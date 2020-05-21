@@ -8,14 +8,13 @@ import com.azure.search.documents.models.MappingCharFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.MappingCharFilter} and
  * {@link MappingCharFilter}.
  */
 public final class MappingCharFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(MappingCharFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MappingCharFilter} to
@@ -27,12 +26,12 @@ public final class MappingCharFilterConverter {
         }
         MappingCharFilter mappingCharFilter = new MappingCharFilter();
 
-        String _name = obj.getName();
-        mappingCharFilter.setName(_name);
+        String name = obj.getName();
+        mappingCharFilter.setName(name);
 
         if (obj.getMappings() != null) {
-            List<String> _mappings = new ArrayList<>(obj.getMappings());
-            mappingCharFilter.setMappings(_mappings);
+            List<String> mappings = new ArrayList<>(obj.getMappings());
+            mappingCharFilter.setMappings(mappings);
         }
         return mappingCharFilter;
     }
@@ -48,13 +47,16 @@ public final class MappingCharFilterConverter {
         com.azure.search.documents.implementation.models.MappingCharFilter mappingCharFilter =
             new com.azure.search.documents.implementation.models.MappingCharFilter();
 
-        String _name = obj.getName();
-        mappingCharFilter.setName(_name);
+        String name = obj.getName();
+        mappingCharFilter.setName(name);
 
         if (obj.getMappings() != null) {
-            List<String> _mappings = new ArrayList<>(obj.getMappings());
-            mappingCharFilter.setMappings(_mappings);
+            List<String> mappings = new ArrayList<>(obj.getMappings());
+            mappingCharFilter.setMappings(mappings);
         }
         return mappingCharFilter;
+    }
+
+    private MappingCharFilterConverter() {
     }
 }

@@ -11,7 +11,7 @@ import com.azure.search.documents.models.TruncateTokenFilter;
  * {@link TruncateTokenFilter}.
  */
 public final class TruncateTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(TruncateTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TruncateTokenFilter} to
@@ -23,11 +23,11 @@ public final class TruncateTokenFilterConverter {
         }
         TruncateTokenFilter truncateTokenFilter = new TruncateTokenFilter();
 
-        String _name = obj.getName();
-        truncateTokenFilter.setName(_name);
+        String name = obj.getName();
+        truncateTokenFilter.setName(name);
 
-        Integer _length = obj.getLength();
-        truncateTokenFilter.setLength(_length);
+        Integer length = obj.getLength();
+        truncateTokenFilter.setLength(length);
         return truncateTokenFilter;
     }
 
@@ -42,11 +42,14 @@ public final class TruncateTokenFilterConverter {
         com.azure.search.documents.implementation.models.TruncateTokenFilter truncateTokenFilter =
             new com.azure.search.documents.implementation.models.TruncateTokenFilter();
 
-        String _name = obj.getName();
-        truncateTokenFilter.setName(_name);
+        String name = obj.getName();
+        truncateTokenFilter.setName(name);
 
-        Integer _length = obj.getLength();
-        truncateTokenFilter.setLength(_length);
+        Integer length = obj.getLength();
+        truncateTokenFilter.setLength(length);
         return truncateTokenFilter;
+    }
+
+    private TruncateTokenFilterConverter() {
     }
 }

@@ -12,7 +12,7 @@ import com.azure.search.documents.models.MicrosoftTokenizerLanguage;
  * {@link MicrosoftLanguageTokenizer}.
  */
 public final class MicrosoftLanguageTokenizerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftLanguageTokenizerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer} to
@@ -24,19 +24,19 @@ public final class MicrosoftLanguageTokenizerConverter {
         }
         MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer();
 
-        String _name = obj.getName();
-        microsoftLanguageTokenizer.setName(_name);
+        String name = obj.getName();
+        microsoftLanguageTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        microsoftLanguageTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            MicrosoftTokenizerLanguage _language = MicrosoftTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageTokenizer.setLanguage(_language);
+            MicrosoftTokenizerLanguage language = MicrosoftTokenizerLanguageConverter.map(obj.getLanguage());
+            microsoftLanguageTokenizer.setLanguage(language);
         }
 
-        Boolean _isSearchTokenizer = obj.isSearchTokenizer();
-        microsoftLanguageTokenizer.setIsSearchTokenizer(_isSearchTokenizer);
+        Boolean isSearchTokenizer = obj.isSearchTokenizer();
+        microsoftLanguageTokenizer.setIsSearchTokenizer(isSearchTokenizer);
         return microsoftLanguageTokenizer;
     }
 
@@ -51,20 +51,23 @@ public final class MicrosoftLanguageTokenizerConverter {
         com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer microsoftLanguageTokenizer =
             new com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer();
 
-        String _name = obj.getName();
-        microsoftLanguageTokenizer.setName(_name);
+        String name = obj.getName();
+        microsoftLanguageTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        microsoftLanguageTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage _language =
+            com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage language =
                 MicrosoftTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageTokenizer.setLanguage(_language);
+            microsoftLanguageTokenizer.setLanguage(language);
         }
 
-        Boolean _isSearchTokenizer = obj.isSearchTokenizer();
-        microsoftLanguageTokenizer.setIsSearchTokenizer(_isSearchTokenizer);
+        Boolean isSearchTokenizer = obj.isSearchTokenizer();
+        microsoftLanguageTokenizer.setIsSearchTokenizer(isSearchTokenizer);
         return microsoftLanguageTokenizer;
+    }
+
+    private MicrosoftLanguageTokenizerConverter() {
     }
 }

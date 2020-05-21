@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.OcrSkill} and {@link OcrSkill}.
  */
 public final class OcrSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(OcrSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.OcrSkill} to {@link OcrSkill}.
@@ -29,39 +29,39 @@ public final class OcrSkillConverter {
         OcrSkill ocrSkill = new OcrSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setOutputs(_outputs);
+            ocrSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setInputs(_inputs);
+            ocrSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        ocrSkill.setName(_name);
+        String name = obj.getName();
+        ocrSkill.setName(name);
 
-        String _context = obj.getContext();
-        ocrSkill.setContext(_context);
+        String context = obj.getContext();
+        ocrSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        ocrSkill.setDescription(_description);
+        String description = obj.getDescription();
+        ocrSkill.setDescription(description);
 
         if (obj.getTextExtractionAlgorithm() != null) {
-            TextExtractionAlgorithm _textExtractionAlgorithm =
+            TextExtractionAlgorithm textExtractionAlgorithm =
                 TextExtractionAlgorithmConverter.map(obj.getTextExtractionAlgorithm());
-            ocrSkill.setTextExtractionAlgorithm(_textExtractionAlgorithm);
+            ocrSkill.setTextExtractionAlgorithm(textExtractionAlgorithm);
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            OcrSkillLanguage _defaultLanguageCode = OcrSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            ocrSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            OcrSkillLanguage defaultLanguageCode = OcrSkillLanguageConverter.map(obj.getDefaultLanguageCode());
+            ocrSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
 
-        Boolean _shouldDetectOrientation = obj.isShouldDetectOrientation();
-        ocrSkill.setShouldDetectOrientation(_shouldDetectOrientation);
+        Boolean shouldDetectOrientation = obj.isShouldDetectOrientation();
+        ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
         return ocrSkill;
     }
 
@@ -76,40 +76,43 @@ public final class OcrSkillConverter {
             new com.azure.search.documents.implementation.models.OcrSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setOutputs(_outputs);
+            ocrSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setInputs(_inputs);
+            ocrSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        ocrSkill.setName(_name);
+        String name = obj.getName();
+        ocrSkill.setName(name);
 
-        String _context = obj.getContext();
-        ocrSkill.setContext(_context);
+        String context = obj.getContext();
+        ocrSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        ocrSkill.setDescription(_description);
+        String description = obj.getDescription();
+        ocrSkill.setDescription(description);
 
         if (obj.getTextExtractionAlgorithm() != null) {
-            com.azure.search.documents.implementation.models.TextExtractionAlgorithm _textExtractionAlgorithm =
+            com.azure.search.documents.implementation.models.TextExtractionAlgorithm textExtractionAlgorithm =
                 TextExtractionAlgorithmConverter.map(obj.getTextExtractionAlgorithm());
-            ocrSkill.setTextExtractionAlgorithm(_textExtractionAlgorithm);
+            ocrSkill.setTextExtractionAlgorithm(textExtractionAlgorithm);
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.OcrSkillLanguage _defaultLanguageCode =
+            com.azure.search.documents.implementation.models.OcrSkillLanguage defaultLanguageCode =
                 OcrSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            ocrSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            ocrSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
 
-        Boolean _shouldDetectOrientation = obj.shouldDetectOrientation();
-        ocrSkill.setShouldDetectOrientation(_shouldDetectOrientation);
+        Boolean shouldDetectOrientation = obj.shouldDetectOrientation();
+        ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
         return ocrSkill;
+    }
+
+    private OcrSkillConverter() {
     }
 }

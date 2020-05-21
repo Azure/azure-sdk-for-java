@@ -12,7 +12,7 @@ import com.azure.search.documents.models.SearchIndexerError;
  * {@link SearchIndexerError}.
  */
 public final class SearchIndexerErrorConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerErrorConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerError} to
@@ -24,23 +24,23 @@ public final class SearchIndexerErrorConverter {
         }
         SearchIndexerError searchIndexerError = new SearchIndexerError();
 
-        String _errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(searchIndexerError, "errorMessage", _errorMessage);
+        String errorMessage = obj.getErrorMessage();
+        PrivateFieldAccessHelper.set(searchIndexerError, "errorMessage", errorMessage);
 
-        String _name = obj.getName();
-        PrivateFieldAccessHelper.set(searchIndexerError, "name", _name);
+        String name = obj.getName();
+        PrivateFieldAccessHelper.set(searchIndexerError, "name", name);
 
-        String _details = obj.getDetails();
-        PrivateFieldAccessHelper.set(searchIndexerError, "details", _details);
+        String details = obj.getDetails();
+        PrivateFieldAccessHelper.set(searchIndexerError, "details", details);
 
-        String _documentationLink = obj.getDocumentationLink();
-        PrivateFieldAccessHelper.set(searchIndexerError, "documentationLink", _documentationLink);
+        String documentationLink = obj.getDocumentationLink();
+        PrivateFieldAccessHelper.set(searchIndexerError, "documentationLink", documentationLink);
 
-        String _key = obj.getKey();
-        PrivateFieldAccessHelper.set(searchIndexerError, "key", _key);
+        String key = obj.getKey();
+        PrivateFieldAccessHelper.set(searchIndexerError, "key", key);
 
-        int _statusCode = obj.getStatusCode();
-        PrivateFieldAccessHelper.set(searchIndexerError, "statusCode", _statusCode);
+        int statusCode = obj.getStatusCode();
+        PrivateFieldAccessHelper.set(searchIndexerError, "statusCode", statusCode);
         return searchIndexerError;
     }
 
@@ -55,23 +55,26 @@ public final class SearchIndexerErrorConverter {
         com.azure.search.documents.implementation.models.SearchIndexerError searchIndexerError =
             new com.azure.search.documents.implementation.models.SearchIndexerError();
 
-        String _errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(searchIndexerError, "errorMessage", _errorMessage);
+        String errorMessage = obj.getErrorMessage();
+        PrivateFieldAccessHelper.set(searchIndexerError, "errorMessage", errorMessage);
 
-        String _name = obj.getName();
-        PrivateFieldAccessHelper.set(searchIndexerError, "name", _name);
+        String name = obj.getName();
+        PrivateFieldAccessHelper.set(searchIndexerError, "name", name);
 
-        String _details = obj.getDetails();
-        PrivateFieldAccessHelper.set(searchIndexerError, "details", _details);
+        String details = obj.getDetails();
+        PrivateFieldAccessHelper.set(searchIndexerError, "details", details);
 
-        String _documentationLink = obj.getDocumentationLink();
-        PrivateFieldAccessHelper.set(searchIndexerError, "documentationLink", _documentationLink);
+        String documentationLink = obj.getDocumentationLink();
+        PrivateFieldAccessHelper.set(searchIndexerError, "documentationLink", documentationLink);
 
-        String _key = obj.getKey();
-        PrivateFieldAccessHelper.set(searchIndexerError, "key", _key);
+        String key = obj.getKey();
+        PrivateFieldAccessHelper.set(searchIndexerError, "key", key);
 
-        int _statusCode = obj.getStatusCode();
-        PrivateFieldAccessHelper.set(searchIndexerError, "statusCode", _statusCode);
+        int statusCode = obj.getStatusCode();
+        PrivateFieldAccessHelper.set(searchIndexerError, "statusCode", statusCode);
         return searchIndexerError;
+    }
+
+    private SearchIndexerErrorConverter() {
     }
 }

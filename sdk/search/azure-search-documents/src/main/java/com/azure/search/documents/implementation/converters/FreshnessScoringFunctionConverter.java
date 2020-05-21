@@ -13,7 +13,7 @@ import com.azure.search.documents.models.ScoringFunctionInterpolation;
  * {@link FreshnessScoringFunction}.
  */
 public final class FreshnessScoringFunctionConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(FreshnessScoringFunctionConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FreshnessScoringFunction} to
@@ -26,20 +26,20 @@ public final class FreshnessScoringFunctionConverter {
         FreshnessScoringFunction freshnessScoringFunction = new FreshnessScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation _interpolation =
+            ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            freshnessScoringFunction.setInterpolation(_interpolation);
+            freshnessScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        freshnessScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        freshnessScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        freshnessScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        freshnessScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            FreshnessScoringParameters _parameters = FreshnessScoringParametersConverter.map(obj.getParameters());
-            freshnessScoringFunction.setParameters(_parameters);
+            FreshnessScoringParameters parameters = FreshnessScoringParametersConverter.map(obj.getParameters());
+            freshnessScoringFunction.setParameters(parameters);
         }
         return freshnessScoringFunction;
     }
@@ -56,22 +56,25 @@ public final class FreshnessScoringFunctionConverter {
             new com.azure.search.documents.implementation.models.FreshnessScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation _interpolation =
+            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            freshnessScoringFunction.setInterpolation(_interpolation);
+            freshnessScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        freshnessScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        freshnessScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        freshnessScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        freshnessScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            com.azure.search.documents.implementation.models.FreshnessScoringParameters _parameters =
+            com.azure.search.documents.implementation.models.FreshnessScoringParameters parameters =
                 FreshnessScoringParametersConverter.map(obj.getParameters());
-            freshnessScoringFunction.setParameters(_parameters);
+            freshnessScoringFunction.setParameters(parameters);
         }
         return freshnessScoringFunction;
+    }
+
+    private FreshnessScoringFunctionConverter() {
     }
 }

@@ -12,7 +12,7 @@ import com.azure.search.documents.models.SnowballTokenFilterLanguage;
  * {@link SnowballTokenFilter}.
  */
 public final class SnowballTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SnowballTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SnowballTokenFilter} to
@@ -24,12 +24,12 @@ public final class SnowballTokenFilterConverter {
         }
         SnowballTokenFilter snowballTokenFilter = new SnowballTokenFilter();
 
-        String _name = obj.getName();
-        snowballTokenFilter.setName(_name);
+        String name = obj.getName();
+        snowballTokenFilter.setName(name);
 
         if (obj.getLanguage() != null) {
-            SnowballTokenFilterLanguage _language = SnowballTokenFilterLanguageConverter.map(obj.getLanguage());
-            snowballTokenFilter.setLanguage(_language);
+            SnowballTokenFilterLanguage language = SnowballTokenFilterLanguageConverter.map(obj.getLanguage());
+            snowballTokenFilter.setLanguage(language);
         }
         return snowballTokenFilter;
     }
@@ -45,14 +45,17 @@ public final class SnowballTokenFilterConverter {
         com.azure.search.documents.implementation.models.SnowballTokenFilter snowballTokenFilter =
             new com.azure.search.documents.implementation.models.SnowballTokenFilter();
 
-        String _name = obj.getName();
-        snowballTokenFilter.setName(_name);
+        String name = obj.getName();
+        snowballTokenFilter.setName(name);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage _language =
+            com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage language =
                 SnowballTokenFilterLanguageConverter.map(obj.getLanguage());
-            snowballTokenFilter.setLanguage(_language);
+            snowballTokenFilter.setLanguage(language);
         }
         return snowballTokenFilter;
+    }
+
+    private SnowballTokenFilterConverter() {
     }
 }

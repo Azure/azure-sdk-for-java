@@ -13,7 +13,7 @@ import com.azure.search.documents.models.ScoringFunctionInterpolation;
  * {@link MagnitudeScoringFunction}.
  */
 public final class MagnitudeScoringFunctionConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(MagnitudeScoringFunctionConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MagnitudeScoringFunction} to
@@ -26,20 +26,20 @@ public final class MagnitudeScoringFunctionConverter {
         MagnitudeScoringFunction magnitudeScoringFunction = new MagnitudeScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation _interpolation =
+            ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            magnitudeScoringFunction.setInterpolation(_interpolation);
+            magnitudeScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        magnitudeScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        magnitudeScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        magnitudeScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        magnitudeScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            MagnitudeScoringParameters _parameters = MagnitudeScoringParametersConverter.map(obj.getParameters());
-            magnitudeScoringFunction.setParameters(_parameters);
+            MagnitudeScoringParameters parameters = MagnitudeScoringParametersConverter.map(obj.getParameters());
+            magnitudeScoringFunction.setParameters(parameters);
         }
         return magnitudeScoringFunction;
     }
@@ -56,22 +56,25 @@ public final class MagnitudeScoringFunctionConverter {
             new com.azure.search.documents.implementation.models.MagnitudeScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation _interpolation =
+            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            magnitudeScoringFunction.setInterpolation(_interpolation);
+            magnitudeScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        magnitudeScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        magnitudeScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        magnitudeScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        magnitudeScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            com.azure.search.documents.implementation.models.MagnitudeScoringParameters _parameters =
+            com.azure.search.documents.implementation.models.MagnitudeScoringParameters parameters =
                 MagnitudeScoringParametersConverter.map(obj.getParameters());
-            magnitudeScoringFunction.setParameters(_parameters);
+            magnitudeScoringFunction.setParameters(parameters);
         }
         return magnitudeScoringFunction;
+    }
+
+    private MagnitudeScoringFunctionConverter() {
     }
 }

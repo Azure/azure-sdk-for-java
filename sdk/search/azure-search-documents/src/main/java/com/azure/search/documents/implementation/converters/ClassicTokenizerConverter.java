@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.ClassicTokenizer;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.ClassicTokenizer;
  * {@link ClassicTokenizer}.
  */
 public final class ClassicTokenizerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ClassicTokenizerConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ClassicTokenizer} to {@link ClassicTokenizer}.
      */
@@ -22,11 +19,11 @@ public final class ClassicTokenizerConverter {
         }
         ClassicTokenizer classicTokenizer = new ClassicTokenizer();
 
-        String _name = obj.getName();
-        classicTokenizer.setName(_name);
+        String name = obj.getName();
+        classicTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        classicTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        classicTokenizer.setMaxTokenLength(maxTokenLength);
         return classicTokenizer;
     }
 
@@ -40,11 +37,14 @@ public final class ClassicTokenizerConverter {
         com.azure.search.documents.implementation.models.ClassicTokenizer classicTokenizer =
             new com.azure.search.documents.implementation.models.ClassicTokenizer();
 
-        String _name = obj.getName();
-        classicTokenizer.setName(_name);
+        String name = obj.getName();
+        classicTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        classicTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        classicTokenizer.setMaxTokenLength(maxTokenLength);
         return classicTokenizer;
+    }
+
+    private ClassicTokenizerConverter() {
     }
 }

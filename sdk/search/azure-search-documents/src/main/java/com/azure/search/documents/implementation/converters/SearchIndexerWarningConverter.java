@@ -12,7 +12,7 @@ import com.azure.search.documents.models.SearchIndexerWarning;
  * {@link SearchIndexerWarning}.
  */
 public final class SearchIndexerWarningConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerWarningConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerWarning} to
@@ -24,20 +24,20 @@ public final class SearchIndexerWarningConverter {
         }
         SearchIndexerWarning searchIndexerWarning = new SearchIndexerWarning();
 
-        String _name = obj.getName();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "name", _name);
+        String name = obj.getName();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "name", name);
 
-        String _details = obj.getDetails();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "details", _details);
+        String details = obj.getDetails();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "details", details);
 
-        String _documentationLink = obj.getDocumentationLink();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "documentationLink", _documentationLink);
+        String documentationLink = obj.getDocumentationLink();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "documentationLink", documentationLink);
 
-        String _message = obj.getMessage();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "message", _message);
+        String message = obj.getMessage();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "message", message);
 
-        String _key = obj.getKey();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "key", _key);
+        String key = obj.getKey();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "key", key);
         return searchIndexerWarning;
     }
 
@@ -52,20 +52,23 @@ public final class SearchIndexerWarningConverter {
         com.azure.search.documents.implementation.models.SearchIndexerWarning searchIndexerWarning =
             new com.azure.search.documents.implementation.models.SearchIndexerWarning();
 
-        String _name = obj.getName();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "name", _name);
+        String name = obj.getName();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "name", name);
 
-        String _details = obj.getDetails();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "details", _details);
+        String details = obj.getDetails();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "details", details);
 
-        String _documentationLink = obj.getDocumentationLink();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "documentationLink", _documentationLink);
+        String documentationLink = obj.getDocumentationLink();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "documentationLink", documentationLink);
 
-        String _message = obj.getMessage();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "message", _message);
+        String message = obj.getMessage();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "message", message);
 
-        String _key = obj.getKey();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "key", _key);
+        String key = obj.getKey();
+        PrivateFieldAccessHelper.set(searchIndexerWarning, "key", key);
         return searchIndexerWarning;
+    }
+
+    private SearchIndexerWarningConverter() {
     }
 }

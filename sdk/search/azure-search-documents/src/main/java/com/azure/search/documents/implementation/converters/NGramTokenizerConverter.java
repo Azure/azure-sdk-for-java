@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * {@link NGramTokenizer}.
  */
 public final class NGramTokenizerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(NGramTokenizerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.NGramTokenizer} to {@link NGramTokenizer}.
@@ -26,20 +26,20 @@ public final class NGramTokenizerConverter {
         }
         NGramTokenizer nGramTokenizer = new NGramTokenizer();
 
-        String _name = obj.getName();
-        nGramTokenizer.setName(_name);
+        String name = obj.getName();
+        nGramTokenizer.setName(name);
 
-        Integer _maxGram = obj.getMaxGram();
-        nGramTokenizer.setMaxGram(_maxGram);
+        Integer maxGram = obj.getMaxGram();
+        nGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            List<TokenCharacterKind> _tokenChars =
+            List<TokenCharacterKind> tokenChars =
                 obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
-            nGramTokenizer.setTokenChars(_tokenChars);
+            nGramTokenizer.setTokenChars(tokenChars);
         }
 
-        Integer _minGram = obj.getMinGram();
-        nGramTokenizer.setMinGram(_minGram);
+        Integer minGram = obj.getMinGram();
+        nGramTokenizer.setMinGram(minGram);
         return nGramTokenizer;
     }
 
@@ -53,20 +53,23 @@ public final class NGramTokenizerConverter {
         com.azure.search.documents.implementation.models.NGramTokenizer nGramTokenizer =
             new com.azure.search.documents.implementation.models.NGramTokenizer();
 
-        String _name = obj.getName();
-        nGramTokenizer.setName(_name);
+        String name = obj.getName();
+        nGramTokenizer.setName(name);
 
-        Integer _maxGram = obj.getMaxGram();
-        nGramTokenizer.setMaxGram(_maxGram);
+        Integer maxGram = obj.getMaxGram();
+        nGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            List<com.azure.search.documents.implementation.models.TokenCharacterKind> _tokenChars =
+            List<com.azure.search.documents.implementation.models.TokenCharacterKind> tokenChars =
                 obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
-            nGramTokenizer.setTokenChars(_tokenChars);
+            nGramTokenizer.setTokenChars(tokenChars);
         }
 
-        Integer _minGram = obj.getMinGram();
-        nGramTokenizer.setMinGram(_minGram);
+        Integer minGram = obj.getMinGram();
+        nGramTokenizer.setMinGram(minGram);
         return nGramTokenizer;
+    }
+
+    private NGramTokenizerConverter() {
     }
 }

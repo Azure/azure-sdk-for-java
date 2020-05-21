@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.ClassicSimilarity;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.ClassicSimilarity;
  * {@link ClassicSimilarity}.
  */
 public final class ClassicSimilarityConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ClassicSimilarityConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ClassicSimilarity} to
      * {@link ClassicSimilarity}.
@@ -36,5 +33,8 @@ public final class ClassicSimilarityConverter {
         com.azure.search.documents.implementation.models.ClassicSimilarity classicSimilarity =
             new com.azure.search.documents.implementation.models.ClassicSimilarity();
         return classicSimilarity;
+    }
+
+    private ClassicSimilarityConverter() {
     }
 }

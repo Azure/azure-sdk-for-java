@@ -11,7 +11,7 @@ import com.azure.search.documents.models.PatternReplaceTokenFilter;
  * {@link PatternReplaceTokenFilter}.
  */
 public final class PatternReplaceTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(PatternReplaceTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternReplaceTokenFilter} to
@@ -23,14 +23,14 @@ public final class PatternReplaceTokenFilterConverter {
         }
         PatternReplaceTokenFilter patternReplaceTokenFilter = new PatternReplaceTokenFilter();
 
-        String _name = obj.getName();
-        patternReplaceTokenFilter.setName(_name);
+        String name = obj.getName();
+        patternReplaceTokenFilter.setName(name);
 
-        String _pattern = obj.getPattern();
-        patternReplaceTokenFilter.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternReplaceTokenFilter.setPattern(pattern);
 
-        String _replacement = obj.getReplacement();
-        patternReplaceTokenFilter.setReplacement(_replacement);
+        String replacement = obj.getReplacement();
+        patternReplaceTokenFilter.setReplacement(replacement);
         return patternReplaceTokenFilter;
     }
 
@@ -45,14 +45,17 @@ public final class PatternReplaceTokenFilterConverter {
         com.azure.search.documents.implementation.models.PatternReplaceTokenFilter patternReplaceTokenFilter =
             new com.azure.search.documents.implementation.models.PatternReplaceTokenFilter();
 
-        String _name = obj.getName();
-        patternReplaceTokenFilter.setName(_name);
+        String name = obj.getName();
+        patternReplaceTokenFilter.setName(name);
 
-        String _pattern = obj.getPattern();
-        patternReplaceTokenFilter.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternReplaceTokenFilter.setPattern(pattern);
 
-        String _replacement = obj.getReplacement();
-        patternReplaceTokenFilter.setReplacement(_replacement);
+        String replacement = obj.getReplacement();
+        patternReplaceTokenFilter.setReplacement(replacement);
         return patternReplaceTokenFilter;
+    }
+
+    private PatternReplaceTokenFilterConverter() {
     }
 }

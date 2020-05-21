@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.SentimentSkillLanguage;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.SentimentSkillLanguage;
  * {@link SentimentSkillLanguage}.
  */
 public final class SentimentSkillLanguageConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SentimentSkillLanguageConverter.class);
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.SentimentSkillLanguage} to enum
      * {@link SentimentSkillLanguage}.
@@ -33,5 +30,8 @@ public final class SentimentSkillLanguageConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.SentimentSkillLanguage.fromString(obj.toString());
+    }
+
+    private SentimentSkillLanguageConverter() {
     }
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
  * {@link RequestOptions}.
  */
 public final class RequestOptionsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(RequestOptionsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.RequestOptions} to {@link RequestOptions}.
@@ -24,8 +24,8 @@ public final class RequestOptionsConverter {
         }
         RequestOptions requestOptions = new RequestOptions();
 
-        UUID _xMsClientRequestId = obj.getXMsClientRequestId();
-        requestOptions.setXMsClientRequestId(_xMsClientRequestId);
+        UUID xMsClientRequestId = obj.getXMsClientRequestId();
+        requestOptions.setXMsClientRequestId(xMsClientRequestId);
         return requestOptions;
     }
 
@@ -39,8 +39,11 @@ public final class RequestOptionsConverter {
         com.azure.search.documents.implementation.models.RequestOptions requestOptions =
             new com.azure.search.documents.implementation.models.RequestOptions();
 
-        UUID _xMsClientRequestId = obj.getXMsClientRequestId();
-        requestOptions.setXMsClientRequestId(_xMsClientRequestId);
+        UUID xMsClientRequestId = obj.getXMsClientRequestId();
+        requestOptions.setXMsClientRequestId(xMsClientRequestId);
         return requestOptions;
+    }
+
+    private RequestOptionsConverter() {
     }
 }

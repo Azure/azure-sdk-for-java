@@ -11,7 +11,7 @@ import com.azure.search.documents.models.LengthTokenFilter;
  * {@link LengthTokenFilter}.
  */
 public final class LengthTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(LengthTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LengthTokenFilter} to
@@ -23,14 +23,14 @@ public final class LengthTokenFilterConverter {
         }
         LengthTokenFilter lengthTokenFilter = new LengthTokenFilter();
 
-        String _name = obj.getName();
-        lengthTokenFilter.setName(_name);
+        String name = obj.getName();
+        lengthTokenFilter.setName(name);
 
-        Integer _minLength = obj.getMinLength();
-        lengthTokenFilter.setMinLength(_minLength);
+        Integer minLength = obj.getMinLength();
+        lengthTokenFilter.setMinLength(minLength);
 
-        Integer _maxLength = obj.getMaxLength();
-        lengthTokenFilter.setMaxLength(_maxLength);
+        Integer maxLength = obj.getMaxLength();
+        lengthTokenFilter.setMaxLength(maxLength);
         return lengthTokenFilter;
     }
 
@@ -45,14 +45,17 @@ public final class LengthTokenFilterConverter {
         com.azure.search.documents.implementation.models.LengthTokenFilter lengthTokenFilter =
             new com.azure.search.documents.implementation.models.LengthTokenFilter();
 
-        String _name = obj.getName();
-        lengthTokenFilter.setName(_name);
+        String name = obj.getName();
+        lengthTokenFilter.setName(name);
 
-        Integer _minLength = obj.getMinLength();
-        lengthTokenFilter.setMinLength(_minLength);
+        Integer minLength = obj.getMinLength();
+        lengthTokenFilter.setMinLength(minLength);
 
-        Integer _maxLength = obj.getMaxLength();
-        lengthTokenFilter.setMaxLength(_maxLength);
+        Integer maxLength = obj.getMaxLength();
+        lengthTokenFilter.setMaxLength(maxLength);
         return lengthTokenFilter;
+    }
+
+    private LengthTokenFilterConverter() {
     }
 }

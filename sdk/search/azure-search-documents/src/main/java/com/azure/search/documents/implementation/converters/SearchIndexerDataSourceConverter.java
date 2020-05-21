@@ -16,7 +16,7 @@ import com.azure.search.documents.models.SearchIndexerDataSourceType;
  * {@link SearchIndexerDataSource}.
  */
 public final class SearchIndexerDataSourceConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerDataSourceConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerDataSource} to
@@ -29,39 +29,39 @@ public final class SearchIndexerDataSourceConverter {
         SearchIndexerDataSource searchIndexerDataSource = new SearchIndexerDataSource();
 
         if (obj.getContainer() != null) {
-            SearchIndexerDataContainer _container = SearchIndexerDataContainerConverter.map(obj.getContainer());
-            searchIndexerDataSource.setContainer(_container);
+            SearchIndexerDataContainer container = SearchIndexerDataContainerConverter.map(obj.getContainer());
+            searchIndexerDataSource.setContainer(container);
         }
 
         if (obj.getDataChangeDetectionPolicy() != null) {
-            DataChangeDetectionPolicy _dataChangeDetectionPolicy =
+            DataChangeDetectionPolicy dataChangeDetectionPolicy =
                 DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
-            searchIndexerDataSource.setDataChangeDetectionPolicy(_dataChangeDetectionPolicy);
+            searchIndexerDataSource.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
 
         if (obj.getCredentials() != null) {
-            DataSourceCredentials _credentials = DataSourceCredentialsConverter.map(obj.getCredentials());
-            searchIndexerDataSource.setCredentials(_credentials);
+            DataSourceCredentials credentials = DataSourceCredentialsConverter.map(obj.getCredentials());
+            searchIndexerDataSource.setCredentials(credentials);
         }
 
-        String _name = obj.getName();
-        searchIndexerDataSource.setName(_name);
+        String name = obj.getName();
+        searchIndexerDataSource.setName(name);
 
-        String _description = obj.getDescription();
-        searchIndexerDataSource.setDescription(_description);
+        String description = obj.getDescription();
+        searchIndexerDataSource.setDescription(description);
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
-            DataDeletionDetectionPolicy _dataDeletionDetectionPolicy =
+            DataDeletionDetectionPolicy dataDeletionDetectionPolicy =
                 DataDeletionDetectionPolicyConverter.map(obj.getDataDeletionDetectionPolicy());
-            searchIndexerDataSource.setDataDeletionDetectionPolicy(_dataDeletionDetectionPolicy);
+            searchIndexerDataSource.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
         }
 
-        String _eTag = obj.getETag();
-        searchIndexerDataSource.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndexerDataSource.setETag(eTag);
 
         if (obj.getType() != null) {
-            SearchIndexerDataSourceType _type = SearchIndexerDataSourceTypeConverter.map(obj.getType());
-            searchIndexerDataSource.setType(_type);
+            SearchIndexerDataSourceType type = SearchIndexerDataSourceTypeConverter.map(obj.getType());
+            searchIndexerDataSource.setType(type);
         }
         return searchIndexerDataSource;
     }
@@ -78,42 +78,46 @@ public final class SearchIndexerDataSourceConverter {
             new com.azure.search.documents.implementation.models.SearchIndexerDataSource();
 
         if (obj.getContainer() != null) {
-            com.azure.search.documents.implementation.models.SearchIndexerDataContainer _container =
+            com.azure.search.documents.implementation.models.SearchIndexerDataContainer container =
                 SearchIndexerDataContainerConverter.map(obj.getContainer());
-            searchIndexerDataSource.setContainer(_container);
+            searchIndexerDataSource.setContainer(container);
         }
 
         if (obj.getDataChangeDetectionPolicy() != null) {
-            com.azure.search.documents.implementation.models.DataChangeDetectionPolicy _dataChangeDetectionPolicy =
+            com.azure.search.documents.implementation.models.DataChangeDetectionPolicy dataChangeDetectionPolicy =
                 DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
-            searchIndexerDataSource.setDataChangeDetectionPolicy(_dataChangeDetectionPolicy);
+            searchIndexerDataSource.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
 
         if (obj.getCredentials() != null) {
-            com.azure.search.documents.implementation.models.DataSourceCredentials _credentials =
+            com.azure.search.documents.implementation.models.DataSourceCredentials credentials =
                 DataSourceCredentialsConverter.map(obj.getCredentials());
-            searchIndexerDataSource.setCredentials(_credentials);
+            searchIndexerDataSource.setCredentials(credentials);
         }
 
-        String _name = obj.getName();
-        searchIndexerDataSource.setName(_name);
+        String name = obj.getName();
+        searchIndexerDataSource.setName(name);
 
-        String _description = obj.getDescription();
-        searchIndexerDataSource.setDescription(_description);
+        String description = obj.getDescription();
+        searchIndexerDataSource.setDescription(description);
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
-            com.azure.search.documents.implementation.models.DataDeletionDetectionPolicy _dataDeletionDetectionPolicy = DataDeletionDetectionPolicyConverter.map(obj.getDataDeletionDetectionPolicy());
-            searchIndexerDataSource.setDataDeletionDetectionPolicy(_dataDeletionDetectionPolicy);
+            com.azure.search.documents.implementation.models.DataDeletionDetectionPolicy dataDeletionDetectionPolicy
+                = DataDeletionDetectionPolicyConverter.map(obj.getDataDeletionDetectionPolicy());
+            searchIndexerDataSource.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
         }
 
-        String _eTag = obj.getETag();
-        searchIndexerDataSource.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndexerDataSource.setETag(eTag);
 
         if (obj.getType() != null) {
-            com.azure.search.documents.implementation.models.SearchIndexerDataSourceType _type =
+            com.azure.search.documents.implementation.models.SearchIndexerDataSourceType type =
                 SearchIndexerDataSourceTypeConverter.map(obj.getType());
-            searchIndexerDataSource.setType(_type);
+            searchIndexerDataSource.setType(type);
         }
         return searchIndexerDataSource;
+    }
+
+    private SearchIndexerDataSourceConverter() {
     }
 }

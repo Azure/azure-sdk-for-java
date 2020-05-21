@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.WordDelimiterTokenFilter;
 
 import java.util.ArrayList;
@@ -14,8 +13,6 @@ import java.util.List;
  * {@link WordDelimiterTokenFilter}.
  */
 public final class WordDelimiterTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(WordDelimiterTokenFilterConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.WordDelimiterTokenFilter} to
      * {@link WordDelimiterTokenFilter}.
@@ -26,40 +23,40 @@ public final class WordDelimiterTokenFilterConverter {
         }
         WordDelimiterTokenFilter wordDelimiterTokenFilter = new WordDelimiterTokenFilter();
 
-        String _name = obj.getName();
-        wordDelimiterTokenFilter.setName(_name);
+        String name = obj.getName();
+        wordDelimiterTokenFilter.setName(name);
 
-        Boolean _catenateNumbers = obj.isCatenateNumbers();
-        wordDelimiterTokenFilter.setCatenateNumbers(_catenateNumbers);
+        Boolean catenateNumbers = obj.isCatenateNumbers();
+        wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
-            List<String> _protectedWords = new ArrayList<>(obj.getProtectedWords());
-            wordDelimiterTokenFilter.setProtectedWords(_protectedWords);
+            List<String> protectedWords = new ArrayList<>(obj.getProtectedWords());
+            wordDelimiterTokenFilter.setProtectedWords(protectedWords);
         }
 
-        Boolean _generateNumberParts = obj.isGenerateNumberParts();
-        wordDelimiterTokenFilter.setGenerateNumberParts(_generateNumberParts);
+        Boolean generateNumberParts = obj.isGenerateNumberParts();
+        wordDelimiterTokenFilter.setGenerateNumberParts(generateNumberParts);
 
-        Boolean _stemEnglishPossessive = obj.isStemEnglishPossessive();
-        wordDelimiterTokenFilter.setStemEnglishPossessive(_stemEnglishPossessive);
+        Boolean stemEnglishPossessive = obj.isStemEnglishPossessive();
+        wordDelimiterTokenFilter.setStemEnglishPossessive(stemEnglishPossessive);
 
-        Boolean _splitOnCaseChange = obj.isSplitOnCaseChange();
-        wordDelimiterTokenFilter.setSplitOnCaseChange(_splitOnCaseChange);
+        Boolean splitOnCaseChange = obj.isSplitOnCaseChange();
+        wordDelimiterTokenFilter.setSplitOnCaseChange(splitOnCaseChange);
 
-        Boolean _generateWordParts = obj.isGenerateWordParts();
-        wordDelimiterTokenFilter.setGenerateWordParts(_generateWordParts);
+        Boolean generateWordParts = obj.isGenerateWordParts();
+        wordDelimiterTokenFilter.setGenerateWordParts(generateWordParts);
 
-        Boolean _splitOnNumerics = obj.isSplitOnNumerics();
-        wordDelimiterTokenFilter.setSplitOnNumerics(_splitOnNumerics);
+        Boolean splitOnNumerics = obj.isSplitOnNumerics();
+        wordDelimiterTokenFilter.setSplitOnNumerics(splitOnNumerics);
 
-        Boolean _preserveOriginal = obj.isPreserveOriginal();
-        wordDelimiterTokenFilter.setPreserveOriginal(_preserveOriginal);
+        Boolean preserveOriginal = obj.isPreserveOriginal();
+        wordDelimiterTokenFilter.setPreserveOriginal(preserveOriginal);
 
-        Boolean _catenateAll = obj.isCatenateAll();
-        wordDelimiterTokenFilter.setCatenateAll(_catenateAll);
+        Boolean catenateAll = obj.isCatenateAll();
+        wordDelimiterTokenFilter.setCatenateAll(catenateAll);
 
-        Boolean _catenateWords = obj.isCatenateWords();
-        wordDelimiterTokenFilter.setCatenateWords(_catenateWords);
+        Boolean catenateWords = obj.isCatenateWords();
+        wordDelimiterTokenFilter.setCatenateWords(catenateWords);
         return wordDelimiterTokenFilter;
     }
 
@@ -74,40 +71,43 @@ public final class WordDelimiterTokenFilterConverter {
         com.azure.search.documents.implementation.models.WordDelimiterTokenFilter wordDelimiterTokenFilter =
             new com.azure.search.documents.implementation.models.WordDelimiterTokenFilter();
 
-        String _name = obj.getName();
-        wordDelimiterTokenFilter.setName(_name);
+        String name = obj.getName();
+        wordDelimiterTokenFilter.setName(name);
 
-        Boolean _catenateNumbers = obj.isCatenateNumbers();
-        wordDelimiterTokenFilter.setCatenateNumbers(_catenateNumbers);
+        Boolean catenateNumbers = obj.isCatenateNumbers();
+        wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
-            List<String> _protectedWords = new ArrayList<>(obj.getProtectedWords());
-            wordDelimiterTokenFilter.setProtectedWords(_protectedWords);
+            List<String> protectedWords = new ArrayList<>(obj.getProtectedWords());
+            wordDelimiterTokenFilter.setProtectedWords(protectedWords);
         }
 
-        Boolean _generateNumberParts = obj.generateNumberParts();
-        wordDelimiterTokenFilter.setGenerateNumberParts(_generateNumberParts);
+        Boolean generateNumberParts = obj.generateNumberParts();
+        wordDelimiterTokenFilter.setGenerateNumberParts(generateNumberParts);
 
-        Boolean _stemEnglishPossessive = obj.isStemEnglishPossessive();
-        wordDelimiterTokenFilter.setStemEnglishPossessive(_stemEnglishPossessive);
+        Boolean stemEnglishPossessive = obj.isStemEnglishPossessive();
+        wordDelimiterTokenFilter.setStemEnglishPossessive(stemEnglishPossessive);
 
-        Boolean _splitOnCaseChange = obj.isSplitOnCaseChange();
-        wordDelimiterTokenFilter.setSplitOnCaseChange(_splitOnCaseChange);
+        Boolean splitOnCaseChange = obj.isSplitOnCaseChange();
+        wordDelimiterTokenFilter.setSplitOnCaseChange(splitOnCaseChange);
 
-        Boolean _generateWordParts = obj.generateWordParts();
-        wordDelimiterTokenFilter.setGenerateWordParts(_generateWordParts);
+        Boolean generateWordParts = obj.generateWordParts();
+        wordDelimiterTokenFilter.setGenerateWordParts(generateWordParts);
 
-        Boolean _splitOnNumerics = obj.isSplitOnNumerics();
-        wordDelimiterTokenFilter.setSplitOnNumerics(_splitOnNumerics);
+        Boolean splitOnNumerics = obj.isSplitOnNumerics();
+        wordDelimiterTokenFilter.setSplitOnNumerics(splitOnNumerics);
 
-        Boolean _preserveOriginal = obj.isPreserveOriginal();
-        wordDelimiterTokenFilter.setPreserveOriginal(_preserveOriginal);
+        Boolean preserveOriginal = obj.isPreserveOriginal();
+        wordDelimiterTokenFilter.setPreserveOriginal(preserveOriginal);
 
-        Boolean _catenateAll = obj.isCatenateAll();
-        wordDelimiterTokenFilter.setCatenateAll(_catenateAll);
+        Boolean catenateAll = obj.isCatenateAll();
+        wordDelimiterTokenFilter.setCatenateAll(catenateAll);
 
-        Boolean _catenateWords = obj.isCatenateWords();
-        wordDelimiterTokenFilter.setCatenateWords(_catenateWords);
+        Boolean catenateWords = obj.isCatenateWords();
+        wordDelimiterTokenFilter.setCatenateWords(catenateWords);
         return wordDelimiterTokenFilter;
+    }
+
+    private WordDelimiterTokenFilterConverter() {
     }
 }

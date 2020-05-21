@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteResult;
@@ -16,8 +15,6 @@ import java.util.stream.Collectors;
  * {@link AutocompleteResult}.
  */
 public final class AutocompleteResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(AutocompleteResultConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.AutocompleteResult} to
      * {@link AutocompleteResult}.
@@ -28,13 +25,13 @@ public final class AutocompleteResultConverter {
         }
         AutocompleteResult autocompleteResult = new AutocompleteResult();
 
-        Double _coverage = obj.getCoverage();
-        PrivateFieldAccessHelper.set(autocompleteResult, "coverage", _coverage);
+        Double coverage = obj.getCoverage();
+        PrivateFieldAccessHelper.set(autocompleteResult, "coverage", coverage);
 
         if (obj.getResults() != null) {
-            List<AutocompleteItem> _results =
+            List<AutocompleteItem> results =
                 obj.getResults().stream().map(AutocompleteItemConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(autocompleteResult, "results", _results);
+            PrivateFieldAccessHelper.set(autocompleteResult, "results", results);
         }
         return autocompleteResult;
     }
@@ -50,14 +47,17 @@ public final class AutocompleteResultConverter {
         com.azure.search.documents.implementation.models.AutocompleteResult autocompleteResult =
             new com.azure.search.documents.implementation.models.AutocompleteResult();
 
-        Double _coverage = obj.getCoverage();
-        PrivateFieldAccessHelper.set(autocompleteResult, "coverage", _coverage);
+        Double coverage = obj.getCoverage();
+        PrivateFieldAccessHelper.set(autocompleteResult, "coverage", coverage);
 
         if (obj.getResults() != null) {
-            List<com.azure.search.documents.implementation.models.AutocompleteItem> _results =
+            List<com.azure.search.documents.implementation.models.AutocompleteItem> results =
                 obj.getResults().stream().map(AutocompleteItemConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(autocompleteResult, "results", _results);
+            PrivateFieldAccessHelper.set(autocompleteResult, "results", results);
         }
         return autocompleteResult;
+    }
+
+    private AutocompleteResultConverter() {
     }
 }

@@ -13,7 +13,7 @@ import com.azure.search.documents.models.ScoringFunctionInterpolation;
  * {@link DistanceScoringFunction}.
  */
 public final class DistanceScoringFunctionConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(DistanceScoringFunctionConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DistanceScoringFunction} to
@@ -26,20 +26,20 @@ public final class DistanceScoringFunctionConverter {
         DistanceScoringFunction distanceScoringFunction = new DistanceScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation _interpolation =
+            ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            distanceScoringFunction.setInterpolation(_interpolation);
+            distanceScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        distanceScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        distanceScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        distanceScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        distanceScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            DistanceScoringParameters _parameters = DistanceScoringParametersConverter.map(obj.getParameters());
-            distanceScoringFunction.setParameters(_parameters);
+            DistanceScoringParameters parameters = DistanceScoringParametersConverter.map(obj.getParameters());
+            distanceScoringFunction.setParameters(parameters);
         }
         return distanceScoringFunction;
     }
@@ -56,22 +56,25 @@ public final class DistanceScoringFunctionConverter {
             new com.azure.search.documents.implementation.models.DistanceScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation _interpolation =
+            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            distanceScoringFunction.setInterpolation(_interpolation);
+            distanceScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        distanceScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        distanceScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        distanceScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        distanceScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            com.azure.search.documents.implementation.models.DistanceScoringParameters _parameters =
+            com.azure.search.documents.implementation.models.DistanceScoringParameters parameters =
                 DistanceScoringParametersConverter.map(obj.getParameters());
-            distanceScoringFunction.setParameters(_parameters);
+            distanceScoringFunction.setParameters(parameters);
         }
         return distanceScoringFunction;
+    }
+
+    private DistanceScoringFunctionConverter() {
     }
 }

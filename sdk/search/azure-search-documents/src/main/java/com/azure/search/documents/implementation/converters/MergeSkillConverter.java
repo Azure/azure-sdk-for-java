@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.MergeSkill} and {@link MergeSkill}.
  */
 public final class MergeSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(MergeSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MergeSkill} to {@link MergeSkill}.
@@ -27,31 +27,31 @@ public final class MergeSkillConverter {
         MergeSkill mergeSkill = new MergeSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setOutputs(_outputs);
+            mergeSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setInputs(_inputs);
+            mergeSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        mergeSkill.setName(_name);
+        String name = obj.getName();
+        mergeSkill.setName(name);
 
-        String _context = obj.getContext();
-        mergeSkill.setContext(_context);
+        String context = obj.getContext();
+        mergeSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        mergeSkill.setDescription(_description);
+        String description = obj.getDescription();
+        mergeSkill.setDescription(description);
 
-        String _insertPostTag = obj.getInsertPostTag();
-        mergeSkill.setInsertPostTag(_insertPostTag);
+        String insertPostTag = obj.getInsertPostTag();
+        mergeSkill.setInsertPostTag(insertPostTag);
 
-        String _insertPreTag = obj.getInsertPreTag();
-        mergeSkill.setInsertPreTag(_insertPreTag);
+        String insertPreTag = obj.getInsertPreTag();
+        mergeSkill.setInsertPreTag(insertPreTag);
         return mergeSkill;
     }
 
@@ -66,31 +66,34 @@ public final class MergeSkillConverter {
             new com.azure.search.documents.implementation.models.MergeSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setOutputs(_outputs);
+            mergeSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setInputs(_inputs);
+            mergeSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        mergeSkill.setName(_name);
+        String name = obj.getName();
+        mergeSkill.setName(name);
 
-        String _context = obj.getContext();
-        mergeSkill.setContext(_context);
+        String context = obj.getContext();
+        mergeSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        mergeSkill.setDescription(_description);
+        String description = obj.getDescription();
+        mergeSkill.setDescription(description);
 
-        String _insertPostTag = obj.getInsertPostTag();
-        mergeSkill.setInsertPostTag(_insertPostTag);
+        String insertPostTag = obj.getInsertPostTag();
+        mergeSkill.setInsertPostTag(insertPostTag);
 
-        String _insertPreTag = obj.getInsertPreTag();
-        mergeSkill.setInsertPreTag(_insertPreTag);
+        String insertPreTag = obj.getInsertPreTag();
+        mergeSkill.setInsertPreTag(insertPreTag);
         return mergeSkill;
+    }
+
+    private MergeSkillConverter() {
     }
 }

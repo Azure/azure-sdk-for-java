@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * {@link ImageAnalysisSkill}.
  */
 public final class ImageAnalysisSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ImageAnalysisSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ImageAnalysisSkill} to
@@ -32,42 +32,42 @@ public final class ImageAnalysisSkillConverter {
         ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setOutputs(_outputs);
+            imageAnalysisSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setInputs(_inputs);
+            imageAnalysisSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        imageAnalysisSkill.setName(_name);
+        String name = obj.getName();
+        imageAnalysisSkill.setName(name);
 
-        String _context = obj.getContext();
-        imageAnalysisSkill.setContext(_context);
+        String context = obj.getContext();
+        imageAnalysisSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        imageAnalysisSkill.setDescription(_description);
+        String description = obj.getDescription();
+        imageAnalysisSkill.setDescription(description);
 
         if (obj.getVisualFeatures() != null) {
-            List<VisualFeature> _visualFeatures =
+            List<VisualFeature> visualFeatures =
                 obj.getVisualFeatures().stream().map(VisualFeatureConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setVisualFeatures(_visualFeatures);
+            imageAnalysisSkill.setVisualFeatures(visualFeatures);
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            ImageAnalysisSkillLanguage _defaultLanguageCode =
+            ImageAnalysisSkillLanguage defaultLanguageCode =
                 ImageAnalysisSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            imageAnalysisSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            imageAnalysisSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
 
         if (obj.getDetails() != null) {
-            List<ImageDetail> _details =
+            List<ImageDetail> details =
                 obj.getDetails().stream().map(ImageDetailConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setDetails(_details);
+            imageAnalysisSkill.setDetails(details);
         }
         return imageAnalysisSkill;
     }
@@ -84,43 +84,46 @@ public final class ImageAnalysisSkillConverter {
             new com.azure.search.documents.implementation.models.ImageAnalysisSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setOutputs(_outputs);
+            imageAnalysisSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setInputs(_inputs);
+            imageAnalysisSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        imageAnalysisSkill.setName(_name);
+        String name = obj.getName();
+        imageAnalysisSkill.setName(name);
 
-        String _context = obj.getContext();
-        imageAnalysisSkill.setContext(_context);
+        String context = obj.getContext();
+        imageAnalysisSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        imageAnalysisSkill.setDescription(_description);
+        String description = obj.getDescription();
+        imageAnalysisSkill.setDescription(description);
 
         if (obj.getVisualFeatures() != null) {
-            List<com.azure.search.documents.implementation.models.VisualFeature> _visualFeatures =
+            List<com.azure.search.documents.implementation.models.VisualFeature> visualFeatures =
                 obj.getVisualFeatures().stream().map(VisualFeatureConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setVisualFeatures(_visualFeatures);
+            imageAnalysisSkill.setVisualFeatures(visualFeatures);
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage _defaultLanguageCode =
+            com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage defaultLanguageCode =
                 ImageAnalysisSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            imageAnalysisSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            imageAnalysisSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
 
         if (obj.getDetails() != null) {
-            List<com.azure.search.documents.implementation.models.ImageDetail> _details =
+            List<com.azure.search.documents.implementation.models.ImageDetail> details =
                 obj.getDetails().stream().map(ImageDetailConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setDetails(_details);
+            imageAnalysisSkill.setDetails(details);
         }
         return imageAnalysisSkill;
+    }
+
+    private ImageAnalysisSkillConverter() {
     }
 }

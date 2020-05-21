@@ -70,4 +70,7 @@ public final class VisualFeatureConverter {
                 throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ENUM_INTERNAL_ERROR_MSG, obj)));
         }
     }
+
+    private VisualFeatureConverter() {
+    }
 }

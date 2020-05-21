@@ -11,7 +11,7 @@ import com.azure.search.documents.models.TextTranslationSkillLanguage;
  * {@link TextTranslationSkillLanguage}.
  */
 public final class TextTranslationSkillLanguageConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(TextTranslationSkillLanguageConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage} to enum
@@ -33,5 +33,8 @@ public final class TextTranslationSkillLanguageConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.TextTranslationSkillLanguage.fromString(obj.toString());
+    }
+
+    private TextTranslationSkillLanguageConverter() {
     }
 }

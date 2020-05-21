@@ -114,6 +114,10 @@ public final class LexicalTokenizerConverter {
         if (obj instanceof com.azure.search.documents.models.NGramTokenizer) {
             return NGramTokenizerConverter.map((com.azure.search.documents.models.NGramTokenizer) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
+            obj.getClass().getSimpleName())));
+    }
+
+    private LexicalTokenizerConverter() {
     }
 }

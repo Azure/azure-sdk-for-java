@@ -1,6 +1,5 @@
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.AnalyzedTokenInfo;
 
@@ -9,8 +8,6 @@ import com.azure.search.documents.models.AnalyzedTokenInfo;
  * {@link AnalyzedTokenInfo}.
  */
 public final class AnalyzedTokenInfoConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(AnalyzedTokenInfoConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.AnalyzedTokenInfo} to
      * {@link AnalyzedTokenInfo}.
@@ -21,17 +18,17 @@ public final class AnalyzedTokenInfoConverter {
         }
         AnalyzedTokenInfo analyzedTokenInfo = new AnalyzedTokenInfo();
 
-        int _endOffset = obj.getEndOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "endOffset", _endOffset);
+        int endOffset = obj.getEndOffset();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "endOffset", endOffset);
 
-        int _startOffset = obj.getStartOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "startOffset", _startOffset);
+        int startOffset = obj.getStartOffset();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "startOffset", startOffset);
 
-        int _position = obj.getPosition();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "position", _position);
+        int position = obj.getPosition();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "position", position);
 
-        String _token = obj.getToken();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "token", _token);
+        String token = obj.getToken();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "token", token);
         return analyzedTokenInfo;
     }
 
@@ -46,17 +43,20 @@ public final class AnalyzedTokenInfoConverter {
         com.azure.search.documents.implementation.models.AnalyzedTokenInfo analyzedTokenInfo =
             new com.azure.search.documents.implementation.models.AnalyzedTokenInfo();
 
-        int _endOffset = obj.getEndOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "endOffset", _endOffset);
+        int endOffset = obj.getEndOffset();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "endOffset", endOffset);
 
-        int _startOffset = obj.getStartOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "startOffset", _startOffset);
+        int startOffset = obj.getStartOffset();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "startOffset", startOffset);
 
-        int _position = obj.getPosition();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "position", _position);
+        int position = obj.getPosition();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "position", position);
 
-        String _token = obj.getToken();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "token", _token);
+        String token = obj.getToken();
+        PrivateFieldAccessHelper.set(analyzedTokenInfo, "token", token);
         return analyzedTokenInfo;
+    }
+
+    private AnalyzedTokenInfoConverter() {
     }
 }

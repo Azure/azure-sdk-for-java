@@ -14,7 +14,7 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.SuggestResult} and {@link SuggestResult}.
  */
 public final class SuggestResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SuggestResultConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SuggestResult} to {@link SuggestResult}.
@@ -25,11 +25,11 @@ public final class SuggestResultConverter {
         }
         SuggestResult suggestResult = new SuggestResult();
 
-        SearchDocument _additionalProperties = new SearchDocument(obj.getAdditionalProperties());
-        PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", _additionalProperties);
+        SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
+        PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
 
-        String _text = obj.getText();
-        PrivateFieldAccessHelper.set(suggestResult, "text", _text);
+        String text = obj.getText();
+        PrivateFieldAccessHelper.set(suggestResult, "text", text);
         return suggestResult;
     }
 
@@ -43,11 +43,14 @@ public final class SuggestResultConverter {
         com.azure.search.documents.implementation.models.SuggestResult suggestResult =
             new com.azure.search.documents.implementation.models.SuggestResult();
 
-        Map<String, Object> _additionalProperties = obj.getDocument();
-        PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", _additionalProperties);
+        Map<String, Object> additionalProperties = obj.getDocument();
+        PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
 
-        String _text = obj.getText();
-        PrivateFieldAccessHelper.set(suggestResult, "text", _text);
+        String text = obj.getText();
+        PrivateFieldAccessHelper.set(suggestResult, "text", text);
         return suggestResult;
+    }
+
+    private SuggestResultConverter() {
     }
 }

@@ -11,7 +11,7 @@ import com.azure.search.documents.models.TokenFilterName;
  * {@link TokenFilterName}.
  */
 public final class TokenFilterNameConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(TokenFilterNameConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.TokenFilterName} to enum
@@ -33,5 +33,8 @@ public final class TokenFilterNameConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.TokenFilterName.fromString(obj.toString());
+    }
+
+    private TokenFilterNameConverter() {
     }
 }

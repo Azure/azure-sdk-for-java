@@ -11,7 +11,7 @@ import com.azure.search.documents.models.KeywordTokenizerV2;
  * {@link KeywordTokenizerV2}.
  */
 public final class KeywordTokenizerV2Converter {
-    private static final ClientLogger LOGGER = new ClientLogger(KeywordTokenizerV2Converter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.KeywordTokenizerV2} to
@@ -23,11 +23,11 @@ public final class KeywordTokenizerV2Converter {
         }
         KeywordTokenizerV2 keywordTokenizerV2 = new KeywordTokenizerV2();
 
-        String _name = obj.getName();
-        keywordTokenizerV2.setName(_name);
+        String name = obj.getName();
+        keywordTokenizerV2.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        keywordTokenizerV2.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        keywordTokenizerV2.setMaxTokenLength(maxTokenLength);
         return keywordTokenizerV2;
     }
 
@@ -42,11 +42,14 @@ public final class KeywordTokenizerV2Converter {
         com.azure.search.documents.implementation.models.KeywordTokenizerV2 keywordTokenizerV2 =
             new com.azure.search.documents.implementation.models.KeywordTokenizerV2();
 
-        String _name = obj.getName();
-        keywordTokenizerV2.setName(_name);
+        String name = obj.getName();
+        keywordTokenizerV2.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        keywordTokenizerV2.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        keywordTokenizerV2.setMaxTokenLength(maxTokenLength);
         return keywordTokenizerV2;
+    }
+
+    private KeywordTokenizerV2Converter() {
     }
 }

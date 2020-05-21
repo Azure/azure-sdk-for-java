@@ -11,7 +11,7 @@ import com.azure.search.documents.models.UniqueTokenFilter;
  * {@link UniqueTokenFilter}.
  */
 public final class UniqueTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(UniqueTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.UniqueTokenFilter} to
@@ -23,11 +23,11 @@ public final class UniqueTokenFilterConverter {
         }
         UniqueTokenFilter uniqueTokenFilter = new UniqueTokenFilter();
 
-        String _name = obj.getName();
-        uniqueTokenFilter.setName(_name);
+        String name = obj.getName();
+        uniqueTokenFilter.setName(name);
 
-        Boolean _onlyOnSamePosition = obj.isOnlyOnSamePosition();
-        uniqueTokenFilter.setOnlyOnSamePosition(_onlyOnSamePosition);
+        Boolean onlyOnSamePosition = obj.isOnlyOnSamePosition();
+        uniqueTokenFilter.setOnlyOnSamePosition(onlyOnSamePosition);
         return uniqueTokenFilter;
     }
 
@@ -42,11 +42,14 @@ public final class UniqueTokenFilterConverter {
         com.azure.search.documents.implementation.models.UniqueTokenFilter uniqueTokenFilter =
             new com.azure.search.documents.implementation.models.UniqueTokenFilter();
 
-        String _name = obj.getName();
-        uniqueTokenFilter.setName(_name);
+        String name = obj.getName();
+        uniqueTokenFilter.setName(name);
 
-        Boolean _onlyOnSamePosition = obj.isOnlyOnSamePosition();
-        uniqueTokenFilter.setOnlyOnSamePosition(_onlyOnSamePosition);
+        Boolean onlyOnSamePosition = obj.isOnlyOnSamePosition();
+        uniqueTokenFilter.setOnlyOnSamePosition(onlyOnSamePosition);
         return uniqueTokenFilter;
+    }
+
+    private UniqueTokenFilterConverter() {
     }
 }

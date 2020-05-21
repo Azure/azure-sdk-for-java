@@ -17,7 +17,7 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexActionConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
@@ -29,13 +29,13 @@ public final class IndexActionConverter {
         IndexAction<T> indexAction = new IndexAction<T>();
 
         if (obj.getActionType() != null) {
-            IndexActionType _actionType = IndexActionTypeConverter.map(obj.getActionType());
-            indexAction.setActionType(_actionType);
+            IndexActionType actionType = IndexActionTypeConverter.map(obj.getActionType());
+            indexAction.setActionType(actionType);
         }
 
         if (obj.getAdditionalProperties() != null) {
-            Map<String, Object> _properties = obj.getAdditionalProperties();
-            PrivateFieldAccessHelper.set(indexAction, "properties", _properties);
+            Map<String, Object> properties = obj.getAdditionalProperties();
+            PrivateFieldAccessHelper.set(indexAction, "properties", properties);
         }
         return indexAction;
     }
@@ -52,23 +52,26 @@ public final class IndexActionConverter {
             new com.azure.search.documents.implementation.models.IndexAction();
 
         if (obj.getActionType() != null) {
-            com.azure.search.documents.implementation.models.IndexActionType _actionType =
+            com.azure.search.documents.implementation.models.IndexActionType actionType =
                 IndexActionTypeConverter.map(obj.getActionType());
-            indexAction.setActionType(_actionType);
+            indexAction.setActionType(actionType);
         }
 
-        T _document = obj.getDocument();
+        T document = obj.getDocument();
 
         ObjectMapper mapper = new JacksonAdapter().serializer();
         SerializationUtil.configureMapper(mapper);
-        Map<String, Object> additionalProperties = mapper.convertValue(_document, Map.class);
+        Map<String, Object> additionalProperties = mapper.convertValue(document, Map.class);
 
         indexAction.setAdditionalProperties(additionalProperties);
 
         if (obj.getParamMap() != null) {
-            Map<String, Object> _properties = obj.getParamMap();
-            PrivateFieldAccessHelper.set(indexAction, "additionalProperties", _properties);
+            Map<String, Object> properties = obj.getParamMap();
+            PrivateFieldAccessHelper.set(indexAction, "additionalProperties", properties);
         }
         return indexAction;
+    }
+
+    private IndexActionConverter() {
     }
 }

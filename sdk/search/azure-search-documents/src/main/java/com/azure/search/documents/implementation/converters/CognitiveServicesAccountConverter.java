@@ -45,6 +45,10 @@ public final class CognitiveServicesAccountConverter {
         if (obj instanceof com.azure.search.documents.models.DefaultCognitiveServicesAccount) {
             return DefaultCognitiveServicesAccountConverter.map((com.azure.search.documents.models.DefaultCognitiveServicesAccount) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
+            obj.getClass().getSimpleName())));
+    }
+
+    private CognitiveServicesAccountConverter() {
     }
 }

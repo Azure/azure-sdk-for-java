@@ -11,7 +11,7 @@ import com.azure.search.documents.models.EntityRecognitionSkillLanguage;
  * {@link EntityRecognitionSkillLanguage}.
  */
 public final class EntityRecognitionSkillLanguageConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(EntityRecognitionSkillLanguageConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.EntityRecognitionSkillLanguage} to enum
@@ -33,5 +33,8 @@ public final class EntityRecognitionSkillLanguageConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.EntityRecognitionSkillLanguage.fromString(obj.toString());
+    }
+
+    private EntityRecognitionSkillLanguageConverter() {
     }
 }

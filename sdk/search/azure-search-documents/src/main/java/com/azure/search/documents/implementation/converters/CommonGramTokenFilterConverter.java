@@ -8,14 +8,13 @@ import com.azure.search.documents.models.CommonGramTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.CommonGramTokenFilter} and
  * {@link CommonGramTokenFilter}.
  */
 public final class CommonGramTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(CommonGramTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.CommonGramTokenFilter} to
@@ -27,18 +26,18 @@ public final class CommonGramTokenFilterConverter {
         }
         CommonGramTokenFilter commonGramTokenFilter = new CommonGramTokenFilter();
 
-        String _name = obj.getName();
-        commonGramTokenFilter.setName(_name);
+        String name = obj.getName();
+        commonGramTokenFilter.setName(name);
 
-        Boolean _ignoreCase = obj.isIgnoreCase();
-        commonGramTokenFilter.setIgnoreCase(_ignoreCase);
+        Boolean ignoreCase = obj.isIgnoreCase();
+        commonGramTokenFilter.setIgnoreCase(ignoreCase);
 
-        Boolean _useQueryMode = obj.isUseQueryMode();
-        commonGramTokenFilter.setUseQueryMode(_useQueryMode);
+        Boolean useQueryMode = obj.isUseQueryMode();
+        commonGramTokenFilter.setUseQueryMode(useQueryMode);
 
         if (obj.getCommonWords() != null) {
-            List<String> _commonWords = new ArrayList<>(obj.getCommonWords());
-            commonGramTokenFilter.setCommonWords(_commonWords);
+            List<String> commonWords = new ArrayList<>(obj.getCommonWords());
+            commonGramTokenFilter.setCommonWords(commonWords);
         }
         return commonGramTokenFilter;
     }
@@ -54,19 +53,22 @@ public final class CommonGramTokenFilterConverter {
         com.azure.search.documents.implementation.models.CommonGramTokenFilter commonGramTokenFilter =
             new com.azure.search.documents.implementation.models.CommonGramTokenFilter();
 
-        String _name = obj.getName();
-        commonGramTokenFilter.setName(_name);
+        String name = obj.getName();
+        commonGramTokenFilter.setName(name);
 
-        Boolean _ignoreCase = obj.isIgnoreCase();
-        commonGramTokenFilter.setIgnoreCase(_ignoreCase);
+        Boolean ignoreCase = obj.isIgnoreCase();
+        commonGramTokenFilter.setIgnoreCase(ignoreCase);
 
-        Boolean _useQueryMode = obj.isUseQueryMode();
-        commonGramTokenFilter.setUseQueryMode(_useQueryMode);
+        Boolean useQueryMode = obj.isUseQueryMode();
+        commonGramTokenFilter.setUseQueryMode(useQueryMode);
 
         if (obj.getCommonWords() != null) {
-            List<String> _commonWords = new ArrayList<>(obj.getCommonWords());
-            commonGramTokenFilter.setCommonWords(_commonWords);
+            List<String> commonWords = new ArrayList<>(obj.getCommonWords());
+            commonGramTokenFilter.setCommonWords(commonWords);
         }
         return commonGramTokenFilter;
+    }
+
+    private CommonGramTokenFilterConverter() {
     }
 }

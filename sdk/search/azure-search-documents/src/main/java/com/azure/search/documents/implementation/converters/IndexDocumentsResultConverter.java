@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * {@link IndexDocumentsResult}.
  */
 public final class IndexDocumentsResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexDocumentsResultConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexDocumentsResult} to
@@ -29,9 +29,9 @@ public final class IndexDocumentsResultConverter {
         IndexDocumentsResult indexDocumentsResult = new IndexDocumentsResult();
 
         if (obj.getResults() != null) {
-            List<IndexingResult> _results =
+            List<IndexingResult> results =
                 obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexDocumentsResult, "results", _results);
+            PrivateFieldAccessHelper.set(indexDocumentsResult, "results", results);
         }
         return indexDocumentsResult;
     }
@@ -48,10 +48,13 @@ public final class IndexDocumentsResultConverter {
             new com.azure.search.documents.implementation.models.IndexDocumentsResult();
 
         if (obj.getResults() != null) {
-            List<com.azure.search.documents.implementation.models.IndexingResult> _results =
+            List<com.azure.search.documents.implementation.models.IndexingResult> results =
                 obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexDocumentsResult, "results", _results);
+            PrivateFieldAccessHelper.set(indexDocumentsResult, "results", results);
         }
         return indexDocumentsResult;
+    }
+
+    private IndexDocumentsResultConverter() {
     }
 }

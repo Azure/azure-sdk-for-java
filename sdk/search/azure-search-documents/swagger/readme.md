@@ -51,6 +51,8 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
 title: SearchServiceRestClient
 models-subpackage: implementation.models
+custom-types: StopwordsList,
+custom-types-subpackage: models
 ```
 
 ### Tag: package-2019-05-searchindex-preview

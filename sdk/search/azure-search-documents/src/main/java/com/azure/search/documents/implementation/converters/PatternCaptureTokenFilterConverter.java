@@ -8,14 +8,13 @@ import com.azure.search.documents.models.PatternCaptureTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.PatternCaptureTokenFilter} and
  * {@link PatternCaptureTokenFilter}.
  */
 public final class PatternCaptureTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(PatternCaptureTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternCaptureTokenFilter} to
@@ -27,16 +26,16 @@ public final class PatternCaptureTokenFilterConverter {
         }
         PatternCaptureTokenFilter patternCaptureTokenFilter = new PatternCaptureTokenFilter();
 
-        String _name = obj.getName();
-        patternCaptureTokenFilter.setName(_name);
+        String name = obj.getName();
+        patternCaptureTokenFilter.setName(name);
 
         if (obj.getPatterns() != null) {
-            List<String> _patterns = new ArrayList<>(obj.getPatterns());
-            patternCaptureTokenFilter.setPatterns(_patterns);
+            List<String> patterns = new ArrayList<>(obj.getPatterns());
+            patternCaptureTokenFilter.setPatterns(patterns);
         }
 
-        Boolean _preserveOriginal = obj.isPreserveOriginal();
-        patternCaptureTokenFilter.setPreserveOriginal(_preserveOriginal);
+        Boolean preserveOriginal = obj.isPreserveOriginal();
+        patternCaptureTokenFilter.setPreserveOriginal(preserveOriginal);
         return patternCaptureTokenFilter;
     }
 
@@ -51,16 +50,19 @@ public final class PatternCaptureTokenFilterConverter {
         com.azure.search.documents.implementation.models.PatternCaptureTokenFilter patternCaptureTokenFilter =
             new com.azure.search.documents.implementation.models.PatternCaptureTokenFilter();
 
-        String _name = obj.getName();
-        patternCaptureTokenFilter.setName(_name);
+        String name = obj.getName();
+        patternCaptureTokenFilter.setName(name);
 
         if (obj.getPatterns() != null) {
-            List<String> _patterns = new ArrayList<>(obj.getPatterns());
-            patternCaptureTokenFilter.setPatterns(_patterns);
+            List<String> patterns = new ArrayList<>(obj.getPatterns());
+            patternCaptureTokenFilter.setPatterns(patterns);
         }
 
-        Boolean _preserveOriginal = obj.isPreserveOriginal();
-        patternCaptureTokenFilter.setPreserveOriginal(_preserveOriginal);
+        Boolean preserveOriginal = obj.isPreserveOriginal();
+        patternCaptureTokenFilter.setPreserveOriginal(preserveOriginal);
         return patternCaptureTokenFilter;
+    }
+
+    private PatternCaptureTokenFilterConverter() {
     }
 }

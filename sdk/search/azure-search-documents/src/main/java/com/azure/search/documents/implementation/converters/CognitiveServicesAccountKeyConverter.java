@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.CognitiveServicesAccountKey;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.CognitiveServicesAccountKey;
  * {@link CognitiveServicesAccountKey}.
  */
 public final class CognitiveServicesAccountKeyConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(CognitiveServicesAccountKeyConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.CognitiveServicesAccountKey} to
      * {@link CognitiveServicesAccountKey}.
@@ -23,11 +20,11 @@ public final class CognitiveServicesAccountKeyConverter {
         }
         CognitiveServicesAccountKey cognitiveServicesAccountKey = new CognitiveServicesAccountKey();
 
-        String _description = obj.getDescription();
-        cognitiveServicesAccountKey.setDescription(_description);
+        String description = obj.getDescription();
+        cognitiveServicesAccountKey.setDescription(description);
 
-        String _key = obj.getKey();
-        cognitiveServicesAccountKey.setKey(_key);
+        String key = obj.getKey();
+        cognitiveServicesAccountKey.setKey(key);
         return cognitiveServicesAccountKey;
     }
 
@@ -42,11 +39,14 @@ public final class CognitiveServicesAccountKeyConverter {
         com.azure.search.documents.implementation.models.CognitiveServicesAccountKey cognitiveServicesAccountKey =
             new com.azure.search.documents.implementation.models.CognitiveServicesAccountKey();
 
-        String _description = obj.getDescription();
-        cognitiveServicesAccountKey.setDescription(_description);
+        String description = obj.getDescription();
+        cognitiveServicesAccountKey.setDescription(description);
 
-        String _key = obj.getKey();
-        cognitiveServicesAccountKey.setKey(_key);
+        String key = obj.getKey();
+        cognitiveServicesAccountKey.setKey(key);
         return cognitiveServicesAccountKey;
+    }
+
+    private CognitiveServicesAccountKeyConverter() {
     }
 }

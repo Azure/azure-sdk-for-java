@@ -8,14 +8,13 @@ import com.azure.search.documents.models.ElisionTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.ElisionTokenFilter} and
  * {@link ElisionTokenFilter}.
  */
 public final class ElisionTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ElisionTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ElisionTokenFilter} to
@@ -27,12 +26,12 @@ public final class ElisionTokenFilterConverter {
         }
         ElisionTokenFilter elisionTokenFilter = new ElisionTokenFilter();
 
-        String _name = obj.getName();
-        elisionTokenFilter.setName(_name);
+        String name = obj.getName();
+        elisionTokenFilter.setName(name);
 
         if (obj.getArticles() != null) {
-            List<String> _articles = new ArrayList<>(obj.getArticles());
-            elisionTokenFilter.setArticles(_articles);
+            List<String> articles = new ArrayList<>(obj.getArticles());
+            elisionTokenFilter.setArticles(articles);
         }
         return elisionTokenFilter;
     }
@@ -48,13 +47,16 @@ public final class ElisionTokenFilterConverter {
         com.azure.search.documents.implementation.models.ElisionTokenFilter elisionTokenFilter =
             new com.azure.search.documents.implementation.models.ElisionTokenFilter();
 
-        String _name = obj.getName();
-        elisionTokenFilter.setName(_name);
+        String name = obj.getName();
+        elisionTokenFilter.setName(name);
 
         if (obj.getArticles() != null) {
-            List<String> _articles = new ArrayList<>(obj.getArticles());
-            elisionTokenFilter.setArticles(_articles);
+            List<String> articles = new ArrayList<>(obj.getArticles());
+            elisionTokenFilter.setArticles(articles);
         }
         return elisionTokenFilter;
+    }
+
+    private ElisionTokenFilterConverter() {
     }
 }

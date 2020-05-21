@@ -11,7 +11,7 @@ import com.azure.search.documents.models.FieldMappingFunction;
  * A converter between {@link com.azure.search.documents.implementation.models.FieldMapping} and {@link FieldMapping}.
  */
 public final class FieldMappingConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(FieldMappingConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FieldMapping} to {@link FieldMapping}.
@@ -22,15 +22,15 @@ public final class FieldMappingConverter {
         }
         FieldMapping fieldMapping = new FieldMapping();
 
-        String _sourceFieldName = obj.getSourceFieldName();
-        fieldMapping.setSourceFieldName(_sourceFieldName);
+        String sourceFieldName = obj.getSourceFieldName();
+        fieldMapping.setSourceFieldName(sourceFieldName);
 
-        String _targetFieldName = obj.getTargetFieldName();
-        fieldMapping.setTargetFieldName(_targetFieldName);
+        String targetFieldName = obj.getTargetFieldName();
+        fieldMapping.setTargetFieldName(targetFieldName);
 
         if (obj.getMappingFunction() != null) {
-            FieldMappingFunction _mappingFunction = FieldMappingFunctionConverter.map(obj.getMappingFunction());
-            fieldMapping.setMappingFunction(_mappingFunction);
+            FieldMappingFunction mappingFunction = FieldMappingFunctionConverter.map(obj.getMappingFunction());
+            fieldMapping.setMappingFunction(mappingFunction);
         }
         return fieldMapping;
     }
@@ -45,17 +45,20 @@ public final class FieldMappingConverter {
         com.azure.search.documents.implementation.models.FieldMapping fieldMapping =
             new com.azure.search.documents.implementation.models.FieldMapping();
 
-        String _sourceFieldName = obj.getSourceFieldName();
-        fieldMapping.setSourceFieldName(_sourceFieldName);
+        String sourceFieldName = obj.getSourceFieldName();
+        fieldMapping.setSourceFieldName(sourceFieldName);
 
-        String _targetFieldName = obj.getTargetFieldName();
-        fieldMapping.setTargetFieldName(_targetFieldName);
+        String targetFieldName = obj.getTargetFieldName();
+        fieldMapping.setTargetFieldName(targetFieldName);
 
         if (obj.getMappingFunction() != null) {
-            com.azure.search.documents.implementation.models.FieldMappingFunction _mappingFunction =
+            com.azure.search.documents.implementation.models.FieldMappingFunction mappingFunction =
                 FieldMappingFunctionConverter.map(obj.getMappingFunction());
-            fieldMapping.setMappingFunction(_mappingFunction);
+            fieldMapping.setMappingFunction(mappingFunction);
         }
         return fieldMapping;
+    }
+
+    private FieldMappingConverter() {
     }
 }

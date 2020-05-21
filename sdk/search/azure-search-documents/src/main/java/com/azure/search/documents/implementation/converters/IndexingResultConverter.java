@@ -12,7 +12,7 @@ import com.azure.search.documents.models.IndexingResult;
  * {@link IndexingResult}.
  */
 public final class IndexingResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexingResultConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexingResult} to {@link IndexingResult}.
@@ -23,17 +23,17 @@ public final class IndexingResultConverter {
         }
         IndexingResult indexingResult = new IndexingResult();
 
-        String _errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(indexingResult, "errorMessage", _errorMessage);
+        String errorMessage = obj.getErrorMessage();
+        PrivateFieldAccessHelper.set(indexingResult, "errorMessage", errorMessage);
 
-        String _key = obj.getKey();
-        PrivateFieldAccessHelper.set(indexingResult, "key", _key);
+        String key = obj.getKey();
+        PrivateFieldAccessHelper.set(indexingResult, "key", key);
 
-        boolean _succeeded = obj.isSucceeded();
-        PrivateFieldAccessHelper.set(indexingResult, "succeeded", _succeeded);
+        boolean succeeded = obj.isSucceeded();
+        PrivateFieldAccessHelper.set(indexingResult, "succeeded", succeeded);
 
-        int _statusCode = obj.getStatusCode();
-        PrivateFieldAccessHelper.set(indexingResult, "statusCode", _statusCode);
+        int statusCode = obj.getStatusCode();
+        PrivateFieldAccessHelper.set(indexingResult, "statusCode", statusCode);
         return indexingResult;
     }
 
@@ -47,17 +47,20 @@ public final class IndexingResultConverter {
         com.azure.search.documents.implementation.models.IndexingResult indexingResult =
             new com.azure.search.documents.implementation.models.IndexingResult();
 
-        String _errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(indexingResult, "errorMessage", _errorMessage);
+        String errorMessage = obj.getErrorMessage();
+        PrivateFieldAccessHelper.set(indexingResult, "errorMessage", errorMessage);
 
-        String _key = obj.getKey();
-        PrivateFieldAccessHelper.set(indexingResult, "key", _key);
+        String key = obj.getKey();
+        PrivateFieldAccessHelper.set(indexingResult, "key", key);
 
-        boolean _succeeded = obj.isSucceeded();
-        PrivateFieldAccessHelper.set(indexingResult, "succeeded", _succeeded);
+        boolean succeeded = obj.isSucceeded();
+        PrivateFieldAccessHelper.set(indexingResult, "succeeded", succeeded);
 
-        int _statusCode = obj.getStatusCode();
-        PrivateFieldAccessHelper.set(indexingResult, "statusCode", _statusCode);
+        int statusCode = obj.getStatusCode();
+        PrivateFieldAccessHelper.set(indexingResult, "statusCode", statusCode);
         return indexingResult;
+    }
+
+    private IndexingResultConverter() {
     }
 }

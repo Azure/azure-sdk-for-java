@@ -14,7 +14,7 @@ import java.util.List;
  * A converter between {@link com.azure.search.documents.implementation.models.Suggester} and {@link Suggester}.
  */
 public final class SuggesterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SuggesterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.Suggester} to {@link Suggester}.
@@ -26,15 +26,15 @@ public final class SuggesterConverter {
         Suggester suggester = new Suggester();
 
         if (obj.getSourceFields() != null) {
-            List<String> _sourceFields = new ArrayList<>(obj.getSourceFields());
-            suggester.setSourceFields(_sourceFields);
+            List<String> sourceFields = new ArrayList<>(obj.getSourceFields());
+            suggester.setSourceFields(sourceFields);
         }
 
-        String _name = obj.getName();
-        suggester.setName(_name);
+        String name = obj.getName();
+        suggester.setName(name);
 
-        String _searchMode = obj.getSearchMode();
-        PrivateFieldAccessHelper.set(suggester, "searchMode", _searchMode);
+        String searchMode = obj.getSearchMode();
+        PrivateFieldAccessHelper.set(suggester, "searchMode", searchMode);
         return suggester;
     }
 
@@ -49,14 +49,17 @@ public final class SuggesterConverter {
             new com.azure.search.documents.implementation.models.Suggester();
 
         if (obj.getSourceFields() != null) {
-            List<String> _sourceFields = new ArrayList<>(obj.getSourceFields());
-            suggester.setSourceFields(_sourceFields);
+            List<String> sourceFields = new ArrayList<>(obj.getSourceFields());
+            suggester.setSourceFields(sourceFields);
         }
 
-        String _name = obj.getName();
-        suggester.setName(_name);
+        String name = obj.getName();
+        suggester.setName(name);
 
         suggester.setSearchMode("analyzingInfixMatching");
         return suggester;
+    }
+
+    private SuggesterConverter() {
     }
 }

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SearchIndexer} and {@link SearchIndexer}.
  */
 public final class SearchIndexerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexer} to {@link SearchIndexer}.
@@ -28,46 +28,46 @@ public final class SearchIndexerConverter {
         SearchIndexer searchIndexer = new SearchIndexer();
 
         if (obj.getSchedule() != null) {
-            IndexingSchedule _schedule = IndexingScheduleConverter.map(obj.getSchedule());
-            searchIndexer.setSchedule(_schedule);
+            IndexingSchedule schedule = IndexingScheduleConverter.map(obj.getSchedule());
+            searchIndexer.setSchedule(schedule);
         }
 
-        String _skillsetName = obj.getSkillsetName();
-        searchIndexer.setSkillsetName(_skillsetName);
+        String skillsetName = obj.getSkillsetName();
+        searchIndexer.setSkillsetName(skillsetName);
 
-        String _name = obj.getName();
-        searchIndexer.setName(_name);
+        String name = obj.getName();
+        searchIndexer.setName(name);
 
-        String _description = obj.getDescription();
-        searchIndexer.setDescription(_description);
+        String description = obj.getDescription();
+        searchIndexer.setDescription(description);
 
-        String _eTag = obj.getETag();
-        searchIndexer.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndexer.setETag(eTag);
 
-        String _targetIndexName = obj.getTargetIndexName();
-        searchIndexer.setTargetIndexName(_targetIndexName);
+        String targetIndexName = obj.getTargetIndexName();
+        searchIndexer.setTargetIndexName(targetIndexName);
 
         if (obj.getFieldMappings() != null) {
-            List<FieldMapping> _fieldMappings =
+            List<FieldMapping> fieldMappings =
                 obj.getFieldMappings().stream().map(FieldMappingConverter::map).collect(Collectors.toList());
-            searchIndexer.setFieldMappings(_fieldMappings);
+            searchIndexer.setFieldMappings(fieldMappings);
         }
 
-        Boolean _isDisabled = obj.isDisabled();
-        searchIndexer.setIsDisabled(_isDisabled);
+        Boolean isDisabled = obj.isDisabled();
+        searchIndexer.setIsDisabled(isDisabled);
 
         if (obj.getParameters() != null) {
-            IndexingParameters _parameters = IndexingParametersConverter.map(obj.getParameters());
-            searchIndexer.setParameters(_parameters);
+            IndexingParameters parameters = IndexingParametersConverter.map(obj.getParameters());
+            searchIndexer.setParameters(parameters);
         }
 
-        String _dataSourceName = obj.getDataSourceName();
-        searchIndexer.setDataSourceName(_dataSourceName);
+        String dataSourceName = obj.getDataSourceName();
+        searchIndexer.setDataSourceName(dataSourceName);
 
         if (obj.getOutputFieldMappings() != null) {
-            List<FieldMapping> _outputFieldMappings =
+            List<FieldMapping> outputFieldMappings =
                 obj.getOutputFieldMappings().stream().map(FieldMappingConverter::map).collect(Collectors.toList());
-            searchIndexer.setOutputFieldMappings(_outputFieldMappings);
+            searchIndexer.setOutputFieldMappings(outputFieldMappings);
         }
         return searchIndexer;
     }
@@ -83,49 +83,52 @@ public final class SearchIndexerConverter {
             new com.azure.search.documents.implementation.models.SearchIndexer();
 
         if (obj.getSchedule() != null) {
-            com.azure.search.documents.implementation.models.IndexingSchedule _schedule =
+            com.azure.search.documents.implementation.models.IndexingSchedule schedule =
                 IndexingScheduleConverter.map(obj.getSchedule());
-            searchIndexer.setSchedule(_schedule);
+            searchIndexer.setSchedule(schedule);
         }
 
-        String _skillsetName = obj.getSkillsetName();
-        searchIndexer.setSkillsetName(_skillsetName);
+        String skillsetName = obj.getSkillsetName();
+        searchIndexer.setSkillsetName(skillsetName);
 
-        String _name = obj.getName();
-        searchIndexer.setName(_name);
+        String name = obj.getName();
+        searchIndexer.setName(name);
 
-        String _description = obj.getDescription();
-        searchIndexer.setDescription(_description);
+        String description = obj.getDescription();
+        searchIndexer.setDescription(description);
 
-        String _eTag = obj.getETag();
-        searchIndexer.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndexer.setETag(eTag);
 
-        String _targetIndexName = obj.getTargetIndexName();
-        searchIndexer.setTargetIndexName(_targetIndexName);
+        String targetIndexName = obj.getTargetIndexName();
+        searchIndexer.setTargetIndexName(targetIndexName);
 
         if (obj.getFieldMappings() != null) {
-            List<com.azure.search.documents.implementation.models.FieldMapping> _fieldMappings =
+            List<com.azure.search.documents.implementation.models.FieldMapping> fieldMappings =
                 obj.getFieldMappings().stream().map(FieldMappingConverter::map).collect(Collectors.toList());
-            searchIndexer.setFieldMappings(_fieldMappings);
+            searchIndexer.setFieldMappings(fieldMappings);
         }
 
-        Boolean _isDisabled = obj.isDisabled();
-        searchIndexer.setIsDisabled(_isDisabled);
+        Boolean isDisabled = obj.isDisabled();
+        searchIndexer.setIsDisabled(isDisabled);
 
         if (obj.getParameters() != null) {
-            com.azure.search.documents.implementation.models.IndexingParameters _parameters =
+            com.azure.search.documents.implementation.models.IndexingParameters parameters =
                 IndexingParametersConverter.map(obj.getParameters());
-            searchIndexer.setParameters(_parameters);
+            searchIndexer.setParameters(parameters);
         }
 
-        String _dataSourceName = obj.getDataSourceName();
-        searchIndexer.setDataSourceName(_dataSourceName);
+        String dataSourceName = obj.getDataSourceName();
+        searchIndexer.setDataSourceName(dataSourceName);
 
         if (obj.getOutputFieldMappings() != null) {
-            List<com.azure.search.documents.implementation.models.FieldMapping> _outputFieldMappings =
+            List<com.azure.search.documents.implementation.models.FieldMapping> outputFieldMappings =
                 obj.getOutputFieldMappings().stream().map(FieldMappingConverter::map).collect(Collectors.toList());
-            searchIndexer.setOutputFieldMappings(_outputFieldMappings);
+            searchIndexer.setOutputFieldMappings(outputFieldMappings);
         }
         return searchIndexer;
+    }
+
+    private SearchIndexerConverter() {
     }
 }

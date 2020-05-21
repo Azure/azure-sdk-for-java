@@ -11,7 +11,7 @@ import com.azure.search.documents.models.MagnitudeScoringParameters;
  * {@link MagnitudeScoringParameters}.
  */
 public final class MagnitudeScoringParametersConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(MagnitudeScoringParametersConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MagnitudeScoringParameters} to
@@ -23,14 +23,14 @@ public final class MagnitudeScoringParametersConverter {
         }
         MagnitudeScoringParameters magnitudeScoringParameters = new MagnitudeScoringParameters();
 
-        double _boostingRangeStart = obj.getBoostingRangeStart();
-        magnitudeScoringParameters.setBoostingRangeStart(_boostingRangeStart);
+        double boostingRangeStart = obj.getBoostingRangeStart();
+        magnitudeScoringParameters.setBoostingRangeStart(boostingRangeStart);
 
-        double _boostingRangeEnd = obj.getBoostingRangeEnd();
-        magnitudeScoringParameters.setBoostingRangeEnd(_boostingRangeEnd);
+        double boostingRangeEnd = obj.getBoostingRangeEnd();
+        magnitudeScoringParameters.setBoostingRangeEnd(boostingRangeEnd);
 
-        Boolean _shouldBoostBeyondRangeByConstant = obj.isShouldBoostBeyondRangeByConstant();
-        magnitudeScoringParameters.setShouldBoostBeyondRangeByConstant(_shouldBoostBeyondRangeByConstant);
+        Boolean shouldBoostBeyondRangeByConstant = obj.isShouldBoostBeyondRangeByConstant();
+        magnitudeScoringParameters.setShouldBoostBeyondRangeByConstant(shouldBoostBeyondRangeByConstant);
         return magnitudeScoringParameters;
     }
 
@@ -45,14 +45,17 @@ public final class MagnitudeScoringParametersConverter {
         com.azure.search.documents.implementation.models.MagnitudeScoringParameters magnitudeScoringParameters =
             new com.azure.search.documents.implementation.models.MagnitudeScoringParameters();
 
-        double _boostingRangeStart = obj.getBoostingRangeStart();
-        magnitudeScoringParameters.setBoostingRangeStart(_boostingRangeStart);
+        double boostingRangeStart = obj.getBoostingRangeStart();
+        magnitudeScoringParameters.setBoostingRangeStart(boostingRangeStart);
 
-        double _boostingRangeEnd = obj.getBoostingRangeEnd();
-        magnitudeScoringParameters.setBoostingRangeEnd(_boostingRangeEnd);
+        double boostingRangeEnd = obj.getBoostingRangeEnd();
+        magnitudeScoringParameters.setBoostingRangeEnd(boostingRangeEnd);
 
-        Boolean _shouldBoostBeyondRangeByConstant = obj.shouldBoostBeyondRangeByConstant();
-        magnitudeScoringParameters.setShouldBoostBeyondRangeByConstant(_shouldBoostBeyondRangeByConstant);
+        Boolean shouldBoostBeyondRangeByConstant = obj.shouldBoostBeyondRangeByConstant();
+        magnitudeScoringParameters.setShouldBoostBeyondRangeByConstant(shouldBoostBeyondRangeByConstant);
         return magnitudeScoringParameters;
+    }
+
+    private MagnitudeScoringParametersConverter() {
     }
 }

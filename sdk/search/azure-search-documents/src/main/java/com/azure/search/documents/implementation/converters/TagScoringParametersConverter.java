@@ -11,7 +11,7 @@ import com.azure.search.documents.models.TagScoringParameters;
  * {@link TagScoringParameters}.
  */
 public final class TagScoringParametersConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(TagScoringParametersConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TagScoringParameters} to
@@ -23,8 +23,8 @@ public final class TagScoringParametersConverter {
         }
         TagScoringParameters tagScoringParameters = new TagScoringParameters();
 
-        String _tagsParameter = obj.getTagsParameter();
-        tagScoringParameters.setTagsParameter(_tagsParameter);
+        String tagsParameter = obj.getTagsParameter();
+        tagScoringParameters.setTagsParameter(tagsParameter);
         return tagScoringParameters;
     }
 
@@ -39,8 +39,11 @@ public final class TagScoringParametersConverter {
         com.azure.search.documents.implementation.models.TagScoringParameters tagScoringParameters =
             new com.azure.search.documents.implementation.models.TagScoringParameters();
 
-        String _tagsParameter = obj.getTagsParameter();
-        tagScoringParameters.setTagsParameter(_tagsParameter);
+        String tagsParameter = obj.getTagsParameter();
+        tagScoringParameters.setTagsParameter(tagsParameter);
         return tagScoringParameters;
+    }
+
+    private TagScoringParametersConverter() {
     }
 }

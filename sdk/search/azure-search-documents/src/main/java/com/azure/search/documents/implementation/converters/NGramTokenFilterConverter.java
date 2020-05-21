@@ -11,7 +11,7 @@ import com.azure.search.documents.models.NGramTokenFilter;
  * {@link NGramTokenFilter}.
  */
 public final class NGramTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(NGramTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.NGramTokenFilter} to {@link NGramTokenFilter}.
@@ -22,14 +22,14 @@ public final class NGramTokenFilterConverter {
         }
         NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
 
-        String _name = obj.getName();
-        nGramTokenFilter.setName(_name);
+        String name = obj.getName();
+        nGramTokenFilter.setName(name);
 
-        Integer _maxGram = obj.getMaxGram();
-        nGramTokenFilter.setMaxGram(_maxGram);
+        Integer maxGram = obj.getMaxGram();
+        nGramTokenFilter.setMaxGram(maxGram);
 
-        Integer _minGram = obj.getMinGram();
-        nGramTokenFilter.setMinGram(_minGram);
+        Integer minGram = obj.getMinGram();
+        nGramTokenFilter.setMinGram(minGram);
         return nGramTokenFilter;
     }
 
@@ -43,14 +43,17 @@ public final class NGramTokenFilterConverter {
         com.azure.search.documents.implementation.models.NGramTokenFilter nGramTokenFilter =
             new com.azure.search.documents.implementation.models.NGramTokenFilter();
 
-        String _name = obj.getName();
-        nGramTokenFilter.setName(_name);
+        String name = obj.getName();
+        nGramTokenFilter.setName(name);
 
-        Integer _maxGram = obj.getMaxGram();
-        nGramTokenFilter.setMaxGram(_maxGram);
+        Integer maxGram = obj.getMaxGram();
+        nGramTokenFilter.setMaxGram(maxGram);
 
-        Integer _minGram = obj.getMinGram();
-        nGramTokenFilter.setMinGram(_minGram);
+        Integer minGram = obj.getMinGram();
+        nGramTokenFilter.setMinGram(minGram);
         return nGramTokenFilter;
+    }
+
+    private NGramTokenFilterConverter() {
     }
 }

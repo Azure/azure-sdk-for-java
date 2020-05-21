@@ -11,7 +11,7 @@ import com.azure.search.documents.models.KeywordTokenizer;
  * {@link KeywordTokenizer}.
  */
 public final class KeywordTokenizerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(KeywordTokenizerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.KeywordTokenizer} to {@link KeywordTokenizer}.
@@ -22,11 +22,11 @@ public final class KeywordTokenizerConverter {
         }
         KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
 
-        String _name = obj.getName();
-        keywordTokenizer.setName(_name);
+        String name = obj.getName();
+        keywordTokenizer.setName(name);
 
-        Integer _bufferSize = obj.getBufferSize();
-        keywordTokenizer.setBufferSize(_bufferSize);
+        Integer bufferSize = obj.getBufferSize();
+        keywordTokenizer.setBufferSize(bufferSize);
         return keywordTokenizer;
     }
 
@@ -40,11 +40,14 @@ public final class KeywordTokenizerConverter {
         com.azure.search.documents.implementation.models.KeywordTokenizer keywordTokenizer =
             new com.azure.search.documents.implementation.models.KeywordTokenizer();
 
-        String _name = obj.getName();
-        keywordTokenizer.setName(_name);
+        String name = obj.getName();
+        keywordTokenizer.setName(name);
 
-        Integer _bufferSize = obj.getBufferSize();
-        keywordTokenizer.setBufferSize(_bufferSize);
+        Integer bufferSize = obj.getBufferSize();
+        keywordTokenizer.setBufferSize(bufferSize);
         return keywordTokenizer;
+    }
+
+    private KeywordTokenizerConverter() {
     }
 }

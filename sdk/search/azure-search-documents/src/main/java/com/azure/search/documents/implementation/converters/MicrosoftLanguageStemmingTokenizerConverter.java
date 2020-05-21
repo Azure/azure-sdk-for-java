@@ -12,7 +12,7 @@ import com.azure.search.documents.models.MicrosoftStemmingTokenizerLanguage;
  * and {@link MicrosoftLanguageStemmingTokenizer}.
  */
 public final class MicrosoftLanguageStemmingTokenizerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftLanguageStemmingTokenizerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer} to
@@ -25,20 +25,20 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer =
             new MicrosoftLanguageStemmingTokenizer();
 
-        String _name = obj.getName();
-        microsoftLanguageStemmingTokenizer.setName(_name);
+        String name = obj.getName();
+        microsoftLanguageStemmingTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        microsoftLanguageStemmingTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            MicrosoftStemmingTokenizerLanguage _language =
+            MicrosoftStemmingTokenizerLanguage language =
                 MicrosoftStemmingTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageStemmingTokenizer.setLanguage(_language);
+            microsoftLanguageStemmingTokenizer.setLanguage(language);
         }
 
-        Boolean _isSearchTokenizer = obj.isSearchTokenizer();
-        microsoftLanguageStemmingTokenizer.setIsSearchTokenizer(_isSearchTokenizer);
+        Boolean isSearchTokenizer = obj.isSearchTokenizer();
+        microsoftLanguageStemmingTokenizer.setIsSearchTokenizer(isSearchTokenizer);
         return microsoftLanguageStemmingTokenizer;
     }
 
@@ -52,20 +52,23 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         }
         com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer = new com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer();
 
-        String _name = obj.getName();
-        microsoftLanguageStemmingTokenizer.setName(_name);
+        String name = obj.getName();
+        microsoftLanguageStemmingTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        microsoftLanguageStemmingTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.implementation.models.MicrosoftStemmingTokenizerLanguage _language =
+            com.azure.search.documents.implementation.models.MicrosoftStemmingTokenizerLanguage language =
                 MicrosoftStemmingTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageStemmingTokenizer.setLanguage(_language);
+            microsoftLanguageStemmingTokenizer.setLanguage(language);
         }
 
-        Boolean _isSearchTokenizer = obj.isSearchTokenizer();
-        microsoftLanguageStemmingTokenizer.setIsSearchTokenizer(_isSearchTokenizer);
+        Boolean isSearchTokenizer = obj.isSearchTokenizer();
+        microsoftLanguageStemmingTokenizer.setIsSearchTokenizer(isSearchTokenizer);
         return microsoftLanguageStemmingTokenizer;
+    }
+
+    private MicrosoftLanguageStemmingTokenizerConverter() {
     }
 }

@@ -11,7 +11,7 @@ import com.azure.search.documents.models.KeyPhraseExtractionSkillLanguage;
  * {@link KeyPhraseExtractionSkillLanguage}.
  */
 public final class KeyPhraseExtractionSkillLanguageConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(KeyPhraseExtractionSkillLanguageConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage} to enum
@@ -33,5 +33,8 @@ public final class KeyPhraseExtractionSkillLanguageConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage.fromString(obj.toString());
+    }
+
+    private KeyPhraseExtractionSkillLanguageConverter() {
     }
 }

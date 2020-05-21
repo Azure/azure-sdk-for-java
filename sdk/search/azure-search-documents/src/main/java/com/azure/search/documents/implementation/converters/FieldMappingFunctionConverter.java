@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * {@link FieldMappingFunction}.
  */
 public final class FieldMappingFunctionConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(FieldMappingFunctionConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FieldMappingFunction} to
@@ -26,14 +26,14 @@ public final class FieldMappingFunctionConverter {
         }
         FieldMappingFunction fieldMappingFunction = new FieldMappingFunction();
 
-        String _name = obj.getName();
-        fieldMappingFunction.setName(_name);
+        String name = obj.getName();
+        fieldMappingFunction.setName(name);
 
         if (obj.getParameters() != null) {
-            Map<String, Object> _parameters =
+            Map<String, Object> parameters =
                 obj.getParameters().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            fieldMappingFunction.setParameters(_parameters);
+            fieldMappingFunction.setParameters(parameters);
         }
         return fieldMappingFunction;
     }
@@ -49,15 +49,18 @@ public final class FieldMappingFunctionConverter {
         com.azure.search.documents.implementation.models.FieldMappingFunction fieldMappingFunction =
             new com.azure.search.documents.implementation.models.FieldMappingFunction();
 
-        String _name = obj.getName();
-        fieldMappingFunction.setName(_name);
+        String name = obj.getName();
+        fieldMappingFunction.setName(name);
 
         if (obj.getParameters() != null) {
-            Map<String, Object> _parameters =
+            Map<String, Object> parameters =
                 obj.getParameters().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            fieldMappingFunction.setParameters(_parameters);
+            fieldMappingFunction.setParameters(parameters);
         }
         return fieldMappingFunction;
+    }
+
+    private FieldMappingFunctionConverter() {
     }
 }

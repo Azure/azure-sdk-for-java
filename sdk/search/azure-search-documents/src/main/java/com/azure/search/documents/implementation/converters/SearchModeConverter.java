@@ -48,4 +48,7 @@ public final class SearchModeConverter {
                 throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ENUM_INTERNAL_ERROR_MSG, obj)));
         }
     }
+
+    private SearchModeConverter() {
+    }
 }

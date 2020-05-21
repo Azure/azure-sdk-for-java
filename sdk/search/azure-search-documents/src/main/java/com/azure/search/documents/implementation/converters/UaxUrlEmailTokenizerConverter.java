@@ -11,7 +11,7 @@ import com.azure.search.documents.models.UaxUrlEmailTokenizer;
  * {@link UaxUrlEmailTokenizer}.
  */
 public final class UaxUrlEmailTokenizerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(UaxUrlEmailTokenizerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer} to
@@ -23,11 +23,11 @@ public final class UaxUrlEmailTokenizerConverter {
         }
         UaxUrlEmailTokenizer uaxUrlEmailTokenizer = new UaxUrlEmailTokenizer();
 
-        String _name = obj.getName();
-        uaxUrlEmailTokenizer.setName(_name);
+        String name = obj.getName();
+        uaxUrlEmailTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        uaxUrlEmailTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        uaxUrlEmailTokenizer.setMaxTokenLength(maxTokenLength);
         return uaxUrlEmailTokenizer;
     }
 
@@ -42,11 +42,14 @@ public final class UaxUrlEmailTokenizerConverter {
         com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer uaxUrlEmailTokenizer =
             new com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer();
 
-        String _name = obj.getName();
-        uaxUrlEmailTokenizer.setName(_name);
+        String name = obj.getName();
+        uaxUrlEmailTokenizer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        uaxUrlEmailTokenizer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        uaxUrlEmailTokenizer.setMaxTokenLength(maxTokenLength);
         return uaxUrlEmailTokenizer;
+    }
+
+    private UaxUrlEmailTokenizerConverter() {
     }
 }

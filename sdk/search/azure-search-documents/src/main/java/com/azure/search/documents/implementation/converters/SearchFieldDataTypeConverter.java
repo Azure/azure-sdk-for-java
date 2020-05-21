@@ -11,7 +11,7 @@ import com.azure.search.documents.models.SearchFieldDataType;
  * {@link SearchFieldDataType}.
  */
 public final class SearchFieldDataTypeConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchFieldDataTypeConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.SearchFieldDataType} to enum
@@ -33,5 +33,8 @@ public final class SearchFieldDataTypeConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.SearchFieldDataType.fromString(obj.toString());
+    }
+
+    private SearchFieldDataTypeConverter() {
     }
 }

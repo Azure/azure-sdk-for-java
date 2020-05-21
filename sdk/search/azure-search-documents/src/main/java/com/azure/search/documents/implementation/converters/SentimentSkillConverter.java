@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * {@link SentimentSkill}.
  */
 public final class SentimentSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SentimentSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SentimentSkill} to {@link SentimentSkill}.
@@ -29,30 +29,30 @@ public final class SentimentSkillConverter {
         SentimentSkill sentimentSkill = new SentimentSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            sentimentSkill.setOutputs(_outputs);
+            sentimentSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            sentimentSkill.setInputs(_inputs);
+            sentimentSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        sentimentSkill.setName(_name);
+        String name = obj.getName();
+        sentimentSkill.setName(name);
 
-        String _context = obj.getContext();
-        sentimentSkill.setContext(_context);
+        String context = obj.getContext();
+        sentimentSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        sentimentSkill.setDescription(_description);
+        String description = obj.getDescription();
+        sentimentSkill.setDescription(description);
 
         if (obj.getDefaultLanguageCode() != null) {
-            SentimentSkillLanguage _defaultLanguageCode =
+            SentimentSkillLanguage defaultLanguageCode =
                 SentimentSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            sentimentSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            sentimentSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
         return sentimentSkill;
     }
@@ -68,31 +68,34 @@ public final class SentimentSkillConverter {
             new com.azure.search.documents.implementation.models.SentimentSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            sentimentSkill.setOutputs(_outputs);
+            sentimentSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            sentimentSkill.setInputs(_inputs);
+            sentimentSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        sentimentSkill.setName(_name);
+        String name = obj.getName();
+        sentimentSkill.setName(name);
 
-        String _context = obj.getContext();
-        sentimentSkill.setContext(_context);
+        String context = obj.getContext();
+        sentimentSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        sentimentSkill.setDescription(_description);
+        String description = obj.getDescription();
+        sentimentSkill.setDescription(description);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.SentimentSkillLanguage _defaultLanguageCode =
+            com.azure.search.documents.implementation.models.SentimentSkillLanguage defaultLanguageCode =
                 SentimentSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            sentimentSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            sentimentSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
         return sentimentSkill;
+    }
+
+    private SentimentSkillConverter() {
     }
 }

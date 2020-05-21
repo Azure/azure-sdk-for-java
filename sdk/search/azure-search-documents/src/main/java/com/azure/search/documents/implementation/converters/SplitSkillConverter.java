@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SplitSkill} and {@link SplitSkill}.
  */
 public final class SplitSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SplitSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SplitSkill} to {@link SplitSkill}.
@@ -29,37 +29,37 @@ public final class SplitSkillConverter {
         SplitSkill splitSkill = new SplitSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setOutputs(_outputs);
+            splitSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setInputs(_inputs);
+            splitSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        splitSkill.setName(_name);
+        String name = obj.getName();
+        splitSkill.setName(name);
 
-        String _context = obj.getContext();
-        splitSkill.setContext(_context);
+        String context = obj.getContext();
+        splitSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        splitSkill.setDescription(_description);
+        String description = obj.getDescription();
+        splitSkill.setDescription(description);
 
-        Integer _maximumPageLength = obj.getMaximumPageLength();
-        splitSkill.setMaximumPageLength(_maximumPageLength);
+        Integer maximumPageLength = obj.getMaximumPageLength();
+        splitSkill.setMaximumPageLength(maximumPageLength);
 
         if (obj.getTextSplitMode() != null) {
-            TextSplitMode _textSplitMode = TextSplitModeConverter.map(obj.getTextSplitMode());
-            splitSkill.setTextSplitMode(_textSplitMode);
+            TextSplitMode textSplitMode = TextSplitModeConverter.map(obj.getTextSplitMode());
+            splitSkill.setTextSplitMode(textSplitMode);
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            SplitSkillLanguage _defaultLanguageCode = SplitSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            splitSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            SplitSkillLanguage defaultLanguageCode = SplitSkillLanguageConverter.map(obj.getDefaultLanguageCode());
+            splitSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
         return splitSkill;
     }
@@ -75,40 +75,43 @@ public final class SplitSkillConverter {
             new com.azure.search.documents.implementation.models.SplitSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setOutputs(_outputs);
+            splitSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setInputs(_inputs);
+            splitSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        splitSkill.setName(_name);
+        String name = obj.getName();
+        splitSkill.setName(name);
 
-        String _context = obj.getContext();
-        splitSkill.setContext(_context);
+        String context = obj.getContext();
+        splitSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        splitSkill.setDescription(_description);
+        String description = obj.getDescription();
+        splitSkill.setDescription(description);
 
-        Integer _maximumPageLength = obj.getMaximumPageLength();
-        splitSkill.setMaximumPageLength(_maximumPageLength);
+        Integer maximumPageLength = obj.getMaximumPageLength();
+        splitSkill.setMaximumPageLength(maximumPageLength);
 
         if (obj.getTextSplitMode() != null) {
-            com.azure.search.documents.implementation.models.TextSplitMode _textSplitMode =
+            com.azure.search.documents.implementation.models.TextSplitMode textSplitMode =
                 TextSplitModeConverter.map(obj.getTextSplitMode());
-            splitSkill.setTextSplitMode(_textSplitMode);
+            splitSkill.setTextSplitMode(textSplitMode);
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.SplitSkillLanguage _defaultLanguageCode =
+            com.azure.search.documents.implementation.models.SplitSkillLanguage defaultLanguageCode =
                 SplitSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            splitSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            splitSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
         return splitSkill;
+    }
+
+    private SplitSkillConverter() {
     }
 }

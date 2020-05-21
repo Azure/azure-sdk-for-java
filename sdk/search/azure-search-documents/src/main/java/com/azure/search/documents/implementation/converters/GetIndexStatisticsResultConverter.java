@@ -12,7 +12,7 @@ import com.azure.search.documents.models.GetIndexStatisticsResult;
  * {@link GetIndexStatisticsResult}.
  */
 public final class GetIndexStatisticsResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(GetIndexStatisticsResultConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.GetIndexStatisticsResult} to
@@ -24,11 +24,11 @@ public final class GetIndexStatisticsResultConverter {
         }
         GetIndexStatisticsResult getIndexStatisticsResult = new GetIndexStatisticsResult();
 
-        long _documentCount = obj.getDocumentCount();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", _documentCount);
+        long documentCount = obj.getDocumentCount();
+        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", documentCount);
 
-        long _storageSize = obj.getStorageSize();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", _storageSize);
+        long storageSize = obj.getStorageSize();
+        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", storageSize);
         return getIndexStatisticsResult;
     }
 
@@ -43,11 +43,14 @@ public final class GetIndexStatisticsResultConverter {
         com.azure.search.documents.implementation.models.GetIndexStatisticsResult getIndexStatisticsResult =
             new com.azure.search.documents.implementation.models.GetIndexStatisticsResult();
 
-        long _documentCount = obj.getDocumentCount();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", _documentCount);
+        long documentCount = obj.getDocumentCount();
+        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", documentCount);
 
-        long _storageSize = obj.getStorageSize();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", _storageSize);
+        long storageSize = obj.getStorageSize();
+        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", storageSize);
         return getIndexStatisticsResult;
+    }
+
+    private GetIndexStatisticsResultConverter() {
     }
 }

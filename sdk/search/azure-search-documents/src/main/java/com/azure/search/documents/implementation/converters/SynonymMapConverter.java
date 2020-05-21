@@ -12,7 +12,7 @@ import com.azure.search.documents.models.SynonymMap;
  * A converter between {@link com.azure.search.documents.implementation.models.SynonymMap} and {@link SynonymMap}.
  */
 public final class SynonymMapConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SynonymMapConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SynonymMap} to {@link SynonymMap}.
@@ -23,22 +23,22 @@ public final class SynonymMapConverter {
         }
         SynonymMap synonymMap = new SynonymMap();
 
-        String _synonyms = obj.getSynonyms();
-        synonymMap.setSynonyms(_synonyms);
+        String synonyms = obj.getSynonyms();
+        synonymMap.setSynonyms(synonyms);
 
-        String _name = obj.getName();
-        synonymMap.setName(_name);
+        String name = obj.getName();
+        synonymMap.setName(name);
 
-        String _format = obj.getFormat();
-        PrivateFieldAccessHelper.set(synonymMap, "format", _format);
+        String format = obj.getFormat();
+        PrivateFieldAccessHelper.set(synonymMap, "format", format);
 
-        String _eTag = obj.getETag();
-        synonymMap.setETag(_eTag);
+        String eTag = obj.getETag();
+        synonymMap.setETag(eTag);
 
         if (obj.getEncryptionKey() != null) {
-            SearchResourceEncryptionKey _encryptionKey =
+            SearchResourceEncryptionKey encryptionKey =
                 SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey());
-            synonymMap.setEncryptionKey(_encryptionKey);
+            synonymMap.setEncryptionKey(encryptionKey);
         }
         return synonymMap;
     }
@@ -53,22 +53,25 @@ public final class SynonymMapConverter {
         com.azure.search.documents.implementation.models.SynonymMap synonymMap =
             new com.azure.search.documents.implementation.models.SynonymMap();
 
-        String _synonyms = obj.getSynonyms();
-        synonymMap.setSynonyms(_synonyms);
+        String synonyms = obj.getSynonyms();
+        synonymMap.setSynonyms(synonyms);
 
-        String _name = obj.getName();
-        synonymMap.setName(_name);
+        String name = obj.getName();
+        synonymMap.setName(name);
 
         synonymMap.setFormat("solr");
 
-        String _eTag = obj.getETag();
-        synonymMap.setETag(_eTag);
+        String eTag = obj.getETag();
+        synonymMap.setETag(eTag);
 
         if (obj.getEncryptionKey() != null) {
-            com.azure.search.documents.implementation.models.SearchResourceEncryptionKey _encryptionKey =
+            com.azure.search.documents.implementation.models.SearchResourceEncryptionKey encryptionKey =
                 SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey());
-            synonymMap.setEncryptionKey(_encryptionKey);
+            synonymMap.setEncryptionKey(encryptionKey);
         }
         return synonymMap;
+    }
+
+    private SynonymMapConverter() {
     }
 }

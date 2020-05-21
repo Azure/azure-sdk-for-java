@@ -11,7 +11,7 @@ import com.azure.search.documents.models.SearchIndexerDataContainer;
  * {@link SearchIndexerDataContainer}.
  */
 public final class SearchIndexerDataContainerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerDataContainerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerDataContainer} to
@@ -23,11 +23,11 @@ public final class SearchIndexerDataContainerConverter {
         }
         SearchIndexerDataContainer searchIndexerDataContainer = new SearchIndexerDataContainer();
 
-        String _query = obj.getQuery();
-        searchIndexerDataContainer.setQuery(_query);
+        String query = obj.getQuery();
+        searchIndexerDataContainer.setQuery(query);
 
-        String _name = obj.getName();
-        searchIndexerDataContainer.setName(_name);
+        String name = obj.getName();
+        searchIndexerDataContainer.setName(name);
         return searchIndexerDataContainer;
     }
 
@@ -42,11 +42,14 @@ public final class SearchIndexerDataContainerConverter {
         com.azure.search.documents.implementation.models.SearchIndexerDataContainer searchIndexerDataContainer =
             new com.azure.search.documents.implementation.models.SearchIndexerDataContainer();
 
-        String _query = obj.getQuery();
-        searchIndexerDataContainer.setQuery(_query);
+        String query = obj.getQuery();
+        searchIndexerDataContainer.setQuery(query);
 
-        String _name = obj.getName();
-        searchIndexerDataContainer.setName(_name);
+        String name = obj.getName();
+        searchIndexerDataContainer.setName(name);
         return searchIndexerDataContainer;
+    }
+
+    private SearchIndexerDataContainerConverter() {
     }
 }

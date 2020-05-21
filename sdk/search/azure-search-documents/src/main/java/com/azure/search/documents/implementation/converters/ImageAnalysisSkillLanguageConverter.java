@@ -11,7 +11,7 @@ import com.azure.search.documents.models.ImageAnalysisSkillLanguage;
  * {@link ImageAnalysisSkillLanguage}.
  */
 public final class ImageAnalysisSkillLanguageConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ImageAnalysisSkillLanguageConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage} to enum
@@ -33,5 +33,8 @@ public final class ImageAnalysisSkillLanguageConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage.fromString(obj.toString());
+    }
+
+    private ImageAnalysisSkillLanguageConverter() {
     }
 }

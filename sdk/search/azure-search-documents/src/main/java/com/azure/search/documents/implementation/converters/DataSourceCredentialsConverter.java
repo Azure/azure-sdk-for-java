@@ -11,7 +11,7 @@ import com.azure.search.documents.models.DataSourceCredentials;
  * {@link DataSourceCredentials}.
  */
 public final class DataSourceCredentialsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(DataSourceCredentialsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DataSourceCredentials} to
@@ -23,8 +23,8 @@ public final class DataSourceCredentialsConverter {
         }
         DataSourceCredentials dataSourceCredentials = new DataSourceCredentials();
 
-        String _connectionString = obj.getConnectionString();
-        dataSourceCredentials.setConnectionString(_connectionString);
+        String connectionString = obj.getConnectionString();
+        dataSourceCredentials.setConnectionString(connectionString);
         return dataSourceCredentials;
     }
 
@@ -39,8 +39,11 @@ public final class DataSourceCredentialsConverter {
         com.azure.search.documents.implementation.models.DataSourceCredentials dataSourceCredentials =
             new com.azure.search.documents.implementation.models.DataSourceCredentials();
 
-        String _connectionString = obj.getConnectionString();
-        dataSourceCredentials.setConnectionString(_connectionString);
+        String connectionString = obj.getConnectionString();
+        dataSourceCredentials.setConnectionString(connectionString);
         return dataSourceCredentials;
+    }
+
+    private DataSourceCredentialsConverter() {
     }
 }

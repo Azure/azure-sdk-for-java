@@ -10,7 +10,7 @@ import com.azure.search.documents.models.Similarity;
  * A converter between {@link com.azure.search.documents.implementation.models.Similarity} and {@link Similarity}.
  */
 public final class SimilarityConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SimilarityConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.Similarity} to {@link Similarity}.
@@ -33,5 +33,8 @@ public final class SimilarityConverter {
         com.azure.search.documents.implementation.models.Similarity similarity =
             new com.azure.search.documents.implementation.models.Similarity();
         return similarity;
+    }
+
+    private SimilarityConverter() {
     }
 }

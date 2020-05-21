@@ -13,7 +13,7 @@ import com.azure.search.documents.models.TagScoringParameters;
  * {@link TagScoringFunction}.
  */
 public final class TagScoringFunctionConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(TagScoringFunctionConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TagScoringFunction} to
@@ -26,20 +26,20 @@ public final class TagScoringFunctionConverter {
         TagScoringFunction tagScoringFunction = new TagScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation _interpolation =
+            ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            tagScoringFunction.setInterpolation(_interpolation);
+            tagScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        tagScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        tagScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        tagScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        tagScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            TagScoringParameters _parameters = TagScoringParametersConverter.map(obj.getParameters());
-            tagScoringFunction.setParameters(_parameters);
+            TagScoringParameters parameters = TagScoringParametersConverter.map(obj.getParameters());
+            tagScoringFunction.setParameters(parameters);
         }
         return tagScoringFunction;
     }
@@ -56,22 +56,25 @@ public final class TagScoringFunctionConverter {
             new com.azure.search.documents.implementation.models.TagScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation _interpolation =
+            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            tagScoringFunction.setInterpolation(_interpolation);
+            tagScoringFunction.setInterpolation(interpolation);
         }
 
-        String _fieldName = obj.getFieldName();
-        tagScoringFunction.setFieldName(_fieldName);
+        String fieldName = obj.getFieldName();
+        tagScoringFunction.setFieldName(fieldName);
 
-        double _boost = obj.getBoost();
-        tagScoringFunction.setBoost(_boost);
+        double boost = obj.getBoost();
+        tagScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            com.azure.search.documents.implementation.models.TagScoringParameters _parameters =
+            com.azure.search.documents.implementation.models.TagScoringParameters parameters =
                 TagScoringParametersConverter.map(obj.getParameters());
-            tagScoringFunction.setParameters(_parameters);
+            tagScoringFunction.setParameters(parameters);
         }
         return tagScoringFunction;
+    }
+
+    private TagScoringFunctionConverter() {
     }
 }

@@ -11,7 +11,7 @@ import com.azure.search.documents.models.OcrSkillLanguage;
  * {@link OcrSkillLanguage}.
  */
 public final class OcrSkillLanguageConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(OcrSkillLanguageConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.OcrSkillLanguage} to enum
@@ -33,5 +33,8 @@ public final class OcrSkillLanguageConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.OcrSkillLanguage.fromString(obj.toString());
+    }
+
+    private OcrSkillLanguageConverter() {
     }
 }

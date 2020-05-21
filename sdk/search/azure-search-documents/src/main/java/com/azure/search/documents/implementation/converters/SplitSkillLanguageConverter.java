@@ -11,7 +11,7 @@ import com.azure.search.documents.models.SplitSkillLanguage;
  * {@link SplitSkillLanguage}.
  */
 public final class SplitSkillLanguageConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SplitSkillLanguageConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.SplitSkillLanguage} to enum
@@ -33,5 +33,8 @@ public final class SplitSkillLanguageConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.SplitSkillLanguage.fromString(obj.toString());
+    }
+
+    private SplitSkillLanguageConverter() {
     }
 }

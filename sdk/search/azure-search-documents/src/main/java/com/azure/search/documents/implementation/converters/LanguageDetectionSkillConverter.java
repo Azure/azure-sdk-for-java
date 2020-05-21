@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * {@link LanguageDetectionSkill}.
  */
 public final class LanguageDetectionSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(LanguageDetectionSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LanguageDetectionSkill} to
@@ -29,25 +29,25 @@ public final class LanguageDetectionSkillConverter {
         LanguageDetectionSkill languageDetectionSkill = new LanguageDetectionSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            languageDetectionSkill.setOutputs(_outputs);
+            languageDetectionSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            languageDetectionSkill.setInputs(_inputs);
+            languageDetectionSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        languageDetectionSkill.setName(_name);
+        String name = obj.getName();
+        languageDetectionSkill.setName(name);
 
-        String _context = obj.getContext();
-        languageDetectionSkill.setContext(_context);
+        String context = obj.getContext();
+        languageDetectionSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        languageDetectionSkill.setDescription(_description);
+        String description = obj.getDescription();
+        languageDetectionSkill.setDescription(description);
         return languageDetectionSkill;
     }
 
@@ -63,25 +63,28 @@ public final class LanguageDetectionSkillConverter {
             new com.azure.search.documents.implementation.models.LanguageDetectionSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            languageDetectionSkill.setOutputs(_outputs);
+            languageDetectionSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            languageDetectionSkill.setInputs(_inputs);
+            languageDetectionSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        languageDetectionSkill.setName(_name);
+        String name = obj.getName();
+        languageDetectionSkill.setName(name);
 
-        String _context = obj.getContext();
-        languageDetectionSkill.setContext(_context);
+        String context = obj.getContext();
+        languageDetectionSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        languageDetectionSkill.setDescription(_description);
+        String description = obj.getDescription();
+        languageDetectionSkill.setDescription(description);
         return languageDetectionSkill;
+    }
+
+    private LanguageDetectionSkillConverter() {
     }
 }

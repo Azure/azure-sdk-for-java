@@ -11,7 +11,7 @@ import com.azure.search.documents.models.SearchIndexerDataSourceType;
  * {@link SearchIndexerDataSourceType}.
  */
 public final class SearchIndexerDataSourceTypeConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerDataSourceTypeConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.SearchIndexerDataSourceType} to enum
@@ -33,5 +33,8 @@ public final class SearchIndexerDataSourceTypeConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.SearchIndexerDataSourceType.fromString(obj.toString());
+    }
+
+    private SearchIndexerDataSourceTypeConverter() {
     }
 }

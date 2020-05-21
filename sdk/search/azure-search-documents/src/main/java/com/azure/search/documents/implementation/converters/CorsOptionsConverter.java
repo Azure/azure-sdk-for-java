@@ -9,13 +9,12 @@ import com.azure.search.documents.models.CorsOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.CorsOptions} and {@link CorsOptions}.
  */
 public final class CorsOptionsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(CorsOptionsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.CorsOptions} to {@link CorsOptions}.
@@ -27,12 +26,12 @@ public final class CorsOptionsConverter {
         CorsOptions corsOptions = new CorsOptions();
 
         if (obj.getAllowedOrigins() != null) {
-            List<String> _allowedOrigins = new ArrayList<>(obj.getAllowedOrigins());
-            PrivateFieldAccessHelper.set(corsOptions, "allowedOrigins", _allowedOrigins);
+            List<String> allowedOrigins = new ArrayList<>(obj.getAllowedOrigins());
+            PrivateFieldAccessHelper.set(corsOptions, "allowedOrigins", allowedOrigins);
         }
 
-        Long _maxAgeInSeconds = obj.getMaxAgeInSeconds();
-        corsOptions.setMaxAgeInSeconds(_maxAgeInSeconds);
+        Long maxAgeInSeconds = obj.getMaxAgeInSeconds();
+        corsOptions.setMaxAgeInSeconds(maxAgeInSeconds);
         return corsOptions;
     }
 
@@ -47,12 +46,15 @@ public final class CorsOptionsConverter {
             new com.azure.search.documents.implementation.models.CorsOptions();
 
         if (obj.getAllowedOrigins() != null) {
-            List<String> _allowedOrigins = new ArrayList<>(obj.getAllowedOrigins());
-            PrivateFieldAccessHelper.set(corsOptions, "allowedOrigins", _allowedOrigins);
+            List<String> allowedOrigins = new ArrayList<>(obj.getAllowedOrigins());
+            PrivateFieldAccessHelper.set(corsOptions, "allowedOrigins", allowedOrigins);
         }
 
-        Long _maxAgeInSeconds = obj.getMaxAgeInSeconds();
-        corsOptions.setMaxAgeInSeconds(_maxAgeInSeconds);
+        Long maxAgeInSeconds = obj.getMaxAgeInSeconds();
+        corsOptions.setMaxAgeInSeconds(maxAgeInSeconds);
         return corsOptions;
+    }
+
+    private CorsOptionsConverter() {
     }
 }

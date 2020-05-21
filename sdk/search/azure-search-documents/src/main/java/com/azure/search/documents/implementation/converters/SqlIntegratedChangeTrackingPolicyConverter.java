@@ -11,7 +11,7 @@ import com.azure.search.documents.models.SqlIntegratedChangeTrackingPolicy;
  * {@link SqlIntegratedChangeTrackingPolicy}.
  */
 public final class SqlIntegratedChangeTrackingPolicyConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SqlIntegratedChangeTrackingPolicyConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy} to
@@ -35,5 +35,8 @@ public final class SqlIntegratedChangeTrackingPolicyConverter {
         }
         com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy sqlIntegratedChangeTrackingPolicy = new com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy();
         return sqlIntegratedChangeTrackingPolicy;
+    }
+
+    private SqlIntegratedChangeTrackingPolicyConverter() {
     }
 }

@@ -8,13 +8,12 @@ import com.azure.search.documents.models.StopAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.StopAnalyzer} and {@link StopAnalyzer}.
  */
 public final class StopAnalyzerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(StopAnalyzerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.StopAnalyzer} to {@link StopAnalyzer}.
@@ -25,12 +24,12 @@ public final class StopAnalyzerConverter {
         }
         StopAnalyzer stopAnalyzer = new StopAnalyzer();
 
-        String _name = obj.getName();
-        stopAnalyzer.setName(_name);
+        String name = obj.getName();
+        stopAnalyzer.setName(name);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            stopAnalyzer.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            stopAnalyzer.setStopwords(stopwords);
         }
         return stopAnalyzer;
     }
@@ -45,13 +44,16 @@ public final class StopAnalyzerConverter {
         com.azure.search.documents.implementation.models.StopAnalyzer stopAnalyzer =
             new com.azure.search.documents.implementation.models.StopAnalyzer();
 
-        String _name = obj.getName();
-        stopAnalyzer.setName(_name);
+        String name = obj.getName();
+        stopAnalyzer.setName(name);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            stopAnalyzer.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            stopAnalyzer.setStopwords(stopwords);
         }
         return stopAnalyzer;
+    }
+
+    private StopAnalyzerConverter() {
     }
 }

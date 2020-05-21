@@ -11,7 +11,7 @@ import com.azure.search.documents.models.PathHierarchyTokenizerV2;
  * {@link PathHierarchyTokenizerV2}.
  */
 public final class PathHierarchyTokenizerV2Converter {
-    private static final ClientLogger LOGGER = new ClientLogger(PathHierarchyTokenizerV2Converter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PathHierarchyTokenizerV2} to
@@ -23,23 +23,23 @@ public final class PathHierarchyTokenizerV2Converter {
         }
         PathHierarchyTokenizerV2 pathHierarchyTokenizerV2 = new PathHierarchyTokenizerV2();
 
-        String _name = obj.getName();
-        pathHierarchyTokenizerV2.setName(_name);
+        String name = obj.getName();
+        pathHierarchyTokenizerV2.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        pathHierarchyTokenizerV2.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        pathHierarchyTokenizerV2.setMaxTokenLength(maxTokenLength);
 
-        String _delimiter = obj.getDelimiter();
-        pathHierarchyTokenizerV2.setDelimiter(_delimiter);
+        String delimiter = obj.getDelimiter();
+        pathHierarchyTokenizerV2.setDelimiter(delimiter);
 
-        Boolean _reverseTokenOrder = obj.isReverseTokenOrder();
-        pathHierarchyTokenizerV2.setReverseTokenOrder(_reverseTokenOrder);
+        Boolean reverseTokenOrder = obj.isReverseTokenOrder();
+        pathHierarchyTokenizerV2.setReverseTokenOrder(reverseTokenOrder);
 
-        Integer _numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
-        pathHierarchyTokenizerV2.setNumberOfTokensToSkip(_numberOfTokensToSkip);
+        Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
+        pathHierarchyTokenizerV2.setNumberOfTokensToSkip(numberOfTokensToSkip);
 
-        String _replacement = obj.getReplacement();
-        pathHierarchyTokenizerV2.setReplacement(_replacement);
+        String replacement = obj.getReplacement();
+        pathHierarchyTokenizerV2.setReplacement(replacement);
         return pathHierarchyTokenizerV2;
     }
 
@@ -54,23 +54,26 @@ public final class PathHierarchyTokenizerV2Converter {
         com.azure.search.documents.implementation.models.PathHierarchyTokenizerV2 pathHierarchyTokenizerV2 =
             new com.azure.search.documents.implementation.models.PathHierarchyTokenizerV2();
 
-        String _name = obj.getName();
-        pathHierarchyTokenizerV2.setName(_name);
+        String name = obj.getName();
+        pathHierarchyTokenizerV2.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        pathHierarchyTokenizerV2.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        pathHierarchyTokenizerV2.setMaxTokenLength(maxTokenLength);
 
-        String _delimiter = obj.getDelimiter();
-        pathHierarchyTokenizerV2.setDelimiter(_delimiter);
+        String delimiter = obj.getDelimiter();
+        pathHierarchyTokenizerV2.setDelimiter(delimiter);
 
-        Boolean _reverseTokenOrder = obj.isReverseTokenOrder();
-        pathHierarchyTokenizerV2.setReverseTokenOrder(_reverseTokenOrder);
+        Boolean reverseTokenOrder = obj.isReverseTokenOrder();
+        pathHierarchyTokenizerV2.setReverseTokenOrder(reverseTokenOrder);
 
-        Integer _numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
-        pathHierarchyTokenizerV2.setNumberOfTokensToSkip(_numberOfTokensToSkip);
+        Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
+        pathHierarchyTokenizerV2.setNumberOfTokensToSkip(numberOfTokensToSkip);
 
-        String _replacement = obj.getReplacement();
-        pathHierarchyTokenizerV2.setReplacement(_replacement);
+        String replacement = obj.getReplacement();
+        pathHierarchyTokenizerV2.setReplacement(replacement);
         return pathHierarchyTokenizerV2;
+    }
+
+    private PathHierarchyTokenizerV2Converter() {
     }
 }

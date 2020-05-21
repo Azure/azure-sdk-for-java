@@ -8,14 +8,13 @@ import com.azure.search.documents.models.LuceneStandardAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.LuceneStandardAnalyzer} and
  * {@link LuceneStandardAnalyzer}.
  */
 public final class LuceneStandardAnalyzerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(LuceneStandardAnalyzerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LuceneStandardAnalyzer} to
@@ -27,15 +26,15 @@ public final class LuceneStandardAnalyzerConverter {
         }
         LuceneStandardAnalyzer luceneStandardAnalyzer = new LuceneStandardAnalyzer();
 
-        String _name = obj.getName();
-        luceneStandardAnalyzer.setName(_name);
+        String name = obj.getName();
+        luceneStandardAnalyzer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        luceneStandardAnalyzer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        luceneStandardAnalyzer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            luceneStandardAnalyzer.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            luceneStandardAnalyzer.setStopwords(stopwords);
         }
         return luceneStandardAnalyzer;
     }
@@ -51,16 +50,19 @@ public final class LuceneStandardAnalyzerConverter {
         com.azure.search.documents.implementation.models.LuceneStandardAnalyzer luceneStandardAnalyzer =
             new com.azure.search.documents.implementation.models.LuceneStandardAnalyzer();
 
-        String _name = obj.getName();
-        luceneStandardAnalyzer.setName(_name);
+        String name = obj.getName();
+        luceneStandardAnalyzer.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        luceneStandardAnalyzer.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        luceneStandardAnalyzer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            luceneStandardAnalyzer.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            luceneStandardAnalyzer.setStopwords(stopwords);
         }
         return luceneStandardAnalyzer;
+    }
+
+    private LuceneStandardAnalyzerConverter() {
     }
 }

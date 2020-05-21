@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * {@link InputFieldMappingEntry}.
  */
 public final class InputFieldMappingEntryConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(InputFieldMappingEntryConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.InputFieldMappingEntry} to
@@ -27,19 +27,19 @@ public final class InputFieldMappingEntryConverter {
         InputFieldMappingEntry inputFieldMappingEntry = new InputFieldMappingEntry();
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            inputFieldMappingEntry.setInputs(_inputs);
+            inputFieldMappingEntry.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        inputFieldMappingEntry.setName(_name);
+        String name = obj.getName();
+        inputFieldMappingEntry.setName(name);
 
-        String _source = obj.getSource();
-        inputFieldMappingEntry.setSource(_source);
+        String source = obj.getSource();
+        inputFieldMappingEntry.setSource(source);
 
-        String _sourceContext = obj.getSourceContext();
-        inputFieldMappingEntry.setSourceContext(_sourceContext);
+        String sourceContext = obj.getSourceContext();
+        inputFieldMappingEntry.setSourceContext(sourceContext);
         return inputFieldMappingEntry;
     }
 
@@ -55,19 +55,22 @@ public final class InputFieldMappingEntryConverter {
             new com.azure.search.documents.implementation.models.InputFieldMappingEntry();
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            inputFieldMappingEntry.setInputs(_inputs);
+            inputFieldMappingEntry.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        inputFieldMappingEntry.setName(_name);
+        String name = obj.getName();
+        inputFieldMappingEntry.setName(name);
 
-        String _source = obj.getSource();
-        inputFieldMappingEntry.setSource(_source);
+        String source = obj.getSource();
+        inputFieldMappingEntry.setSource(source);
 
-        String _sourceContext = obj.getSourceContext();
-        inputFieldMappingEntry.setSourceContext(_sourceContext);
+        String sourceContext = obj.getSourceContext();
+        inputFieldMappingEntry.setSourceContext(sourceContext);
         return inputFieldMappingEntry;
+    }
+
+    private InputFieldMappingEntryConverter() {
     }
 }

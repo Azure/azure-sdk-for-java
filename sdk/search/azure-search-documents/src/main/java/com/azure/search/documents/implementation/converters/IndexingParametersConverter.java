@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * {@link IndexingParameters}.
  */
 public final class IndexingParametersConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexingParametersConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexingParameters} to
@@ -26,21 +26,21 @@ public final class IndexingParametersConverter {
         }
         IndexingParameters indexingParameters = new IndexingParameters();
 
-        Integer _maxFailedItemsPerBatch = obj.getMaxFailedItemsPerBatch();
-        indexingParameters.setMaxFailedItemsPerBatch(_maxFailedItemsPerBatch);
+        Integer maxFailedItemsPerBatch = obj.getMaxFailedItemsPerBatch();
+        indexingParameters.setMaxFailedItemsPerBatch(maxFailedItemsPerBatch);
 
-        Integer _maxFailedItems = obj.getMaxFailedItems();
-        indexingParameters.setMaxFailedItems(_maxFailedItems);
+        Integer maxFailedItems = obj.getMaxFailedItems();
+        indexingParameters.setMaxFailedItems(maxFailedItems);
 
         if (obj.getConfiguration() != null) {
-            Map<String, Object> _configuration =
+            Map<String, Object> configuration =
                 obj.getConfiguration().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            indexingParameters.setConfiguration(_configuration);
+            indexingParameters.setConfiguration(configuration);
         }
 
-        Integer _batchSize = obj.getBatchSize();
-        indexingParameters.setBatchSize(_batchSize);
+        Integer batchSize = obj.getBatchSize();
+        indexingParameters.setBatchSize(batchSize);
         return indexingParameters;
     }
 
@@ -55,21 +55,24 @@ public final class IndexingParametersConverter {
         com.azure.search.documents.implementation.models.IndexingParameters indexingParameters =
             new com.azure.search.documents.implementation.models.IndexingParameters();
 
-        Integer _maxFailedItemsPerBatch = obj.getMaxFailedItemsPerBatch();
-        indexingParameters.setMaxFailedItemsPerBatch(_maxFailedItemsPerBatch);
+        Integer maxFailedItemsPerBatch = obj.getMaxFailedItemsPerBatch();
+        indexingParameters.setMaxFailedItemsPerBatch(maxFailedItemsPerBatch);
 
-        Integer _maxFailedItems = obj.getMaxFailedItems();
-        indexingParameters.setMaxFailedItems(_maxFailedItems);
+        Integer maxFailedItems = obj.getMaxFailedItems();
+        indexingParameters.setMaxFailedItems(maxFailedItems);
 
         if (obj.getConfiguration() != null) {
-            Map<String, Object> _configuration =
+            Map<String, Object> configuration =
                 obj.getConfiguration().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            indexingParameters.setConfiguration(_configuration);
+            indexingParameters.setConfiguration(configuration);
         }
 
-        Integer _batchSize = obj.getBatchSize();
-        indexingParameters.setBatchSize(_batchSize);
+        Integer batchSize = obj.getBatchSize();
+        indexingParameters.setBatchSize(batchSize);
         return indexingParameters;
+    }
+
+    private IndexingParametersConverter() {
     }
 }

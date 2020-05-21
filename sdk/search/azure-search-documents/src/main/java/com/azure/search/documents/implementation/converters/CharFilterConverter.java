@@ -43,6 +43,10 @@ public final class CharFilterConverter {
         if (obj instanceof com.azure.search.documents.models.MappingCharFilter) {
             return MappingCharFilterConverter.map((com.azure.search.documents.models.MappingCharFilter) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
+            obj.getClass().getSimpleName())));
+    }
+
+    private CharFilterConverter() {
     }
 }

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.BM25Similarity;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.BM25Similarity;
  * {@link BM25Similarity}.
  */
 public final class BM25SimilarityConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(BM25SimilarityConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.BM25Similarity} to {@link BM25Similarity}.
      */
@@ -22,11 +19,11 @@ public final class BM25SimilarityConverter {
         }
         BM25Similarity bM25Similarity = new BM25Similarity();
 
-        Double _b = obj.getB();
-        bM25Similarity.setB(_b);
+        Double b = obj.getB();
+        bM25Similarity.setB(b);
 
-        Double _k1 = obj.getK1();
-        bM25Similarity.setK1(_k1);
+        Double k1 = obj.getK1();
+        bM25Similarity.setK1(k1);
         return bM25Similarity;
     }
 
@@ -40,11 +37,14 @@ public final class BM25SimilarityConverter {
         com.azure.search.documents.implementation.models.BM25Similarity bM25Similarity =
             new com.azure.search.documents.implementation.models.BM25Similarity();
 
-        Double _b = obj.getB();
-        bM25Similarity.setB(_b);
+        Double b = obj.getB();
+        bM25Similarity.setB(b);
 
-        Double _k1 = obj.getK1();
-        bM25Similarity.setK1(_k1);
+        Double k1 = obj.getK1();
+        bM25Similarity.setK1(k1);
         return bM25Similarity;
+    }
+
+    private BM25SimilarityConverter() {
     }
 }

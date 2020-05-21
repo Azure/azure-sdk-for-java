@@ -11,7 +11,7 @@ import com.azure.search.documents.models.OutputFieldMappingEntry;
  * {@link OutputFieldMappingEntry}.
  */
 public final class OutputFieldMappingEntryConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(OutputFieldMappingEntryConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.OutputFieldMappingEntry} to
@@ -23,11 +23,11 @@ public final class OutputFieldMappingEntryConverter {
         }
         OutputFieldMappingEntry outputFieldMappingEntry = new OutputFieldMappingEntry();
 
-        String _targetName = obj.getTargetName();
-        outputFieldMappingEntry.setTargetName(_targetName);
+        String targetName = obj.getTargetName();
+        outputFieldMappingEntry.setTargetName(targetName);
 
-        String _name = obj.getName();
-        outputFieldMappingEntry.setName(_name);
+        String name = obj.getName();
+        outputFieldMappingEntry.setName(name);
         return outputFieldMappingEntry;
     }
 
@@ -42,11 +42,14 @@ public final class OutputFieldMappingEntryConverter {
         com.azure.search.documents.implementation.models.OutputFieldMappingEntry outputFieldMappingEntry =
             new com.azure.search.documents.implementation.models.OutputFieldMappingEntry();
 
-        String _targetName = obj.getTargetName();
-        outputFieldMappingEntry.setTargetName(_targetName);
+        String targetName = obj.getTargetName();
+        outputFieldMappingEntry.setTargetName(targetName);
 
-        String _name = obj.getName();
-        outputFieldMappingEntry.setName(_name);
+        String name = obj.getName();
+        outputFieldMappingEntry.setName(name);
         return outputFieldMappingEntry;
+    }
+
+    private OutputFieldMappingEntryConverter() {
     }
 }

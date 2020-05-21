@@ -10,7 +10,7 @@ import com.azure.search.documents.models.ServiceLimits;
  * A converter between {@link com.azure.search.documents.implementation.models.ServiceLimits} and {@link ServiceLimits}.
  */
 public final class ServiceLimitsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceLimitsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ServiceLimits} to {@link ServiceLimits}.
@@ -21,17 +21,17 @@ public final class ServiceLimitsConverter {
         }
         ServiceLimits serviceLimits = new ServiceLimits();
 
-        Integer _maxFieldNestingDepthPerIndex = obj.getMaxFieldNestingDepthPerIndex();
-        serviceLimits.setMaxFieldNestingDepthPerIndex(_maxFieldNestingDepthPerIndex);
+        Integer maxFieldNestingDepthPerIndex = obj.getMaxFieldNestingDepthPerIndex();
+        serviceLimits.setMaxFieldNestingDepthPerIndex(maxFieldNestingDepthPerIndex);
 
-        Integer _maxFieldsPerIndex = obj.getMaxFieldsPerIndex();
-        serviceLimits.setMaxFieldsPerIndex(_maxFieldsPerIndex);
+        Integer maxFieldsPerIndex = obj.getMaxFieldsPerIndex();
+        serviceLimits.setMaxFieldsPerIndex(maxFieldsPerIndex);
 
-        Integer _maxComplexObjectsInCollectionsPerDocument = obj.getMaxComplexObjectsInCollectionsPerDocument();
-        serviceLimits.setMaxComplexObjectsInCollectionsPerDocument(_maxComplexObjectsInCollectionsPerDocument);
+        Integer maxComplexObjectsInCollectionsPerDocument = obj.getMaxComplexObjectsInCollectionsPerDocument();
+        serviceLimits.setMaxComplexObjectsInCollectionsPerDocument(maxComplexObjectsInCollectionsPerDocument);
 
-        Integer _maxComplexCollectionFieldsPerIndex = obj.getMaxComplexCollectionFieldsPerIndex();
-        serviceLimits.setMaxComplexCollectionFieldsPerIndex(_maxComplexCollectionFieldsPerIndex);
+        Integer maxComplexCollectionFieldsPerIndex = obj.getMaxComplexCollectionFieldsPerIndex();
+        serviceLimits.setMaxComplexCollectionFieldsPerIndex(maxComplexCollectionFieldsPerIndex);
         return serviceLimits;
     }
 
@@ -45,17 +45,20 @@ public final class ServiceLimitsConverter {
         com.azure.search.documents.implementation.models.ServiceLimits serviceLimits =
             new com.azure.search.documents.implementation.models.ServiceLimits();
 
-        Integer _maxFieldNestingDepthPerIndex = obj.getMaxFieldNestingDepthPerIndex();
-        serviceLimits.setMaxFieldNestingDepthPerIndex(_maxFieldNestingDepthPerIndex);
+        Integer maxFieldNestingDepthPerIndex = obj.getMaxFieldNestingDepthPerIndex();
+        serviceLimits.setMaxFieldNestingDepthPerIndex(maxFieldNestingDepthPerIndex);
 
-        Integer _maxFieldsPerIndex = obj.getMaxFieldsPerIndex();
-        serviceLimits.setMaxFieldsPerIndex(_maxFieldsPerIndex);
+        Integer maxFieldsPerIndex = obj.getMaxFieldsPerIndex();
+        serviceLimits.setMaxFieldsPerIndex(maxFieldsPerIndex);
 
-        Integer _maxComplexObjectsInCollectionsPerDocument = obj.getMaxComplexObjectsInCollectionsPerDocument();
-        serviceLimits.setMaxComplexObjectsInCollectionsPerDocument(_maxComplexObjectsInCollectionsPerDocument);
+        Integer maxComplexObjectsInCollectionsPerDocument = obj.getMaxComplexObjectsInCollectionsPerDocument();
+        serviceLimits.setMaxComplexObjectsInCollectionsPerDocument(maxComplexObjectsInCollectionsPerDocument);
 
-        Integer _maxComplexCollectionFieldsPerIndex = obj.getMaxComplexCollectionFieldsPerIndex();
-        serviceLimits.setMaxComplexCollectionFieldsPerIndex(_maxComplexCollectionFieldsPerIndex);
+        Integer maxComplexCollectionFieldsPerIndex = obj.getMaxComplexCollectionFieldsPerIndex();
+        serviceLimits.setMaxComplexCollectionFieldsPerIndex(maxComplexCollectionFieldsPerIndex);
         return serviceLimits;
+    }
+
+    private ServiceLimitsConverter() {
     }
 }

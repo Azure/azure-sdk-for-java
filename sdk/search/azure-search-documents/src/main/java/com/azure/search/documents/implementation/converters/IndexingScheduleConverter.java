@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * {@link IndexingSchedule}.
  */
 public final class IndexingScheduleConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexingScheduleConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexingSchedule} to {@link IndexingSchedule}.
@@ -25,11 +25,11 @@ public final class IndexingScheduleConverter {
         }
         IndexingSchedule indexingSchedule = new IndexingSchedule();
 
-        Duration _interval = obj.getInterval();
-        indexingSchedule.setInterval(_interval);
+        Duration interval = obj.getInterval();
+        indexingSchedule.setInterval(interval);
 
-        OffsetDateTime _startTime = obj.getStartTime();
-        indexingSchedule.setStartTime(_startTime);
+        OffsetDateTime startTime = obj.getStartTime();
+        indexingSchedule.setStartTime(startTime);
         return indexingSchedule;
     }
 
@@ -43,11 +43,14 @@ public final class IndexingScheduleConverter {
         com.azure.search.documents.implementation.models.IndexingSchedule indexingSchedule =
             new com.azure.search.documents.implementation.models.IndexingSchedule();
 
-        Duration _interval = obj.getInterval();
-        indexingSchedule.setInterval(_interval);
+        Duration interval = obj.getInterval();
+        indexingSchedule.setInterval(interval);
 
-        OffsetDateTime _startTime = obj.getStartTime();
-        indexingSchedule.setStartTime(_startTime);
+        OffsetDateTime startTime = obj.getStartTime();
+        indexingSchedule.setStartTime(startTime);
         return indexingSchedule;
+    }
+
+    private IndexingScheduleConverter() {
     }
 }

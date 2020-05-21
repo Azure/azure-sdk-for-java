@@ -15,7 +15,7 @@ import java.util.List;
  * {@link SuggestOptions}.
  */
 public final class SuggestOptionsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SuggestOptionsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SuggestOptions} to {@link SuggestOptions}.
@@ -26,38 +26,38 @@ public final class SuggestOptionsConverter {
         }
         SuggestOptions suggestOptions = new SuggestOptions();
 
-        String _filter = obj.getFilter();
-        suggestOptions.setFilter(_filter);
+        String filter = obj.getFilter();
+        suggestOptions.setFilter(filter);
 
-        Boolean _useFuzzyMatching = obj.isUseFuzzyMatching();
-        suggestOptions.setUseFuzzyMatching(_useFuzzyMatching);
+        Boolean useFuzzyMatching = obj.isUseFuzzyMatching();
+        suggestOptions.setUseFuzzyMatching(useFuzzyMatching);
 
-        Double _minimumCoverage = obj.getMinimumCoverage();
-        suggestOptions.setMinimumCoverage(_minimumCoverage);
+        Double minimumCoverage = obj.getMinimumCoverage();
+        suggestOptions.setMinimumCoverage(minimumCoverage);
 
         if (obj.getSelect() != null) {
-            List<String> _select = new ArrayList<>(obj.getSelect());
-            PrivateFieldAccessHelper.set(suggestOptions, "select", _select);
+            List<String> select = new ArrayList<>(obj.getSelect());
+            PrivateFieldAccessHelper.set(suggestOptions, "select", select);
         }
 
-        Integer _top = obj.getTop();
-        suggestOptions.setTop(_top);
+        Integer top = obj.getTop();
+        suggestOptions.setTop(top);
 
-        String _highlightPostTag = obj.getHighlightPostTag();
-        suggestOptions.setHighlightPostTag(_highlightPostTag);
+        String highlightPostTag = obj.getHighlightPostTag();
+        suggestOptions.setHighlightPostTag(highlightPostTag);
 
         if (obj.getOrderBy() != null) {
-            List<String> _orderBy = new ArrayList<>(obj.getOrderBy());
-            PrivateFieldAccessHelper.set(suggestOptions, "orderBy", _orderBy);
+            List<String> orderBy = new ArrayList<>(obj.getOrderBy());
+            PrivateFieldAccessHelper.set(suggestOptions, "orderBy", orderBy);
         }
 
         if (obj.getSearchFields() != null) {
-            List<String> _searchFields = new ArrayList<>(obj.getSearchFields());
-            PrivateFieldAccessHelper.set(suggestOptions, "searchFields", _searchFields);
+            List<String> searchFields = new ArrayList<>(obj.getSearchFields());
+            PrivateFieldAccessHelper.set(suggestOptions, "searchFields", searchFields);
         }
 
-        String _highlightPreTag = obj.getHighlightPreTag();
-        suggestOptions.setHighlightPreTag(_highlightPreTag);
+        String highlightPreTag = obj.getHighlightPreTag();
+        suggestOptions.setHighlightPreTag(highlightPreTag);
         return suggestOptions;
     }
 
@@ -71,38 +71,41 @@ public final class SuggestOptionsConverter {
         com.azure.search.documents.implementation.models.SuggestOptions suggestOptions =
             new com.azure.search.documents.implementation.models.SuggestOptions();
 
-        String _filter = obj.getFilter();
-        suggestOptions.setFilter(_filter);
+        String filter = obj.getFilter();
+        suggestOptions.setFilter(filter);
 
-        Boolean _useFuzzyMatching = obj.useFuzzyMatching();
-        suggestOptions.setUseFuzzyMatching(_useFuzzyMatching);
+        Boolean useFuzzyMatching = obj.useFuzzyMatching();
+        suggestOptions.setUseFuzzyMatching(useFuzzyMatching);
 
-        Double _minimumCoverage = obj.getMinimumCoverage();
-        suggestOptions.setMinimumCoverage(_minimumCoverage);
+        Double minimumCoverage = obj.getMinimumCoverage();
+        suggestOptions.setMinimumCoverage(minimumCoverage);
 
         if (obj.getSelect() != null) {
-            List<String> _select = new ArrayList<>(obj.getSelect());
-            PrivateFieldAccessHelper.set(suggestOptions, "select", _select);
+            List<String> select = new ArrayList<>(obj.getSelect());
+            PrivateFieldAccessHelper.set(suggestOptions, "select", select);
         }
 
-        Integer _top = obj.getTop();
-        suggestOptions.setTop(_top);
+        Integer top = obj.getTop();
+        suggestOptions.setTop(top);
 
-        String _highlightPostTag = obj.getHighlightPostTag();
-        suggestOptions.setHighlightPostTag(_highlightPostTag);
+        String highlightPostTag = obj.getHighlightPostTag();
+        suggestOptions.setHighlightPostTag(highlightPostTag);
 
         if (obj.getOrderBy() != null) {
-            List<String> _orderBy = new ArrayList<>(obj.getOrderBy());
-            PrivateFieldAccessHelper.set(suggestOptions, "orderBy", _orderBy);
+            List<String> orderBy = new ArrayList<>(obj.getOrderBy());
+            PrivateFieldAccessHelper.set(suggestOptions, "orderBy", orderBy);
         }
 
         if (obj.getSearchFields() != null) {
-            List<String> _searchFields = new ArrayList<>(obj.getSearchFields());
-            PrivateFieldAccessHelper.set(suggestOptions, "searchFields", _searchFields);
+            List<String> searchFields = new ArrayList<>(obj.getSearchFields());
+            PrivateFieldAccessHelper.set(suggestOptions, "searchFields", searchFields);
         }
 
-        String _highlightPreTag = obj.getHighlightPreTag();
-        suggestOptions.setHighlightPreTag(_highlightPreTag);
+        String highlightPreTag = obj.getHighlightPreTag();
+        suggestOptions.setHighlightPreTag(highlightPreTag);
         return suggestOptions;
+    }
+
+    private SuggestOptionsConverter() {
     }
 }

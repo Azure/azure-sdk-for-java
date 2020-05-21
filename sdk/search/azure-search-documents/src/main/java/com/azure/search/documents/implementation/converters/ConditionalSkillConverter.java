@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * {@link ConditionalSkill}.
  */
 public final class ConditionalSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ConditionalSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ConditionalSkill} to {@link ConditionalSkill}.
@@ -28,25 +28,25 @@ public final class ConditionalSkillConverter {
         ConditionalSkill conditionalSkill = new ConditionalSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            conditionalSkill.setOutputs(_outputs);
+            conditionalSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            conditionalSkill.setInputs(_inputs);
+            conditionalSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        conditionalSkill.setName(_name);
+        String name = obj.getName();
+        conditionalSkill.setName(name);
 
-        String _context = obj.getContext();
-        conditionalSkill.setContext(_context);
+        String context = obj.getContext();
+        conditionalSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        conditionalSkill.setDescription(_description);
+        String description = obj.getDescription();
+        conditionalSkill.setDescription(description);
         return conditionalSkill;
     }
 
@@ -61,25 +61,28 @@ public final class ConditionalSkillConverter {
             new com.azure.search.documents.implementation.models.ConditionalSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            conditionalSkill.setOutputs(_outputs);
+            conditionalSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            conditionalSkill.setInputs(_inputs);
+            conditionalSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        conditionalSkill.setName(_name);
+        String name = obj.getName();
+        conditionalSkill.setName(name);
 
-        String _context = obj.getContext();
-        conditionalSkill.setContext(_context);
+        String context = obj.getContext();
+        conditionalSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        conditionalSkill.setDescription(_description);
+        String description = obj.getDescription();
+        conditionalSkill.setDescription(description);
         return conditionalSkill;
+    }
+
+    private ConditionalSkillConverter() {
     }
 }

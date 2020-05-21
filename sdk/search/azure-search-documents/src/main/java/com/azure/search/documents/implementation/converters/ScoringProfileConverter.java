@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * {@link ScoringProfile}.
  */
 public final class ScoringProfileConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ScoringProfileConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ScoringProfile} to {@link ScoringProfile}.
@@ -29,23 +29,23 @@ public final class ScoringProfileConverter {
         ScoringProfile scoringProfile = new ScoringProfile();
 
         if (obj.getFunctions() != null) {
-            List<ScoringFunction> _functions =
+            List<ScoringFunction> functions =
                 obj.getFunctions().stream().map(ScoringFunctionConverter::map).collect(Collectors.toList());
-            scoringProfile.setFunctions(_functions);
+            scoringProfile.setFunctions(functions);
         }
 
-        String _name = obj.getName();
-        scoringProfile.setName(_name);
+        String name = obj.getName();
+        scoringProfile.setName(name);
 
         if (obj.getTextWeights() != null) {
-            TextWeights _textWeights = TextWeightsConverter.map(obj.getTextWeights());
-            scoringProfile.setTextWeights(_textWeights);
+            TextWeights textWeights = TextWeightsConverter.map(obj.getTextWeights());
+            scoringProfile.setTextWeights(textWeights);
         }
 
         if (obj.getFunctionAggregation() != null) {
-            ScoringFunctionAggregation _functionAggregation =
+            ScoringFunctionAggregation functionAggregation =
                 ScoringFunctionAggregationConverter.map(obj.getFunctionAggregation());
-            scoringProfile.setFunctionAggregation(_functionAggregation);
+            scoringProfile.setFunctionAggregation(functionAggregation);
         }
         return scoringProfile;
     }
@@ -61,25 +61,28 @@ public final class ScoringProfileConverter {
             new com.azure.search.documents.implementation.models.ScoringProfile();
 
         if (obj.getFunctions() != null) {
-            List<com.azure.search.documents.implementation.models.ScoringFunction> _functions =
+            List<com.azure.search.documents.implementation.models.ScoringFunction> functions =
                 obj.getFunctions().stream().map(ScoringFunctionConverter::map).collect(Collectors.toList());
-            scoringProfile.setFunctions(_functions);
+            scoringProfile.setFunctions(functions);
         }
 
-        String _name = obj.getName();
-        scoringProfile.setName(_name);
+        String name = obj.getName();
+        scoringProfile.setName(name);
 
         if (obj.getTextWeights() != null) {
-            com.azure.search.documents.implementation.models.TextWeights _textWeights =
+            com.azure.search.documents.implementation.models.TextWeights textWeights =
                 TextWeightsConverter.map(obj.getTextWeights());
-            scoringProfile.setTextWeights(_textWeights);
+            scoringProfile.setTextWeights(textWeights);
         }
 
         if (obj.getFunctionAggregation() != null) {
-            com.azure.search.documents.implementation.models.ScoringFunctionAggregation _functionAggregation =
+            com.azure.search.documents.implementation.models.ScoringFunctionAggregation functionAggregation =
                 ScoringFunctionAggregationConverter.map(obj.getFunctionAggregation());
-            scoringProfile.setFunctionAggregation(_functionAggregation);
+            scoringProfile.setFunctionAggregation(functionAggregation);
         }
         return scoringProfile;
+    }
+
+    private ScoringProfileConverter() {
     }
 }

@@ -45,6 +45,10 @@ public final class DataChangeDetectionPolicyConverter {
         if (obj instanceof com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy) {
             return HighWaterMarkChangeDetectionPolicyConverter.map((com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
+            obj.getClass().getSimpleName())));
+    }
+
+    private DataChangeDetectionPolicyConverter() {
     }
 }

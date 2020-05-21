@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * {@link IndexBatchBase}.
  */
 public final class IndexBatchBaseConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexBatchBaseConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexBatch} to {@link IndexBatchBase}.
@@ -28,9 +28,9 @@ public final class IndexBatchBaseConverter {
         IndexBatchBase<T> indexBatchBase = new IndexBatchBase<T>();
 
         if (obj.getActions() != null) {
-            List<IndexAction<T>> _actions =
+            List<IndexAction<T>> actions =
                 obj.getActions().stream().map(IndexActionConverter::<T>map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexBatchBase, "actions", _actions);
+            PrivateFieldAccessHelper.set(indexBatchBase, "actions", actions);
         }
         return indexBatchBase;
     }
@@ -46,10 +46,13 @@ public final class IndexBatchBaseConverter {
             new com.azure.search.documents.implementation.models.IndexBatch();
 
         if (obj.getActions() != null) {
-            List<com.azure.search.documents.implementation.models.IndexAction> _actions =
+            List<com.azure.search.documents.implementation.models.IndexAction> actions =
                 obj.getActions().stream().map(IndexActionConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexBatch, "actions", _actions);
+            PrivateFieldAccessHelper.set(indexBatch, "actions", actions);
         }
         return indexBatch;
+    }
+
+    private IndexBatchBaseConverter() {
     }
 }

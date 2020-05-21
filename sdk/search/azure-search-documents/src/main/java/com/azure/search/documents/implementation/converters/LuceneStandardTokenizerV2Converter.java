@@ -11,7 +11,7 @@ import com.azure.search.documents.models.LuceneStandardTokenizerV2;
  * {@link LuceneStandardTokenizerV2}.
  */
 public final class LuceneStandardTokenizerV2Converter {
-    private static final ClientLogger LOGGER = new ClientLogger(LuceneStandardTokenizerV2Converter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LuceneStandardTokenizerV2} to
@@ -23,11 +23,11 @@ public final class LuceneStandardTokenizerV2Converter {
         }
         LuceneStandardTokenizerV2 luceneStandardTokenizerV2 = new LuceneStandardTokenizerV2();
 
-        String _name = obj.getName();
-        luceneStandardTokenizerV2.setName(_name);
+        String name = obj.getName();
+        luceneStandardTokenizerV2.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        luceneStandardTokenizerV2.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        luceneStandardTokenizerV2.setMaxTokenLength(maxTokenLength);
         return luceneStandardTokenizerV2;
     }
 
@@ -42,11 +42,14 @@ public final class LuceneStandardTokenizerV2Converter {
         com.azure.search.documents.implementation.models.LuceneStandardTokenizerV2 luceneStandardTokenizerV2 =
             new com.azure.search.documents.implementation.models.LuceneStandardTokenizerV2();
 
-        String _name = obj.getName();
-        luceneStandardTokenizerV2.setName(_name);
+        String name = obj.getName();
+        luceneStandardTokenizerV2.setName(name);
 
-        Integer _maxTokenLength = obj.getMaxTokenLength();
-        luceneStandardTokenizerV2.setMaxTokenLength(_maxTokenLength);
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        luceneStandardTokenizerV2.setMaxTokenLength(maxTokenLength);
         return luceneStandardTokenizerV2;
+    }
+
+    private LuceneStandardTokenizerV2Converter() {
     }
 }

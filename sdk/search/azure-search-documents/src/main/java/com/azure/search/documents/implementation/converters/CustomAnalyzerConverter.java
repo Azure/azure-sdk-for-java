@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.CharFilterName;
 import com.azure.search.documents.models.CustomAnalyzer;
 import com.azure.search.documents.models.LexicalTokenizerName;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
  * {@link CustomAnalyzer}.
  */
 public final class CustomAnalyzerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(CustomAnalyzerConverter.class);
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.CustomAnalyzer} to {@link CustomAnalyzer}.
@@ -28,30 +26,31 @@ public final class CustomAnalyzerConverter {
         }
         CustomAnalyzer customAnalyzer = new CustomAnalyzer();
 
-        String _name = obj.getName();
-        customAnalyzer.setName(_name);
+        String name = obj.getName();
+        customAnalyzer.setName(name);
 
         if (obj.getCharFilters() != null) {
-            List<CharFilterName> _charFilters =
+            List<CharFilterName> charFilters =
                 obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setCharFilters(_charFilters);
+            customAnalyzer.setCharFilters(charFilters);
         }
 
         if (obj.getTokenFilters() != null) {
-            List<TokenFilterName> _tokenFilters =
+            List<TokenFilterName> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setTokenFilters(_tokenFilters);
+            customAnalyzer.setTokenFilters(tokenFilters);
         }
 
         if (obj.getTokenizer() != null) {
-            LexicalTokenizerName _tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
-            customAnalyzer.setTokenizer(_tokenizer);
+            LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
+            customAnalyzer.setTokenizer(tokenizer);
         }
         return customAnalyzer;
     }
 
     /**
-     * Maps from {@link CustomAnalyzer} to {@link com.azure.search.documents.implementation.models.CustomAnalyzer}.
+     * Maps from {@link CustomAnalyzer} to
+     * {@link com.azure.search.documents.implementation.models.CustomAnalyzer}.
      */
     public static com.azure.search.documents.implementation.models.CustomAnalyzer map(CustomAnalyzer obj) {
         if (obj == null) {
@@ -60,26 +59,29 @@ public final class CustomAnalyzerConverter {
         com.azure.search.documents.implementation.models.CustomAnalyzer customAnalyzer =
             new com.azure.search.documents.implementation.models.CustomAnalyzer();
 
-        String _name = obj.getName();
-        customAnalyzer.setName(_name);
+        String name = obj.getName();
+        customAnalyzer.setName(name);
 
         if (obj.getCharFilters() != null) {
-            List<com.azure.search.documents.implementation.models.CharFilterName> _charFilters =
+            List<com.azure.search.documents.implementation.models.CharFilterName> charFilters =
                 obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setCharFilters(_charFilters);
+            customAnalyzer.setCharFilters(charFilters);
         }
 
         if (obj.getTokenFilters() != null) {
-            List<com.azure.search.documents.implementation.models.TokenFilterName> _tokenFilters =
+            List<com.azure.search.documents.implementation.models.TokenFilterName> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setTokenFilters(_tokenFilters);
+            customAnalyzer.setTokenFilters(tokenFilters);
         }
 
         if (obj.getTokenizer() != null) {
-            com.azure.search.documents.implementation.models.LexicalTokenizerName _tokenizer =
+            com.azure.search.documents.implementation.models.LexicalTokenizerName tokenizer =
                 LexicalTokenizerNameConverter.map(obj.getTokenizer());
-            customAnalyzer.setTokenizer(_tokenizer);
+            customAnalyzer.setTokenizer(tokenizer);
         }
         return customAnalyzer;
+    }
+
+    private CustomAnalyzerConverter() {
     }
 }

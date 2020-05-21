@@ -12,7 +12,7 @@ import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy
  * {@link SoftDeleteColumnDeletionDetectionPolicy}.
  */
 public final class SoftDeleteColumnDeletionDetectionPolicyConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SoftDeleteColumnDeletionDetectionPolicyConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy} to
@@ -25,11 +25,11 @@ public final class SoftDeleteColumnDeletionDetectionPolicyConverter {
         SoftDeleteColumnDeletionDetectionPolicy softDeleteColumnDeletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy();
 
-        String _softDeleteColumnName = obj.getSoftDeleteColumnName();
-        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteColumnName(_softDeleteColumnName);
+        String softDeleteColumnName = obj.getSoftDeleteColumnName();
+        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteColumnName(softDeleteColumnName);
 
-        String _softDeleteMarkerValue = obj.getSoftDeleteMarkerValue();
-        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteMarkerValue(_softDeleteMarkerValue);
+        String softDeleteMarkerValue = obj.getSoftDeleteMarkerValue();
+        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteMarkerValue(softDeleteMarkerValue);
         return softDeleteColumnDeletionDetectionPolicy;
     }
 
@@ -43,11 +43,14 @@ public final class SoftDeleteColumnDeletionDetectionPolicyConverter {
         }
         com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy softDeleteColumnDeletionDetectionPolicy = new com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy();
 
-        String _softDeleteColumnName = obj.getSoftDeleteColumnName();
-        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteColumnName(_softDeleteColumnName);
+        String softDeleteColumnName = obj.getSoftDeleteColumnName();
+        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteColumnName(softDeleteColumnName);
 
-        String _softDeleteMarkerValue = obj.getSoftDeleteMarkerValue();
-        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteMarkerValue(_softDeleteMarkerValue);
+        String softDeleteMarkerValue = obj.getSoftDeleteMarkerValue();
+        softDeleteColumnDeletionDetectionPolicy.setSoftDeleteMarkerValue(softDeleteMarkerValue);
         return softDeleteColumnDeletionDetectionPolicy;
+    }
+
+    private SoftDeleteColumnDeletionDetectionPolicyConverter() {
     }
 }

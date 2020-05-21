@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -16,10 +13,10 @@ public final class StopwordsListConverter {
     private static final ClientLogger LOGGER = new ClientLogger(StopwordsListConverter.class);
 
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.StopwordsList} to enum
-     * {@link StopwordsList}.
+     * Maps from enum {@link com.azure.search.documents.implementation.models.StopwordsList} to enum {@link StopwordsList}.
      */
-    public static StopwordsList map(com.azure.search.documents.implementation.models.StopwordsList obj) {
+    public static StopwordsList map(
+        com.azure.search.documents.implementation.models.StopwordsList obj) {
         if (obj == null) {
             return null;
         }
@@ -92,10 +89,10 @@ public final class StopwordsListConverter {
     }
 
     /**
-     * Maps from enum {@link StopwordsList} to enum
-     * {@link com.azure.search.documents.implementation.models.StopwordsList}.
+     * Maps from enum {@link StopwordsList} to enum {@link com.azure.search.documents.implementation.models.StopwordsList}.
      */
-    public static com.azure.search.documents.implementation.models.StopwordsList map(StopwordsList obj) {
+    public static com.azure.search.documents.implementation.models.StopwordsList map(
+        StopwordsList obj) {
         if (obj == null) {
             return null;
         }

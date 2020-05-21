@@ -12,7 +12,7 @@ import com.azure.search.documents.models.PhoneticTokenFilter;
  * {@link PhoneticTokenFilter}.
  */
 public final class PhoneticTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(PhoneticTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PhoneticTokenFilter} to
@@ -24,15 +24,15 @@ public final class PhoneticTokenFilterConverter {
         }
         PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter();
 
-        String _name = obj.getName();
-        phoneticTokenFilter.setName(_name);
+        String name = obj.getName();
+        phoneticTokenFilter.setName(name);
 
-        Boolean _replaceOriginalTokens = obj.isReplaceOriginalTokens();
-        phoneticTokenFilter.setReplaceOriginalTokens(_replaceOriginalTokens);
+        Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
+        phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
-            PhoneticEncoder _encoder = PhoneticEncoderConverter.map(obj.getEncoder());
-            phoneticTokenFilter.setEncoder(_encoder);
+            PhoneticEncoder encoder = PhoneticEncoderConverter.map(obj.getEncoder());
+            phoneticTokenFilter.setEncoder(encoder);
         }
         return phoneticTokenFilter;
     }
@@ -48,17 +48,20 @@ public final class PhoneticTokenFilterConverter {
         com.azure.search.documents.implementation.models.PhoneticTokenFilter phoneticTokenFilter =
             new com.azure.search.documents.implementation.models.PhoneticTokenFilter();
 
-        String _name = obj.getName();
-        phoneticTokenFilter.setName(_name);
+        String name = obj.getName();
+        phoneticTokenFilter.setName(name);
 
-        Boolean _replaceOriginalTokens = obj.isReplaceOriginalTokens();
-        phoneticTokenFilter.setReplaceOriginalTokens(_replaceOriginalTokens);
+        Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
+        phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
-            com.azure.search.documents.implementation.models.PhoneticEncoder _encoder =
+            com.azure.search.documents.implementation.models.PhoneticEncoder encoder =
                 PhoneticEncoderConverter.map(obj.getEncoder());
-            phoneticTokenFilter.setEncoder(_encoder);
+            phoneticTokenFilter.setEncoder(encoder);
         }
         return phoneticTokenFilter;
+    }
+
+    private PhoneticTokenFilterConverter() {
     }
 }

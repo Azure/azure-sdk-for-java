@@ -223,4 +223,7 @@ public final class MicrosoftStemmingTokenizerLanguageConverter {
                 throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ENUM_INTERNAL_ERROR_MSG, obj)));
         }
     }
+
+    private MicrosoftStemmingTokenizerLanguageConverter() {
+    }
 }

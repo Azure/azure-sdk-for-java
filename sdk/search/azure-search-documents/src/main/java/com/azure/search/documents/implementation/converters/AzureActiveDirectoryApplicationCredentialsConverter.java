@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.AzureActiveDirectoryApplicationCredentials;
 
 /**
@@ -12,9 +11,6 @@ import com.azure.search.documents.models.AzureActiveDirectoryApplicationCredenti
  * {@link AzureActiveDirectoryApplicationCredentials}.
  */
 public final class AzureActiveDirectoryApplicationCredentialsConverter {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(AzureActiveDirectoryApplicationCredentialsConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials} to
      * {@link AzureActiveDirectoryApplicationCredentials}.
@@ -26,11 +22,11 @@ public final class AzureActiveDirectoryApplicationCredentialsConverter {
         AzureActiveDirectoryApplicationCredentials azureActiveDirectoryApplicationCredentials =
             new AzureActiveDirectoryApplicationCredentials();
 
-        String _applicationId = obj.getApplicationId();
-        azureActiveDirectoryApplicationCredentials.setApplicationId(_applicationId);
+        String applicationId = obj.getApplicationId();
+        azureActiveDirectoryApplicationCredentials.setApplicationId(applicationId);
 
-        String _applicationSecret = obj.getApplicationSecret();
-        azureActiveDirectoryApplicationCredentials.setApplicationSecret(_applicationSecret);
+        String applicationSecret = obj.getApplicationSecret();
+        azureActiveDirectoryApplicationCredentials.setApplicationSecret(applicationSecret);
         return azureActiveDirectoryApplicationCredentials;
     }
 
@@ -44,11 +40,14 @@ public final class AzureActiveDirectoryApplicationCredentialsConverter {
         }
         com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials azureActiveDirectoryApplicationCredentials = new com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials();
 
-        String _applicationId = obj.getApplicationId();
-        azureActiveDirectoryApplicationCredentials.setApplicationId(_applicationId);
+        String applicationId = obj.getApplicationId();
+        azureActiveDirectoryApplicationCredentials.setApplicationId(applicationId);
 
-        String _applicationSecret = obj.getApplicationSecret();
-        azureActiveDirectoryApplicationCredentials.setApplicationSecret(_applicationSecret);
+        String applicationSecret = obj.getApplicationSecret();
+        azureActiveDirectoryApplicationCredentials.setApplicationSecret(applicationSecret);
         return azureActiveDirectoryApplicationCredentials;
+    }
+
+    private AzureActiveDirectoryApplicationCredentialsConverter() {
     }
 }

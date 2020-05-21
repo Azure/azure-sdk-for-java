@@ -12,7 +12,7 @@ import com.azure.search.documents.models.SearchResourceEncryptionKey;
  * {@link SearchResourceEncryptionKey}.
  */
 public final class SearchResourceEncryptionKeyConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchResourceEncryptionKeyConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchResourceEncryptionKey} to
@@ -24,20 +24,20 @@ public final class SearchResourceEncryptionKeyConverter {
         }
         SearchResourceEncryptionKey searchResourceEncryptionKey = new SearchResourceEncryptionKey();
 
-        String _keyVersion = obj.getKeyVersion();
-        searchResourceEncryptionKey.setKeyVersion(_keyVersion);
+        String keyVersion = obj.getKeyVersion();
+        searchResourceEncryptionKey.setKeyVersion(keyVersion);
 
         if (obj.getAccessCredentials() != null) {
-            AzureActiveDirectoryApplicationCredentials _accessCredentials =
+            AzureActiveDirectoryApplicationCredentials accessCredentials =
                 AzureActiveDirectoryApplicationCredentialsConverter.map(obj.getAccessCredentials());
-            searchResourceEncryptionKey.setAccessCredentials(_accessCredentials);
+            searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
         }
 
-        String _keyName = obj.getKeyName();
-        searchResourceEncryptionKey.setKeyName(_keyName);
+        String keyName = obj.getKeyName();
+        searchResourceEncryptionKey.setKeyName(keyName);
 
-        String _vaultUri = obj.getVaultUri();
-        searchResourceEncryptionKey.setVaultUri(_vaultUri);
+        String vaultUri = obj.getVaultUri();
+        searchResourceEncryptionKey.setVaultUri(vaultUri);
         return searchResourceEncryptionKey;
     }
 
@@ -52,19 +52,22 @@ public final class SearchResourceEncryptionKeyConverter {
         com.azure.search.documents.implementation.models.SearchResourceEncryptionKey searchResourceEncryptionKey =
             new com.azure.search.documents.implementation.models.SearchResourceEncryptionKey();
 
-        String _keyVersion = obj.getKeyVersion();
-        searchResourceEncryptionKey.setKeyVersion(_keyVersion);
+        String keyVersion = obj.getKeyVersion();
+        searchResourceEncryptionKey.setKeyVersion(keyVersion);
 
         if (obj.getAccessCredentials() != null) {
-            com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials _accessCredentials = AzureActiveDirectoryApplicationCredentialsConverter.map(obj.getAccessCredentials());
-            searchResourceEncryptionKey.setAccessCredentials(_accessCredentials);
+            com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials accessCredentials = AzureActiveDirectoryApplicationCredentialsConverter.map(obj.getAccessCredentials());
+            searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
         }
 
-        String _keyName = obj.getKeyName();
-        searchResourceEncryptionKey.setKeyName(_keyName);
+        String keyName = obj.getKeyName();
+        searchResourceEncryptionKey.setKeyName(keyName);
 
-        String _vaultUri = obj.getVaultUri();
-        searchResourceEncryptionKey.setVaultUri(_vaultUri);
+        String vaultUri = obj.getVaultUri();
+        searchResourceEncryptionKey.setVaultUri(vaultUri);
         return searchResourceEncryptionKey;
+    }
+
+    private SearchResourceEncryptionKeyConverter() {
     }
 }

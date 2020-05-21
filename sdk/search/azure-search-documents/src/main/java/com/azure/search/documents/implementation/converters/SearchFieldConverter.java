@@ -28,57 +28,57 @@ public final class SearchFieldConverter {
         }
         SearchField searchField = new SearchField();
 
-        Boolean _filterable = obj.isFilterable();
-        searchField.setFilterable(_filterable);
+        Boolean filterable = obj.isFilterable();
+        searchField.setFilterable(filterable);
 
-        Boolean _hidden = obj.isRetrievable() == null ? null : !obj.isRetrievable();
-        searchField.setHidden(_hidden);
+        Boolean hidden = obj.isRetrievable() == null ? null : !obj.isRetrievable();
+        searchField.setHidden(hidden);
 
-        Boolean _sortable = obj.isSortable();
-        searchField.setSortable(_sortable);
+        Boolean sortable = obj.isSortable();
+        searchField.setSortable(sortable);
 
         if (obj.getType() != null) {
-            SearchFieldDataType _type = SearchFieldDataTypeConverter.map(obj.getType());
-            searchField.setType(_type);
+            SearchFieldDataType type = SearchFieldDataTypeConverter.map(obj.getType());
+            searchField.setType(type);
         }
 
-        Boolean _searchable = obj.isSearchable();
-        searchField.setSearchable(_searchable);
+        Boolean searchable = obj.isSearchable();
+        searchField.setSearchable(searchable);
 
         if (obj.getAnalyzer() != null) {
-            LexicalAnalyzerName _analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
-            searchField.setAnalyzer(_analyzer);
+            LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
+            searchField.setAnalyzer(analyzer);
         }
 
         if (obj.getSearchAnalyzer() != null) {
-            LexicalAnalyzerName _searchAnalyzer = LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzer());
-            searchField.setSearchAnalyzer(_searchAnalyzer);
+            LexicalAnalyzerName searchAnalyzer = LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzer());
+            searchField.setSearchAnalyzer(searchAnalyzer);
         }
 
-        String _name = obj.getName();
-        searchField.setName(_name);
+        String name = obj.getName();
+        searchField.setName(name);
 
         if (obj.getIndexAnalyzer() != null) {
-            LexicalAnalyzerName _indexAnalyzer = LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzer());
-            searchField.setIndexAnalyzer(_indexAnalyzer);
+            LexicalAnalyzerName indexAnalyzer = LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzer());
+            searchField.setIndexAnalyzer(indexAnalyzer);
         }
 
-        Boolean _facetable = obj.isFacetable();
-        searchField.setFacetable(_facetable);
+        Boolean facetable = obj.isFacetable();
+        searchField.setFacetable(facetable);
 
         if (obj.getSynonymMaps() != null) {
-            List<String> _synonymMaps = new ArrayList<>(obj.getSynonymMaps());
-            searchField.setSynonymMaps(_synonymMaps);
+            List<String> synonymMaps = new ArrayList<>(obj.getSynonymMaps());
+            searchField.setSynonymMaps(synonymMaps);
         }
 
         if (obj.getFields() != null) {
-            List<SearchField> _fields =
+            List<SearchField> fields =
                 obj.getFields().stream().map(com.azure.search.documents.implementation.converters.SearchFieldConverter::map).collect(Collectors.toList());
-            searchField.setFields(_fields);
+            searchField.setFields(fields);
         }
 
-        Boolean _key = obj.isKey();
-        searchField.setKey(_key);
+        Boolean key = obj.isKey();
+        searchField.setKey(key);
         return searchField;
     }
 
@@ -92,61 +92,64 @@ public final class SearchFieldConverter {
         com.azure.search.documents.implementation.models.SearchField searchField =
             new com.azure.search.documents.implementation.models.SearchField();
 
-        Boolean _filterable = obj.isFilterable();
-        searchField.setFilterable(_filterable);
+        Boolean filterable = obj.isFilterable();
+        searchField.setFilterable(filterable);
 
-        Boolean _hidden = obj.isHidden() == null ? null : !obj.isHidden();
-        searchField.setRetrievable(_hidden);
+        Boolean hidden = obj.isHidden() == null ? null : !obj.isHidden();
+        searchField.setRetrievable(hidden);
 
-        Boolean _sortable = obj.isSortable();
-        searchField.setSortable(_sortable);
+        Boolean sortable = obj.isSortable();
+        searchField.setSortable(sortable);
 
         if (obj.getType() != null) {
-            com.azure.search.documents.implementation.models.SearchFieldDataType _type =
+            com.azure.search.documents.implementation.models.SearchFieldDataType type =
                 SearchFieldDataTypeConverter.map(obj.getType());
-            searchField.setType(_type);
+            searchField.setType(type);
         }
 
-        Boolean _searchable = obj.isSearchable();
-        searchField.setSearchable(_searchable);
+        Boolean searchable = obj.isSearchable();
+        searchField.setSearchable(searchable);
 
         if (obj.getAnalyzer() != null) {
-            com.azure.search.documents.implementation.models.LexicalAnalyzerName _analyzer =
+            com.azure.search.documents.implementation.models.LexicalAnalyzerName analyzer =
                 LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
-            searchField.setAnalyzer(_analyzer);
+            searchField.setAnalyzer(analyzer);
         }
 
         if (obj.getSearchAnalyzer() != null) {
-            com.azure.search.documents.implementation.models.LexicalAnalyzerName _searchAnalyzer =
+            com.azure.search.documents.implementation.models.LexicalAnalyzerName searchAnalyzer =
                 LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzer());
-            searchField.setSearchAnalyzer(_searchAnalyzer);
+            searchField.setSearchAnalyzer(searchAnalyzer);
         }
 
-        String _name = obj.getName();
-        searchField.setName(_name);
+        String name = obj.getName();
+        searchField.setName(name);
 
         if (obj.getIndexAnalyzer() != null) {
-            com.azure.search.documents.implementation.models.LexicalAnalyzerName _indexAnalyzer =
+            com.azure.search.documents.implementation.models.LexicalAnalyzerName indexAnalyzer =
                 LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzer());
-            searchField.setIndexAnalyzer(_indexAnalyzer);
+            searchField.setIndexAnalyzer(indexAnalyzer);
         }
 
-        Boolean _facetable = obj.isFacetable();
-        searchField.setFacetable(_facetable);
+        Boolean facetable = obj.isFacetable();
+        searchField.setFacetable(facetable);
 
         if (obj.getSynonymMaps() != null) {
-            List<String> _synonymMaps = new ArrayList<>(obj.getSynonymMaps());
-            searchField.setSynonymMaps(_synonymMaps);
+            List<String> synonymMaps = new ArrayList<>(obj.getSynonymMaps());
+            searchField.setSynonymMaps(synonymMaps);
         }
 
         if (obj.getFields() != null) {
-            List<com.azure.search.documents.implementation.models.SearchField> _fields =
+            List<com.azure.search.documents.implementation.models.SearchField> fields =
                 obj.getFields().stream().map(com.azure.search.documents.implementation.converters.SearchFieldConverter::map).collect(Collectors.toList());
-            searchField.setFields(_fields);
+            searchField.setFields(fields);
         }
 
-        Boolean _key = obj.isKey();
-        searchField.setKey(_key);
+        Boolean key = obj.isKey();
+        searchField.setKey(key);
         return searchField;
+    }
+
+    private SearchFieldConverter() {
     }
 }

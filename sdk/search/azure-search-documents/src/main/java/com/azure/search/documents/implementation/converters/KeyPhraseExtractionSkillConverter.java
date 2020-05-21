@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * {@link KeyPhraseExtractionSkill}.
  */
 public final class KeyPhraseExtractionSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(KeyPhraseExtractionSkillConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill} to
@@ -30,33 +30,33 @@ public final class KeyPhraseExtractionSkillConverter {
         KeyPhraseExtractionSkill keyPhraseExtractionSkill = new KeyPhraseExtractionSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            keyPhraseExtractionSkill.setOutputs(_outputs);
+            keyPhraseExtractionSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            keyPhraseExtractionSkill.setInputs(_inputs);
+            keyPhraseExtractionSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        keyPhraseExtractionSkill.setName(_name);
+        String name = obj.getName();
+        keyPhraseExtractionSkill.setName(name);
 
-        String _context = obj.getContext();
-        keyPhraseExtractionSkill.setContext(_context);
+        String context = obj.getContext();
+        keyPhraseExtractionSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        keyPhraseExtractionSkill.setDescription(_description);
+        String description = obj.getDescription();
+        keyPhraseExtractionSkill.setDescription(description);
 
-        Integer _maxKeyPhraseCount = obj.getMaxKeyPhraseCount();
-        keyPhraseExtractionSkill.setMaxKeyPhraseCount(_maxKeyPhraseCount);
+        Integer maxKeyPhraseCount = obj.getMaxKeyPhraseCount();
+        keyPhraseExtractionSkill.setMaxKeyPhraseCount(maxKeyPhraseCount);
 
         if (obj.getDefaultLanguageCode() != null) {
-            KeyPhraseExtractionSkillLanguage _defaultLanguageCode =
+            KeyPhraseExtractionSkillLanguage defaultLanguageCode =
                 KeyPhraseExtractionSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            keyPhraseExtractionSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            keyPhraseExtractionSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
         return keyPhraseExtractionSkill;
     }
@@ -73,34 +73,37 @@ public final class KeyPhraseExtractionSkillConverter {
             new com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            keyPhraseExtractionSkill.setOutputs(_outputs);
+            keyPhraseExtractionSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            keyPhraseExtractionSkill.setInputs(_inputs);
+            keyPhraseExtractionSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        keyPhraseExtractionSkill.setName(_name);
+        String name = obj.getName();
+        keyPhraseExtractionSkill.setName(name);
 
-        String _context = obj.getContext();
-        keyPhraseExtractionSkill.setContext(_context);
+        String context = obj.getContext();
+        keyPhraseExtractionSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        keyPhraseExtractionSkill.setDescription(_description);
+        String description = obj.getDescription();
+        keyPhraseExtractionSkill.setDescription(description);
 
-        Integer _maxKeyPhraseCount = obj.getMaxKeyPhraseCount();
-        keyPhraseExtractionSkill.setMaxKeyPhraseCount(_maxKeyPhraseCount);
+        Integer maxKeyPhraseCount = obj.getMaxKeyPhraseCount();
+        keyPhraseExtractionSkill.setMaxKeyPhraseCount(maxKeyPhraseCount);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage _defaultLanguageCode =
+            com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage defaultLanguageCode =
                 KeyPhraseExtractionSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            keyPhraseExtractionSkill.setDefaultLanguageCode(_defaultLanguageCode);
+            keyPhraseExtractionSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
         return keyPhraseExtractionSkill;
+    }
+
+    private KeyPhraseExtractionSkillConverter() {
     }
 }

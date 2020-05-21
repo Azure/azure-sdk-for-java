@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SearchIndex} and {@link SearchIndex}.
  */
 public final class SearchIndexConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndex} to {@link SearchIndex}.
@@ -35,70 +35,70 @@ public final class SearchIndexConverter {
         SearchIndex searchIndex = new SearchIndex();
 
         if (obj.getTokenizers() != null) {
-            List<LexicalTokenizer> _tokenizers =
+            List<LexicalTokenizer> tokenizers =
                 obj.getTokenizers().stream().map(LexicalTokenizerConverter::map).collect(Collectors.toList());
-            searchIndex.setTokenizers(_tokenizers);
+            searchIndex.setTokenizers(tokenizers);
         }
 
         if (obj.getSuggesters() != null) {
-            List<Suggester> _suggesters =
+            List<Suggester> suggesters =
                 obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
-            searchIndex.setSuggesters(_suggesters);
+            searchIndex.setSuggesters(suggesters);
         }
 
         if (obj.getCharFilters() != null) {
-            List<CharFilter> _charFilters =
+            List<CharFilter> charFilters =
                 obj.getCharFilters().stream().map(CharFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setCharFilters(_charFilters);
+            searchIndex.setCharFilters(charFilters);
         }
 
         if (obj.getTokenFilters() != null) {
-            List<TokenFilter> _tokenFilters =
+            List<TokenFilter> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setTokenFilters(_tokenFilters);
+            searchIndex.setTokenFilters(tokenFilters);
         }
 
         if (obj.getEncryptionKey() != null) {
-            SearchResourceEncryptionKey _encryptionKey =
+            SearchResourceEncryptionKey encryptionKey =
                 SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey());
-            searchIndex.setEncryptionKey(_encryptionKey);
+            searchIndex.setEncryptionKey(encryptionKey);
         }
 
-        String _defaultScoringProfile = obj.getDefaultScoringProfile();
-        searchIndex.setDefaultScoringProfile(_defaultScoringProfile);
+        String defaultScoringProfile = obj.getDefaultScoringProfile();
+        searchIndex.setDefaultScoringProfile(defaultScoringProfile);
 
         if (obj.getAnalyzers() != null) {
-            List<LexicalAnalyzer> _analyzers =
+            List<LexicalAnalyzer> analyzers =
                 obj.getAnalyzers().stream().map(LexicalAnalyzerConverter::map).collect(Collectors.toList());
-            searchIndex.setAnalyzers(_analyzers);
+            searchIndex.setAnalyzers(analyzers);
         }
 
         if (obj.getSimilarity() != null) {
-            Similarity _similarity = SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarity(_similarity);
+            Similarity similarity = SimilarityConverter.map(obj.getSimilarity());
+            searchIndex.setSimilarity(similarity);
         }
 
-        String _name = obj.getName();
-        searchIndex.setName(_name);
+        String name = obj.getName();
+        searchIndex.setName(name);
 
         if (obj.getCorsOptions() != null) {
-            CorsOptions _corsOptions = CorsOptionsConverter.map(obj.getCorsOptions());
-            searchIndex.setCorsOptions(_corsOptions);
+            CorsOptions corsOptions = CorsOptionsConverter.map(obj.getCorsOptions());
+            searchIndex.setCorsOptions(corsOptions);
         }
 
-        String _eTag = obj.getETag();
-        searchIndex.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndex.setETag(eTag);
 
         if (obj.getScoringProfiles() != null) {
-            List<ScoringProfile> _scoringProfiles =
+            List<ScoringProfile> scoringProfiles =
                 obj.getScoringProfiles().stream().map(ScoringProfileConverter::map).collect(Collectors.toList());
-            searchIndex.setScoringProfiles(_scoringProfiles);
+            searchIndex.setScoringProfiles(scoringProfiles);
         }
 
         if (obj.getFields() != null) {
-            List<SearchField> _fields =
+            List<SearchField> fields =
                 obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
-            searchIndex.setFields(_fields);
+            searchIndex.setFields(fields);
         }
         return searchIndex;
     }
@@ -114,73 +114,76 @@ public final class SearchIndexConverter {
             new com.azure.search.documents.implementation.models.SearchIndex();
 
         if (obj.getTokenizers() != null) {
-            List<com.azure.search.documents.implementation.models.LexicalTokenizer> _tokenizers =
+            List<com.azure.search.documents.implementation.models.LexicalTokenizer> tokenizers =
                 obj.getTokenizers().stream().map(LexicalTokenizerConverter::map).collect(Collectors.toList());
-            searchIndex.setTokenizers(_tokenizers);
+            searchIndex.setTokenizers(tokenizers);
         }
 
         if (obj.getSuggesters() != null) {
-            List<com.azure.search.documents.implementation.models.Suggester> _suggesters =
+            List<com.azure.search.documents.implementation.models.Suggester> suggesters =
                 obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
-            searchIndex.setSuggesters(_suggesters);
+            searchIndex.setSuggesters(suggesters);
         }
 
         if (obj.getCharFilters() != null) {
-            List<com.azure.search.documents.implementation.models.CharFilter> _charFilters =
+            List<com.azure.search.documents.implementation.models.CharFilter> charFilters =
                 obj.getCharFilters().stream().map(CharFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setCharFilters(_charFilters);
+            searchIndex.setCharFilters(charFilters);
         }
 
         if (obj.getTokenFilters() != null) {
-            List<com.azure.search.documents.implementation.models.TokenFilter> _tokenFilters =
+            List<com.azure.search.documents.implementation.models.TokenFilter> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setTokenFilters(_tokenFilters);
+            searchIndex.setTokenFilters(tokenFilters);
         }
 
         if (obj.getEncryptionKey() != null) {
-            com.azure.search.documents.implementation.models.SearchResourceEncryptionKey _encryptionKey =
+            com.azure.search.documents.implementation.models.SearchResourceEncryptionKey encryptionKey =
                 SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey());
-            searchIndex.setEncryptionKey(_encryptionKey);
+            searchIndex.setEncryptionKey(encryptionKey);
         }
 
-        String _defaultScoringProfile = obj.getDefaultScoringProfile();
-        searchIndex.setDefaultScoringProfile(_defaultScoringProfile);
+        String defaultScoringProfile = obj.getDefaultScoringProfile();
+        searchIndex.setDefaultScoringProfile(defaultScoringProfile);
 
         if (obj.getAnalyzers() != null) {
-            List<com.azure.search.documents.implementation.models.LexicalAnalyzer> _analyzers =
+            List<com.azure.search.documents.implementation.models.LexicalAnalyzer> analyzers =
                 obj.getAnalyzers().stream().map(LexicalAnalyzerConverter::map).collect(Collectors.toList());
-            searchIndex.setAnalyzers(_analyzers);
+            searchIndex.setAnalyzers(analyzers);
         }
 
         if (obj.getSimilarity() != null) {
-            com.azure.search.documents.implementation.models.Similarity _similarity =
+            com.azure.search.documents.implementation.models.Similarity similarity =
                 SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarity(_similarity);
+            searchIndex.setSimilarity(similarity);
         }
 
-        String _name = obj.getName();
-        searchIndex.setName(_name);
+        String name = obj.getName();
+        searchIndex.setName(name);
 
         if (obj.getCorsOptions() != null) {
-            com.azure.search.documents.implementation.models.CorsOptions _corsOptions =
+            com.azure.search.documents.implementation.models.CorsOptions corsOptions =
                 CorsOptionsConverter.map(obj.getCorsOptions());
-            searchIndex.setCorsOptions(_corsOptions);
+            searchIndex.setCorsOptions(corsOptions);
         }
 
-        String _eTag = obj.getETag();
-        searchIndex.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndex.setETag(eTag);
 
         if (obj.getScoringProfiles() != null) {
-            List<com.azure.search.documents.implementation.models.ScoringProfile> _scoringProfiles =
+            List<com.azure.search.documents.implementation.models.ScoringProfile> scoringProfiles =
                 obj.getScoringProfiles().stream().map(ScoringProfileConverter::map).collect(Collectors.toList());
-            searchIndex.setScoringProfiles(_scoringProfiles);
+            searchIndex.setScoringProfiles(scoringProfiles);
         }
 
         if (obj.getFields() != null) {
-            List<com.azure.search.documents.implementation.models.SearchField> _fields =
+            List<com.azure.search.documents.implementation.models.SearchField> fields =
                 obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
-            searchIndex.setFields(_fields);
+            searchIndex.setFields(fields);
         }
         return searchIndex;
+    }
+
+    private SearchIndexConverter() {
     }
 }

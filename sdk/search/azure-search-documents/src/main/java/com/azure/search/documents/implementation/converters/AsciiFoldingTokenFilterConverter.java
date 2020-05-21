@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.AsciiFoldingTokenFilter;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.AsciiFoldingTokenFilter;
  * {@link AsciiFoldingTokenFilter}.
  */
 public final class AsciiFoldingTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(AsciiFoldingTokenFilterConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter} to
      * {@link AsciiFoldingTokenFilter}.
@@ -23,11 +20,11 @@ public final class AsciiFoldingTokenFilterConverter {
         }
         AsciiFoldingTokenFilter asciiFoldingTokenFilter = new AsciiFoldingTokenFilter();
 
-        String _name = obj.getName();
-        asciiFoldingTokenFilter.setName(_name);
+        String name = obj.getName();
+        asciiFoldingTokenFilter.setName(name);
 
-        Boolean _preserveOriginal = obj.isPreserveOriginal();
-        asciiFoldingTokenFilter.setPreserveOriginal(_preserveOriginal);
+        Boolean preserveOriginal = obj.isPreserveOriginal();
+        asciiFoldingTokenFilter.setPreserveOriginal(preserveOriginal);
         return asciiFoldingTokenFilter;
     }
 
@@ -42,11 +39,14 @@ public final class AsciiFoldingTokenFilterConverter {
         com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter asciiFoldingTokenFilter =
             new com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter();
 
-        String _name = obj.getName();
-        asciiFoldingTokenFilter.setName(_name);
+        String name = obj.getName();
+        asciiFoldingTokenFilter.setName(name);
 
-        Boolean _preserveOriginal = obj.isPreserveOriginal();
-        asciiFoldingTokenFilter.setPreserveOriginal(_preserveOriginal);
+        Boolean preserveOriginal = obj.isPreserveOriginal();
+        asciiFoldingTokenFilter.setPreserveOriginal(preserveOriginal);
         return asciiFoldingTokenFilter;
+    }
+
+    private AsciiFoldingTokenFilterConverter() {
     }
 }

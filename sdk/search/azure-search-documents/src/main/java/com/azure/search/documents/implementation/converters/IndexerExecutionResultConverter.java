@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexerExecutionResult;
 import com.azure.search.documents.models.IndexerExecutionStatus;
@@ -19,8 +18,6 @@ import java.util.stream.Collectors;
  * {@link IndexerExecutionResult}.
  */
 public final class IndexerExecutionResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexerExecutionResultConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexerExecutionResult} to
      * {@link IndexerExecutionResult}.
@@ -31,43 +28,43 @@ public final class IndexerExecutionResultConverter {
         }
         IndexerExecutionResult indexerExecutionResult = new IndexerExecutionResult();
 
-        String _finalTrackingState = obj.getFinalTrackingState();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "finalTrackingState", _finalTrackingState);
+        String finalTrackingState = obj.getFinalTrackingState();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "finalTrackingState", finalTrackingState);
 
-        String _initialTrackingState = obj.getInitialTrackingState();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "initialTrackingState", _initialTrackingState);
+        String initialTrackingState = obj.getInitialTrackingState();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "initialTrackingState", initialTrackingState);
 
         if (obj.getWarnings() != null) {
-            List<SearchIndexerWarning> _warnings =
+            List<SearchIndexerWarning> warnings =
                 obj.getWarnings().stream().map(SearchIndexerWarningConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "warnings", _warnings);
+            PrivateFieldAccessHelper.set(indexerExecutionResult, "warnings", warnings);
         }
 
-        String _errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "errorMessage", _errorMessage);
+        String errorMessage = obj.getErrorMessage();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "errorMessage", errorMessage);
 
-        OffsetDateTime _startTime = obj.getStartTime();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "startTime", _startTime);
+        OffsetDateTime startTime = obj.getStartTime();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "startTime", startTime);
 
-        int _failedItemCount = obj.getFailedItemCount();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "failedItemCount", _failedItemCount);
+        int failedItemCount = obj.getFailedItemCount();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "failedItemCount", failedItemCount);
 
-        OffsetDateTime _endTime = obj.getEndTime();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "endTime", _endTime);
+        OffsetDateTime endTime = obj.getEndTime();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "endTime", endTime);
 
         if (obj.getErrors() != null) {
-            List<SearchIndexerError> _errors =
+            List<SearchIndexerError> errors =
                 obj.getErrors().stream().map(SearchIndexerErrorConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "errors", _errors);
+            PrivateFieldAccessHelper.set(indexerExecutionResult, "errors", errors);
         }
 
         if (obj.getStatus() != null) {
-            IndexerExecutionStatus _status = IndexerExecutionStatusConverter.map(obj.getStatus());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "status", _status);
+            IndexerExecutionStatus status = IndexerExecutionStatusConverter.map(obj.getStatus());
+            PrivateFieldAccessHelper.set(indexerExecutionResult, "status", status);
         }
 
-        int _itemCount = obj.getItemCount();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "itemCount", _itemCount);
+        int itemCount = obj.getItemCount();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "itemCount", itemCount);
         return indexerExecutionResult;
     }
 
@@ -82,44 +79,47 @@ public final class IndexerExecutionResultConverter {
         com.azure.search.documents.implementation.models.IndexerExecutionResult indexerExecutionResult =
             new com.azure.search.documents.implementation.models.IndexerExecutionResult();
 
-        String _finalTrackingState = obj.getFinalTrackingState();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "finalTrackingState", _finalTrackingState);
+        String finalTrackingState = obj.getFinalTrackingState();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "finalTrackingState", finalTrackingState);
 
-        String _initialTrackingState = obj.getInitialTrackingState();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "initialTrackingState", _initialTrackingState);
+        String initialTrackingState = obj.getInitialTrackingState();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "initialTrackingState", initialTrackingState);
 
         if (obj.getWarnings() != null) {
-            List<com.azure.search.documents.implementation.models.SearchIndexerWarning> _warnings =
+            List<com.azure.search.documents.implementation.models.SearchIndexerWarning> warnings =
                 obj.getWarnings().stream().map(SearchIndexerWarningConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "warnings", _warnings);
+            PrivateFieldAccessHelper.set(indexerExecutionResult, "warnings", warnings);
         }
 
-        String _errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "errorMessage", _errorMessage);
+        String errorMessage = obj.getErrorMessage();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "errorMessage", errorMessage);
 
-        OffsetDateTime _startTime = obj.getStartTime();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "startTime", _startTime);
+        OffsetDateTime startTime = obj.getStartTime();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "startTime", startTime);
 
-        int _failedItemCount = obj.getFailedItemCount();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "failedItemCount", _failedItemCount);
+        int failedItemCount = obj.getFailedItemCount();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "failedItemCount", failedItemCount);
 
-        OffsetDateTime _endTime = obj.getEndTime();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "endTime", _endTime);
+        OffsetDateTime endTime = obj.getEndTime();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "endTime", endTime);
 
         if (obj.getErrors() != null) {
-            List<com.azure.search.documents.implementation.models.SearchIndexerError> _errors =
+            List<com.azure.search.documents.implementation.models.SearchIndexerError> errors =
                 obj.getErrors().stream().map(SearchIndexerErrorConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "errors", _errors);
+            PrivateFieldAccessHelper.set(indexerExecutionResult, "errors", errors);
         }
 
         if (obj.getStatus() != null) {
-            com.azure.search.documents.implementation.models.IndexerExecutionStatus _status =
+            com.azure.search.documents.implementation.models.IndexerExecutionStatus status =
                 IndexerExecutionStatusConverter.map(obj.getStatus());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "status", _status);
+            PrivateFieldAccessHelper.set(indexerExecutionResult, "status", status);
         }
 
-        int _itemCount = obj.getItemCount();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "itemCount", _itemCount);
+        int itemCount = obj.getItemCount();
+        PrivateFieldAccessHelper.set(indexerExecutionResult, "itemCount", itemCount);
         return indexerExecutionResult;
+    }
+
+    private IndexerExecutionResultConverter() {
     }
 }

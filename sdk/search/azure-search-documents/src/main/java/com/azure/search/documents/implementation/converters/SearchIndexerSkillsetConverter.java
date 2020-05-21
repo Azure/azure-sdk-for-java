@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * {@link SearchIndexerSkillset}.
  */
 public final class SearchIndexerSkillsetConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerSkillsetConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerSkillset} to
@@ -29,25 +29,25 @@ public final class SearchIndexerSkillsetConverter {
         SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset();
 
         if (obj.getSkills() != null) {
-            List<SearchIndexerSkill> _skills =
+            List<SearchIndexerSkill> skills =
                 obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
-            searchIndexerSkillset.setSkills(_skills);
+            searchIndexerSkillset.setSkills(skills);
         }
 
-        String _name = obj.getName();
-        searchIndexerSkillset.setName(_name);
+        String name = obj.getName();
+        searchIndexerSkillset.setName(name);
 
         if (obj.getCognitiveServicesAccount() != null) {
-            CognitiveServicesAccount _cognitiveServicesAccount =
+            CognitiveServicesAccount cognitiveServicesAccount =
                 CognitiveServicesAccountConverter.map(obj.getCognitiveServicesAccount());
-            searchIndexerSkillset.setCognitiveServicesAccount(_cognitiveServicesAccount);
+            searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
         }
 
-        String _description = obj.getDescription();
-        searchIndexerSkillset.setDescription(_description);
+        String description = obj.getDescription();
+        searchIndexerSkillset.setDescription(description);
 
-        String _eTag = obj.getETag();
-        searchIndexerSkillset.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndexerSkillset.setETag(eTag);
         return searchIndexerSkillset;
     }
 
@@ -63,25 +63,28 @@ public final class SearchIndexerSkillsetConverter {
             new com.azure.search.documents.implementation.models.SearchIndexerSkillset();
 
         if (obj.getSkills() != null) {
-            List<com.azure.search.documents.implementation.models.SearchIndexerSkill> _skills =
+            List<com.azure.search.documents.implementation.models.SearchIndexerSkill> skills =
                 obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
-            searchIndexerSkillset.setSkills(_skills);
+            searchIndexerSkillset.setSkills(skills);
         }
 
-        String _name = obj.getName();
-        searchIndexerSkillset.setName(_name);
+        String name = obj.getName();
+        searchIndexerSkillset.setName(name);
 
         if (obj.getCognitiveServicesAccount() != null) {
-            com.azure.search.documents.implementation.models.CognitiveServicesAccount _cognitiveServicesAccount =
+            com.azure.search.documents.implementation.models.CognitiveServicesAccount cognitiveServicesAccount =
                 CognitiveServicesAccountConverter.map(obj.getCognitiveServicesAccount());
-            searchIndexerSkillset.setCognitiveServicesAccount(_cognitiveServicesAccount);
+            searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
         }
 
-        String _description = obj.getDescription();
-        searchIndexerSkillset.setDescription(_description);
+        String description = obj.getDescription();
+        searchIndexerSkillset.setDescription(description);
 
-        String _eTag = obj.getETag();
-        searchIndexerSkillset.setETag(_eTag);
+        String eTag = obj.getETag();
+        searchIndexerSkillset.setETag(eTag);
         return searchIndexerSkillset;
+    }
+
+    private SearchIndexerSkillsetConverter() {
     }
 }

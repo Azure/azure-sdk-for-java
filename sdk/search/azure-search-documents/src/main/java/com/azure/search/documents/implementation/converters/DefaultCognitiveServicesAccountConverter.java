@@ -11,7 +11,7 @@ import com.azure.search.documents.models.DefaultCognitiveServicesAccount;
  * {@link DefaultCognitiveServicesAccount}.
  */
 public final class DefaultCognitiveServicesAccountConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(DefaultCognitiveServicesAccountConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount} to
@@ -23,8 +23,8 @@ public final class DefaultCognitiveServicesAccountConverter {
         }
         DefaultCognitiveServicesAccount defaultCognitiveServicesAccount = new DefaultCognitiveServicesAccount();
 
-        String _description = obj.getDescription();
-        defaultCognitiveServicesAccount.setDescription(_description);
+        String description = obj.getDescription();
+        defaultCognitiveServicesAccount.setDescription(description);
         return defaultCognitiveServicesAccount;
     }
 
@@ -38,8 +38,11 @@ public final class DefaultCognitiveServicesAccountConverter {
         }
         com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount defaultCognitiveServicesAccount = new com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount();
 
-        String _description = obj.getDescription();
-        defaultCognitiveServicesAccount.setDescription(_description);
+        String description = obj.getDescription();
+        defaultCognitiveServicesAccount.setDescription(description);
         return defaultCognitiveServicesAccount;
+    }
+
+    private DefaultCognitiveServicesAccountConverter() {
     }
 }

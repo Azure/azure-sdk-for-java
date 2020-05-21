@@ -8,14 +8,13 @@ import com.azure.search.documents.models.KeywordMarkerTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter} and
  * {@link KeywordMarkerTokenFilter}.
  */
 public final class KeywordMarkerTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(KeywordMarkerTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter} to
@@ -27,16 +26,16 @@ public final class KeywordMarkerTokenFilterConverter {
         }
         KeywordMarkerTokenFilter keywordMarkerTokenFilter = new KeywordMarkerTokenFilter();
 
-        String _name = obj.getName();
-        keywordMarkerTokenFilter.setName(_name);
+        String name = obj.getName();
+        keywordMarkerTokenFilter.setName(name);
 
         if (obj.getKeywords() != null) {
-            List<String> _keywords = new ArrayList<>(obj.getKeywords());
-            keywordMarkerTokenFilter.setKeywords(_keywords);
+            List<String> keywords = new ArrayList<>(obj.getKeywords());
+            keywordMarkerTokenFilter.setKeywords(keywords);
         }
 
-        Boolean _ignoreCase = obj.isIgnoreCase();
-        keywordMarkerTokenFilter.setIgnoreCase(_ignoreCase);
+        Boolean ignoreCase = obj.isIgnoreCase();
+        keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
         return keywordMarkerTokenFilter;
     }
 
@@ -51,16 +50,19 @@ public final class KeywordMarkerTokenFilterConverter {
         com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter keywordMarkerTokenFilter =
             new com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter();
 
-        String _name = obj.getName();
-        keywordMarkerTokenFilter.setName(_name);
+        String name = obj.getName();
+        keywordMarkerTokenFilter.setName(name);
 
         if (obj.getKeywords() != null) {
-            List<String> _keywords = new ArrayList<>(obj.getKeywords());
-            keywordMarkerTokenFilter.setKeywords(_keywords);
+            List<String> keywords = new ArrayList<>(obj.getKeywords());
+            keywordMarkerTokenFilter.setKeywords(keywords);
         }
 
-        Boolean _ignoreCase = obj.isIgnoreCase();
-        keywordMarkerTokenFilter.setIgnoreCase(_ignoreCase);
+        Boolean ignoreCase = obj.isIgnoreCase();
+        keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
         return keywordMarkerTokenFilter;
+    }
+
+    private KeywordMarkerTokenFilterConverter() {
     }
 }

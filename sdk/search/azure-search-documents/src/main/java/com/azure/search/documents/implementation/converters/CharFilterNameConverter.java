@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.CharFilterName;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.CharFilterName;
  * {@link CharFilterName}.
  */
 public final class CharFilterNameConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(CharFilterNameConverter.class);
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.CharFilterName} to enum
      * {@link CharFilterName}.
@@ -33,5 +30,8 @@ public final class CharFilterNameConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.CharFilterName.fromString(obj.toString());
+    }
+
+    private CharFilterNameConverter() {
     }
 }

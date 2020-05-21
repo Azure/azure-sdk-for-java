@@ -11,7 +11,7 @@ import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
  * and {@link HighWaterMarkChangeDetectionPolicy}.
  */
 public final class HighWaterMarkChangeDetectionPolicyConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(HighWaterMarkChangeDetectionPolicyConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy} to
@@ -24,8 +24,8 @@ public final class HighWaterMarkChangeDetectionPolicyConverter {
         HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =
             new HighWaterMarkChangeDetectionPolicy();
 
-        String _highWaterMarkColumnName = obj.getHighWaterMarkColumnName();
-        highWaterMarkChangeDetectionPolicy.setHighWaterMarkColumnName(_highWaterMarkColumnName);
+        String highWaterMarkColumnName = obj.getHighWaterMarkColumnName();
+        highWaterMarkChangeDetectionPolicy.setHighWaterMarkColumnName(highWaterMarkColumnName);
         return highWaterMarkChangeDetectionPolicy;
     }
 
@@ -39,8 +39,11 @@ public final class HighWaterMarkChangeDetectionPolicyConverter {
         }
         com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy = new com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy();
 
-        String _highWaterMarkColumnName = obj.getHighWaterMarkColumnName();
-        highWaterMarkChangeDetectionPolicy.setHighWaterMarkColumnName(_highWaterMarkColumnName);
+        String highWaterMarkColumnName = obj.getHighWaterMarkColumnName();
+        highWaterMarkChangeDetectionPolicy.setHighWaterMarkColumnName(highWaterMarkColumnName);
         return highWaterMarkChangeDetectionPolicy;
+    }
+
+    private HighWaterMarkChangeDetectionPolicyConverter() {
     }
 }

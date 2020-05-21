@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
 import com.azure.search.documents.models.WebApiSkill;
@@ -17,8 +16,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.WebApiSkill} and {@link WebApiSkill}.
  */
 public final class WebApiSkillConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(WebApiSkillConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.WebApiSkill} to {@link WebApiSkill}.
      */
@@ -29,46 +26,47 @@ public final class WebApiSkillConverter {
         WebApiSkill webApiSkill = new WebApiSkill();
 
         if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> _outputs =
+            List<OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            webApiSkill.setOutputs(_outputs);
+            webApiSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> _inputs =
+            List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            webApiSkill.setInputs(_inputs);
+            webApiSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        webApiSkill.setName(_name);
+        String name = obj.getName();
+        webApiSkill.setName(name);
 
-        String _context = obj.getContext();
-        webApiSkill.setContext(_context);
+        String context = obj.getContext();
+        webApiSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        webApiSkill.setDescription(_description);
+        String description = obj.getDescription();
+        webApiSkill.setDescription(description);
 
         if (obj.getHttpHeaders() != null) {
-            Map<String, String> _httpHeaders =
-                obj.getHttpHeaders().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            webApiSkill.setHttpHeaders(_httpHeaders);
+            Map<String, String> httpHeaders =
+                obj.getHttpHeaders().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
+            webApiSkill.setHttpHeaders(httpHeaders);
         }
 
-        String _httpMethod = obj.getHttpMethod();
-        webApiSkill.setHttpMethod(_httpMethod);
+        String httpMethod = obj.getHttpMethod();
+        webApiSkill.setHttpMethod(httpMethod);
 
-        Integer _batchSize = obj.getBatchSize();
-        webApiSkill.setBatchSize(_batchSize);
+        Integer batchSize = obj.getBatchSize();
+        webApiSkill.setBatchSize(batchSize);
 
-        String _uri = obj.getUri();
-        webApiSkill.setUri(_uri);
+        String uri = obj.getUri();
+        webApiSkill.setUri(uri);
 
-        Duration _timeout = obj.getTimeout();
-        webApiSkill.setTimeout(_timeout);
+        Duration timeout = obj.getTimeout();
+        webApiSkill.setTimeout(timeout);
 
-        Integer _degreeOfParallelism = obj.getDegreeOfParallelism();
-        webApiSkill.setDegreeOfParallelism(_degreeOfParallelism);
+        Integer degreeOfParallelism = obj.getDegreeOfParallelism();
+        webApiSkill.setDegreeOfParallelism(degreeOfParallelism);
         return webApiSkill;
     }
 
@@ -83,47 +81,50 @@ public final class WebApiSkillConverter {
             new com.azure.search.documents.implementation.models.WebApiSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> _outputs =
+            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            webApiSkill.setOutputs(_outputs);
+            webApiSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> _inputs =
+            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            webApiSkill.setInputs(_inputs);
+            webApiSkill.setInputs(inputs);
         }
 
-        String _name = obj.getName();
-        webApiSkill.setName(_name);
+        String name = obj.getName();
+        webApiSkill.setName(name);
 
-        String _context = obj.getContext();
-        webApiSkill.setContext(_context);
+        String context = obj.getContext();
+        webApiSkill.setContext(context);
 
-        String _description = obj.getDescription();
-        webApiSkill.setDescription(_description);
+        String description = obj.getDescription();
+        webApiSkill.setDescription(description);
 
         if (obj.getHttpHeaders() != null) {
-            Map<String, String> _httpHeaders =
+            Map<String, String> httpHeaders =
                 obj.getHttpHeaders().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            webApiSkill.setHttpHeaders(_httpHeaders);
+            webApiSkill.setHttpHeaders(httpHeaders);
         }
 
-        String _httpMethod = obj.getHttpMethod();
-        webApiSkill.setHttpMethod(_httpMethod);
+        String httpMethod = obj.getHttpMethod();
+        webApiSkill.setHttpMethod(httpMethod);
 
-        Integer _batchSize = obj.getBatchSize();
-        webApiSkill.setBatchSize(_batchSize);
+        Integer batchSize = obj.getBatchSize();
+        webApiSkill.setBatchSize(batchSize);
 
-        String _uri = obj.getUri();
-        webApiSkill.setUri(_uri);
+        String uri = obj.getUri();
+        webApiSkill.setUri(uri);
 
-        Duration _timeout = obj.getTimeout();
-        webApiSkill.setTimeout(_timeout);
+        Duration timeout = obj.getTimeout();
+        webApiSkill.setTimeout(timeout);
 
-        Integer _degreeOfParallelism = obj.getDegreeOfParallelism();
-        webApiSkill.setDegreeOfParallelism(_degreeOfParallelism);
+        Integer degreeOfParallelism = obj.getDegreeOfParallelism();
+        webApiSkill.setDegreeOfParallelism(degreeOfParallelism);
         return webApiSkill;
+    }
+
+    private WebApiSkillConverter() {
     }
 }

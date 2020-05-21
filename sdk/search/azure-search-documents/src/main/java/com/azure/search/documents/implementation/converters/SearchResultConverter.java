@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SearchResult} and {@link SearchResult}.
  */
 public final class SearchResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchResultConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchResult} to {@link SearchResult}.
@@ -27,18 +27,18 @@ public final class SearchResultConverter {
         }
         SearchResult searchResult = new SearchResult();
 
-        double _score = obj.getScore();
-        PrivateFieldAccessHelper.set(searchResult, "score", _score);
+        double score = obj.getScore();
+        PrivateFieldAccessHelper.set(searchResult, "score", score);
 
         if (obj.getHighlights() != null) {
-            Map<String, List<String>> _highlights =
+            Map<String, List<String>> highlights =
                 obj.getHighlights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            PrivateFieldAccessHelper.set(searchResult, "highlights", _highlights);
+            PrivateFieldAccessHelper.set(searchResult, "highlights", highlights);
         }
 
-        SearchDocument _additionalProperties = new SearchDocument(obj.getAdditionalProperties());
-        PrivateFieldAccessHelper.set(searchResult, "additionalProperties", _additionalProperties);
+        SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
+        PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
         return searchResult;
     }
 
@@ -52,18 +52,21 @@ public final class SearchResultConverter {
         com.azure.search.documents.implementation.models.SearchResult searchResult =
             new com.azure.search.documents.implementation.models.SearchResult();
 
-        double _score = obj.getScore();
-        PrivateFieldAccessHelper.set(searchResult, "score", _score);
+        double score = obj.getScore();
+        PrivateFieldAccessHelper.set(searchResult, "score", score);
 
         if (obj.getHighlights() != null) {
-            Map<String, List<String>> _highlights =
+            Map<String, List<String>> highlights =
                 obj.getHighlights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            PrivateFieldAccessHelper.set(searchResult, "highlights", _highlights);
+            PrivateFieldAccessHelper.set(searchResult, "highlights", highlights);
         }
 
-        SearchDocument _additionalProperties = obj.getDocument();
-        PrivateFieldAccessHelper.set(searchResult, "additionalProperties", _additionalProperties);
+        SearchDocument additionalProperties = obj.getDocument();
+        PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
         return searchResult;
+    }
+
+    private SearchResultConverter() {
     }
 }

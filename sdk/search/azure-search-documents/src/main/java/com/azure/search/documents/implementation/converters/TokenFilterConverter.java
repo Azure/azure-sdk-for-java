@@ -204,6 +204,10 @@ public final class TokenFilterConverter {
         if (obj instanceof com.azure.search.documents.models.StemmerOverrideTokenFilter) {
             return StemmerOverrideTokenFilterConverter.map((com.azure.search.documents.models.StemmerOverrideTokenFilter) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
+            obj.getClass().getSimpleName())));
+    }
+
+    private TokenFilterConverter() {
     }
 }

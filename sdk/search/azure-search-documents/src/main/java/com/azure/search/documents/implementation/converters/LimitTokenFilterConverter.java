@@ -11,7 +11,7 @@ import com.azure.search.documents.models.LimitTokenFilter;
  * {@link LimitTokenFilter}.
  */
 public final class LimitTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(LimitTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LimitTokenFilter} to {@link LimitTokenFilter}.
@@ -22,14 +22,14 @@ public final class LimitTokenFilterConverter {
         }
         LimitTokenFilter limitTokenFilter = new LimitTokenFilter();
 
-        String _name = obj.getName();
-        limitTokenFilter.setName(_name);
+        String name = obj.getName();
+        limitTokenFilter.setName(name);
 
-        Integer _maxTokenCount = obj.getMaxTokenCount();
-        limitTokenFilter.setMaxTokenCount(_maxTokenCount);
+        Integer maxTokenCount = obj.getMaxTokenCount();
+        limitTokenFilter.setMaxTokenCount(maxTokenCount);
 
-        Boolean _consumeAllTokens = obj.isConsumeAllTokens();
-        limitTokenFilter.setConsumeAllTokens(_consumeAllTokens);
+        Boolean consumeAllTokens = obj.isConsumeAllTokens();
+        limitTokenFilter.setConsumeAllTokens(consumeAllTokens);
         return limitTokenFilter;
     }
 
@@ -43,14 +43,17 @@ public final class LimitTokenFilterConverter {
         com.azure.search.documents.implementation.models.LimitTokenFilter limitTokenFilter =
             new com.azure.search.documents.implementation.models.LimitTokenFilter();
 
-        String _name = obj.getName();
-        limitTokenFilter.setName(_name);
+        String name = obj.getName();
+        limitTokenFilter.setName(name);
 
-        Integer _maxTokenCount = obj.getMaxTokenCount();
-        limitTokenFilter.setMaxTokenCount(_maxTokenCount);
+        Integer maxTokenCount = obj.getMaxTokenCount();
+        limitTokenFilter.setMaxTokenCount(maxTokenCount);
 
-        Boolean _consumeAllTokens = obj.isConsumeAllTokens();
-        limitTokenFilter.setConsumeAllTokens(_consumeAllTokens);
+        Boolean consumeAllTokens = obj.isConsumeAllTokens();
+        limitTokenFilter.setConsumeAllTokens(consumeAllTokens);
         return limitTokenFilter;
+    }
+
+    private LimitTokenFilterConverter() {
     }
 }

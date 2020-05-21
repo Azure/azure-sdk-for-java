@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * {@link PatternAnalyzer}.
  */
 public final class PatternAnalyzerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(PatternAnalyzerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternAnalyzer} to {@link PatternAnalyzer}.
@@ -28,14 +28,14 @@ public final class PatternAnalyzerConverter {
         }
         PatternAnalyzer patternAnalyzer = new PatternAnalyzer();
 
-        String _name = obj.getName();
-        patternAnalyzer.setName(_name);
+        String name = obj.getName();
+        patternAnalyzer.setName(name);
 
-        Boolean _lowerCaseTerms = obj.isLowerCaseTerms();
-        patternAnalyzer.setLowerCaseTerms(_lowerCaseTerms);
+        Boolean lowerCaseTerms = obj.isLowerCaseTerms();
+        patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
 
-        String _pattern = obj.getPattern();
-        patternAnalyzer.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternAnalyzer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
             List<RegexFlags> regexFlags =
@@ -44,8 +44,8 @@ public final class PatternAnalyzerConverter {
         }
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            patternAnalyzer.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            patternAnalyzer.setStopwords(stopwords);
         }
         return patternAnalyzer;
     }
@@ -60,25 +60,27 @@ public final class PatternAnalyzerConverter {
         com.azure.search.documents.implementation.models.PatternAnalyzer patternAnalyzer =
             new com.azure.search.documents.implementation.models.PatternAnalyzer();
 
-        String _name = obj.getName();
-        patternAnalyzer.setName(_name);
+        String name = obj.getName();
+        patternAnalyzer.setName(name);
 
-        Boolean _lowerCaseTerms = obj.isLowerCaseTerms();
-        patternAnalyzer.setLowerCaseTerms(_lowerCaseTerms);
+        Boolean lowerCaseTerms = obj.isLowerCaseTerms();
+        patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
 
-        String _pattern = obj.getPattern();
-        patternAnalyzer.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternAnalyzer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
-            String flattenFlags =
-                obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
+            String flattenFlags = obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
             patternAnalyzer.setFlags(com.azure.search.documents.implementation.models.RegexFlags.fromString(flattenFlags));
         }
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            patternAnalyzer.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            patternAnalyzer.setStopwords(stopwords);
         }
         return patternAnalyzer;
+    }
+
+    private PatternAnalyzerConverter() {
     }
 }

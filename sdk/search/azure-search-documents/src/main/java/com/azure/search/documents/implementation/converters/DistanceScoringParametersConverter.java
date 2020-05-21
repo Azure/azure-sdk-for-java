@@ -11,7 +11,7 @@ import com.azure.search.documents.models.DistanceScoringParameters;
  * {@link DistanceScoringParameters}.
  */
 public final class DistanceScoringParametersConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(DistanceScoringParametersConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DistanceScoringParameters} to
@@ -23,11 +23,11 @@ public final class DistanceScoringParametersConverter {
         }
         DistanceScoringParameters distanceScoringParameters = new DistanceScoringParameters();
 
-        String _referencePointParameter = obj.getReferencePointParameter();
-        distanceScoringParameters.setReferencePointParameter(_referencePointParameter);
+        String referencePointParameter = obj.getReferencePointParameter();
+        distanceScoringParameters.setReferencePointParameter(referencePointParameter);
 
-        double _boostingDistance = obj.getBoostingDistance();
-        distanceScoringParameters.setBoostingDistance(_boostingDistance);
+        double boostingDistance = obj.getBoostingDistance();
+        distanceScoringParameters.setBoostingDistance(boostingDistance);
         return distanceScoringParameters;
     }
 
@@ -42,11 +42,14 @@ public final class DistanceScoringParametersConverter {
         com.azure.search.documents.implementation.models.DistanceScoringParameters distanceScoringParameters =
             new com.azure.search.documents.implementation.models.DistanceScoringParameters();
 
-        String _referencePointParameter = obj.getReferencePointParameter();
-        distanceScoringParameters.setReferencePointParameter(_referencePointParameter);
+        String referencePointParameter = obj.getReferencePointParameter();
+        distanceScoringParameters.setReferencePointParameter(referencePointParameter);
 
-        double _boostingDistance = obj.getBoostingDistance();
-        distanceScoringParameters.setBoostingDistance(_boostingDistance);
+        double boostingDistance = obj.getBoostingDistance();
+        distanceScoringParameters.setBoostingDistance(boostingDistance);
         return distanceScoringParameters;
+    }
+
+    private DistanceScoringParametersConverter() {
     }
 }

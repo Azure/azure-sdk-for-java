@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * {@link PatternTokenizer}.
  */
 public final class PatternTokenizerConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(PatternTokenizerConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternTokenizer} to {@link PatternTokenizer}.
@@ -27,11 +27,11 @@ public final class PatternTokenizerConverter {
         }
         PatternTokenizer patternTokenizer = new PatternTokenizer();
 
-        String _name = obj.getName();
-        patternTokenizer.setName(_name);
+        String name = obj.getName();
+        patternTokenizer.setName(name);
 
-        String _pattern = obj.getPattern();
-        patternTokenizer.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternTokenizer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
             List<RegexFlags> regexFlags =
@@ -39,8 +39,8 @@ public final class PatternTokenizerConverter {
             patternTokenizer.setFlags(regexFlags);
         }
 
-        Integer _group = obj.getGroup();
-        patternTokenizer.setGroup(_group);
+        Integer group = obj.getGroup();
+        patternTokenizer.setGroup(group);
         return patternTokenizer;
     }
 
@@ -54,20 +54,22 @@ public final class PatternTokenizerConverter {
         com.azure.search.documents.implementation.models.PatternTokenizer patternTokenizer =
             new com.azure.search.documents.implementation.models.PatternTokenizer();
 
-        String _name = obj.getName();
-        patternTokenizer.setName(_name);
+        String name = obj.getName();
+        patternTokenizer.setName(name);
 
-        String _pattern = obj.getPattern();
-        patternTokenizer.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternTokenizer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
-            String flattenFlags =
-                obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
+            String flattenFlags = obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
             patternTokenizer.setFlags(com.azure.search.documents.implementation.models.RegexFlags.fromString(flattenFlags));
         }
 
-        Integer _group = obj.getGroup();
-        patternTokenizer.setGroup(_group);
+        Integer group = obj.getGroup();
+        patternTokenizer.setGroup(group);
         return patternTokenizer;
+    }
+
+    private PatternTokenizerConverter() {
     }
 }

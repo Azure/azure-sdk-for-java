@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.FacetResult;
 
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.FacetResult} and {@link FacetResult}.
  */
 public final class FacetResultConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(FacetResultConverter.class);
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FacetResult} to {@link FacetResult}.
@@ -25,14 +23,14 @@ public final class FacetResultConverter {
         }
         FacetResult facetResult = new FacetResult();
 
-        Long _count = obj.getCount();
-        PrivateFieldAccessHelper.set(facetResult, "count", _count);
+        Long count = obj.getCount();
+        PrivateFieldAccessHelper.set(facetResult, "count", count);
 
         if (obj.getAdditionalProperties() != null) {
-            Map<String, Object> _additionalProperties =
+            Map<String, Object> additionalProperties =
                 obj.getAdditionalProperties().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            PrivateFieldAccessHelper.set(facetResult, "additionalProperties", _additionalProperties);
+            PrivateFieldAccessHelper.set(facetResult, "additionalProperties", additionalProperties);
         }
         return facetResult;
     }
@@ -47,15 +45,18 @@ public final class FacetResultConverter {
         com.azure.search.documents.implementation.models.FacetResult facetResult =
             new com.azure.search.documents.implementation.models.FacetResult();
 
-        Long _count = obj.getCount();
-        PrivateFieldAccessHelper.set(facetResult, "count", _count);
+        Long count = obj.getCount();
+        PrivateFieldAccessHelper.set(facetResult, "count", count);
 
         if (obj.getAdditionalProperties() != null) {
-            Map<String, Object> _additionalProperties =
+            Map<String, Object> additionalProperties =
                 obj.getAdditionalProperties().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue));
-            PrivateFieldAccessHelper.set(facetResult, "additionalProperties", _additionalProperties);
+            PrivateFieldAccessHelper.set(facetResult, "additionalProperties", additionalProperties);
         }
         return facetResult;
+    }
+
+    private FacetResultConverter() {
     }
 }

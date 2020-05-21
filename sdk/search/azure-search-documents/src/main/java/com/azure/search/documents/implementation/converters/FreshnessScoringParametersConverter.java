@@ -13,7 +13,7 @@ import java.time.Duration;
  * {@link FreshnessScoringParameters}.
  */
 public final class FreshnessScoringParametersConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(FreshnessScoringParametersConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FreshnessScoringParameters} to
@@ -25,8 +25,8 @@ public final class FreshnessScoringParametersConverter {
         }
         FreshnessScoringParameters freshnessScoringParameters = new FreshnessScoringParameters();
 
-        Duration _boostingDuration = obj.getBoostingDuration();
-        freshnessScoringParameters.setBoostingDuration(_boostingDuration);
+        Duration boostingDuration = obj.getBoostingDuration();
+        freshnessScoringParameters.setBoostingDuration(boostingDuration);
         return freshnessScoringParameters;
     }
 
@@ -41,8 +41,11 @@ public final class FreshnessScoringParametersConverter {
         com.azure.search.documents.implementation.models.FreshnessScoringParameters freshnessScoringParameters =
             new com.azure.search.documents.implementation.models.FreshnessScoringParameters();
 
-        Duration _boostingDuration = obj.getBoostingDuration();
-        freshnessScoringParameters.setBoostingDuration(_boostingDuration);
+        Duration boostingDuration = obj.getBoostingDuration();
+        freshnessScoringParameters.setBoostingDuration(boostingDuration);
         return freshnessScoringParameters;
+    }
+
+    private FreshnessScoringParametersConverter() {
     }
 }

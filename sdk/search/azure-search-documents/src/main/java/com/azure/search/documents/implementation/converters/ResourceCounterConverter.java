@@ -11,7 +11,7 @@ import com.azure.search.documents.models.ResourceCounter;
  * {@link ResourceCounter}.
  */
 public final class ResourceCounterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceCounterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ResourceCounter} to {@link ResourceCounter}.
@@ -22,11 +22,11 @@ public final class ResourceCounterConverter {
         }
         ResourceCounter resourceCounter = new ResourceCounter();
 
-        long _usage = obj.getUsage();
-        resourceCounter.setUsage(_usage);
+        long usage = obj.getUsage();
+        resourceCounter.setUsage(usage);
 
-        Long _quota = obj.getQuota();
-        resourceCounter.setQuota(_quota);
+        Long quota = obj.getQuota();
+        resourceCounter.setQuota(quota);
         return resourceCounter;
     }
 
@@ -40,11 +40,14 @@ public final class ResourceCounterConverter {
         com.azure.search.documents.implementation.models.ResourceCounter resourceCounter =
             new com.azure.search.documents.implementation.models.ResourceCounter();
 
-        long _usage = obj.getUsage();
-        resourceCounter.setUsage(_usage);
+        long usage = obj.getUsage();
+        resourceCounter.setUsage(usage);
 
-        Long _quota = obj.getQuota();
-        resourceCounter.setQuota(_quota);
+        Long quota = obj.getQuota();
+        resourceCounter.setQuota(quota);
         return resourceCounter;
+    }
+
+    private ResourceCounterConverter() {
     }
 }

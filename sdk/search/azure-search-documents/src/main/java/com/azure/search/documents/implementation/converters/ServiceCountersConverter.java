@@ -12,7 +12,7 @@ import com.azure.search.documents.models.ServiceCounters;
  * {@link ServiceCounters}.
  */
 public final class ServiceCountersConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceCountersConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ServiceCounters} to {@link ServiceCounters}.
@@ -24,38 +24,38 @@ public final class ServiceCountersConverter {
         ServiceCounters serviceCounters = new ServiceCounters();
 
         if (obj.getDocumentCounter() != null) {
-            ResourceCounter _documentCounter = ResourceCounterConverter.map(obj.getDocumentCounter());
-            serviceCounters.setDocumentCounter(_documentCounter);
+            ResourceCounter documentCounter = ResourceCounterConverter.map(obj.getDocumentCounter());
+            serviceCounters.setDocumentCounter(documentCounter);
         }
 
         if (obj.getIndexCounter() != null) {
-            ResourceCounter _indexCounter = ResourceCounterConverter.map(obj.getIndexCounter());
-            serviceCounters.setIndexCounter(_indexCounter);
+            ResourceCounter indexCounter = ResourceCounterConverter.map(obj.getIndexCounter());
+            serviceCounters.setIndexCounter(indexCounter);
         }
 
         if (obj.getSynonymMapCounter() != null) {
-            ResourceCounter _synonymMapCounter = ResourceCounterConverter.map(obj.getSynonymMapCounter());
-            serviceCounters.setSynonymMapCounter(_synonymMapCounter);
+            ResourceCounter synonymMapCounter = ResourceCounterConverter.map(obj.getSynonymMapCounter());
+            serviceCounters.setSynonymMapCounter(synonymMapCounter);
         }
 
         if (obj.getStorageSizeCounter() != null) {
-            ResourceCounter _storageSizeCounter = ResourceCounterConverter.map(obj.getStorageSizeCounter());
-            serviceCounters.setStorageSizeCounter(_storageSizeCounter);
+            ResourceCounter storageSizeCounter = ResourceCounterConverter.map(obj.getStorageSizeCounter());
+            serviceCounters.setStorageSizeCounter(storageSizeCounter);
         }
 
         if (obj.getDataSourceCounter() != null) {
-            ResourceCounter _dataSourceCounter = ResourceCounterConverter.map(obj.getDataSourceCounter());
-            serviceCounters.setDataSourceCounter(_dataSourceCounter);
+            ResourceCounter dataSourceCounter = ResourceCounterConverter.map(obj.getDataSourceCounter());
+            serviceCounters.setDataSourceCounter(dataSourceCounter);
         }
 
         if (obj.getIndexerCounter() != null) {
-            ResourceCounter _indexerCounter = ResourceCounterConverter.map(obj.getIndexerCounter());
-            serviceCounters.setIndexerCounter(_indexerCounter);
+            ResourceCounter indexerCounter = ResourceCounterConverter.map(obj.getIndexerCounter());
+            serviceCounters.setIndexerCounter(indexerCounter);
         }
 
         if (obj.getSkillsetCounter() != null) {
-            ResourceCounter _skillsetCounter = ResourceCounterConverter.map(obj.getSkillsetCounter());
-            serviceCounters.setSkillsetCounter(_skillsetCounter);
+            ResourceCounter skillsetCounter = ResourceCounterConverter.map(obj.getSkillsetCounter());
+            serviceCounters.setSkillsetCounter(skillsetCounter);
         }
         return serviceCounters;
     }
@@ -71,46 +71,49 @@ public final class ServiceCountersConverter {
             new com.azure.search.documents.implementation.models.ServiceCounters();
 
         if (obj.getDocumentCounter() != null) {
-            com.azure.search.documents.implementation.models.ResourceCounter _documentCounter =
+            com.azure.search.documents.implementation.models.ResourceCounter documentCounter =
                 ResourceCounterConverter.map(obj.getDocumentCounter());
-            serviceCounters.setDocumentCounter(_documentCounter);
+            serviceCounters.setDocumentCounter(documentCounter);
         }
 
         if (obj.getIndexCounter() != null) {
-            com.azure.search.documents.implementation.models.ResourceCounter _indexCounter =
+            com.azure.search.documents.implementation.models.ResourceCounter indexCounter =
                 ResourceCounterConverter.map(obj.getIndexCounter());
-            serviceCounters.setIndexCounter(_indexCounter);
+            serviceCounters.setIndexCounter(indexCounter);
         }
 
         if (obj.getSynonymMapCounter() != null) {
-            com.azure.search.documents.implementation.models.ResourceCounter _synonymMapCounter =
+            com.azure.search.documents.implementation.models.ResourceCounter synonymMapCounter =
                 ResourceCounterConverter.map(obj.getSynonymMapCounter());
-            serviceCounters.setSynonymMapCounter(_synonymMapCounter);
+            serviceCounters.setSynonymMapCounter(synonymMapCounter);
         }
 
         if (obj.getStorageSizeCounter() != null) {
-            com.azure.search.documents.implementation.models.ResourceCounter _storageSizeCounter =
+            com.azure.search.documents.implementation.models.ResourceCounter storageSizeCounter =
                 ResourceCounterConverter.map(obj.getStorageSizeCounter());
-            serviceCounters.setStorageSizeCounter(_storageSizeCounter);
+            serviceCounters.setStorageSizeCounter(storageSizeCounter);
         }
 
         if (obj.getDataSourceCounter() != null) {
-            com.azure.search.documents.implementation.models.ResourceCounter _dataSourceCounter =
+            com.azure.search.documents.implementation.models.ResourceCounter dataSourceCounter =
                 ResourceCounterConverter.map(obj.getDataSourceCounter());
-            serviceCounters.setDataSourceCounter(_dataSourceCounter);
+            serviceCounters.setDataSourceCounter(dataSourceCounter);
         }
 
         if (obj.getIndexerCounter() != null) {
-            com.azure.search.documents.implementation.models.ResourceCounter _indexerCounter =
+            com.azure.search.documents.implementation.models.ResourceCounter indexerCounter =
                 ResourceCounterConverter.map(obj.getIndexerCounter());
-            serviceCounters.setIndexerCounter(_indexerCounter);
+            serviceCounters.setIndexerCounter(indexerCounter);
         }
 
         if (obj.getSkillsetCounter() != null) {
-            com.azure.search.documents.implementation.models.ResourceCounter _skillsetCounter =
+            com.azure.search.documents.implementation.models.ResourceCounter skillsetCounter =
                 ResourceCounterConverter.map(obj.getSkillsetCounter());
-            serviceCounters.setSkillsetCounter(_skillsetCounter);
+            serviceCounters.setSkillsetCounter(skillsetCounter);
         }
         return serviceCounters;
+    }
+
+    private ServiceCountersConverter() {
     }
 }

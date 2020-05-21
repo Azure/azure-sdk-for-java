@@ -14,7 +14,7 @@ import java.time.Duration;
  * {@link SearchIndexerLimits}.
  */
 public final class SearchIndexerLimitsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerLimitsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerLimits} to
@@ -26,15 +26,15 @@ public final class SearchIndexerLimitsConverter {
         }
         SearchIndexerLimits searchIndexerLimits = new SearchIndexerLimits();
 
-        Duration _maxRunTime = obj.getMaxRunTime();
-        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxRunTime", _maxRunTime);
+        Duration maxRunTime = obj.getMaxRunTime();
+        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxRunTime", maxRunTime);
 
-        Double _maxDocumentContentCharactersToExtract = obj.getMaxDocumentContentCharactersToExtract();
+        Double maxDocumentContentCharactersToExtract = obj.getMaxDocumentContentCharactersToExtract();
         PrivateFieldAccessHelper.set(searchIndexerLimits, "maxDocumentContentCharactersToExtract",
-            _maxDocumentContentCharactersToExtract);
+            maxDocumentContentCharactersToExtract);
 
-        Double _maxDocumentExtractionSize = obj.getMaxDocumentExtractionSize();
-        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxDocumentExtractionSize", _maxDocumentExtractionSize);
+        Double maxDocumentExtractionSize = obj.getMaxDocumentExtractionSize();
+        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxDocumentExtractionSize", maxDocumentExtractionSize);
         return searchIndexerLimits;
     }
 
@@ -49,15 +49,18 @@ public final class SearchIndexerLimitsConverter {
         com.azure.search.documents.implementation.models.SearchIndexerLimits searchIndexerLimits =
             new com.azure.search.documents.implementation.models.SearchIndexerLimits();
 
-        Duration _maxRunTime = obj.getMaxRunTime();
-        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxRunTime", _maxRunTime);
+        Duration maxRunTime = obj.getMaxRunTime();
+        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxRunTime", maxRunTime);
 
-        Double _maxDocumentContentCharactersToExtract = obj.getMaxDocumentContentCharactersToExtract();
+        Double maxDocumentContentCharactersToExtract = obj.getMaxDocumentContentCharactersToExtract();
         PrivateFieldAccessHelper.set(searchIndexerLimits, "maxDocumentContentCharactersToExtract",
-            _maxDocumentContentCharactersToExtract);
+            maxDocumentContentCharactersToExtract);
 
-        Double _maxDocumentExtractionSize = obj.getMaxDocumentExtractionSize();
-        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxDocumentExtractionSize", _maxDocumentExtractionSize);
+        Double maxDocumentExtractionSize = obj.getMaxDocumentExtractionSize();
+        PrivateFieldAccessHelper.set(searchIndexerLimits, "maxDocumentExtractionSize", maxDocumentExtractionSize);
         return searchIndexerLimits;
+    }
+
+    private SearchIndexerLimitsConverter() {
     }
 }

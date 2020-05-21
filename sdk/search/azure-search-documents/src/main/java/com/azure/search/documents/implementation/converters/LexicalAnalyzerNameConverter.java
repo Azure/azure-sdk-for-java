@@ -11,7 +11,7 @@ import com.azure.search.documents.models.LexicalAnalyzerName;
  * {@link LexicalAnalyzerName}.
  */
 public final class LexicalAnalyzerNameConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(LexicalAnalyzerNameConverter.class);
+
 
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.LexicalAnalyzerName} to enum
@@ -33,5 +33,8 @@ public final class LexicalAnalyzerNameConverter {
             return null;
         }
         return com.azure.search.documents.implementation.models.LexicalAnalyzerName.fromString(obj.toString());
+    }
+
+    private LexicalAnalyzerNameConverter() {
     }
 }

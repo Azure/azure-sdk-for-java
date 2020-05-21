@@ -8,14 +8,13 @@ import com.azure.search.documents.models.DictionaryDecompounderTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter} and
  * {@link DictionaryDecompounderTokenFilter}.
  */
 public final class DictionaryDecompounderTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(DictionaryDecompounderTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter} to
@@ -27,25 +26,25 @@ public final class DictionaryDecompounderTokenFilterConverter {
         }
         DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter = new DictionaryDecompounderTokenFilter();
 
-        String _name = obj.getName();
-        dictionaryDecompounderTokenFilter.setName(_name);
+        String name = obj.getName();
+        dictionaryDecompounderTokenFilter.setName(name);
 
-        Integer _minSubwordSize = obj.getMinSubwordSize();
-        dictionaryDecompounderTokenFilter.setMinSubwordSize(_minSubwordSize);
+        Integer minSubwordSize = obj.getMinSubwordSize();
+        dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
 
-        Boolean _onlyLongestMatch = obj.isOnlyLongestMatch();
-        dictionaryDecompounderTokenFilter.setOnlyLongestMatch(_onlyLongestMatch);
+        Boolean onlyLongestMatch = obj.isOnlyLongestMatch();
+        dictionaryDecompounderTokenFilter.setOnlyLongestMatch(onlyLongestMatch);
 
-        Integer _maxSubwordSize = obj.getMaxSubwordSize();
-        dictionaryDecompounderTokenFilter.setMaxSubwordSize(_maxSubwordSize);
+        Integer maxSubwordSize = obj.getMaxSubwordSize();
+        dictionaryDecompounderTokenFilter.setMaxSubwordSize(maxSubwordSize);
 
         if (obj.getWordList() != null) {
-            List<String> _wordList = new ArrayList<>(obj.getWordList());
-            dictionaryDecompounderTokenFilter.setWordList(_wordList);
+            List<String> wordList = new ArrayList<>(obj.getWordList());
+            dictionaryDecompounderTokenFilter.setWordList(wordList);
         }
 
-        Integer _minWordSize = obj.getMinWordSize();
-        dictionaryDecompounderTokenFilter.setMinWordSize(_minWordSize);
+        Integer minWordSize = obj.getMinWordSize();
+        dictionaryDecompounderTokenFilter.setMinWordSize(minWordSize);
         return dictionaryDecompounderTokenFilter;
     }
 
@@ -59,25 +58,28 @@ public final class DictionaryDecompounderTokenFilterConverter {
         }
         com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter = new com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter();
 
-        String _name = obj.getName();
-        dictionaryDecompounderTokenFilter.setName(_name);
+        String name = obj.getName();
+        dictionaryDecompounderTokenFilter.setName(name);
 
-        Integer _minSubwordSize = obj.getMinSubwordSize();
-        dictionaryDecompounderTokenFilter.setMinSubwordSize(_minSubwordSize);
+        Integer minSubwordSize = obj.getMinSubwordSize();
+        dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
 
-        Boolean _onlyLongestMatch = obj.isOnlyLongestMatch();
-        dictionaryDecompounderTokenFilter.setOnlyLongestMatch(_onlyLongestMatch);
+        Boolean onlyLongestMatch = obj.isOnlyLongestMatch();
+        dictionaryDecompounderTokenFilter.setOnlyLongestMatch(onlyLongestMatch);
 
-        Integer _maxSubwordSize = obj.getMaxSubwordSize();
-        dictionaryDecompounderTokenFilter.setMaxSubwordSize(_maxSubwordSize);
+        Integer maxSubwordSize = obj.getMaxSubwordSize();
+        dictionaryDecompounderTokenFilter.setMaxSubwordSize(maxSubwordSize);
 
         if (obj.getWordList() != null) {
-            List<String> _wordList = new ArrayList<>(obj.getWordList());
-            dictionaryDecompounderTokenFilter.setWordList(_wordList);
+            List<String> wordList = new ArrayList<>(obj.getWordList());
+            dictionaryDecompounderTokenFilter.setWordList(wordList);
         }
 
-        Integer _minWordSize = obj.getMinWordSize();
-        dictionaryDecompounderTokenFilter.setMinWordSize(_minWordSize);
+        Integer minWordSize = obj.getMinWordSize();
+        dictionaryDecompounderTokenFilter.setMinWordSize(minWordSize);
         return dictionaryDecompounderTokenFilter;
+    }
+
+    private DictionaryDecompounderTokenFilterConverter() {
     }
 }

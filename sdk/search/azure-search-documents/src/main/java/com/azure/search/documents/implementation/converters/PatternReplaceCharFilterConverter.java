@@ -11,7 +11,7 @@ import com.azure.search.documents.models.PatternReplaceCharFilter;
  * {@link PatternReplaceCharFilter}.
  */
 public final class PatternReplaceCharFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(PatternReplaceCharFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternReplaceCharFilter} to
@@ -23,14 +23,14 @@ public final class PatternReplaceCharFilterConverter {
         }
         PatternReplaceCharFilter patternReplaceCharFilter = new PatternReplaceCharFilter();
 
-        String _name = obj.getName();
-        patternReplaceCharFilter.setName(_name);
+        String name = obj.getName();
+        patternReplaceCharFilter.setName(name);
 
-        String _pattern = obj.getPattern();
-        patternReplaceCharFilter.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternReplaceCharFilter.setPattern(pattern);
 
-        String _replacement = obj.getReplacement();
-        patternReplaceCharFilter.setReplacement(_replacement);
+        String replacement = obj.getReplacement();
+        patternReplaceCharFilter.setReplacement(replacement);
         return patternReplaceCharFilter;
     }
 
@@ -45,14 +45,17 @@ public final class PatternReplaceCharFilterConverter {
         com.azure.search.documents.implementation.models.PatternReplaceCharFilter patternReplaceCharFilter =
             new com.azure.search.documents.implementation.models.PatternReplaceCharFilter();
 
-        String _name = obj.getName();
-        patternReplaceCharFilter.setName(_name);
+        String name = obj.getName();
+        patternReplaceCharFilter.setName(name);
 
-        String _pattern = obj.getPattern();
-        patternReplaceCharFilter.setPattern(_pattern);
+        String pattern = obj.getPattern();
+        patternReplaceCharFilter.setPattern(pattern);
 
-        String _replacement = obj.getReplacement();
-        patternReplaceCharFilter.setReplacement(_replacement);
+        String replacement = obj.getReplacement();
+        patternReplaceCharFilter.setReplacement(replacement);
         return patternReplaceCharFilter;
+    }
+
+    private PatternReplaceCharFilterConverter() {
     }
 }

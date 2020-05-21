@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.TextWeights} and {@link TextWeights}.
  */
 public final class TextWeightsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(TextWeightsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TextWeights} to {@link TextWeights}.
@@ -25,10 +25,9 @@ public final class TextWeightsConverter {
         TextWeights textWeights = new TextWeights();
 
         if (obj.getWeights() != null) {
-            Map<String, Double> _weights =
-                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                    Map.Entry::getValue));
-            textWeights.setWeights(_weights);
+            Map<String, Double> weights =
+                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            textWeights.setWeights(weights);
         }
         return textWeights;
     }
@@ -44,11 +43,13 @@ public final class TextWeightsConverter {
             new com.azure.search.documents.implementation.models.TextWeights();
 
         if (obj.getWeights() != null) {
-            Map<String, Double> _weights =
-                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                    Map.Entry::getValue));
-            textWeights.setWeights(_weights);
+            Map<String, Double> weights =
+                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            textWeights.setWeights(weights);
         }
         return textWeights;
+    }
+
+    private TextWeightsConverter() {
     }
 }

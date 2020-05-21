@@ -11,7 +11,7 @@ import com.azure.search.documents.models.ShingleTokenFilter;
  * {@link ShingleTokenFilter}.
  */
 public final class ShingleTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ShingleTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ShingleTokenFilter} to
@@ -23,26 +23,26 @@ public final class ShingleTokenFilterConverter {
         }
         ShingleTokenFilter shingleTokenFilter = new ShingleTokenFilter();
 
-        String _name = obj.getName();
-        shingleTokenFilter.setName(_name);
+        String name = obj.getName();
+        shingleTokenFilter.setName(name);
 
-        Integer _minShingleSize = obj.getMinShingleSize();
-        shingleTokenFilter.setMinShingleSize(_minShingleSize);
+        Integer minShingleSize = obj.getMinShingleSize();
+        shingleTokenFilter.setMinShingleSize(minShingleSize);
 
-        Boolean _outputUnigrams = obj.isOutputUnigrams();
-        shingleTokenFilter.setOutputUnigrams(_outputUnigrams);
+        Boolean outputUnigrams = obj.isOutputUnigrams();
+        shingleTokenFilter.setOutputUnigrams(outputUnigrams);
 
-        String _filterToken = obj.getFilterToken();
-        shingleTokenFilter.setFilterToken(_filterToken);
+        String filterToken = obj.getFilterToken();
+        shingleTokenFilter.setFilterToken(filterToken);
 
-        Boolean _outputUnigramsIfNoShingles = obj.isOutputUnigramsIfNoShingles();
-        shingleTokenFilter.setOutputUnigramsIfNoShingles(_outputUnigramsIfNoShingles);
+        Boolean outputUnigramsIfNoShingles = obj.isOutputUnigramsIfNoShingles();
+        shingleTokenFilter.setOutputUnigramsIfNoShingles(outputUnigramsIfNoShingles);
 
-        Integer _maxShingleSize = obj.getMaxShingleSize();
-        shingleTokenFilter.setMaxShingleSize(_maxShingleSize);
+        Integer maxShingleSize = obj.getMaxShingleSize();
+        shingleTokenFilter.setMaxShingleSize(maxShingleSize);
 
-        String _tokenSeparator = obj.getTokenSeparator();
-        shingleTokenFilter.setTokenSeparator(_tokenSeparator);
+        String tokenSeparator = obj.getTokenSeparator();
+        shingleTokenFilter.setTokenSeparator(tokenSeparator);
         return shingleTokenFilter;
     }
 
@@ -57,26 +57,29 @@ public final class ShingleTokenFilterConverter {
         com.azure.search.documents.implementation.models.ShingleTokenFilter shingleTokenFilter =
             new com.azure.search.documents.implementation.models.ShingleTokenFilter();
 
-        String _name = obj.getName();
-        shingleTokenFilter.setName(_name);
+        String name = obj.getName();
+        shingleTokenFilter.setName(name);
 
-        Integer _minShingleSize = obj.getMinShingleSize();
-        shingleTokenFilter.setMinShingleSize(_minShingleSize);
+        Integer minShingleSize = obj.getMinShingleSize();
+        shingleTokenFilter.setMinShingleSize(minShingleSize);
 
-        Boolean _outputUnigrams = obj.isOutputUnigrams();
-        shingleTokenFilter.setOutputUnigrams(_outputUnigrams);
+        Boolean outputUnigrams = obj.isOutputUnigrams();
+        shingleTokenFilter.setOutputUnigrams(outputUnigrams);
 
-        String _filterToken = obj.getFilterToken();
-        shingleTokenFilter.setFilterToken(_filterToken);
+        String filterToken = obj.getFilterToken();
+        shingleTokenFilter.setFilterToken(filterToken);
 
-        Boolean _outputUnigramsIfNoShingles = obj.isOutputUnigramsIfNoShingles();
-        shingleTokenFilter.setOutputUnigramsIfNoShingles(_outputUnigramsIfNoShingles);
+        Boolean outputUnigramsIfNoShingles = obj.isOutputUnigramsIfNoShingles();
+        shingleTokenFilter.setOutputUnigramsIfNoShingles(outputUnigramsIfNoShingles);
 
-        Integer _maxShingleSize = obj.getMaxShingleSize();
-        shingleTokenFilter.setMaxShingleSize(_maxShingleSize);
+        Integer maxShingleSize = obj.getMaxShingleSize();
+        shingleTokenFilter.setMaxShingleSize(maxShingleSize);
 
-        String _tokenSeparator = obj.getTokenSeparator();
-        shingleTokenFilter.setTokenSeparator(_tokenSeparator);
+        String tokenSeparator = obj.getTokenSeparator();
+        shingleTokenFilter.setTokenSeparator(tokenSeparator);
         return shingleTokenFilter;
+    }
+
+    private ShingleTokenFilterConverter() {
     }
 }

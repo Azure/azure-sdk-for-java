@@ -13,7 +13,7 @@ import com.azure.search.documents.models.ServiceStatistics;
  * {@link ServiceStatistics}.
  */
 public final class ServiceStatisticsConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceStatisticsConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ServiceStatistics} to
@@ -26,13 +26,13 @@ public final class ServiceStatisticsConverter {
         ServiceStatistics serviceStatistics = new ServiceStatistics();
 
         if (obj.getCounters() != null) {
-            ServiceCounters _counters = ServiceCountersConverter.map(obj.getCounters());
-            serviceStatistics.setCounters(_counters);
+            ServiceCounters counters = ServiceCountersConverter.map(obj.getCounters());
+            serviceStatistics.setCounters(counters);
         }
 
         if (obj.getLimits() != null) {
-            ServiceLimits _limits = ServiceLimitsConverter.map(obj.getLimits());
-            serviceStatistics.setLimits(_limits);
+            ServiceLimits limits = ServiceLimitsConverter.map(obj.getLimits());
+            serviceStatistics.setLimits(limits);
         }
         return serviceStatistics;
     }
@@ -49,16 +49,19 @@ public final class ServiceStatisticsConverter {
             new com.azure.search.documents.implementation.models.ServiceStatistics();
 
         if (obj.getCounters() != null) {
-            com.azure.search.documents.implementation.models.ServiceCounters _counters =
+            com.azure.search.documents.implementation.models.ServiceCounters counters =
                 ServiceCountersConverter.map(obj.getCounters());
-            serviceStatistics.setCounters(_counters);
+            serviceStatistics.setCounters(counters);
         }
 
         if (obj.getLimits() != null) {
-            com.azure.search.documents.implementation.models.ServiceLimits _limits =
+            com.azure.search.documents.implementation.models.ServiceLimits limits =
                 ServiceLimitsConverter.map(obj.getLimits());
-            serviceStatistics.setLimits(_limits);
+            serviceStatistics.setLimits(limits);
         }
         return serviceStatistics;
+    }
+
+    private ServiceStatisticsConverter() {
     }
 }

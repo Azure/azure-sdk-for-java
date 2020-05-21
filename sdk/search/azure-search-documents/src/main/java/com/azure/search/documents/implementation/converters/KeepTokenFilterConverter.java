@@ -8,14 +8,13 @@ import com.azure.search.documents.models.KeepTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.KeepTokenFilter} and
  * {@link KeepTokenFilter}.
  */
 public final class KeepTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(KeepTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.KeepTokenFilter} to {@link KeepTokenFilter}.
@@ -26,16 +25,16 @@ public final class KeepTokenFilterConverter {
         }
         KeepTokenFilter keepTokenFilter = new KeepTokenFilter();
 
-        String _name = obj.getName();
-        keepTokenFilter.setName(_name);
+        String name = obj.getName();
+        keepTokenFilter.setName(name);
 
         if (obj.getKeepWords() != null) {
-            List<String> _keepWords = new ArrayList<>(obj.getKeepWords());
-            keepTokenFilter.setKeepWords(_keepWords);
+            List<String> keepWords = new ArrayList<>(obj.getKeepWords());
+            keepTokenFilter.setKeepWords(keepWords);
         }
 
-        Boolean _lowerCaseKeepWords = obj.isLowerCaseKeepWords();
-        keepTokenFilter.setLowerCaseKeepWords(_lowerCaseKeepWords);
+        Boolean lowerCaseKeepWords = obj.isLowerCaseKeepWords();
+        keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);
         return keepTokenFilter;
     }
 
@@ -49,16 +48,19 @@ public final class KeepTokenFilterConverter {
         com.azure.search.documents.implementation.models.KeepTokenFilter keepTokenFilter =
             new com.azure.search.documents.implementation.models.KeepTokenFilter();
 
-        String _name = obj.getName();
-        keepTokenFilter.setName(_name);
+        String name = obj.getName();
+        keepTokenFilter.setName(name);
 
         if (obj.getKeepWords() != null) {
-            List<String> _keepWords = new ArrayList<>(obj.getKeepWords());
-            keepTokenFilter.setKeepWords(_keepWords);
+            List<String> keepWords = new ArrayList<>(obj.getKeepWords());
+            keepTokenFilter.setKeepWords(keepWords);
         }
 
-        Boolean _lowerCaseKeepWords = obj.isLowerCaseKeepWords();
-        keepTokenFilter.setLowerCaseKeepWords(_lowerCaseKeepWords);
+        Boolean lowerCaseKeepWords = obj.isLowerCaseKeepWords();
+        keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);
         return keepTokenFilter;
+    }
+
+    private KeepTokenFilterConverter() {
     }
 }

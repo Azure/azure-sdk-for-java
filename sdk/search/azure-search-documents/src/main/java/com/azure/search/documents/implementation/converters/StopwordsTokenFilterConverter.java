@@ -9,14 +9,13 @@ import com.azure.search.documents.models.StopwordsTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.StopwordsTokenFilter} and
  * {@link StopwordsTokenFilter}.
  */
 public final class StopwordsTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(StopwordsTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.StopwordsTokenFilter} to
@@ -28,23 +27,23 @@ public final class StopwordsTokenFilterConverter {
         }
         StopwordsTokenFilter stopwordsTokenFilter = new StopwordsTokenFilter();
 
-        String _name = obj.getName();
-        stopwordsTokenFilter.setName(_name);
+        String name = obj.getName();
+        stopwordsTokenFilter.setName(name);
 
-        Boolean _removeTrailingStopWords = obj.isRemoveTrailingStopWords();
-        stopwordsTokenFilter.setRemoveTrailingStopWords(_removeTrailingStopWords);
+        Boolean removeTrailingStopWords = obj.isRemoveTrailingStopWords();
+        stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
 
-        Boolean _ignoreCase = obj.isIgnoreCase();
-        stopwordsTokenFilter.setIgnoreCase(_ignoreCase);
+        Boolean ignoreCase = obj.isIgnoreCase();
+        stopwordsTokenFilter.setIgnoreCase(ignoreCase);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            stopwordsTokenFilter.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            stopwordsTokenFilter.setStopwords(stopwords);
         }
 
         if (obj.getStopwordsList() != null) {
-            StopwordsList _stopwordsList = StopwordsListConverter.map(obj.getStopwordsList());
-            stopwordsTokenFilter.setStopwordsList(_stopwordsList);
+            StopwordsList stopwordsList = StopwordsListConverter.map(obj.getStopwordsList());
+            stopwordsTokenFilter.setStopwordsList(stopwordsList);
         }
         return stopwordsTokenFilter;
     }
@@ -60,25 +59,28 @@ public final class StopwordsTokenFilterConverter {
         com.azure.search.documents.implementation.models.StopwordsTokenFilter stopwordsTokenFilter =
             new com.azure.search.documents.implementation.models.StopwordsTokenFilter();
 
-        String _name = obj.getName();
-        stopwordsTokenFilter.setName(_name);
+        String name = obj.getName();
+        stopwordsTokenFilter.setName(name);
 
-        Boolean _removeTrailingStopWords = obj.isRemoveTrailingStopWords();
-        stopwordsTokenFilter.setRemoveTrailingStopWords(_removeTrailingStopWords);
+        Boolean removeTrailingStopWords = obj.isRemoveTrailingStopWords();
+        stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
 
-        Boolean _ignoreCase = obj.isIgnoreCase();
-        stopwordsTokenFilter.setIgnoreCase(_ignoreCase);
+        Boolean ignoreCase = obj.isIgnoreCase();
+        stopwordsTokenFilter.setIgnoreCase(ignoreCase);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
-            stopwordsTokenFilter.setStopwords(_stopwords);
+            List<String> stopwords = new ArrayList<>(obj.getStopwords());
+            stopwordsTokenFilter.setStopwords(stopwords);
         }
 
         if (obj.getStopwordsList() != null) {
-            com.azure.search.documents.implementation.models.StopwordsList _stopwordsList =
+            com.azure.search.documents.implementation.models.StopwordsList stopwordsList =
                 StopwordsListConverter.map(obj.getStopwordsList());
-            stopwordsTokenFilter.setStopwordsList(_stopwordsList);
+            stopwordsTokenFilter.setStopwordsList(stopwordsList);
         }
         return stopwordsTokenFilter;
+    }
+
+    private StopwordsTokenFilterConverter() {
     }
 }

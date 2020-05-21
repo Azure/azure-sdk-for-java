@@ -12,7 +12,7 @@ import com.azure.search.documents.models.StemmerTokenFilterLanguage;
  * {@link StemmerTokenFilter}.
  */
 public final class StemmerTokenFilterConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(StemmerTokenFilterConverter.class);
+
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.StemmerTokenFilter} to
@@ -24,12 +24,12 @@ public final class StemmerTokenFilterConverter {
         }
         StemmerTokenFilter stemmerTokenFilter = new StemmerTokenFilter();
 
-        String _name = obj.getName();
-        stemmerTokenFilter.setName(_name);
+        String name = obj.getName();
+        stemmerTokenFilter.setName(name);
 
         if (obj.getLanguage() != null) {
-            StemmerTokenFilterLanguage _language = StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-            stemmerTokenFilter.setLanguage(_language);
+            StemmerTokenFilterLanguage language = StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
+            stemmerTokenFilter.setLanguage(language);
         }
         return stemmerTokenFilter;
     }
@@ -45,14 +45,17 @@ public final class StemmerTokenFilterConverter {
         com.azure.search.documents.implementation.models.StemmerTokenFilter stemmerTokenFilter =
             new com.azure.search.documents.implementation.models.StemmerTokenFilter();
 
-        String _name = obj.getName();
-        stemmerTokenFilter.setName(_name);
+        String name = obj.getName();
+        stemmerTokenFilter.setName(name);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.implementation.models.StemmerTokenFilterLanguage _language =
+            com.azure.search.documents.implementation.models.StemmerTokenFilterLanguage language =
                 StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-            stemmerTokenFilter.setLanguage(_language);
+            stemmerTokenFilter.setLanguage(language);
         }
         return stemmerTokenFilter;
+    }
+
+    private StemmerTokenFilterConverter() {
     }
 }

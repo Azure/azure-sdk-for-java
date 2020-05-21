@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.AutocompleteItem;
 
@@ -12,8 +11,6 @@ import com.azure.search.documents.models.AutocompleteItem;
  * {@link AutocompleteItem}.
  */
 public final class AutocompleteItemConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(AutocompleteItemConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.AutocompleteItem} to {@link AutocompleteItem}.
      */
@@ -23,11 +20,11 @@ public final class AutocompleteItemConverter {
         }
         AutocompleteItem autocompleteItem = new AutocompleteItem();
 
-        String _text = obj.getText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "text", _text);
+        String text = obj.getText();
+        PrivateFieldAccessHelper.set(autocompleteItem, "text", text);
 
-        String _queryPlusText = obj.getQueryPlusText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "queryPlusText", _queryPlusText);
+        String queryPlusText = obj.getQueryPlusText();
+        PrivateFieldAccessHelper.set(autocompleteItem, "queryPlusText", queryPlusText);
         return autocompleteItem;
     }
 
@@ -41,11 +38,14 @@ public final class AutocompleteItemConverter {
         com.azure.search.documents.implementation.models.AutocompleteItem autocompleteItem =
             new com.azure.search.documents.implementation.models.AutocompleteItem();
 
-        String _text = obj.getText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "text", _text);
+        String text = obj.getText();
+        PrivateFieldAccessHelper.set(autocompleteItem, "text", text);
 
-        String _queryPlusText = obj.getQueryPlusText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "queryPlusText", _queryPlusText);
+        String queryPlusText = obj.getQueryPlusText();
+        PrivateFieldAccessHelper.set(autocompleteItem, "queryPlusText", queryPlusText);
         return autocompleteItem;
+    }
+
+    private AutocompleteItemConverter() {
     }
 }
