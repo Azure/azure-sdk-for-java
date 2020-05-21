@@ -3,19 +3,24 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +32,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -187,6 +193,55 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertEquals(noMessages, messages.stream().count());
+    }
+
+    /**
+     * Verifies that we can receive one messages and complete fails because lock is lost.
+     */
+    @Disabled("Bug with session enabled entity. https://app.zenhub.com/workspaces/azure-sdk-team-5bdca72c4b5806bc2bf0aab2/issues/azure/azure-sdk-for-java/11381")
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveMessageAndCompleteFailLockLost(MessagingEntityType entityType, boolean isSessionEnabled) {
+        if (!isSessionEnabled) return;
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        int maxMessages = 1;
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+
+        // Act
+        final Stream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT)
+            .stream()
+            .map(ServiceBusReceivedMessageContext::getMessage);
+
+        // Assert
+        final AtomicInteger receivedMessageCount = new AtomicInteger();
+        messages.forEach(receivedMessage -> {
+            assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            Mono.empty().delaySubscription(MESSAGE_LOCK_EXPIRED_TIME).block();
+            try {
+                receiver.complete(receivedMessage);
+                assertFalse(true, "Complete should have failed because of lock token expired.");
+            } catch (Exception ex) {
+                assertTrue( ex instanceof AmqpException);
+                AmqpErrorCondition lockErrorCondition;
+                if (isSessionEnabled) {
+                    lockErrorCondition = AmqpErrorCondition.fromString("com.microsoft:session-cannot-be-locked");
+                } else {
+                    lockErrorCondition = AmqpErrorCondition.fromString("com.microsoft:message-lock-lost");
+                }
+                assertTrue((((AmqpException)ex).getErrorCondition() == lockErrorCondition));
+
+            }
+            messagesPending.decrementAndGet();
+            receivedMessageCount.incrementAndGet();
+        });
+
+        assertEquals(maxMessages, receivedMessageCount.get());
+
     }
 
     /**
@@ -606,7 +661,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             this.receiver = getReceiverBuilder(false, entityType, Function.identity())
-                .maxAutoLockRenewalDuration(autoLockRenewal)
+                //.maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity())
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
