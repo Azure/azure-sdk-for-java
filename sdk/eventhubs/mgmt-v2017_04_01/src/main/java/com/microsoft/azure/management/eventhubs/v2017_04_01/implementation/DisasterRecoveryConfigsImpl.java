@@ -91,10 +91,14 @@ class DisasterRecoveryConfigsImpl extends WrapperImpl<DisasterRecoveryConfigsInn
     public Observable<ArmDisasterRecovery> getAsync(String resourceGroupName, String namespaceName, String alias) {
         DisasterRecoveryConfigsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, alias)
-        .map(new Func1<ArmDisasterRecoveryInner, ArmDisasterRecovery>() {
+        .flatMap(new Func1<ArmDisasterRecoveryInner, Observable<ArmDisasterRecovery>>() {
             @Override
-            public ArmDisasterRecovery call(ArmDisasterRecoveryInner inner) {
-                return wrapModel(inner);
+            public Observable<ArmDisasterRecovery> call(ArmDisasterRecoveryInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ArmDisasterRecovery)wrapModel(inner));
+                }
             }
        });
     }
@@ -113,7 +117,7 @@ class DisasterRecoveryConfigsImpl extends WrapperImpl<DisasterRecoveryConfigsInn
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String namespaceName = IdParsingUtils.getValueFromIdByName(id, "namespaces");
         String alias = IdParsingUtils.getValueFromIdByName(id, "disasterRecoveryConfigs");
-        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "AuthorizationRules");
+        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "authorizationRules");
         DisasterRecoveryConfigsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, alias, authorizationRuleName);
     }
@@ -122,10 +126,14 @@ class DisasterRecoveryConfigsImpl extends WrapperImpl<DisasterRecoveryConfigsInn
     public Observable<DisasterRecoveryConfigNamespaceAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
         DisasterRecoveryConfigsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, alias, authorizationRuleName)
-        .map(new Func1<AuthorizationRuleInner, DisasterRecoveryConfigNamespaceAuthorizationRule>() {
+        .flatMap(new Func1<AuthorizationRuleInner, Observable<DisasterRecoveryConfigNamespaceAuthorizationRule>>() {
             @Override
-            public DisasterRecoveryConfigNamespaceAuthorizationRule call(AuthorizationRuleInner inner) {
-                return wrapDisasterRecoveryConfigNamespaceAuthorizationRuleModel(inner);
+            public Observable<DisasterRecoveryConfigNamespaceAuthorizationRule> call(AuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DisasterRecoveryConfigNamespaceAuthorizationRule)wrapDisasterRecoveryConfigNamespaceAuthorizationRuleModel(inner));
+                }
             }
        });
     }

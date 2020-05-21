@@ -133,19 +133,6 @@ public class EventHubManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
-
-    /**
-     * Gets the OperationsInner object to access its operations.
-     * @return the OperationsInner object.
-     */
-    public OperationsInner operations() {
-        return this.operations;
-    }
-
-    /**
      * The NamespacesInner object to access its operations.
      */
     private NamespacesInner namespaces;
@@ -198,6 +185,19 @@ public class EventHubManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
      * The RegionsInner object to access its operations.
      */
     private RegionsInner regions;
@@ -245,11 +245,11 @@ public class EventHubManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.namespaces = new NamespacesInner(restClient().retrofit(), this);
         this.disasterRecoveryConfigs = new DisasterRecoveryConfigsInner(restClient().retrofit(), this);
         this.eventHubs = new EventHubsInner(restClient().retrofit(), this);
         this.consumerGroups = new ConsumerGroupsInner(restClient().retrofit(), this);
+        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.regions = new RegionsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
