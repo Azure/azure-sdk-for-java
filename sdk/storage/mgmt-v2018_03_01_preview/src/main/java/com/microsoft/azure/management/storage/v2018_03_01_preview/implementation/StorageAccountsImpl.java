@@ -226,10 +226,14 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
     public Observable<StorageAccountManagementPolicies> getManagementPoliciesAsync(String resourceGroupName, String accountName) {
         StorageAccountsInner client = this.inner();
         return client.getManagementPoliciesAsync(resourceGroupName, accountName)
-        .map(new Func1<StorageAccountManagementPoliciesInner, StorageAccountManagementPolicies>() {
+        .flatMap(new Func1<StorageAccountManagementPoliciesInner, Observable<StorageAccountManagementPolicies>>() {
             @Override
-            public StorageAccountManagementPolicies call(StorageAccountManagementPoliciesInner inner) {
-                return wrapStorageAccountManagementPoliciesModel(inner);
+            public Observable<StorageAccountManagementPolicies> call(StorageAccountManagementPoliciesInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((StorageAccountManagementPolicies)wrapStorageAccountManagementPoliciesModel(inner));
+                }
             }
        });
     }
