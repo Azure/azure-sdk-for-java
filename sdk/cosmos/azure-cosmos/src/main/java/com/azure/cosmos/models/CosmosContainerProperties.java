@@ -78,7 +78,6 @@ public final class CosmosContainerProperties {
      *
      * @param indexingPolicy {@link IndexingPolicy} the indexing policy
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setIndexingPolicy(IndexingPolicy indexingPolicy) {
         this.documentCollection.setIndexingPolicy(indexingPolicy);
@@ -99,7 +98,6 @@ public final class CosmosContainerProperties {
      *
      * @param uniqueKeyPolicy the unique key policy
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         this.documentCollection.setUniqueKeyPolicy(uniqueKeyPolicy);
@@ -120,7 +118,6 @@ public final class CosmosContainerProperties {
      *
      * @param partitionKeyDefinition the partition key definition.
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.documentCollection.setPartitionKey(partitionKeyDefinition);
@@ -143,7 +140,6 @@ public final class CosmosContainerProperties {
      *
      * @param value ConflictResolutionPolicy to be used.
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setConflictResolutionPolicy(ConflictResolutionPolicy value) {
         this.documentCollection.setConflictResolutionPolicy(value);

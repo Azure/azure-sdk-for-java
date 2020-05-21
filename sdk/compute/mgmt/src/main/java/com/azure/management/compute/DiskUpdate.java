@@ -68,6 +68,13 @@ public class DiskUpdate {
     @JsonProperty(value = "properties.diskMBpsReadWrite")
     private Integer diskMBpsReadWrite;
 
+    /*
+     * Encryption property can be used to encrypt data at rest with customer
+     * managed keys or platform managed keys.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -221,6 +228,28 @@ public class DiskUpdate {
     }
 
     /**
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @param encryption the encryption value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,6 +260,9 @@ public class DiskUpdate {
         }
         if (encryptionSettingsCollection() != null) {
             encryptionSettingsCollection().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
     }
 }

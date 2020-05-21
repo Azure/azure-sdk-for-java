@@ -47,7 +47,7 @@ public final class SynonymMap {
      * paid services created on or after January 1, 2019.
      */
     @JsonProperty(value = "encryptionKey")
-    private EncryptionKey encryptionKey;
+    private SearchResourceEncryptionKey encryptionKey;
 
     /*
      * The ETag of the synonym map.
@@ -119,7 +119,7 @@ public final class SynonymMap {
      *
      * @return the encryptionKey value.
      */
-    public EncryptionKey getEncryptionKey() {
+    public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
 
@@ -139,7 +139,7 @@ public final class SynonymMap {
      * @param encryptionKey the encryptionKey value to set.
      * @return the SynonymMap object itself.
      */
-    public SynonymMap setEncryptionKey(EncryptionKey encryptionKey) {
+    public SynonymMap setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
     }

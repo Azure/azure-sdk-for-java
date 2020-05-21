@@ -26,7 +26,7 @@ public class TestExpressRouteCircuit {
     public class Basic extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().getSdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =
@@ -78,7 +78,7 @@ public class TestExpressRouteCircuit {
     public class ExpressRouteCircuitPeering extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().getSdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =
@@ -119,7 +119,7 @@ public class TestExpressRouteCircuit {
                     .withSecondaryPeerAddressPrefix("123.0.0.8/30")
                     .apply();
             Assertions.assertEquals(300, peering.vlanId());
-            Assertions.assertEquals(101, peering.peerASN());
+            Assertions.assertEquals(101, peering.peerAsn());
             Assertions.assertEquals("123.0.0.8/30", peering.secondaryPeerAddressPrefix());
             return resource;
         }

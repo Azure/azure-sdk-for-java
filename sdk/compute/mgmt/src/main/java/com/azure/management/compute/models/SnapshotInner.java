@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CreationData;
+import com.azure.management.compute.Encryption;
 import com.azure.management.compute.EncryptionSettingsCollection;
 import com.azure.management.compute.HyperVGeneration;
 import com.azure.management.compute.OperatingSystemTypes;
@@ -103,6 +104,13 @@ public class SnapshotInner extends Resource {
      */
     @JsonProperty(value = "properties.incremental")
     private Boolean incremental;
+
+    /*
+     * Encryption property can be used to encrypt data at rest with customer
+     * managed keys or platform managed keys.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
 
     /**
      * Get the managedBy property: Unused. Always Null.
@@ -302,6 +310,28 @@ public class SnapshotInner extends Resource {
     }
 
     /**
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @param encryption the encryption value to set.
+     * @return the SnapshotInner object itself.
+     */
+    public SnapshotInner withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -315,6 +345,9 @@ public class SnapshotInner extends Resource {
         }
         if (encryptionSettingsCollection() != null) {
             encryptionSettingsCollection().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
     }
 }
