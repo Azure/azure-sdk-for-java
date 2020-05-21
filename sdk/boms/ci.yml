@@ -40,6 +40,3 @@ stages:
         - name: azure-sdk-bom
           groupId: com.azure
           safeName: azuresdkbom
-        - name: azure-core-dependencies
-          groupId: com.azure
-          safeName: azurecoredependencies
