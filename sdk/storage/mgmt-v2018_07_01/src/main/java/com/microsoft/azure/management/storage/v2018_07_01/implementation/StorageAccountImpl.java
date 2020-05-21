@@ -17,6 +17,7 @@ import com.microsoft.azure.management.storage.v2018_07_01.AccessTier;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2018_07_01.CustomDomain;
 import com.microsoft.azure.management.storage.v2018_07_01.Encryption;
+import com.microsoft.azure.management.storage.v2018_07_01.GeoReplicationStats;
 import com.microsoft.azure.management.storage.v2018_07_01.Identity;
 import com.microsoft.azure.management.storage.v2018_07_01.Kind;
 import com.microsoft.azure.management.storage.v2018_07_01.NetworkRuleSet;
@@ -109,6 +110,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public Encryption encryption() {
         return this.inner().encryption();
+    }
+
+    @Override
+    public Boolean failoverInProgress() {
+        return this.inner().failoverInProgress();
+    }
+
+    @Override
+    public GeoReplicationStats geoReplicationStats() {
+        return this.inner().geoReplicationStats();
     }
 
     @Override

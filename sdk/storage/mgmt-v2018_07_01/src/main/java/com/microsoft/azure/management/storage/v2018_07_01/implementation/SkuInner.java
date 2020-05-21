@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SkuInner {
     /**
-     * Gets or sets the sku name. Required for account creation; optional for
-     * update. Note that in older versions, sku name was called accountType.
+     * Gets or sets the SKU name. Required for account creation; optional for
+     * update. Note that in older versions, SKU name was called accountType.
      * Possible values include: 'Standard_LRS', 'Standard_GRS',
      * 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS'.
      */
@@ -30,7 +30,7 @@ public class SkuInner {
     private SkuName name;
 
     /**
-     * Gets the sku tier. This is based on the SKU name. Possible values
+     * Gets the SKU tier. This is based on the SKU name. Possible values
      * include: 'Standard', 'Premium'.
      */
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
@@ -59,8 +59,8 @@ public class SkuInner {
     private List<String> locations;
 
     /**
-     * The capability information in the specified sku, including file
-     * encryption, network acls, change notification, etc.
+     * The capability information in the specified SKU, including file
+     * encryption, network ACLs, change notification, etc.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SKUCapability> capabilities;
@@ -73,7 +73,7 @@ public class SkuInner {
     private List<Restriction> restrictions;
 
     /**
-     * Get gets or sets the sku name. Required for account creation; optional for update. Note that in older versions, sku name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS'.
+     * Get gets or sets the SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS'.
      *
      * @return the name value
      */
@@ -82,7 +82,7 @@ public class SkuInner {
     }
 
     /**
-     * Set gets or sets the sku name. Required for account creation; optional for update. Note that in older versions, sku name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS'.
+     * Set gets or sets the SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS'.
      *
      * @param name the name value to set
      * @return the SkuInner object itself.
@@ -93,7 +93,7 @@ public class SkuInner {
     }
 
     /**
-     * Get gets the sku tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'.
+     * Get gets the SKU tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'.
      *
      * @return the tier value
      */
@@ -129,7 +129,7 @@ public class SkuInner {
     }
 
     /**
-     * Get the capability information in the specified sku, including file encryption, network acls, change notification, etc.
+     * Get the capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
      *
      * @return the capabilities value
      */
