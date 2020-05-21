@@ -22,7 +22,7 @@ public class GalleryImageVersionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
 
     /*
-     * The publishing profile of a gallery Image Version.
+     * Describes the basic gallery artifact publishing profile.
      */
     @JsonProperty(value = "properties.publishingProfile")
     private GalleryImageVersionPublishingProfile publishingProfile;
@@ -36,7 +36,7 @@ public class GalleryImageVersionInner extends Resource {
     /*
      * This is the storage profile of a Gallery Image Version.
      */
-    @JsonProperty(value = "properties.storageProfile", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.storageProfile")
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
@@ -46,7 +46,7 @@ public class GalleryImageVersionInner extends Resource {
     private ReplicationStatus replicationStatus;
 
     /**
-     * Get the publishingProfile property: The publishing profile of a gallery Image Version.
+     * Get the publishingProfile property: Describes the basic gallery artifact publishing profile.
      *
      * @return the publishingProfile value.
      */
@@ -55,7 +55,7 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Set the publishingProfile property: The publishing profile of a gallery Image Version.
+     * Set the publishingProfile property: Describes the basic gallery artifact publishing profile.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.
@@ -81,6 +81,17 @@ public class GalleryImageVersionInner extends Resource {
      */
     public GalleryImageVersionStorageProfile storageProfile() {
         return this.storageProfile;
+    }
+
+    /**
+     * Set the storageProfile property: This is the storage profile of a Gallery Image Version.
+     *
+     * @param storageProfile the storageProfile value to set.
+     * @return the GalleryImageVersionInner object itself.
+     */
+    public GalleryImageVersionInner withStorageProfile(GalleryImageVersionStorageProfile storageProfile) {
+        this.storageProfile = storageProfile;
+        return this;
     }
 
     /**

@@ -215,10 +215,4 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             ? "https://isPlaybackmode"
             : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
     }
-
-    private String getTestingSasUri() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://isPlaybackmode"
-            : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
-    }
 }

@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.FeedOptions;
@@ -146,8 +146,8 @@ public class BasicDemo {
     }
 
     private void log(String msg, Throwable throwable) {
-        if (throwable instanceof CosmosClientException) {
-            log(msg + ": " + ((CosmosClientException) throwable).getStatusCode());
+        if (throwable instanceof CosmosException) {
+            log(msg + ": " + ((CosmosException) throwable).getStatusCode());
         }
     }
 
