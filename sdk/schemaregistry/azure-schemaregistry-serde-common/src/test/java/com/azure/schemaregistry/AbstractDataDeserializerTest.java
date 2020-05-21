@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry;
 
@@ -23,11 +21,11 @@ import java.nio.charset.Charset;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AbstractDataDeserializerTest {
-    private static final String MOCK_GUID = new String(new char[AbstractDataSerDe.idSize]).replace("\0", "a");
+    private static final String MOCK_GUID = new String(new char[AbstractDataSerDe.SCHEMA_ID_SIZE]).replace("\0", "a");
     private static final String MOCK_AVRO_SCHEMA_STRING = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
 
     private final EncoderFactory encoderFactory = EncoderFactory.get();
-    private final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
+    private static final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
 
     @Test
     public void testLoadDecoder() throws IOException, SchemaRegistryClientException, SerializationException {
@@ -38,16 +36,16 @@ public class AbstractDataDeserializerTest {
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             decoder.serializationFormat(),
             MOCK_AVRO_SCHEMA_STRING.getBytes(),
-            s -> decoder.parseSchemaString(s));
+            decoder::parseSchemaString);
 
         assertTrue(registered.deserialize() != null);
 
         MockSchemaRegistryClient mockRegistryClient = new MockSchemaRegistryClient();
-        mockRegistryClient.guidCache.put(MOCK_GUID, registered);
+        mockRegistryClient.getGuidCache().put(MOCK_GUID, registered);
         TestDummyDeserializer deserializer = new TestDummyDeserializer(mockRegistryClient); // contains byte decoder
 
-        assertEquals(MOCK_GUID, deserializer.schemaRegistryClient.getSchemaByGuid(MOCK_GUID).schemaId);
-        assertEquals(decoder.constantPayload, deserializer.deserialize(getPayload()));
+        assertEquals(MOCK_GUID, deserializer.schemaRegistryClient.getSchemaByGuid(MOCK_GUID).getSchemaId());
+        assertEquals(SampleByteDecoder.CONSTANT_PAYLOAD, deserializer.deserialize(getPayload()));
     }
 
     @Test
@@ -82,7 +80,7 @@ public class AbstractDataDeserializerTest {
 
     private byte[] getPayload() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        out.write(ByteBuffer.allocate(AbstractDataSerDe.idSize)
+        out.write(ByteBuffer.allocate(AbstractDataSerDe.SCHEMA_ID_SIZE)
                             .put(MOCK_GUID.getBytes(Charset.forName("UTF-8")))
                             .array());
         GenericRecord record = getAvroRecord();

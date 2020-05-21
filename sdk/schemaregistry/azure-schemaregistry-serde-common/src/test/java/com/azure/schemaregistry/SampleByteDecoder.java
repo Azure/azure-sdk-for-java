@@ -1,25 +1,23 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry;
 
 import org.apache.avro.Schema;
 
 public class SampleByteDecoder implements ByteDecoder {
-    public SampleByteDecoder() {}
+    public SampleByteDecoder() { }
 
     @Override
     public String serializationFormat() {
         return "sample";
     }
 
-    public static final String constantPayload = "sample payload!";
+    public static final String CONSTANT_PAYLOAD = "sample payload!";
 
     @Override
     public Object decodeBytes(byte[] bytes, Object o) throws SerializationException {
-        return constantPayload;
+        return CONSTANT_PAYLOAD;
     }
 
     @Override

@@ -1,55 +1,75 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.schemaregistry.client.SchemaRegistryClient;
 import com.azure.schemaregistry.client.SchemaRegistryClientException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Common implementation for all registry-based serializers.
+ */
 public abstract class AbstractDataSerializer extends AbstractDataSerDe {
-    public static Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
-    public static String SCHEMA_GROUP_DEFAULT = "$default";
+    private final ClientLogger logger = new ClientLogger(AbstractDataSerializer.class);
+
+    public static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
+    public static final String SCHEMA_GROUP_DEFAULT = "$default";
 
     protected ByteEncoder byteEncoder = null;
     protected String serializationFormat;
     protected Boolean autoRegisterSchemas = AbstractDataSerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
     protected String schemaGroup = AbstractDataSerializer.SCHEMA_GROUP_DEFAULT;
 
+    /**
+     * @param schemaRegistryClient registry client to be used for storing schemas.  Not null.
+     */
     public AbstractDataSerializer(SchemaRegistryClient schemaRegistryClient) {
         super(schemaRegistryClient);
     }
 
-    // special case for KafkaAvroSerializer
+    /**
+     * Special case constructor for Kafka serializer.
+     */
     public AbstractDataSerializer() {
     }
 
+    /**
+     * Set ByteEncoder class to be used for serialized objects into bytes
+     * @param byteEncoder ByteEncoder instance
+     */
     protected void setByteEncoder(ByteEncoder byteEncoder) {
         if (this.byteEncoder != null) {
-            throw new IllegalArgumentException("Setting multiple encoders on serializer not permitted");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Setting multiple encoders on serializer not permitted"));
         }
         this.byteEncoder = byteEncoder;
         this.schemaRegistryClient.loadSchemaParser(byteEncoder.serializationFormat(), byteEncoder::parseSchemaString);
     }
 
-    protected byte[] serializeImpl(Object object) throws SerializationException {
+    /**
+     * Core implementation of registry-based serialization.
+     * ID for data schema is fetched from the registry and prefixed to the encoded byte array
+     * representation of the object param.
+     *
+     * @param object object to be serialized
+     * @return byte array containing encoded bytes with prefixed schema ID
+     * @throws SerializationException if serialization operation fails during runtime.
+     */
+    protected byte[] serializeImpl(Object object) {
         if (object == null) {
-            throw new SerializationException(
-                    "Null object.  Null object case should be handled in concrete serializer class." +
-                            "Please file an issue.");
+            throw logger.logExceptionAsError(new SerializationException(
+                "Null object, behavior should be defined in concrete serializer implementation."));
         }
 
         if (byteEncoder == null) {
-            throw new SerializationException("Byte encoder null, serializer must be initialized with a byte encoder.");
+            throw logger.logExceptionAsError(
+                new SerializationException("Byte encoder null, serializer must be initialized with a byte encoder."));
         }
 
         if (serializationFormat == null) {
@@ -60,34 +80,50 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
         String schemaName = byteEncoder.getSchemaName(object);
 
         try {
-            String schemaGuid = maybeRegisterSchema(this.schemaGroup, schemaName, schemaString, this.serializationFormat);
+            String schemaGuid = maybeRegisterSchema(
+                this.schemaGroup, schemaName, schemaString, this.serializationFormat);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            // utf8 swap todo
-            ByteBuffer guidBuffer = ByteBuffer.allocate(AbstractDataSerDe.idSize)
-                    .put(schemaGuid.getBytes(StandardCharsets.UTF_8));
+            ByteBuffer guidBuffer = ByteBuffer.allocate(AbstractDataSerDe.SCHEMA_ID_SIZE)
+                .put(schemaGuid.getBytes(StandardCharsets.UTF_8));
             out.write(guidBuffer.array());
             byteEncoder.encode(object).writeTo(out);
             return out.toByteArray();
         } catch (SchemaRegistryClientException | IOException e) {
             if (this.autoRegisterSchemas) {
-                throw new SerializationException(
+                throw logger.logExceptionAsError(
+                    new SerializationException(
                         String.format("Error registering Avro schema. Group: %s, name: %s", schemaGroup, schemaName),
-                        e);
+                        e));
             } else {
-                throw new SerializationException(
+                throw logger.logExceptionAsError(
+                    new SerializationException(
                         String.format("Error retrieving Avro schema. Group: %s, name: %s", schemaGroup, schemaName),
-                        e);
+                        e));
             }
         }
     }
 
-    private String maybeRegisterSchema(String schemaGroup, String schemaName, String schemaString, String serializationFormatString)
-            throws IOException, SchemaRegistryClientException {
+    /**
+     * If auto-registering is enabled, register schema against SchemaRegistryClient.
+     * If auto-registering is disabled, fetch schema ID for provided schema. Requires pre-registering of schema
+     * against registry.
+     *
+     * @param schemaGroup Schema group where schema should be registered.
+     * @param schemaName name of schema
+     * @param schemaString string representation of schema being stored - must match group schema type
+     * @param schemaType type of schema being stored, e.g. avro
+     * @return string representation of schema ID
+     * @throws SchemaRegistryClientException upon registry client operation failure
+     */
+    private String maybeRegisterSchema(
+        String schemaGroup, String schemaName, String schemaString, String schemaType)
+        throws SchemaRegistryClientException {
         if (this.autoRegisterSchemas) {
-            return this.schemaRegistryClient.register(schemaGroup, schemaName, schemaString,
-                    serializationFormatString).schemaId;
+            return this.schemaRegistryClient.register(schemaGroup, schemaName, schemaString, schemaType)
+                .getSchemaId();
         } else {
-            return this.schemaRegistryClient.getSchemaId(schemaGroup, schemaName, schemaString, serializationFormatString);
+            return this.schemaRegistryClient.getSchemaId(
+                schemaGroup, schemaName, schemaString, schemaType);
         }
     }
 }

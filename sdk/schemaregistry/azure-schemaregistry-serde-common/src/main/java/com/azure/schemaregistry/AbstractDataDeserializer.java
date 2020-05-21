@@ -1,58 +1,76 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.schemaregistry.client.SchemaRegistryObject;
 import com.azure.schemaregistry.client.SchemaRegistryClient;
 import com.azure.schemaregistry.client.SchemaRegistryClientException;
 
-import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Common implementation for all registry-based deserializers.
+ */
 public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
+    private final ClientLogger logger = new ClientLogger(AbstractDataDeserializer.class);
+
     protected final Map<String, ByteDecoder> byteDecoderMap = new ConcurrentHashMap<>();
 
+    /**
+     * Constructor called by all concrete implementation constructors.
+     * Should only call parent constructor.
+     * @param schemaRegistryClient client to be used for fetching schemas by ID
+     */
     protected AbstractDataDeserializer(SchemaRegistryClient schemaRegistryClient) {
         super(schemaRegistryClient);
     }
 
-    // special case for KafkaAvroDeserializer
-    protected AbstractDataDeserializer() {
-    }
+    /**
+     * Special case constructor for Kafka deserializer's empty constructors.
+     */
+    protected AbstractDataDeserializer() { }
 
+    /**
+     * Fetches schema referenced by prefixed ID and deserializes the subsequent payload into Java object.
+     *
+     * @param payload byte payload, produced by an Azure Schema Registry client producer
+     * @return object, deserialized with the prefixed schema
+     * @throws SerializationException if deserialization of registry schema or message payload fails.
+     */
     protected Object deserialize(byte[] payload) throws SerializationException {
         if (payload == null) {
             return null;
         }
 
-        ByteBuffer buffer = getByteBuffer(payload);
+        ByteBuffer buffer = ByteBuffer.wrap(payload);
         String schemaGuid = getSchemaGuidFromPayload(buffer);
-        SchemaRegistryObject registryObject = null;
-        Object payloadSchema = null;
+        SchemaRegistryObject registryObject;
+        Object payloadSchema;
 
         try {
             registryObject = this.schemaRegistryClient.getSchemaByGuid(schemaGuid);
             payloadSchema = registryObject.deserialize();
-        } catch (IOException | SchemaRegistryClientException e) {
-            throw new SerializationException("Failed to retrieve schema for id " + schemaGuid, e);
+        } catch (SchemaRegistryClientException e) {
+            throw logger.logExceptionAsError(
+                new SerializationException(String.format("Failed to retrieve schema for id ", schemaGuid), e));
         }
 
         // TODO: how to handle unknown formats
         if (payloadSchema == null) {
-            throw new SerializationException(
+            throw logger.logExceptionAsError(
+             new SerializationException(
                     String.format("Cast failure for REST object from registry. Object type: %s",
-                            registryObject.deserialize().getClass().getName()));
+                            registryObject.deserialize().getClass().getName())));
         }
 
         int start = buffer.position() + buffer.arrayOffset();
-        int length = buffer.limit() - AbstractDataSerDe.idSize;
+        int length = buffer.limit() - AbstractDataSerDe.SCHEMA_ID_SIZE;
         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
         ByteDecoder byteDecoder = getByteDecoder(registryObject);
@@ -60,32 +78,48 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
     }
 
 
+    /**
+     * Fetches the correct ByteDecoder based on schema type of the message.
+     *
+     * @param registryObject object returned from SchemaRegistryClient, contains schema type
+     * @return ByteDecoder to be used to deserialize encoded payload bytes
+     * @throws SerializationException if decoder for the required schema type has not been loaded
+     */
     private ByteDecoder getByteDecoder(SchemaRegistryObject registryObject) throws SerializationException {
-        ByteDecoder decoder = byteDecoderMap.get(registryObject.serializationType);
+        ByteDecoder decoder = byteDecoderMap.get(registryObject.getSchemaType());
         if (decoder == null) {
-            throw new SerializationException("No decoder class found for serialization type " +
-                    registryObject.serializationType);
+            throw logger.logExceptionAsError(
+                new SerializationException(
+                    String.format("No decoder class found for serialization type ", registryObject.getSchemaType())));
         }
         return decoder;
     }
 
-    private ByteBuffer getByteBuffer(byte[] payload) {
-        ByteBuffer buffer = ByteBuffer.wrap(payload);
-        return buffer;
-    }
-
+    /**
+     * @param buffer full payload bytes
+     * @return String representation of schema ID
+     * @throws SerializationException if schema ID could not be extracted from payload
+     */
     private String getSchemaGuidFromPayload(ByteBuffer buffer) throws SerializationException {
-        byte[] schemaGuidByteArray = new byte[AbstractDataSerDe.idSize];
+        byte[] schemaGuidByteArray = new byte[AbstractDataSerDe.SCHEMA_ID_SIZE];
         try {
             buffer.get(schemaGuidByteArray);
         } catch (BufferUnderflowException e) {
-            throw new SerializationException("Payload too short, no readable guid.", e);
+            throw logger.logExceptionAsError(new SerializationException("Payload too short, no readable guid.", e));
         }
 
-        return new String(schemaGuidByteArray);
+        return new String(schemaGuidByteArray, schemaRegistryClient.getEncoding());
     }
 
+    /**
+     * Loads a ByteDecoder to be used for deserializing payloads of specified serialization format.
+     * @param decoder ByteDecoder class instance to be loaded
+     */
     protected void loadByteDecoder(ByteDecoder decoder) {
+        if (decoder == null) {
+            throw logger.logExceptionAsError(new SerializationException("ByteDecoder cannot be null"));
+        }
+
         this.byteDecoderMap.put(decoder.serializationFormat(), decoder);
         this.schemaRegistryClient.loadSchemaParser(decoder.serializationFormat(), decoder::parseSchemaString);
     }

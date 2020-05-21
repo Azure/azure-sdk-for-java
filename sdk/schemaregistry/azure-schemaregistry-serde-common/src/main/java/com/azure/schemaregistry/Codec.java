@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry;
 
@@ -15,12 +13,12 @@ public interface Codec {
      * Utilized by schema registry store and client as non-case-sensitive tags for
      * schemas of specific serialization format.
      */
-    public String serializationFormat();
+    String serializationFormat();
 
     /**
      * Parses string representation of schema into schema Object
      * @param schemaString string representation of schema
      * @return schema object to be used for decoding payloads
      */
-    public Object parseSchemaString(String schemaString);
+    Object parseSchemaString(String schemaString);
 }
