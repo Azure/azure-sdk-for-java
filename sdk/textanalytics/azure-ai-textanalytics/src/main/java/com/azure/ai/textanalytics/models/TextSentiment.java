@@ -39,7 +39,7 @@ public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
      * @return The corresponding {@link TextSentiment}.
      */
     @JsonCreator
-    public static TextSentiment fromString(String name) {
+    static TextSentiment fromString(String name) {
         return fromString(name, TextSentiment.class);
     }
 }
