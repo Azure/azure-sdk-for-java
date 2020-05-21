@@ -229,6 +229,46 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can complete a message with lock token only with a transaction.
+     */
+    @Test
+    void transactionCommitMessagesWithLockTokenTest() throws InterruptedException {
+        // Arrange
+        MessagingEntityType entityType = MessagingEntityType.QUEUE;
+
+        setSenderAndReceiver(entityType, false);
+        ServiceBusReceiverAsyncClient receiverNonConnectionSharing = getReceiverBuilder(false, entityType).buildAsyncClient();
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message).block(TIMEOUT);
+
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+
+        receiver.receive()
+            .map(messageContext -> {
+                logger.verbose("!!!! Test Received Message SQ [{}]", messageContext.getMessage().getSequenceNumber());
+                return receiver.complete(messageContext.getMessage(), transaction.get());
+            })
+            .subscribe();
+
+        logger.verbose("!!!! Test ready to commit Transaction Id: ", new String(transaction.get().getTransactionId().array()));
+        StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
+            .verifyComplete();
+        logger.verbose("!!!! called commitTransaction Test Wait ... ");
+        TimeUnit.SECONDS.sleep(30);
+        logger.verbose("!!!! Test Exit  after Wait.");
+    }
+
+    /**
      * Verifies that we can send and receive two messages.
      */
     @MethodSource("messagingEntityWithSessions")
