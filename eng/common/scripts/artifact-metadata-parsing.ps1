@@ -98,7 +98,7 @@ function ParseMavenPackage($pkg, $workingDirectory) {
   }
 
   $readmeContentLoc = @(Get-ChildItem -Path $pkg.DirectoryName -Recurse -Include "$($pkg.Basename)-readme.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
@@ -172,7 +172,7 @@ function ParseNPMPackage($pkg, $workingDirectory) {
   }
 
   $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
@@ -229,7 +229,7 @@ function ParseNugetPackage($pkg, $workingDirectory) {
   }
 
   $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
@@ -292,7 +292,7 @@ function ParsePyPIPackage($pkg, $workingDirectory) {
   }
 
   $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
   Remove-Item $workFolder -Force  -Recurse -ErrorAction SilentlyContinue
@@ -317,7 +317,7 @@ function ParseCArtifact($pkg, $workingDirectory) {
   }
   
   $readmeContentLoc = @(Get-ChildItem -Path $packageArtifactLocation -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
