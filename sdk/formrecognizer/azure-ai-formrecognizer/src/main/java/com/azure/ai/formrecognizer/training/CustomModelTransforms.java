@@ -50,8 +50,8 @@ final class CustomModelTransforms {
         ModelInfo modelInfo = modelResponse.getModelInfo();
         if (modelInfo.getStatus() == ModelStatus.INVALID) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(String.format("Model Id %s returned with invalid status.",
-                    modelInfo.getModelId())));
+                new IllegalArgumentException(String.format("Model Id %s returned with invalid status. Error %s",
+                    modelInfo.getModelId(), modelResponse.getTrainResult().getErrors().get(0).getMessage())));
         }
 
         List<TrainingDocumentInfo> trainingDocumentInfoList = null;
