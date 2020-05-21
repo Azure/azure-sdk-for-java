@@ -5,13 +5,17 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.MetricAlertStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MetricAlertStatusCollection model. */
 @Fluent
 public final class MetricAlertStatusCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatusCollectionInner.class);
+
     /*
      * the values for the alert rule resources.
      */
@@ -36,5 +40,16 @@ public final class MetricAlertStatusCollectionInner {
     public MetricAlertStatusCollectionInner withValue(List<MetricAlertStatus> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

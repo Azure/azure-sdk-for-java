@@ -1,6 +1,8 @@
 parameters:
   Artifacts: []
   ArtifactName: 'not-specified'
+  TargetDocRepoOwner: ''
+  TargetDocRepoName: ''
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -14,7 +16,7 @@ stages:
         environment: esrp
         timeoutInMinutes: 20
         pool:
-          vmImage: ubuntu-16.04
+          vmImage: ubuntu-18.04
 
         strategy:
           runOnce:
@@ -52,7 +54,7 @@ stages:
             displayName: "Verify release version"
             condition: ne(variables['Skip.VersionVerification'], 'true')
             pool:
-              vmImage: ubuntu-16.04
+              vmImage: ubuntu-18.04
 
             steps:
               - task: UsePythonVersion@0
@@ -85,14 +87,11 @@ stages:
                 deploy:
                   steps:
                     - checkout: self
-                    - pwsh: |
-                        Get-ChildItem $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                        New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                        Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        Get-ChildItem $(Pipeline.Workspace)/${{artifact.safeName}}
-                      workingDirectory: $(Pipeline.Workspace)
-                      displayName: Stage artifacts
-                      timeoutInMinutes: 5
+                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                      parameters:
+                        SourceFolder: ${{parameters.ArtifactName}}-signed
+                        TargetFolder: ${{artifact.safeName}}
+                        PackageName: ${{artifact.name}}
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
@@ -140,12 +139,46 @@ stages:
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+            - deployment: PublicDocsMs
+              displayName: "Publish Updates for Docs.MS"
+              condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+              environment: github
+              timeoutInMinutes: 5
+              dependsOn: PublishPackage
+
+              pool:
+                vmImage: vs2017-win2016
+
+              strategy:
+                runOnce:
+                  deploy:
+                    steps:
+                      - checkout: self
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
+                      - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
+                        parameters:
+                          ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                          PackageRepository: Maven
+                          ReleaseSha: $(Build.SourceVersion)
+                          RepoId: Azure/azure-sdk-for-java
+                          WorkingDirectory: $(System.DefaultWorkingDirectory)
+                          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                          PRBranchName: 'smoke-test-rdme'
+                          ArtifactName: ${{parameters.ArtifactName}}
+                          Language: 'java'
+                          DocRepoDestinationPath: 'docs-ref-services/' 
+                          
+          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: githubio
               dependsOn: PublishPackage
-
 
               pool:
                 vmImage: windows-2019
@@ -155,12 +188,11 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)
-                          New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                          Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        workingDirectory: $(Pipeline.Workspace)
-                        displayName: Stage artifacts
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
                         workingDirectory: $(Pipeline.Workspace)

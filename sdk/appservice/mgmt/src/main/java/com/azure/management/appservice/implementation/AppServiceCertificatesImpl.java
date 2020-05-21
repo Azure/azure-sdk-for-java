@@ -52,7 +52,7 @@ class AppServiceCertificatesImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceCertificateImpl(inner.getName(), inner, this.manager());
+        return new AppServiceCertificateImpl(inner.name(), inner, this.manager());
     }
 
     @Override

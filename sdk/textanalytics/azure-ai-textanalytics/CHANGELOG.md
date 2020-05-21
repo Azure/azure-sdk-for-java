@@ -1,8 +1,36 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
+**New features**
+- Added Text property and `getText()` to `SentenceSentiment`.
+- `Warnings` property added to each document-level response object returned from the endpoints. It is a list of `TextAnalyticsWarnings`.
+- Added `CategorizedEntityCollection`, `KeyPhrasesCollection`, `LinkedEntityCollection` for having `getWarnings()` to retrieve warnings. 
+- Added a new enum value `ADDRESS` to `EntityCategory`.
+- Text analytics SDK update the service to version `v3.0` from `v3.0-preview.1`.
 
-
+**Breaking changes**
+- Renamed `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
+- Removed `getGraphemeLength()` and `getGraphemeOffset()` from `CategorizedEntity`, `SentenceSentiment`, and `LinkedEntityMatch`.
+- `getGraphemeCount()` in `TextDocumentStatistics` has been renamed to `getCharacterCount()`.
+- `getScore()` in `DetectedLanguage` has been renamed to `getConfidenceScore()`.
+- `getSubCategory()` in `CategorizedEntity` has been renamed to `getSubcategory()`.
+- `getLinkedEntityMatches()` in `LinkedEntity` has been renamed to `getMatches()`.
+- `getCode()` in `TextAnalyticsException` and `TextAnalyticsError` has been renamed to `getErrorCode()`.
+- `getCode()` in `TextAnalyticsWarning` has been renamed to `getWarningCode()`.
+- Async client returns errors, mono error or flux error but no longer throws exception. Sync client throws exceptions only.
+- Deprecated `TextDocumentInput(String id, String text, String language)` constructor, but added `setLanguage()` setter since `language` is optional.
+- Renamed `RecognizeCategorizedEntitiesResult` to `RecognizeEntitiesResult`.
+- Renamed `DocumentResult` to `TextAnalyticsResult`.
+- Removed `getServiceVersion()` from both synchronous and asynchronous clients.
+- Replaced all single input asynchronous APIs, e.x., 
+  - `TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document)` to `Mono<CategorizedEntityCollection> recognizeEntities(String document)`.
+  - `TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document)` to `Mono<LinkedEntityCollection> recognizeLinkedEntities(String document)`.
+  - `TextAnalyticsPagedFlux<String> extractKeyPhrases(String document)` to `Mono<KeyPhrasesCollection> extractKeyPhrases(String document)`.
+- Replaced all single input synchronous APIs, e.x., 
+  - `TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String document)` to `CategorizedEntityCollection recognizeEntities(String document)`.
+  - `TextAnalyticsPagedIterable<LinkedEntity> recognizeLinkedEntities(String document)` to `LinkedEntityCollection recognizeLinkedEntities(String document)`.
+  - `TextAnalyticsPagedIterable<String> extractKeyPhrases(String document)` to `KeyPhrasesCollection extractKeyPhrases(String document)`.
+  
 ## 1.0.0-beta.4 (2020-04-07)
 - Throws an illegal argument exception when the given list of documents is an empty list.
 

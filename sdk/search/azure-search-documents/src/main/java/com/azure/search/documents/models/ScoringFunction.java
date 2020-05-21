@@ -40,8 +40,8 @@ public abstract class ScoringFunction {
 
     /*
      * A value indicating how boosting will be interpolated across document
-     * scores; defaults to "Linear". Possible values include: 'linear',
-     * 'constant', 'quadratic', 'logarithmic'
+     * scores; defaults to "Linear". Possible values include: 'Linear',
+     * 'Constant', 'Quadratic', 'Logarithmic'
      */
     @JsonProperty(value = "interpolation")
     private ScoringFunctionInterpolation interpolation;
@@ -93,7 +93,7 @@ public abstract class ScoringFunction {
     /**
      * Get the interpolation property: A value indicating how boosting will be
      * interpolated across document scores; defaults to "Linear". Possible
-     * values include: 'linear', 'constant', 'quadratic', 'logarithmic'.
+     * values include: 'Linear', 'Constant', 'Quadratic', 'Logarithmic'.
      *
      * @return the interpolation value.
      */
@@ -104,7 +104,7 @@ public abstract class ScoringFunction {
     /**
      * Set the interpolation property: A value indicating how boosting will be
      * interpolated across document scores; defaults to "Linear". Possible
-     * values include: 'linear', 'constant', 'quadratic', 'logarithmic'.
+     * values include: 'Linear', 'Constant', 'Quadratic', 'Logarithmic'.
      *
      * @param interpolation the interpolation value to set.
      * @return the ScoringFunction object itself.

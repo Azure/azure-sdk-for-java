@@ -4,17 +4,18 @@
 package com.azure.management.cosmosdb.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.CloudException;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountKind;
 import com.azure.management.cosmosdb.DatabaseAccountListConnectionStringsResult;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
-
-import java.io.File;
 
 /**
  * Azure CosmosDB sample for high availability.
@@ -29,10 +30,9 @@ public final class CreateCosmosDBWithKindMongoDB {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
-     * @param clientId client id
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId) {
+    public static boolean runSample(Azure azure) {
         final String docDBName = azure.sdkContext().randomResourceName("docDb", 10);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);
 
@@ -61,10 +61,10 @@ public final class CreateCosmosDBWithKindMongoDB {
             //============================================================
             // Delete CosmosDB
             System.out.println("Deleting the CosmosDB");
-            // work around CosmosDB service issue returning 404 CloudException on delete operation
+            // work around CosmosDB service issue returning 404 ManagementException on delete operation
             try {
                 azure.cosmosDBAccounts().deleteById(cosmosDBAccount.id());
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
             }
             System.out.println("Deleted the CosmosDB");
 
@@ -96,17 +96,21 @@ public final class CreateCosmosDBWithKindMongoDB {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            runSample(azure, ApplicationTokenCredential.fromFile(credFile).getClientId());
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

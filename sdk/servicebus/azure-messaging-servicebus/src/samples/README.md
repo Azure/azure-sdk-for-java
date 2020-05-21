@@ -9,48 +9,72 @@ urlFragment: servicebus-samples
 ---
 
 # Azure Service Bus Samples client library for Java
-This document explains samples and how to use them.
+Azure Service Bus samples are a set of self-contained Java programs that demonstrate interacting with Azure Service Bus
+using the client library. Each sample focuses on a specific scenario and can be executed independently.
 
 ## Key concepts
-Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
+Key concepts are explained in detail [here][sdk_readme_key_concepts].
 
 ## Getting started
-Getting started explained in detail [here][SDK_README_GETTING_STARTED].
- 
-### Adding the package to your project
+Please refer to the [Getting Started][sdk_readme_getting_started] section.
 
-Maven dependency for Azure app configuration Client library. Add it to your project's pom file.
+### Obtaining a Service Bus namespace connection string
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-servicebus;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.0-beta.1</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+Most of the samples authorize with Service Bus using a connection string generated for that Service Bus namespace. The
+connection string value can be obtained by:
+
+1. Going to your Service Bus namespace in Azure Portal.
+1. Go to "Shared access policies" for your Service Bus namespace.
+1. Click on the "RootManageSharedAccessKey" policy.
+1. Copying the connection string from the policy's properties.
 
 ## Examples
-The following sections provide several code snippets covering some of the most common service tasks, including:
+
+- [Send messages][SendMessageAsyncSample]
+- [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
+- [Send message batches synchronously][SendMessageBatchSyncSample]
+- [Schedule and cancel a message][MessageCancelScheduleAsyncSample]
+- [Receive messages synchronously][ReceiveMessageSyncSample]
+- [Receive and auto-complete messages][ReceiveMessageAsyncSample]
+- [Receive messages using Azure Identity][ReceiveMessageAzureIdentityAsyncSample]
+- [Receive and settle messages via complete or abandon][ReceiveMessageAndSettleAsyncSample]
+- [Peek at a message][PeekMessageAsyncSample]
+
+### Message sessions
+- [Send and receive messages from a session][SendAndReceiveSessionMessageSample]
+- [Receive messages from multiple available sessions][ReceiveMultipleSessionsAsyncSample]
+- [Receive messages from a specific session][ReceiveNamedSessionAsyncSample]
+- [Receive messages from the first available session][ReceiveSingleSessionAsyncSample]
 
 ## Troubleshooting
-Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
+See [Troubleshooting][sdk_readme_troubleshooting].
 
 ## Next steps
-Start using App Configuration Java SDK in your solutions. Our SDK documentation could be found at [SDK Documentation][servicebus_docs]. 
+See [Next steps][sdk_readme_next_steps].
 
 ## Contributing
-This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
+
+If you would like to become an active contributor to this project please refer to our [Contribution
+Guidelines](../../../../../CONTRIBUTING.md) for more information.
 
 <!-- LINKS -->
-[KEYS_SDK_README]: ../../README.md
-[SDK_README_CONTRIBUTING]: ../../README.md#contributing
-[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
-[SDK_README_TROUBLESHOOTING]: ../../README.md#troubleshooting
-[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
-[SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
-[servicebus_docs]: https://docs.microsoft.com/azure/azure-app-configuration
+[sdk_readme_key_concepts]: ../../README.md#key-concepts
+[sdk_readme_getting_started]: ../../README.md#getting-started
+[sdk_readme_troubleshooting]: ../../README.md#troubleshooting
+[sdk_readme_next_steps]: ../../README.md#next-steps
 
+[PeekMessageAsyncSample]: ./java/com/azure/messaging/servicebus/PeekMessageAsyncSample.java
+[ReceiveMessageAndSettleAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
+[ReceiveMessageAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
+[ReceiveMessageAzureIdentityAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
+[ReceiveMessageSyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageSyncSample.java
+[ReceiveMultipleSessionsAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMultipleSessionsAsyncSample.java
+[ReceiveNamedSessionAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveNamedSessionAsyncSample.java
+[ReceiveSingleSessionAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveSingleSessionAsyncSample.java
+[SendAndReceiveSessionMessageSample]: ./java/com/azure/messaging/servicebus/SendAndReceiveSessionMessageSample.java
+[SendMessageAsyncSample]: ./java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
+[SendMessageBatchSyncSample]: ./java/com/azure/messaging/servicebus/SendMessageBatchSyncSample.java
+[SendMessageWithAzureIdentityAsyncSample]: ./java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
+[SendScheduledMessageAndCancelAsyncSample]: ./java/com/azure/messaging/servicebus/SendScheduledMessageAndCancelAsyncSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)

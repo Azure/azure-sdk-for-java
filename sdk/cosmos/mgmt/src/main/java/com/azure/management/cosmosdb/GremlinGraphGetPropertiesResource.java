@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GremlinGraphGetPropertiesResource model. */
 @Immutable
 public final class GremlinGraphGetPropertiesResource extends GremlinGraphResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinGraphGetPropertiesResource.class);
+
     /*
      * A system generated property. A unique identifier.
      */
@@ -56,5 +60,15 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.management.sql.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SampleName;
@@ -17,8 +16,6 @@ import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseStandardServiceObjective;
 import com.azure.management.sql.SqlFailoverGroup;
 import com.azure.management.sql.SqlServer;
-
-import java.io.File;
 
 /**
  * Azure SQL sample for managing SQL Failover Groups
@@ -94,7 +91,7 @@ public class ManageSqlFailoverGroups {
             // Get the Failover Group from the secondary SQL server.
             System.out.println("Getting the Failover Group from the secondary SQL server");
 
-            SqlFailoverGroup failoverGroupOnPartner = sqlSecondaryServer.failoverGroups().get(failoverGroup.name());
+            sqlSecondaryServer.failoverGroups().get(failoverGroup.name());
 
             Utils.print(failoverGroup);
 
@@ -180,16 +177,16 @@ public class ManageSqlFailoverGroups {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
-            RestClient restClient = new RestClientBuilder()
-                    .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withReadTimeout(150, TimeUnit.SECONDS)
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .withCredential(credentials).buildClient();
-            Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

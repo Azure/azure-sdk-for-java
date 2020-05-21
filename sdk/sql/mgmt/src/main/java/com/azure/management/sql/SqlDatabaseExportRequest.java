@@ -36,6 +36,7 @@ public interface SqlDatabaseExportRequest
              * @param storageAccount an existing storage account to be used
              * @param containerName the container name within the storage account to use
              * @param fileName the exported database file name
+             * @return next definition stage
              */
             SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
                 StorageAccount storageAccount, String containerName, String fileName);

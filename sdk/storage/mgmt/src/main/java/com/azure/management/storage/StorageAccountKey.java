@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The StorageAccountKey model. */
 @Immutable
 public final class StorageAccountKey {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountKey.class);
+
     /*
      * Name of the key.
      */
@@ -53,5 +57,13 @@ public final class StorageAccountKey {
      */
     public KeyPermission permissions() {
         return this.permissions;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

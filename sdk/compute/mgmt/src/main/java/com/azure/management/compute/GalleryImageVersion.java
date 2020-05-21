@@ -140,6 +140,7 @@ public interface GalleryImageVersion
              * Specifies a region in which image version needs to be available.
              *
              * @param region the region
+             * @param replicaCount the replication count
              * @return the next definition stage
              */
             WithCreate withRegionAvailability(Region region, int replicaCount);
@@ -220,6 +221,7 @@ public interface GalleryImageVersion
              * Specifies a region in which image version needs to be available.
              *
              * @param region the region
+             * @param replicaCount the replication count
              * @return the next update stage
              */
             Update withRegionAvailability(Region region, int replicaCount);

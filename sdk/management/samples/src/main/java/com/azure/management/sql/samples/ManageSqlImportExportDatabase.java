@@ -4,23 +4,19 @@
 package com.azure.management.sql.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SampleName;
 import com.azure.management.sql.SqlDatabase;
-import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.storage.StorageAccount;
-
-import java.io.File;
 
 /**
  * Azure SQL sample for managing import/export SQL Database -
@@ -68,7 +64,6 @@ public final class ManageSqlImportExportDatabase {
             // Export a database from a SQL server created above to a new storage account within the same resource group.
             System.out.println("Exporting a database from a SQL server created above to a new storage account within the same resource group.");
 
-            SqlDatabaseImportExportResponse exportedDB;
             StorageAccount storageAccount = azure.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
             if (storageAccount == null) {
                 Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
@@ -76,12 +71,12 @@ public final class ManageSqlImportExportDatabase {
                     .withRegion(sqlServer.regionName())
                     .withExistingResourceGroup(sqlServer.resourceGroupName());
 
-                exportedDB = dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
+                dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
                     .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                     .execute();
                 storageAccount = azure.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
             } else {
-                exportedDB = dbFromSample.exportTo(storageAccount, "container-name", "dbfromsample.bacpac")
+                dbFromSample.exportTo(storageAccount, "container-name", "dbfromsample.bacpac")
                     .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                     .execute();
             }
@@ -161,16 +156,16 @@ public final class ManageSqlImportExportDatabase {
     public static void main(String[] args) {
         try {
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
-            RestClient restClient = new RestClientBuilder()
-                    .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withReadTimeout(150, TimeUnit.SECONDS)
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .withCredential(credentials).buildClient();
-            Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

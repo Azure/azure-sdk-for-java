@@ -5,9 +5,8 @@ package com.azure.management;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.implementation.polling.PollerFactory;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
@@ -139,7 +138,7 @@ public abstract class AzureServiceClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResultAsync(Mono<SimpleResponse<Flux<ByteBuffer>>> lroInit,
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResultAsync(Mono<? extends Response<Flux<ByteBuffer>>> lroInit,
                                                                  HttpPipeline httpPipeline,
                                                                  Type pollResultType, Type finalResultType) {
         return PollerFactory.create(
@@ -152,7 +151,7 @@ public abstract class AzureServiceClient {
         );
     }
 
-    private Mono<Response<Flux<ByteBuffer>>> activationOperation(Mono<SimpleResponse<Flux<ByteBuffer>>> lroInit) {
+    private Mono<Response<Flux<ByteBuffer>>> activationOperation(Mono<? extends Response<Flux<ByteBuffer>>> lroInit) {
         return lroInit.flatMap(fluxSimpleResponse -> Mono.just(fluxSimpleResponse));
     }
 

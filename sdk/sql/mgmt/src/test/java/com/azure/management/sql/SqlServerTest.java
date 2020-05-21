@@ -3,9 +3,9 @@
 
 package com.azure.management.sql;
 
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.implementation.SqlServerManager;
@@ -19,23 +19,16 @@ public abstract class SqlServerTest extends TestBase {
     protected String sqlServerName = "";
 
     @Override
-    protected RestClient buildRestClient(RestClientBuilder builder, boolean isMocked) {
-        //        if (!isMocked) {
-        //        return super.buildRestClient(builder.withReadTimeout(150, TimeUnit.SECONDS) , isMocked);
-        return super.buildRestClient(builder, isMocked);
-    }
-
-    @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("rgsql", 20);
         sqlServerName = generateRandomResourceName("javasqlserver", 20);
 
         resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        sqlServerManager = SqlServerManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
+        sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
 
-        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override

@@ -9,12 +9,14 @@ import com.azure.management.graphrbac.CertificateCredential;
 import com.azure.management.graphrbac.CertificateType;
 import com.azure.management.graphrbac.models.KeyCredentialInner;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import reactor.core.publisher.Mono;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<CertificateCredential, KeyCredentialInner>
@@ -30,7 +32,8 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
         if (keyCredential.customKeyIdentifier() != null && !keyCredential.customKeyIdentifier().isEmpty()) {
-            this.name = new String(Base64.getDecoder().decode(keyCredential.customKeyIdentifier()));
+            this.name = new String(Base64.getDecoder().decode(keyCredential.customKeyIdentifier()),
+                StandardCharsets.UTF_8);
         } else {
             this.name = keyCredential.keyId();
         }
@@ -40,7 +43,7 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
         super(
             new KeyCredentialInner()
                 .withUsage("Verify")
-                .withCustomKeyIdentifier(Base64.getEncoder().encodeToString(name.getBytes()))
+                .withCustomKeyIdentifier(Base64.getEncoder().encodeToString(name.getBytes(StandardCharsets.UTF_8)))
                 .withStartDate(OffsetDateTime.now())
                 .withEndDate(OffsetDateTime.now().plusYears(1)));
         this.name = name;
@@ -162,7 +165,7 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
             .append("\n");
         builder.append("}");
         try {
-            authFile.write(builder.toString().getBytes());
+            authFile.write(builder.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }

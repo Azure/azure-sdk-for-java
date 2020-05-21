@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TopLevelDomainAgreementOption model. */
 @Fluent
 public final class TopLevelDomainAgreementOption {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopLevelDomainAgreementOption.class);
+
     /*
      * If <code>true</code>, then the list of agreements will include
      * agreements for domain privacy as well; otherwise, <code>false</code>.
@@ -66,5 +70,13 @@ public final class TopLevelDomainAgreementOption {
     public TopLevelDomainAgreementOption withForTransfer(Boolean forTransfer) {
         this.forTransfer = forTransfer;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,6 +5,7 @@ package com.azure.management.compute;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
+import java.util.Locale;
 
 /** Possible power states of a virtual machine. */
 public final class PowerState extends ExpandableStringEnum<PowerState> {
@@ -39,7 +40,7 @@ public final class PowerState extends ExpandableStringEnum<PowerState> {
     public static PowerState fromInstanceView(VirtualMachineInstanceView virtualMachineInstanceView) {
         if (virtualMachineInstanceView != null && virtualMachineInstanceView.statuses() != null) {
             for (InstanceViewStatus status : virtualMachineInstanceView.statuses()) {
-                if (status.code() != null && status.code().toLowerCase().startsWith("powerstate")) {
+                if (status.code() != null && status.code().toLowerCase(Locale.ROOT).startsWith("powerstate")) {
                     return fromString(status.code());
                 }
             }

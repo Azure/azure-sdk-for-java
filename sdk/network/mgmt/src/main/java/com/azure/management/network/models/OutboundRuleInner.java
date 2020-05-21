@@ -7,7 +7,9 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.LoadBalancerOutboundRuleProtocol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class OutboundRuleInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundRuleInner.class);
+
     /*
      * The name of the resource that is unique within the set of outbound rules
      * used by the load balancer. This name can be used to access the resource.
@@ -44,7 +48,7 @@ public class OutboundRuleInner extends SubResource {
      * The Frontend IP addresses of the load balancer.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
-    private List<SubResource> frontendIPConfigurations;
+    private List<SubResource> frontendIpConfigurations;
 
     /*
      * A reference to a pool of DIPs. Outbound traffic is randomly load
@@ -152,22 +156,22 @@ public class OutboundRuleInner extends SubResource {
     }
 
     /**
-     * Get the frontendIPConfigurations property: The Frontend IP addresses of the load balancer.
+     * Get the frontendIpConfigurations property: The Frontend IP addresses of the load balancer.
      *
-     * @return the frontendIPConfigurations value.
+     * @return the frontendIpConfigurations value.
      */
-    public List<SubResource> frontendIPConfigurations() {
-        return this.frontendIPConfigurations;
+    public List<SubResource> frontendIpConfigurations() {
+        return this.frontendIpConfigurations;
     }
 
     /**
-     * Set the frontendIPConfigurations property: The Frontend IP addresses of the load balancer.
+     * Set the frontendIpConfigurations property: The Frontend IP addresses of the load balancer.
      *
-     * @param frontendIPConfigurations the frontendIPConfigurations value to set.
+     * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the OutboundRuleInner object itself.
      */
-    public OutboundRuleInner withFrontendIPConfigurations(List<SubResource> frontendIPConfigurations) {
-        this.frontendIPConfigurations = frontendIPConfigurations;
+    public OutboundRuleInner withFrontendIpConfigurations(List<SubResource> frontendIpConfigurations) {
+        this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
 
@@ -275,5 +279,13 @@ public class OutboundRuleInner extends SubResource {
     public OutboundRuleInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

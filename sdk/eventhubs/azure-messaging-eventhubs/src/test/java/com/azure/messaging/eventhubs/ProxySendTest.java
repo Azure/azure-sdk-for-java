@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -25,21 +26,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class ProxySendTest extends IntegrationTestBase {
+/**
+ * Verifies we can publish events through a proxy.
+ */
+@Tag(TestUtils.INTEGRATION)
+class ProxySendTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8999;
-    private static final String PARTITION_ID = "1";
+    private static final String PARTITION_ID = "3";
     private static final int NUMBER_OF_EVENTS = 25;
 
     private static ProxyServer proxyServer;
     private static ProxySelector defaultProxySelector;
     private EventHubClientBuilder builder;
 
-    public ProxySendTest() {
+    ProxySendTest() {
         super(new ClientLogger(ProxySendTest.class));
     }
 
     @BeforeAll
-    public static void initialize() throws Exception {
+    static void initialize() throws Exception {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
         proxyServer = new SimpleProxy(PROXY_PORT);
@@ -61,7 +66,7 @@ public class ProxySendTest extends IntegrationTestBase {
     }
 
     @AfterAll
-    public static void cleanupClient() throws Exception {
+    static void cleanupClient() throws Exception {
         StepVerifier.resetDefaultTimeout();
 
         if (proxyServer != null) {
@@ -78,16 +83,11 @@ public class ProxySendTest extends IntegrationTestBase {
             .connectionString(getConnectionString());
     }
 
-    @Override
-    protected void afterTest() {
-
-    }
-
     /**
      * Verifies that we can send some number of events.
      */
     @Test
-    public void sendEvents() {
+    void sendEvents() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);

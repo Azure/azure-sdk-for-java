@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PathHierarchyTokenizerV2")
 @Fluent
-public final class PathHierarchyTokenizerV2 extends Tokenizer {
+public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     /*
      * The delimiter character to use. Default is "/".
      */

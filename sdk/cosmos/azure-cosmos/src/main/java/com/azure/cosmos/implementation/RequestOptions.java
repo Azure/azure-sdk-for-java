@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.AccessCondition;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,18 +19,20 @@ public class RequestOptions {
     private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
-    private AccessCondition accessCondition;
     private IndexingDirective indexingDirective;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Integer resourceTokenExpirySeconds;
     private String offerType;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private Integer offerThroughput;
     private PartitionKey partitionkey;
     private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
     private boolean populateQuotaInfo;
     private Map<String, Object> properties;
+    private ThroughputProperties throughputProperties;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -69,21 +71,39 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return tthe ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return this.accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      */
-    public void setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public void setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
+     */
+    public void setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
     }
 
     /**
@@ -192,6 +212,14 @@ public class RequestOptions {
      */
     public void setOfferThroughput(Integer offerThroughput) {
         this.offerThroughput = offerThroughput;
+    }
+
+    public void setThroughputProperties(ThroughputProperties throughputProperties) {
+        this.throughputProperties = throughputProperties;
+    }
+
+    public ThroughputProperties getThroughputProperties() {
+        return this.throughputProperties;
     }
 
     /**

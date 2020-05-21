@@ -10,11 +10,12 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-  
+
 trigger:
   branches:
     include:
       - master
+      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -31,11 +32,23 @@ pr:
   paths:
     include:
       - sdk/spring/
-  
+
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: spring
       Artifacts:
-        - name: azure-spring-something
-          safeName: azurespringsomething
+        - name: azure-spring-boot
+          groupId: com.microsoft.azure
+          safeName: azurespringboot
+        - name: azure-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarter
+        - name: azure-active-directory-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarteractivedirectory
+
+
+
+
+

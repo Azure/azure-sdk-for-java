@@ -4,140 +4,40 @@
 
 package com.azure.management.compute;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The ApiError model. */
-@Fluent
-public final class ApiError {
-    /*
-     * The Api error details
-     */
-    @JsonProperty(value = "details")
-    private List<ApiErrorBase> details;
+@Immutable
+public final class ApiError extends ManagementError {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiError.class);
 
     /*
      * The Api inner error
      */
-    @JsonProperty(value = "innererror")
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
-
-    /*
-     * The error code.
-     */
-    @JsonProperty(value = "code")
-    private String code;
-
-    /*
-     * The target of the particular error.
-     */
-    @JsonProperty(value = "target")
-    private String target;
-
-    /*
-     * The error message.
-     */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /**
-     * Get the details property: The Api error details.
-     *
-     * @return the details value.
-     */
-    public List<ApiErrorBase> details() {
-        return this.details;
-    }
-
-    /**
-     * Set the details property: The Api error details.
-     *
-     * @param details the details value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withDetails(List<ApiErrorBase> details) {
-        this.details = details;
-        return this;
-    }
 
     /**
      * Get the innererror property: The Api inner error.
      *
      * @return the innererror value.
      */
-    public InnerError innererror() {
+    public InnerError getInnererror() {
         return this.innererror;
     }
 
     /**
-     * Set the innererror property: The Api inner error.
+     * Validates the instance.
      *
-     * @param innererror the innererror value to set.
-     * @return the ApiError object itself.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public ApiError withInnererror(InnerError innererror) {
-        this.innererror = innererror;
-        return this;
-    }
-
-    /**
-     * Get the code property: The error code.
-     *
-     * @return the code value.
-     */
-    public String code() {
-        return this.code;
-    }
-
-    /**
-     * Set the code property: The error code.
-     *
-     * @param code the code value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the target property: The target of the particular error.
-     *
-     * @return the target value.
-     */
-    public String target() {
-        return this.target;
-    }
-
-    /**
-     * Set the target property: The target of the particular error.
-     *
-     * @param target the target value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
-     * Get the message property: The error message.
-     *
-     * @return the message value.
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message property: The error message.
-     *
-     * @param message the message value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withMessage(String message) {
-        this.message = message;
-        return this;
+    public void validate() {
+        if (innererror != null) {
+            innererror.validate();
+        }
     }
 }

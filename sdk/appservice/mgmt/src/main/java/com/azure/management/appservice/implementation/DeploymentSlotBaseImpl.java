@@ -8,7 +8,7 @@ import com.azure.management.appservice.AppSetting;
 import com.azure.management.appservice.ConnectionString;
 import com.azure.management.appservice.CsmPublishingProfileOptions;
 import com.azure.management.appservice.CsmSlotEntity;
-import com.azure.management.appservice.HostNameBinding;
+import com.azure.management.appservice.HostnameBinding;
 import com.azure.management.appservice.MSDeploy;
 import com.azure.management.appservice.PublishingProfile;
 import com.azure.management.appservice.WebAppBase;
@@ -54,7 +54,7 @@ abstract class DeploymentSlotBaseImpl<
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
         inner().withServerFarmId(parent.appServicePlanId());
-        inner().setLocation(regionName());
+        inner().withLocation(regionName());
     }
 
     @Override
@@ -63,27 +63,27 @@ abstract class DeploymentSlotBaseImpl<
     }
 
     @Override
-    public Map<String, HostNameBinding> getHostNameBindings() {
-        return getHostNameBindingsAsync().block();
+    public Map<String, HostnameBinding> getHostnameBindings() {
+        return getHostnameBindingsAsync().block();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Mono<Map<String, HostNameBinding>> getHostNameBindingsAsync() {
+    public Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync() {
         return this
             .manager()
             .inner()
             .webApps()
-            .listHostNameBindingsSlotAsync(resourceGroupName(), parent().name(), name())
+            .listHostnameBindingsSlotAsync(resourceGroupName(), parent().name(), name())
             .mapPage(
                 hostNameBindingInner ->
-                    new HostNameBindingImpl<FluentT, FluentImplT>(
+                    new HostnameBindingImpl<FluentT, FluentImplT>(
                         hostNameBindingInner, (FluentImplT) DeploymentSlotBaseImpl.this))
             .collectList()
             .map(
                 hostNameBindings ->
                     Collections
-                        .<String, HostNameBinding>unmodifiableMap(
+                        .<String, HostnameBinding>unmodifiableMap(
                             hostNameBindings
                                 .stream()
                                 .collect(
@@ -258,11 +258,11 @@ abstract class DeploymentSlotBaseImpl<
     }
 
     @Override
-    Mono<Void> deleteHostNameBinding(String hostname) {
+    Mono<Void> deleteHostnameBinding(String hostname) {
         return manager()
             .inner()
             .webApps()
-            .deleteHostNameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
+            .deleteHostnameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
     }
 
     @Override

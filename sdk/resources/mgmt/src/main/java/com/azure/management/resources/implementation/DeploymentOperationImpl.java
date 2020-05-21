@@ -28,8 +28,8 @@ final class DeploymentOperationImpl extends
     DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
         super(innerModel);
         this.client = client;
-        this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.getId());
-        this.deploymentName = ResourceUtils.extractFromResourceId(innerModel.getId(), "deployments");
+        this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
+        this.deploymentName = ResourceUtils.extractFromResourceId(innerModel.id(), "deployments");
     }
 
     @Override

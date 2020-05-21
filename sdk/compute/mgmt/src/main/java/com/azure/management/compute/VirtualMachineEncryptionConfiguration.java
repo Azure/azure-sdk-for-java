@@ -4,6 +4,8 @@
 package com.azure.management.compute;
 
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
+
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -89,7 +91,7 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     /** @return URL to the key vault to store the disk encryption key */
     public String keyVaultUrl() {
         String keyVaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);
-        return String.format("https://%s.vault.azure.net/", keyVaultName.toLowerCase());
+        return String.format("https://%s.vault.azure.net/", keyVaultName.toLowerCase(Locale.ROOT));
     }
 
     /** @return resource ID of the Key Vault holding key encryption key (KEK) */

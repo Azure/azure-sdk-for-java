@@ -62,6 +62,6 @@ class NetworkSecurityGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkSecurityGroupImpl(inner.getName(), inner, this.manager());
+        return new NetworkSecurityGroupImpl(inner.name(), inner, this.manager());
     }
 }

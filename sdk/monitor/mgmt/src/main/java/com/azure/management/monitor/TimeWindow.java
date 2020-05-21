@@ -5,12 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The TimeWindow model. */
 @Fluent
 public final class TimeWindow {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeWindow.class);
+
     /*
      * the timezone of the start and end times for the profile. Some examples
      * of valid time zones are: Dateline Standard Time, UTC-11, Hawaiian
@@ -173,5 +177,22 @@ public final class TimeWindow {
     public TimeWindow withEnd(OffsetDateTime end) {
         this.end = end;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (start() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property start in model TimeWindow"));
+        }
+        if (end() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property end in model TimeWindow"));
+        }
     }
 }

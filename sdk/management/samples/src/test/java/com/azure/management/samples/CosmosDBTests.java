@@ -17,25 +17,25 @@ public class CosmosDBTests extends SamplesTestBase {
     public void testCreateCosmosDBWithEventualConsistency() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(CreateCosmosDBWithEventualConsistency.runSample(azure, "clientId"));
+            Assertions.assertTrue(CreateCosmosDBWithEventualConsistency.runSample(azure));
         }
     }
 
     @Test
     public void testCreateCosmosDBWithIPRange() {
-        Assertions.assertTrue(CreateCosmosDBWithIPRange.runSample(azure, "clientId"));
+        Assertions.assertTrue(CreateCosmosDBWithIPRange.runSample(azure));
     }
 
     @Test
     public void testCreateCosmosDBTableWithVirtualNetworkRule() {
-        Assertions.assertTrue(CreateCosmosDBTableWithVirtualNetworkRule.runSample(azure, "clientId"));
+        Assertions.assertTrue(CreateCosmosDBTableWithVirtualNetworkRule.runSample(azure));
     }
 
     @Test
     public void testCreateCosmosDBWithKindMongoDB() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(CreateCosmosDBWithKindMongoDB.runSample(azure, "clientId"));
+            Assertions.assertTrue(CreateCosmosDBWithKindMongoDB.runSample(azure));
         }
     }
 
@@ -43,7 +43,7 @@ public class CosmosDBTests extends SamplesTestBase {
     public void testManageHACosmosDB() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(ManageHACosmosDB.runSample(azure, "clientId"));
+            Assertions.assertTrue(ManageHACosmosDB.runSample(azure));
         }
     }
 }

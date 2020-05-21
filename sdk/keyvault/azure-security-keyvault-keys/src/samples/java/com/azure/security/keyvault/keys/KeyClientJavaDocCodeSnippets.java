@@ -126,6 +126,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
+        // Deleted date only works for SoftDelete Enabled Key Vault.
         DeletedKey deletedKey = deletedKeyPollResponse.getValue();
         System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());

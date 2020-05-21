@@ -14,10 +14,12 @@ import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.azure.management.resources.fluentcore.model.Creatable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -76,7 +78,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             .inner()
             .identity()
             .type()
-            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
             this.virtualMachine.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -203,14 +205,14 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
                 VirtualMachineIdentity currentIdentity = this.virtualMachine.inner().identity();
                 if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
                     for (String id : currentIdentity.userAssignedIdentities().keySet()) {
-                        currentIds.add(id.toLowerCase());
+                        currentIds.add(id.toLowerCase(Locale.ROOT));
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
                 for (Map.Entry<String, VirtualMachineIdentityUserAssignedIdentities> entrySet
                     : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
-                        removeIds.add(entrySet.getKey().toLowerCase());
+                        removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
                     }
                 }
                 // If so check user want to remove all the identities
@@ -221,7 +223,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
                     // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
                         vmUpdate.withIdentity(new VirtualMachineIdentity().withType(ResourceIdentityType.NONE));
-                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
                         vmUpdate.withIdentity(currentIdentity);
                         vmUpdate.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ResourceIdentityType.USER_ASSIGNED)) {
@@ -266,7 +268,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             || virtualMachineInner.identity().type().equals(identityType)) {
             virtualMachineInner.identity().withType(identityType);
         } else {
-            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
         }
     }
 }

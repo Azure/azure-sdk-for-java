@@ -3,12 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -38,10 +39,7 @@ public class ReadmeSamples {
      * Code sample for using AAD authorization to create a client.
      */
     public void useAadAuthorization() {
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId("<< APPLICATION (CLIENT) ID >>")
-            .clientSecret("<< APPLICATION SECRET >>")
-            .tenantId("<< DIRECTORY (TENANT) ID >>")
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
         // The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:

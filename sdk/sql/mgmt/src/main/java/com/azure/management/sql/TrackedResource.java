@@ -6,12 +6,16 @@ package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The TrackedResource model. */
 @Fluent
 public class TrackedResource extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResource.class);
+
     /*
      * Resource location.
      */
@@ -62,5 +66,18 @@ public class TrackedResource extends ProxyResource {
     public TrackedResource withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (location() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property location in model TrackedResource"));
+        }
     }
 }

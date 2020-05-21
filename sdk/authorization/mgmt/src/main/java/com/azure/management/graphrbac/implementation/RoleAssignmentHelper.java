@@ -3,7 +3,7 @@
 
 package com.azure.management.graphrbac.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.RoleAssignment;
 import com.azure.management.graphrbac.RoleDefinition;
@@ -11,9 +11,10 @@ import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.azure.management.resources.fluentcore.model.Indexable;
+import reactor.core.publisher.Mono;
+
 import java.util.Objects;
 import java.util.function.Function;
-import reactor.core.publisher.Mono;
 
 /**
  * A utility class to operate on role assignments for a resource with service principal (object id). This type is used
@@ -79,7 +80,7 @@ public class RoleAssignmentHelper {
                 }
                 final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
                 final String resourceScope;
-                if (scope == CURRENT_RESOURCE_GROUP_SCOPE) {
+                if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
                     resourceScope = resourceGroupId(idProvider.resourceId());
                 } else {
                     resourceScope = scope;
@@ -133,7 +134,7 @@ public class RoleAssignmentHelper {
                 }
                 final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
                 final String resourceScope;
-                if (scope == CURRENT_RESOURCE_GROUP_SCOPE) {
+                if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
                     resourceScope = resourceGroupId(idProvider.resourceId());
                 } else {
                     resourceScope = scope;
@@ -244,8 +245,8 @@ public class RoleAssignmentHelper {
      * @return true if role assignment exists, false otherwise
      */
     private static boolean isRoleAssignmentExists(Throwable throwable) {
-        if (throwable instanceof CloudException) {
-            CloudException exception = (CloudException) throwable;
+        if (throwable instanceof ManagementException) {
+            ManagementException exception = (ManagementException) throwable;
             if (exception.getValue() != null
                 && exception.getValue().getCode() != null
                 && exception.getValue().getCode().equalsIgnoreCase("RoleAssignmentExists")) {

@@ -10,10 +10,12 @@ import com.azure.management.compute.InstanceViewStatus;
 import com.azure.management.compute.OperatingSystemTypes;
 import com.azure.management.compute.models.VirtualMachineInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
+import reactor.core.publisher.Mono;
+
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * The implementation for DiskVolumeEncryptionStatus for Windows virtual machine. This implementation monitor status of
@@ -169,7 +171,7 @@ class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMon
      * @return mapped EncryptionStatus if given code is encryption status code, null otherwise.
      */
     private static EncryptionStatus encryptionStatusFromCode(String code) {
-        if (code != null && code.toLowerCase().startsWith("encryptionstate")) {
+        if (code != null && code.toLowerCase(Locale.ROOT).startsWith("encryptionstate")) {
             // e.g. "code": "EncryptionState/encrypted"
             //      "code": "EncryptionState/notEncrypted"
             String[] parts = code.split("/", 2);

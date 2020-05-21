@@ -5,22 +5,22 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.AnalyzerName;
-import com.azure.search.documents.models.DataContainer;
-import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
-import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.EntityRecognitionSkill;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.Indexer;
 import com.azure.search.documents.models.IndexingSchedule;
 import com.azure.search.documents.models.InputFieldMappingEntry;
+import com.azure.search.documents.models.LexicalAnalyzerName;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.models.SearchIndexer;
+import com.azure.search.documents.models.SearchIndexerDataContainer;
+import com.azure.search.documents.models.SearchIndexerDataSource;
+import com.azure.search.documents.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.models.SearchIndexerSkill;
+import com.azure.search.documents.models.SearchIndexerSkillset;
 import com.azure.search.documents.models.Suggester;
 
 import java.time.Duration;
@@ -55,19 +55,19 @@ public class LifecycleSetupExample {
     public static void main(String[] args) {
         SearchServiceClient client = createServiceClient();
         // Create a data source for a Cosmos DB database
-        DataSource dataSource = createCosmosDataSource(client);
+        SearchIndexerDataSource dataSource = createCosmosDataSource(client);
         System.out.println("Created DataSource " + dataSource.getName());
 
         // Create an index
-        Index index = createIndex(client);
+        SearchIndex index = createIndex(client);
         System.out.println("Created Index " + index.getName());
 
         // Create a skillset for Cognitive Services
-        Skillset skillset = createSkillset(client);
+        SearchIndexerSkillset skillset = createSkillset(client);
         System.out.println("Created Skillset " + skillset.getName());
 
         // Create an indexer that uses the skillset and data source and loads the index
-        Indexer indexer = createIndexer(client, dataSource, skillset, index);
+        SearchIndexer indexer = createIndexer(client, dataSource, skillset, index);
         System.out.println("Created Indexer " + indexer.getName());
 
         // Update indexer schedule
@@ -86,7 +86,7 @@ public class LifecycleSetupExample {
             .buildClient();
     }
 
-    private static void updateIndexerSchedule(SearchServiceClient client, Indexer indexer) {
+    private static void updateIndexerSchedule(SearchServiceClient client, SearchIndexer indexer) {
         IndexingSchedule indexingSchedule = new IndexingSchedule()
             .setInterval(Duration.ofMinutes(10));
         indexer.setSchedule(indexingSchedule);
@@ -94,8 +94,9 @@ public class LifecycleSetupExample {
         client.createOrUpdateIndexer(indexer);
     }
 
-    private static Indexer createIndexer(SearchServiceClient client, DataSource dataSource, Skillset skillset, Index index) {
-        Indexer indexer = new Indexer()
+    private static SearchIndexer createIndexer(SearchServiceClient client, SearchIndexerDataSource dataSource,
+        SearchIndexerSkillset skillset, SearchIndex index) {
+        SearchIndexer indexer = new SearchIndexer()
             .setName(INDEXER_NAME)
             .setDataSourceName(dataSource.getName())
             .setSkillsetName(skillset.getName())
@@ -104,7 +105,7 @@ public class LifecycleSetupExample {
         return client.createOrUpdateIndexer(indexer);
     }
 
-    private static Skillset createSkillset(SearchServiceClient client) {
+    private static SearchIndexerSkillset createSkillset(SearchServiceClient client) {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -118,14 +119,14 @@ public class LifecycleSetupExample {
         );
 
 
-        Skill skill = new EntityRecognitionSkill()
+        SearchIndexerSkill skill = new EntityRecognitionSkill()
             .setName("#1")
             .setDescription("Entity Recognition Skill")
             .setContext("/document/Description")
             .setInputs(inputs)
             .setOutputs(outputs);
 
-        Skillset skillset = new Skillset()
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
             .setName(SKILLSET_NAME)
             .setDescription("Skillset for testing default configuration")
             .setSkills(Collections.singletonList(skill));
@@ -134,48 +135,48 @@ public class LifecycleSetupExample {
         return client.createOrUpdateSkillset(skillset);
     }
 
-    private static Index createIndex(SearchServiceClient client) {
+    private static SearchIndex createIndex(SearchServiceClient client) {
 
         // Index definition
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName(INDEX_NAME)
             .setFields(
-                Arrays.asList(new Field()
+                Arrays.asList(new SearchField()
                         .setName("HotelId")
-                        .setType(DataType.EDM_STRING)
+                        .setType(SearchFieldDataType.STRING)
                         .setKey(Boolean.TRUE)
                         .setFacetable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
                         .setHidden(Boolean.FALSE)
                         .setSearchable(Boolean.FALSE)
                         .setSortable(Boolean.FALSE),
-                    new Field()
+                    new SearchField()
                         .setName("HotelName")
-                        .setType(DataType.EDM_STRING)
+                        .setType(SearchFieldDataType.STRING)
                         .setFacetable(Boolean.FALSE)
                         .setFilterable(Boolean.FALSE)
                         .setHidden(Boolean.FALSE)
                         .setKey(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
                         .setSortable(Boolean.FALSE)
-                        .setAnalyzer(AnalyzerName.EN_MICROSOFT),
-                    new Field()
+                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                    new SearchField()
                         .setName("Description")
-                        .setType(DataType.EDM_STRING)
+                        .setType(SearchFieldDataType.STRING)
                         .setSearchable(Boolean.TRUE)
                         .setFilterable(Boolean.FALSE)
                         .setHidden(Boolean.FALSE)
                         .setSortable(Boolean.FALSE)
                         .setFacetable(Boolean.FALSE)
-                        .setAnalyzer(AnalyzerName.EN_MICROSOFT),
-                    new Field()
+                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                    new SearchField()
                         .setName("Tags")
-                        .setType(DataType.collection(DataType.EDM_STRING))
+                        .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
                         .setFacetable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
                         .setHidden(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
-                        .setAnalyzer(AnalyzerName.EN_MICROSOFT)));
+                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
         index.setSuggesters(Collections.singletonList(new Suggester()
@@ -185,14 +186,15 @@ public class LifecycleSetupExample {
         return client.createOrUpdateIndex(index);
     }
 
-    private static DataSource createCosmosDataSource(SearchServiceClient client) {
+    private static SearchIndexerDataSource createCosmosDataSource(SearchServiceClient client) {
 
-        DataContainer dataContainer = new DataContainer().setName(COSMOS_COLLECTION_NAME);
-        HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy = new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts");
+        SearchIndexerDataContainer dataContainer = new SearchIndexerDataContainer().setName(COSMOS_COLLECTION_NAME);
+        HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =
+            new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts");
 
-        DataSource dataSource = new DataSource()
+        SearchIndexerDataSource dataSource = new SearchIndexerDataSource()
             .setName(DATASOURCE_NAME)
-            .setType(DataSourceType.COSMOS)
+            .setType(SearchIndexerDataSourceType.COSMOS_DB)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString(COSMOS_CONNECTION_STRING))
             .setContainer(dataContainer)

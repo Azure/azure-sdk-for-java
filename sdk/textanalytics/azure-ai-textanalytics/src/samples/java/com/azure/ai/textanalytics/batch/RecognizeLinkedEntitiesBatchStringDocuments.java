@@ -24,7 +24,7 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
@@ -48,8 +48,9 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
                     System.out.println("Linked Entities:");
                     System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                         entity.getName(), entity.getDataSourceEntityId(), entity.getUrl(), entity.getDataSource());
-                    entity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                        "\tMatched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                    entity.getMatches().forEach(entityMatch -> System.out.printf(
+                        "\tMatched entity: %s, confidence score: %f.%n",
+                        entityMatch.getText(), entityMatch.getConfidenceScore()));
                 });
             }
         }

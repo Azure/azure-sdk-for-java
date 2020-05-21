@@ -11,9 +11,11 @@ import com.azure.management.compute.OperatingSystemTypes;
 import com.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.azure.management.compute.models.VirtualMachineInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
-import java.util.HashMap;
-import java.util.Map;
 import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * The implementation for DiskVolumeEncryptionStatus for Linux virtual machine. This implementation monitor status of
@@ -103,8 +105,8 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
                             if (eiv.type() != null
                                 && eiv
                                     .type()
-                                    .toLowerCase()
-                                    .startsWith(EncryptionExtensionIdentifier.publisherName().toLowerCase())
+                                    .toLowerCase(Locale.ROOT)
+                                    .startsWith(EncryptionExtensionIdentifier.publisherName().toLowerCase(Locale.ROOT))
                                 && eiv.name() != null
                                 && EncryptionExtensionIdentifier.isEncryptionTypeName(eiv.name(), osType())) {
                                 self.extensionInstanceView = eiv;
@@ -146,7 +148,7 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
      * @return mapped EncryptionStatus if given code is encryption status code, null otherwise.
      */
     private static EncryptionStatus encryptionStatusFromCode(String code) {
-        if (code != null && code.toLowerCase().startsWith("encryptionstate")) {
+        if (code != null && code.toLowerCase(Locale.ROOT).startsWith("encryptionstate")) {
             // e.g. "code": "EncryptionState/encrypted"
             //      "code": "EncryptionState/notEncrypted"
             String[] parts = code.split("/", 2);

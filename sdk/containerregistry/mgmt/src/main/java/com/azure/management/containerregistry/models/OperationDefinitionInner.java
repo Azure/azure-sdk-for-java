@@ -6,14 +6,18 @@ package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.OperationDisplayDefinition;
 import com.azure.management.containerregistry.OperationServiceSpecificationDefinition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationDefinition model. */
 @JsonFlatten
 @Fluent
 public class OperationDefinitionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDefinitionInner.class);
+
     /*
      * The origin information of the container registry operation.
      */
@@ -117,5 +121,19 @@ public class OperationDefinitionInner {
         OperationServiceSpecificationDefinition serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (display() != null) {
+            display().validate();
+        }
+        if (serviceSpecification() != null) {
+            serviceSpecification().validate();
+        }
     }
 }

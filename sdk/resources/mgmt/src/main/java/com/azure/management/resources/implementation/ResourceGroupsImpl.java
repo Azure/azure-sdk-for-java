@@ -90,7 +90,7 @@ final class ResourceGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ResourceGroupImpl(inner, inner.getName(), serviceClient);
+        return new ResourceGroupImpl(inner, inner.name(), serviceClient);
     }
 
     @Override

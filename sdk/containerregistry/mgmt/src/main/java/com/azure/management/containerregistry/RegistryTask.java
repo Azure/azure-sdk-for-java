@@ -371,6 +371,7 @@ public interface RegistryTask
             /**
              * The function that begins the definition of a source trigger.
              *
+             * @param sourceTriggerName the name of the source trigger.
              * @return the next stage of the RegistrySourceTrigger update.
              */
             RegistrySourceTrigger.Update updateSourceTrigger(String sourceTriggerName);
@@ -378,7 +379,7 @@ public interface RegistryTask
             /**
              * The function that allows us to define a new source trigger in a registry task update.
              *
-             * @param sourceTriggerName the name of the new source trigger we are updating.
+             * @param sourceTriggerName the name of the source trigger.
              * @return the next stage of the RegistrySourceTrigger update.
              */
             RegistrySourceTrigger.UpdateDefinitionStages.Blank defineSourceTrigger(String sourceTriggerName);

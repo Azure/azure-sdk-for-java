@@ -3,9 +3,10 @@
 
 package com.azure.management.samples;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 public class SamplesTestBase extends TestBase {
     protected Azure azure;
@@ -19,11 +20,11 @@ public class SamplesTestBase extends TestBase {
     }
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         azure = Azure
-                .authenticate(restClient, domain, defaultSubscription)
+                .authenticate(httpPipeline, profile)
                 .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+                .withDefaultSubscription();
     }
 
     @Override

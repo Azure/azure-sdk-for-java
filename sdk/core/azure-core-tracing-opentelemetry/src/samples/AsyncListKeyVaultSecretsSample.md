@@ -18,24 +18,24 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 </dependency>
 ```
 
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
+<!-- SDK dependencies   -->
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.0.6</version>
+</dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.2.0-beta.1</version>
+    <version>4.2.0-beta.2</version>
 </dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
-```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
     <version>1.0.0-beta.4</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 #### Sample demonstrates tracing when asynchronously creating and listing secrets from a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets] client library.
 ```java
@@ -43,72 +43,58 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 import reactor.util.context.Context;
 
-import java.util.logging.Logger;
-
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static java.util.logging.Logger.getLogger;
 
 /**
- * Sample demonstrates tracing how to add and list secrets in a Key vault with tracing enabled with a Logging Exporter.
+ * Sample demonstrates tracing how to add and list secrets in a Key Vault with tracing enabled with a Logging Exporter.
  */
-public class Sample {
+public class Sample { 
+  private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
+  private static final String VAULT_URL = "<YOUR_VAULT_URL>";
 
-    private static final Logger LOGGER = getLogger("Sample");
-    private static final Tracer TRACER;
-    private static final TracerSdkProvider TRACER_SDK_PROVIDER;
+  public static void main(String[] args) throws InterruptedException {
+      Span userSpan = TRACER.spanBuilder("user-parent-span").startSpan();
+      final Scope scope = TRACER.withSpan(userSpan);
+      doClientWork();
+      userSpan.end();
+      scope.close();
+  }
 
-    static {
-        TRACER_SDK_PROVIDER = Helper.configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_PROVIDER.get("Sample");
-    }
+  private static Tracer configureOpenTelemetryAndLoggingExporter() {
+      LoggingSpanExporter exporter = new LoggingSpanExporter();
+      TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerProvider();
+      tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+      return tracerSdkProvider.get("Sample");
+  }
 
-    public static void main(String[] args) throws InterruptedException {
-        Span userSpan = TRACER.spanBuilder("user-parent-span").startSpan();
-        final Scope scope = TRACER.withSpan(userSpan);
-        doClientWork();
-        userSpan.end();
-        scope.close();
-        TRACER_SDK_PROVIDER.shutdown();
-    }
+  public static void doClientWork() throws InterruptedException {
+      SecretAsyncClient client = new SecretClientBuilder()
+              .vaultUrl(VAULT_URL)
+              .credential(new DefaultAzureCredentialBuilder().build())
+              .buildAsyncClient();
 
-    private static TracerSdkProvider configureOpenTelemetryAndLoggingExporter() {
-        LoggingExporter exporter = new LoggingExporter();
-        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerFactory();
-        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+      Context traceContext = Context.of(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
 
-        return tracerSdkProvider;
-    }
-  
-    public static void doClientWork() throws InterruptedException {
-        SecretAsyncClient client = new SecretClientBuilder()
-            .vaultUrl("YOUR_VAULT_URL")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAsyncClient();
+      client.setSecret(new KeyVaultSecret("Secret1", "password1"))
+              .subscriberContext(traceContext)
+              .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
+      client.listPropertiesOfSecrets()
+              .subscriberContext(traceContext)
+              .subscribe(secretBase -> client.getSecret(secretBase.getName())
+                      .subscriberContext(traceContext)
+                      .subscribe(secret -> System.out.printf("Secret with name: %s%n", secret.getName())));
 
-        Context traceContext = Context.of(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
-
-        client.setSecret(new KeyVaultSecret("Secret1", "password1"))
-            .subscriberContext(traceContext)
-            .subscribe(secretResponse ->
-                    LOGGER.info("Secret with name: " + secret.getName()),
-                err -> {
-                    LOGGER.info("Error occurred: " + err.getMessage());
-                });
-
-       client.listPropertiesOfSecrets()
-            .subscriberContext(traceContext)
-            .subscribe(secretBase -> client.getSecret(secretBase.getName())
-                .subscriberContext(traceContext)
-                .subscribe(secret -> LOGGER.info("Secret with name: " + secret.getName())));
-
-        Thread.sleep(10000);
-    }
+      Thread.sleep(10000);
+  }
 }
 ```
 

@@ -5,15 +5,19 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.DiagnosticMetricSet;
 import com.azure.management.appservice.NameValuePair;
-import com.azure.management.appservice.ResponseMetaData;
+import com.azure.management.appservice.ResponseMetadata;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AnalysisData model. */
 @Fluent
 public final class AnalysisDataInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AnalysisDataInner.class);
+
     /*
      * Name of the Detector
      */
@@ -42,7 +46,7 @@ public final class AnalysisDataInner {
      * Detector Meta Data
      */
     @JsonProperty(value = "detectorMetaData")
-    private ResponseMetaData detectorMetaData;
+    private ResponseMetadata detectorMetadata;
 
     /**
      * Get the source property: Name of the Detector.
@@ -125,22 +129,42 @@ public final class AnalysisDataInner {
     }
 
     /**
-     * Get the detectorMetaData property: Detector Meta Data.
+     * Get the detectorMetadata property: Detector Meta Data.
      *
-     * @return the detectorMetaData value.
+     * @return the detectorMetadata value.
      */
-    public ResponseMetaData detectorMetaData() {
-        return this.detectorMetaData;
+    public ResponseMetadata detectorMetadata() {
+        return this.detectorMetadata;
     }
 
     /**
-     * Set the detectorMetaData property: Detector Meta Data.
+     * Set the detectorMetadata property: Detector Meta Data.
      *
-     * @param detectorMetaData the detectorMetaData value to set.
+     * @param detectorMetadata the detectorMetadata value to set.
      * @return the AnalysisDataInner object itself.
      */
-    public AnalysisDataInner withDetectorMetaData(ResponseMetaData detectorMetaData) {
-        this.detectorMetaData = detectorMetaData;
+    public AnalysisDataInner withDetectorMetadata(ResponseMetadata detectorMetadata) {
+        this.detectorMetadata = detectorMetadata;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (detectorDefinition() != null) {
+            detectorDefinition().validate();
+        }
+        if (metrics() != null) {
+            metrics().forEach(e -> e.validate());
+        }
+        if (data() != null) {
+            data().forEach(e -> e.forEach(e1 -> e1.validate()));
+        }
+        if (detectorMetadata() != null) {
+            detectorMetadata().validate();
+        }
     }
 }

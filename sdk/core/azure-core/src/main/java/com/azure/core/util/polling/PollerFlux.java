@@ -41,6 +41,7 @@ import java.util.function.Function;
  * @param <U> The type of the final result of long running operation.
  */
 public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
+
     private final ClientLogger logger = new ClientLogger(PollerFlux.class);
     private final PollingContext<T> rootContext = new PollingContext<>();
     private final Duration defaultPollInterval;
@@ -160,6 +161,22 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             // mapper
             Function.identity()).getMono();
         this.syncActivationOperation = cxt -> activationOperation.apply(cxt).block();
+    }
+
+    /**
+     * Creates a PollerFlux instance that returns an error on subscription.
+     *
+     * @param ex The exception to be returned on subscription of this {@link PollerFlux}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long running operation.
+     * @return A poller flux instance that returns an error without emitting any data.
+     *
+     * @see Mono#error(Throwable)
+     * @see Flux#error(Throwable)
+     */
+    public static <T, U> PollerFlux<T, U> error(Exception ex) {
+        return new PollerFlux<>(Duration.ofMillis(1L), context -> Mono.error(ex), context -> Mono.error(ex),
+            (context, response) -> Mono.error(ex), context -> Mono.error(ex));
     }
 
     @Override

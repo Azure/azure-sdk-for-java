@@ -14,12 +14,15 @@ import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.RestClient;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.FunctionApp;
 import com.azure.management.appservice.FunctionAuthenticationPolicy;
@@ -43,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,8 +96,8 @@ class FunctionAppImpl
         SiteLogsConfigInner logConfig,
         AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
-        functionAppKeyServiceHost = manager.restClient().getBaseUrl().toString();
-        functionAppKeyService = RestProxy.create(FunctionAppKeyService.class, manager.restClient().getHttpPipeline());
+        functionAppKeyServiceHost = manager.environment().getResourceManagerEndpoint();
+        functionAppKeyService = RestProxy.create(FunctionAppKeyService.class, manager.httpPipeline());
         if (!isInCreateMode()) {
             initializeFunctionService();
         }
@@ -101,7 +105,7 @@ class FunctionAppImpl
 
     private void initializeFunctionService() {
         if (functionService == null) {
-            UrlBuilder urlBuilder = UrlBuilder.parse(defaultHostName());
+            UrlBuilder urlBuilder = UrlBuilder.parse(this.defaultHostname());
             String baseUrl;
             if (urlBuilder.getScheme() == null) {
                 urlBuilder.setScheme("https");
@@ -111,16 +115,19 @@ class FunctionAppImpl
             } catch (MalformedURLException e) {
                 throw logger.logExceptionAsError(new IllegalStateException(e));
             }
-            RestClient client =
-                manager()
-                    .restClient()
-                    .newBuilder()
-                    .withBaseUrl(baseUrl)
-                    .withPolicy(new FunctionAuthenticationPolicy(this))
-                    .buildClient();
-            functionServiceHost = client.getBaseUrl().toString();
+
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            for (int i = 0, count = manager().httpPipeline().getPolicyCount(); i < count; ++i) {
+                policies.add(manager().httpPipeline().getPolicy(i));
+            }
+            policies.add(new FunctionAuthenticationPolicy(this));
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(manager().httpPipeline().getHttpClient())
+                .build();
+            functionServiceHost = baseUrl;
             functionService =
-                RestProxy.create(FunctionService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                RestProxy.create(FunctionService.class, httpPipeline, new AzureJacksonAdapter());
         }
     }
 
@@ -209,7 +216,7 @@ class FunctionAppImpl
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().getSdkContext().randomResourceName(name(), 32));
+                                        this.manager().sdkContext().randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
                             }))
@@ -463,7 +470,7 @@ class FunctionAppImpl
                             functionAppKeyServiceHost,
                             resourceGroupName(),
                             name(),
-                            manager().getSubscriptionId(),
+                            manager().subscriptionId(),
                             "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
@@ -543,8 +550,8 @@ class FunctionAppImpl
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(
                 throwable -> {
-                    if (throwable instanceof CloudException
-                        && ((CloudException) throwable).getResponse().getStatusCode() == 200) {
+                    if (throwable instanceof ManagementException
+                        && ((ManagementException) throwable).getResponse().getStatusCode() == 200) {
                         return Mono.empty();
                     } else {
                         return Mono.error(throwable);
@@ -624,7 +631,7 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().getSdkContext().randomResourceName(name(), 20),
+                    this.manager().sdkContext().randomResourceName(name(), 20),
                     com.azure.management.storage.SkuName.STANDARD_GRS);
             }
         }

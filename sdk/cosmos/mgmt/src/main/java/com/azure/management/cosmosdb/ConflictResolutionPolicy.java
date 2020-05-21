@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConflictResolutionPolicy model. */
 @Fluent
 public final class ConflictResolutionPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConflictResolutionPolicy.class);
+
     /*
      * Indicates the conflict resolution mode.
      */
@@ -86,5 +90,13 @@ public final class ConflictResolutionPolicy {
     public ConflictResolutionPolicy withConflictResolutionProcedure(String conflictResolutionProcedure) {
         this.conflictResolutionProcedure = conflictResolutionProcedure;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

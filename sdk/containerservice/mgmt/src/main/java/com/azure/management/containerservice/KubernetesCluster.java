@@ -12,6 +12,8 @@ import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
+
+import java.util.List;
 import java.util.Map;
 
 /** A client-side representation for a managed Kubernetes cluster. */
@@ -39,6 +41,12 @@ public interface KubernetesCluster
 
     /** @return the Kubernetes configuration file content with user-level privileges to the cluster */
     byte[] userKubeConfigContent();
+
+    /** @return the Kubernetes credentials with administrative privileges to the cluster */
+    List<CredentialResult> adminKubeConfigs();
+
+    /** @return the Kubernetes credentials with user-level privileges to the cluster */
+    List<CredentialResult> userKubeConfigs();
 
     /** @return the service principal client ID */
     String servicePrincipalClientId();

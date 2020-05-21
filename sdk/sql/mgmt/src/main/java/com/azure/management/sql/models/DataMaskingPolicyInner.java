@@ -7,13 +7,17 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.DataMaskingState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DataMaskingPolicy model. */
 @JsonFlatten
 @Fluent
 public class DataMaskingPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingPolicyInner.class);
+
     /*
      * The location of the data masking policy.
      */
@@ -133,5 +137,13 @@ public class DataMaskingPolicyInner extends ProxyResource {
      */
     public String maskingLevel() {
         return this.maskingLevel;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

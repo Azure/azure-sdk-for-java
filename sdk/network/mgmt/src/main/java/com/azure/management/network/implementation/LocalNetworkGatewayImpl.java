@@ -136,7 +136,7 @@ class LocalNetworkGatewayImpl
             .manager()
             .inner()
             .localNetworkGateways()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags())
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(
                 inner -> {
                     setInner(inner);

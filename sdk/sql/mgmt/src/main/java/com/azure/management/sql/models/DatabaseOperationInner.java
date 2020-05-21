@@ -7,7 +7,9 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ManagementOperationState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -15,6 +17,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Immutable
 public class DatabaseOperationInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseOperationInner.class);
+
     /*
      * The name of the database the operation is being performed on.
      */
@@ -223,5 +227,13 @@ public class DatabaseOperationInner extends ProxyResource {
      */
     public Boolean isCancellable() {
         return this.isCancellable;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

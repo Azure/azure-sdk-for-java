@@ -89,7 +89,7 @@ class VirtualMachineScaleSetUnmanagedDataDiskImpl
             if (dataDisk.lun() == -1) {
                 Integer i = 0;
                 while (usedLuns.contains(i)) {
-                    i++;
+                    i += 1;
                 }
                 dataDisk.withLun(i);
                 usedLuns.add(i);

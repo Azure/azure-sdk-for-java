@@ -82,7 +82,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                         event.getData().getBodyAsString());
                 }
             })
-            .subscribeWith(EmitterProcessor.create(false));
+            .subscribeWith(EmitterProcessor.create(amqpReceiveLinkProcessor.getPrefetch(), false));
     }
 
     /**

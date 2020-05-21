@@ -5,13 +5,17 @@
 package com.azure.management.containerservice.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.CredentialResult;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CredentialResults model. */
 @Immutable
 public final class CredentialResultsInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialResultsInner.class);
+
     /*
      * Base64-encoded Kubernetes configuration file.
      */
@@ -25,5 +29,16 @@ public final class CredentialResultsInner {
      */
     public List<CredentialResult> kubeconfigs() {
         return this.kubeconfigs;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (kubeconfigs() != null) {
+            kubeconfigs().forEach(e -> e.validate());
+        }
     }
 }

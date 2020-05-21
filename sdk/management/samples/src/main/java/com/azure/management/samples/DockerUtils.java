@@ -7,8 +7,8 @@ import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.network.NicIPConfiguration;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.NicIpConfiguration;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.github.dockerjava.api.DockerClient;
@@ -26,7 +26,7 @@ import javax.net.ssl.SSLContext;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
@@ -44,7 +44,7 @@ public class DockerUtils {
     /**
      * Creates "in memory" SSL configuration to be used by the Java Docker Client.
      */
-    public static class DockerSSLConfig implements SSLConfig, Serializable {
+    public static class DockerSSLConfig implements SSLConfig {
         private SslConfigurator sslConfig;
 
         /**
@@ -114,9 +114,9 @@ public class DockerUtils {
                 String keyPemPath = envDockerCertPath + File.separator + "key.pem";
                 String certPemPath = envDockerCertPath + File.separator + "cert.pem";
 
-                String keyPemContent = new String(Files.readAllBytes(Paths.get(keyPemPath)));
-                String certPemContent = new String(Files.readAllBytes(Paths.get(certPemPath)));
-                String caPemContent = new String(Files.readAllBytes(Paths.get(caPemPath)));
+                String keyPemContent = new String(Files.readAllBytes(Paths.get(keyPemPath)), StandardCharsets.UTF_8);
+                String certPemContent = new String(Files.readAllBytes(Paths.get(certPemPath)), StandardCharsets.UTF_8);
+                String caPemContent = new String(Files.readAllBytes(Paths.get(caPemPath)), StandardCharsets.UTF_8);
 
                 dockerClientConfig = createDockerClientConfig(dockerHostUrl, registryServerUrl, username, password,
                         caPemContent, keyPemContent, certPemContent);
@@ -219,8 +219,8 @@ public class DockerUtils {
         // Wait for a minute for PIP to be available
         SdkContext.sleep(60 * 1000);
         // Get the IP of the Docker host
-        NicIPConfiguration nicIPConfiguration = dockerVM.getPrimaryNetworkInterface().primaryIPConfiguration();
-        PublicIPAddress publicIp = nicIPConfiguration.getPublicIPAddress();
+        NicIpConfiguration nicIPConfiguration = dockerVM.getPrimaryNetworkInterface().primaryIPConfiguration();
+        PublicIpAddress publicIp = nicIPConfiguration.getPublicIpAddress();
         String dockerHostIP = publicIp.ipAddress();
 
         DockerClient dockerClient = installDocker(dockerHostIP, vmUserName, vmPassword, registryServerUrl, username, password);
@@ -255,38 +255,38 @@ public class DockerUtils {
             System.out.println("Copy Docker setup scripts to remote host: " + dockerHostIP);
             sshShell = SSHShell.open(dockerHostIP, 22, vmUserName, vmPassword);
 
-            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes(StandardCharsets.UTF_8)),
                     "INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh",
                     ".azuredocker",
                     true,
                     "4095");
 
-            sshShell.upload(new ByteArrayInputStream(CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU.replaceAll("HOST_IP", dockerHostIP).getBytes()),
+            sshShell.upload(new ByteArrayInputStream(CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU.replaceAll("HOST_IP", dockerHostIP).getBytes(StandardCharsets.UTF_8)),
                     "CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU.sh",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU.getBytes(StandardCharsets.UTF_8)),
                     "INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU.sh",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_ENABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_ENABLED.getBytes(StandardCharsets.UTF_8)),
                     "dockerd_tls.config",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED.getBytes(StandardCharsets.UTF_8)),
                     "CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED.sh",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_DISABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_DISABLED.getBytes(StandardCharsets.UTF_8)),
                     "dockerd_notls.config",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED.getBytes(StandardCharsets.UTF_8)),
                     "CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED.sh",
                     ".azuredocker",
                     true,

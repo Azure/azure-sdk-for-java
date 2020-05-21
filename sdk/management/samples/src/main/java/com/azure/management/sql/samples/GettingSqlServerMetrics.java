@@ -3,29 +3,36 @@
 package com.azure.management.sql.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.management.monitor.Metric;
+import com.azure.management.monitor.MetricCollection;
+import com.azure.management.monitor.MetricDefinition;
+import com.azure.management.monitor.MetricValue;
+import com.azure.management.monitor.TimeSeriesElement;
+import com.azure.management.monitor.models.MetadataValueInner;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SampleName;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseMetric;
 import com.azure.management.sql.SqlDatabaseUsageMetric;
+import com.azure.management.sql.SqlElasticPool;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlSubscriptionUsageMetric;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -91,68 +98,72 @@ public class GettingSqlServerMetrics {
                 administratorPassword);
 
             // Establish the connection.
-            Connection connection = DriverManager.getConnection(connectionToSqlTestUrl);
+            try (Connection connection = DriverManager.getConnection(connectionToSqlTestUrl);
+                 Statement statement = connection.createStatement();) {
 
-            // ============================================================
-            // Create and execute a "select" SQL statement on the sample database.
-            System.out.println("Creating and executing a \"SELECT\" SQL statement on the sample database");
+                // ============================================================
+                // Create and execute a "select" SQL statement on the sample database.
+                System.out.println("Creating and executing a \"SELECT\" SQL statement on the sample database");
 
-            String selectSql = "SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer";
-            Statement statement = connection.createStatement();
-            System.out.println("SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer");
-            ResultSet resultSet = statement.executeQuery(selectSql);
+                String selectSql = "SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer";
 
-            // Print results from select statement
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(2) + " "
-                    + resultSet.getString(3));
+                System.out.println("SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer");
+                try (ResultSet resultSet = statement.executeQuery(selectSql);) {
+
+                    // Print results from select statement
+                    while (resultSet.next()) {
+                        System.out.println(resultSet.getString(2) + " "
+                            + resultSet.getString(3));
+                    }
+                }
+
+                // ============================================================
+                // Create and execute an "INSERT" SQL statement on the sample database.
+                System.out.println("Creating and executing an \"INSERT\" SQL statement on the sample database");
+                // Create and execute an INSERT SQL prepared statement.
+                String insertSql = "INSERT INTO SalesLT.Product (Name, ProductNumber, Color, StandardCost, ListPrice, SellStartDate) VALUES "
+                    + "('Bike', 'B1', 'Blue', 50, 120, '2016-01-01');";
+
+                try (PreparedStatement prepsInsertProduct = connection.prepareStatement(
+                    insertSql,
+                    Statement.RETURN_GENERATED_KEYS);) {
+                    prepsInsertProduct.execute();
+
+                    // Retrieve the generated key from the insert.
+                    try (ResultSet resultSet2 = prepsInsertProduct.getGeneratedKeys();) {
+                        // Print the ID of the inserted row.
+                        while (resultSet2.next()) {
+                            System.out.println("Generated: " + resultSet2.getString(1));
+                        }
+                    }
+                }
+
+                // ============================================================
+                // Create a new table into the SQL Server database and insert one value.
+                System.out.println("Creating a new table into the SQL Server database and insert one value");
+
+                try (Statement stmt = connection.createStatement();) {
+
+                    String sqlCommand = "CREATE TABLE [Sample_Test] ([Name] [varchar](30) NOT NULL)";
+                    stmt.execute(sqlCommand);
+
+                    sqlCommand = "INSERT Sample_Test VALUES ('Test')";
+                    stmt.execute(sqlCommand);
+
+                    // ============================================================
+                    // Run a "select" query for the new table.
+                    System.out.println("Running a \"SELECT\" query for the new table");
+
+                    sqlCommand = "SELECT * FROM Sample_Test;";
+                    try (ResultSet resultSet = stmt.executeQuery(sqlCommand);) {
+                        // Print results from select statement
+                        System.out.println("SELECT * FROM Sample_Test");
+                        while (resultSet.next()) {
+                            System.out.format("\t%s%n", resultSet.getString(1));
+                        }
+                    }
+                }
             }
-
-            // ============================================================
-            // Create and execute an "INSERT" SQL statement on the sample database.
-            System.out.println("Creating and executing an \"INSERT\" SQL statement on the sample database");
-            // Create and execute an INSERT SQL prepared statement.
-            String insertSql = "INSERT INTO SalesLT.Product (Name, ProductNumber, Color, StandardCost, ListPrice, SellStartDate) VALUES "
-                + "('Bike', 'B1', 'Blue', 50, 120, '2016-01-01');";
-
-            PreparedStatement prepsInsertProduct = connection.prepareStatement(
-                insertSql,
-                Statement.RETURN_GENERATED_KEYS);
-            prepsInsertProduct.execute();
-
-            // Retrieve the generated key from the insert.
-            ResultSet resultSet2 = prepsInsertProduct.getGeneratedKeys();
-            // Print the ID of the inserted row.
-            while (resultSet2.next()) {
-                System.out.println("Generated: " + resultSet2.getString(1));
-            }
-
-            // ============================================================
-            // Create a new table into the SQL Server database and insert one value.
-            System.out.println("Creating a new table into the SQL Server database and insert one value");
-
-            Statement stmt = connection.createStatement();
-
-            String sqlCommand = "CREATE TABLE [Sample_Test] ([Name] [varchar](30) NOT NULL)";
-            stmt.execute(sqlCommand);
-
-            sqlCommand = "INSERT Sample_Test VALUES ('Test')";
-            stmt.execute(sqlCommand);
-
-            // ============================================================
-            // Run a "select" query for the new table.
-            System.out.println("Running a \"SELECT\" query for the new table");
-
-            sqlCommand = "SELECT * FROM Sample_Test;";
-            resultSet = stmt.executeQuery(sqlCommand);
-            // Print results from select statement
-            System.out.println("SELECT * FROM Sample_Test");
-            while (resultSet.next()) {
-                System.out.format("\t%s\n", resultSet.getString(1));
-            }
-
-            // Close the connection to the "test" database
-            connection.close();
 
             SdkContext.sleep(6 * 60 * 1000);
 
@@ -207,103 +218,101 @@ public class GettingSqlServerMetrics {
             // ============================================================
             // Use Monitor Service to list the SQL server metrics.
 
-            // TODO: fix after add monitor
-//            System.out.println("Using Monitor Service to list the SQL server metrics");
-//            List<MetricDefinition> metricDefinitions = azure.metricDefinitions().listByResource(sqlServer.id());
-//
-//            SqlElasticPool ep = sqlServer.elasticPools().get(epName);
-//
-//            for (MetricDefinition metricDefinition : metricDefinitions) {
-//                // find metric definition for "DTU used" and "Storage used"
-//                if (metricDefinition.name().localizedValue().equalsIgnoreCase("dtu used")
-//                    || metricDefinition.name().localizedValue().equalsIgnoreCase("storage used")) {
-//                    // get metric records
-//                    MetricCollection metricCollection = metricDefinition.defineQuery()
-//                        .startingFrom(startTime)
-//                        .endsBefore(endTime)
-//                        .withAggregation("Average")
-//                        .withInterval(Period.minutes(5))
-//                        .withOdataFilter(String.format("ElasticPoolResourceId eq '%s'", ep.id()))
-//                        .execute();
-//
-//                    System.out.format("SQL server \"%s\" %s metrics\n", sqlServer.name(), metricDefinition.name().localizedValue());
-//                    System.out.println("\tNamespace: " + metricCollection.namespace());
-//                    System.out.println("\tQuery time: " + metricCollection.timespan());
-//                    System.out.println("\tTime Grain: " + metricCollection.interval());
-//                    System.out.println("\tCost: " + metricCollection.cost());
-//
-//                    for (Metric metric : metricCollection.metrics()) {
-//                        System.out.println("\tMetric: " + metric.name().localizedValue());
-//                        System.out.println("\tType: " + metric.type());
-//                        System.out.println("\tUnit: " + metric.unit());
-//                        System.out.println("\tTime Series: ");
-//                        for (TimeSeriesElement timeElement : metric.timeseries()) {
-//                            System.out.println("\t\tMetadata: ");
-//                            for (MetadataValue metadata : timeElement.metadatavalues()) {
-//                                System.out.println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
-//                            }
-//                            System.out.println("\t\tData: ");
-//                            for (MetricValue data : timeElement.data()) {
-//                                System.out.println("\t\t\t" + data.timeStamp()
-//                                    + " : (Min) " + data.minimum()
-//                                    + " : (Max) " + data.maximum()
-//                                    + " : (Avg) " + data.average()
-//                                    + " : (Total) " + data.total()
-//                                    + " : (Count) " + data.count());
-//                            }
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//
-//            // ============================================================
-//            // Use Monitor Service to list the SQL Database metrics.
-//            System.out.println("Using Monitor Service to list the SQL Database metrics");
-//            metricDefinitions = azure.metricDefinitions().listByResource(db.id());
-//
-//            for (MetricDefinition metricDefinition : metricDefinitions) {
-//                // find metric definition for Transactions
-//                if (metricDefinition.name().localizedValue().equalsIgnoreCase("dtu used")
-//                    || metricDefinition.name().localizedValue().equalsIgnoreCase("cpu used")
-//                    || metricDefinition.name().localizedValue().equalsIgnoreCase("storage used")) {
-//                    // get metric records
-//                    MetricCollection metricCollection = metricDefinition.defineQuery()
-//                        .startingFrom(startTime)
-//                        .endsBefore(endTime)
-//                        .execute();
-//
-//                    System.out.println("Metrics for '" + db.id() + "':");
-//                    System.out.println("Namespace: " + metricCollection.namespace());
-//                    System.out.println("Query time: " + metricCollection.timespan());
-//                    System.out.println("Time Grain: " + metricCollection.interval());
-//                    System.out.println("Cost: " + metricCollection.cost());
-//
-//                    for (Metric metric : metricCollection.metrics()) {
-//                        System.out.println("\tMetric: " + metric.name().localizedValue());
-//                        System.out.println("\tType: " + metric.type());
-//                        System.out.println("\tUnit: " + metric.unit());
-//                        System.out.println("\tTime Series: ");
-//                        for (TimeSeriesElement timeElement : metric.timeseries()) {
-//                            System.out.println("\t\tMetadata: ");
-//                            for (MetadataValue metadata : timeElement.metadatavalues()) {
-//                                System.out.println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
-//                            }
-//                            System.out.println("\t\tData: ");
-//                            for (MetricValue data : timeElement.data()) {
-//                                System.out.println("\t\t\t" + data.timeStamp()
-//                                    + " : (Min) " + data.minimum()
-//                                    + " : (Max) " + data.maximum()
-//                                    + " : (Avg) " + data.average()
-//                                    + " : (Total) " + data.total()
-//                                    + " : (Count) " + data.count());
-//                            }
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
+            System.out.println("Using Monitor Service to list the SQL server metrics");
+            PagedIterable<MetricDefinition> metricDefinitions = azure.metricDefinitions().listByResource(sqlServer.id());
 
+            SqlElasticPool ep = sqlServer.elasticPools().get(epName);
+
+            for (MetricDefinition metricDefinition : metricDefinitions) {
+                // find metric definition for "DTU used" and "Storage used"
+                if (metricDefinition.name().localizedValue().equalsIgnoreCase("dtu used")
+                    || metricDefinition.name().localizedValue().equalsIgnoreCase("storage used")) {
+                    // get metric records
+                    MetricCollection metricCollection = metricDefinition.defineQuery()
+                        .startingFrom(startTime)
+                        .endsBefore(endTime)
+                        .withAggregation("Average")
+                        .withInterval(Duration.ofMinutes(5))
+                        .withOdataFilter(String.format("ElasticPoolResourceId eq '%s'", ep.id()))
+                        .execute();
+
+                    System.out.format("SQL server \"%s\" %s metrics%n", sqlServer.name(), metricDefinition.name().localizedValue());
+                    System.out.println("\tNamespace: " + metricCollection.namespace());
+                    System.out.println("\tQuery time: " + metricCollection.timespan());
+                    System.out.println("\tTime Grain: " + metricCollection.interval());
+                    System.out.println("\tCost: " + metricCollection.cost());
+
+                    for (Metric metric : metricCollection.metrics()) {
+                        System.out.println("\tMetric: " + metric.name().localizedValue());
+                        System.out.println("\tType: " + metric.type());
+                        System.out.println("\tUnit: " + metric.unit());
+                        System.out.println("\tTime Series: ");
+                        for (TimeSeriesElement timeElement : metric.timeseries()) {
+                            System.out.println("\t\tMetadata: ");
+                            for (MetadataValueInner metadata : timeElement.metadatavalues()) {
+                                System.out.println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
+                            }
+                            System.out.println("\t\tData: ");
+                            for (MetricValue data : timeElement.data()) {
+                                System.out.println("\t\t\t" + data.timestamp()
+                                    + " : (Min) " + data.minimum()
+                                    + " : (Max) " + data.maximum()
+                                    + " : (Avg) " + data.average()
+                                    + " : (Total) " + data.total()
+                                    + " : (Count) " + data.count());
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            // ============================================================
+            // Use Monitor Service to list the SQL Database metrics.
+            System.out.println("Using Monitor Service to list the SQL Database metrics");
+            metricDefinitions = azure.metricDefinitions().listByResource(db.id());
+
+            for (MetricDefinition metricDefinition : metricDefinitions) {
+                // find metric definition for Transactions
+                if (metricDefinition.name().localizedValue().equalsIgnoreCase("dtu used")
+                    || metricDefinition.name().localizedValue().equalsIgnoreCase("cpu used")
+                    || metricDefinition.name().localizedValue().equalsIgnoreCase("storage used")) {
+                    // get metric records
+                    MetricCollection metricCollection = metricDefinition.defineQuery()
+                        .startingFrom(startTime)
+                        .endsBefore(endTime)
+                        .execute();
+
+                    System.out.println("Metrics for '" + db.id() + "':");
+                    System.out.println("Namespace: " + metricCollection.namespace());
+                    System.out.println("Query time: " + metricCollection.timespan());
+                    System.out.println("Time Grain: " + metricCollection.interval());
+                    System.out.println("Cost: " + metricCollection.cost());
+
+                    for (Metric metric : metricCollection.metrics()) {
+                        System.out.println("\tMetric: " + metric.name().localizedValue());
+                        System.out.println("\tType: " + metric.type());
+                        System.out.println("\tUnit: " + metric.unit());
+                        System.out.println("\tTime Series: ");
+                        for (TimeSeriesElement timeElement : metric.timeseries()) {
+                            System.out.println("\t\tMetadata: ");
+                            for (MetadataValueInner metadata : timeElement.metadatavalues()) {
+                                System.out.println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
+                            }
+                            System.out.println("\t\tData: ");
+                            for (MetricValue data : timeElement.data()) {
+                                System.out.println("\t\t\t" + data.timestamp()
+                                    + " : (Min) " + data.minimum()
+                                    + " : (Max) " + data.maximum()
+                                    + " : (Avg) " + data.average()
+                                    + " : (Total) " + data.total()
+                                    + " : (Count) " + data.count());
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
 
             // Delete the SQL Servers.
             System.out.println("Deleting the Sql Server");
@@ -330,17 +339,16 @@ public class GettingSqlServerMetrics {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
-            RestClient restClient = new RestClientBuilder()
-                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withReadTimeout(150, TimeUnit.SECONDS)
+            Azure azure = Azure
+                .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
-                .withCredential(credentials).buildClient();
-            Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

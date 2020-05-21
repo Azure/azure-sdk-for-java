@@ -5,12 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AutoscaleNotification model. */
 @Fluent
 public final class AutoscaleNotification {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleNotification.class);
+
     /*
      * the operation associated with the notification and its value must be
      * "scale"
@@ -93,5 +97,19 @@ public final class AutoscaleNotification {
     public AutoscaleNotification withWebhooks(List<WebhookNotification> webhooks) {
         this.webhooks = webhooks;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (email() != null) {
+            email().validate();
+        }
+        if (webhooks() != null) {
+            webhooks().forEach(e -> e.validate());
+        }
     }
 }

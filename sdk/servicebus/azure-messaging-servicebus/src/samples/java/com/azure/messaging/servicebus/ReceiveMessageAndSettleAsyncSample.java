@@ -3,24 +3,27 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
- * it. Settling of message include accept, defer and abandon the message as needed.
+ * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(MessageLockToken) complete()}, {@link
+ * ServiceBusReceiverAsyncClient#defer(MessageLockToken) defer()},
+ * {@link ServiceBusReceiverAsyncClient#abandon(MessageLockToken) abandon}, or
+ * {@link ServiceBusReceiverAsyncClient#deadLetter(MessageLockToken) dead-letter} a message.
  */
 public class ReceiveMessageAndSettleAsyncSample {
 
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus Queue
+     * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
+     * Queue
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
@@ -33,39 +36,32 @@ public class ReceiveMessageAndSettleAsyncSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-        ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
-            .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
 
-        Disposable subscription = receiverAsyncClient.receive(options)
-            .flatMap(message -> {
-                boolean messageProcessed =  false;
-                // Process the message here.
+        Disposable subscription = receiver.receive()
+            .flatMap(context -> {
+                boolean messageProcessed = false;
+                // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
-
                 if (messageProcessed) {
-                    return receiverAsyncClient.complete(message).then();
+                    return receiver.complete(context.getMessage());
                 } else {
-                    return receiverAsyncClient.abandon(message).then();
+                    return receiver.abandon(context.getMessage());
                 }
             }).subscribe();
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        try {
-            Thread.sleep(Duration.ofSeconds(60).toMillis());
-        } catch (InterruptedException ignored) {
-        }
+        TimeUnit.SECONDS.sleep(60);
+
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();
 
         // Close the receiver.
-        receiverAsyncClient.close();
+        receiver.close();
     }
 }

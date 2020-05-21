@@ -5,13 +5,16 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -22,6 +25,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
+
+import java.util.Objects;
+
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
@@ -65,15 +72,6 @@ public final class TextAnalyticsClient {
      */
     public String getDefaultLanguage() {
         return client.getDefaultLanguage();
-    }
-
-    /**
-     * Gets the service version the client is using.
-     *
-     * @return The service version the client is using.
-     */
-    public TextAnalyticsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
     }
 
     /**
@@ -144,9 +142,11 @@ public final class TextAnalyticsClient {
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.detectLanguageBatch(documents));
     }
 
@@ -168,10 +168,12 @@ public final class TextAnalyticsClient {
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(
         Iterable<String> documents, String countryHint) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.detectLanguageBatch(documents, countryHint));
     }
 
@@ -195,10 +197,12 @@ public final class TextAnalyticsClient {
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(
         Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.detectLanguageBatch(documents, countryHint, options));
     }
 
@@ -221,10 +225,12 @@ public final class TextAnalyticsClient {
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.detectLanguageAsyncClient.detectLanguageBatchWithContext(documents, options, context));
     }
@@ -247,14 +253,14 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link CategorizedEntity recognized categorized entities}.
+     * @return A {@link CategorizedEntityCollection} contains a list of
+     * {@link CategorizedEntity recognized categorized entities} and warnings.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CategorizedEntityCollection recognizeEntities(String document) {
         return recognizeEntities(document, client.getDefaultLanguage());
     }
 
@@ -273,15 +279,16 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
-     * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link CategorizedEntity recognized categorized entities}.
+     * @return The {@link CategorizedEntityCollection} contains a list of
+     * {@link CategorizedEntity recognized categorized entities} and warnings.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String document, String language) {
-        return new TextAnalyticsPagedIterable<>(client.recognizeEntities(document, language));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CategorizedEntityCollection recognizeEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        return client.recognizeEntities(document, language).block();
     }
 
     /**
@@ -300,13 +307,14 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
-        Iterable<String> documents) {
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents));
     }
 
@@ -323,13 +331,15 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents, language));
     }
 
@@ -349,15 +359,16 @@ public final class TextAnalyticsClient {
      * and show statistics.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return new TextAnalyticsPagedIterable<>(
-            client.recognizeEntitiesBatch(documents, language, options));
+        inputDocumentsValidation(documents);
+        return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents, language, options));
     }
 
     /**
@@ -377,16 +388,17 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
-            client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options,
-                context));
+            client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options, context));
     }
 
     // Linked Entities
@@ -406,14 +418,13 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link LinkedEntity recognized linked entities}.
+     * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<LinkedEntity> recognizeLinkedEntities(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedEntityCollection recognizeLinkedEntities(String document) {
         return recognizeLinkedEntities(document, client.getDefaultLanguage());
     }
 
@@ -433,15 +444,15 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link LinkedEntity recognized linked entities}.
+     * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<LinkedEntity> recognizeLinkedEntities(String document, String language) {
-        return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntities(document, language));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedEntityCollection recognizeLinkedEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        return client.recognizeLinkedEntities(document, language).block();
     }
 
     /**
@@ -464,10 +475,12 @@ public final class TextAnalyticsClient {
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntitiesBatch(documents));
     }
 
@@ -492,10 +505,12 @@ public final class TextAnalyticsClient {
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntitiesBatch(documents, language));
     }
 
@@ -522,10 +537,12 @@ public final class TextAnalyticsClient {
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntitiesBatch(documents, language, options));
     }
 
@@ -551,10 +568,12 @@ public final class TextAnalyticsClient {
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithContext(
                 documents, options, context));
@@ -581,8 +600,8 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<String> extractKeyPhrases(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyPhrasesCollection extractKeyPhrases(String document) {
         return extractKeyPhrases(document, client.getDefaultLanguage());
     }
 
@@ -605,9 +624,10 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<String> extractKeyPhrases(String document, String language) {
-        return new TextAnalyticsPagedIterable<>(client.extractKeyPhrases(document, language));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyPhrasesCollection extractKeyPhrases(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        return client.extractKeyPhrases(document, language).block();
     }
 
     /**
@@ -629,9 +649,11 @@ public final class TextAnalyticsClient {
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.extractKeyPhrasesBatch(documents));
     }
 
@@ -654,10 +676,12 @@ public final class TextAnalyticsClient {
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.extractKeyPhrasesBatch(documents, language));
     }
 
@@ -683,10 +707,12 @@ public final class TextAnalyticsClient {
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.extractKeyPhrasesBatch(documents, language, options));
     }
 
@@ -711,10 +737,12 @@ public final class TextAnalyticsClient {
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithContext(documents, options, context));
     }
@@ -767,6 +795,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.analyzeSentiment(document, language).block();
     }
 
@@ -790,9 +819,11 @@ public final class TextAnalyticsClient {
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.analyzeSentimentBatch(documents));
     }
 
@@ -814,10 +845,12 @@ public final class TextAnalyticsClient {
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.analyzeSentimentBatch(documents, language));
     }
 
@@ -841,10 +874,12 @@ public final class TextAnalyticsClient {
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.analyzeSentimentBatch(documents, language, options));
     }
 
@@ -868,10 +903,12 @@ public final class TextAnalyticsClient {
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context));
     }

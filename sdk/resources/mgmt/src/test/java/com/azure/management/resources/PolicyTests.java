@@ -3,10 +3,11 @@
 
 package com.azure.management.resources;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.implementation.ResourceManager;
@@ -15,14 +16,14 @@ import org.junit.jupiter.api.Test;
 
 public class PolicyTests extends TestBase {
     protected ResourceManager resourceManager;
-    private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"northeurope\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
+    private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         resourceManager = ResourceManager
-                .authenticate(restClient)
+                .authenticate(httpPipeline, profile)
                 .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+                .withDefaultSubscription();
     }
 
     @Override

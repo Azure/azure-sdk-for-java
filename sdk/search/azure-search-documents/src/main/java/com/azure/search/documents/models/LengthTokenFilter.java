@@ -24,55 +24,55 @@ public final class LengthTokenFilter extends TokenFilter {
      * less than the value of max.
      */
     @JsonProperty(value = "min")
-    private Integer min;
+    private Integer minLength;
 
     /*
      * The maximum length in characters. Default and maximum is 300.
      */
     @JsonProperty(value = "max")
-    private Integer max;
+    private Integer maxLength;
 
     /**
-     * Get the min property: The minimum length in characters. Default is 0.
-     * Maximum is 300. Must be less than the value of max.
+     * Get the minLength property: The minimum length in characters. Default is
+     * 0. Maximum is 300. Must be less than the value of max.
      *
-     * @return the min value.
+     * @return the minLength value.
      */
-    public Integer getMin() {
-        return this.min;
+    public Integer getMinLength() {
+        return this.minLength;
     }
 
     /**
-     * Set the min property: The minimum length in characters. Default is 0.
-     * Maximum is 300. Must be less than the value of max.
+     * Set the minLength property: The minimum length in characters. Default is
+     * 0. Maximum is 300. Must be less than the value of max.
      *
-     * @param min the min value to set.
+     * @param minLength the minLength value to set.
      * @return the LengthTokenFilter object itself.
      */
-    public LengthTokenFilter setMin(Integer min) {
-        this.min = min;
+    public LengthTokenFilter setMinLength(Integer minLength) {
+        this.minLength = minLength;
         return this;
     }
 
     /**
-     * Get the max property: The maximum length in characters. Default and
-     * maximum is 300.
+     * Get the maxLength property: The maximum length in characters. Default
+     * and maximum is 300.
      *
-     * @return the max value.
+     * @return the maxLength value.
      */
-    public Integer getMax() {
-        return this.max;
+    public Integer getMaxLength() {
+        return this.maxLength;
     }
 
     /**
-     * Set the max property: The maximum length in characters. Default and
-     * maximum is 300.
+     * Set the maxLength property: The maximum length in characters. Default
+     * and maximum is 300.
      *
-     * @param max the max value to set.
+     * @param maxLength the maxLength value to set.
      * @return the LengthTokenFilter object itself.
      */
-    public LengthTokenFilter setMax(Integer max) {
-        this.max = max;
+    public LengthTokenFilter setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
         return this;
     }
 }

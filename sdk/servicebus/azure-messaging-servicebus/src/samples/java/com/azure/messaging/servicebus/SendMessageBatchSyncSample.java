@@ -10,10 +10,13 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Sample demonstrates how to send {@link ServiceBusMessageBatch} to an Azure Service Bus Topic with the synchronous
+ * sender.
+ */
 public class SendMessageBatchSyncSample {
-
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
+     * Main method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
      *
      * @param args Unused arguments to the program.
      */
@@ -31,14 +34,11 @@ public class SendMessageBatchSyncSample {
         String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
             + "SharedAccessKey={key}";
 
-        // Create a Queue or Topic in that Service Bus namespace.
-        String queueName = "queueName";
-
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
-            .queueName(queueName)
+            .topicName("<< TOPIC NAME >>")
             .buildClient();
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.

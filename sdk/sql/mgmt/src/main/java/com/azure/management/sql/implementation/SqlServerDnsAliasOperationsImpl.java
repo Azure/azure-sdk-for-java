@@ -99,7 +99,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
             serverDnsAliases
                 .add(
                     new SqlServerDnsAliasImpl(
-                        resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
+                        resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverDnsAliases);
     }
@@ -118,7 +118,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
                     new SqlServerDnsAliasImpl(
                         resourceGroupName,
                         sqlServerName,
-                        serverDnsAliasInner.getName(),
+                        serverDnsAliasInner.name(),
                         serverDnsAliasInner,
                         self.sqlServerManager));
     }
@@ -136,7 +136,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
             serverDnsAliases
                 .add(
                     new SqlServerDnsAliasImpl(
-                        inner.getName(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
+                        inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverDnsAliases);
     }
@@ -151,7 +151,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
             .mapPage(
                 serverDnsAliasInner ->
                     new SqlServerDnsAliasImpl(
-                        serverDnsAliasInner.getName(),
+                        serverDnsAliasInner.name(),
                         (SqlServerImpl) sqlServer,
                         serverDnsAliasInner,
                         sqlServer.manager()));

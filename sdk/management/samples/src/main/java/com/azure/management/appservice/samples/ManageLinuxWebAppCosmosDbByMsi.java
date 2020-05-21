@@ -3,14 +3,15 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 //import com.azure.management.containerregistry.AccessKeyType;
 //import com.azure.management.containerregistry.Registry;
 //import com.azure.management.containerregistry.RegistryCredentials;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-
-import java.io.File;
-
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 /**
  * Azure App Service basic sample for managing web apps.
@@ -29,6 +30,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        System.out.println("removed later");
         return true;
 //        // New resources
 //        final Region region         = Region.US_WEST;
@@ -192,13 +194,16 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

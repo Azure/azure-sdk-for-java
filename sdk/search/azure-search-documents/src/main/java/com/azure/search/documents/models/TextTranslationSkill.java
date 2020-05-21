@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Text.TranslationSkill")
 @Fluent
-public final class TextTranslationSkill extends Skill {
+public final class TextTranslationSkill extends SearchIndexerSkill {
     /*
      * The language code to translate documents into for documents that don't
      * specify the to language explicitly. Possible values include: 'af', 'ar',

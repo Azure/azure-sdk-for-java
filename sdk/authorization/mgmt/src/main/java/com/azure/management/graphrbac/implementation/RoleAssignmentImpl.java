@@ -3,7 +3,7 @@
 
 package com.azure.management.graphrbac.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryUser;
@@ -16,10 +16,12 @@ import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import java.time.Duration;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.Locale;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInner, RoleAssignmentImpl>
@@ -41,7 +43,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public boolean isInCreateMode() {
-        return inner().getId() == null;
+        return inner().id() == null;
     }
 
     @Override
@@ -92,9 +94,11 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                     .zipWith(
                                         Flux.range(1, 30),
                                         (throwable, integer) -> {
-                                            if (throwable instanceof CloudException) {
-                                                CloudException cloudException = (CloudException) throwable;
-                                                String exceptionMessage = cloudException.getMessage().toLowerCase();
+                                            if (throwable instanceof ManagementException) {
+                                                ManagementException managementException =
+                                                    (ManagementException) throwable;
+                                                String exceptionMessage =
+                                                    managementException.getMessage().toLowerCase(Locale.ROOT);
                                                 if (exceptionMessage.contains("principalnotfound")
                                                     || exceptionMessage.contains("does not exist in the directory")) {
                                                     /*
@@ -204,7 +208,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

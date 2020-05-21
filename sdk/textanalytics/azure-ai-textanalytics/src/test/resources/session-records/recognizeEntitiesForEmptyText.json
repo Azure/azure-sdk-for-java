@@ -1,23 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/entities/recognition/general",
+    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//entities/recognition/general",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1221c2bb-9541-4201-a2ce-ff119ba77dc9",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "235ca2bb-7dd2-452b-9acd-a6196322953f",
+      "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-envoy-upstream-service-time" : "2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b90ddc69-b691-4008-95d4-8f7ce3029cfa",
-      "x-aml-ta-request-id" : "fb985580-7eff-4032-bb58-5744906a215a",
+      "apim-request-id" : "9891bfdc-977a-4561-9fa3-e2517e7d3c0e",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"innerError\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"},\"message\":\"Invalid document in request.\"}}],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Tue, 17 Dec 2019 22:35:00 GMT",
+      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2020-04-01\"}",
+      "Date" : "Wed, 29 Apr 2020 17:12:20 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

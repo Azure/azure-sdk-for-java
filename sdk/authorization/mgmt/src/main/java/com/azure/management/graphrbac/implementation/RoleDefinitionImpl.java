@@ -16,12 +16,12 @@ import java.util.Set;
 class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements RoleDefinition {
     private GraphRbacManager manager;
     // Active Directory identify info
-    private String objectId;
-    private String userName;
-    private String servicePrincipalName;
+    // private String objectId;
+    // private String userName;
+    // private String servicePrincipalName;
     // role info
-    private String roleDefinitionId;
-    private String roleName;
+    // private String roleDefinitionId;
+    // private String roleName;
 
     RoleDefinitionImpl(RoleDefinitionInner innerObject, GraphRbacManager manager) {
         super(innerObject);
@@ -59,7 +59,7 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

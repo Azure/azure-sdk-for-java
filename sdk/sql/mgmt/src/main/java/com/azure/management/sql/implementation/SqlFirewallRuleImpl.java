@@ -97,7 +97,7 @@ public class SqlFirewallRuleImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override

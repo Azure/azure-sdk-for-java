@@ -7,13 +7,17 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.VirtualMachineExtensionInstanceView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineExtension model. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineExtensionInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionInner.class);
+
     /*
      * How the extension handler should be forced to update even if the
      * extension configuration has not changed.
@@ -69,7 +73,7 @@ public class VirtualMachineExtensionInner extends Resource {
     private String provisioningState;
 
     /*
-     * The instance view of a virtual machine extension.
+     * The virtual machine extension instance view.
      */
     @JsonProperty(value = "properties.instanceView")
     private VirtualMachineExtensionInstanceView instanceView;
@@ -117,9 +121,10 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the virtualMachineExtensionType property: Specifies the type of the extension; an example is
+     * "CustomScriptExtension".
      *
-     * @return the typePropertiesType value.
+     * @return the virtualMachineExtensionType value.
      */
     public String virtualMachineExtensionType() {
         return this.virtualMachineExtensionType;
@@ -250,5 +255,16 @@ public class VirtualMachineExtensionInner extends Resource {
     public VirtualMachineExtensionInner withInstanceView(VirtualMachineExtensionInstanceView instanceView) {
         this.instanceView = instanceView;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MaxSizeCapability model. */
 @Immutable
 public final class MaxSizeCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaxSizeCapability.class);
+
     /*
      * The maximum size limit (see 'unit' for the units).
      */
@@ -38,5 +42,13 @@ public final class MaxSizeCapability {
      */
     public MaxSizeUnit unit() {
         return this.unit;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

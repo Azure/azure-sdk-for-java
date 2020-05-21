@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -124,6 +123,6 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         return client.readFeed(request)
-                .map( rsp -> BridgeInternal.toChaneFeedResponsePage(rsp, klass));
+                .map( rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass));
     }
 }

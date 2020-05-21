@@ -5,6 +5,7 @@ package com.azure.management.compute;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /** Scale set virtual machine SKU types. */
@@ -284,7 +285,7 @@ public class VirtualMachineScaleSetSkuTypes {
         } else {
             this.value = this.sku.name() + '_' + this.sku.tier();
         }
-        VALUES_BY_NAME.put(this.value.toLowerCase(), this);
+        VALUES_BY_NAME.put(this.value.toLowerCase(Locale.ROOT), this);
     }
 
     /**
@@ -304,7 +305,7 @@ public class VirtualMachineScaleSetSkuTypes {
             nameToLookFor += '_' + sku.tier();
         }
 
-        VirtualMachineScaleSetSkuTypes result = VALUES_BY_NAME.get(nameToLookFor.toLowerCase());
+        VirtualMachineScaleSetSkuTypes result = VALUES_BY_NAME.get(nameToLookFor.toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {
@@ -343,7 +344,6 @@ public class VirtualMachineScaleSetSkuTypes {
 
     @Override
     public boolean equals(Object obj) {
-        String value = this.toString();
         if (!(obj instanceof VirtualMachineScaleSetSkuTypes)) {
             return false;
         } else if (obj == this) {
@@ -351,7 +351,7 @@ public class VirtualMachineScaleSetSkuTypes {
         } else if (value == null) {
             return ((VirtualMachineScaleSetSkuTypes) obj).value == null;
         } else {
-            return value.equalsIgnoreCase(((VirtualMachineScaleSetSkuTypes) obj).value.toLowerCase());
+            return value.equalsIgnoreCase(((VirtualMachineScaleSetSkuTypes) obj).value);
         }
     }
 

@@ -28,7 +28,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     public void createFormRecognizerClient() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.instantiation
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.instantiation
@@ -44,7 +44,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .build();
 
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();

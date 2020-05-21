@@ -15,11 +15,12 @@ import com.azure.management.graphrbac.models.ServicePrincipalInner;
 import com.azure.management.graphrbac.models.UserInner;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /** Implementation for Group and its parent interfaces. */
 class ActiveDirectoryGroupImpl
@@ -28,7 +29,6 @@ class ActiveDirectoryGroupImpl
 
     private final GraphRbacManager manager;
     private GroupCreateParameters createParameters;
-    private String domainName;
     private Set<String> membersToAdd;
     private Set<String> membersToRemove;
 
@@ -55,8 +55,8 @@ class ActiveDirectoryGroupImpl
     }
 
     @Override
-    public Set<ActiveDirectoryObject> listMembers() {
-        return Collections.unmodifiableSet(new HashSet(listMembersAsync().buffer().blockLast()));
+    public List<ActiveDirectoryObject> listMembers() {
+        return listMembersAsync().collectList().block();
     }
 
     @Override
@@ -129,7 +129,7 @@ class ActiveDirectoryGroupImpl
         // User providing domain
         if (mailNickname.contains("@")) {
             String[] parts = mailNickname.split("@");
-            domainName = parts[1];
+            // domainName = parts[1]; // no use
             mailNickname = parts[0];
         }
         createParameters.withMailNickname(mailNickname);

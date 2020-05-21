@@ -75,6 +75,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
     @Override
     public ActiveDirectoryUserImpl withPassword(String password) {
         createParameters.withPasswordProfile(new PasswordProfile().withPassword(password));
+        updateParameters.withPasswordProfile(new PasswordProfile().withPassword(password));
         return this;
     }
 
@@ -90,7 +91,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public Mono<ActiveDirectoryUser> createResourceAsync() {
-        Mono<ActiveDirectoryUserImpl> domain;
+        Mono<ActiveDirectoryUserImpl> domain = null;
         if (emailAlias != null) {
             domain =
                 manager()
@@ -107,7 +108,8 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
                             return Mono.just(ActiveDirectoryUserImpl.this);
                         })
                     .blockLast();
-        } else {
+        }
+        if (domain == null) {
             domain = Mono.just(this);
         }
         return domain
@@ -131,6 +133,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
     @Override
     public ActiveDirectoryUserImpl withPromptToChangePasswordOnLogin(boolean promptToChangePasswordOnLogin) {
         createParameters.passwordProfile().withForceChangePasswordNextLogin(promptToChangePasswordOnLogin);
+        updateParameters.passwordProfile().withForceChangePasswordNextLogin(promptToChangePasswordOnLogin);
         return this;
     }
 

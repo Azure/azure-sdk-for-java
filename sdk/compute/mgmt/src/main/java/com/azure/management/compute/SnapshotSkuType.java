@@ -5,6 +5,7 @@ package com.azure.management.compute;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /** Defines values for SnapshotSkuType. */
@@ -38,7 +39,7 @@ public final class SnapshotSkuType {
     private SnapshotSkuType(SnapshotStorageAccountTypes value) {
         this.value = value;
         if (value != null) {
-            VALUES_BY_NAME.put(value.toString().toLowerCase(), this);
+            VALUES_BY_NAME.put(value.toString().toLowerCase(Locale.ROOT), this);
         }
     }
 
@@ -54,7 +55,7 @@ public final class SnapshotSkuType {
             return null;
         }
 
-        SnapshotSkuType result = VALUES_BY_NAME.get(value.toString().toLowerCase());
+        SnapshotSkuType result = VALUES_BY_NAME.get(value.toString().toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {

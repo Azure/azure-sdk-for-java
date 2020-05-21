@@ -10,7 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-
+      
 trigger:
   branches:
     include:
@@ -31,11 +31,18 @@ pr:
   paths:
     include:
       - sdk/parents/
-
+  
 stages:
-  - stage: Placeholder
-    jobs:
-      - job: Placeholder
-        steps:
-          - script: |
-              echo Hello, world!
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
+    parameters:
+      ServiceDirectory: parents
+      Artifacts:
+        - name: azure-client-sdk-parent
+          groupId: com.azure
+          safeName: azureclientsdkparent
+        - name: azure-data-sdk-parent
+          groupId: com.azure
+          safeName: azuredatasdkparent
+        - name: azure-sdk-parent
+          groupId: com.azure
+          safeName: azuresdkparent

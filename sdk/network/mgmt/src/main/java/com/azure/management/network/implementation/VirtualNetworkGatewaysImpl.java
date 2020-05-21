@@ -43,7 +43,7 @@ class VirtualNetworkGatewaysImpl
     @Override
     public PagedFlux<VirtualNetworkGateway> listAsync() {
         PagedIterable<ResourceGroup> resources =
-            new PagedIterable<>(this.manager().getResourceManager().resourceGroups().listAsync());
+            new PagedIterable<>(this.manager().resourceManager().resourceGroups().listAsync());
         Iterator<ResourceGroup> iterator = resources.iterator();
 
         Function<String, Mono<PagedResponse<VirtualNetworkGatewayInner>>> fetcher =
@@ -97,6 +97,6 @@ class VirtualNetworkGatewaysImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualNetworkGatewayImpl(inner.getName(), inner, this.manager());
+        return new VirtualNetworkGatewayImpl(inner.name(), inner, this.manager());
     }
 }

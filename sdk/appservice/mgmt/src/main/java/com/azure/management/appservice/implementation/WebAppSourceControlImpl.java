@@ -33,7 +33,7 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public String name() {
-        return inner().getName();
+        return inner().name();
     }
 
     @Override

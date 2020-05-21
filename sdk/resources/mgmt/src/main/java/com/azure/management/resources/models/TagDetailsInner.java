@@ -5,13 +5,17 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.TagCount;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TagDetails model. */
 @Fluent
 public final class TagDetailsInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagDetailsInner.class);
+
     /*
      * The tag ID.
      */
@@ -42,7 +46,7 @@ public final class TagDetailsInner {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
@@ -106,5 +110,19 @@ public final class TagDetailsInner {
     public TagDetailsInner withValues(List<TagValueInner> values) {
         this.values = values;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (count() != null) {
+            count().validate();
+        }
+        if (values() != null) {
+            values().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PercentileMetricValue model. */
 @Immutable
 public final class PercentileMetricValue extends MetricValue {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PercentileMetricValue.class);
+
     /*
      * The 10th percentile value for the metric.
      */
@@ -113,5 +117,15 @@ public final class PercentileMetricValue extends MetricValue {
      */
     public Double p99() {
         return this.p99;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

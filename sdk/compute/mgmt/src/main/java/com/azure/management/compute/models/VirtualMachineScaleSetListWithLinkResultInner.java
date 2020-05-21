@@ -5,12 +5,17 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetListWithLinkResult model. */
 @Fluent
 public final class VirtualMachineScaleSetListWithLinkResultInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetListWithLinkResultInner.class);
+
     /*
      * The list of virtual machine scale sets.
      */
@@ -65,5 +70,21 @@ public final class VirtualMachineScaleSetListWithLinkResultInner {
     public VirtualMachineScaleSetListWithLinkResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model VirtualMachineScaleSetListWithLinkResultInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

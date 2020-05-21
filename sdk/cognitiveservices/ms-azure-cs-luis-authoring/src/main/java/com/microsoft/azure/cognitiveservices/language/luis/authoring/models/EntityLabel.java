@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -32,6 +33,18 @@ public class EntityLabel {
      */
     @JsonProperty(value = "endTokenIndex", required = true)
     private int endTokenIndex;
+
+    /**
+     * The role of the predicted entity.
+     */
+    @JsonProperty(value = "role")
+    private String role;
+
+    /**
+     * The role id for the predicted entity.
+     */
+    @JsonProperty(value = "roleId")
+    private UUID roleId;
 
     /**
      * Get the entityName value.
@@ -90,6 +103,46 @@ public class EntityLabel {
      */
     public EntityLabel withEndTokenIndex(int endTokenIndex) {
         this.endTokenIndex = endTokenIndex;
+        return this;
+    }
+
+    /**
+     * Get the role value.
+     *
+     * @return the role value
+     */
+    public String role() {
+        return this.role;
+    }
+
+    /**
+     * Set the role value.
+     *
+     * @param role the role value to set
+     * @return the EntityLabel object itself.
+     */
+    public EntityLabel withRole(String role) {
+        this.role = role;
+        return this;
+    }
+
+    /**
+     * Get the roleId value.
+     *
+     * @return the roleId value
+     */
+    public UUID roleId() {
+        return this.roleId;
+    }
+
+    /**
+     * Set the roleId value.
+     *
+     * @param roleId the roleId value to set
+     * @return the EntityLabel object itself.
+     */
+    public EntityLabel withRoleId(UUID roleId) {
+        this.roleId = roleId;
         return this;
     }
 

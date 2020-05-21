@@ -7,12 +7,14 @@ package com.azure.management.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.NetworkProfile;
 import com.azure.management.containerservice.OpenShiftManagedClusterAgentPoolProfile;
 import com.azure.management.containerservice.OpenShiftManagedClusterAuthProfile;
 import com.azure.management.containerservice.OpenShiftManagedClusterMasterPoolProfile;
 import com.azure.management.containerservice.OpenShiftRouterProfile;
 import com.azure.management.containerservice.PurchasePlan;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,6 +22,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class OpenShiftManagedClusterInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterInner.class);
+
     /*
      * Define the resource plan as required by ARM for billing purposes
      */
@@ -265,5 +269,31 @@ public class OpenShiftManagedClusterInner extends Resource {
     public OpenShiftManagedClusterInner withAuthProfile(OpenShiftManagedClusterAuthProfile authProfile) {
         this.authProfile = authProfile;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (plan() != null) {
+            plan().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
+        }
+        if (routerProfiles() != null) {
+            routerProfiles().forEach(e -> e.validate());
+        }
+        if (masterPoolProfile() != null) {
+            masterPoolProfile().validate();
+        }
+        if (agentPoolProfiles() != null) {
+            agentPoolProfiles().forEach(e -> e.validate());
+        }
+        if (authProfile() != null) {
+            authProfile().validate();
+        }
     }
 }

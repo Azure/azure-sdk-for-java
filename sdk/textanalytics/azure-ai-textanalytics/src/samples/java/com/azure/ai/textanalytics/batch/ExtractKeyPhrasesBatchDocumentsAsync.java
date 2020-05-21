@@ -28,14 +28,14 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "My cat might need to see a veterinarian.", "en"),
-            new TextDocumentInput("B", "The pitot tube is used to measure airspeed.", "en")
+            new TextDocumentInput("A", "My cat might need to see a veterinarian.").setLanguage("en"),
+            new TextDocumentInput("B", "The pitot tube is used to measure airspeed.").setLanguage("en")
         );
 
         // Request options: show statistics and model version

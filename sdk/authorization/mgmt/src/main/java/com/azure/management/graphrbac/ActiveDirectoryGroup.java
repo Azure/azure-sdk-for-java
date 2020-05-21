@@ -10,7 +10,8 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import java.util.Set;
+
+import java.util.List;
 
 /** An immutable client-side representation of an Azure AD group. */
 @Fluent
@@ -25,14 +26,14 @@ public interface ActiveDirectoryGroup
     /**
      * Lists the members in the group.
      *
-     * @return an unmodifiable set of the members
+     * @return a list of the members
      */
-    Set<ActiveDirectoryObject> listMembers();
+    List<ActiveDirectoryObject> listMembers();
 
     /**
      * Lists the members in the group.
      *
-     * @return an unmodifiable set of the members
+     * @return a list of the members
      */
     PagedFlux<ActiveDirectoryObject> listMembersAsync();
 

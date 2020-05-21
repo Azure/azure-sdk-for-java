@@ -42,7 +42,7 @@ public enum DocumentSentimentValue {
 
     /**
      * Parses a serialized value to a DocumentSentimentValue instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DocumentSentimentValue object, or null if unable to parse.
      */

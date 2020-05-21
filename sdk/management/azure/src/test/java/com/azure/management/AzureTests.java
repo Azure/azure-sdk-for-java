@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.management;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.compute.CachingTypes;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.PowerState;
@@ -40,9 +41,14 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -50,20 +56,17 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 public class AzureTests extends TestBase {
     private Azure azure;
     private MSIManager msiManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         Azure.Authenticated azureAuthed =
-            Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
-        azure = azureAuthed.withSubscription(defaultSubscription);
-        this.msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
+            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azure = azureAuthed.withDefaultSubscription();
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override
@@ -177,11 +180,11 @@ public class AzureTests extends TestBase {
      * Tests ARM template deployments.
      *
      * @throws IOException
-     * @throws CloudException
+     * @throws ManagementException
      */
     @Test
     public void testDeployments() throws Exception {
-        String testId = azure.deployments().manager().getSdkContext().randomResourceName("", 8);
+        String testId = azure.deployments().manager().sdkContext().randomResourceName("", 8);
         PagedIterable<Deployment> deployments = azure.deployments().list();
         System.out.println("Deployments: " + TestUtilities.getSize(deployments));
         Deployment deployment =
@@ -213,13 +216,13 @@ public class AzureTests extends TestBase {
         NetworkSecurityGroup nsg =
             azure
                 .networkSecurityGroups()
-                .define(azure.networkSecurityGroups().manager().getSdkContext().randomResourceName("nsg", 13))
+                .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("nsg", 13))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .create();
         azure
-            .publicIPAddresses()
-            .define(azure.networkSecurityGroups().manager().getSdkContext().randomResourceName("pip", 13))
+            .publicIpAddresses()
+            .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("pip", 13))
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(nsg.resourceGroupName())
             .create();
@@ -454,10 +457,10 @@ public class AzureTests extends TestBase {
      * Tests VM images.
      *
      * @throws IOException
-     * @throws CloudException
+     * @throws ManagementException
      */
     @Test
-    public void testVMImages() throws CloudException, IOException {
+    public void testVMImages() throws ManagementException, IOException {
         PagedIterable<VirtualMachinePublisher> publishers =
             azure.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
         Assertions.assertTrue(TestUtilities.getSize(publishers) > 0);
@@ -556,7 +559,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testManagedDiskVMUpdate() throws Exception {
-        SdkContext context = azure.disks().manager().getSdkContext();
+        SdkContext context = azure.disks().manager().sdkContext();
         final String rgName = context.randomResourceName("rg", 13);
         final String linuxVM2Name = context.randomResourceName("vm" + "-", 10);
         final String linuxVM2Pip = context.randomResourceName("pip" + "-", 18);
@@ -591,7 +594,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testPublicIPAddresses() throws Exception {
-        new TestPublicIPAddress().runTest(azure.publicIPAddresses(), azure.resourceGroups());
+        new TestPublicIPAddress().runTest(azure.publicIpAddresses(), azure.resourceGroups());
     }
     //
     //    /**
@@ -793,8 +796,8 @@ public class AzureTests extends TestBase {
                 nw
                     .nextHop()
                     .withTargetResourceId(virtualMachines[0].id())
-                    .withSourceIPAddress("10.0.0.4")
-                    .withDestinationIPAddress("8.8.8.8")
+                    .withSourceIpAddress("10.0.0.4")
+                    .withDestinationIpAddress("8.8.8.8")
                     .execute();
             Assertions.assertEquals("System Route", nextHop.routeTableId());
             Assertions.assertEquals(NextHopType.INTERNET, nextHop.nextHopType());
@@ -828,7 +831,7 @@ public class AzureTests extends TestBase {
                     .withTimeLimitInSeconds(1500)
                     .definePacketCaptureFilter()
                     .withProtocol(PcProtocol.TCP)
-                    .withLocalIPAddresses(Arrays.asList("127.0.0.1", "127.0.0.5"))
+                    .withLocalIpAddresses(Arrays.asList("127.0.0.1", "127.0.0.5"))
                     .attach()
                     .create();
             packetCaptures = nw.packetCaptures().list();
@@ -836,7 +839,7 @@ public class AzureTests extends TestBase {
             Assertions.assertEquals("NewPacketCapture", packetCapture.name());
             Assertions.assertEquals(1500, packetCapture.timeLimitInSeconds());
             Assertions.assertEquals(PcProtocol.TCP, packetCapture.filters().get(0).protocol());
-            Assertions.assertEquals("127.0.0.1;127.0.0.5", packetCapture.filters().get(0).localIPAddress());
+            Assertions.assertEquals("127.0.0.1;127.0.0.5", packetCapture.filters().get(0).localIpAddress());
             //            Assertions.assertEquals("Running",
             // packetCapture.getStatus().packetCaptureStatus().toString());
             packetCapture.stop();
@@ -939,7 +942,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testVirtualMachineSSh() throws Exception {
-        new TestVirtualMachineSsh(azure.publicIPAddresses()).runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineSsh(azure.publicIpAddresses()).runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     /**
@@ -954,7 +957,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testVirtualMachineCustomData() throws Exception {
-        new TestVirtualMachineCustomData(azure.publicIPAddresses())
+        new TestVirtualMachineCustomData(azure.publicIpAddresses())
             .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
@@ -1074,12 +1077,6 @@ public class AzureTests extends TestBase {
     @Test
     public void testResourceStreaming() throws Exception {
         new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
-    }
-
-    @Test
-    @Disabled("Container service will be deprecated")
-    public void testContainerService() throws Exception {
-        new TestContainerService().runTest(azure.containerServices(), azure.resourceGroups());
     }
 
     @Test

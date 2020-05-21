@@ -358,7 +358,7 @@ class VirtualMachineEncryptionHelper {
         return Mono.error(new Exception(message));
     }
 
-    private class VMExtTuple {
+    private static class VMExtTuple {
         private final VirtualMachine virtualMachine;
         private final VirtualMachineExtension encryptExtension;
         //

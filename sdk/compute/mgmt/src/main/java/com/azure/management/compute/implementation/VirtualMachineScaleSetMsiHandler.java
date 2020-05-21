@@ -14,10 +14,12 @@ import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.azure.management.resources.fluentcore.model.Creatable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -69,7 +71,8 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             return this;
         } else if (this.scaleSet.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             this.scaleSet.inner().identity().withType(ResourceIdentityType.NONE);
-        } else if (this.scaleSet.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+        } else if (this.scaleSet.inner().identity().type().equals(
+            ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
             this.scaleSet.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -196,14 +199,14 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
                 VirtualMachineScaleSetIdentity currentIdentity = this.scaleSet.inner().identity();
                 if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
                     for (String id : currentIdentity.userAssignedIdentities().keySet()) {
-                        currentIds.add(id.toLowerCase());
+                        currentIds.add(id.toLowerCase(Locale.ROOT));
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
                 for (Map.Entry<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> entrySet
                     : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
-                        removeIds.add(entrySet.getKey().toLowerCase());
+                        removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
                     }
                 }
                 // If so check user want to remove all the identities
@@ -215,7 +218,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
                     if (currentIdentity == null || currentIdentity.type() == null) {
                         vmssUpdate
                             .withIdentity(new VirtualMachineScaleSetIdentity().withType(ResourceIdentityType.NONE));
-                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
                         vmssUpdate.withIdentity(currentIdentity);
                         vmssUpdate.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ResourceIdentityType.USER_ASSIGNED)) {
@@ -261,7 +264,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             || scaleSetInner.identity().type().equals(identityType)) {
             scaleSetInner.identity().withType(identityType);
         } else {
-            scaleSetInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            scaleSetInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
         }
     }
 }

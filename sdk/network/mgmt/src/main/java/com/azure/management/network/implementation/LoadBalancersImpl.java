@@ -36,6 +36,6 @@ class LoadBalancersImpl
         if (inner == null) {
             return null;
         }
-        return new LoadBalancerImpl(inner.getName(), inner, this.manager());
+        return new LoadBalancerImpl(inner.name(), inner, this.manager());
     }
 }

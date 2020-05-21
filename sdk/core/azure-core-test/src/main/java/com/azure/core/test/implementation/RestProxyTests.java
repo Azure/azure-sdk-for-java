@@ -440,13 +440,13 @@ public abstract class RestProxyTests {
         @Put("put")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
-        HttpBinJSON putBodyAndContentLength(@BodyParam("application/octet-stream") ByteBuffer body,
+        HttpBinJSON putBodyAndContentLength(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
             @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
-        Mono<HttpBinJSON> putAsyncBodyAndContentLength(@BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+        Mono<HttpBinJSON> putAsyncBodyAndContentLength(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> body,
             @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
@@ -535,7 +535,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service9.class).putBodyAndContentLength(body, 4L);
 
         assertEquals("test", json.data());
-        assertEquals("application/octet-stream", json.headers().get(("Content-Type")));
+        assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.headers().get(("Content-Type")));
         assertEquals("4", json.headers().get(("Content-Length")));
     }
 
@@ -566,7 +566,7 @@ public abstract class RestProxyTests {
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(body, 4L))
             .assertNext(json -> {
                 assertEquals("test", json.data());
-                assertEquals("application/octet-stream", json.headers().get(("Content-Type")));
+                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.headers().get(("Content-Type")));
                 assertEquals("4", json.headers().get(("Content-Length")));
             }).verifyComplete();
     }

@@ -3,9 +3,10 @@
 
 package com.azure.management.resources;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,12 +22,12 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
     private String newRgName;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         testId = sdkContext.randomResourceName("", 9);
         rgName = "rg" + testId;
         newRgName = "rgB" + testId;
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
         resourceGroups = resourceClient.resourceGroups();
         genericResources = resourceClient.genericResources();
         resourceGroups.define(rgName)
@@ -61,6 +62,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         boolean found = false;
         for (GenericResource gr : resourceList) {
             if (gr.name().equals(resource.name())) {
+                Assertions.assertNotNull(gr.apiVersion());
                 found = true;
                 break;
             }
