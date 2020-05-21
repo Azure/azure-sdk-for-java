@@ -660,7 +660,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             this.receiver = getReceiverBuilder(false, entityType, Function.identity())
-                //.maxAutoLockRenewalDuration(autoLockRenewal)
+                .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity())
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
