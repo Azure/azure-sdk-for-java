@@ -105,7 +105,8 @@ public final class StorageManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        StorageManagementClient client = new StorageManagementClient(pipeline, environment, host, apiVersion, subscriptionId);
+        StorageManagementClient client = new StorageManagementClient(pipeline, environment,
+            host, apiVersion, subscriptionId);
         return client;
     }
 }
