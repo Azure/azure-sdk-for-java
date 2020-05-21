@@ -34,7 +34,6 @@
         <legal>
             <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
         <testMode>playback</testMode>
-        <playbackServerPort>11080</playbackServerPort>
     </properties>
 
     <developers>
@@ -237,7 +236,7 @@
                 </analysisConfigurationFiles>
                 <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
                 <checkDependencies>true</checkDependencies>
-                <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
                 </configuration>
                 <dependencies>
                 <dependency>
