@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TopologyAssociation model. */
 @Fluent
 public final class TopologyAssociation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyAssociation.class);
+
     /*
      * The name of the resource that is associated with the parent resource.
      */
@@ -86,5 +90,13 @@ public final class TopologyAssociation {
     public TopologyAssociation withAssociationType(AssociationType associationType) {
         this.associationType = associationType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

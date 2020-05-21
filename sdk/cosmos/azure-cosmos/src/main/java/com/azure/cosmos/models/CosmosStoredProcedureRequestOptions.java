@@ -39,7 +39,7 @@ public final class CosmosStoredProcedureRequestOptions {
      *
      * @return the consistency level.
      */
-    public ConsistencyLevel getConsistencyLevel() {
+    ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -49,7 +49,7 @@ public final class CosmosStoredProcedureRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the CosmosStoredProcedureRequestOptions.
      */
-    public CosmosStoredProcedureRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    CosmosStoredProcedureRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }

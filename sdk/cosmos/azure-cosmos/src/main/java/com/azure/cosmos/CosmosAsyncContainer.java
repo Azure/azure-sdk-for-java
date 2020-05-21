@@ -154,7 +154,6 @@ public class CosmosAsyncContainer {
     public Mono<CosmosAsyncContainerResponse> replace(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
-        ModelBridgeInternal.validateResource(ModelBridgeInternal.getResourceFromResourceWrapper(containerProperties));
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
@@ -672,8 +671,7 @@ public class CosmosAsyncContainer {
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return this.read()
                    .flatMap(response -> this.database.getDocClientWrapper()
-                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response
-                                                                                                      .getProperties()
+                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response.getProperties()
                                                                                                       .getResourceId())
                                                 , new FeedOptions())
                                             .single()
@@ -704,8 +702,7 @@ public class CosmosAsyncContainer {
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
                    .flatMap(response -> this.database.getDocClientWrapper()
-                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response
-                                                                                                      .getProperties()
+                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response.getProperties()
                                                                                                       .getResourceId())
                                                 , new FeedOptions())
                                             .single()

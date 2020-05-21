@@ -1223,7 +1223,7 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
     <Class name="com.azure.cosmos.CosmosClientException"/>
-    <Field name="cosmosResponseDiagnostics"/>
+    <Field name="cosmosDiagnostics"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 

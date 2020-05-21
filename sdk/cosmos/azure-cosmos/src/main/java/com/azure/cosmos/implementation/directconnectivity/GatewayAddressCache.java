@@ -308,7 +308,7 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
                 dsr -> {
-                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics);
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
                     if (metadataDiagnosticsContext != null) {
                         ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                         MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
@@ -495,7 +495,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         return dsrObs.map(
                 dsr -> {
-                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics);
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
                     if (metadataDiagnosticsContext != null) {
                         ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                         MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
@@ -576,16 +576,16 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     private static String logAddressResolutionStart(RxDocumentServiceRequest request, URI targetEndpointUrl) {
-        if (request.requestContext.cosmosResponseDiagnostics != null) {
-            return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosResponseDiagnostics, targetEndpointUrl);
+        if (request.requestContext.cosmosDiagnostics != null) {
+            return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosDiagnostics, targetEndpointUrl);
         }
 
         return null;
     }
 
     private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier) {
-        if (request.requestContext.cosmosResponseDiagnostics != null) {
-            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosResponseDiagnostics, identifier);
+        if (request.requestContext.cosmosDiagnostics != null) {
+            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier);
         }
     }
 }

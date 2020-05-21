@@ -77,7 +77,7 @@ class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
     }
 
-    Duration getRequestLatency() {
+    Duration getDuration() {
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
@@ -280,7 +280,7 @@ class ClientSideRequestStatistics {
             ClientSideRequestStatistics statistics, JsonGenerator generator, SerializerProvider provider) throws
             IOException {
             generator.writeStartObject();
-            long requestLatency = statistics.getRequestLatency().toMillis();
+            long requestLatency = statistics.getDuration().toMillis();
             generator.writeNumberField("requestLatency", requestLatency);
             generator.writeStringField("requestStartTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestEndTimeUTC));

@@ -5,12 +5,16 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.DeploymentOperationProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentOperation model. */
 @Fluent
 public final class DeploymentOperationInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationInner.class);
+
     /*
      * Full deployment operation ID.
      */
@@ -65,5 +69,16 @@ public final class DeploymentOperationInner {
     public DeploymentOperationInner withProperties(DeploymentOperationProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

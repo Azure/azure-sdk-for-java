@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.Name;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Usage model. */
 @Immutable
 public final class UsageInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
+
     /*
      * Resource ID.
      */
@@ -114,5 +118,16 @@ public final class UsageInner {
      */
     public Integer requestedLimit() {
         return this.requestedLimit;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
     }
 }

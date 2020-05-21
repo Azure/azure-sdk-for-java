@@ -5,34 +5,47 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BlobContainersExtendImmutabilityPolicyHeaders model. */
 @Fluent
 public final class BlobContainersExtendImmutabilityPolicyHeaders {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BlobContainersExtendImmutabilityPolicyHeaders.class);
+
     /*
-     * The ETag property.
+     * The Etag property.
      */
-    @JsonProperty(value = "ETag")
-    private String eTag;
+    @JsonProperty(value = "Etag")
+    private String etag;
 
     /**
-     * Get the eTag property: The ETag property.
+     * Get the etag property: The Etag property.
      *
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.eTag;
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Set the eTag property: The ETag property.
+     * Set the etag property: The Etag property.
      *
-     * @param eTag the eTag value to set.
+     * @param etag the etag value to set.
      * @return the BlobContainersExtendImmutabilityPolicyHeaders object itself.
      */
-    public BlobContainersExtendImmutabilityPolicyHeaders withETag(String eTag) {
-        this.eTag = eTag;
+    public BlobContainersExtendImmutabilityPolicyHeaders withEtag(String etag) {
+        this.etag = etag;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -7,11 +7,13 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.InstanceFailoverGroupReadOnlyEndpoint;
 import com.azure.management.sql.InstanceFailoverGroupReadWriteEndpoint;
 import com.azure.management.sql.InstanceFailoverGroupReplicationRole;
 import com.azure.management.sql.ManagedInstancePairInfo;
 import com.azure.management.sql.PartnerRegionInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,6 +21,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class InstanceFailoverGroupInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceFailoverGroupInner.class);
+
     /*
      * Read-write endpoint of the failover group instance.
      */
@@ -151,5 +155,25 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     public InstanceFailoverGroupInner withManagedInstancePairs(List<ManagedInstancePairInfo> managedInstancePairs) {
         this.managedInstancePairs = managedInstancePairs;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (readWriteEndpoint() != null) {
+            readWriteEndpoint().validate();
+        }
+        if (readOnlyEndpoint() != null) {
+            readOnlyEndpoint().validate();
+        }
+        if (partnerRegions() != null) {
+            partnerRegions().forEach(e -> e.validate());
+        }
+        if (managedInstancePairs() != null) {
+            managedInstancePairs().forEach(e -> e.validate());
+        }
     }
 }

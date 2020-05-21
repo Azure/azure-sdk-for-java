@@ -9,7 +9,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
     <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
-    <relativePath>../../parents/azure-data-sdk-client</relativePath>
+    <relativePath>../../parents/azure-data-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>com.microsoft.rest</groupId>
       <artifactId>client-runtime</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.rest:client-runtime;external_dependency} -->
+      <version>1.7.4</version> <!-- {x-version-update;com.microsoft.rest:client-runtime;external_dependency} -->
     </dependency>
 
     <!-- Other Dependencies -->

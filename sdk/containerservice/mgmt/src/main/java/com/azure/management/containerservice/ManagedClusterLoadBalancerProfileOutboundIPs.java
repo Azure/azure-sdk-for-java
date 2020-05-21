@@ -5,12 +5,17 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ManagedClusterLoadBalancerProfileOutboundIPs model. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileOutboundIPs {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfileOutboundIPs.class);
+
     /*
      * A list of public IP resources.
      */
@@ -35,5 +40,16 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
     public ManagedClusterLoadBalancerProfileOutboundIPs withPublicIPs(List<ResourceReference> publicIPs) {
         this.publicIPs = publicIPs;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publicIPs() != null) {
+            publicIPs().forEach(e -> e.validate());
+        }
     }
 }

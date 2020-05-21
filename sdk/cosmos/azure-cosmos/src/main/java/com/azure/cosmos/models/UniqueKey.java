@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,10 @@ import java.util.List;
  *
  * @see UniqueKeyPolicy
  */
-public final class UniqueKey extends JsonSerializableWrapper{
+public final class UniqueKey {
     private List<String> paths;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Instantiates a new Unique key.
@@ -29,8 +32,22 @@ public final class UniqueKey extends JsonSerializableWrapper{
         this.jsonSerializable = new JsonSerializable();
     }
 
+    /**
+     * Initializes a new instance of the UniqueKey class.
+     *
+     * @param jsonString the json string that represents the included path.
+     */
     UniqueKey(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Initializes a new instance of the UniqueKey class.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    UniqueKey(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -68,11 +85,12 @@ public final class UniqueKey extends JsonSerializableWrapper{
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
+    void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         if (paths != null) {
             this.jsonSerializable.set(Constants.Properties.PATHS, paths);
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

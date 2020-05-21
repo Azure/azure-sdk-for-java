@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ApplicationStack;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.StackMajorVersion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ApplicationStackResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationStackResourceInner.class);
+
     /*
      * Application stack name.
      */
@@ -144,5 +148,21 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
     public ApplicationStackResourceInner withFrameworks(List<ApplicationStack> frameworks) {
         this.frameworks = frameworks;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (majorVersions() != null) {
+            majorVersions().forEach(e -> e.validate());
+        }
+        if (frameworks() != null) {
+            frameworks().forEach(e -> e.validate());
+        }
     }
 }

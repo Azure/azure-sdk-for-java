@@ -7,12 +7,16 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TdeCertificate model. */
 @JsonFlatten
 @Fluent
 public class TdeCertificate extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TdeCertificate.class);
+
     /*
      * The base64 encoded certificate private blob.
      */
@@ -63,5 +67,13 @@ public class TdeCertificate extends ProxyResource {
     public TdeCertificate withCertPassword(String certPassword) {
         this.certPassword = certPassword;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

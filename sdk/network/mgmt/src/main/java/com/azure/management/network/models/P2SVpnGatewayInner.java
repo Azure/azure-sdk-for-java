@@ -8,15 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.ProvisioningState;
 import com.azure.management.network.VpnClientConnectionHealth;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The P2SVpnGateway model. */
 @JsonFlatten
 @Fluent
 public class P2SVpnGatewayInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnGatewayInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -225,5 +229,22 @@ public class P2SVpnGatewayInner extends Resource {
     public P2SVpnGatewayInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vpnClientAddressPool() != null) {
+            vpnClientAddressPool().validate();
+        }
+        if (customRoutes() != null) {
+            customRoutes().validate();
+        }
+        if (vpnClientConnectionHealth() != null) {
+            vpnClientConnectionHealth().validate();
+        }
     }
 }

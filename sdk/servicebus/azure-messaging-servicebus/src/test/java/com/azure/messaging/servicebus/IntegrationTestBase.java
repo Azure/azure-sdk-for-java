@@ -231,7 +231,8 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType, boolean isSessionAware) {
+    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
+        boolean isSessionAware) {
 
         switch (entityType) {
             case QUEUE:
@@ -246,48 +247,46 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return getBuilder(useCredentials).sender()
-                    .topicName(topicName);
+                return getBuilder(useCredentials).sender().topicName(topicName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType) {
+        MessagingEntityType entityType,
+        Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+
+        final ServiceBusClientBuilder builder = onBuilderCreate.apply(getBuilder(useCredentials));
+
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName();
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                return getBuilder(useCredentials).receiver()
-                    .queueName(queueName);
+                return builder.receiver().queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
                 final String subscriptionName = getSubscriptionName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return getBuilder(useCredentials).receiver()
-                    .topicName(topicName).subscriptionName(subscriptionName);
+                return builder.receiver().topicName(topicName).subscriptionName(subscriptionName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(
-        boolean useCredentials, MessagingEntityType entityType,
-        Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
-        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onReceiverCreate) {
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
         switch (entityType) {
             case QUEUE:
                 final String queueName = getSessionQueueName();
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                final ServiceBusSessionReceiverClientBuilder builder = onBuilderCreate.apply(getBuilder(useCredentials))
+                return onBuilderCreate.apply(getBuilder(useCredentials))
                     .sessionReceiver()
                     .queueName(queueName);
-                return onReceiverCreate.apply(builder);
 
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
@@ -295,10 +294,9 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                final ServiceBusSessionReceiverClientBuilder builder2 = onBuilderCreate.apply(getBuilder(useCredentials))
+                return onBuilderCreate.apply(getBuilder(useCredentials))
                     .sessionReceiver()
                     .topicName(topicName).subscriptionName(subscriptionName);
-                return onReceiverCreate.apply(builder2);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }

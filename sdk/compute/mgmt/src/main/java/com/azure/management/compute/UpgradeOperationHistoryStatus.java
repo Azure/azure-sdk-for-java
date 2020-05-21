@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The UpgradeOperationHistoryStatus model. */
 @Immutable
 public final class UpgradeOperationHistoryStatus {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradeOperationHistoryStatus.class);
+
     /*
      * Code indicating the current status of the upgrade.
      */
@@ -54,5 +58,13 @@ public final class UpgradeOperationHistoryStatus {
      */
     public OffsetDateTime endTime() {
         return this.endTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

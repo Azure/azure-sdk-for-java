@@ -5,12 +5,17 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ElasticPoolPerDatabaseMaxPerformanceLevelCapability model. */
 @Fluent
 public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ElasticPoolPerDatabaseMaxPerformanceLevelCapability.class);
+
     /*
      * The maximum performance level per database.
      */
@@ -95,5 +100,16 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
     public ElasticPoolPerDatabaseMaxPerformanceLevelCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedPerDatabaseMinPerformanceLevels() != null) {
+            supportedPerDatabaseMinPerformanceLevels().forEach(e -> e.validate());
+        }
     }
 }

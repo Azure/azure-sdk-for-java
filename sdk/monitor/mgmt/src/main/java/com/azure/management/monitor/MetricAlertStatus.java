@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MetricAlertStatus model. */
 @Fluent
 public final class MetricAlertStatus {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatus.class);
+
     /*
      * The status name.
      */
@@ -112,5 +116,16 @@ public final class MetricAlertStatus {
     public MetricAlertStatus withProperties(MetricAlertStatusProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

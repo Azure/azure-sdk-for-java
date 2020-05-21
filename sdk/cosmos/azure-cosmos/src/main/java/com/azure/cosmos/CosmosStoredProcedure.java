@@ -7,6 +7,8 @@ import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 
+import java.util.List;
+
 /**
  * The type Cosmos sync stored procedure.
  */
@@ -94,7 +96,7 @@ public class CosmosStoredProcedure {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosStoredProcedureResponse execute(
-        Object[] procedureParams,
+        List<Object> procedureParams,
         CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.execute(procedureParams, options));

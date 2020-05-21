@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SourceRegistryCredentials model. */
 @Fluent
 public final class SourceRegistryCredentials {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceRegistryCredentials.class);
+
     /*
      * The authentication mode which determines the source registry login
      * scope. The credentials for the source registry
@@ -42,5 +46,13 @@ public final class SourceRegistryCredentials {
     public SourceRegistryCredentials withLoginMode(SourceRegistryLoginMode loginMode) {
         this.loginMode = loginMode;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

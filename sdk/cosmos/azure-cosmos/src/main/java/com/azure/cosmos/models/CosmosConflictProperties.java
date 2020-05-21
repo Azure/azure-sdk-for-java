@@ -5,13 +5,14 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Resource;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos conflict properties.
  */
-public final class CosmosConflictProperties extends ResourceWrapper{
+public final class CosmosConflictProperties {
 
     private Conflict conflict;
 
@@ -49,22 +50,59 @@ public final class CosmosConflictProperties extends ResourceWrapper{
         return this.conflict.getResouceType();
     }
 
+    Resource getResource() {
+        return this.conflict;
+    }
+
     /**
-     * Gets the resource ID for the conflict in the Azure Cosmos DB service.
+     * Gets the name of the resource.
      *
-     * @return resource Id for the conflict.
+     * @return the name of the resource.
      */
-    String getSourceResourceId() {
+    public String getId() {
+        return this.conflict.getId();
+    }
+
+    /**
+     * Sets the name of the resource.
+     *
+     * @param id the name of the resource.
+     * @return the current instance of {@link CosmosConflictProperties}.
+     */
+    public CosmosConflictProperties setId(String id) {
+        this.conflict.setId(id);
+        return this;
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
         return this.conflict.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.conflict.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.conflict.getETag();
     }
 
     static List<CosmosConflictProperties> getFromV2Results(List<Conflict> results) {
         return results.stream().map(conflict -> new CosmosConflictProperties(conflict.toJson()))
                    .collect(Collectors.toList());
-    }
-
-    @Override
-    Resource getResource() {
-        return this.conflict;
     }
 }

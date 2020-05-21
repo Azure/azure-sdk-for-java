@@ -7,8 +7,10 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.MetricAlertAction;
 import com.azure.management.monitor.MetricAlertCriteria;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -18,6 +20,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class MetricAlertResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertResourceInner.class);
+
     /*
      * the description of the metric alert that will be included in the alert
      * email.
@@ -336,5 +340,42 @@ public class MetricAlertResourceInner extends Resource {
      */
     public OffsetDateTime lastUpdatedTime() {
         return this.lastUpdatedTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (description() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property description in model MetricAlertResourceInner"));
+        }
+        if (evaluationFrequency() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property evaluationFrequency in model MetricAlertResourceInner"));
+        }
+        if (windowSize() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property windowSize in model MetricAlertResourceInner"));
+        }
+        if (criteria() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property criteria in model MetricAlertResourceInner"));
+        } else {
+            criteria().validate();
+        }
+        if (actions() != null) {
+            actions().forEach(e -> e.validate());
+        }
     }
 }

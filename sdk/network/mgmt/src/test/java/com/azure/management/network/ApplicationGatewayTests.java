@@ -28,9 +28,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     public void canCRUDApplicationGatewayWithWAF() throws Exception {
         String appGatewayName = sdkContext.randomResourceName("agwaf", 15);
         String appPublicIp = sdkContext.randomResourceName("pip", 15);
-        PublicIPAddress pip =
+        PublicIpAddress pip =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(appPublicIp)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
@@ -55,7 +55,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .toBackendIPAddress("11.1.1.1")
                 .toBackendIPAddress("11.1.1.2")
                 .attach()
-                .withExistingPublicIPAddress(pip)
+                .withExistingPublicIpAddress(pip)
                 .withTier(ApplicationGatewayTier.WAF_V2)
                 .withSize(ApplicationGatewaySkuName.WAF_V2)
                 .withAutoScale(2, 5)
@@ -124,9 +124,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         String appPublicIp = sdkContext.randomResourceName("pip", 15);
         String identityName = sdkContext.randomResourceName("id", 10);
 
-        PublicIPAddress pip =
+        PublicIpAddress pip =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(appPublicIp)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
@@ -169,7 +169,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .defineSslCertificate("ssl1")
                 .withKeyVaultSecretId(secret1.id())
                 .attach()
-                .withExistingPublicIPAddress(pip)
+                .withExistingPublicIpAddress(pip)
                 .withTier(ApplicationGatewayTier.WAF_V2)
                 .withSize(ApplicationGatewaySkuName.WAF_V2)
                 .withAutoScale(2, 5)

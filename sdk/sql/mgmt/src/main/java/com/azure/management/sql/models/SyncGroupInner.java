@@ -7,9 +7,11 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SyncConflictResolutionPolicy;
 import com.azure.management.sql.SyncGroupSchema;
 import com.azure.management.sql.SyncGroupState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -17,6 +19,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class SyncGroupInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupInner.class);
+
     /*
      * Sync interval of the sync group.
      */
@@ -45,7 +49,7 @@ public class SyncGroupInner extends ProxyResource {
      * User name for the sync group hub database credential.
      */
     @JsonProperty(value = "properties.hubDatabaseUserName")
-    private String hubDatabaseUserName;
+    private String hubDatabaseUsername;
 
     /*
      * Password for the sync group hub database credential.
@@ -135,22 +139,22 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the hubDatabaseUserName property: User name for the sync group hub database credential.
+     * Get the hubDatabaseUsername property: User name for the sync group hub database credential.
      *
-     * @return the hubDatabaseUserName value.
+     * @return the hubDatabaseUsername value.
      */
-    public String hubDatabaseUserName() {
-        return this.hubDatabaseUserName;
+    public String hubDatabaseUsername() {
+        return this.hubDatabaseUsername;
     }
 
     /**
-     * Set the hubDatabaseUserName property: User name for the sync group hub database credential.
+     * Set the hubDatabaseUsername property: User name for the sync group hub database credential.
      *
-     * @param hubDatabaseUserName the hubDatabaseUserName value to set.
+     * @param hubDatabaseUsername the hubDatabaseUsername value to set.
      * @return the SyncGroupInner object itself.
      */
-    public SyncGroupInner withHubDatabaseUserName(String hubDatabaseUserName) {
-        this.hubDatabaseUserName = hubDatabaseUserName;
+    public SyncGroupInner withHubDatabaseUsername(String hubDatabaseUsername) {
+        this.hubDatabaseUsername = hubDatabaseUsername;
         return this;
     }
 
@@ -201,5 +205,16 @@ public class SyncGroupInner extends ProxyResource {
     public SyncGroupInner withSchema(SyncGroupSchema schema) {
         this.schema = schema;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (schema() != null) {
+            schema().validate();
+        }
     }
 }

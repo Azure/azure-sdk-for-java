@@ -6,9 +6,11 @@ package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.PacketCaptureFilter;
 import com.azure.management.network.PacketCaptureStorageLocation;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class PacketCaptureResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultInner.class);
+
     /*
      * Name of the packet capture session.
      */
@@ -241,5 +245,19 @@ public class PacketCaptureResultInner {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (storageLocation() != null) {
+            storageLocation().validate();
+        }
+        if (filters() != null) {
+            filters().forEach(e -> e.validate());
+        }
     }
 }

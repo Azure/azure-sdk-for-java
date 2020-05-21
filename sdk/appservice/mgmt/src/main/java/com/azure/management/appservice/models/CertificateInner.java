@@ -8,8 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.HostingEnvironmentProfile;
 import com.azure.management.appservice.KeyVaultSecretStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class CertificateInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateInner.class);
+
     /*
      * Friendly name of the certificate.
      */
@@ -424,5 +428,16 @@ public class CertificateInner extends Resource {
     public CertificateInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (hostingEnvironmentProfile() != null) {
+            hostingEnvironmentProfile().validate();
+        }
     }
 }

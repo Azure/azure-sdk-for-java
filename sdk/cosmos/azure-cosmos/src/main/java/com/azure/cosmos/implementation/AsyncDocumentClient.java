@@ -739,7 +739,7 @@ public interface AsyncDocumentClient {
      * @param procedureParams     the array of procedure parameter values.
      * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, Object[] procedureParams);
+    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, List<Object> procedureParams);
 
     /**
      * Executes a stored procedure by the stored procedure link.
@@ -754,7 +754,7 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
     Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
-                                                               Object[] procedureParams);
+                                                               List<Object> procedureParams);
 
     /**
      * Creates a trigger.

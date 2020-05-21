@@ -5,12 +5,16 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AlertRuleResourceCollection model. */
 @Fluent
 public final class AlertRuleResourceCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleResourceCollectionInner.class);
+
     /*
      * the values for the alert rule resources.
      */
@@ -35,5 +39,16 @@ public final class AlertRuleResourceCollectionInner {
     public AlertRuleResourceCollectionInner withValue(List<AlertRuleResourceInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

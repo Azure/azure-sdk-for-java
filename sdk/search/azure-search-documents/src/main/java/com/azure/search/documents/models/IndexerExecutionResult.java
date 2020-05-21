@@ -18,7 +18,7 @@ import java.util.List;
 public final class IndexerExecutionResult {
     /*
      * The outcome of this indexer execution. Possible values include:
-     * 'transientFailure', 'success', 'inProgress', 'reset'
+     * 'TransientFailure', 'Success', 'InProgress', 'Reset'
      */
     @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerExecutionStatus status;
@@ -46,13 +46,13 @@ public final class IndexerExecutionResult {
      * The item-level indexing errors.
      */
     @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<ItemError> errors;
+    private List<SearchIndexerError> errors;
 
     /*
      * The item-level indexing warnings.
      */
     @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<ItemWarning> warnings;
+    private List<SearchIndexerWarning> warnings;
 
     /*
      * The number of items that were processed during this indexer execution.
@@ -83,7 +83,7 @@ public final class IndexerExecutionResult {
 
     /**
      * Get the status property: The outcome of this indexer execution. Possible
-     * values include: 'transientFailure', 'success', 'inProgress', 'reset'.
+     * values include: 'TransientFailure', 'Success', 'InProgress', 'Reset'.
      *
      * @return the status value.
      */
@@ -125,7 +125,7 @@ public final class IndexerExecutionResult {
      *
      * @return the errors value.
      */
-    public List<ItemError> getErrors() {
+    public List<SearchIndexerError> getErrors() {
         return this.errors;
     }
 
@@ -134,7 +134,7 @@ public final class IndexerExecutionResult {
      *
      * @return the warnings value.
      */
-    public List<ItemWarning> getWarnings() {
+    public List<SearchIndexerWarning> getWarnings() {
         return this.warnings;
     }
 

@@ -7,12 +7,16 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BackupLongTermRetentionPolicy model. */
 @JsonFlatten
 @Fluent
 public class BackupLongTermRetentionPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupLongTermRetentionPolicyInner.class);
+
     /*
      * The weekly retention policy for an LTR backup in an ISO 8601 format.
      */
@@ -115,5 +119,13 @@ public class BackupLongTermRetentionPolicyInner extends ProxyResource {
     public BackupLongTermRetentionPolicyInner withWeekOfYear(Integer weekOfYear) {
         this.weekOfYear = weekOfYear;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

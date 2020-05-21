@@ -5,13 +5,17 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.LocalizableString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The CsmUsageQuota model. */
 @Fluent
 public final class CsmUsageQuotaInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmUsageQuotaInner.class);
+
     /*
      * Units of measurement for the quota resource.
      */
@@ -140,5 +144,16 @@ public final class CsmUsageQuotaInner {
     public CsmUsageQuotaInner withName(LocalizableString name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
     }
 }

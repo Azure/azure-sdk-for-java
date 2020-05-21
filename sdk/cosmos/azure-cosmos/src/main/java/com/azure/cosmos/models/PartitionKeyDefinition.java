@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.Optional;
  * specifies which
  * document property is used as the partition key in a collection that has multiple partitions.
  */
-public final class PartitionKeyDefinition extends JsonSerializableWrapper{
+public final class PartitionKeyDefinition {
     private List<String> paths;
     private PartitionKind kind;
     private Optional<PartitionKeyDefinitionVersion> versionOptional;
     private Boolean systemKey;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor. Creates a new instance of the PartitionKeyDefinition object.
@@ -40,6 +43,16 @@ public final class PartitionKeyDefinition extends JsonSerializableWrapper{
      */
     PartitionKeyDefinition(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Constructor. Creates a new instance of the PartitionKeyDefinition object from a
+     * JSON string.
+     *
+     * @param objectNode the object node that represents the partition key definition.
+     */
+    PartitionKeyDefinition(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -163,8 +176,7 @@ public final class PartitionKeyDefinition extends JsonSerializableWrapper{
         }
     }
 
-    @Override
-    protected void populatePropertyBag() {
+    void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         if (this.kind != null) {
             this.jsonSerializable.set(Constants.Properties.PARTITION_KIND, kind.toString());
@@ -177,4 +189,6 @@ public final class PartitionKeyDefinition extends JsonSerializableWrapper{
             this.jsonSerializable.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, versionOptional.get().toString());
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

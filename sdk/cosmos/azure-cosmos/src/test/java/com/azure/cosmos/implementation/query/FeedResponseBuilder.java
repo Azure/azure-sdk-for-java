@@ -66,7 +66,7 @@ public class FeedResponseBuilder<T extends Resource> {
         if (isChangeFeed) {
             when(rsp.getStatusCode()).thenReturn(noMoreChangesInChangeFeed?
                     HttpConstants.StatusCodes.NOT_MODIFIED : 200);
-            return BridgeInternal.toChaneFeedResponsePage(rsp, klass);
+            return BridgeInternal.toChangeFeedResponsePage(rsp, klass);
         } else {
             return BridgeInternal.toFeedResponsePage(rsp, klass);
         }

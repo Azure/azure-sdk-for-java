@@ -140,8 +140,8 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         try {
 
-            if (request.requestContext.cosmosResponseDiagnostics == null) {
-                request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
             }
 
             URI uri = getUri(request);
@@ -266,7 +266,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().getReactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(OffsetDateTime.now());
-                                   BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosResponseDiagnostics,
+                                   BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
                                        reactorNettyRequestRecord.takeTimelineSnapshot());
                                }
 
@@ -279,9 +279,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                                    HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
                                    content);
                                DirectBridgeInternal.setRequestTimeline(rsp, reactorNettyRequestRecord.takeTimelineSnapshot());
-                               if (request.requestContext.cosmosResponseDiagnostics != null) {
-                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, rsp, null);
-                                   DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
+                               if (request.requestContext.cosmosDiagnostics != null) {
+                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, null);
+                                   DirectBridgeInternal.setCosmosDiagnostics(rsp, request.requestContext.cosmosDiagnostics);
                                }
                                return rsp;
                        })
@@ -305,9 +305,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                            return Mono.error(dce);
                        }
 
-                       if (request.requestContext.cosmosResponseDiagnostics != null) {
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, null, (CosmosClientException)exception);
-                           BridgeInternal.setCosmosResponseDiagnostics((CosmosClientException)exception, request.requestContext.cosmosResponseDiagnostics);
+                       if (request.requestContext.cosmosDiagnostics != null) {
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, (CosmosClientException)exception);
+                           BridgeInternal.setCosmosDiagnostics((CosmosClientException)exception, request.requestContext.cosmosDiagnostics);
                        }
 
                        return Mono.error(exception);

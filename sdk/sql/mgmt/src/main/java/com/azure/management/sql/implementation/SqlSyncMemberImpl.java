@@ -158,8 +158,8 @@ public class SqlSyncMemberImpl
     }
 
     @Override
-    public String userName() {
-        return this.inner().userName();
+    public String username() {
+        return this.inner().username();
     }
 
     @Override
@@ -305,7 +305,7 @@ public class SqlSyncMemberImpl
 
     @Override
     public SqlSyncMemberImpl withMemberUserName(String userName) {
-        this.inner().withUserName(userName);
+        this.inner().withUsername(userName);
         return this;
     }
 

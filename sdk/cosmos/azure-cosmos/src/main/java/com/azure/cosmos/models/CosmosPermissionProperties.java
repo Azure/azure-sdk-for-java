@@ -5,13 +5,14 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Resource;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos permission properties.
  */
-public final class CosmosPermissionProperties extends ResourceWrapper{
+public final class CosmosPermissionProperties {
 
     private Permission permission;
     static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
@@ -33,9 +34,7 @@ public final class CosmosPermissionProperties extends ResourceWrapper{
      * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties setId(String id) {
-        this.permission = new Permission();
         permission.setId(id);
-
         return this;
     }
 
@@ -108,12 +107,47 @@ public final class CosmosPermissionProperties extends ResourceWrapper{
         return this;
     }
 
-    Permission getV2Permissions() {
-        return new Permission(this.permission.toJson());
-    }
-
-    @Override
     Resource getResource() {
         return this.permission;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.permission.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.permission.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.permission.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.permission.getETag();
+    }
+
+    Permission getV2Permissions() {
+        return new Permission(this.permission.toJson());
     }
 }

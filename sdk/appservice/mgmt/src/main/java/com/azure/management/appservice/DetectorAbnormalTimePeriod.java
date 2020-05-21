@@ -5,6 +5,8 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The DetectorAbnormalTimePeriod model. */
 @Fluent
 public final class DetectorAbnormalTimePeriod {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DetectorAbnormalTimePeriod.class);
+
     /*
      * Start time of the correlated event
      */
@@ -46,7 +50,7 @@ public final class DetectorAbnormalTimePeriod {
      * Downtime metadata
      */
     @JsonProperty(value = "metaData")
-    private List<List<NameValuePair>> metaData;
+    private List<List<NameValuePair>> metadata;
 
     /*
      * Represents the type of the Detector
@@ -161,22 +165,22 @@ public final class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the metaData property: Downtime metadata.
+     * Get the metadata property: Downtime metadata.
      *
-     * @return the metaData value.
+     * @return the metadata value.
      */
-    public List<List<NameValuePair>> metaData() {
-        return this.metaData;
+    public List<List<NameValuePair>> metadata() {
+        return this.metadata;
     }
 
     /**
-     * Set the metaData property: Downtime metadata.
+     * Set the metadata property: Downtime metadata.
      *
-     * @param metaData the metaData value to set.
+     * @param metadata the metadata value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
-    public DetectorAbnormalTimePeriod withMetaData(List<List<NameValuePair>> metaData) {
-        this.metaData = metaData;
+    public DetectorAbnormalTimePeriod withMetadata(List<List<NameValuePair>> metadata) {
+        this.metadata = metadata;
         return this;
     }
 
@@ -218,5 +222,19 @@ public final class DetectorAbnormalTimePeriod {
     public DetectorAbnormalTimePeriod withSolutions(List<Solution> solutions) {
         this.solutions = solutions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metadata() != null) {
+            metadata().forEach(e -> e.forEach(e1 -> e1.validate()));
+        }
+        if (solutions() != null) {
+            solutions().forEach(e -> e.validate());
+        }
     }
 }

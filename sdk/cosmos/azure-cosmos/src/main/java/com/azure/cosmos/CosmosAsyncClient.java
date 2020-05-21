@@ -63,7 +63,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
         this.cosmosKeyCredential = builder.getKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
-        this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
+        this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 public class PolicyTests extends TestBase {
     protected ResourceManager resourceManager;
-    private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"northeurope\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
+    private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {

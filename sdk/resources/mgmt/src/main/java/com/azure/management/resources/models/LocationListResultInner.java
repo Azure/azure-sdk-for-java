@@ -5,12 +5,16 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The LocationListResult model. */
 @Fluent
 public final class LocationListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationListResultInner.class);
+
     /*
      * An array of locations.
      */
@@ -35,5 +39,16 @@ public final class LocationListResultInner {
     public LocationListResultInner withValue(List<LocationInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

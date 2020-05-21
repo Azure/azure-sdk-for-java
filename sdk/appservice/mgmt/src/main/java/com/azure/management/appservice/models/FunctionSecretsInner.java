@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FunctionSecrets model. */
 @JsonFlatten
 @Fluent
 public class FunctionSecretsInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionSecretsInner.class);
+
     /*
      * Secret key.
      */
@@ -63,5 +67,15 @@ public class FunctionSecretsInner extends ProxyOnlyResource {
     public FunctionSecretsInner withTriggerUrl(String triggerUrl) {
         this.triggerUrl = triggerUrl;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BillingMeter model. */
 @JsonFlatten
 @Fluent
 public class BillingMeterInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingMeterInner.class);
+
     /*
      * Meter GUID onboarded in Commerce
      */
@@ -167,5 +171,15 @@ public class BillingMeterInner extends ProxyOnlyResource {
     public BillingMeterInner withOsType(String osType) {
         this.osType = osType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

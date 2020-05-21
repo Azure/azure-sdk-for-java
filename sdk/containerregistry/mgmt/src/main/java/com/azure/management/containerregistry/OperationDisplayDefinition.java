@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationDisplayDefinition model. */
 @Fluent
 public final class OperationDisplayDefinition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplayDefinition.class);
+
     /*
      * The resource provider name: Microsoft.ContainerRegistry.
      */
@@ -112,5 +116,13 @@ public final class OperationDisplayDefinition {
     public OperationDisplayDefinition withDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

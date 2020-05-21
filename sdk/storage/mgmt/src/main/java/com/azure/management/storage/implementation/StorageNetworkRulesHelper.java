@@ -6,7 +6,7 @@ package com.azure.management.storage.implementation;
 import com.azure.management.storage.Action;
 import com.azure.management.storage.Bypass;
 import com.azure.management.storage.DefaultAction;
-import com.azure.management.storage.IPRule;
+import com.azure.management.storage.IpRule;
 import com.azure.management.storage.NetworkRuleSet;
 import com.azure.management.storage.StorageAccountCreateParameters;
 import com.azure.management.storage.StorageAccountUpdateParameters;
@@ -92,9 +92,9 @@ final class StorageNetworkRulesHelper {
     static List<String> ipAddressesWithAccess(final StorageAccountInner inner) {
         List<String> ipAddresses = new ArrayList<>();
         if (inner.networkRuleSet() != null && inner.networkRuleSet().ipRules() != null) {
-            for (IPRule rule : inner.networkRuleSet().ipRules()) {
-                if (rule != null && rule.iPAddressOrRange() != null && !rule.iPAddressOrRange().contains("/")) {
-                    ipAddresses.add(rule.iPAddressOrRange());
+            for (IpRule rule : inner.networkRuleSet().ipRules()) {
+                if (rule != null && rule.ipAddressOrRange() != null && !rule.ipAddressOrRange().contains("/")) {
+                    ipAddresses.add(rule.ipAddressOrRange());
                 }
             }
         }
@@ -110,9 +110,9 @@ final class StorageNetworkRulesHelper {
     static List<String> ipAddressRangesWithAccess(final StorageAccountInner inner) {
         List<String> ipAddressRanges = new ArrayList<>();
         if (inner.networkRuleSet() != null && inner.networkRuleSet().ipRules() != null) {
-            for (IPRule rule : inner.networkRuleSet().ipRules()) {
-                if (rule != null && rule.iPAddressOrRange() != null && rule.iPAddressOrRange().contains("/")) {
-                    ipAddressRanges.add(rule.iPAddressOrRange());
+            for (IpRule rule : inner.networkRuleSet().ipRules()) {
+                if (rule != null && rule.ipAddressOrRange() != null && rule.ipAddressOrRange().contains("/")) {
+                    ipAddressRanges.add(rule.ipAddressOrRange());
                 }
             }
         }
@@ -480,17 +480,17 @@ final class StorageNetworkRulesHelper {
     private StorageNetworkRulesHelper withAccessAllowedFromIpAddressOrRange(String ipAddressOrRange) {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(true);
         if (networkRuleSet.ipRules() == null) {
-            networkRuleSet.withIpRules(new ArrayList<IPRule>());
+            networkRuleSet.withIpRules(new ArrayList<IpRule>());
         }
         boolean found = false;
-        for (IPRule rule : networkRuleSet.ipRules()) {
-            if (rule.iPAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
+        for (IpRule rule : networkRuleSet.ipRules()) {
+            if (rule.ipAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            networkRuleSet.ipRules().add(new IPRule().withIPAddressOrRange(ipAddressOrRange).withAction(Action.ALLOW));
+            networkRuleSet.ipRules().add(new IpRule().withIpAddressOrRange(ipAddressOrRange).withAction(Action.ALLOW));
         }
         return this;
     }
@@ -509,8 +509,8 @@ final class StorageNetworkRulesHelper {
         }
         int foundIndex = -1;
         int i = 0;
-        for (IPRule rule : networkRuleSet.ipRules()) {
-            if (rule.iPAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
+        for (IpRule rule : networkRuleSet.ipRules()) {
+            if (rule.ipAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
                 foundIndex = i;
                 break;
             }
@@ -564,10 +564,10 @@ final class StorageNetworkRulesHelper {
                         }
                     }
                     if (this.inner.networkRuleSet().ipRules() != null) {
-                        clonedNetworkRuleSet.withIpRules(new ArrayList<IPRule>());
-                        for (IPRule rule : this.inner.networkRuleSet().ipRules()) {
-                            IPRule clonedRule =
-                                new IPRule().withAction(rule.action()).withIPAddressOrRange(rule.iPAddressOrRange());
+                        clonedNetworkRuleSet.withIpRules(new ArrayList<IpRule>());
+                        for (IpRule rule : this.inner.networkRuleSet().ipRules()) {
+                            IpRule clonedRule =
+                                new IpRule().withAction(rule.action()).withIpAddressOrRange(rule.ipAddressOrRange());
                             clonedNetworkRuleSet.ipRules().add(clonedRule);
                         }
                     }

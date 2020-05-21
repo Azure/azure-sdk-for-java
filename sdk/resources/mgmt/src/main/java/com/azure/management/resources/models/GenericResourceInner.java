@@ -6,14 +6,18 @@ package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.Identity;
 import com.azure.management.resources.Plan;
 import com.azure.management.resources.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GenericResource model. */
 @Fluent
 public class GenericResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericResourceInner.class);
+
     /*
      * The plan of the resource.
      */
@@ -168,5 +172,22 @@ public class GenericResourceInner extends Resource {
     public GenericResourceInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (plan() != null) {
+            plan().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 }
