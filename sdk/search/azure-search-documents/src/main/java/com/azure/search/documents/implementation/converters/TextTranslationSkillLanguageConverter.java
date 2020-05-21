@@ -1,0 +1,37 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.search.documents.implementation.converters;
+
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.models.TextTranslationSkillLanguage;
+
+/**
+ * A converter between {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage} and
+ * {@link TextTranslationSkillLanguage}.
+ */
+public final class TextTranslationSkillLanguageConverter {
+    private static final ClientLogger LOGGER = new ClientLogger(TextTranslationSkillLanguageConverter.class);
+
+    /**
+     * Maps from enum {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage} to enum
+     * {@link TextTranslationSkillLanguage}.
+     */
+    public static TextTranslationSkillLanguage map(com.azure.search.documents.implementation.models.TextTranslationSkillLanguage obj) {
+        if (obj == null) {
+            return null;
+        }
+        return TextTranslationSkillLanguage.fromString(obj.toString());
+    }
+
+    /**
+     * Maps from enum {@link TextTranslationSkillLanguage} to enum
+     * {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage}.
+     */
+    public static com.azure.search.documents.implementation.models.TextTranslationSkillLanguage map(TextTranslationSkillLanguage obj) {
+        if (obj == null) {
+            return null;
+        }
+        return com.azure.search.documents.implementation.models.TextTranslationSkillLanguage.fromString(obj.toString());
+    }
+}

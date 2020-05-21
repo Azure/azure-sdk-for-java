@@ -362,9 +362,14 @@
   <!-- Suppress checks for AutoRest generated Search code -->
   <!-- Hand-written classes should be specified here to be checked -->
   <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]((?!(GeoPointDeserializer|Iso8601DateDeserializer|SerializationUtil)).*)"/>
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]models[/\\]"/>
   <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult)).*)"/>
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]converters[/\\]"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\](DataSourcesImpl|DocumentsImpl|IndexersImpl|IndexesImpl|SkillsetsImpl|SynonymMapsImpl|SearchIndexRestClientBuilder|SearchIndexRestClientImpl|SearchServiceRestClientBuilder|SearchServiceRestClientImpl)"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult|ComplexField|SearchableField|SimpleField|SearchFieldBase|IndexBatchException|ScoringParameter)).*)"/>
+  <suppress checks="GoodLoggingCheck" files="com.azure.search.documents.implementation.util.PrivateFieldAccessHelper.java"/>
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
