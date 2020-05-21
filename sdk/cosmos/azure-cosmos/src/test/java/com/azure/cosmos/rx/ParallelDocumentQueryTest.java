@@ -376,10 +376,10 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<Double> expectedValues = createdDocuments.stream()
-                                           .map(d -> ModelBridgeInternal.getDoubleFromJsonSerializable(d, "prop"))
+                                           .map(d -> ModelBridgeInternal.getDoubleFromJsonSerializable(d, "_value"))
                                            .collect(Collectors.toList());
 
-        String query = "Select value c.prop from c";
+        String query = "Select value c._value from c";
 
         CosmosPagedFlux<Double> queryObservable = createdCollection.queryItems(query, options, Double.class);
 
@@ -387,6 +387,24 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         queryObservable.byPage().map(feedResponse -> fetchedResults.addAll(feedResponse.getResults())).blockLast();
 
         assertThat(fetchedResults).containsAll(expectedValues);
+    }
+
+    @Test(groups = {"simple"})
+    public void queryDocumentsDoubleValueToInt() {
+        // When try try to fetch double value using integer class, it should fail
+        FeedOptions options = new FeedOptions();
+        options.setMaxDegreeOfParallelism(2);
+        String query = "Select value c._value from c";
+        CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options, Integer.class);
+        Exception resultException = null;
+        List<Integer> fetchedResults = new ArrayList<>();
+        try {
+            queryObservable.byPage().map(feedResponse -> fetchedResults.addAll(feedResponse.getResults())).blockLast();
+        } catch (Exception e) {
+            resultException = e;
+        }
+        assertThat(resultException).isNotNull();
+        assertThat(resultException).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(groups = { "simple" })
@@ -465,11 +483,12 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         CosmosItemProperties doc = new CosmosItemProperties(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"prop\" : %d, "
+                + "\"_value\" : %f, "
                 + "\"boolProp\" : %b, "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
                 + "}"
-            , uuid, cnt, boolVal, uuid));
+            , uuid, cnt, (double)cnt*2.3, boolVal, uuid)); //2.3 is just a random num chosen
         return doc;
     }
 
