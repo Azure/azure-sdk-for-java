@@ -41,11 +41,11 @@ parameters:
       DisplayName: 'Windows - Java 11'
       SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: okhttp
-    Windows - Java 12 (AzureCloud):
+    Windows - Java 13 (AzureCloud):
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.12'
-      DisplayName: 'Windows - Java 12'
+      JavaVersion: '1.13'
+      DisplayName: 'Windows - Java 13'
       CloudType: AzureCloud
       AZURE_TEST_HTTP_CLIENTS: jdk
   PreRunSteps: []
