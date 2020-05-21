@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 /**
  * Information about the storage queue destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = StorageQueueEventSubscriptionDestination.class)
 @JsonTypeName("StorageQueue")
 @JsonFlatten
 public class StorageQueueEventSubscriptionDestination extends EventSubscriptionDestination {
