@@ -4,6 +4,7 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.management.storage.StorageManager;
 import com.azure.management.storage.models.BlobServiceProperties;
 import com.azure.management.storage.models.CorsRule;
 import com.azure.management.storage.models.CorsRules;

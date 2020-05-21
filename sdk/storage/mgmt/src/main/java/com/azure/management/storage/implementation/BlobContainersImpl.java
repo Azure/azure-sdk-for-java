@@ -5,6 +5,7 @@ package com.azure.management.storage.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.management.storage.StorageManager;
 import com.azure.management.storage.models.BlobContainer;
 import com.azure.management.storage.models.BlobContainers;
 import com.azure.management.storage.models.ImmutabilityPolicy;
@@ -16,10 +17,10 @@ import com.azure.management.storage.fluent.inner.ListContainerItemInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implements BlobContainers {
+public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implements BlobContainers {
     private final StorageManager manager;
 
-    BlobContainersImpl(StorageManager manager) {
+    public BlobContainersImpl(StorageManager manager) {
         super(manager.inner().blobContainers());
         this.manager = manager;
     }

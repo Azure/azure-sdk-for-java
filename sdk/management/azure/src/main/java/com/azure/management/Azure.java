@@ -92,7 +92,7 @@ import com.azure.management.storage.models.ManagementPolicies;
 import com.azure.management.storage.models.StorageAccounts;
 import com.azure.management.storage.models.StorageSkus;
 import com.azure.management.storage.models.Usages;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 
 /** The entry point for accessing resource management APIs in Azure. */
 public final class Azure {

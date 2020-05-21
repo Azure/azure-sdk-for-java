@@ -78,7 +78,7 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.models.StorageAccount;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

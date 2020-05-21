@@ -6,6 +6,7 @@ package com.azure.management.storage.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import com.azure.management.storage.StorageManager;
 import com.azure.management.storage.models.AccessTier;
 import com.azure.management.storage.models.AccountStatuses;
 import com.azure.management.storage.models.AzureFilesIdentityBasedAuthentication;

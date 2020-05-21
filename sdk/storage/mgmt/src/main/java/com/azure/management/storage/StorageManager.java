@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.management.storage.implementation;
+package com.azure.management.storage;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -11,14 +11,18 @@ import com.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.storage.StorageManagementClient;
+import com.azure.management.storage.implementation.BlobContainersImpl;
+import com.azure.management.storage.implementation.BlobServicesImpl;
+import com.azure.management.storage.implementation.ManagementPoliciesImpl;
+import com.azure.management.storage.implementation.StorageAccountsImpl;
+import com.azure.management.storage.implementation.StorageSkusImpl;
+import com.azure.management.storage.implementation.UsagesImpl;
 import com.azure.management.storage.models.BlobContainers;
 import com.azure.management.storage.models.BlobServices;
 import com.azure.management.storage.models.ManagementPolicies;
 import com.azure.management.storage.models.StorageAccounts;
 import com.azure.management.storage.models.StorageSkus;
 import com.azure.management.storage.models.Usages;
-import com.azure.management.storage.StorageManagementClientBuilder;
 
 /** Entry point to Azure storage resource management. */
 public final class StorageManager extends Manager<StorageManager, StorageManagementClient> {

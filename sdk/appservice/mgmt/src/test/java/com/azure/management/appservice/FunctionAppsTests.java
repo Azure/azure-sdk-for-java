@@ -12,7 +12,7 @@ import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.models.StorageAccount;
 import com.azure.management.storage.models.StorageAccountSkuType;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
