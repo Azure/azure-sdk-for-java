@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * Represents a work item that can be scheduled multiple times.
  */
-class RetriableWorkItem extends WorkItem {
+final class RetriableWorkItem extends WorkItem {
 
     private final MonoSink<Void> monoSink;
 

@@ -235,7 +235,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
-            propertiesToModify, sessionId, AmqpConstants.TXN_NULL);
+            propertiesToModify, sessionId, AmqpConstants.NULL_TRANSACTION);
     }
 
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
@@ -279,7 +279,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> complete(MessageLockToken lockToken, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-            null, sessionId, AmqpConstants.TXN_NULL);
+            null, sessionId, AmqpConstants.NULL_TRANSACTION);
     }
 
     public Mono<Void> complete(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
@@ -322,7 +322,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return defer(lockToken, null, sessionId);
     }
 
-
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
      * move message into the deferred subqueue.
@@ -364,7 +363,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
-            propertiesToModify, sessionId, AmqpConstants.TXN_NULL);
+            propertiesToModify, sessionId, AmqpConstants.NULL_TRANSACTION);
     }
 
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
@@ -456,7 +455,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId,
-            AmqpConstants.TXN_NULL);
+            AmqpConstants.NULL_TRANSACTION);
     }
 
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
@@ -809,8 +808,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             });
     }
 
-
-
     /**
      * Asynchronously renews the lock on the specified message. The lock will be renewed based on the setting specified
      * on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the
@@ -943,9 +940,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
-                                         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-                                         String sessionId, ByteBuffer transactionId) {
-        logger.verbose("!!!! updateDisposition transactionId is null [{}].", (transactionId == AmqpConstants.TXN_NULL) );
+        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        String sessionId, ByteBuffer transactionId) {
 
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
@@ -996,10 +992,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final ServiceBusAsyncConsumer existingConsumer = consumer.get();
         if (isManagementToken(lockToken) || existingConsumer == null) {
-            logger.verbose("!!!! the token is in management client performOnManagement [{}].", performOnManagement);
             return performOnManagement;
         } else {
-            logger.verbose("!!!! the token is NOT in management client performOnManagement.");
             return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                 deadLetterErrorDescription, propertiesToModify, transactionId)
                 .then(Mono.fromRunnable(() -> logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
@@ -1057,12 +1051,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     *
      * @return receiver options set by user;
      */
     ReceiverOptions getReceiverOptions() {
         return receiverOptions;
     }
+
     /**
      * Renews the message lock, and updates its value in the container.
      */

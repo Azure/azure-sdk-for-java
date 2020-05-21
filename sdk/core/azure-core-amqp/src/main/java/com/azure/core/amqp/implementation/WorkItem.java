@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This is abstract class and any class extending this would be able to handle success and error based on their needs.
  *
  */
-public abstract class WorkItem {
+abstract class WorkItem {
     final AtomicInteger retryAttempts = new AtomicInteger();
     private boolean waitingForAck;
     private final int messageFormat;

@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * Work item which returns {@link DeliveryState} to subscriber and that can be scheduled multiple times..
  */
-public class RetriableResponseWorkItem extends WorkItem {
+final class RetriableResponseWorkItem extends WorkItem {
 
     private final MonoSink<DeliveryState> monoSink;
 

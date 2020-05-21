@@ -855,14 +855,4 @@ public final class ServiceBusClientBuilder {
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
-
-    /*public TransactionManager buildTransactionManager() {
-        return null;
-    }
-
-    public TransactionManagerAsync buildAsyncTransactionManager() {
-        return null;
-    }
-
-     */
 }

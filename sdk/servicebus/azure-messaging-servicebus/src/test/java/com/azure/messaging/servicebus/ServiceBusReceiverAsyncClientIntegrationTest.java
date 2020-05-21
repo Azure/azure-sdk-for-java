@@ -193,12 +193,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         logger.verbose("!!!! Test Received Message SQ [{}]  Lock [{}] and will complete it transaction [{}]", receivedMessage.getSequenceNumber(), receivedMessage.getLockToken(), (new String(transaction.get().getTransactionId().array(), Charset.defaultCharset())));
 
         // Assert & Act
-        logger.verbose("!!!! Test ready complete the message transaction is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.TXN_NULL));
+        logger.verbose("!!!! Test ready complete the message transaction is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.NULL_TRANSACTION));
 
         StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
-        logger.verbose("!!!! Test ready to rollback Transaction Id is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.TXN_NULL));
+        logger.verbose("!!!! Test ready to rollback Transaction Id is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.NULL_TRANSACTION));
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
             .verifyComplete();

@@ -114,7 +114,7 @@ public final class MessageUtils {
         final DeliveryState state;
         switch (dispositionStatus) {
             case COMPLETED:
-                if (transactionId != AmqpConstants.TXN_NULL) {
+                if (transactionId != AmqpConstants.NULL_TRANSACTION) {
                     TransactionalState tState = new TransactionalState();
                     tState.setTxnId(new Binary(transactionId.array()));
                     tState.setOutcome(Accepted.getInstance());

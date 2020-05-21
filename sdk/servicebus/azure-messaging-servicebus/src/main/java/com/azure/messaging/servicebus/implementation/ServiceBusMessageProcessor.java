@@ -336,9 +336,10 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
                 logger.info("Abandoning message lock: {}", lockToken);
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.ABANDONED,
-                    null, null, null, AmqpConstants.TXN_NULL);
+                    null, null, null,
+                    AmqpConstants.NULL_TRANSACTION);
 
-                managementOperations.updateDisposition(lockToken, deliveryState, AmqpConstants.TXN_NULL)
+                managementOperations.updateDisposition(lockToken, deliveryState, AmqpConstants.NULL_TRANSACTION)
                     .onErrorContinue((error, item) -> {
                         logger.warning("Could not abandon message with lock: {}", lockToken, error);
                         setInternalError(error);
@@ -362,9 +363,11 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             logger.info("sequenceNumber[{}]. lock[{}]. Completing message.", sequenceNumber, lockToken);
 
             final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.COMPLETED,
-                null, null, null, AmqpConstants.TXN_NULL);
+                null, null, null,
+                AmqpConstants.NULL_TRANSACTION);
 
-            managementOperations.updateDisposition(lockToken, deliveryState, AmqpConstants.TXN_NULL)
+            managementOperations.updateDisposition(lockToken, deliveryState,
+                AmqpConstants.NULL_TRANSACTION)
                 .onErrorResume(error -> {
                     logger.warning("Could not complete message with lock: {}", lockToken, error);
                     setInternalError(error);

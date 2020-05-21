@@ -54,9 +54,6 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
         return cbsChannelMono.flatMap(channel ->
             credential.getToken(new TokenRequestContext().addScopes(scopes))
                 .flatMap(accessToken -> {
-                    logger
-                        .verbose("!!!! Auth tokenAudience [{}] and scopes [{}] accessToken [{}]", tokenAudience,
-                            scopes, accessToken);
                     final Message request = Proton.message();
                     final Map<String, Object> properties = new HashMap<>();
                     properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);

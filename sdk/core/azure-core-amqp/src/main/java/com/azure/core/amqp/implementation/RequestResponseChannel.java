@@ -194,7 +194,7 @@ public class RequestResponseChannel implements Disposable {
      * @return An AMQP message representing the service's response to the message.
      */
     public Mono<Message> sendWithAck(final Message message) {
-        return sendWithAck(message, AmqpConstants.TXN_NULL);
+        return sendWithAck(message, AmqpConstants.NULL_TRANSACTION);
     }
 
     /**
@@ -241,7 +241,7 @@ public class RequestResponseChannel implements Disposable {
                             Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
                                 .replace("-", "").getBytes(UTF_8));
 
-                            if (transactionId != AmqpConstants.TXN_NULL) {
+                            if (transactionId != AmqpConstants.NULL_TRANSACTION) {
                                 logger.verbose("Setting transaction on delivery.");
                                 TransactionalState transactionalState = new TransactionalState();
                                 transactionalState.setTxnId(new Binary(transactionId.array()));

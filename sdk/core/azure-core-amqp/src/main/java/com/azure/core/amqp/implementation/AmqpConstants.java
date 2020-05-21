@@ -6,7 +6,6 @@ package com.azure.core.amqp.implementation;
 import org.apache.qpid.proton.amqp.Symbol;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 
@@ -22,7 +21,7 @@ public final class AmqpConstants {
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 
-    // Used as null transaction
-    public static final ByteBuffer TXN_NULL = ByteBuffer.wrap("NULL".getBytes(StandardCharsets.UTF_8));
+    // Using null transaction to match that there is no transaction.
+    public static final ByteBuffer NULL_TRANSACTION = null;
 
 }

@@ -166,120 +166,6 @@ public class ReactorSession implements AmqpSession {
     /**
      * {@inheritDoc}
      */
-    /*@Override
-    public Mono<AmqpLink> createTransactionProducer(String linkName, Duration timeout, AmqpRetryPolicy retry) {
-        boolean authNeeded = false;
-
-        if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create send link '%s' from a closed session.", linkName))));
-        }
-
-        final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
-        if (existing != null) {
-            logger.verbose("linkName[{}]: Returning existing send link.", linkName);
-            return Mono.just(existing.getLink());
-        }
-
-        final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, linkName);
-        return RetryUtil.withRetry(
-            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-            timeout, retry)
-             .then(tokenManager.authorize())
-            .then(Mono.<AmqpLink>create(sink -> {
-                try {
-                    // We have to invoke this in the same thread or else proton-j will not properly link up the created
-                    // sender because the link names are not unique. Link name == entity path.
-                    provider.getReactorDispatcher().invoke(() -> {
-                        final LinkSubscription<AmqpSendLink> computed = openSendLinks.compute(linkName,
-                            (linkNameKey, existingLink) -> {
-                                if (existingLink != null) {
-                                    logger.info("linkName[{}]: Another send link exists. Disposing of new one.",
-                                        linkName);
-                                    tokenManager.close();
-                                    return existingLink;
-                                }
-
-                                return getSubscription(linkNameKey, linkNameKey, timeout, retry, tokenManager, true);
-                            });
-
-                        sink.success(computed.getLink());
-                    });
-                } catch (IOException e) {
-                    sink.error(e);
-                }
-            }));
-    }*/
-
-    public Mono<Long> authorize(TokenManager tokenManager, boolean authRequired) {
-        if (authRequired) {
-            logger.verbose("!!!! making authorize call ");
-            return tokenManager.authorize();
-        } else {
-            logger.verbose("!!!! not making authorize call ");
-            return Mono.empty();
-        }
-    }
-
-    public Mono<AmqpLink> createTransactionProducer(String linkName, Duration timeout, AmqpRetryPolicy retry) {
-        boolean authNeeded = false;
-
-        if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create send link '%s' from a closed session.", linkName))));
-        }
-
-        final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
-        if (existing != null) {
-            logger.verbose("linkName[{}]: Returning existing send link.", linkName);
-            return Mono.just(existing.getLink());
-        }
-
-        final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, linkName);
-        return RetryUtil.withRetry(
-            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-            timeout, retry)
-            .then(Mono.defer(() -> {
-                if (authNeeded) {
-                    return tokenManager.authorize();
-                } else {
-                    return Mono.empty();
-                }
-            }
-            ).then(Mono.<AmqpLink>create(sink -> {
-                try {
-                    // We have to invoke this in the same thread or else proton-j will not properly link up the created
-                    // sender because the link names are not unique. Link name == entity path.
-                    provider.getReactorDispatcher().invoke(() -> {
-                        final LinkSubscription<AmqpSendLink> computed = openSendLinks.compute(linkName,
-                            (linkNameKey, existingLink) -> {
-                                if (existingLink != null) {
-                                    logger.info("linkName[{}]: Another send link exists. Disposing of new one.",
-                                        linkName);
-                                    tokenManager.close();
-                                    return existingLink;
-                                }
-
-                                return getSubscription(linkNameKey, linkNameKey, timeout, retry, tokenManager, true);
-                            });
-
-                        sink.success(computed.getLink());
-                    });
-                } catch (IOException e) {
-                    sink.error(e);
-                }
-            })));
-    }
-
-
-    /*public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
-        boolean authNeeded) {
-        return createProducer(linkName, entityPath, timeout, retry, authNeeded);
-    }*/
-
-    /**
-     * {@inheritDoc}
-     */
 
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
@@ -301,14 +187,11 @@ public class ReactorSession implements AmqpSession {
             timeout, retry)
             .then(Mono.defer(() -> {
                 if (authNeeded) {
-                    logger.verbose("!!!! calling tokenManager.authorize()");
                     return tokenManager.authorize();
                 } else {
-                    logger.verbose("!!!! NOT calling tokenManager.authorize()");
                     return Mono.empty();
                 }
             }).then(Mono.<AmqpLink>create(sink -> {
-            //.then(tokenManager.authorize().then(Mono.<AmqpLink>create(sink -> {
                 try {
                     // We have to invoke this in the same thread or else proton-j will not properly link up the created
                     // sender because the link names are not unique. Link name == entity path.
