@@ -125,21 +125,21 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress(String leafDnsLabel) {
-        String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
-        String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress() {
-        String dnsLabel = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         return this.fromNewPublicIPAddress(dnsLabel);
     }
 

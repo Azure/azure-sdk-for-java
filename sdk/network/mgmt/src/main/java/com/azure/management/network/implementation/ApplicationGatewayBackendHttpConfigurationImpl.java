@@ -271,7 +271,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
         // If matching cert reference not found, create a new one
         if (certName == null) {
-            certName = this.parent().manager().getSdkContext().randomResourceName("cert", 20);
+            certName = this.parent().manager().sdkContext().randomResourceName("cert", 20);
             this.parent().defineAuthenticationCertificate(certName).fromBase64(base64Data).attach();
         }
 
