@@ -4,6 +4,8 @@
 
 package com.azure.management.storage;
 
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -31,6 +33,7 @@ import com.azure.management.storage.fluent.TablesClient;
 import com.azure.management.storage.fluent.UsagesClient;
 
 /** Initializes a new instance of the StorageManagementClient type. */
+@ServiceClient(builder = ServiceClientBuilder.class)
 public final class StorageManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(StorageManagementClient.class);
 
