@@ -5,7 +5,7 @@
 
 package com.azure.management.storage.models;
 
-import com.azure.management.storage.inner.CheckNameAvailabilityResultInner;
+import com.azure.management.storage.fluent.inner.CheckNameAvailabilityResultInner;
 
 /** The {@link StorageAccounts#checkNameAvailability} action result. */
 public class CheckNameAvailabilityResult {

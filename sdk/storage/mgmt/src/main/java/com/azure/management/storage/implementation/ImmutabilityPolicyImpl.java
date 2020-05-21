@@ -7,8 +7,8 @@ import com.azure.management.resources.fluentcore.model.implementation.CreatableU
 import com.azure.management.resources.fluentcore.utils.ETagState;
 import com.azure.management.storage.models.ImmutabilityPolicy;
 import com.azure.management.storage.models.ImmutabilityPolicyState;
-import com.azure.management.storage.inner.BlobContainersClient;
-import com.azure.management.storage.inner.ImmutabilityPolicyInner;
+import com.azure.management.storage.fluent.BlobContainersClient;
+import com.azure.management.storage.fluent.inner.ImmutabilityPolicyInner;
 import reactor.core.publisher.Mono;
 
 class ImmutabilityPolicyImpl

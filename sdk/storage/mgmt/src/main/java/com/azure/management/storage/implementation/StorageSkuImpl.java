@@ -12,7 +12,7 @@ import com.azure.management.storage.models.SkuTier;
 import com.azure.management.storage.models.StorageAccountSkuType;
 import com.azure.management.storage.models.StorageResourceType;
 import com.azure.management.storage.models.StorageSku;
-import com.azure.management.storage.inner.SkuInformationInner;
+import com.azure.management.storage.fluent.inner.SkuInformationInner;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,7 +5,7 @@ package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.storage.models.LegalHold;
-import com.azure.management.storage.inner.LegalHoldInner;
+import com.azure.management.storage.fluent.inner.LegalHoldInner;
 import java.util.List;
 
 class LegalHoldImpl extends WrapperImpl<LegalHoldInner> implements LegalHold {

@@ -9,8 +9,8 @@ import com.azure.management.storage.models.ServiceSasParameters;
 import com.azure.management.storage.models.SkuName;
 import com.azure.management.storage.models.StorageAccount;
 import com.azure.management.storage.models.StorageAccounts;
-import com.azure.management.storage.inner.StorageAccountInner;
-import com.azure.management.storage.inner.StorageAccountsClient;
+import com.azure.management.storage.fluent.inner.StorageAccountInner;
+import com.azure.management.storage.fluent.StorageAccountsClient;
 import reactor.core.publisher.Mono;
 
 /** The implementation of StorageAccounts and its parent interfaces. */

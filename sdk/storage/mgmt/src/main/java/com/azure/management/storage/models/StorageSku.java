@@ -8,7 +8,7 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.management.storage.inner.SkuInformationInner;
+import com.azure.management.storage.fluent.inner.SkuInformationInner;
 import java.util.List;
 
 /** Type representing sku for an Azure storage resource. */

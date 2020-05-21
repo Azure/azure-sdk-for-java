@@ -9,10 +9,10 @@ import com.azure.management.storage.models.BlobContainer;
 import com.azure.management.storage.models.BlobContainers;
 import com.azure.management.storage.models.ImmutabilityPolicy;
 import com.azure.management.storage.models.LegalHold;
-import com.azure.management.storage.inner.BlobContainerInner;
-import com.azure.management.storage.inner.BlobContainersClient;
-import com.azure.management.storage.inner.ImmutabilityPolicyInner;
-import com.azure.management.storage.inner.ListContainerItemInner;
+import com.azure.management.storage.fluent.inner.BlobContainerInner;
+import com.azure.management.storage.fluent.BlobContainersClient;
+import com.azure.management.storage.fluent.inner.ImmutabilityPolicyInner;
+import com.azure.management.storage.fluent.inner.ListContainerItemInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

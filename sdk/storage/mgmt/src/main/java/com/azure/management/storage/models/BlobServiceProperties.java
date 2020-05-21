@@ -14,7 +14,7 @@ import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.storage.implementation.StorageManager;
-import com.azure.management.storage.inner.BlobServicePropertiesInner;
+import com.azure.management.storage.fluent.inner.BlobServicePropertiesInner;
 import java.util.List;
 
 /** Type representing BlobServiceProperties. */

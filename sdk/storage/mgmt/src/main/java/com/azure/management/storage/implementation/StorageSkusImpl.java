@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.storage.models.StorageSku;
 import com.azure.management.storage.models.StorageSkus;
-import com.azure.management.storage.inner.SkusClient;
+import com.azure.management.storage.fluent.SkusClient;
 
 /** The implementation for {@link StorageSkus}. */
 class StorageSkusImpl implements StorageSkus {
