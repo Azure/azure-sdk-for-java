@@ -5,8 +5,8 @@ package com.azure.management.storage.models;
 
 /** An instance of this class stores the availability of a storage account. */
 public class AccountStatuses {
-    private AccountStatus primary;
-    private AccountStatus secondary;
+    private final AccountStatus primary;
+    private final AccountStatus secondary;
 
     /**
      * Creates an instance of AccountStatuses class.
