@@ -918,6 +918,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return {@code true} if the management node contains the lock token and false otherwise.
      */
     private boolean isManagementToken(String lockToken) {
+        logger.verbose("!!!! This token is management token ? ", managementNodeLocks.contains(lockToken));
         return managementNodeLocks.contains(lockToken);
     }
 
@@ -968,7 +969,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                 deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionId))
             .then(Mono.fromRunnable(() -> {
-                logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
+                logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
 
                 managementNodeLocks.remove(lockToken);

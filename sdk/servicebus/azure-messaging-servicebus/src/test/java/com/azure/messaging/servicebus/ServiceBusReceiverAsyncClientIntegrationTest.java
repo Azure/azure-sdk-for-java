@@ -150,17 +150,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         receiver.receive()
             .map(messageContext -> {
-                logger.verbose("!!!! Test Received Message SQ [{}]", messageContext.getMessage().getSequenceNumber());
                 return receiver.complete(messageContext.getMessage(), transaction.get());
             })
             .subscribe();
 
-        logger.verbose("!!!! Test ready to commit Transaction Id: ", new String(transaction.get().getTransactionId().array()));
         StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
             .verifyComplete();
-        logger.verbose("!!!! called commitTransaction Test Wait ... ");
-        TimeUnit.SECONDS.sleep(30);
-        logger.verbose("!!!! Test Exit  after Wait.");
     }
 
     /**
@@ -190,20 +185,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
-        logger.verbose("!!!! Test Received Message SQ [{}]  Lock [{}] and will complete it transaction [{}]", receivedMessage.getSequenceNumber(), receivedMessage.getLockToken(), (new String(transaction.get().getTransactionId().array(), Charset.defaultCharset())));
 
         // Assert & Act
-        logger.verbose("!!!! Test ready complete the message transaction is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.NULL_TRANSACTION));
-
         StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
-        logger.verbose("!!!! Test ready to rollback Transaction Id is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.NULL_TRANSACTION));
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
             .verifyComplete();
-
-        logger.verbose("!!!! Test Exit .....");
     }
 
     /**
@@ -237,7 +226,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         MessagingEntityType entityType = MessagingEntityType.QUEUE;
 
         setSenderAndReceiver(entityType, false);
-        ServiceBusReceiverAsyncClient receiverNonConnectionSharing = getReceiverBuilder(false, entityType, Function.identity()).buildAsyncClient();
+        ServiceBusReceiverAsyncClient receiverNonConnectionSharing = getReceiverBuilder(false, entityType, Function.identity())
+            .buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -246,26 +236,30 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(receiver.createTransaction())
+        StepVerifier.create(receiverNonConnectionSharing.createTransaction())
             .assertNext(txn -> {
                 transaction.set(txn);
                 assertNotNull(transaction);
             })
             .verifyComplete();
 
+        AtomicReference<MessageLockToken> messageLockToken = new AtomicReference<>();
         receiver.receive()
             .map(messageContext -> {
-                logger.verbose("!!!! Test Received Message SQ [{}]", messageContext.getMessage().getSequenceNumber());
-                return receiver.complete(messageContext.getMessage(), transaction.get());
+                ServiceBusReceivedMessage received =  messageContext.getMessage();
+                logger.verbose("!!!! Test Received Message SQ [{}] LockToken [{}]", received.getSequenceNumber(), received.getLockToken());
+                messageLockToken.set(MessageLockToken.fromString(received.getLockToken()));
+                return messageContext;
             })
             .subscribe();
 
-        logger.verbose("!!!! Test ready to commit Transaction Id: ", new String(transaction.get().getTransactionId().array()));
-        StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
+        TimeUnit.SECONDS.sleep(15);
+
+        StepVerifier.create(receiverNonConnectionSharing.complete(messageLockToken.get(), transaction.get()))
             .verifyComplete();
-        logger.verbose("!!!! called commitTransaction Test Wait ... ");
-        TimeUnit.SECONDS.sleep(30);
-        logger.verbose("!!!! Test Exit  after Wait.");
+
+        StepVerifier.create(receiverNonConnectionSharing.commitTransaction(transaction.get()))
+            .verifyComplete();
     }
 
     /**

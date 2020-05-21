@@ -1,6 +1,5 @@
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.publisher.SignalType;
@@ -36,27 +35,23 @@ public class ReceiveMessageWithTransactionAsyncSample {
         ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(connectionString);
 
+        // At most, the receiver will automatically renew the message lock until 120 seconds have elapsed.
+        // By default, after messages are processed, the onus is on users to complete, abandon, defer, or dead-letter the
+        // message when they are finished with it.
+
         ServiceBusReceiverAsyncClient receiver = builder
             .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
+            .maxAutoLockRenewalDuration(Duration.ofSeconds(120))
             .buildAsyncClient();
 
         ServiceBusSenderAsyncClient sender = builder.sender()
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        // At most, the receiver will automatically renew the message lock until 120 seconds have elapsed.
-        // By default, after messages are processed, they are completed (ie. removed from the queue/topic). Setting
-        // enableAutoComplete to false, means the onus is on users to complete, abandon, defer, or dead-letter the
-        // message when they are finished with it.
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(false)
-            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
-
-
         AtomicReference<ServiceBusTransactionContext>  transaction = new AtomicReference<>();
-        Disposable subscription = receiver.receive(options)
+        Disposable subscription = receiver.receive()
             .flatMap(context -> {
                 if (transaction.get() ==  null) {
                     receiver.createTransaction().map(transactionCreated -> {

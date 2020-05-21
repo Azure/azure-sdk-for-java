@@ -479,16 +479,30 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager())
             .flatMap(transactionManager -> transactionManager.createTransaction())
-            .map(byteBuffer -> {
-                return new ServiceBusTransactionContext(byteBuffer);
-            });
+            .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "commitTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getTransactionManager())
+            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, true))
+            .then();
     }
 
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "rollbackTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getTransactionManager())
+            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, false))
+            .then();
     }
 }
