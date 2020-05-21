@@ -160,7 +160,7 @@ public final class FormTrainingClientBuilder {
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
-            .build();
+            .buildClient();
 
         return new FormTrainingAsyncClient(formRecognizerAPI, serviceVersion);
 

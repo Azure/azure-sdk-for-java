@@ -8,23 +8,30 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the analyzeLayoutAsync operation. */
-public final class AnalyzeLayoutAsyncResponse extends ResponseBase<AnalyzeLayoutAsyncHeaders, Void> {
+/** Contains all response data for the generateModelCopyAuthorization operation. */
+public final class GenerateModelCopyAuthorizationResponse
+        extends ResponseBase<GenerateModelCopyAuthorizationHeaders, CopyAuthorizationResult> {
     /**
-     * Creates an instance of AnalyzeLayoutAsyncResponse.
+     * Creates an instance of GenerateModelCopyAuthorizationResponse.
      *
-     * @param request the request which resulted in this AnalyzeLayoutAsyncResponse.
+     * @param request the request which resulted in this GenerateModelCopyAuthorizationResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AnalyzeLayoutAsyncResponse(
+    public GenerateModelCopyAuthorizationResponse(
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            Void value,
-            AnalyzeLayoutAsyncHeaders headers) {
+            CopyAuthorizationResult value,
+            GenerateModelCopyAuthorizationHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
+    }
+
+    /** @return the deserialized response body. */
+    @Override
+    public CopyAuthorizationResult getValue() {
+        return super.getValue();
     }
 }

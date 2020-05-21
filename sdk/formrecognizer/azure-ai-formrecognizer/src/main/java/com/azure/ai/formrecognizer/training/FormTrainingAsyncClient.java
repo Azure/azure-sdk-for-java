@@ -212,7 +212,7 @@ public final class FormTrainingAsyncClient {
 
     Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId, Context context) {
         Objects.requireNonNull(modelId, "'modelId' cannot be null");
-        return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), context, true)
+        return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), true, context)
             .map(response -> new SimpleResponse<>(response, toCustomFormModel(response.getValue())));
     }
 
