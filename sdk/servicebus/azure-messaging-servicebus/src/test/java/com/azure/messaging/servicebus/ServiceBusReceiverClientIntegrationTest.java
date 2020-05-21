@@ -236,7 +236,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 assertTrue((((AmqpException)ex).getErrorCondition() == lockErrorCondition));
 
             }
-            messagesPending.decrementAndGet();
             receivedMessageCount.incrementAndGet();
         });
 
