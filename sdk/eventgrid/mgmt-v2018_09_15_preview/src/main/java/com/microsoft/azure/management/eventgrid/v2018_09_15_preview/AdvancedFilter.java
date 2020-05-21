@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Represents an advanced filter that can be used to filter events based on
  * various event envelope/data fields.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType", defaultImpl = AdvancedFilter.class)
 @JsonTypeName("AdvancedFilter")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NumberIn", value = NumberInAdvancedFilter.class),
