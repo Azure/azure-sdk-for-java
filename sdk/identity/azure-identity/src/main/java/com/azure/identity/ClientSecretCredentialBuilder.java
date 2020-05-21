@@ -26,6 +26,18 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     }
 
     /**
+     * Sets whether to enable using the shared token cache. This is disabled by default.
+     *
+     * @param enabled whether to enabled using the shared token cache.
+     *
+     * @return An updated instance of this builder with if the shared token cache enabled specified.
+     */
+    public ClientSecretCredentialBuilder enablePersistentCache(boolean enabled) {
+        this.identityClientOptions.enablePersistentCache(enabled);
+        return this;
+    }
+
+    /**
      * Creates a new {@link ClientCertificateCredential} with the current configurations.
      *
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
