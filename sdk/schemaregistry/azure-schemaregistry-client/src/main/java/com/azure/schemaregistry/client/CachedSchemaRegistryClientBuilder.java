@@ -36,7 +36,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- *
+ * Builder implementation for {@link CachedSchemaRegistryClient}.
  */
 @ServiceClientBuilder(serviceClients = CachedSchemaRegistryClient.class)
 public class CachedSchemaRegistryClientBuilder {

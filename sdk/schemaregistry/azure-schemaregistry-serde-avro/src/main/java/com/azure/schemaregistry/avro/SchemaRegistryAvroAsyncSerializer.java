@@ -1,51 +1,48 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry.avro;
 
 import com.azure.schemaregistry.AbstractDataSerializer;
 import com.azure.schemaregistry.SerializationException;
-import com.azure.schemaregistry.client.CachedSchemaRegistryClient;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.concurrent.Executors;
 
 /**
- * A serializer implementation capable of serializing objects and automatedly storing serialization schemas
- * in the Azure Schema Registry store.
- *
- * SchemaRegistryAvroSyncSerializer instances should be built using the static Builder class.
- *
- * Pluggable with the core Azure SDK Serializer interface.
- *
- * @see AbstractDataSerializer See AbstractDataSerializer for internal serialization implementation
- * @see SchemaRegistryAvroAsyncSerializer.Builder See Builder for documentation on required parameters
+ * Asynchronous registry-based serializer implementation.
  */
 public class SchemaRegistryAvroAsyncSerializer extends AbstractDataSerializer {
-    private SchemaRegistryAvroAsyncSerializer(Builder builder) {
-        super(new CachedSchemaRegistryClient.Builder(builder.registryUrl)
-                .maxSchemaMapSize(builder.maxSchemaMapSize)
-                .build());
+    private static final int DEFAULT_THREAD_POOL_SIZE = 8;
 
-        setByteEncoder(new AvroByteEncoder.Builder().build());
-        this.serializationFormat = this.byteEncoder.serializationFormat();
-        this.autoRegisterSchemas = builder.autoRegisterSchemas;
-        this.schemaGroup = builder.schemaGroup;
+    private final SchemaRegistryAvroSerializer serializer;
+    private final Scheduler scheduler;
+
+    /**
+     * @param serializer synchronous Avro serializer implementation
+     */
+    SchemaRegistryAvroAsyncSerializer(SchemaRegistryAvroSerializer serializer) {
+        this.serializer = serializer;
+        this.scheduler = Schedulers.fromExecutor(Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE));
     }
 
     /**
-     * Serializes object into byte array payload using the configured byte encoder.
-     * @param object target of serialization
-     * @return byte array containing GUID reference to schema, then the object serialized into bytes
-     * @throws SerializationException Throws on serialization failure.
-     * Exception may contain inner exceptions detailing failure condition.
+     * Async wrapper around sync serialization operation
+     *
+     * @param object object to be serialized to bytes
+     * @return Avro byte representation of object
+     * @throws SerializationException upon serialization operation failure
      */
-    public byte[] serializeSync(Object object) throws SerializationException {
+    public Mono<byte[]> serializeAsync(Object object) throws SerializationException {
         if (object == null) {
-            return null;
+            return Mono.empty();
         }
-        return serializeImpl(object);
+
+        return Mono
+            .fromCallable(() -> this.serializer.serializeSync(object))
+            .subscribeOn(scheduler);
     }
-
-
 }
 

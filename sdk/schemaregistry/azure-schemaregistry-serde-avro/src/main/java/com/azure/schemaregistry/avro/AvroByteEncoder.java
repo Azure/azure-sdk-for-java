@@ -1,10 +1,9 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry.avro;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.schemaregistry.ByteEncoder;
 import com.azure.schemaregistry.SerializationException;
 import org.apache.avro.Schema;
@@ -14,8 +13,6 @@ import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,14 +22,18 @@ import java.io.IOException;
  */
 public class AvroByteEncoder extends AvroCodec
         implements ByteEncoder {
-    private static final Logger log = LoggerFactory.getLogger(AvroByteEncoder.class);
+    private final ClientLogger logger = new ClientLogger(AvroByteEncoder.class);
     private final EncoderFactory encoderFactory = EncoderFactory.get();
 
-    private AvroByteEncoder() {}
+    /**
+     * Instantiates AvroByteEncoder instance.
+     */
+    public AvroByteEncoder() { }
 
     /**
      * @param object Schema object used to generate schema string
      * @see AvroSchemaUtils for distinction between primitive and Avro schema generation
+     * @return string representation of schema
      */
     public String getSchemaString(Object object) {
         Schema schema = AvroSchemaUtils.getSchema(object);
@@ -77,14 +78,8 @@ public class AvroByteEncoder extends AvroCodec
             return out;
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
-            throw new SerializationException("Error serializing Avro message", e);
-        }
-    }
-
-    public static class Builder {
-        public Builder() {}
-        public AvroByteEncoder build() {
-            return new AvroByteEncoder();
+            throw logger.logExceptionAsError(
+                new SerializationException("Error serializing Avro message", e));
         }
     }
 }

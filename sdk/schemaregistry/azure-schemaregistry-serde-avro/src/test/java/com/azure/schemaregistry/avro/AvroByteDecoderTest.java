@@ -1,31 +1,15 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry.avro;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
 
-public class AvroByteDecoderTest extends TestCase {
-    public AvroByteDecoderTest(String testName) {
-        super(testName);
-    }
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    public static Test suite() {
-        return new TestSuite(AvroByteDecoderTest.class);
-    }
-
-    protected void setUp() {
-    }
-
-    protected void tearDown() {
-    }
-
-    public void testShouldAnswerWithTrue()
-    {
-        assertTrue( true );
+public class AvroByteDecoderTest {
+    @Test
+    public void testShouldAnswerWithTrue() {
+        assertTrue(true);
     }
 }

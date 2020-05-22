@@ -49,6 +49,7 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
                 new IllegalArgumentException("Setting multiple encoders on serializer not permitted"));
         }
         this.byteEncoder = byteEncoder;
+        this.serializationFormat = byteEncoder.serializationFormat();
         this.schemaRegistryClient.loadSchemaParser(byteEncoder.serializationFormat(), byteEncoder::parseSchemaString);
     }
 
