@@ -278,7 +278,6 @@ public class CachedSchemaRegistryClientBuilder {
         return new CachedSchemaRegistryClient(
             schemaRegistryUrl,
             pipeline,
-            credential,
             maxSchemaMapSize,
             typeParserDictionary);
     }

@@ -4,7 +4,6 @@
 package com.azure.schemaregistry.client;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,14 +22,14 @@ import java.util.function.Function;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
- *
+ * <p>
  * Utilizes in-memory HashMap caching to minimize network I/O.
- *
+ * <p>
  * Max HashMap size can be configured when instantiating.
  * Two maps are maintained -
  * - SchemaRegistryObject cache by GUID - stores GUIDs previously seen in payloads
  * - SchemaRegistryObject cache by schema string - minimizes HTTP calls when sending payloads of same schema
- *
+ * <p>
  * TODO: implement max age for schema maps? or will schemas always be immutable?
  *
  * @see SchemaRegistryClient Implements SchemaRegistryClient interface to allow for testing with mock
@@ -43,30 +42,35 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClient.class);
 
     public static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
-    public static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
     public static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
+    static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
 
-    private final int maxSchemaMapSize;
     private final AzureSchemaRegistryRestService restService;
+    private final int maxSchemaMapSize;
     private final HashMap<String, Function<String, Object>> typeParserDictionary;
-
-    private HashMap<String, SchemaRegistryObject> guidCache;
-    private HashMap<String, SchemaRegistryObject> schemaStringCache;
+    private final HashMap<String, SchemaRegistryObject> guidCache;
+    private final HashMap<String, SchemaRegistryObject> schemaStringCache;
 
     CachedSchemaRegistryClient(
-            String registryUrl,
-            HttpPipeline pipeline,
-            TokenCredential credential,
-            int maxSchemaMapSize,
-            HashMap<String, Function<String, Object>> typeParserDictionary) {
+        String registryUrl,
+        HttpPipeline pipeline,
+        int maxSchemaMapSize,
+        HashMap<String, Function<String, Object>> typeParserDictionary) {
         if (registryUrl == null || registryUrl.isEmpty()) {
-            throw new IllegalArgumentException("Schema Registry URL cannot be null or empty.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Schema Registry URL cannot be null or empty."));
+        }
+
+        if (maxSchemaMapSize < MAX_SCHEMA_MAP_SIZE_MINIMUM) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(
+                    String.format("Max schema map size must be greater than %d schemas", MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
 
         this.restService = new AzureSchemaRegistryRestServiceClientBuilder()
-                                .host(registryUrl)
-                                .pipeline(pipeline)
-                                .buildClient();
+            .host(registryUrl)
+            .pipeline(pipeline)
+            .buildClient();
 
         this.maxSchemaMapSize = maxSchemaMapSize;
         this.typeParserDictionary = typeParserDictionary;
@@ -98,7 +102,6 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     /**
      * @param schemaType tag used by schema registry store to identify schema serialization type, e.g. "avro"
      * @param parseMethod function to parse string into usable schema object
-     *
      * @throws IllegalArgumentException on bad schema type or if parser for schema type has already been registered
      */
     public synchronized void loadSchemaParser(String schemaType, Function<String, Object> parseMethod) {
@@ -118,7 +121,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     @Override
     public synchronized SchemaRegistryObject register(
         String schemaGroup, String schemaName, String schemaString, String serializationType)
-            throws SchemaRegistryClientException {
+        throws SchemaRegistryClientException {
         if (schemaStringCache.containsKey(schemaString)) {
             logger.verbose(
                 String.format(
@@ -185,7 +188,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     @Override
     public synchronized String getSchemaId(
         String schemaGroup, String schemaName, String schemaString, String schemaType)
-            throws SchemaRegistryClientException {
+        throws SchemaRegistryClientException {
         if (schemaStringCache.containsKey(schemaString)) {
             logger.verbose(String.format("Cache hit schema string. Group: '%s', name: '%s'", schemaGroup, schemaName));
             return schemaStringCache.get(schemaString).getSchemaId();
@@ -223,7 +226,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
 
     @Override
     public String deleteLatestSchemaVersion(String schemaGroup, String schemaName)
-        throws SchemaRegistryClientException  {
+        throws SchemaRegistryClientException {
         // return this.restService.deleteSchemaVersion(schemaName, null);
         // remove from cache
         return null;
@@ -231,7 +234,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
 
     @Override
     public List<String> deleteSchema(String schemaGroup, String schemaName)
-        throws SchemaRegistryClientException  {
+        throws SchemaRegistryClientException {
         // return this.restService.deleteSchema();
         // remove from cache
         return null;
@@ -250,18 +253,17 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
      * Checks if caches should be reinitialized to satisfy initial configuration
      */
     private synchronized void resetIfNeeded() {
-        // don't call clear, just re-instantiate and let gc collect
-        // don't clear parser dictionary
         if (guidCache.size() > this.maxSchemaMapSize) {
-            guidCache = new HashMap<>();
+            guidCache.clear();
         }
         if (schemaStringCache.size() > this.maxSchemaMapSize) {
-            schemaStringCache = new HashMap<>();
+            schemaStringCache.clear();
         }
     }
 
     /**
      * Return stored parse function for parsing schema payloads of specified schema type
+     *
      * @param schemaType schema type of payload to be deserialized
      * @return parse method for deserializing schema string
      */
