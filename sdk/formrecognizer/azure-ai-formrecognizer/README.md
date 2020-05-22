@@ -285,7 +285,20 @@ customModels.forEach(customFormModelInfo -> {
 formTrainingClient.deleteModel(modelId.get());
 ```
 ### Copy custom model
-
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L181-L191 -->
+```java
+String resourceId = "target-resource-Id";
+String resourceRegion = "target-resource-region";
+SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(resourceId,
+    formTrainingClient.getCopyAuthorization(resourceId, resourceRegion));
+CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
+System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
+        + " last updated on: %s.%n",
+    modelCopy.getModelId(),
+    modelCopy.getStatus(),
+    modelCopy.getCreatedOn(),
+    modelCopy.getLastUpdatedOn());
+```
 For more detailed examples, refer to [samples][sample_readme].
 
 ## Troubleshooting

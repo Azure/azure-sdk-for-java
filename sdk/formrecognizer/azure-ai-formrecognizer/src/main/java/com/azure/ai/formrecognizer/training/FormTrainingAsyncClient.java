@@ -341,8 +341,7 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string
-     * -copyAuthorization}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource
@@ -368,7 +367,7 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-Duration}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource
@@ -398,7 +397,7 @@ public final class FormTrainingAsyncClient {
      * by Cognitive Services.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-resourceRegion}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string}
      *
      * @return The {@link CopyAuthorization}
      */
@@ -417,7 +416,7 @@ public final class FormTrainingAsyncClient {
      * Cognitive Services.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-resourceRegion}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string}
      *
      * @return A {@link Response} containing the {@link CopyAuthorization}
      */
@@ -494,7 +493,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-    createCopyPollOperation(String modelId) {
+        createCopyPollOperation(String modelId) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
@@ -568,7 +567,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-    createTrainingPollOperation() {
+        createTrainingPollOperation() {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();

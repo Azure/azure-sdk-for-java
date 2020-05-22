@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/copyAuthorization",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.3 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "880541f0-5dc2-4ef0-9be5-805fe85abe22"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "5225",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "769cd41c-9602-4373-ba38-a2531643e041",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Body" : "{\"modelId\":\"97bf97bc-3210-4c84-a0ef-9472dec722a0\",\"accessToken\":\"769cd41c-9602-4373-ba38-a2531643e041\",\"expirationDateTimeTicks\":637258696186131476}",
+      "Date" : "Fri, 22 May 2020 22:26:58 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://savaity-formrecognizer.cognitiveservices.azure.com/formrecognizer/v2.0-preview/custom/models/97bf97bc-3210-4c84-a0ef-9472dec722a0"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

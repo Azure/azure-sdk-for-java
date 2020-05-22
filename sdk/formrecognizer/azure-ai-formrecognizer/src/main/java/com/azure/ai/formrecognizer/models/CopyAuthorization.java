@@ -85,10 +85,21 @@ public final class CopyAuthorization {
         return this.expirationDateTimeTicks;
     }
 
+    /**
+     * Get the Azure Resource Id of the target Form Recognizer resource
+     * where the model will be copied to.
+     *
+     * @return the resourceId value.
+     */
     public String getResourceId() {
         return resourceId;
     }
 
+    /**
+     * Get the location of the target Form Recognizer resource.
+     *
+     * @return the resourceRegion value.
+     */
     public String getResourceRegion() {
         return resourceRegion;
     }

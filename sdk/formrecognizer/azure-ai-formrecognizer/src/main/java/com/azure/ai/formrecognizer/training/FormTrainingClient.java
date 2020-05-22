@@ -17,7 +17,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.time.Duration;
@@ -241,8 +240,7 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string
-     * -copyAuthorization}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource
@@ -268,7 +266,7 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource
@@ -292,7 +290,7 @@ public final class FormTrainingClient {
      * by Cognitive Services.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorization#string-resourceRegion}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorization#string-string}
      *
      * @return The {@link CopyAuthorization}
      */
@@ -309,15 +307,16 @@ public final class FormTrainingClient {
      * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
      * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure  region name supported by
      * Cognitive Services.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorizationWithResponse#string-resourceRegion}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorizationWithResponse#string-string-Context}
      *
      * @return A {@link Response} containing the {@link CopyAuthorization}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyAuthorization> getCopyAuthorizationWithResponse(String resourceId,
-        String resourceRegion, Context context) {
+    public Response<CopyAuthorization> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
+        Context context) {
         return client.getCopyAuthorizationWithResponse(resourceId, resourceRegion, context).block();
     }
 }

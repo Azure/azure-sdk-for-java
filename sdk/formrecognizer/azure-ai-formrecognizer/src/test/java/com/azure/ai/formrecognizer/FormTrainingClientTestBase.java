@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.models.FormFieldsReport;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
@@ -39,6 +40,17 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
+    private static final String RESOURCE_ID = Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TARGET_RESOURCE_ID");
+    private static final String RESOURCE_REGION = Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TARGET_RESOURCE_REGION");
+
+    void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
+        CopyAuthorization actualResult) {
+        assertNotNull(actualResult.getModelId());
+        assertNotNull(actualResult.getAccessToken());
+        assertNotNull(actualResult.getExpirationDateTimeTicks());
+        assertEquals(expectedResourceRegion, actualResult.getResourceRegion());
+        assertEquals(expectedResourceId, actualResult.getResourceId());
+    }
 
     private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
         List<TrainingDocumentInfo> actualTrainingDocuments) {
@@ -175,6 +187,15 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
@@ -185,6 +206,14 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getTrainingSasUri(), false);
+    }
+
+    void beginCopyRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(RESOURCE_ID, RESOURCE_REGION);
+    }
+
+    void beginCopyInvalidRegionRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(RESOURCE_ID, "RESOURCE_REGION");
     }
 
     /**

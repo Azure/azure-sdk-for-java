@@ -287,7 +287,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
         return FluxUtil.withContext(
-                context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
+            context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
     }
 
     /**
@@ -332,7 +332,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> trainCustomModelAsyncAsync(TrainRequest trainRequest) {
         return trainCustomModelAsyncWithResponseAsync(trainRequest)
-                .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
+            .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -355,7 +355,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> trainCustomModelAsyncAsync(TrainRequest trainRequest, Context context) {
         return trainCustomModelAsyncWithResponseAsync(trainRequest, context)
-                .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
+            .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -412,7 +412,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
         return FluxUtil.withContext(
-                context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
+            context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
     }
 
     /**
@@ -445,14 +445,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Model> getCustomModelAsync(UUID modelId, Boolean includeKeys) {
         return getCustomModelWithResponseAsync(modelId, includeKeys)
-                .flatMap(
-                        (SimpleResponse<Model> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((SimpleResponse<Model> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -469,14 +468,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Model> getCustomModelAsync(UUID modelId, Boolean includeKeys, Context context) {
         return getCustomModelWithResponseAsync(modelId, includeKeys, context)
-                .flatMap(
-                        (SimpleResponse<Model> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((SimpleResponse<Model> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -612,21 +610,20 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
-            UUID modelId,
-            ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
-            Boolean includeTextDetails) {
+        UUID modelId,
+        ContentType contentType,
+        Flux<ByteBuffer> fileStream,
+        long contentLength,
+        Boolean includeTextDetails) {
         return FluxUtil.withContext(
-                context ->
-                        service.analyzeWithCustomModel(
-                                this.getEndpoint(),
-                                modelId,
-                                includeTextDetails,
-                                contentType,
-                                fileStream,
-                                contentLength,
-                                context));
+            context -> service.analyzeWithCustomModel(
+                this.getEndpoint(),
+                modelId,
+                includeTextDetails,
+                contentType,
+                fileStream,
+                contentLength,
+                context));
     }
 
     /**
@@ -647,12 +644,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
-            UUID modelId,
-            ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
-            Boolean includeTextDetails,
-            Context context) {
+        UUID modelId,
+        ContentType contentType,
+        Flux<ByteBuffer> fileStream,
+        long contentLength,
+        Boolean includeTextDetails,
+        Context context) {
         return service.analyzeWithCustomModel(
                 this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context);
     }
@@ -674,11 +671,11 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeWithCustomModelAsync(
-            UUID modelId,
-            ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
-            Boolean includeTextDetails) {
+        UUID modelId,
+        ContentType contentType,
+        Flux<ByteBuffer> fileStream,
+        long contentLength,
+        Boolean includeTextDetails) {
         return analyzeWithCustomModelWithResponseAsync(
                         modelId, contentType, fileStream, contentLength, includeTextDetails)
                 .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
@@ -702,14 +699,14 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeWithCustomModelAsync(
-            UUID modelId,
-            ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
-            Boolean includeTextDetails,
-            Context context) {
+        UUID modelId,
+        ContentType contentType,
+        Flux<ByteBuffer> fileStream,
+        long contentLength,
+        Boolean includeTextDetails,
+        Context context) {
         return analyzeWithCustomModelWithResponseAsync(
-                        modelId, contentType, fileStream, contentLength, includeTextDetails, context)
+                    modelId, contentType, fileStream, contentLength, includeTextDetails, context)
                 .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
@@ -729,11 +726,11 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeWithCustomModel(
-            UUID modelId,
-            ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
-            Boolean includeTextDetails) {
+        UUID modelId,
+        ContentType contentType,
+        Flux<ByteBuffer> fileStream,
+        long contentLength,
+        Boolean includeTextDetails) {
         analyzeWithCustomModelAsync(modelId, contentType, fileStream, contentLength, includeTextDetails).block();
     }
 
@@ -754,14 +751,14 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeWithCustomModel(
-            UUID modelId,
-            ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
-            Boolean includeTextDetails,
-            Context context) {
+        UUID modelId,
+        ContentType contentType,
+        Flux<ByteBuffer> fileStream,
+        long contentLength,
+        Boolean includeTextDetails,
+        Context context) {
         analyzeWithCustomModelAsync(modelId, contentType, fileStream, contentLength, includeTextDetails, context)
-                .block();
+            .block();
     }
 
     /**
@@ -780,10 +777,9 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
             UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
-        return FluxUtil.withContext(
-                context ->
-                        service.analyzeWithCustomModel(
-                                this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
+        return FluxUtil.withContext(context ->
+            service.analyzeWithCustomModel(
+                this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
     }
 
     /**
@@ -822,7 +818,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeWithCustomModelAsync(UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
         return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, fileStream)
-                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
+            .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -843,7 +839,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Void> analyzeWithCustomModelAsync(
             UUID modelId, Boolean includeTextDetails, SourcePath fileStream, Context context) {
         return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, fileStream, context)
-                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
+            .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -896,7 +892,7 @@ public final class FormRecognizerClientImpl {
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(
             UUID modelId, UUID resultId) {
         return FluxUtil.withContext(
-                context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
+            context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
     }
 
     /**
@@ -929,14 +925,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeFormResultAsync(UUID modelId, UUID resultId) {
         return getAnalyzeFormResultWithResponseAsync(modelId, resultId)
-                .flatMap(
-                        (SimpleResponse<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -953,14 +948,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeFormResultAsync(UUID modelId, UUID resultId, Context context) {
         return getAnalyzeFormResultWithResponseAsync(modelId, resultId, context)
-                .flatMap(
-                        (SimpleResponse<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1008,7 +1002,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(UUID modelId, CopyRequest copyRequest) {
         return FluxUtil.withContext(
-                context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, context));
+            context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, context));
     }
 
     /**
@@ -1043,7 +1037,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> copyCustomModelAsync(UUID modelId, CopyRequest copyRequest) {
         return copyCustomModelWithResponseAsync(modelId, copyRequest)
-                .flatMap((CopyCustomModelResponse res) -> Mono.empty());
+            .flatMap((CopyCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -1061,7 +1055,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> copyCustomModelAsync(UUID modelId, CopyRequest copyRequest, Context context) {
         return copyCustomModelWithResponseAsync(modelId, copyRequest, context)
-                .flatMap((CopyCustomModelResponse res) -> Mono.empty());
+            .flatMap((CopyCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -1109,7 +1103,7 @@ public final class FormRecognizerClientImpl {
     public Mono<SimpleResponse<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(
             UUID modelId, UUID resultId) {
         return FluxUtil.withContext(
-                context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, context));
+            context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, context));
     }
 
     /**
@@ -1142,14 +1136,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyOperationResult> getCustomModelCopyResultAsync(UUID modelId, UUID resultId) {
         return getCustomModelCopyResultWithResponseAsync(modelId, resultId)
-                .flatMap(
-                        (SimpleResponse<CopyOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((SimpleResponse<CopyOperationResult> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1166,14 +1159,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyOperationResult> getCustomModelCopyResultAsync(UUID modelId, UUID resultId, Context context) {
         return getCustomModelCopyResultWithResponseAsync(modelId, resultId, context)
-                .flatMap(
-                        (SimpleResponse<CopyOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((SimpleResponse<CopyOperationResult> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1244,14 +1236,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorizationResult> generateModelCopyAuthorizationAsync() {
         return generateModelCopyAuthorizationWithResponseAsync()
-                .flatMap(
-                        (GenerateModelCopyAuthorizationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (GenerateModelCopyAuthorizationResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1266,14 +1258,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorizationResult> generateModelCopyAuthorizationAsync(Context context) {
         return generateModelCopyAuthorizationWithResponseAsync(context)
-                .flatMap(
-                        (GenerateModelCopyAuthorizationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((GenerateModelCopyAuthorizationResponse res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1319,15 +1310,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
             ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        return FluxUtil.withContext(
-                context ->
-                        service.analyzeReceiptAsync(
-                                this.getEndpoint(),
-                                includeTextDetails,
-                                contentType,
-                                fileStream,
-                                contentLength,
-                                context));
+        return FluxUtil.withContext(context ->
+            service.analyzeReceiptAsync(
+                this.getEndpoint(),
+                includeTextDetails,
+                contentType,
+                fileStream,
+                contentLength,
+                context));
     }
 
     /**
@@ -1353,7 +1343,7 @@ public final class FormRecognizerClientImpl {
             Boolean includeTextDetails,
             Context context) {
         return service.analyzeReceiptAsync(
-                this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context);
+            this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context);
     }
 
     /**
@@ -1374,7 +1364,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Void> analyzeReceiptAsyncAsync(
             ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
         return analyzeReceiptAsyncWithResponseAsync(contentType, fileStream, contentLength, includeTextDetails)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1400,7 +1390,7 @@ public final class FormRecognizerClientImpl {
             Boolean includeTextDetails,
             Context context) {
         return analyzeReceiptAsyncWithResponseAsync(contentType, fileStream, contentLength, includeTextDetails, context)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1462,7 +1452,7 @@ public final class FormRecognizerClientImpl {
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
             Boolean includeTextDetails, SourcePath fileStream) {
         return FluxUtil.withContext(
-                context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context));
+            context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context));
     }
 
     /**
@@ -1499,7 +1489,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeReceiptAsyncAsync(Boolean includeTextDetails, SourcePath fileStream) {
         return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, fileStream)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1518,7 +1508,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeReceiptAsyncAsync(Boolean includeTextDetails, SourcePath fileStream, Context context) {
         return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, fileStream, context)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1596,14 +1586,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeReceiptResultAsync(UUID resultId) {
         return getAnalyzeReceiptResultWithResponseAsync(resultId)
-                .flatMap(
-                        (SimpleResponse<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (SimpleResponse<AnalyzeOperationResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1619,14 +1609,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeReceiptResultAsync(UUID resultId, Context context) {
         return getAnalyzeReceiptResultWithResponseAsync(resultId, context)
-                .flatMap(
-                        (SimpleResponse<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1675,9 +1664,9 @@ public final class FormRecognizerClientImpl {
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
             ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength) {
         return FluxUtil.withContext(
-                context ->
-                        service.analyzeLayoutAsync(
-                                this.getEndpoint(), contentType, fileStream, contentLength, context));
+            context ->
+                service.analyzeLayoutAsync(
+                        this.getEndpoint(), contentType, fileStream, contentLength, context));
     }
 
     /**
@@ -1825,7 +1814,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(SourcePath fileStream) {
         return analyzeLayoutAsyncWithResponseAsync(fileStream)
-                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
+            .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1843,7 +1832,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(SourcePath fileStream, Context context) {
         return analyzeLayoutAsyncWithResponseAsync(fileStream, context)
-                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
+            .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1919,14 +1908,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeLayoutResultAsync(UUID resultId) {
         return getAnalyzeLayoutResultWithResponseAsync(resultId)
-                .flatMap(
-                        (SimpleResponse<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1942,14 +1930,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeLayoutResultAsync(UUID resultId, Context context) {
         return getAnalyzeLayoutResultWithResponseAsync(resultId, context)
-                .flatMap(
-                        (SimpleResponse<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1992,15 +1979,14 @@ public final class FormRecognizerClientImpl {
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
         final String op = "full";
         return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getModelList(),
-                                        res.getValue().getNextLink(),
-                                        null));
+                .map(res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().getModelList(),
+                        res.getValue().getNextLink(),
+                        null));
     }
 
     /**
@@ -2016,15 +2002,14 @@ public final class FormRecognizerClientImpl {
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
         final String op = "full";
         return service.listCustomModels(this.getEndpoint(), op, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getModelList(),
-                                        res.getValue().getNextLink(),
-                                        null));
+                .map(res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().getModelList(),
+                        res.getValue().getNextLink(),
+                        null));
     }
 
     /**
@@ -2037,7 +2022,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelInfo> listCustomModelsAsync() {
         return new PagedFlux<>(
-                () -> listCustomModelsSinglePageAsync(), nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
+            () -> listCustomModelsSinglePageAsync(), nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2052,8 +2037,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelInfo> listCustomModelsAsync(Context context) {
         return new PagedFlux<>(
-                () -> listCustomModelsSinglePageAsync(context),
-                nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
+            () -> listCustomModelsSinglePageAsync(context),
+            nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2120,14 +2105,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Models> getCustomModelsAsync() {
         return getCustomModelsWithResponseAsync()
-                .flatMap(
-                        (SimpleResponse<Models> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((SimpleResponse<Models> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -2142,14 +2126,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Models> getCustomModelsAsync(Context context) {
         return getCustomModelsWithResponseAsync(context)
-                .flatMap(
-                        (SimpleResponse<Models> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((SimpleResponse<Models> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -2190,15 +2173,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getModelList(),
-                                        res.getValue().getNextLink(),
-                                        null));
+                .map(res -> new PagedResponseBase<>(
+                    res.getRequest(),
+                    res.getStatusCode(),
+                    res.getHeaders(),
+                    res.getValue().getModelList(),
+                    res.getValue().getNextLink(),
+                    null));
     }
 
     /**
@@ -2214,14 +2195,12 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
         return service.listCustomModelsNext(nextLink, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getModelList(),
-                                        res.getValue().getNextLink(),
-                                        null));
+                .map(res -> new PagedResponseBase<>(
+                    res.getRequest(),
+                    res.getStatusCode(),
+                    res.getHeaders(),
+                    res.getValue().getModelList(),
+                    res.getValue().getNextLink(),
+                    null));
     }
 }

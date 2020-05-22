@@ -180,6 +180,20 @@ public class ReadmeSamples {
         formTrainingClient.deleteModel(modelId.get());
     }
 
+    public void beginCopy() {
+        String resourceId = "target-resource-Id";
+        String resourceRegion = "target-resource-region";
+        SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(resourceId,
+            formTrainingClient.getCopyAuthorization(resourceId, resourceRegion));
+        CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
+        System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
+                + " last updated on: %s.%n",
+            modelCopy.getModelId(),
+            modelCopy.getStatus(),
+            modelCopy.getCreatedOn(),
+            modelCopy.getLastUpdatedOn());
+    }
+
     /**
      * Code snippet for handling exception
      */
