@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The MetricValue model. */
 @Immutable
 public class MetricValue {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricValue.class);
+
     /*
      * The number of values for the metric.
      */
@@ -99,5 +103,13 @@ public class MetricValue {
      */
     public Double total() {
         return this.total;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

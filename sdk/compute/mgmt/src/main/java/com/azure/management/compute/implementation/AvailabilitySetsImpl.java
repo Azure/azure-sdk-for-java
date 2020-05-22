@@ -71,6 +71,6 @@ class AvailabilitySetsImpl
         if (availabilitySetInner == null) {
             return null;
         }
-        return new AvailabilitySetImpl(availabilitySetInner.getName(), availabilitySetInner, this.manager());
+        return new AvailabilitySetImpl(availabilitySetInner.name(), availabilitySetInner, this.manager());
     }
 }

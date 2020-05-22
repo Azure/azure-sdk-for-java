@@ -6,7 +6,9 @@ package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.SubResourceReadOnly;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionInner.class);
+
     /*
      * The name of the extension.
      */
@@ -279,5 +283,15 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     public VirtualMachineScaleSetExtensionInner withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
         this.provisionAfterExtensions = provisionAfterExtensions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

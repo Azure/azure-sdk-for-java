@@ -48,7 +48,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         } else {
             for (SubResource ref : this.inner().authenticationCertificates()) {
                 ApplicationGatewayAuthenticationCertificate cert =
-                    this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.getId()));
+                    this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.id()));
                 if (cert != null) {
                     certs.put(cert.name(), cert);
                 }
@@ -65,7 +65,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     @Override
     public ApplicationGatewayProbe probe() {
         if (this.parent().probes() != null && this.inner().probe() != null) {
-            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().getId()));
+            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().id()));
         } else {
             return null;
         }
@@ -73,12 +73,12 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public String hostHeader() {
-        return this.inner().hostName();
+        return this.inner().hostname();
     }
 
     @Override
     public boolean isHostHeaderFromBackend() {
-        return Utils.toPrimitiveBoolean(this.inner().pickHostNameFromBackendAddress());
+        return Utils.toPrimitiveBoolean(this.inner().pickHostnameFromBackendAddress());
     }
 
     @Override
@@ -165,7 +165,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         if (name == null) {
             return this.withoutProbe();
         } else {
-            SubResource probeRef = new SubResource().setId(this.parent().futureResourceId() + "/probes/" + name);
+            SubResource probeRef = new SubResource().withId(this.parent().futureResourceId() + "/probes/" + name);
             this.inner().withProbe(probeRef);
             return this;
         }
@@ -177,17 +177,17 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeaderFromBackend() {
-        this.inner().withPickHostNameFromBackendAddress(true).withHostName(null);
+        this.inner().withPickHostnameFromBackendAddress(true).withHostname(null);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeader(String hostHeader) {
-        this.inner().withHostName(hostHeader).withPickHostNameFromBackendAddress(false);
+        this.inner().withHostname(hostHeader).withPickHostnameFromBackendAddress(false);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withoutHostHeader() {
-        this.inner().withHostName(null).withPickHostNameFromBackendAddress(false);
+        this.inner().withHostname(null).withPickHostnameFromBackendAddress(false);
         return this;
     }
 
@@ -230,14 +230,14 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this;
         }
         SubResource certRef =
-            new SubResource().setId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
+            new SubResource().withId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
         List<SubResource> refs = this.inner().authenticationCertificates();
         if (refs == null) {
             refs = new ArrayList<>();
             this.inner().withAuthenticationCertificates(refs);
         }
         for (SubResource ref : refs) {
-            if (ref.getId().equalsIgnoreCase(certRef.getId())) {
+            if (ref.id().equalsIgnoreCase(certRef.id())) {
                 return this;
             }
         }
@@ -271,7 +271,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
         // If matching cert reference not found, create a new one
         if (certName == null) {
-            certName = this.parent().manager().getSdkContext().randomResourceName("cert", 20);
+            certName = this.parent().manager().sdkContext().randomResourceName("cert", 20);
             this.parent().defineAuthenticationCertificate(certName).fromBase64(base64Data).attach();
         }
 
@@ -295,7 +295,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this;
         }
         for (SubResource ref : this.inner().authenticationCertificates()) {
-            if (ResourceUtils.nameFromResourceId(ref.getId()).equalsIgnoreCase(name)) {
+            if (ResourceUtils.nameFromResourceId(ref.id()).equalsIgnoreCase(name)) {
                 this.inner().authenticationCertificates().remove(ref);
                 break;
             }

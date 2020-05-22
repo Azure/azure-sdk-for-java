@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.ItemOperations;
@@ -18,7 +18,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -186,7 +186,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
-            .instanceOf(CosmosClientException.class)
+            .instanceOf(CosmosException.class)
             .statusCode(400)
             .notNullActivityId()
             .build();
@@ -373,8 +373,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     }
 
-    // TODO (DANOBLE) ParallelDocumentQueryTest initialization intermittently fails in CI environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6398
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
         client = getClientBuilder().buildAsyncClient();
@@ -491,12 +489,12 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
-        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
+        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosException.class)
             .statusCode(400).notNullActivityId().build();
         validateQueryFailure(queryObservable.byPage(), validator);
     }
 
-    public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) throws CosmosClientException {
+    public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) {
 
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
 

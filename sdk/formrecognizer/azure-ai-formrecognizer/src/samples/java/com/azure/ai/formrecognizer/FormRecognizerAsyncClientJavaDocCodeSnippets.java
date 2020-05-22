@@ -31,7 +31,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void createFormRecognizerAsyncClient() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation
         FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation
@@ -47,7 +47,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             .build();
 
         FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildAsyncClient();

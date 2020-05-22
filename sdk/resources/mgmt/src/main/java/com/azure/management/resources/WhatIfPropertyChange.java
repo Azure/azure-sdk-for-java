@@ -5,12 +5,16 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The WhatIfPropertyChange model. */
 @Fluent
 public final class WhatIfPropertyChange {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfPropertyChange.class);
+
     /*
      * The path of the property.
      */
@@ -139,5 +143,27 @@ public final class WhatIfPropertyChange {
     public WhatIfPropertyChange withChildren(List<WhatIfPropertyChange> children) {
         this.children = children;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (path() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property path in model WhatIfPropertyChange"));
+        }
+        if (propertyChangeType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property propertyChangeType in model WhatIfPropertyChange"));
+        }
+        if (children() != null) {
+            children().forEach(e -> e.validate());
+        }
     }
 }

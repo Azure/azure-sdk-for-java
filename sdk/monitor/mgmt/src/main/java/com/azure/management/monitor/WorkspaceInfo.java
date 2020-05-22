@@ -6,12 +6,16 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The WorkspaceInfo model. */
 @JsonFlatten
 @Fluent
 public class WorkspaceInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInfo.class);
+
     /*
      * Azure Resource Manager identifier of the Log Analytics Workspace.
      */
@@ -35,7 +39,7 @@ public class WorkspaceInfo {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
@@ -88,5 +92,28 @@ public class WorkspaceInfo {
     public WorkspaceInfo withCustomerId(String customerId) {
         this.customerId = customerId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model WorkspaceInfo"));
+        }
+        if (location() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property location in model WorkspaceInfo"));
+        }
+        if (customerId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property customerId in model WorkspaceInfo"));
+        }
     }
 }

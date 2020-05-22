@@ -4,7 +4,7 @@
 package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.implementation.serializer.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;

@@ -29,7 +29,7 @@ class VirtualMachineCustomImagesImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualMachineCustomImageImpl(inner.getName(), inner, this.manager());
+        return new VirtualMachineCustomImageImpl(inner.name(), inner, this.manager());
     }
 
     @Override

@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ParametersLink model. */
 @Fluent
 public final class ParametersLink {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParametersLink.class);
+
     /*
      * The URI of the parameters file.
      */
@@ -60,5 +64,18 @@ public final class ParametersLink {
     public ParametersLink withContentVersion(String contentVersion) {
         this.contentVersion = contentVersion;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (uri() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property uri in model ParametersLink"));
+        }
     }
 }

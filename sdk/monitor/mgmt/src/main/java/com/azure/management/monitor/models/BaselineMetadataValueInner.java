@@ -5,11 +5,15 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BaselineMetadataValue model. */
 @Fluent
 public final class BaselineMetadataValueInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaselineMetadataValueInner.class);
+
     /*
      * the name of the metadata.
      */
@@ -60,5 +64,16 @@ public final class BaselineMetadataValueInner {
     public BaselineMetadataValueInner withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
     }
 }

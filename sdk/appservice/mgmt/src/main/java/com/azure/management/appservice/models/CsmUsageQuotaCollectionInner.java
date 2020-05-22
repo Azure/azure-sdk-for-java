@@ -5,12 +5,16 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CsmUsageQuotaCollection model. */
 @Fluent
 public final class CsmUsageQuotaCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmUsageQuotaCollectionInner.class);
+
     /*
      * Collection of resources.
      */
@@ -50,5 +54,21 @@ public final class CsmUsageQuotaCollectionInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model CsmUsageQuotaCollectionInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

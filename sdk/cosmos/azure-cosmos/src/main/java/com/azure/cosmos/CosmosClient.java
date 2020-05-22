@@ -36,10 +36,8 @@ public final class CosmosClient implements Closeable {
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) throws
-        CosmosClientException {
+    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
     }
 
@@ -48,9 +46,8 @@ public final class CosmosClient implements Closeable {
      *
      * @param id the id of the database
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabaseIfNotExists(String id) throws CosmosClientException {
+    public CosmosDatabaseResponse createDatabaseIfNotExists(String id) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id));
     }
 
@@ -61,10 +58,9 @@ public final class CosmosClient implements Closeable {
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param options the request options.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
+                                                 CosmosDatabaseRequestOptions options) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, options));
     }
 
@@ -73,10 +69,8 @@ public final class CosmosClient implements Closeable {
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) throws
-        CosmosClientException {
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties));
     }
 
@@ -85,9 +79,8 @@ public final class CosmosClient implements Closeable {
      *
      * @param id the id of the database
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabase(String id) throws CosmosClientException {
+    public CosmosDatabaseResponse createDatabase(String id) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id));
 
     }
@@ -99,11 +92,10 @@ public final class CosmosClient implements Closeable {
      * @param throughput the throughput
      * @param options {@link CosmosDatabaseRequestOptions} the request options
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  int throughput,
-                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
+                                                 CosmosDatabaseRequestOptions options) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput, options));
     }
 
@@ -113,10 +105,9 @@ public final class CosmosClient implements Closeable {
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param throughput the throughput
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 int throughput) throws CosmosClientException {
+                                                 int throughput) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput));
     }
 
@@ -127,22 +118,20 @@ public final class CosmosClient implements Closeable {
      * @param id the id of the database
      * @param throughput the throughput
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse createDatabase(String id, int throughput) throws CosmosClientException {
+    public CosmosDatabaseResponse createDatabase(String id, int throughput) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughput));
     }
 
-    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) throws
-        CosmosClientException {
+    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) {
         try {
             return databaseMono
                        .map(this::convertResponse)
                        .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
             } else {
                 throw Exceptions.propagate(ex);
             }

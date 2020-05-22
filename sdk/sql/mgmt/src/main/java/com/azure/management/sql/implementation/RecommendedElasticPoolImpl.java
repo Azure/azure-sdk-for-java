@@ -111,7 +111,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .databases()
                 .listByElasticPool(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name());
         for (DatabaseInner inner : databaseInners) {
-            databasesList.add(new SqlDatabaseImpl(inner.getName(), this.sqlServer, inner, this.manager()));
+            databasesList.add(new SqlDatabaseImpl(inner.name(), this.sqlServer, inner, this.manager()));
         }
         return Collections.unmodifiableList(databasesList);
     }
@@ -127,7 +127,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name())
             .mapPage(
                 databaseInner ->
-                    new SqlDatabaseImpl(databaseInner.getName(), self.sqlServer, databaseInner, self.manager()));
+                    new SqlDatabaseImpl(databaseInner.name(), self.sqlServer, databaseInner, self.manager()));
     }
 
     @Override
@@ -140,7 +140,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .databases()
                 .get(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName);
 
-        return new SqlDatabaseImpl(databaseInner.getName(), this.sqlServer, databaseInner, this.manager());
+        return new SqlDatabaseImpl(databaseInner.name(), this.sqlServer, databaseInner, this.manager());
     }
 
     @Override
@@ -154,7 +154,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             .getAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName)
             .map(
                 databaseInner ->
-                    new SqlDatabaseImpl(databaseInner.getName(), self.sqlServer, databaseInner, self.manager()));
+                    new SqlDatabaseImpl(databaseInner.name(), self.sqlServer, databaseInner, self.manager()));
     }
 
     @Override
@@ -175,12 +175,12 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override

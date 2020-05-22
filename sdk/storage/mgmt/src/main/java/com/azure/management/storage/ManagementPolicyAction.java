@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagementPolicyAction model. */
 @Fluent
 public final class ManagementPolicyAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyAction.class);
+
     /*
      * The management policy action for base blob
      */
@@ -60,5 +64,19 @@ public final class ManagementPolicyAction {
     public ManagementPolicyAction withSnapshot(ManagementPolicySnapShot snapshot) {
         this.snapshot = snapshot;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (baseBlob() != null) {
+            baseBlob().validate();
+        }
+        if (snapshot() != null) {
+            snapshot().validate();
+        }
     }
 }

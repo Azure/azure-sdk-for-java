@@ -3,7 +3,7 @@
 
 package com.azure.management.graphrbac.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryUser;
@@ -43,7 +43,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public boolean isInCreateMode() {
-        return inner().getId() == null;
+        return inner().id() == null;
     }
 
     @Override
@@ -94,10 +94,11 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                     .zipWith(
                                         Flux.range(1, 30),
                                         (throwable, integer) -> {
-                                            if (throwable instanceof CloudException) {
-                                                CloudException cloudException = (CloudException) throwable;
+                                            if (throwable instanceof ManagementException) {
+                                                ManagementException managementException =
+                                                    (ManagementException) throwable;
                                                 String exceptionMessage =
-                                                    cloudException.getMessage().toLowerCase(Locale.ROOT);
+                                                    managementException.getMessage().toLowerCase(Locale.ROOT);
                                                 if (exceptionMessage.contains("principalnotfound")
                                                     || exceptionMessage.contains("does not exist in the directory")) {
                                                     /*
@@ -207,7 +208,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

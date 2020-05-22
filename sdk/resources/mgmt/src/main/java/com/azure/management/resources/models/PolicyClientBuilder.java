@@ -48,6 +48,22 @@ public final class PolicyClientBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the PolicyClientBuilder.
+     */
+    public PolicyClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The environment to connect to
      */
     private AzureEnvironment environment;
@@ -88,6 +104,9 @@ public final class PolicyClientBuilder {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
+        if (apiVersion == null) {
+            this.apiVersion = "2019-09-01";
+        }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         }
@@ -100,6 +119,7 @@ public final class PolicyClientBuilder {
         PolicyClientImpl client = new PolicyClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);
         client.setHost(this.host);
+        client.setApiVersion(this.apiVersion);
         return client;
     }
 }

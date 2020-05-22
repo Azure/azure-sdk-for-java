@@ -67,6 +67,6 @@ class CaaRecordSetsImpl extends DnsRecordSetsBaseImpl<CaaRecordSet, CaaRecordSet
         if (inner == null) {
             return null;
         }
-        return new CaaRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new CaaRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

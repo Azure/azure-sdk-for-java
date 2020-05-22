@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.search.documents.indexes.FieldIgnore;
+import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.azure.search.documents.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,21 +13,25 @@ import java.util.Date;
 import java.util.List;
 
 public class Hotel {
+    @SimpleFieldProperty(isKey = true, isSortable = true)
     @JsonProperty(value = "HotelId")
     private String hotelId;
 
+    @SearchableFieldProperty(isSortable = true, analyzer = "en.lucene")
     @JsonProperty(value = "HotelName")
     private String hotelName;
 
     @JsonProperty(value = "Description")
     private String description;
 
+    @FieldIgnore
     @JsonProperty(value = "Description_fr")
     private String descriptionFr;
 
     @JsonProperty(value = "Category")
     private String category;
 
+    @SearchableFieldProperty
     @JsonProperty(value = "Tags")
     private List<String> tags;
 
@@ -40,6 +47,7 @@ public class Hotel {
     @JsonProperty(value = "Rating")
     private Integer rating;
 
+    @SimpleFieldProperty
     @JsonProperty(value = "Location")
     private GeoPoint location;
 

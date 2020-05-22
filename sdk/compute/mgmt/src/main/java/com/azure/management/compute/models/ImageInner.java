@@ -8,14 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.HyperVGenerationTypes;
 import com.azure.management.compute.ImageStorageProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Image model. */
 @JsonFlatten
 @Fluent
 public class ImageInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageInner.class);
+
     /*
      * The source virtual machine from which Image is created.
      */
@@ -108,5 +112,16 @@ public class ImageInner extends Resource {
     public ImageInner withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
         this.hyperVGeneration = hyperVGeneration;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
     }
 }

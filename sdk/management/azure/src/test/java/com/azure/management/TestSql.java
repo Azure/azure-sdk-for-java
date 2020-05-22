@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 public class TestSql extends TestTemplate<SqlServer, SqlServers> {
     @Override
     public SqlServer createResource(SqlServers resources) throws Exception {
-        final String sqlServerName = resources.manager().getSdkContext().randomResourceName("sql", 10);
+        final String sqlServerName = resources.manager().sdkContext().randomResourceName("sql", 10);
         final SqlServer[] sqlServers = new SqlServer[1];
         final SettableFuture<SqlServer> future = SettableFuture.create();
         Flux<Indexable> resourceStream =

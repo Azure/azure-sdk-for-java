@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ComplianceStatus {
     /**
      * The compliance state of the configuration. Possible values include:
-     * 'Pending', 'Compliant', 'Noncompliant'.
+     * 'Pending', 'Compliant', 'Noncompliant', 'Installed', 'Failed'.
      */
     @JsonProperty(value = "complianceState", access = JsonProperty.Access.WRITE_ONLY)
     private ComplianceState complianceState;
@@ -42,7 +42,7 @@ public class ComplianceStatus {
     private MessageLevel messageLevel;
 
     /**
-     * Get the compliance state of the configuration. Possible values include: 'Pending', 'Compliant', 'Noncompliant'.
+     * Get the compliance state of the configuration. Possible values include: 'Pending', 'Compliant', 'Noncompliant', 'Installed', 'Failed'.
      *
      * @return the complianceState value
      */

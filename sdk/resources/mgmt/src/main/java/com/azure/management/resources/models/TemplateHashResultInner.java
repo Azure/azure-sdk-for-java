@@ -5,11 +5,15 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TemplateHashResult model. */
 @Fluent
 public final class TemplateHashResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TemplateHashResultInner.class);
+
     /*
      * The minified template string.
      */
@@ -60,5 +64,13 @@ public final class TemplateHashResultInner {
     public TemplateHashResultInner withTemplateHash(String templateHash) {
         this.templateHash = templateHash;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

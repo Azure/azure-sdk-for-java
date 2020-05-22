@@ -14,7 +14,7 @@ import com.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.azure.management.network.ApplicationGatewaySslCertificate;
 import com.azure.management.network.ApplicationGatewayUrlPathMap;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.models.ApplicationGatewayRequestRoutingRuleInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -56,7 +56,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayUrlPathMap urlPathMap() {
         SubResource urlMapRef = this.inner().urlPathMap();
         if (urlMapRef != null) {
-            String urlMapName = ResourceUtils.nameFromResourceId(urlMapRef.getId());
+            String urlMapName = ResourceUtils.nameFromResourceId(urlMapRef.id());
             return this.parent().urlPathMaps().get(urlMapName);
         } else {
             return null;
@@ -82,9 +82,9 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public String hostName() {
+    public String hostname() {
         final ApplicationGatewayListener listener = this.listener();
-        return (listener != null) ? listener.hostName() : null;
+        return (listener != null) ? listener.hostname() : null;
     }
 
     @Override
@@ -106,15 +106,15 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public String publicIPAddressId() {
+    public String publicIpAddressId() {
         final ApplicationGatewayListener listener = this.listener();
-        return (listener != null) ? listener.publicIPAddressId() : null;
+        return (listener != null) ? listener.publicIpAddressId() : null;
     }
 
     @Override
-    public PublicIPAddress getPublicIPAddress() {
-        final String pipId = this.publicIPAddressId();
-        return (pipId != null) ? this.parent().manager().publicIPAddresses().getById(pipId) : null;
+    public PublicIpAddress getPublicIpAddress() {
+        final String pipId = this.publicIpAddressId();
+        return (pipId != null) ? this.parent().manager().publicIpAddresses().getById(pipId) : null;
     }
 
     @Override
@@ -131,7 +131,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayBackend backend() {
         SubResource backendRef = this.inner().backendAddressPool();
         if (backendRef != null) {
-            String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
             return this.parent().backends().get(backendName);
         } else {
             return null;
@@ -142,7 +142,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayBackendHttpConfigurationImpl backendHttpConfiguration() {
         SubResource configRef = this.inner().backendHttpSettings();
         if (configRef != null) {
-            String configName = ResourceUtils.nameFromResourceId(configRef.getId());
+            String configName = ResourceUtils.nameFromResourceId(configRef.id());
             return (ApplicationGatewayBackendHttpConfigurationImpl)
                 this.parent().backendHttpConfigurations().get(configName);
         } else {
@@ -154,7 +154,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayListenerImpl listener() {
         SubResource listenerRef = this.inner().httpListener();
         if (listenerRef != null) {
-            String listenerName = ResourceUtils.nameFromResourceId(listenerRef.getId());
+            String listenerName = ResourceUtils.nameFromResourceId(listenerRef.id());
             return (ApplicationGatewayListenerImpl) this.parent().listeners().get(listenerName);
         } else {
             return null;
@@ -167,7 +167,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
         if (ref == null) {
             return null;
         } else {
-            return this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(ref.getId()));
+            return this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(ref.id()));
         }
     }
 
@@ -209,7 +209,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpConfiguration(String name) {
         SubResource httpConfigRef =
-            new SubResource().setId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
+            new SubResource().withId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
         this.inner().withBackendHttpSettings(httpConfigRef);
         return this;
     }
@@ -217,7 +217,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayBackendHttpConfigurationImpl ensureBackendHttpConfig() {
         ApplicationGatewayBackendHttpConfigurationImpl config = this.backendHttpConfiguration();
         if (config == null) {
-            final String name = this.parent().manager().getSdkContext().randomResourceName("bckcfg", 11);
+            final String name = this.parent().manager().sdkContext().randomResourceName("bckcfg", 11);
             config = this.parent().defineBackendHttpConfiguration(name);
             config.attach();
             this.toBackendHttpConfiguration(name);
@@ -227,7 +227,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpPort(int portNumber) {
-        String name = this.parent().manager().getSdkContext().randomResourceName("backcfg", 12);
+        String name = this.parent().manager().sdkContext().randomResourceName("backcfg", 12);
         this.parent().defineBackendHttpConfiguration(name).withPort(portNumber).attach();
         return this.toBackendHttpConfiguration(name);
     }
@@ -248,7 +248,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl fromListener(String name) {
-        SubResource listenerRef = new SubResource().setId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
+        SubResource listenerRef = new SubResource().withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         this.inner().withHttpListener(listenerRef);
         return this;
     }
@@ -268,7 +268,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
         if (needToCreate == ApplicationGatewayImpl.CreationState.NeedToCreate) {
             // If no listener exists for the requested port number yet and the name, create one
             if (name == null) {
-                name = this.parent().manager().getSdkContext().randomResourceName("listener", 13);
+                name = this.parent().manager().sdkContext().randomResourceName("listener", 13);
             }
 
             listenerByPort = this.parent().defineListener(name).withFrontendPort(portNumber);
@@ -283,7 +283,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             // Determine frontend
             if (Boolean.TRUE.equals(this.associateWithPublicFrontend)) {
                 listenerByPort.withPublicFrontend();
-                this.parent().withNewPublicIPAddress();
+                this.parent().withNewPublicIpAddress();
             } else if (Boolean.FALSE.equals(this.associateWithPublicFrontend)) {
                 listenerByPort.withPrivateFrontend();
             }
@@ -300,7 +300,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayListenerImpl ensureListener() {
         ApplicationGatewayListenerImpl listener = this.listener();
         if (listener == null) {
-            final String name = this.parent().manager().getSdkContext().randomResourceName("listener", 13);
+            final String name = this.parent().manager().sdkContext().randomResourceName("listener", 13);
             listener = this.parent().defineListener(name);
             listener.attach();
             this.fromListener(name);
@@ -333,8 +333,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withHostName(String hostName) {
-        this.parent().updateListener(ensureListener().name()).withHostName(hostName);
+    public ApplicationGatewayRequestRoutingRuleImpl withHostname(String hostName) {
+        this.parent().updateListener(ensureListener().name()).withHostname(hostName);
         return this;
     }
 
@@ -396,7 +396,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             this.inner().withRedirectConfiguration(null);
         } else {
             SubResource ref =
-                new SubResource().setId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
+                new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
             this.inner().withRedirectConfiguration(ref).withBackendAddressPool(null).withBackendHttpSettings(null);
         }
         return this;
@@ -415,7 +415,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             this.inner().withUrlPathMap(null);
         } else {
             SubResource ref =
-                new SubResource().setId(this.parent().futureResourceId() + "/urlPathMaps/" + urlPathMapName);
+                new SubResource().withId(this.parent().futureResourceId() + "/urlPathMaps/" + urlPathMapName);
             this.inner().withUrlPathMap(ref);
         }
         return this;

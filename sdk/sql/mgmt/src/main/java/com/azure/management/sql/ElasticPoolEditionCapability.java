@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ElasticPoolEditionCapability model. */
 @Fluent
 public final class ElasticPoolEditionCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolEditionCapability.class);
+
     /*
      * The elastic pool edition name.
      */
@@ -96,5 +100,16 @@ public final class ElasticPoolEditionCapability {
     public ElasticPoolEditionCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedElasticPoolPerformanceLevels() != null) {
+            supportedElasticPoolPerformanceLevels().forEach(e -> e.validate());
+        }
     }
 }

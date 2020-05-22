@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PacketCaptureStorageLocation model. */
 @Fluent
 public final class PacketCaptureStorageLocation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureStorageLocation.class);
+
     /*
      * The ID of the storage account to save the packet capture session.
      * Required if no local file path is provided.
@@ -99,5 +103,13 @@ public final class PacketCaptureStorageLocation {
     public PacketCaptureStorageLocation withFilePath(String filePath) {
         this.filePath = filePath;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

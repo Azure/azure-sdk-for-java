@@ -6,9 +6,9 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 /**
  * Integration tests for {@link ServiceBusSenderAsyncClient} from queues or subscriptions.
  */
+@Tag("integration")
 class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
@@ -43,10 +44,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         try {
-            receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
+            receiver.receive()
                 .take(numberOfMessages)
                 .map(message -> {
-                    logger.info("Message received: {}", message.getSequenceNumber());
+                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
                     return message;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
@@ -157,10 +158,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-                sender = createBuilder(useCredentials).sender()
+                sender = getBuilder(useCredentials).sender()
                     .queueName(queueName)
                     .buildAsyncClient();
-                receiver = createBuilder(useCredentials).receiver()
+                receiver = getBuilder(useCredentials).receiver()
                     .queueName(queueName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
@@ -172,10 +173,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                sender = createBuilder(useCredentials).sender()
+                sender = getBuilder(useCredentials).sender()
                     .topicName(topicName)
                     .buildAsyncClient();
-                receiver = createBuilder(useCredentials).receiver()
+                receiver = getBuilder(useCredentials).receiver()
                     .topicName(topicName)
                     .subscriptionName(subscriptionName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)

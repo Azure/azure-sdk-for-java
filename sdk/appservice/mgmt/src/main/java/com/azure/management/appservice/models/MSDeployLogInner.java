@@ -6,8 +6,10 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.MSDeployLogEntry;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class MSDeployLogInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployLogInner.class);
+
     /*
      * List of log entry messages
      */
@@ -28,5 +32,18 @@ public class MSDeployLogInner extends ProxyOnlyResource {
      */
     public List<MSDeployLogEntry> entries() {
         return this.entries;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (entries() != null) {
+            entries().forEach(e -> e.validate());
+        }
     }
 }

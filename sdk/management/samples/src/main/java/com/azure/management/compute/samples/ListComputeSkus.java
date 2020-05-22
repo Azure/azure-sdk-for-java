@@ -55,7 +55,6 @@ public final class ListComputeSkus {
             } else if (sku.resourceType().equals(ComputeResourceType.SNAPSHOTS)) {
                 size = sku.diskSkuType().toString();
             }
-            Map<Region, Set<AvailabilityZoneId>> regionZones = sku.zones();
             System.out.println(String.format(format, sku.name(), sku.resourceType(), size, regionZoneToString(sku.zones())));
         }
 

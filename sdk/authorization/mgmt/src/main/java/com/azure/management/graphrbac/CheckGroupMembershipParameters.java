@@ -5,12 +5,19 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The CheckGroupMembershipParameters model. */
 @Fluent
 public final class CheckGroupMembershipParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckGroupMembershipParameters.class);
+
     /*
      * The object ID of the group to check.
      */
@@ -27,8 +34,7 @@ public final class CheckGroupMembershipParameters {
     /*
      * Request parameters for IsMemberOf API call.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the groupId property: The object ID of the group to check.
@@ -77,6 +83,7 @@ public final class CheckGroupMembershipParameters {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -90,5 +97,33 @@ public final class CheckGroupMembershipParameters {
     public CheckGroupMembershipParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (groupId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property groupId in model CheckGroupMembershipParameters"));
+        }
+        if (memberId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property memberId in model CheckGroupMembershipParameters"));
+        }
     }
 }

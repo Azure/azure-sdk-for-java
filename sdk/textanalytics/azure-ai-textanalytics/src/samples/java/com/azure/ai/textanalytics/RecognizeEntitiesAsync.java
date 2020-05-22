@@ -19,7 +19,7 @@ public class RecognizeEntitiesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -27,11 +27,13 @@ public class RecognizeEntitiesAsync {
         String document = "Satya Nadella is the CEO of Microsoft";
 
         client.recognizeEntities(document).subscribe(
-            entity -> System.out.printf(
-                "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()),
+            entityCollection -> entityCollection.forEach(entity -> System.out.printf(
+                "Recognized categorized entity: %s, entity category: %s, entity subcategory: %s,"
+                    + " confidence score: %f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())),
             error -> System.err.println("There was an error recognizing entities of the text." + error),
-            () -> System.out.println("Entities recognized."));
+            () -> System.out.println("Entities recognized.")
+        );
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

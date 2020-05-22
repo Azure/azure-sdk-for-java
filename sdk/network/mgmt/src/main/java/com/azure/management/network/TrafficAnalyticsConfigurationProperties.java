@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TrafficAnalyticsConfigurationProperties model. */
 @Fluent
 public final class TrafficAnalyticsConfigurationProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficAnalyticsConfigurationProperties.class);
+
     /*
      * Flag to enable/disable traffic analytics.
      */
@@ -141,5 +145,32 @@ public final class TrafficAnalyticsConfigurationProperties {
     public TrafficAnalyticsConfigurationProperties withTrafficAnalyticsInterval(Integer trafficAnalyticsInterval) {
         this.trafficAnalyticsInterval = trafficAnalyticsInterval;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (workspaceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workspaceId in model TrafficAnalyticsConfigurationProperties"));
+        }
+        if (workspaceRegion() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workspaceRegion in model TrafficAnalyticsConfigurationProperties"));
+        }
+        if (workspaceResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workspaceResourceId in model"
+                            + " TrafficAnalyticsConfigurationProperties"));
+        }
     }
 }

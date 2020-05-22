@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NotebookWorkspaceConnectionInfoResult model. */
 @Immutable
 public final class NotebookWorkspaceConnectionInfoResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookWorkspaceConnectionInfoResultInner.class);
+
     /*
      * Specifies auth token used for connecting to Notebook server (uses
      * token-based auth).
@@ -39,5 +43,13 @@ public final class NotebookWorkspaceConnectionInfoResultInner {
      */
     public String notebookServerEndpoint() {
         return this.notebookServerEndpoint;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

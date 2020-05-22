@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConsistencyPolicy model. */
 @Fluent
 public final class ConsistencyPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsistencyPolicy.class);
+
     /*
      * The default consistency level and configuration settings of the Cosmos
      * DB account.
@@ -103,5 +107,19 @@ public final class ConsistencyPolicy {
     public ConsistencyPolicy withMaxIntervalInSeconds(Integer maxIntervalInSeconds) {
         this.maxIntervalInSeconds = maxIntervalInSeconds;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (defaultConsistencyLevel() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
+        }
     }
 }

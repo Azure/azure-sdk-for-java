@@ -5,8 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.Hotel;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 
 import java.util.ArrayList;

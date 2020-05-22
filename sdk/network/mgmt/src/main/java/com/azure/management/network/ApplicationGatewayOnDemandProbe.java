@@ -6,11 +6,15 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayOnDemandProbe model. */
 @Fluent
 public final class ApplicationGatewayOnDemandProbe {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayOnDemandProbe.class);
+
     /*
      * The protocol used for the probe.
      */
@@ -43,7 +47,7 @@ public final class ApplicationGatewayOnDemandProbe {
      * Default value is false.
      */
     @JsonProperty(value = "pickHostNameFromBackendHttpSettings")
-    private Boolean pickHostNameFromBackendHttpSettings;
+    private Boolean pickHostnameFromBackendHttpSettings;
 
     /*
      * Criterion for classifying a healthy probe response.
@@ -150,25 +154,25 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Get the pickHostNameFromBackendHttpSettings property: Whether the host header should be picked from the backend
+     * Get the pickHostnameFromBackendHttpSettings property: Whether the host header should be picked from the backend
      * http settings. Default value is false.
      *
-     * @return the pickHostNameFromBackendHttpSettings value.
+     * @return the pickHostnameFromBackendHttpSettings value.
      */
-    public Boolean pickHostNameFromBackendHttpSettings() {
-        return this.pickHostNameFromBackendHttpSettings;
+    public Boolean pickHostnameFromBackendHttpSettings() {
+        return this.pickHostnameFromBackendHttpSettings;
     }
 
     /**
-     * Set the pickHostNameFromBackendHttpSettings property: Whether the host header should be picked from the backend
+     * Set the pickHostnameFromBackendHttpSettings property: Whether the host header should be picked from the backend
      * http settings. Default value is false.
      *
-     * @param pickHostNameFromBackendHttpSettings the pickHostNameFromBackendHttpSettings value to set.
+     * @param pickHostnameFromBackendHttpSettings the pickHostnameFromBackendHttpSettings value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
-    public ApplicationGatewayOnDemandProbe withPickHostNameFromBackendHttpSettings(
-        Boolean pickHostNameFromBackendHttpSettings) {
-        this.pickHostNameFromBackendHttpSettings = pickHostNameFromBackendHttpSettings;
+    public ApplicationGatewayOnDemandProbe withPickHostnameFromBackendHttpSettings(
+        Boolean pickHostnameFromBackendHttpSettings) {
+        this.pickHostnameFromBackendHttpSettings = pickHostnameFromBackendHttpSettings;
         return this;
     }
 
@@ -234,5 +238,16 @@ public final class ApplicationGatewayOnDemandProbe {
     public ApplicationGatewayOnDemandProbe withBackendHttpSettings(SubResource backendHttpSettings) {
         this.backendHttpSettings = backendHttpSettings;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (match() != null) {
+            match().validate();
+        }
     }
 }

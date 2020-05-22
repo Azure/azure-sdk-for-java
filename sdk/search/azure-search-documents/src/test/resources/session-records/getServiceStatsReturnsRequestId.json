@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azsjavagetservicestatsreturnsrequestid6e0452828c7d99f.search.windows.net/servicestats?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/servicestats?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "ebf33cf6-5966-45e4-8913-d7bf7dde0936"
+      "x-ms-client-request-id" : "0f4db1e9-df72-4b8d-a489-8e773b26d0e4"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ebf33cf6-5966-45e4-8913-d7bf7dde0936",
+      "request-id" : "0f4db1e9-df72-4b8d-a489-8e773b26d0e4",
       "StatusCode" : "200",
-      "Date" : "Tue, 21 Apr 2020 20:06:58 GMT",
+      "Date" : "Mon, 11 May 2020 18:07:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "ebf33cf6-5966-45e4-8913-d7bf7dde0936",
+      "client-request-id" : "0f4db1e9-df72-4b8d-a489-8e773b26d0e4",
       "elapsed-time" : "38",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "618",
-      "Body" : "{\"@odata.context\":\"https://azsjavagetservicestatsreturnsrequestid6e0452828c7d99f.search.windows.net/$metadata#Microsoft.Azure.Search.V2019_05_06_Preview.ServiceStatistics\",\"counters\":{\"documentCount\":{\"usage\":0,\"quota\":null},\"indexesCount\":{\"usage\":0,\"quota\":3},\"indexersCount\":{\"usage\":0,\"quota\":3},\"dataSourcesCount\":{\"usage\":0,\"quota\":3},\"storageSize\":{\"usage\":0,\"quota\":52428800},\"synonymMaps\":{\"usage\":0,\"quota\":3},\"skillsetCount\":{\"usage\":0,\"quota\":3}},\"limits\":{\"maxFieldsPerIndex\":1000,\"maxFieldNestingDepthPerIndex\":10,\"maxComplexCollectionFieldsPerIndex\":40,\"maxComplexObjectsInCollectionsPerDocument\":3000}}",
+      "Content-Length" : "586",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#Microsoft.Azure.Search.V2019_05_06_Preview.ServiceStatistics\",\"counters\":{\"documentCount\":{\"usage\":0,\"quota\":null},\"indexesCount\":{\"usage\":0,\"quota\":15},\"indexersCount\":{\"usage\":1,\"quota\":15},\"dataSourcesCount\":{\"usage\":0,\"quota\":15},\"storageSize\":{\"usage\":0,\"quota\":2147483648},\"synonymMaps\":{\"usage\":0,\"quota\":3},\"skillsetCount\":{\"usage\":0,\"quota\":15}},\"limits\":{\"maxFieldsPerIndex\":1000,\"maxFieldNestingDepthPerIndex\":10,\"maxComplexCollectionFieldsPerIndex\":40,\"maxComplexObjectsInCollectionsPerDocument\":3000}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavagetservicestatsreturnsrequestid6e0452828c7d99f" ]
+  "variables" : [ ]
 }

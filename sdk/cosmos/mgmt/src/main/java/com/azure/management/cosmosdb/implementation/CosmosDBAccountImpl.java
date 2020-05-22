@@ -452,14 +452,14 @@ class CosmosDBAccountImpl
     private DatabaseAccountCreateUpdateParameters createUpdateParametersInner(DatabaseAccountGetResultsInner inner) {
         this.ensureFailoverIsInitialized();
         DatabaseAccountCreateUpdateParameters createUpdateParametersInner = new DatabaseAccountCreateUpdateParameters();
-        createUpdateParametersInner.setLocation(this.regionName().toLowerCase(Locale.ROOT));
+        createUpdateParametersInner.withLocation(this.regionName().toLowerCase(Locale.ROOT));
         createUpdateParametersInner.withConsistencyPolicy(inner.consistencyPolicy());
         //        createUpdateParametersInner.withDatabaseAccountOfferType(
         //                DatabaseAccountOfferType.STANDARD.toString()); // Enum to Constant
         createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
         createUpdateParametersInner.withKind(inner.kind());
         createUpdateParametersInner.withCapabilities(inner.capabilities());
-        createUpdateParametersInner.setTags(inner.getTags());
+        createUpdateParametersInner.withTags(inner.tags());
         createUpdateParametersInner.withEnableMultipleWriteLocations(inner.enableMultipleWriteLocations());
         this
             .addLocationsForParameters(
@@ -480,7 +480,7 @@ class CosmosDBAccountImpl
     private DatabaseAccountUpdateParameters updateParametersInner(DatabaseAccountGetResultsInner inner) {
         this.ensureFailoverIsInitialized();
         DatabaseAccountUpdateParameters updateParameters = new DatabaseAccountUpdateParameters();
-        updateParameters.withTags(inner.getTags());
+        updateParameters.withTags(inner.tags());
         updateParameters.withLocation(this.regionName().toLowerCase(Locale.ROOT));
         updateParameters.withConsistencyPolicy(inner.consistencyPolicy());
         updateParameters.withIpRangeFilter(inner.ipRangeFilter());
@@ -649,7 +649,7 @@ class CosmosDBAccountImpl
             this.virtualNetworkRulesMap = new HashMap<>();
             if (this.inner() != null && this.inner().virtualNetworkRules() != null) {
                 for (VirtualNetworkRule virtualNetworkRule : this.inner().virtualNetworkRules()) {
-                    this.virtualNetworkRulesMap.put(virtualNetworkRule.getId(), virtualNetworkRule);
+                    this.virtualNetworkRulesMap.put(virtualNetworkRule.id(), virtualNetworkRule);
                 }
             }
         }
@@ -685,7 +685,7 @@ class CosmosDBAccountImpl
         }
         this.inner().withIsVirtualNetworkFilterEnabled(true);
         for (VirtualNetworkRule vnetRule : virtualNetworkRules) {
-            this.virtualNetworkRulesMap.put(vnetRule.getId(), vnetRule);
+            this.virtualNetworkRulesMap.put(vnetRule.id(), vnetRule);
         }
 
         return this;
@@ -734,7 +734,7 @@ class CosmosDBAccountImpl
 
         @Override
         public String location() {
-            return parameters.getLocation();
+            return parameters.location();
         }
 
         @Override

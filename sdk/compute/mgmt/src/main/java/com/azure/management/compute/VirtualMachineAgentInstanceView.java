@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineAgentInstanceView model. */
 @Fluent
 public final class VirtualMachineAgentInstanceView {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineAgentInstanceView.class);
+
     /*
      * The VM Agent full version.
      */
@@ -88,5 +92,19 @@ public final class VirtualMachineAgentInstanceView {
     public VirtualMachineAgentInstanceView withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (extensionHandlers() != null) {
+            extensionHandlers().forEach(e -> e.validate());
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 }

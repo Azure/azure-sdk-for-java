@@ -4,12 +4,13 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.test.TestBase;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SearchServiceSubClientTests extends SearchServiceTestBase {
+public class SearchServiceSubClientTests extends TestBase {
 
 
     @Test

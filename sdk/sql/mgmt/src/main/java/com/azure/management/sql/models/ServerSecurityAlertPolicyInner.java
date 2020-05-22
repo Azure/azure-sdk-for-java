@@ -7,7 +7,9 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SecurityAlertPolicyState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ServerSecurityAlertPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyInner.class);
+
     /*
      * Specifies the state of the policy, whether it is enabled or disabled or
      * a policy has not been applied yet on the specific database.
@@ -225,5 +229,13 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      */
     public OffsetDateTime creationTime() {
         return this.creationTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

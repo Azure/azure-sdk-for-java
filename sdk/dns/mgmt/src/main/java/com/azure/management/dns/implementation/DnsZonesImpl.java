@@ -33,12 +33,12 @@ class DnsZonesImpl extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl,
         if (inner == null) {
             return null;
         }
-        return new DnsZoneImpl(inner.getName(), inner, this.manager());
+        return new DnsZoneImpl(inner.name(), inner, this.manager());
     }
 
     private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {
         // Zone location must be 'global' irrespective of region of the resource group it resides.
-        dnsZone.inner().setLocation("global");
+        dnsZone.inner().withLocation("global");
         return dnsZone;
     }
 

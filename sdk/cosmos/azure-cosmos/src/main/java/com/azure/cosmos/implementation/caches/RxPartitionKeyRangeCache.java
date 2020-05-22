@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -64,7 +64,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                               .map(Utils.ValueHolder::new)
                               .onErrorResume(err -> {
                                   logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
-                                  CosmosClientException dce = Utils.as(err, CosmosClientException.class);
+                                  CosmosException dce = Utils.as(err, CosmosException.class);
                                   if (dce != null && Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND)) {
                                       return Mono.just(new Utils.ValueHolder<>(null));
                                   }
@@ -153,7 +153,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
-                    CosmosClientException dce = Utils.as(err, CosmosClientException.class);
+                    CosmosException dce = Utils.as(err, CosmosException.class);
                     logger.debug("tryGetRangeByPartitionKeyRangeId on collectionRid {} and partitionKeyRangeId {} encountered failure",
                             collectionRid, partitionKeyRangeId, err);
 

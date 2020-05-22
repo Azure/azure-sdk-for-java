@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -91,7 +91,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     initialPageSize,
                     feedOptions.getRequestContinuation());
             return Flux.just(context);
-        } catch (CosmosClientException dce) {
+        } catch (CosmosException dce) {
             return Flux.error(dce);
         }
     }
@@ -130,7 +130,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             String collectionRid,
             List<PartitionKeyRange> targetRanges,
             int initialPageSize,
-            String continuationToken) throws CosmosClientException {
+            String continuationToken) {
         // Generate the corresponding continuation token map.
         Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap = new HashMap<PartitionKeyRange, String>();
         if (continuationToken == null) {
@@ -156,7 +156,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     outCompositeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Parallel~Context",
                         continuationToken);
-                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 
@@ -187,7 +187,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
     private List<PartitionKeyRange> getPartitionKeyRangesForContinuation(
             CompositeContinuationToken compositeContinuationToken,
-            List<PartitionKeyRange> partitionKeyRanges) throws CosmosClientException {
+            List<PartitionKeyRange> partitionKeyRanges) {
         // Find the partition key range we left off on
         int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 compositeContinuationToken.getRange());

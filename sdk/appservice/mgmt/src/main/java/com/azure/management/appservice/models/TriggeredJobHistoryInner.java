@@ -6,8 +6,10 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.TriggeredJobRun;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class TriggeredJobHistoryInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredJobHistoryInner.class);
+
     /*
      * List of triggered web job runs.
      */
@@ -39,5 +43,18 @@ public class TriggeredJobHistoryInner extends ProxyOnlyResource {
     public TriggeredJobHistoryInner withRuns(List<TriggeredJobRun> runs) {
         this.runs = runs;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (runs() != null) {
+            runs().forEach(e -> e.validate());
+        }
     }
 }

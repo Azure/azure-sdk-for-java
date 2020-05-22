@@ -46,7 +46,7 @@ class VirtualNetworkGatewayConnectionsImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualNetworkGatewayConnectionImpl(inner.getName(), parent, inner);
+        return new VirtualNetworkGatewayConnectionImpl(inner.name(), parent, inner);
     }
 
     @Override

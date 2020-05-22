@@ -6,7 +6,9 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class ProcessInfoInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessInfoInner.class);
+
     /*
      * ARM Identifier for deployment.
      */
@@ -104,7 +108,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * User name.
      */
     @JsonProperty(value = "properties.user_name")
-    private String userName;
+    private String username;
 
     /*
      * Handle count.
@@ -206,7 +210,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * Time stamp.
      */
     @JsonProperty(value = "properties.time_stamp")
-    private OffsetDateTime timeStamp;
+    private OffsetDateTime timestamp;
 
     /*
      * List of environment variables.
@@ -502,22 +506,22 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the userName property: User name.
+     * Get the username property: User name.
      *
-     * @return the userName value.
+     * @return the username value.
      */
-    public String userName() {
-        return this.userName;
+    public String username() {
+        return this.username;
     }
 
     /**
-     * Set the userName property: User name.
+     * Set the username property: User name.
      *
-     * @param userName the userName value to set.
+     * @param username the username value to set.
      * @return the ProcessInfoInner object itself.
      */
-    public ProcessInfoInner withUserName(String userName) {
-        this.userName = userName;
+    public ProcessInfoInner withUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -842,22 +846,22 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the timeStamp property: Time stamp.
+     * Get the timestamp property: Time stamp.
      *
-     * @return the timeStamp value.
+     * @return the timestamp value.
      */
-    public OffsetDateTime timeStamp() {
-        return this.timeStamp;
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
     }
 
     /**
-     * Set the timeStamp property: Time stamp.
+     * Set the timestamp property: Time stamp.
      *
-     * @param timeStamp the timeStamp value to set.
+     * @param timestamp the timestamp value to set.
      * @return the ProcessInfoInner object itself.
      */
-    public ProcessInfoInner withTimeStamp(OffsetDateTime timeStamp) {
-        this.timeStamp = timeStamp;
+    public ProcessInfoInner withTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
         return this;
     }
 
@@ -939,5 +943,21 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     public ProcessInfoInner withDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (threads() != null) {
+            threads().forEach(e -> e.validate());
+        }
+        if (modules() != null) {
+            modules().forEach(e -> e.validate());
+        }
     }
 }

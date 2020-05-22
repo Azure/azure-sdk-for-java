@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CheckPrivateLinkServiceVisibilityRequest model. */
 @Fluent
 public final class CheckPrivateLinkServiceVisibilityRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckPrivateLinkServiceVisibilityRequest.class);
+
     /*
      * The alias of the private link service.
      */
@@ -34,5 +38,13 @@ public final class CheckPrivateLinkServiceVisibilityRequest {
     public CheckPrivateLinkServiceVisibilityRequest withPrivateLinkServiceAlias(String privateLinkServiceAlias) {
         this.privateLinkServiceAlias = privateLinkServiceAlias;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

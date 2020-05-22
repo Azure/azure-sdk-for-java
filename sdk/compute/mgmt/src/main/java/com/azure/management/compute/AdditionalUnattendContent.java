@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AdditionalUnattendContent model. */
 @Fluent
 public final class AdditionalUnattendContent {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalUnattendContent.class);
+
     /*
      * The pass name. Currently, the only allowable value is OobeSystem.
      */
@@ -125,5 +129,13 @@ public final class AdditionalUnattendContent {
     public AdditionalUnattendContent withContent(String content) {
         this.content = content;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

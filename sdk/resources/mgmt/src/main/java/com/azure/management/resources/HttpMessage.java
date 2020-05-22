@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HttpMessage model. */
 @Fluent
 public final class HttpMessage {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpMessage.class);
+
     /*
      * HTTP message content.
      */
@@ -34,5 +38,13 @@ public final class HttpMessage {
     public HttpMessage withContent(Object content) {
         this.content = content;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -22,7 +22,7 @@ Typically, you won't need to install or depend on Azure Core, instead it will be
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -59,7 +59,7 @@ to reduce the scope of exception reasons.
 
 ### Pagination with `ContinuablePagedFlux<T>`
 
-`ContinuablePageFlux` manages sending an intial page request to a service and retrieving additional pages as the consumer requests more data until the consumer is
+`ContinuablePageFlux` manages sending an initial page request to a service and retrieving additional pages as the consumer requests more data until the consumer is
 done processing or all pages have been consumed.
 
 ### Long Running Operations with `PollerFlux<T>`
@@ -91,7 +91,7 @@ If you would like to become an active contributor to this project please follow 
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Requestl
+5. Create new Pull Request
 
 <!-- links -->
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK

@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SyncFullSchemaTableColumn model. */
 @Immutable
 public final class SyncFullSchemaTableColumn {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaTableColumn.class);
+
     /*
      * Data size of the column.
      */
@@ -113,5 +117,13 @@ public final class SyncFullSchemaTableColumn {
      */
     public String quotedName() {
         return this.quotedName;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

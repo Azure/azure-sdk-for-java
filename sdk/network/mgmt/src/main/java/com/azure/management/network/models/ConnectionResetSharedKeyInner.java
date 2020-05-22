@@ -5,11 +5,15 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnectionResetSharedKey model. */
 @Fluent
 public final class ConnectionResetSharedKeyInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionResetSharedKeyInner.class);
+
     /*
      * The virtual network connection reset shared key length, should between 1
      * and 128.
@@ -35,5 +39,13 @@ public final class ConnectionResetSharedKeyInner {
     public ConnectionResetSharedKeyInner withKeyLength(int keyLength) {
         this.keyLength = keyLength;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

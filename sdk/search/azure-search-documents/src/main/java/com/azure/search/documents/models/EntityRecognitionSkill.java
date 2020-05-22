@@ -18,7 +18,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Text.EntityRecognitionSkill")
 @Fluent
-public final class EntityRecognitionSkill extends Skill {
+public final class EntityRecognitionSkill extends SearchIndexerSkill {
     /*
      * A list of entity categories that should be extracted.
      */

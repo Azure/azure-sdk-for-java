@@ -7,13 +7,16 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.Disallowed;
 import com.azure.management.compute.GalleryImageIdentifier;
 import com.azure.management.compute.GalleryImagePropertiesProvisioningState;
+import com.azure.management.compute.HyperVGeneration;
 import com.azure.management.compute.ImagePurchasePlan;
 import com.azure.management.compute.OperatingSystemStateTypes;
 import com.azure.management.compute.OperatingSystemTypes;
 import com.azure.management.compute.RecommendedMachineConfiguration;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -21,6 +24,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class GalleryImageInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageInner.class);
+
     /*
      * The description of this gallery Image Definition resource. This property
      * is updatable.
@@ -60,6 +65,13 @@ public class GalleryImageInner extends Resource {
      */
     @JsonProperty(value = "properties.osState")
     private OperatingSystemStateTypes osState;
+
+    /*
+     * The hypervisor generation of the Virtual Machine. Applicable to OS disks
+     * only.
+     */
+    @JsonProperty(value = "properties.hyperVGeneration")
+    private HyperVGeneration hyperVGeneration;
 
     /*
      * The end of life date of the gallery Image Definition. This property can
@@ -229,6 +241,26 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+     *
+     * @return the hyperVGeneration value.
+     */
+    public HyperVGeneration hyperVGeneration() {
+        return this.hyperVGeneration;
+    }
+
+    /**
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+     *
+     * @param hyperVGeneration the hyperVGeneration value to set.
+     * @return the GalleryImageInner object itself.
+     */
+    public GalleryImageInner withHyperVGeneration(HyperVGeneration hyperVGeneration) {
+        this.hyperVGeneration = hyperVGeneration;
+        return this;
+    }
+
+    /**
      * Get the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
@@ -341,5 +373,25 @@ public class GalleryImageInner extends Resource {
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identifier() != null) {
+            identifier().validate();
+        }
+        if (recommended() != null) {
+            recommended().validate();
+        }
+        if (disallowed() != null) {
+            disallowed().validate();
+        }
+        if (purchasePlan() != null) {
+            purchasePlan().validate();
+        }
     }
 }

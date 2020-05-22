@@ -3,9 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.Resource;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -323,12 +322,12 @@ public final class ResourceResponse<T extends Resource> {
     }
 
     /**
-     * Gets the request diagnostic statistics for the current request to Azure Cosmos DB service.
+     * Gets the diagnostic statistics for the current request to Azure Cosmos DB service.
      *
-     * @return request diagnostic statistics for the current request to Azure Cosmos DB service.
+     * @return diagnostic statistics for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return this.response.getCosmosResponseRequestDiagnosticStatistics();
+    public CosmosDiagnostics getDiagnostics() {
+        return this.response.getCosmosDiagnostics();
     }
 
     /**
@@ -336,13 +335,13 @@ public final class ResourceResponse<T extends Resource> {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    public Duration getRequestLatency() {
-        CosmosResponseDiagnostics cosmosResponseDiagnostics = this.response.getCosmosResponseRequestDiagnosticStatistics();
-        if (cosmosResponseDiagnostics == null) {
+    public Duration getDuration() {
+        CosmosDiagnostics cosmosDiagnostics = this.response.getCosmosDiagnostics();
+        if (cosmosDiagnostics == null) {
             return Duration.ZERO;
         }
 
-        return cosmosResponseDiagnostics.getRequestLatency();
+        return cosmosDiagnostics.getDuration();
     }
 
     /**
@@ -350,12 +349,23 @@ public final class ResourceResponse<T extends Resource> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public String getCosmosResponseDiagnosticString() {
-        CosmosResponseDiagnostics cosmosResponseRequestDiagnosticStatistics = this.response.getCosmosResponseRequestDiagnosticStatistics();
-        if (cosmosResponseRequestDiagnosticStatistics == null) {
+    public String getCosmosDiagnosticString() {
+        CosmosDiagnostics cosmosDiagnosticStatistics = this.response.getCosmosDiagnostics();
+        if (cosmosDiagnosticStatistics == null) {
             return StringUtils.EMPTY;
         }
-        return cosmosResponseRequestDiagnosticStatistics.toString();
+        return cosmosDiagnosticStatistics.toString();
+    }
+
+    /**
+     * Gets the ETag from the response headers.
+     *
+     * Null in case of delete operation.
+     *
+     * @return ETag
+     */
+    public String getETag() {
+        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG);
     }
 
     long getCurrentQuotaHeader(String headerName) {

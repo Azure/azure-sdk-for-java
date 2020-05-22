@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TrustPolicy model. */
 @Fluent
 public final class TrustPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrustPolicy.class);
+
     /*
      * The type of trust policy.
      */
@@ -60,5 +64,13 @@ public final class TrustPolicy {
     public TrustPolicy withStatus(PolicyStatus status) {
         this.status = status;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualNetworkGatewaySku model. */
 @Fluent
 public final class VirtualNetworkGatewaySku {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewaySku.class);
+
     /*
      * Gateway SKU name.
      */
@@ -86,5 +90,13 @@ public final class VirtualNetworkGatewaySku {
     public VirtualNetworkGatewaySku withCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

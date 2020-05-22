@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
@@ -44,7 +43,7 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType);
 
     /**
@@ -62,6 +61,6 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType, String sessionId);
 }

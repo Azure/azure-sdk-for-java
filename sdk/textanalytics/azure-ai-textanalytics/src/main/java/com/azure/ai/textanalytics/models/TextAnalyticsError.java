@@ -15,7 +15,7 @@ public final class TextAnalyticsError {
      * Error code. Possible values include: 'invalidRequest',
      * 'invalidArgument', 'internalServerError', 'serviceUnavailable'
      */
-    private final TextAnalyticsErrorCode code;
+    private final TextAnalyticsErrorCode errorCode;
 
     /*
      * Error message.
@@ -29,13 +29,12 @@ public final class TextAnalyticsError {
 
     /**
      * Creates a {@code TextAnalyticsError} model that describes text analytics error.
-     *
-     * @param code The error code.
+     * @param errorCode The error code.
      * @param message The error message.
      * @param target The error target.
      */
-    public TextAnalyticsError(TextAnalyticsErrorCode code, String message, String target) {
-        this.code = code;
+    public TextAnalyticsError(String errorCode, String message, String target) {
+        this.errorCode = TextAnalyticsErrorCode.fromString(errorCode);
         this.message = message;
         this.target = target;
     }
@@ -47,8 +46,8 @@ public final class TextAnalyticsError {
      *
      * @return The code value.
      */
-    public TextAnalyticsErrorCode getCode() {
-        return this.code;
+    public TextAnalyticsErrorCode getErrorCode() {
+        return this.errorCode;
     }
 
     /**

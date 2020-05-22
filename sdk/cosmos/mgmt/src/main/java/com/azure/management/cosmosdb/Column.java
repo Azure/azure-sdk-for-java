@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Column model. */
 @Fluent
 public final class Column {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Column.class);
+
     /*
      * Name of the Cosmos DB Cassandra table column
      */
@@ -60,5 +64,13 @@ public final class Column {
     public Column withType(String type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

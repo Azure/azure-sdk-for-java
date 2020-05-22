@@ -1,7 +1,16 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-- Change `createOrUpdate*` and `delete*` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditioans`.
+## 1.0.0-beta.4 (Unreleased)
+
+
+## 1.0.0-beta.3 (2020-05-05)
+- Replaced `isRetrievable` API with `isHidden`, parameter name changed from `retrievable` to `hidden`.
+- Changed Azure Search service version from `2019-05-06` to `2019-05-06-Preview`
+- Changed `createOrUpdate` and `delete` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditions`.
+- Updated reactor core to `3.3.5.RELEASE`.
+- Added helper class `FieldBuilder` which converts a strongly-typed model class to `List<Field>`. 
+- Added annotations `FieldIgnore`, `SimpleFieldProperty`, and `SearchableFieldProperty` to define the `Field` on model properties.
+- Added fluent class `SimpleField`, `SearchableField`, and `ComplexField` to build `Field`.
 
 ## 1.0.0-beta.2 (2020-04-06)
 

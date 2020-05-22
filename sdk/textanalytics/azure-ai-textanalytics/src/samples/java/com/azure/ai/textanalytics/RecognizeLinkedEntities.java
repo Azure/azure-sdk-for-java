@@ -17,7 +17,7 @@ public class RecognizeLinkedEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
@@ -29,8 +29,9 @@ public class RecognizeLinkedEntities {
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
-            linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+            linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                "Matched entity: %s, confidence score: %f.%n",
+                entityMatch.getText(), entityMatch.getConfidenceScore()));
         });
     }
 }

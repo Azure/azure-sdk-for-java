@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.MicrosoftLanguageTokenizer")
 @Fluent
-public final class MicrosoftLanguageTokenizer extends Tokenizer {
+public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     /*
      * The maximum token length. Tokens longer than the maximum length are
      * split. Maximum token length that can be used is 300 characters. Tokens
@@ -38,14 +38,14 @@ public final class MicrosoftLanguageTokenizer extends Tokenizer {
 
     /*
      * The language to use. The default is English. Possible values include:
-     * 'bangla', 'bulgarian', 'catalan', 'chineseSimplified',
-     * 'chineseTraditional', 'croatian', 'czech', 'danish', 'dutch', 'english',
-     * 'french', 'german', 'greek', 'gujarati', 'hindi', 'icelandic',
-     * 'indonesian', 'italian', 'japanese', 'kannada', 'korean', 'malay',
-     * 'malayalam', 'marathi', 'norwegianBokmaal', 'polish', 'portuguese',
-     * 'portugueseBrazilian', 'punjabi', 'romanian', 'russian',
-     * 'serbianCyrillic', 'serbianLatin', 'slovenian', 'spanish', 'swedish',
-     * 'tamil', 'telugu', 'thai', 'ukrainian', 'urdu', 'vietnamese'
+     * 'Bangla', 'Bulgarian', 'Catalan', 'ChineseSimplified',
+     * 'ChineseTraditional', 'Croatian', 'Czech', 'Danish', 'Dutch', 'English',
+     * 'French', 'German', 'Greek', 'Gujarati', 'Hindi', 'Icelandic',
+     * 'Indonesian', 'Italian', 'Japanese', 'Kannada', 'Korean', 'Malay',
+     * 'Malayalam', 'Marathi', 'NorwegianBokmaal', 'Polish', 'Portuguese',
+     * 'PortugueseBrazilian', 'Punjabi', 'Romanian', 'Russian',
+     * 'SerbianCyrillic', 'SerbianLatin', 'Slovenian', 'Spanish', 'Swedish',
+     * 'Tamil', 'Telugu', 'Thai', 'Ukrainian', 'Urdu', 'Vietnamese'
      */
     @JsonProperty(value = "language")
     private MicrosoftTokenizerLanguage language;
@@ -104,14 +104,14 @@ public final class MicrosoftLanguageTokenizer extends Tokenizer {
 
     /**
      * Get the language property: The language to use. The default is English.
-     * Possible values include: 'bangla', 'bulgarian', 'catalan',
-     * 'chineseSimplified', 'chineseTraditional', 'croatian', 'czech',
-     * 'danish', 'dutch', 'english', 'french', 'german', 'greek', 'gujarati',
-     * 'hindi', 'icelandic', 'indonesian', 'italian', 'japanese', 'kannada',
-     * 'korean', 'malay', 'malayalam', 'marathi', 'norwegianBokmaal', 'polish',
-     * 'portuguese', 'portugueseBrazilian', 'punjabi', 'romanian', 'russian',
-     * 'serbianCyrillic', 'serbianLatin', 'slovenian', 'spanish', 'swedish',
-     * 'tamil', 'telugu', 'thai', 'ukrainian', 'urdu', 'vietnamese'.
+     * Possible values include: 'Bangla', 'Bulgarian', 'Catalan',
+     * 'ChineseSimplified', 'ChineseTraditional', 'Croatian', 'Czech',
+     * 'Danish', 'Dutch', 'English', 'French', 'German', 'Greek', 'Gujarati',
+     * 'Hindi', 'Icelandic', 'Indonesian', 'Italian', 'Japanese', 'Kannada',
+     * 'Korean', 'Malay', 'Malayalam', 'Marathi', 'NorwegianBokmaal', 'Polish',
+     * 'Portuguese', 'PortugueseBrazilian', 'Punjabi', 'Romanian', 'Russian',
+     * 'SerbianCyrillic', 'SerbianLatin', 'Slovenian', 'Spanish', 'Swedish',
+     * 'Tamil', 'Telugu', 'Thai', 'Ukrainian', 'Urdu', 'Vietnamese'.
      *
      * @return the language value.
      */
@@ -121,14 +121,14 @@ public final class MicrosoftLanguageTokenizer extends Tokenizer {
 
     /**
      * Set the language property: The language to use. The default is English.
-     * Possible values include: 'bangla', 'bulgarian', 'catalan',
-     * 'chineseSimplified', 'chineseTraditional', 'croatian', 'czech',
-     * 'danish', 'dutch', 'english', 'french', 'german', 'greek', 'gujarati',
-     * 'hindi', 'icelandic', 'indonesian', 'italian', 'japanese', 'kannada',
-     * 'korean', 'malay', 'malayalam', 'marathi', 'norwegianBokmaal', 'polish',
-     * 'portuguese', 'portugueseBrazilian', 'punjabi', 'romanian', 'russian',
-     * 'serbianCyrillic', 'serbianLatin', 'slovenian', 'spanish', 'swedish',
-     * 'tamil', 'telugu', 'thai', 'ukrainian', 'urdu', 'vietnamese'.
+     * Possible values include: 'Bangla', 'Bulgarian', 'Catalan',
+     * 'ChineseSimplified', 'ChineseTraditional', 'Croatian', 'Czech',
+     * 'Danish', 'Dutch', 'English', 'French', 'German', 'Greek', 'Gujarati',
+     * 'Hindi', 'Icelandic', 'Indonesian', 'Italian', 'Japanese', 'Kannada',
+     * 'Korean', 'Malay', 'Malayalam', 'Marathi', 'NorwegianBokmaal', 'Polish',
+     * 'Portuguese', 'PortugueseBrazilian', 'Punjabi', 'Romanian', 'Russian',
+     * 'SerbianCyrillic', 'SerbianLatin', 'Slovenian', 'Spanish', 'Swedish',
+     * 'Tamil', 'Telugu', 'Thai', 'Ukrainian', 'Urdu', 'Vietnamese'.
      *
      * @param language the language value to set.
      * @return the MicrosoftLanguageTokenizer object itself.

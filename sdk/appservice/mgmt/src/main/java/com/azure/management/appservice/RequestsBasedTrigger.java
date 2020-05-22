@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RequestsBasedTrigger model. */
 @Fluent
 public final class RequestsBasedTrigger {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestsBasedTrigger.class);
+
     /*
      * Request Count.
      */
@@ -60,5 +64,13 @@ public final class RequestsBasedTrigger {
     public RequestsBasedTrigger withTimeInterval(String timeInterval) {
         this.timeInterval = timeInterval;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

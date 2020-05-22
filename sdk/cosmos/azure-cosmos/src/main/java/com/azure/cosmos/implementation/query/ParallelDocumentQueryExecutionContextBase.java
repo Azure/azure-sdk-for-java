@@ -3,20 +3,19 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -102,7 +101,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     }
 
     protected <TContinuationToken> int findTargetRangeAndExtractContinuationTokens(
-            List<PartitionKeyRange> partitionKeyRanges, Range<String> range) throws CosmosClientException {
+            List<PartitionKeyRange> partitionKeyRanges, Range<String> range) {
         if (partitionKeyRanges == null) {
             throw new IllegalArgumentException("partitionKeyRanges can not be null.");
         }
@@ -127,7 +126,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         }
 
         if (minIndex == partitionKeyRanges.size()) {
-            throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+            throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                     String.format("Could not find partition key range for continuation token: {0}", needle));
         }
 

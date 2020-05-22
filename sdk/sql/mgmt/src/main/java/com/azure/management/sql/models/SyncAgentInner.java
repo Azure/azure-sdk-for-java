@@ -7,7 +7,9 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SyncAgentState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -15,6 +17,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class SyncAgentInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncAgentInner.class);
+
     /*
      * Name of the sync agent.
      */
@@ -129,5 +133,13 @@ public class SyncAgentInner extends ProxyResource {
      */
     public String version() {
         return this.version;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

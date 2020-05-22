@@ -43,9 +43,16 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #apiKey(AzureKeyCredential)} gives
- * the builder access credential.
+ * {@link #credential(AzureKeyCredential)} gives the builder access credential.
  * </p>
+ *
+ * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -54,6 +61,8 @@ import java.util.Objects;
  * pipeline requires additional setup but allows for finer control on how the {@link FormRecognizerClient} and
  * {@link FormRecognizerAsyncClient} is built.
  * </p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.pipeline.instantiation}
  *
  * @see FormRecognizerAsyncClient
  * @see FormRecognizerClient
@@ -114,7 +123,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @return A FormRecognizerClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
+     * {@link #credential(AzureKeyCredential)} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerClient buildClient() {
@@ -132,8 +141,8 @@ public final class FormRecognizerClientBuilder {
      * </p>
      *
      * @return A FormRecognizerAsyncClient with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
+     * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerAsyncClient buildAsyncClient() {
@@ -219,14 +228,15 @@ public final class FormRecognizerClientBuilder {
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests for this FormRecognizerClientBuilder.
+     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
+     * FormRecognizerClientBuilder.
      *
-     * @param apiKeyCredential API key credential
+     * @param apiKeyCredential {@link AzureKeyCredential} API key credential
      *
      * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
-    public FormRecognizerClientBuilder apiKey(AzureKeyCredential apiKeyCredential) {
+    public FormRecognizerClientBuilder credential(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
         return this;
     }

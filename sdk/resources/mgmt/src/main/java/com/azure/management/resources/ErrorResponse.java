@@ -5,12 +5,16 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ErrorResponse model. */
 @Immutable
 public final class ErrorResponse {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorResponse.class);
+
     /*
      * The error code.
      */
@@ -84,5 +88,19 @@ public final class ErrorResponse {
      */
     public List<ErrorAdditionalInfo> additionalInfo() {
         return this.additionalInfo;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (details() != null) {
+            details().forEach(e -> e.validate());
+        }
+        if (additionalInfo() != null) {
+            additionalInfo().forEach(e -> e.validate());
+        }
     }
 }

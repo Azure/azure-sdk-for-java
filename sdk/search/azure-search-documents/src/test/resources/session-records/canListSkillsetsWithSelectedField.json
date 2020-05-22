@@ -1,82 +1,120 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/skillsets?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "1342b099-0acf-425b-945e-592037886fcc",
+      "x-ms-client-request-id" : "1358f861-0fa2-46eb-b1f4-fda18f0b755c",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1342b099-0acf-425b-945e-592037886fcc",
+      "request-id" : "1358f861-0fa2-46eb-b1f4-fda18f0b755c",
       "StatusCode" : "201",
-      "Date" : "Tue, 21 Apr 2020 19:11:51 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "1342b099-0acf-425b-945e-592037886fcc",
-      "ETag" : "W/\"0x8D7E627D8C849F2\"",
-      "elapsed-time" : "71",
+      "client-request-id" : "1358f861-0fa2-46eb-b1f4-fda18f0b755c",
+      "ETag" : "W/\"0x8D7F5D68999ACFE\"",
+      "elapsed-time" : "81",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "836",
-      "Body" : "{\"@odata.context\":\"https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627D8C849F2\\\"\",\"name\":\"cognitive-services-key-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null},\"knowledgeStore\":null}",
+      "Content-Length" : "808",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D68999ACFE\\\"\",\"name\":\"cognitive-services-key-skillset20660b80b13\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null},\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/skillsets('cognitive-services-key-skillset')?api-version=2019-05-06-Preview"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('cognitive-services-key-skillset20660b80b13')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/skillsets?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "93e3e5f8-87e9-4a54-83cf-db9fe1289ab5",
+      "x-ms-client-request-id" : "8e2f560d-a7eb-4fe8-80ea-e31b3cf425fc",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "93e3e5f8-87e9-4a54-83cf-db9fe1289ab5",
+      "request-id" : "8e2f560d-a7eb-4fe8-80ea-e31b3cf425fc",
       "StatusCode" : "201",
-      "Date" : "Tue, 21 Apr 2020 19:11:51 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "93e3e5f8-87e9-4a54-83cf-db9fe1289ab5",
-      "ETag" : "W/\"0x8D7E627D8DA0188\"",
-      "elapsed-time" : "91",
+      "client-request-id" : "8e2f560d-a7eb-4fe8-80ea-e31b3cf425fc",
+      "ETag" : "W/\"0x8D7F5D689ABB19F\"",
+      "elapsed-time" : "67",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "718",
-      "Body" : "{\"@odata.context\":\"https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627D8DA0188\\\"\",\"name\":\"entity-recognition-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Content-Length" : "692",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D689ABB19F\\\"\",\"name\":\"entity-recognition-skillset80015249c3f67\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/skillsets('entity-recognition-skillset')?api-version=2019-05-06-Preview"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('entity-recognition-skillset80015249c3f67')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/skillsets?$select=name&api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?$select=name&api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "96b94faf-e311-493c-a1d6-293460935863"
+      "x-ms-client-request-id" : "b5dc28f1-64a7-4864-8182-d985ef893710"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "96b94faf-e311-493c-a1d6-293460935863",
+      "request-id" : "b5dc28f1-64a7-4864-8182-d985ef893710",
       "StatusCode" : "200",
-      "Date" : "Tue, 21 Apr 2020 19:11:51 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "96b94faf-e311-493c-a1d6-293460935863",
-      "elapsed-time" : "16",
+      "client-request-id" : "b5dc28f1-64a7-4864-8182-d985ef893710",
+      "elapsed-time" : "26",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "220",
-      "Body" : "{\"@odata.context\":\"https://azsjavacanlistskillsetswithselectedfield7f458556136319.search.windows.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset\"},{\"name\":\"entity-recognition-skillset\"}]}",
+      "Content-Length" : "205",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset20660b80b13\"},{\"name\":\"entity-recognition-skillset80015249c3f67\"}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('cognitive-services-key-skillset20660b80b13')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "d618a980-214e-4e14-b161-277cd1684254"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d618a980-214e-4e14-b161-277cd1684254",
+      "elapsed-time" : "50",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d618a980-214e-4e14-b161-277cd1684254",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 May 2020 18:10:07 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('entity-recognition-skillset80015249c3f67')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "52897918-d731-4802-bb41-ca26557bf990"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "52897918-d731-4802-bb41-ca26557bf990",
+      "elapsed-time" : "39",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "52897918-d731-4802-bb41-ca26557bf990",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 May 2020 18:10:07 GMT"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "azsjavacanlistskillsetswithselectedfield7f458556136319" ]
+  "variables" : [ "cognitive-services-key-skillset20660b80b13", "entity-recognition-skillset80015249c3f67" ]
 }

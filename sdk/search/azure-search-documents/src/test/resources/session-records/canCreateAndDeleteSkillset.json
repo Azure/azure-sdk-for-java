@@ -1,75 +1,75 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "ab31de17-9b47-4fb8-add2-a2f69eb94d50",
+      "x-ms-client-request-id" : "986e9da9-ebcd-4319-bbc0-2c9f7714f1f0",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ab31de17-9b47-4fb8-add2-a2f69eb94d50",
+      "request-id" : "986e9da9-ebcd-4319-bbc0-2c9f7714f1f0",
       "StatusCode" : "201",
-      "Date" : "Tue, 21 Apr 2020 19:11:25 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:04 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "ab31de17-9b47-4fb8-add2-a2f69eb94d50",
-      "ETag" : "W/\"0x8D7E627C996F203\"",
-      "elapsed-time" : "52",
+      "client-request-id" : "986e9da9-ebcd-4319-bbc0-2c9f7714f1f0",
+      "ETag" : "W/\"0x8D7F5D68862062D\"",
+      "elapsed-time" : "63",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "750",
-      "Body" : "{\"@odata.context\":\"https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627C996F203\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D68862062D\\\"\",\"name\":\"ocr-skillsetcancreateanddeleteskillsetef212531a\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('ocr-skillsetcancreateanddeleteskillsetef212531a')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillsetcancreateanddeleteskillsetef212531a')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "6bfe0f86-f3f5-4267-87f6-50fb42fc32e2"
+      "x-ms-client-request-id" : "f494ed34-5176-4f49-bf1e-6d60a9078a31"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "6bfe0f86-f3f5-4267-87f6-50fb42fc32e2",
-      "elapsed-time" : "30",
+      "client-request-id" : "f494ed34-5176-4f49-bf1e-6d60a9078a31",
+      "elapsed-time" : "158",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6bfe0f86-f3f5-4267-87f6-50fb42fc32e2",
+      "request-id" : "f494ed34-5176-4f49-bf1e-6d60a9078a31",
       "StatusCode" : "204",
-      "Date" : "Tue, 21 Apr 2020 19:11:25 GMT"
+      "Date" : "Mon, 11 May 2020 18:10:04 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillsetcancreateanddeleteskillsetef212531a')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "86720f7a-1573-4153-9b17-05d79747bc29"
+      "x-ms-client-request-id" : "7c8a50d0-2e85-4bd7-90e3-5901fe6cad50"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "86720f7a-1573-4153-9b17-05d79747bc29",
+      "request-id" : "7c8a50d0-2e85-4bd7-90e3-5901fe6cad50",
       "StatusCode" : "404",
-      "Date" : "Tue, 21 Apr 2020 19:11:25 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:04 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "86720f7a-1573-4153-9b17-05d79747bc29",
-      "elapsed-time" : "14",
+      "client-request-id" : "7c8a50d0-2e85-4bd7-90e3-5901fe6cad50",
+      "elapsed-time" : "20",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "154",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in service 'Microsoft.WindowsAzure.Search.Core.Models.SearchService'.\"}}",
+      "Content-Length" : "189",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillsetcancreateanddeleteskillsetef212531a' was found in service 'Microsoft.WindowsAzure.Search.Core.Models.SearchService'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavacancreateanddeleteskillset3a58256069266d988" ]
+  "variables" : [ "ocr-skillsetcancreateanddeleteskillsetef212531a" ]
 }

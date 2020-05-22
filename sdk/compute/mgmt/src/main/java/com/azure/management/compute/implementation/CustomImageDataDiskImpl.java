@@ -47,19 +47,19 @@ class CustomImageDataDiskImpl
 
     @Override
     public CustomImageDataDiskImpl fromSnapshot(String sourceSnapshotId) {
-        this.inner().withSnapshot(new SubResource().setId(sourceSnapshotId));
+        this.inner().withSnapshot(new SubResource().withId(sourceSnapshotId));
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl fromManagedDisk(String sourceManagedDiskId) {
-        this.inner().withManagedDisk(new SubResource().setId(sourceManagedDiskId));
+        this.inner().withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl fromManagedDisk(Disk sourceManagedDisk) {
-        this.inner().withManagedDisk(new SubResource().setId(sourceManagedDisk.id()));
+        this.inner().withManagedDisk(new SubResource().withId(sourceManagedDisk.id()));
         return this;
     }
 

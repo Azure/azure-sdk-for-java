@@ -10,6 +10,8 @@ import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
  * The type Cosmos async stored procedure.
  */
@@ -82,7 +84,7 @@ public class CosmosAsyncStoredProcedure {
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -96,7 +98,7 @@ public class CosmosAsyncStoredProcedure {
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -118,15 +120,15 @@ public class CosmosAsyncStoredProcedure {
      * Executes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure 
+     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure
      * response.
      * In case of failure the {@link Mono} will error.
      *
-     * @param procedureParams the array of procedure parameter values.
+     * @param procedureParams the list of procedure parameter values.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams,
+    public Mono<CosmosAsyncStoredProcedureResponse> execute(List<Object> procedureParams,
                                                             CosmosStoredProcedureRequestOptions options) {
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
@@ -142,7 +144,7 @@ public class CosmosAsyncStoredProcedure {
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -157,7 +159,7 @@ public class CosmosAsyncStoredProcedure {
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -172,7 +174,8 @@ public class CosmosAsyncStoredProcedure {
         }
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
-                   .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(storedProcedureSettings)),
+                   .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(
+                       ModelBridgeInternal.getResource(storedProcedureSettings))),
                        ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
                    .single();
