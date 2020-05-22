@@ -10,10 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the StorageManagementClientImpl type. */
 public final class StorageManagementClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(StorageManagementClientImpl.class);
+
     /** The ID of the target subscription. */
     private String subscriptionId;
 
@@ -251,6 +254,54 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
         return this.fileShares;
     }
 
+    /** The QueueServicesInner object to access its operations. */
+    private final QueueServicesInner queueServices;
+
+    /**
+     * Gets the QueueServicesInner object to access its operations.
+     *
+     * @return the QueueServicesInner object.
+     */
+    public QueueServicesInner queueServices() {
+        return this.queueServices;
+    }
+
+    /** The QueuesInner object to access its operations. */
+    private final QueuesInner queues;
+
+    /**
+     * Gets the QueuesInner object to access its operations.
+     *
+     * @return the QueuesInner object.
+     */
+    public QueuesInner queues() {
+        return this.queues;
+    }
+
+    /** The TableServicesInner object to access its operations. */
+    private final TableServicesInner tableServices;
+
+    /**
+     * Gets the TableServicesInner object to access its operations.
+     *
+     * @return the TableServicesInner object.
+     */
+    public TableServicesInner tableServices() {
+        return this.tableServices;
+    }
+
+    /** The TablesInner object to access its operations. */
+    private final TablesInner tables;
+
+    /**
+     * Gets the TablesInner object to access its operations.
+     *
+     * @return the TablesInner object.
+     */
+    public TablesInner tables() {
+        return this.tables;
+    }
+
     /** Initializes an instance of StorageManagementClient client. */
     public StorageManagementClientImpl() {
         this(
@@ -289,5 +340,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
         this.blobContainers = new BlobContainersInner(this);
         this.fileServices = new FileServicesInner(this);
         this.fileShares = new FileSharesInner(this);
+        this.queueServices = new QueueServicesInner(this);
+        this.queues = new QueuesInner(this);
+        this.tableServices = new TableServicesInner(this);
+        this.tables = new TablesInner(this);
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EndpointDetail model. */
 @Fluent
 public final class EndpointDetail {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDetail.class);
+
     /*
      * An IP Address that Domain Name currently resolves to.
      */
@@ -118,5 +122,13 @@ public final class EndpointDetail {
     public EndpointDetail withIsAccessible(Boolean isAccessible) {
         this.isAccessible = isAccessible;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

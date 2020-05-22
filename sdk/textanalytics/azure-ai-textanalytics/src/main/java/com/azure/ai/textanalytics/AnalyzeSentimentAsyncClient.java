@@ -6,17 +6,18 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
+import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -28,16 +29,16 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -145,51 +146,35 @@ class AnalyzeSentimentAsyncClient {
      */
     private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final TextSentiment documentSentimentLabel = TextSentiment.fromString(
-            documentSentiment.getSentiment().toString());
-        if (documentSentimentLabel == null) {
-            // Not throw exception for an invalid Sentiment type because we should not skip processing the
-            // other response. It is a service issue.
-            logger.logExceptionAsWarning(
-                new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
-                    documentSentiment.getSentiment())));
-        }
-
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getConfidenceScores();
-
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                final TextSentiment sentenceSentimentLabel = TextSentiment.fromString(
-                    sentenceSentiment.getSentiment().toString());
-                if (sentenceSentimentLabel == null) {
-                    // Not throw exception for an invalid Sentiment type because we should not skip processing the
-                    // other response. It is a service issue.
-                    logger.logExceptionAsWarning(
-                        new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
-                            sentenceSentiment.getSentiment())));
-                }
                 final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
                     sentenceSentiment.getConfidenceScores();
-
+                final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
                 return new SentenceSentiment(sentenceSentiment.getText(),
-                    sentenceSentimentLabel,
+                    sentenceSentimentValue == null ? null : sentenceSentimentValue.toString(),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
             }).collect(Collectors.toList());
 
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentSentiment.getWarnings().stream().map(
-            warning -> new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                warning.getMessage())).collect(Collectors.toList());
+            warning -> {
+                final WarningCodeValue warningCodeValue = warning.getCode();
+                return new TextAnalyticsWarning(warningCodeValue == null ? null : warningCodeValue.toString(),
+                    warning.getMessage());
+            }).collect(Collectors.toList());
 
+        final DocumentSentimentValue documentSentimentValue = documentSentiment.getSentiment();
         return new AnalyzeSentimentResult(
             documentSentiment.getId(),
             documentSentiment.getStatistics() == null
                 ? null : toTextDocumentStatistics(documentSentiment.getStatistics()),
             null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
-                documentSentimentLabel,
+                documentSentimentValue == null ? null : documentSentimentValue.toString(),
                 new SentimentConfidenceScores(
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),
@@ -211,7 +196,7 @@ class AnalyzeSentimentAsyncClient {
     private Mono<TextAnalyticsPagedResponse<AnalyzeSentimentResult>> getAnalyzedSentimentResponseInPage(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.sentimentWithResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics())

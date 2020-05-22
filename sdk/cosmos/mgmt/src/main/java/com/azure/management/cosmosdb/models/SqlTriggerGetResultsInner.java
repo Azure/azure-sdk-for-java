@@ -6,14 +6,18 @@ package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.management.cosmosdb.ARMResourceProperties;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.cosmosdb.ArmResourceProperties;
 import com.azure.management.cosmosdb.SqlTriggerGetPropertiesResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SqlTriggerGetResults model. */
 @JsonFlatten
 @Fluent
-public class SqlTriggerGetResultsInner extends ARMResourceProperties {
+public class SqlTriggerGetResultsInner extends ArmResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlTriggerGetResultsInner.class);
+
     /*
      * The resource property.
      */
@@ -38,5 +42,18 @@ public class SqlTriggerGetResultsInner extends ARMResourceProperties {
     public SqlTriggerGetResultsInner withResource(SqlTriggerGetPropertiesResource resource) {
         this.resource = resource;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (resource() != null) {
+            resource().validate();
+        }
     }
 }

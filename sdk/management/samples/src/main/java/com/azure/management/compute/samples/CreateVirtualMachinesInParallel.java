@@ -12,7 +12,7 @@ import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
@@ -108,7 +108,7 @@ public final class CreateVirtualMachinesInParallel {
                     //=============================================================
                     // Create 1 public IP address creatable
                     //
-                    Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses()
+                    Creatable<PublicIpAddress> publicIPAddressCreatable = azure.publicIpAddresses()
                             .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroup)

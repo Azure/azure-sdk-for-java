@@ -4,10 +4,10 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
@@ -81,10 +81,10 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
 
             // Define a PIP for each VM
             String pipName = sdkContext.randomResourceName("pip", 14);
-            PublicIPAddress.DefinitionStages.WithCreate pipDefinition =
+            PublicIpAddress.DefinitionStages.WithCreate pipDefinition =
                 this
                     .networkManager
-                    .publicIPAddresses()
+                    .publicIpAddresses()
                     .define(pipName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup);
@@ -215,8 +215,8 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
         // Show any errors
         for (Throwable error : errors) {
             System.out.println("\n### ERROR ###\n");
-            if (error instanceof CloudException) {
-                CloudException ce = (CloudException) error;
+            if (error instanceof ManagementException) {
+                ManagementException ce = (ManagementException) error;
                 System.out.println("CLOUD EXCEPTION: " + ce.getMessage());
             } else {
                 error.printStackTrace();
@@ -239,7 +239,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
             TestUtilities.getSize(networkManager.networks().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualNetworkCount);
         final int actualPipCount =
-            TestUtilities.getSize(networkManager.publicIPAddresses().listByResourceGroup(resourceGroupName));
+            TestUtilities.getSize(networkManager.publicIpAddresses().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualPipCount);
         final int actualAvailabilitySetCount =
             TestUtilities.getSize(computeManager.availabilitySets().listByResourceGroup(resourceGroupName));

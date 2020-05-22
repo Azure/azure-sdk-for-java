@@ -17,5 +17,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Util.ConditionalSkill")
 @Fluent
-public final class ConditionalSkill extends Skill {
+public final class ConditionalSkill extends SearchIndexerSkill {
 }

@@ -5,17 +5,21 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.ResourceSkuCapabilities;
 import com.azure.management.compute.ResourceSkuCapacity;
 import com.azure.management.compute.ResourceSkuCosts;
 import com.azure.management.compute.ResourceSkuLocationInfo;
 import com.azure.management.compute.ResourceSkuRestrictions;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceSku model. */
 @Immutable
 public final class ResourceSkuInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuInner.class);
+
     /*
      * The type of resource the SKU applies to.
      */
@@ -215,5 +219,28 @@ public final class ResourceSkuInner {
      */
     public List<ResourceSkuRestrictions> restrictions() {
         return this.restrictions;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (capacity() != null) {
+            capacity().validate();
+        }
+        if (locationInfo() != null) {
+            locationInfo().forEach(e -> e.validate());
+        }
+        if (costs() != null) {
+            costs().forEach(e -> e.validate());
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
+        }
+        if (restrictions() != null) {
+            restrictions().forEach(e -> e.validate());
+        }
     }
 }

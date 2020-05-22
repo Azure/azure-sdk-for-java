@@ -21,14 +21,14 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<
      *     "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently
      *     supported. Mixing ranges with multiple entries not currently supported. Default = null.
      */
-    String localIPAddress();
+    String localIpAddress();
 
     /**
      * @return remote IP Address to be filtered on. Notation: "127.0.0.1" for single address entry.
      *     "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently
      *     supported. Mixing ranges with multiple entries not currently supported. Default = null.
      */
-    String remoteIPAddress();
+    String remoteIpAddress();
 
     /**
      * @return local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for
@@ -62,7 +62,7 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<
             extends HasProtocol.DefinitionStages.WithProtocol<
                     WithAttach<PacketCapture.DefinitionStages.WithCreate>, PcProtocol>,
                 WithLocalIP<ParentT>,
-                WithRemoteIPAddress<ParentT>,
+                WithRemoteIpAddress<ParentT>,
                 WithLocalPort<ParentT>,
                 WithRemotePort<ParentT> {
         }
@@ -79,16 +79,16 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<
              * @param ipAddress local IP address
              * @return the next stage
              */
-            Definition<ParentT> withLocalIPAddress(String ipAddress);
+            Definition<ParentT> withLocalIpAddress(String ipAddress);
 
             /**
              * Set local IP addresses range to be filtered on.
              *
-             * @param startIPAddress range start IP address
-             * @param endIPAddress range end IP address
+             * @param startIpAddress range start IP address
+             * @param endIpAddress range end IP address
              * @return the next stage
              */
-            Definition<ParentT> withLocalIPAddressesRange(String startIPAddress, String endIPAddress);
+            Definition<ParentT> withLocalIpAddressesRange(String startIpAddress, String endIpAddress);
 
             /**
              * Set list of local IP addresses to be filtered on.
@@ -96,7 +96,7 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<
              * @param ipAddresses list of IP address
              * @return the next stage
              */
-            Definition<ParentT> withLocalIPAddresses(List<String> ipAddresses);
+            Definition<ParentT> withLocalIpAddresses(List<String> ipAddresses);
         }
 
         /**
@@ -104,23 +104,23 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<
          * "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5" for multiple entries. Multiple ranges not currently
          * supported. Mixing ranges with multiple entries not currently supported. Default = null.
          */
-        interface WithRemoteIPAddress<ParentT> {
+        interface WithRemoteIpAddress<ParentT> {
             /**
              * Set remote IP address to be filtered on.
              *
              * @param ipAddress remote IP address
              * @return the next stage
              */
-            Definition<ParentT> withRemoteIPAddress(String ipAddress);
+            Definition<ParentT> withRemoteIpAddress(String ipAddress);
 
             /**
              * Set remote IP addresses range to be filtered on.
              *
-             * @param startIPAddress range start IP address
-             * @param endIPAddress range end IP address
+             * @param startIpAddress range start IP address
+             * @param endIpAddress range end IP address
              * @return the next stage
              */
-            Definition<ParentT> withRemoteIPAddressesRange(String startIPAddress, String endIPAddress);
+            Definition<ParentT> withRemoteIpAddressesRange(String startIpAddress, String endIpAddress);
 
             /**
              * Set list of remote IP addresses to be filtered on.
@@ -128,7 +128,7 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<
              * @param ipAddresses list of IP addresses
              * @return the next stage
              */
-            Definition<ParentT> withRemoteIPAddresses(List<String> ipAddresses);
+            Definition<ParentT> withRemoteIpAddresses(List<String> ipAddresses);
         }
 
         /**

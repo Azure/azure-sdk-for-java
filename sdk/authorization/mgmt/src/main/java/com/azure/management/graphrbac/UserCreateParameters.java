@@ -5,11 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserCreateParameters model. */
 @Fluent
 public final class UserCreateParameters extends UserBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserCreateParameters.class);
+
     /*
      * Whether the account is enabled.
      */
@@ -167,5 +171,41 @@ public final class UserCreateParameters extends UserBase {
     public UserCreateParameters withMail(String mail) {
         this.mail = mail;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (displayName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property displayName in model UserCreateParameters"));
+        }
+        if (passwordProfile() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property passwordProfile in model UserCreateParameters"));
+        } else {
+            passwordProfile().validate();
+        }
+        if (userPrincipalName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property userPrincipalName in model UserCreateParameters"));
+        }
+        if (mailNickname() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property mailNickname in model UserCreateParameters"));
+        }
     }
 }

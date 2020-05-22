@@ -6,15 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.CloningInfo;
-import com.azure.management.appservice.HostNameSslState;
 import com.azure.management.appservice.HostingEnvironmentProfile;
+import com.azure.management.appservice.HostnameSslState;
 import com.azure.management.appservice.ManagedServiceIdentity;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.RedundancyMode;
 import com.azure.management.appservice.SiteAvailabilityState;
 import com.azure.management.appservice.SlotSwapStatus;
 import com.azure.management.appservice.UsageState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -24,6 +26,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class SitePatchResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SitePatchResourceInner.class);
+
     /*
      * Managed service identity.
      */
@@ -81,7 +85,7 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
      * hostnames.
      */
     @JsonProperty(value = "properties.hostNameSslStates")
-    private List<HostNameSslState> hostNameSslStates;
+    private List<HostnameSslState> hostnameSslStates;
 
     /*
      * Resource ID of the associated App Service plan, formatted as:
@@ -241,7 +245,7 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
      * Default hostname of the app. Read-only.
      */
     @JsonProperty(value = "properties.defaultHostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultHostName;
+    private String defaultHostname;
 
     /*
      * Status of the last deployment slot swap operation.
@@ -367,22 +371,22 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostNameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
+     * Get the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
      *
-     * @return the hostNameSslStates value.
+     * @return the hostnameSslStates value.
      */
-    public List<HostNameSslState> hostNameSslStates() {
-        return this.hostNameSslStates;
+    public List<HostnameSslState> hostnameSslStates() {
+        return this.hostnameSslStates;
     }
 
     /**
-     * Set the hostNameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
+     * Set the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
      *
-     * @param hostNameSslStates the hostNameSslStates value to set.
+     * @param hostnameSslStates the hostnameSslStates value to set.
      * @return the SitePatchResourceInner object itself.
      */
-    public SitePatchResourceInner withHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
-        this.hostNameSslStates = hostNameSslStates;
+    public SitePatchResourceInner withHostnameSslStates(List<HostnameSslState> hostnameSslStates) {
+        this.hostnameSslStates = hostnameSslStates;
         return this;
     }
 
@@ -767,12 +771,12 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the defaultHostName property: Default hostname of the app. Read-only.
+     * Get the defaultHostname property: Default hostname of the app. Read-only.
      *
-     * @return the defaultHostName value.
+     * @return the defaultHostname value.
      */
-    public String defaultHostName() {
-        return this.defaultHostName;
+    public String defaultHostname() {
+        return this.defaultHostname;
     }
 
     /**
@@ -833,5 +837,33 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
      */
     public UUID inProgressOperationId() {
         return this.inProgressOperationId;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (hostnameSslStates() != null) {
+            hostnameSslStates().forEach(e -> e.validate());
+        }
+        if (siteConfig() != null) {
+            siteConfig().validate();
+        }
+        if (hostingEnvironmentProfile() != null) {
+            hostingEnvironmentProfile().validate();
+        }
+        if (cloningInfo() != null) {
+            cloningInfo().validate();
+        }
+        if (slotSwapStatus() != null) {
+            slotSwapStatus().validate();
+        }
     }
 }

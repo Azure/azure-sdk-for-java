@@ -4,7 +4,7 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.compute.models.VirtualMachineScaleSetsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
@@ -41,11 +41,11 @@ public interface VirtualMachineScaleSets
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     * @throws CloudException thrown for an invalid response from the service.
+     * @throws ManagementException thrown for an invalid response from the service.
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void deallocate(String groupName, String name) throws CloudException, IOException, InterruptedException;
+    void deallocate(String groupName, String name) throws ManagementException, IOException, InterruptedException;
 
     /**
      * Shuts down the virtual machines in the scale set and releases the compute resources asynchronously.
@@ -61,11 +61,11 @@ public interface VirtualMachineScaleSets
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     * @throws CloudException thrown for an invalid response from the service.
+     * @throws ManagementException thrown for an invalid response from the service.
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void powerOff(String groupName, String name) throws CloudException, IOException, InterruptedException;
+    void powerOff(String groupName, String name) throws ManagementException, IOException, InterruptedException;
 
     /**
      * Powers off (stops) the virtual machines in the scale set asynchronously.
@@ -81,11 +81,11 @@ public interface VirtualMachineScaleSets
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     * @throws CloudException thrown for an invalid response from the service.
+     * @throws ManagementException thrown for an invalid response from the service.
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void restart(String groupName, String name) throws CloudException, IOException, InterruptedException;
+    void restart(String groupName, String name) throws ManagementException, IOException, InterruptedException;
 
     /**
      * Restarts the virtual machines in the scale set asynchronously.
@@ -101,11 +101,11 @@ public interface VirtualMachineScaleSets
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     * @throws CloudException thrown for an invalid response from the service.
+     * @throws ManagementException thrown for an invalid response from the service.
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void start(String groupName, String name) throws CloudException, IOException, InterruptedException;
+    void start(String groupName, String name) throws ManagementException, IOException, InterruptedException;
 
     /**
      * Starts the virtual machines in the scale set asynchronously.
@@ -121,11 +121,11 @@ public interface VirtualMachineScaleSets
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     * @throws CloudException thrown for an invalid response from the service.
+     * @throws ManagementException thrown for an invalid response from the service.
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void reimage(String groupName, String name) throws CloudException, IOException, InterruptedException;
+    void reimage(String groupName, String name) throws ManagementException, IOException, InterruptedException;
 
     /**
      * Re-images (updates the version of the installed operating system) the virtual machines in the scale set

@@ -5,12 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The RestorePolicyProperties model. */
 @Fluent
 public final class RestorePolicyProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePolicyProperties.class);
+
     /*
      * Blob restore is enabled if set to true.
      */
@@ -79,5 +83,13 @@ public final class RestorePolicyProperties {
      */
     public OffsetDateTime lastEnabledTime() {
         return this.lastEnabledTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

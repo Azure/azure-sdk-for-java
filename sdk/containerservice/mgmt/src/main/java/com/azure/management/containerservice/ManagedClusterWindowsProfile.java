@@ -5,11 +5,15 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagedClusterWindowsProfile model. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterWindowsProfile.class);
+
     /*
      * The administrator username to use for Windows VMs.
      */
@@ -60,5 +64,19 @@ public final class ManagedClusterWindowsProfile {
     public ManagedClusterWindowsProfile withAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (adminUsername() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
+        }
     }
 }

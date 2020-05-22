@@ -5,11 +5,15 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RecoveryWalkResponse model. */
 @Immutable
 public final class RecoveryWalkResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryWalkResponseInner.class);
+
     /*
      * Whether the recovery walk was performed
      */
@@ -40,5 +44,13 @@ public final class RecoveryWalkResponseInner {
      */
     public Integer nextPlatformUpdateDomain() {
         return this.nextPlatformUpdateDomain;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

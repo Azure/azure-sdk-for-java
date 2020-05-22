@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.IndexKind;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a range index in the Azure Cosmos DB database service.
@@ -45,6 +46,18 @@ public final class RangeIndex extends Index {
      */
     RangeIndex(String jsonString) {
         super(jsonString, IndexKind.RANGE);
+        if (this.getDataType() == null) {
+            throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
+        }
+    }
+
+    /**
+     * Initializes a new instance of the RangeIndex class with json string.
+     *
+     * @param objectNode the object node that represents the index.
+     */
+    RangeIndex(ObjectNode objectNode) {
+        super(objectNode, IndexKind.RANGE);
         if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
         }

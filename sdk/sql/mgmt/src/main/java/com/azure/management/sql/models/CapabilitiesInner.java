@@ -17,14 +17,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.CapabilityGroup;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Capabilities. */
 public final class CapabilitiesInner {
+    private final ClientLogger logger = new ClientLogger(CapabilitiesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final CapabilitiesService service;
 
@@ -52,7 +55,7 @@ public final class CapabilitiesInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/capabilities")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<LocationCapabilitiesInner>> listByLocation(
             @HostParam("$host") String host,
             @PathParam("locationName") String locationName,
@@ -68,13 +71,26 @@ public final class CapabilitiesInner {
      * @param locationName The location name whose capabilities are retrieved.
      * @param include If specified, restricts the response to only include the selected item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the subscription capabilities available for the specified location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LocationCapabilitiesInner>> listByLocationWithResponseAsync(
         String locationName, CapabilityGroup include) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -95,8 +111,41 @@ public final class CapabilitiesInner {
      *
      * @param locationName The location name whose capabilities are retrieved.
      * @param include If specified, restricts the response to only include the selected item.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription capabilities available for the specified location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<LocationCapabilitiesInner>> listByLocationWithResponseAsync(
+        String locationName, CapabilityGroup include, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-01-preview";
+        return service
+            .listByLocation(
+                this.client.getHost(), locationName, include, this.client.getSubscriptionId(), apiVersion, context);
+    }
+
+    /**
+     * Gets the subscription capabilities available for the specified location.
+     *
+     * @param locationName The location name whose capabilities are retrieved.
+     * @param include If specified, restricts the response to only include the selected item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the subscription capabilities available for the specified location.
      */
@@ -118,7 +167,7 @@ public final class CapabilitiesInner {
      *
      * @param locationName The location name whose capabilities are retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the subscription capabilities available for the specified location.
      */
@@ -143,7 +192,7 @@ public final class CapabilitiesInner {
      * @param locationName The location name whose capabilities are retrieved.
      * @param include If specified, restricts the response to only include the selected item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the subscription capabilities available for the specified location.
      */
@@ -157,7 +206,7 @@ public final class CapabilitiesInner {
      *
      * @param locationName The location name whose capabilities are retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the subscription capabilities available for the specified location.
      */

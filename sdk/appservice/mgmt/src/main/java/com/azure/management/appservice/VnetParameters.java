@@ -6,12 +6,16 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VnetParameters model. */
 @JsonFlatten
 @Fluent
 public class VnetParameters extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetParameters.class);
+
     /*
      * The Resource Group of the VNET to be validated
      */
@@ -88,5 +92,15 @@ public class VnetParameters extends ProxyOnlyResource {
     public VnetParameters withVnetSubnetName(String vnetSubnetName) {
         this.vnetSubnetName = vnetSubnetName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

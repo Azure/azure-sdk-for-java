@@ -7,11 +7,13 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem;
 import com.azure.management.appservice.CertificateDetails;
 import com.azure.management.appservice.CertificateOrderStatus;
 import com.azure.management.appservice.CertificateProductType;
 import com.azure.management.appservice.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class AppServiceCertificateOrderInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateOrderInner.class);
+
     /*
      * State of the Key Vault secret.
      */
@@ -139,7 +143,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      * Time stamp when the certificate would be auto renewed next
      */
     @JsonProperty(value = "properties.nextAutoRenewalTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextAutoRenewalTimeStamp;
+    private OffsetDateTime nextAutoRenewalTimestamp;
 
     /*
      * Kind of resource.
@@ -392,12 +396,12 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the nextAutoRenewalTimeStamp property: Time stamp when the certificate would be auto renewed next.
+     * Get the nextAutoRenewalTimestamp property: Time stamp when the certificate would be auto renewed next.
      *
-     * @return the nextAutoRenewalTimeStamp value.
+     * @return the nextAutoRenewalTimestamp value.
      */
-    public OffsetDateTime nextAutoRenewalTimeStamp() {
-        return this.nextAutoRenewalTimeStamp;
+    public OffsetDateTime nextAutoRenewalTimestamp() {
+        return this.nextAutoRenewalTimestamp;
     }
 
     /**
@@ -418,5 +422,25 @@ public class AppServiceCertificateOrderInner extends Resource {
     public AppServiceCertificateOrderInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (certificates() != null) {
+            certificates().values().forEach(e -> e.validate());
+        }
+        if (signedCertificate() != null) {
+            signedCertificate().validate();
+        }
+        if (intermediate() != null) {
+            intermediate().validate();
+        }
+        if (root() != null) {
+            root().validate();
+        }
     }
 }

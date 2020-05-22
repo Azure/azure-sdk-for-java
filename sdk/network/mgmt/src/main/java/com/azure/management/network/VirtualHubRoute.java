@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualHubRoute model. */
 @Fluent
 public final class VirtualHubRoute {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRoute.class);
+
     /*
      * List of all addressPrefixes.
      */
@@ -61,5 +65,13 @@ public final class VirtualHubRoute {
     public VirtualHubRoute withNextHopIpAddress(String nextHopIpAddress) {
         this.nextHopIpAddress = nextHopIpAddress;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

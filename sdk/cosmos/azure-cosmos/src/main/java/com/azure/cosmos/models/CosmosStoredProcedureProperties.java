@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
  * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
  * additional details, refer to the server-side JavaScript API documentation.
  */
-public final class CosmosStoredProcedureProperties extends ResourceWrapper{
+public final class CosmosStoredProcedureProperties {
 
     private StoredProcedure storedProcedure;
     /**
@@ -32,9 +33,7 @@ public final class CosmosStoredProcedureProperties extends ResourceWrapper{
      * @return return the Cosmos stored procedure properties with id set
      */
     public CosmosStoredProcedureProperties setId(String id) {
-        this.storedProcedure = new StoredProcedure();
         this.storedProcedure.setId(id);
-
         return this;
     }
 
@@ -79,13 +78,48 @@ public final class CosmosStoredProcedureProperties extends ResourceWrapper{
         return this;
     }
 
-    static List<CosmosStoredProcedureProperties> getFromV2Results(List<StoredProcedure> results) {
-        return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson()))
-                   .collect(Collectors.toList());
-    }
-
-    @Override
     Resource getResource() {
         return this.storedProcedure;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.storedProcedure.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.storedProcedure.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.storedProcedure.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.storedProcedure.getETag();
+    }
+
+    static List<CosmosStoredProcedureProperties> getFromV2Results(List<StoredProcedure> results) {
+        return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson()))
+            .collect(Collectors.toList());
     }
 }

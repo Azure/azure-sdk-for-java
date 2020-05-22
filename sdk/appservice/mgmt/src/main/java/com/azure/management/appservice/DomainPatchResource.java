@@ -6,6 +6,8 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DomainPatchResource extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainPatchResource.class);
+
     /*
      * Administrative contact.
      */
@@ -101,7 +105,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * All hostnames derived from the domain and assigned to Azure resources.
      */
     @JsonProperty(value = "properties.managedHostNames", access = JsonProperty.Access.WRITE_ONLY)
-    private List<HostName> managedHostNames;
+    private List<Hostname> managedHostNames;
 
     /*
      * Legal agreement consent.
@@ -333,7 +337,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      *
      * @return the managedHostNames value.
      */
-    public List<HostName> managedHostNames() {
+    public List<Hostname> managedHostNames() {
         return this.managedHostNames;
     }
 
@@ -444,5 +448,33 @@ public class DomainPatchResource extends ProxyOnlyResource {
     public DomainPatchResource withAuthCode(String authCode) {
         this.authCode = authCode;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (contactAdmin() != null) {
+            contactAdmin().validate();
+        }
+        if (contactBilling() != null) {
+            contactBilling().validate();
+        }
+        if (contactRegistrant() != null) {
+            contactRegistrant().validate();
+        }
+        if (contactTech() != null) {
+            contactTech().validate();
+        }
+        if (managedHostNames() != null) {
+            managedHostNames().forEach(e -> e.validate());
+        }
+        if (consent() != null) {
+            consent().validate();
+        }
     }
 }

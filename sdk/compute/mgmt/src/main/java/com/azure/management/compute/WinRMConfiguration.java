@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The WinRMConfiguration model. */
 @Fluent
 public final class WinRMConfiguration {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WinRMConfiguration.class);
+
     /*
      * The list of Windows Remote Management listeners
      */
@@ -35,5 +39,16 @@ public final class WinRMConfiguration {
     public WinRMConfiguration withListeners(List<WinRMListener> listeners) {
         this.listeners = listeners;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (listeners() != null) {
+            listeners().forEach(e -> e.validate());
+        }
     }
 }

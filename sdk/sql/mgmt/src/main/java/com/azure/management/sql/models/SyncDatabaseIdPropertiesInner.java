@@ -5,11 +5,15 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SyncDatabaseIdProperties model. */
 @Immutable
 public final class SyncDatabaseIdPropertiesInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncDatabaseIdPropertiesInner.class);
+
     /*
      * ARM resource id of sync database.
      */
@@ -23,5 +27,13 @@ public final class SyncDatabaseIdPropertiesInner {
      */
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

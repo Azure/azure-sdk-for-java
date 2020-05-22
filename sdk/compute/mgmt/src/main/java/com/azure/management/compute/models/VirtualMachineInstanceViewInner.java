@@ -5,6 +5,7 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.BootDiagnosticsInstanceView;
 import com.azure.management.compute.DiskInstanceView;
 import com.azure.management.compute.HyperVGenerationType;
@@ -12,12 +13,15 @@ import com.azure.management.compute.InstanceViewStatus;
 import com.azure.management.compute.MaintenanceRedeployStatus;
 import com.azure.management.compute.VirtualMachineAgentInstanceView;
 import com.azure.management.compute.VirtualMachineExtensionInstanceView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineInstanceView model. */
 @Fluent
 public final class VirtualMachineInstanceViewInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineInstanceViewInner.class);
+
     /*
      * Specifies the update domain of the virtual machine.
      */
@@ -362,5 +366,31 @@ public final class VirtualMachineInstanceViewInner {
     public VirtualMachineInstanceViewInner withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vmAgent() != null) {
+            vmAgent().validate();
+        }
+        if (maintenanceRedeployStatus() != null) {
+            maintenanceRedeployStatus().validate();
+        }
+        if (disks() != null) {
+            disks().forEach(e -> e.validate());
+        }
+        if (extensions() != null) {
+            extensions().forEach(e -> e.validate());
+        }
+        if (bootDiagnostics() != null) {
+            bootDiagnostics().validate();
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 }

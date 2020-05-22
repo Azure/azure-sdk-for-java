@@ -5,17 +5,21 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The StaticSiteFunctionOverviewCollection model. */
 @Fluent
 public final class StaticSiteFunctionOverviewCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteFunctionOverviewCollectionInner.class);
+
     /*
      * Collection of resources.
      */
     @JsonProperty(value = "value", required = true)
-    private List<StaticSiteFunctionOverviewARMResourceInner> value;
+    private List<StaticSiteFunctionOverviewArmResourceInner> value;
 
     /*
      * Link to next page of resources.
@@ -28,7 +32,7 @@ public final class StaticSiteFunctionOverviewCollectionInner {
      *
      * @return the value value.
      */
-    public List<StaticSiteFunctionOverviewARMResourceInner> value() {
+    public List<StaticSiteFunctionOverviewArmResourceInner> value() {
         return this.value;
     }
 
@@ -38,7 +42,7 @@ public final class StaticSiteFunctionOverviewCollectionInner {
      * @param value the value value to set.
      * @return the StaticSiteFunctionOverviewCollectionInner object itself.
      */
-    public StaticSiteFunctionOverviewCollectionInner withValue(List<StaticSiteFunctionOverviewARMResourceInner> value) {
+    public StaticSiteFunctionOverviewCollectionInner withValue(List<StaticSiteFunctionOverviewArmResourceInner> value) {
         this.value = value;
         return this;
     }
@@ -50,5 +54,21 @@ public final class StaticSiteFunctionOverviewCollectionInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model StaticSiteFunctionOverviewCollectionInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

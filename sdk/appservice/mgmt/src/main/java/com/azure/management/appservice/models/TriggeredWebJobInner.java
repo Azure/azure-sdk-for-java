@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.TriggeredJobRun;
 import com.azure.management.appservice.WebJobType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -16,6 +18,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class TriggeredWebJobInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredWebJobInner.class);
+
     /*
      * Latest job run information.
      */
@@ -274,5 +278,18 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
     public TriggeredWebJobInner withSettings(Map<String, Object> settings) {
         this.settings = settings;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (latestRun() != null) {
+            latestRun().validate();
+        }
     }
 }

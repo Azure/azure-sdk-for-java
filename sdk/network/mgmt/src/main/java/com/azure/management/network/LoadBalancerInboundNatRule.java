@@ -26,7 +26,7 @@ public interface LoadBalancerInboundNatRule
         ChildResource<LoadBalancer> {
 
     /** @return the name of the IP configuration within the network interface associated with this NAT rule */
-    String backendNicIPConfigurationName();
+    String backendNicIpConfigurationName();
 
     /** @return the resource ID of the network interface assigned as the backend of this inbound NAT rule */
     String backendNetworkInterfaceId();

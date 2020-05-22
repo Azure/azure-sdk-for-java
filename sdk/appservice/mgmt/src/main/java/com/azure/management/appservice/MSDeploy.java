@@ -6,6 +6,8 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class MSDeploy extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeploy.class);
+
     /*
      * Package URI
      */
@@ -238,5 +242,18 @@ public class MSDeploy extends ProxyOnlyResource {
     public MSDeploy withAddOnPackages(List<MSDeployCore> addOnPackages) {
         this.addOnPackages = addOnPackages;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (addOnPackages() != null) {
+            addOnPackages().forEach(e -> e.validate());
+        }
     }
 }

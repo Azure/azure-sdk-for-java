@@ -23,7 +23,7 @@ public class ApplicationSettings {
 
     /**
      * Setting your application as public allows other people to use your
-     * application's endpoint using their own keys.
+     * application's endpoint using their own keys for billing purposes.
      */
     @JsonProperty(value = "public", required = true)
     private boolean isPublic;

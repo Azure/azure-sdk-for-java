@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExpressRouteCircuitRoutesTable model. */
 @Fluent
 public final class ExpressRouteCircuitRoutesTable {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitRoutesTable.class);
+
     /*
      * IP address of a network entity.
      */
@@ -141,5 +145,13 @@ public final class ExpressRouteCircuitRoutesTable {
     public ExpressRouteCircuitRoutesTable withPath(String path) {
         this.path = path;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

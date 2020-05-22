@@ -5,12 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ManagedClusterAgentPoolProfileProperties model. */
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfileProperties.class);
+
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 1 to 100 (inclusive). The default value is 1.
@@ -36,7 +40,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * VNet SubnetID specifies the VNet's subnet identifier.
      */
     @JsonProperty(value = "vnetSubnetID")
-    private String vnetSubnetID;
+    private String vnetSubnetId;
 
     /*
      * Maximum number of pods that can run on a node.
@@ -99,7 +103,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Enable public IP for nodes
      */
     @JsonProperty(value = "enableNodePublicIP")
-    private Boolean enableNodePublicIP;
+    private Boolean enableNodePublicIp;
 
     /*
      * ScaleSetPriority to be used to specify virtual machine scale set
@@ -187,22 +191,22 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @return the vnetSubnetID value.
+     * @return the vnetSubnetId value.
      */
-    public String vnetSubnetID() {
-        return this.vnetSubnetID;
+    public String vnetSubnetId() {
+        return this.vnetSubnetId;
     }
 
     /**
-     * Set the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @param vnetSubnetID the vnetSubnetID value to set.
+     * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withVnetSubnetID(String vnetSubnetID) {
-        this.vnetSubnetID = vnetSubnetID;
+    public ManagedClusterAgentPoolProfileProperties withVnetSubnetId(String vnetSubnetId) {
+        this.vnetSubnetId = vnetSubnetId;
         return this;
     }
 
@@ -379,22 +383,22 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the enableNodePublicIP property: Enable public IP for nodes.
+     * Get the enableNodePublicIp property: Enable public IP for nodes.
      *
-     * @return the enableNodePublicIP value.
+     * @return the enableNodePublicIp value.
      */
-    public Boolean enableNodePublicIP() {
-        return this.enableNodePublicIP;
+    public Boolean enableNodePublicIp() {
+        return this.enableNodePublicIp;
     }
 
     /**
-     * Set the enableNodePublicIP property: Enable public IP for nodes.
+     * Set the enableNodePublicIp property: Enable public IP for nodes.
      *
-     * @param enableNodePublicIP the enableNodePublicIP value to set.
+     * @param enableNodePublicIp the enableNodePublicIp value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withEnableNodePublicIP(Boolean enableNodePublicIP) {
-        this.enableNodePublicIP = enableNodePublicIP;
+    public ManagedClusterAgentPoolProfileProperties withEnableNodePublicIp(Boolean enableNodePublicIp) {
+        this.enableNodePublicIp = enableNodePublicIp;
         return this;
     }
 
@@ -463,5 +467,13 @@ public class ManagedClusterAgentPoolProfileProperties {
     public ManagedClusterAgentPoolProfileProperties withNodeTaints(List<String> nodeTaints) {
         this.nodeTaints = nodeTaints;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,8 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedOptions;
@@ -114,7 +113,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
                                                                                             .queryStoredProcedures(query, options);
 
-        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
+        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosException.class)
                 .statusCode(400).notNullActivityId().build();
         validateQueryFailure(queryObservable.byPage(), validator);
     }

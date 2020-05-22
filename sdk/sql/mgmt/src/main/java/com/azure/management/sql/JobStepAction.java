@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JobStepAction model. */
 @Fluent
 public final class JobStepAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepAction.class);
+
     /*
      * Type of action being executed by the job step.
      */
@@ -86,5 +90,18 @@ public final class JobStepAction {
     public JobStepAction withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property value in model JobStepAction"));
+        }
     }
 }

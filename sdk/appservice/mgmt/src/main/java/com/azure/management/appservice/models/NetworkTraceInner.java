@@ -5,11 +5,15 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NetworkTrace model. */
 @Fluent
 public final class NetworkTraceInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkTraceInner.class);
+
     /*
      * Local file path for the captured network trace file.
      */
@@ -90,5 +94,13 @@ public final class NetworkTraceInner {
     public NetworkTraceInner withMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

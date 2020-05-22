@@ -7,13 +7,17 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NetworkWatcher model. */
 @JsonFlatten
 @Fluent
 public class NetworkWatcherInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkWatcherInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -79,5 +83,13 @@ public class NetworkWatcherInner extends Resource {
     public NetworkWatcherInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

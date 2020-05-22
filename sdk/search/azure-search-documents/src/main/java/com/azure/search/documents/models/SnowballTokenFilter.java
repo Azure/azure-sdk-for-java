@@ -20,21 +20,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SnowballTokenFilter extends TokenFilter {
     /*
-     * The language to use. Possible values include: 'armenian', 'basque',
-     * 'catalan', 'danish', 'dutch', 'english', 'finnish', 'french', 'german',
-     * 'german2', 'hungarian', 'italian', 'kp', 'lovins', 'norwegian',
-     * 'porter', 'portuguese', 'romanian', 'russian', 'spanish', 'swedish',
-     * 'turkish'
+     * The language to use. Possible values include: 'Armenian', 'Basque',
+     * 'Catalan', 'Danish', 'Dutch', 'English', 'Finnish', 'French', 'German',
+     * 'German2', 'Hungarian', 'Italian', 'Kp', 'Lovins', 'Norwegian',
+     * 'Porter', 'Portuguese', 'Romanian', 'Russian', 'Spanish', 'Swedish',
+     * 'Turkish'
      */
     @JsonProperty(value = "language", required = true)
     private SnowballTokenFilterLanguage language;
 
     /**
      * Get the language property: The language to use. Possible values include:
-     * 'armenian', 'basque', 'catalan', 'danish', 'dutch', 'english',
-     * 'finnish', 'french', 'german', 'german2', 'hungarian', 'italian', 'kp',
-     * 'lovins', 'norwegian', 'porter', 'portuguese', 'romanian', 'russian',
-     * 'spanish', 'swedish', 'turkish'.
+     * 'Armenian', 'Basque', 'Catalan', 'Danish', 'Dutch', 'English',
+     * 'Finnish', 'French', 'German', 'German2', 'Hungarian', 'Italian', 'Kp',
+     * 'Lovins', 'Norwegian', 'Porter', 'Portuguese', 'Romanian', 'Russian',
+     * 'Spanish', 'Swedish', 'Turkish'.
      *
      * @return the language value.
      */
@@ -44,10 +44,10 @@ public final class SnowballTokenFilter extends TokenFilter {
 
     /**
      * Set the language property: The language to use. Possible values include:
-     * 'armenian', 'basque', 'catalan', 'danish', 'dutch', 'english',
-     * 'finnish', 'french', 'german', 'german2', 'hungarian', 'italian', 'kp',
-     * 'lovins', 'norwegian', 'porter', 'portuguese', 'romanian', 'russian',
-     * 'spanish', 'swedish', 'turkish'.
+     * 'Armenian', 'Basque', 'Catalan', 'Danish', 'Dutch', 'English',
+     * 'Finnish', 'French', 'German', 'German2', 'Hungarian', 'Italian', 'Kp',
+     * 'Lovins', 'Norwegian', 'Porter', 'Portuguese', 'Romanian', 'Russian',
+     * 'Spanish', 'Swedish', 'Turkish'.
      *
      * @param language the language value to set.
      * @return the SnowballTokenFilter object itself.

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 
@@ -119,8 +119,8 @@ public class CosmosResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return resourceResponseWrapper.getResponseDiagnostics();
+    public CosmosDiagnostics getDiagnostics() {
+        return resourceResponseWrapper.getDiagnostics();
     }
 
     /**
@@ -128,7 +128,7 @@ public class CosmosResponse<T> {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    public Duration getRequestLatency() {
-        return resourceResponseWrapper.getRequestLatency();
+    public Duration getDuration() {
+        return resourceResponseWrapper.getDuration();
     }
 }

@@ -7,12 +7,14 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.IpsecPolicy;
 import com.azure.management.network.P2SVpnServerConfigRadiusClientRootCertificate;
 import com.azure.management.network.P2SVpnServerConfigRadiusServerRootCertificate;
 import com.azure.management.network.P2SVpnServerConfigVpnClientRevokedCertificate;
 import com.azure.management.network.P2SVpnServerConfigVpnClientRootCertificate;
 import com.azure.management.network.VpnGatewayTunnelingProtocol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,6 +22,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class P2SVpnServerConfigurationInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigurationInner.class);
+
     /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -380,5 +384,28 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     public P2SVpnServerConfigurationInner withEtagPropertiesEtag(String etagPropertiesEtag) {
         this.etagPropertiesEtag = etagPropertiesEtag;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (p2SVpnServerConfigVpnClientRootCertificates() != null) {
+            p2SVpnServerConfigVpnClientRootCertificates().forEach(e -> e.validate());
+        }
+        if (p2SVpnServerConfigVpnClientRevokedCertificates() != null) {
+            p2SVpnServerConfigVpnClientRevokedCertificates().forEach(e -> e.validate());
+        }
+        if (p2SVpnServerConfigRadiusServerRootCertificates() != null) {
+            p2SVpnServerConfigRadiusServerRootCertificates().forEach(e -> e.validate());
+        }
+        if (p2SVpnServerConfigRadiusClientRootCertificates() != null) {
+            p2SVpnServerConfigRadiusClientRootCertificates().forEach(e -> e.validate());
+        }
+        if (vpnClientIpsecPolicies() != null) {
+            vpnClientIpsecPolicies().forEach(e -> e.validate());
+        }
     }
 }

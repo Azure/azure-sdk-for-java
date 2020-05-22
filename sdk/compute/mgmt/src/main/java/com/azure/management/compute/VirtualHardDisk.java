@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualHardDisk model. */
 @Fluent
 public final class VirtualHardDisk {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHardDisk.class);
+
     /*
      * Specifies the virtual hard disk's uri.
      */
@@ -34,5 +38,13 @@ public final class VirtualHardDisk {
     public VirtualHardDisk withUri(String uri) {
         this.uri = uri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

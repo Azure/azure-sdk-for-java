@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EncryptionSettingsElement model. */
 @Fluent
 public final class EncryptionSettingsElement {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSettingsElement.class);
+
     /*
      * Key Vault Secret Url and vault id of the disk encryption key
      */
@@ -64,5 +68,19 @@ public final class EncryptionSettingsElement {
     public EncryptionSettingsElement withKeyEncryptionKey(KeyVaultAndKeyReference keyEncryptionKey) {
         this.keyEncryptionKey = keyEncryptionKey;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (diskEncryptionKey() != null) {
+            diskEncryptionKey().validate();
+        }
+        if (keyEncryptionKey() != null) {
+            keyEncryptionKey().validate();
+        }
     }
 }

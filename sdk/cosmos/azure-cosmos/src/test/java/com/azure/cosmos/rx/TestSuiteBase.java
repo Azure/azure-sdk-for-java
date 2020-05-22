@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -12,10 +13,9 @@ import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -74,7 +74,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -109,7 +108,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     private static final ImmutableList<Protocol> protocols;
 
-    protected static final CosmosKeyCredential cosmosKeyCredential;
+    protected static final AzureKeyCredential credential;
 
     protected int subscriberValidationTimeout = TIMEOUT;
 
@@ -158,7 +157,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         objectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
 
-        cosmosKeyCredential = new CosmosKeyCredential(TestConfigurations.MASTER_KEY);
+        credential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
     }
 
     protected TestSuiteBase() {
@@ -537,16 +536,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         partitionKeyDef.setPaths(partitionKeyPath);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "getPrecision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "precision", -1);
-        indexes.add(numberIndex);
+        IncludedPath includedPath = new IncludedPath("/*");
+        List<Index> indexes = new ArrayList<>();
+        indexes.add(Index.range(DataType.STRING, -1));
+        indexes.add(Index.range(DataType.NUMBER, -1));
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
@@ -597,7 +590,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             try {
                 cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey)).block();
             } catch (Exception e) {
-                CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+                CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
                     throw e;
                 }
@@ -637,7 +630,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         try {
             return client.createDatabase(databaseSettings).getDatabase();
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             e.printStackTrace();
         }
         return null;
@@ -1063,7 +1056,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .keyCredential(cosmosKeyCredential)
+                                        .credential(credential)
                                         .gatewayMode(gatewayConnectionConfig)
                                         .throttlingRetryOptions(options)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
@@ -1074,7 +1067,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                        List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .keyCredential(cosmosKeyCredential)
+                                        .credential(credential)
                                         .gatewayMode(gatewayConnectionConfig)
                                         .multipleWriteRegionsEnabled(multiMasterEnabled)
                                         .preferredRegions(preferredRegions)
@@ -1092,7 +1085,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled) {
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                                               .keyCredential(cosmosKeyCredential)
+                                                               .credential(credential)
                                                                .directMode(DirectConnectionConfig.getDefaultConfig())
                                                                .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                                                .consistencyLevel(consistencyLevel);

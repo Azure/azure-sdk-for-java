@@ -8,7 +8,7 @@ import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.LoadBalancerInboundNatPool;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -49,7 +49,7 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
         return this
             .parent()
             .frontends()
-            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIPConfiguration().id()));
+            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIpConfiguration().id()));
     }
 
     @Override
@@ -80,7 +80,7 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
     public LoadBalancerInboundNatPoolImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
-            this.inner().withFrontendIPConfiguration(frontendRef);
+            this.inner().withFrontendIpConfiguration(frontendRef);
         }
         return this;
     }
@@ -99,7 +99,7 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
     }
 
     @Override
-    public LoadBalancerInboundNatPoolImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+    public LoadBalancerInboundNatPoolImpl fromExistingPublicIPAddress(PublicIpAddress publicIPAddress) {
         return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
@@ -112,21 +112,21 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(String leafDnsLabel) {
-        String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
-    public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
-        String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+    public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
+        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress() {
-        String dnsLabel = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         return this.fromNewPublicIPAddress(dnsLabel);
     }
 

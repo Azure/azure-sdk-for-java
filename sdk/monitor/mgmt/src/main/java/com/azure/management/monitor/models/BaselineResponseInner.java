@@ -6,7 +6,9 @@ package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.Baseline;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class BaselineResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaselineResponseInner.class);
+
     /*
      * the metric baseline Id.
      */
@@ -229,5 +233,22 @@ public class BaselineResponseInner {
     public BaselineResponseInner withMetadata(List<BaselineMetadataValueInner> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
+        if (baseline() != null) {
+            baseline().forEach(e -> e.validate());
+        }
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 }

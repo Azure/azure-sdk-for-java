@@ -34,7 +34,7 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
 
     /*
      * Specifies which side of the input the n-gram should be generated from.
-     * Default is "front". Possible values include: 'front', 'back'
+     * Default is "front". Possible values include: 'Front', 'Back'
      */
     @JsonProperty(value = "side")
     private EdgeNGramTokenFilterSide side;
@@ -86,7 +86,7 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
     /**
      * Get the side property: Specifies which side of the input the n-gram
      * should be generated from. Default is "front". Possible values include:
-     * 'front', 'back'.
+     * 'Front', 'Back'.
      *
      * @return the side value.
      */
@@ -97,7 +97,7 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
     /**
      * Set the side property: Specifies which side of the input the n-gram
      * should be generated from. Default is "front". Possible values include:
-     * 'front', 'back'.
+     * 'Front', 'Back'.
      *
      * @param side the side value to set.
      * @return the EdgeNGramTokenFilterV2 object itself.

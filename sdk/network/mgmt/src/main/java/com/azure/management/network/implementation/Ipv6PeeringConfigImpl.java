@@ -54,8 +54,8 @@ class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuit
     }
 
     @Override
-    public Ipv6PeeringConfigImpl withCustomerASN(int customerASN) {
-        ensureMicrosoftPeeringConfig().withCustomerASN(customerASN);
+    public Ipv6PeeringConfigImpl withCustomerAsn(int customerASN) {
+        ensureMicrosoftPeeringConfig().withCustomerAsn(customerASN);
         return this;
     }
 

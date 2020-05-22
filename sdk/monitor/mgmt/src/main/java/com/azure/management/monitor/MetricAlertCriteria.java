@@ -6,6 +6,7 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,12 +28,17 @@ import java.util.Map;
         name = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
         value = MetricAlertSingleResourceMultipleMetricCriteria.class),
     @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria",
+        value = WebtestLocationAvailabilityCriteria.class),
+    @JsonSubTypes.Type(
         name = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
         value = MetricAlertMultipleResourceMultipleMetricCriteria.class)
 })
 @JsonFlatten
 @Fluent
 public class MetricAlertCriteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertCriteria.class);
+
     /*
      * The rule criteria that defines the conditions of the alert rule.
      */
@@ -64,6 +70,14 @@ public class MetricAlertCriteria {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
-        additionalProperties.put(key, value);
+        additionalProperties.put(key.replace("\\.", "."), value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

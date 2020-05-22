@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualNetworkRule model. */
 @Fluent
 public final class VirtualNetworkRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRule.class);
+
     /*
      * Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
@@ -66,5 +70,13 @@ public final class VirtualNetworkRule {
     public VirtualNetworkRule withIgnoreMissingVNetServiceEndpoint(Boolean ignoreMissingVNetServiceEndpoint) {
         this.ignoreMissingVNetServiceEndpoint = ignoreMissingVNetServiceEndpoint;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationLogsConfig model. */
 @Fluent
 public final class ApplicationLogsConfig {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationLogsConfig.class);
+
     /*
      * Application logs to file system configuration.
      */
@@ -86,5 +90,22 @@ public final class ApplicationLogsConfig {
     public ApplicationLogsConfig withAzureBlobStorage(AzureBlobStorageApplicationLogsConfig azureBlobStorage) {
         this.azureBlobStorage = azureBlobStorage;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (fileSystem() != null) {
+            fileSystem().validate();
+        }
+        if (azureTableStorage() != null) {
+            azureTableStorage().validate();
+        }
+        if (azureBlobStorage() != null) {
+            azureBlobStorage().validate();
+        }
     }
 }

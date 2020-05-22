@@ -5,13 +5,17 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.QuarantinePolicy;
 import com.azure.management.containerregistry.TrustPolicy;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RegistryPolicies model. */
 @Fluent
 public final class RegistryPoliciesInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryPoliciesInner.class);
+
     /*
      * An object that represents quarantine policy for a container registry.
      */
@@ -62,5 +66,19 @@ public final class RegistryPoliciesInner {
     public RegistryPoliciesInner withTrustPolicy(TrustPolicy trustPolicy) {
         this.trustPolicy = trustPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (quarantinePolicy() != null) {
+            quarantinePolicy().validate();
+        }
+        if (trustPolicy() != null) {
+            trustPolicy().validate();
+        }
     }
 }

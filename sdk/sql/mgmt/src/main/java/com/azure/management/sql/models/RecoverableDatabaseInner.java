@@ -7,6 +7,8 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -14,6 +16,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Immutable
 public class RecoverableDatabaseInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableDatabaseInner.class);
+
     /*
      * The edition of the database
      */
@@ -72,5 +76,13 @@ public class RecoverableDatabaseInner extends ProxyResource {
      */
     public OffsetDateTime lastAvailableBackupDate() {
         return this.lastAvailableBackupDate;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

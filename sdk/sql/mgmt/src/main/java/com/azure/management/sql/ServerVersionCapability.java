@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ServerVersionCapability model. */
 @Fluent
 public final class ServerVersionCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerVersionCapability.class);
+
     /*
      * The server version name.
      */
@@ -95,5 +99,19 @@ public final class ServerVersionCapability {
     public ServerVersionCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedEditions() != null) {
+            supportedEditions().forEach(e -> e.validate());
+        }
+        if (supportedElasticPoolEditions() != null) {
+            supportedElasticPoolEditions().forEach(e -> e.validate());
+        }
     }
 }

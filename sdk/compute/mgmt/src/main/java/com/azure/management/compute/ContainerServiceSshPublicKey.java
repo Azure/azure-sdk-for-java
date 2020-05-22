@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerServiceSshPublicKey model. */
 @Fluent
 public final class ContainerServiceSshPublicKey {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceSshPublicKey.class);
+
     /*
      * Certificate public key used to authenticate with VMs through SSH. The
      * certificate must be in PEM format with or without headers.
@@ -37,5 +41,19 @@ public final class ContainerServiceSshPublicKey {
     public ContainerServiceSshPublicKey withKeyData(String keyData) {
         this.keyData = keyData;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (keyData() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property keyData in model ContainerServiceSshPublicKey"));
+        }
     }
 }
