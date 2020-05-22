@@ -115,6 +115,7 @@ The [FormTrainingClient][form_training_sync_client] and
 A `CustomFormModel` is returned indicating the fields the model will extract, as well as the estimated accuracy for
 each field. See the [service's documents][fr_train_with_labels] for a more detailed explanation.
 - Managing models created in your account.
+- Copying a custom model from one Form Recognizer resource to another.
 
 Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
 
@@ -138,6 +139,7 @@ The following section provides several code snippets covering some of the most c
 * [Recognize Receipts](#recognize-receipts "Recognize receipts")
 * [Train a Model](#train-a-model "Train a model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
+- [Copy custom model between Form Recognizer resources](#copy-custom-model "Copy Custom Model between Form recognizer resources")
 
 
 ### Recognize Forms Using a Custom Model
@@ -282,6 +284,8 @@ customModels.forEach(customFormModelInfo -> {
 // Delete Custom Model
 formTrainingClient.deleteModel(modelId.get());
 ```
+### Copy custom model
+
 For more detailed examples, refer to [samples][sample_readme].
 
 ## Troubleshooting

@@ -7,12 +7,17 @@ import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult;
+import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
+import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
@@ -324,6 +329,118 @@ public final class FormTrainingAsyncClient {
             continuationToken -> listNextPageModelInfo(continuationToken, context));
     }
 
+    /**
+     * Copy a custom model stored in this resource (the source) to the user specified target Form Recognizer resource.
+     *
+     * <p>This should be called with the source Form Recognizer resource (with the model that is intended to be copied).
+     * The target parameter should be supplied from the target resource's output from
+     * {@link FormTrainingAsyncClient#getCopyAuthorization(String, String)} method.
+     * </p>
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string
+     * -copyAuthorization}
+     *
+     * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
+     * @param target the copy authorization to the target Form Recognizer resource
+     *
+     * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
+     * or has been cancelled.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+        CopyAuthorization target) {
+        return beginCopyModel(modelId, target, null);
+    }
+
+    /**
+     * Copy a custom model stored in this resource (the source) to the user specified target Form Recognizer resource.
+     *
+     * <p>This should be called with the source Form Recognizer resource (with the model that is intended to be copied).
+     * The target parameter should be supplied from the target resource's output from
+     * {@link FormTrainingAsyncClient#getCopyAuthorization(String, String)} method.
+     * </p>
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-duration}
+     *
+     * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
+     * @param target the copy authorization to the target Form Recognizer resource
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
+     *
+     * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
+     * or has been cancelled.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+        CopyAuthorization target, Duration pollInterval) {
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
+        return new PollerFlux<OperationResult, CustomFormModelInfo>(
+            interval,
+            getCopyActivationOperation(modelId, target),
+            createCopyPollOperation(modelId),
+            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            fetchCopyModelResultOperation(modelId));
+    }
+
+    /**
+     * Generate authorization for copying a custom model into the target Form Recognizer resource.
+     *
+     * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
+     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure  region name supported
+     * by Cognitive Services.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-resourceRegion}
+     *
+     * @return The {@link CopyAuthorization}
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CopyAuthorization> getCopyAuthorization(String resourceId, String resourceRegion) {
+        return getCopyAuthorizationWithResponse(resourceId, resourceRegion).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Generate authorization for copying a custom model into the target Form Recognizer resource.
+     * This should be called by the target resource (where the model will be copied to) and the output can be passed as
+     * the target parameter into {@link FormTrainingAsyncClient#beginCopyModel(String, CopyAuthorization)}.
+     *
+     * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
+     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure  region name supported by
+     * Cognitive Services.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-resourceRegion}
+     *
+     * @return A {@link Response} containing the {@link CopyAuthorization}
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId,
+        String resourceRegion) {
+        try {
+            return withContext(context -> getCopyAuthorizationWithResponse(resourceId, resourceRegion, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
+        Context context) {
+        return service.generateModelCopyAuthorizationWithResponseAsync(context)
+            .map(response -> {
+                CopyAuthorizationResult p = response.getValue();
+                return new SimpleResponse<>(response, new CopyAuthorization(p.getModelId(), p.getAccessToken(),
+                    resourceId, resourceRegion, p.getExpirationDateTimeTicks()));
+            });
+    }
+
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
         return service.listCustomModelsSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
@@ -356,6 +473,88 @@ public final class FormTrainingAsyncClient {
                 null));
     }
 
+    private Function<PollingContext<OperationResult>, Mono<CustomFormModelInfo>> fetchCopyModelResultOperation(
+        String modelId) {
+        return (pollingContext) -> {
+            try {
+                final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                Objects.requireNonNull(modelId, "'modelId' cannot be null.");
+                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid)
+                    .map(modelSimpleResponse -> {
+                        CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
+                        return new CustomFormModelInfo(modelId,
+                            CustomFormModelStatus.fromString(copyOperationResult.getStatus().toString()),
+                            copyOperationResult.getCreatedDateTime(),
+                            copyOperationResult.getLastUpdatedDateTime());
+                    });
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
+    }
+
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
+    createCopyPollOperation(String modelId) {
+        return (pollingContext) -> {
+            try {
+                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
+                UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
+                return service.getCustomModelCopyResultAsync(UUID.fromString(modelId), targetId)
+                    .flatMap(modelSimpleResponse ->
+                        processCopyModelResponse(modelSimpleResponse, operationResultPollResponse));
+            } catch (HttpResponseException e) {
+                logger.logExceptionAsError(e);
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            }
+        };
+    }
+
+    private Function<PollingContext<OperationResult>, Mono<OperationResult>> getCopyActivationOperation(
+        String modelId, CopyAuthorization copyAuthorization) {
+        return (pollingContext) -> {
+            try {
+                Objects.requireNonNull(modelId, "'modelId' cannot be null.");
+                Objects.requireNonNull(copyAuthorization, "'copyAuthorization' cannot be null.");
+                CopyRequest copyRequest = new CopyRequest()
+                    .setTargetResourceId(copyAuthorization.getResourceId())
+                    .setTargetResourceRegion(copyAuthorization.getResourceRegion())
+                    .setCopyAuthorization(new CopyAuthorizationResult()
+                        .setModelId(copyAuthorization.getModelId())
+                        .setAccessToken(copyAuthorization.getAccessToken())
+                        .setExpirationDateTimeTicks(copyAuthorization.getExpirationDateTimeTicks()));
+                return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest)
+                    .map(response ->
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
+    }
+
+    private static Mono<PollResponse<OperationResult>> processCopyModelResponse(
+        CopyOperationResult copyModel,
+        PollResponse<OperationResult> copyModelOperationResponse) {
+        LongRunningOperationStatus status;
+        switch (copyModel.getStatus()) {
+            case NOT_STARTED:
+
+            case RUNNING:
+                status = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            case SUCCEEDED:
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case FAILED:
+                status = LongRunningOperationStatus.FAILED;
+                break;
+            default:
+                status = LongRunningOperationStatus.fromString(
+                    copyModel.getStatus().toString(), true);
+                break;
+        }
+        return Mono.just(new PollResponse<>(status, copyModelOperationResponse.getValue()));
+    }
+
     private Function<PollingContext<OperationResult>, Mono<CustomFormModel>> fetchTrainingModelResultOperation() {
         return (pollingContext) -> {
             try {
@@ -369,7 +568,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createTrainingPollOperation() {
+    createTrainingPollOperation() {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();

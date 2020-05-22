@@ -11,6 +11,7 @@
 - Add `pageNumber` property to `FormPage` and `FormTable` model
 - Remove `pageNumber` property from `FormField` model
 - Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
+- Support to copy a custom model from one Form Recognizer resource to another
 - Fix bug in FormRecognizer API's to support multipage document recognition.
 - Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
 - Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`
