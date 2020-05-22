@@ -13,26 +13,25 @@ public class TextAnalyticsException extends AzureException {
     private static final String ERROR_CODE = "ErrorCodeValue";
     private static final String TARGET = "target";
 
-    private final String code;
+    private final String errorCode;
     private final String target;
 
     /**
      * Initializes a new instance of the {@link TextAnalyticsException} class.
-     *
      * @param message Text contains any additional details of the exception.
-     * @param code The service returned error code value.
+     * @param errorCode The service returned error code value.
      * @param target The target for this exception.
      */
-    public TextAnalyticsException(String message, String code, String target) {
+    public TextAnalyticsException(String message, String errorCode, String target) {
         super(message);
-        this.code = code;
+        this.errorCode = errorCode;
         this.target = target;
     }
 
     @Override
     public String getMessage() {
         StringBuilder baseMessage = new StringBuilder().append(super.getMessage()).append(" ").append(ERROR_CODE)
-            .append(": {").append(code).append("}");
+            .append(": {").append(errorCode).append("}");
 
         if (this.target == null) {
             return baseMessage.toString();
@@ -56,6 +55,6 @@ public class TextAnalyticsException extends AzureException {
      * @return The {@link TextAnalyticsErrorCode} for this exception.
      */
     public TextAnalyticsErrorCode getErrorCode() {
-        return TextAnalyticsErrorCode.fromString(code);
+        return TextAnalyticsErrorCode.fromString(errorCode);
     }
 }
