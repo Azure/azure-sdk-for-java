@@ -3,6 +3,7 @@
 
 package com.azure.schemaregistry.client;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
@@ -35,6 +36,9 @@ import java.util.function.Function;
  * @see SchemaRegistryClient Implements SchemaRegistryClient interface to allow for testing with mock
  * @see CachedSchemaRegistryClientBuilder Follows builder pattern for object instantiation
  */
+@ServiceClient(
+    builder = CachedSchemaRegistryClientBuilder.class,
+    serviceInterfaces = AzureSchemaRegistryRestService.class)
 public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClient.class);
 
