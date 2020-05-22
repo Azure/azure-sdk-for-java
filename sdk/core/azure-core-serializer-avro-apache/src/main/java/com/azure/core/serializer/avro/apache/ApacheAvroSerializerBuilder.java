@@ -3,10 +3,9 @@
 
 package com.azure.core.serializer.avro.apache;
 
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.specific.SpecificData;
 
 /**
  * Fluent builder class that configures and instantiates instances of {@link ApacheAvroSerializer}.
@@ -18,7 +17,7 @@ public class ApacheAvroSerializerBuilder {
     private boolean validateSchemaDefaults = true;
     private DecoderFactory decoderFactory;
     private EncoderFactory encoderFactory;
-    private GenericData genericData;
+    private SpecificData specificData;
 
     /**
      * Instantiates a new instance of {@link ApacheAvroSerializer} based on the configurations set on the builder.
@@ -28,10 +27,10 @@ public class ApacheAvroSerializerBuilder {
     public ApacheAvroSerializer build() {
         DecoderFactory buildDecoderFactory = (decoderFactory == null) ? DecoderFactory.get() : decoderFactory;
         EncoderFactory buildEncoderFactory = (encoderFactory == null) ? EncoderFactory.get() : encoderFactory;
-        GenericData buildGenericData = (genericData == null) ? GenericData.get() : genericData;
+        SpecificData buildSpecificData = (specificData == null) ? SpecificData.get() : specificData;
 
         return new ApacheAvroSerializer(validateSchema, validateSchemaDefaults, buildDecoderFactory,
-            buildEncoderFactory, buildGenericData);
+            buildEncoderFactory, buildSpecificData);
     }
 
     /**
@@ -89,16 +88,16 @@ public class ApacheAvroSerializerBuilder {
     }
 
     /**
-     * Configures the {@link GenericData} that will be used during serialization and deserialization of Avro.
+     * Configures the {@link SpecificData} that will be used during serialization and deserialization of Avro.
      * <p>
-     * If {@code genericData} is {@code null} when {@link #build()} is called {@link GenericData#get()
-     * GenericData.get()} will be used as the generic data.
+     * If {@code specificData} is {@code null} when {@link #build()} is called {@link SpecificData#get()
+     * SpecificData.get()} will be used as the generic data.
      *
-     * @param genericData The {@link GenericData} used during serialization and deserialization of Avro.
+     * @param specificData The {@link SpecificData} used during serialization and deserialization of Avro.
      * @return The updated ApacheAvroSerializerBuilder object.
      */
-    public ApacheAvroSerializerBuilder genericData(GenericData genericData) {
-        this.genericData = genericData;
+    public ApacheAvroSerializerBuilder specificData(SpecificData specificData) {
+        this.specificData = specificData;
         return this;
     }
 }

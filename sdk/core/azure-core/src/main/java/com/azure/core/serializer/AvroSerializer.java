@@ -3,6 +3,8 @@
 
 package com.azure.core.serializer;
 
+import reactor.core.publisher.Mono;
+
 /**
  * Generic interface covering basic Avro serialization and deserialization methods.
  */
@@ -15,19 +17,7 @@ public interface AvroSerializer {
      * @param <T> Type of the object.
      * @return The object representing the Avro stream.
      */
-    <T> T read(byte[] input, String schema);
-
-    /**
-     * Reads the Avro stream into its object representation.
-     *
-     * @param input Incoming Avro stream.
-     * @param readerSchema JSON string representing the Avro schema that will be used to deserialize the incoming Avro
-     * stream.
-     * @param writerSchema JSON string representing the Avro schema that was used to generate the incoming Avro stream.
-     * @param <T> Type of the object.
-     * @return The object representing the Avro stream.
-     */
-    <T> T read(byte[] input, String readerSchema, String writerSchema);
+    <T> Mono<T> deserialize(byte[] input, String schema);
 
     /**
      * Writes the object into its Avro stream.
@@ -36,5 +26,5 @@ public interface AvroSerializer {
      * @param schema JSON string representing the Avro schema.
      * @return The Avro stream representing the object.
      */
-    byte[] write(Object value, String schema);
+    Mono<byte[]> serialize(Object value, String schema);
 }

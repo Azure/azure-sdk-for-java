@@ -20,7 +20,7 @@ public class JacksonAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("simpleDeserializationSupplier")
     public void simpleDeserialization(String schema, byte[] avro, Object expected) {
-        Object actual = AVRO_SERIALIZER.read(avro, schema);
+        Object actual = AVRO_SERIALIZER.deserialize(avro, schema);
 
         assertEquals(expected, actual);
     }
@@ -52,7 +52,7 @@ public class JacksonAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("simpleSerializationSupplier")
     public void simpleSerialization(String schema, Object value, byte[] expected) {
-        byte[] actual = AVRO_SERIALIZER.write(value, schema);
+        byte[] actual = AVRO_SERIALIZER.serialize(value, schema);
 
         assertArrayEquals(expected, actual);
     }
