@@ -9,33 +9,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Subscription;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit test for sync subscriber
+ * Unit test for sync subscriber.
  */
 public class SynchronousMessageSubscriberTest {
 
-    private static final String NAMESPACE = "my-namespace";
-    private static final String ENTITY_NAME = "my-servicebus-entity";
+    private static final int PREFETCH = 1;
 
     @Mock
     private SynchronousReceiveWork work1;
@@ -43,23 +33,10 @@ public class SynchronousMessageSubscriberTest {
     @Mock
     private SynchronousReceiveWork work2;
 
-    @Captor
-    private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
-
-    @Captor
-    private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
-
-    @Captor
-    private ArgumentCaptor<Instant> scheduleMessageCaptor;
-
-    @Captor
-    private ArgumentCaptor<Long> cancelScheduleMessageCaptor;
+    @Mock
+    private Subscription subscription;
 
     private SynchronousMessageSubscriber syncSybscriber;
-
-    private static final Duration RETRY_TIMEOUT = Duration.ofSeconds(10);
-    private static final int prefetch = 1;
-    private static final String TEST_CONTENTS = "My message for service bus queue!";
 
     @BeforeAll
     static void beforeAll() {
@@ -82,22 +59,72 @@ public class SynchronousMessageSubscriberTest {
         Mockito.framework().clearInlineMocks();
     }
 
+    /**
+     * Test that if prefetch is large value, it will be the one requested.
+     */
+    @Test
+    void workAddedAndLargePrefetch() {
+        // Arrange
+        when(work1.getId()).thenReturn(1L);
+
+        // Act
+        syncSybscriber = new SynchronousMessageSubscriber(100, work1);
+
+        // Assert
+        Assertions.assertEquals(1, syncSybscriber.getWorkQueueSize());
+        Assertions.assertEquals(100, syncSybscriber.getRequested());
+
+    }
+
+    /**
+     * Test that if prefetch is small value than work, larger value be requested.
+     */
     @Test
     void workAddedInQueueOnCreation() {
+        // Arrange & Act
+        when(work1.getNumberOfEvents()).thenReturn(3);
+        syncSybscriber = new SynchronousMessageSubscriber(0, work1);
 
-       syncSybscriber = new SynchronousMessageSubscriber(prefetch, work1);
-
+        // Assert
         Assertions.assertEquals(1, syncSybscriber.getWorkQueueSize());
+        Assertions.assertEquals(3, syncSybscriber.getRequested());
+
+    }
+
+    /**
+     * A work get queued in work queue.
+     */
+    @Test
+    void queueWorkTest() {
+        // Arrange
+        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
+
+        // Act
+        syncSybscriber.queueWork(work2);
+
+        // Assert
+        Assertions.assertEquals(2, syncSybscriber.getWorkQueueSize());
         Assertions.assertEquals(1, syncSybscriber.getRequested());
 
     }
 
+    /**
+     * When we call hookOnSubscribe, the sync subscriber is initialised.
+     */
     @Test
-    void queueWork() {
+    void hookOnSubscribeTest() {
+        // Arrange
+        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
+        when(work1.getTimeout()).thenReturn(Duration.ofSeconds(10));
+        when(work1.isTerminal()).thenReturn(true);
+        doNothing().when(subscription).request(1);
 
-        syncSybscriber = new SynchronousMessageSubscriber(prefetch, work1);
-        syncSybscriber.queueWork(work2);
-        Assertions.assertEquals(2, syncSybscriber.getWorkQueueSize());
+        // Act
+        syncSybscriber.hookOnSubscribe(subscription);
+
+        // Assert
+        Assertions.assertTrue(syncSybscriber.isSubscriberInitialized());
+        Assertions.assertEquals(0, syncSybscriber.getWorkQueueSize());
         Assertions.assertEquals(1, syncSybscriber.getRequested());
 
     }

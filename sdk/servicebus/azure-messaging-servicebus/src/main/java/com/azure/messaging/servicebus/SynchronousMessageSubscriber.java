@@ -247,4 +247,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     long getRequested() {
         return this.requested;
     }
+
+    boolean isSubscriberInitialized() {
+        return this.subscriberInitialized;
+    }
 }
