@@ -45,16 +45,6 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Creates a new {@link FormTrainingClient} object.The new {@code FormRecognizerClient} uses the same request policy
-     * pipeline as the {@code FormRecognizerClient}.
-     *
-     * @return A new {@link FormTrainingClient} object.
-     */
-    public FormTrainingClient getFormTrainingClient() {
-        return new FormTrainingClient(client.getFormTrainingAsyncClient());
-    }
-
-    /**
      * Recognizes and extracts receipt data from documents using optical character recognition (OCR)
      * and a custom trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an

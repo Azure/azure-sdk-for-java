@@ -16,10 +16,11 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
 import com.azure.management.appservice.AppServiceCertificateOrder;
 import com.azure.management.appservice.AppServiceDomain;
@@ -27,8 +28,8 @@ import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.AppSetting;
 import com.azure.management.appservice.ConnectionString;
 import com.azure.management.appservice.Contact;
-import com.azure.management.appservice.HostNameBinding;
-import com.azure.management.appservice.HostNameSslState;
+import com.azure.management.appservice.HostnameBinding;
+import com.azure.management.appservice.HostnameSslState;
 import com.azure.management.appservice.PublishingProfile;
 import com.azure.management.appservice.SslState;
 import com.azure.management.appservice.WebAppBase;
@@ -45,6 +46,20 @@ import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
 import com.azure.management.cosmosdb.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.management.dns.ARecordSet;
+import com.azure.management.dns.AaaaRecordSet;
+import com.azure.management.dns.CNameRecordSet;
+import com.azure.management.dns.DnsZone;
+import com.azure.management.dns.MXRecordSet;
+import com.azure.management.dns.MxRecord;
+import com.azure.management.dns.NSRecordSet;
+import com.azure.management.dns.PtrRecordSet;
+import com.azure.management.dns.SoaRecord;
+import com.azure.management.dns.SoaRecordSet;
+import com.azure.management.dns.SrvRecord;
+import com.azure.management.dns.SrvRecordSet;
+import com.azure.management.dns.TxtRecord;
+import com.azure.management.dns.TxtRecordSet;
 import com.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryObject;
@@ -80,7 +95,7 @@ import com.azure.management.network.ApplicationGatewayBackend;
 import com.azure.management.network.ApplicationGatewayBackendAddress;
 import com.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.azure.management.network.ApplicationGatewayFrontend;
-import com.azure.management.network.ApplicationGatewayIPConfiguration;
+import com.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.azure.management.network.ApplicationGatewayListener;
 import com.azure.management.network.ApplicationGatewayProbe;
 import com.azure.management.network.ApplicationGatewayRedirectConfiguration;
@@ -108,7 +123,7 @@ import com.azure.management.network.NetworkWatcher;
 import com.azure.management.network.NextHop;
 import com.azure.management.network.PacketCapture;
 import com.azure.management.network.PacketCaptureFilter;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.RouteTable;
 import com.azure.management.network.SecurityGroupNetworkInterface;
 import com.azure.management.network.SecurityGroupView;
@@ -155,8 +170,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -195,8 +212,7 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tService Principal Id: ").append(resource.principalId())
                 .append("\n\tClient Id: ").append(resource.clientId())
-                .append("\n\tTenant Id: ").append(resource.tenantId())
-                .append("\n\tClient Secret Url: ").append(resource.clientSecretUrl());
+                .append("\n\tTenant Id: ").append(resource.tenantId());
         System.out.println(info.toString());
     }
 
@@ -256,7 +272,7 @@ public final class Utils {
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
                 if (resource.isManagedDiskEnabled()) {
                     if (disk.managedDisk() != null) {
-                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().getId());
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
                     }
                 } else {
                     if (disk.vhd().uri() != null) {
@@ -357,7 +373,7 @@ public final class Utils {
      * Print network info.
      *
      * @param resource a network
-     * @throws CloudException Cloud errors
+     * @throws ManagementException Cloud errors
      */
     public static void print(Network resource) {
         StringBuilder info = new StringBuilder();
@@ -437,7 +453,7 @@ public final class Utils {
                 .append("\n\tAccelerated networking enabled? ").append(resource.isAcceleratedNetworkingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
-                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
+                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
                 .append("\n\tPrimary virtual network ID: ").append(resource.primaryIPConfiguration().networkId())
                 .append("\n\tPrimary subnet name:").append(resource.primaryIPConfiguration().subnetName());
 
@@ -478,7 +494,7 @@ public final class Utils {
      *
      * @param resource a public IP address
      */
-    public static void print(PublicIPAddress resource) {
+    public static void print(PublicIpAddress resource) {
         System.out.println(new StringBuilder().append("Public IP Address: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -661,8 +677,8 @@ public final class Utils {
 
         // Show public IP addresses
         info.append("\n\tPublic IP address IDs: ")
-                .append(resource.publicIPAddressIds().size());
-        for (String pipId : resource.publicIPAddressIds()) {
+                .append(resource.publicIpAddressIds().size());
+        for (String pipId : resource.publicIpAddressIds()) {
             info.append("\n\t\tPIP id: ").append(pipId);
         }
 
@@ -765,12 +781,12 @@ public final class Utils {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                     .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIPAddressId());
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIpAddressId());
             } else {
                 info.append("\n\t\t\tVirtual network ID: ").append(((LoadBalancerPrivateFrontend) frontend).networkId())
                         .append("\n\t\t\tSubnet name: ").append(((LoadBalancerPrivateFrontend) frontend).subnetName())
-                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAllocationMethod());
+                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAllocationMethod());
             }
 
             // Inbound NAT pool references
@@ -805,7 +821,7 @@ public final class Utils {
                     .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
                     .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
                     .append("\n\t\t\tBackend NIC ID: ").append(natRule.backendNetworkInterfaceId())
-                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIPConfigurationName())
+                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIpConfigurationName())
                     .append("\n\t\t\tFloating IP? ").append(natRule.floatingIPEnabled())
                     .append("\n\t\t\tIdle timeout in minutes: ").append(natRule.idleTimeoutInMinutes());
         }
@@ -978,14 +994,14 @@ public final class Utils {
                 .append("\n\tState: ").append(resource.state())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tDefault hostname: ").append(resource.defaultHostName())
+                .append("\n\tDefault hostname: ").append(resource.defaultHostname())
                 .append("\n\tApp service plan: ").append(resource.appServicePlanId())
                 .append("\n\tHost name bindings: ");
-        for (HostNameBinding binding : resource.getHostNameBindings().values()) {
+        for (HostnameBinding binding : resource.getHostnameBindings().values()) {
             builder = builder.append("\n\t\t" + binding.toString());
         }
         builder = builder.append("\n\tSSL bindings: ");
-        for (HostNameSslState binding : resource.hostNameSslStates().values()) {
+        for (HostnameSslState binding : resource.hostnameSslStates().values()) {
             builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
             if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
                 builder = builder.append(" - " + binding.thumbprint());
@@ -1076,140 +1092,140 @@ public final class Utils {
 //        }
 //        System.out.println(info.toString());
 //    }
-//
-//    /**
-//     * Print a dns zone.
-//     *
-//     * @param dnsZone a dns zone
-//     */
-//    public static void print(DnsZone dnsZone) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("DNS Zone: ").append(dnsZone.id())
-//                .append("\n\tName (Top level domain): ").append(dnsZone.name())
-//                .append("\n\tResource group: ").append(dnsZone.resourceGroupName())
-//                .append("\n\tRegion: ").append(dnsZone.regionName())
-//                .append("\n\tTags: ").append(dnsZone.tags())
-//                .append("\n\tName servers:");
-//        for (String nameServer : dnsZone.nameServers()) {
-//            info.append("\n\t\t").append(nameServer);
-//        }
-//        SoaRecordSet soaRecordSet = dnsZone.getSoaRecordSet();
-//        SoaRecord soaRecord = soaRecordSet.record();
-//        info.append("\n\tSOA Record:")
-//                .append("\n\t\tHost:").append(soaRecord.host())
-//                .append("\n\t\tEmail:").append(soaRecord.email())
-//                .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
-//                .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
-//                .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
-//                .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
-//                .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
-//
-//        PagedList<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
-//        info.append("\n\tA Record sets:");
-//        for (ARecordSet aRecordSet : aRecordSets) {
-//            info.append("\n\t\tId: ").append(aRecordSet.id())
-//                    .append("\n\t\tName: ").append(aRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
-//                    .append("\n\t\tIP v4 addresses: ");
-//            for (String ipAddress : aRecordSet.ipv4Addresses()) {
-//                info.append("\n\t\t\t").append(ipAddress);
-//            }
-//        }
-//
-//        PagedList<AaaaRecordSet> aaaaRecordSets = dnsZone.aaaaRecordSets().list();
-//        info.append("\n\tAAAA Record sets:");
-//        for (AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
-//            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
-//                    .append("\n\t\tName: ").append(aaaaRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
-//                    .append("\n\t\tIP v6 addresses: ");
-//            for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
-//                info.append("\n\t\t\t").append(ipAddress);
-//            }
-//        }
-//
-//        PagedList<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
-//        info.append("\n\tCNAME Record sets:");
-//        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
-//            info.append("\n\t\tId: ").append(cnameRecordSet.id())
-//                    .append("\n\t\tName: ").append(cnameRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
-//                    .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
-//        }
-//
-//        PagedList<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
-//        info.append("\n\tMX Record sets:");
-//        for (MXRecordSet mxRecordSet : mxRecordSets) {
-//            info.append("\n\t\tId: ").append(mxRecordSet.id())
-//                    .append("\n\t\tName: ").append(mxRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
-//                    .append("\n\t\tRecords: ");
-//            for (MxRecord mxRecord : mxRecordSet.records()) {
-//                info.append("\n\t\t\tExchange server, Preference: ")
-//                        .append(mxRecord.exchange())
-//                        .append(" ")
-//                        .append(mxRecord.preference());
-//            }
-//        }
-//
-//        PagedList<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
-//        info.append("\n\tNS Record sets:");
-//        for (NSRecordSet nsRecordSet : nsRecordSets) {
-//            info.append("\n\t\tId: ").append(nsRecordSet.id())
-//                    .append("\n\t\tName: ").append(nsRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
-//                    .append("\n\t\tName servers: ");
-//            for (String nameServer : nsRecordSet.nameServers()) {
-//                info.append("\n\t\t\t").append(nameServer);
-//            }
-//        }
-//
-//        PagedList<PtrRecordSet> ptrRecordSets = dnsZone.ptrRecordSets().list();
-//        info.append("\n\tPTR Record sets:");
-//        for (PtrRecordSet ptrRecordSet : ptrRecordSets) {
-//            info.append("\n\t\tId: ").append(ptrRecordSet.id())
-//                    .append("\n\t\tName: ").append(ptrRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
-//                    .append("\n\t\tTarget domain names: ");
-//            for (String domainNames : ptrRecordSet.targetDomainNames()) {
-//                info.append("\n\t\t\t").append(domainNames);
-//            }
-//        }
-//
-//        PagedList<SrvRecordSet> srvRecordSets = dnsZone.srvRecordSets().list();
-//        info.append("\n\tSRV Record sets:");
-//        for (SrvRecordSet srvRecordSet : srvRecordSets) {
-//            info.append("\n\t\tId: ").append(srvRecordSet.id())
-//                    .append("\n\t\tName: ").append(srvRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
-//                    .append("\n\t\tRecords: ");
-//            for (SrvRecord srvRecord : srvRecordSet.records()) {
-//                info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
-//                        .append(srvRecord.target())
-//                        .append(", ")
-//                        .append(srvRecord.port())
-//                        .append(", ")
-//                        .append(srvRecord.priority())
-//                        .append(", ")
-//                        .append(srvRecord.weight());
-//            }
-//        }
-//
-//        PagedList<TxtRecordSet> txtRecordSets = dnsZone.txtRecordSets().list();
-//        info.append("\n\tTXT Record sets:");
-//        for (TxtRecordSet txtRecordSet : txtRecordSets) {
-//            info.append("\n\t\tId: ").append(txtRecordSet.id())
-//                    .append("\n\t\tName: ").append(txtRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
-//                    .append("\n\t\tRecords: ");
-//            for (TxtRecord txtRecord : txtRecordSet.records()) {
-//                if (txtRecord.value().size() > 0) {
-//                    info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
-//                }
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
+
+    /**
+     * Print a dns zone.
+     *
+     * @param dnsZone a dns zone
+     */
+    public static void print(DnsZone dnsZone) {
+        StringBuilder info = new StringBuilder();
+        info.append("DNS Zone: ").append(dnsZone.id())
+                .append("\n\tName (Top level domain): ").append(dnsZone.name())
+                .append("\n\tResource group: ").append(dnsZone.resourceGroupName())
+                .append("\n\tRegion: ").append(dnsZone.regionName())
+                .append("\n\tTags: ").append(dnsZone.tags())
+                .append("\n\tName servers:");
+        for (String nameServer : dnsZone.nameServers()) {
+            info.append("\n\t\t").append(nameServer);
+        }
+        SoaRecordSet soaRecordSet = dnsZone.getSoaRecordSet();
+        SoaRecord soaRecord = soaRecordSet.record();
+        info.append("\n\tSOA Record:")
+                .append("\n\t\tHost:").append(soaRecord.host())
+                .append("\n\t\tEmail:").append(soaRecord.email())
+                .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
+                .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
+                .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
+                .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
+                .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
+
+        PagedIterable<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
+        info.append("\n\tA Record sets:");
+        for (ARecordSet aRecordSet : aRecordSets) {
+            info.append("\n\t\tId: ").append(aRecordSet.id())
+                    .append("\n\t\tName: ").append(aRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
+                    .append("\n\t\tIP v4 addresses: ");
+            for (String ipAddress : aRecordSet.ipv4Addresses()) {
+                info.append("\n\t\t\t").append(ipAddress);
+            }
+        }
+
+        PagedIterable<AaaaRecordSet> aaaaRecordSets = dnsZone.aaaaRecordSets().list();
+        info.append("\n\tAAAA Record sets:");
+        for (AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
+            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
+                    .append("\n\t\tName: ").append(aaaaRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
+                    .append("\n\t\tIP v6 addresses: ");
+            for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
+                info.append("\n\t\t\t").append(ipAddress);
+            }
+        }
+
+        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        info.append("\n\tCNAME Record sets:");
+        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+            info.append("\n\t\tId: ").append(cnameRecordSet.id())
+                    .append("\n\t\tName: ").append(cnameRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
+                    .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
+        }
+
+        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        info.append("\n\tMX Record sets:");
+        for (MXRecordSet mxRecordSet : mxRecordSets) {
+            info.append("\n\t\tId: ").append(mxRecordSet.id())
+                    .append("\n\t\tName: ").append(mxRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
+                    .append("\n\t\tRecords: ");
+            for (MxRecord mxRecord : mxRecordSet.records()) {
+                info.append("\n\t\t\tExchange server, Preference: ")
+                        .append(mxRecord.exchange())
+                        .append(" ")
+                        .append(mxRecord.preference());
+            }
+        }
+
+        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        info.append("\n\tNS Record sets:");
+        for (NSRecordSet nsRecordSet : nsRecordSets) {
+            info.append("\n\t\tId: ").append(nsRecordSet.id())
+                    .append("\n\t\tName: ").append(nsRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
+                    .append("\n\t\tName servers: ");
+            for (String nameServer : nsRecordSet.nameServers()) {
+                info.append("\n\t\t\t").append(nameServer);
+            }
+        }
+
+        PagedIterable<PtrRecordSet> ptrRecordSets = dnsZone.ptrRecordSets().list();
+        info.append("\n\tPTR Record sets:");
+        for (PtrRecordSet ptrRecordSet : ptrRecordSets) {
+            info.append("\n\t\tId: ").append(ptrRecordSet.id())
+                    .append("\n\t\tName: ").append(ptrRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
+                    .append("\n\t\tTarget domain names: ");
+            for (String domainNames : ptrRecordSet.targetDomainNames()) {
+                info.append("\n\t\t\t").append(domainNames);
+            }
+        }
+
+        PagedIterable<SrvRecordSet> srvRecordSets = dnsZone.srvRecordSets().list();
+        info.append("\n\tSRV Record sets:");
+        for (SrvRecordSet srvRecordSet : srvRecordSets) {
+            info.append("\n\t\tId: ").append(srvRecordSet.id())
+                    .append("\n\t\tName: ").append(srvRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
+                    .append("\n\t\tRecords: ");
+            for (SrvRecord srvRecord : srvRecordSet.records()) {
+                info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
+                        .append(srvRecord.target())
+                        .append(", ")
+                        .append(srvRecord.port())
+                        .append(", ")
+                        .append(srvRecord.priority())
+                        .append(", ")
+                        .append(srvRecord.weight());
+            }
+        }
+
+        PagedIterable<TxtRecordSet> txtRecordSets = dnsZone.txtRecordSets().list();
+        info.append("\n\tTXT Record sets:");
+        for (TxtRecordSet txtRecordSet : txtRecordSets) {
+            info.append("\n\t\tId: ").append(txtRecordSet.id())
+                    .append("\n\t\tName: ").append(txtRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
+                    .append("\n\t\tRecords: ");
+            for (TxtRecord txtRecord : txtRecordSet.records()) {
+                if (txtRecord.value().size() > 0) {
+                    info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
+                }
+            }
+        }
+        System.out.println(info.toString());
+    }
 
     /**
      * Print an Azure Container Registry.
@@ -1576,7 +1592,7 @@ public final class Utils {
         builder.append("\n\tPartner Servers: ");
         for (PartnerInfo item : failoverGroup.partnerServers()) {
             builder
-                    .append("\n\t\tId: ").append(item.getId())
+                    .append("\n\t\tId: ").append(item.id())
                     .append("\n\t\tLocation: ").append(item.location())
                     .append("\n\t\tReplication role: ").append(item.replicationRole());
         }
@@ -1694,14 +1710,14 @@ public final class Utils {
                 .append("\n\tOperational state: ").append(resource.operationalState())
                 .append("\n\tInternet-facing? ").append(resource.isPublic())
                 .append("\n\tInternal? ").append(resource.isPrivate())
-                .append("\n\tDefault private IP address: ").append(resource.privateIPAddress())
-                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod())
+                .append("\n\tDefault private IP address: ").append(resource.privateIpAddress())
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIpAllocationMethod())
                 .append("\n\tDisabled SSL protocols: ").append(resource.disabledSslProtocols().toString());
 
         // Show IP configs
-        Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
+        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
-        for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
+        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                     .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
                     .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
@@ -1716,13 +1732,13 @@ public final class Utils {
 
             if (frontend.isPublic()) {
                 // Show public frontend info
-                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIPAddressId());
+                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIpAddressId());
             }
 
             if (frontend.isPrivate()) {
                 // Show private frontend info
-                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIPAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIPAllocationMethod())
+                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIpAllocationMethod())
                         .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
                         .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
             }
@@ -1791,7 +1807,7 @@ public final class Utils {
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
-                    .append("\n\t\t\tHost name: ").append(listener.hostName())
+                    .append("\n\t\t\tHost name: ").append(listener.hostname())
                     .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
                     .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
                     .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
@@ -1822,8 +1838,8 @@ public final class Utils {
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
                     .append("\n\t\tType: ").append(rule.ruleType())
-                    .append("\n\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
-                    .append("\n\t\tHost name: ").append(rule.hostName())
+                    .append("\n\t\tPublic IP address ID: ").append(rule.publicIpAddressId())
+                    .append("\n\t\tHost name: ").append(rule.hostname())
                     .append("\n\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
                     .append("\n\t\tFrontend port: ").append(rule.frontendPort())
                     .append("\n\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
@@ -1899,10 +1915,10 @@ public final class Utils {
             builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
         }
         if (image.osDiskImage().managedDisk() != null) {
-            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().getId());
+            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().id());
         }
         if (image.osDiskImage().snapshot() != null) {
-            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().getId());
+            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().id());
         }
         if (image.osDiskImage().blobUri() != null) {
             builder.append("\n\t\tSource un-managed vhd: ").append(image.osDiskImage().blobUri());
@@ -1916,10 +1932,10 @@ public final class Utils {
                     builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
                 }
                 if (diskImage.managedDisk() != null) {
-                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().getId());
+                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().id());
                 }
                 if (diskImage.snapshot() != null) {
-                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().getId());
+                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().id());
                 }
                 if (diskImage.blobUri() != null) {
                     builder.append("\n\t\tSource un-managed vhd: ").append(diskImage.blobUri());
@@ -2440,8 +2456,8 @@ public final class Utils {
                 .append("\n\t Packet capture filters: ").append(resource.filters().size());
         for (PacketCaptureFilter filter : resource.filters()) {
             sb.append("\n\t\tProtocol: ").append(filter.protocol());
-            sb.append("\n\t\tLocal IP address: ").append(filter.localIPAddress());
-            sb.append("\n\t\tRemote IP address: ").append(filter.remoteIPAddress());
+            sb.append("\n\t\tLocal IP address: ").append(filter.localIpAddress());
+            sb.append("\n\t\tRemote IP address: ").append(filter.remoteIpAddress());
             sb.append("\n\t\tLocal port: ").append(filter.localPort());
             sb.append("\n\t\tRemote port: ").append(filter.remotePort());
         }
@@ -2469,12 +2485,12 @@ public final class Utils {
         StringBuilder sb = new StringBuilder().append("Topology: ").append(resource.id())
                 .append("\n\tTopology parameters: ")
                 .append("\n\t\tResource group: ").append(resource.topologyParameters().targetResourceGroupName())
-                .append("\n\t\tVirtual network: ").append(resource.topologyParameters().targetVirtualNetwork() == null ? "" : resource.topologyParameters().targetVirtualNetwork().getId())
-                .append("\n\t\tSubnet id: ").append(resource.topologyParameters().targetSubnet() == null ? "" : resource.topologyParameters().targetSubnet().getId())
+                .append("\n\t\tVirtual network: ").append(resource.topologyParameters().targetVirtualNetwork() == null ? "" : resource.topologyParameters().targetVirtualNetwork().id())
+                .append("\n\t\tSubnet id: ").append(resource.topologyParameters().targetSubnet() == null ? "" : resource.topologyParameters().targetSubnet().id())
                 .append("\n\tCreated time: ").append(resource.createdTime())
                 .append("\n\tLast modified time: ").append(resource.lastModifiedTime());
         for (TopologyResource tr : resource.resources().values()) {
-            sb.append("\n\tTopology resource: ").append(tr.getId())
+            sb.append("\n\tTopology resource: ").append(tr.id())
                     .append("\n\t\tName: ").append(tr.name())
                     .append("\n\t\tLocation: ").append(tr.location())
                     .append("\n\t\tAssociations:");
@@ -2511,7 +2527,7 @@ public final class Utils {
         StringBuilder sb = new StringBuilder().append("Security group view: ")
                 .append("\n\tVirtual machine id: ").append(resource.vmId());
         for (SecurityGroupNetworkInterface sgni : resource.networkInterfaces().values()) {
-            sb.append("\n\tSecurity group network interface:").append(sgni.getId())
+            sb.append("\n\tSecurity group network interface:").append(sgni.id())
                     .append("\n\t\tSecurity group network interface:")
                     .append("\n\t\tEffective security rules:");
             for (EffectiveNetworkSecurityRule rule : sgni.securityRuleAssociations().effectiveSecurityRules()) {
@@ -2525,10 +2541,10 @@ public final class Utils {
                         .append("\n\t\t\tDestination port range: ").append(rule.destinationPortRange())
                         .append("\n\t\t\tProtocol: ").append(rule.protocol());
             }
-            sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().getId());
+            sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().id());
             printSecurityRule(sb, sgni.securityRuleAssociations().subnetAssociation().securityRules());
             if (sgni.securityRuleAssociations().networkInterfaceAssociation() != null) {
-                sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().getId());
+                sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().id());
                 printSecurityRule(sb, sgni.securityRuleAssociations().networkInterfaceAssociation().securityRules());
             }
             sb.append("\n\t\tDefault security rules:");
@@ -3054,7 +3070,7 @@ public final class Utils {
     private static WebAppTestClient httpClient = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy())
+                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")
@@ -3067,5 +3083,15 @@ public final class Utils {
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
         Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
+    }
+
+    public static synchronized <T> int getSize(Iterable<T> iterable) {
+        int res = 0;
+        Iterator<T> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            ++res;
+        }
+        return res;
     }
 }

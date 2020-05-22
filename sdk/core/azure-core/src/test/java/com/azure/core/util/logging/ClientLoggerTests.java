@@ -7,6 +7,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -53,6 +54,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void canLogAtLevel(LogLevel logLevelToConfigure, LogLevel logLevelToValidate, boolean expected) {
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         assertEquals(expected, new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevelToValidate));
@@ -64,6 +66,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logSimpleMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
         String logMessage = "This is a test";
 
@@ -78,6 +81,7 @@ public class ClientLoggerTests {
 
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logFormattedMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
         String logMessage = "This is a test";
         String logFormat = "{} is a {}";
@@ -97,6 +101,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("multiLevelCheckSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logException(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String logMessage = "This is an exception";
@@ -118,6 +123,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsWarningSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -142,6 +148,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsWarningSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -166,6 +173,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsErrorSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -190,6 +198,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsErrorSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -213,6 +222,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("validLogLevelSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void logLevelFromString(String environmentLogLevel, LogLevel expected) {
         assertEquals(expected, LogLevel.fromString(environmentLogLevel));
     }
@@ -223,6 +233,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @ValueSource(strings = {"errs", "not_set", "12", "onlyerrorsplease"})
+    @ResourceLock("SYSTEM_OUT")
     public void invalidLogLevelFromString(String environmentLogLevel) {
         assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(environmentLogLevel));
     }

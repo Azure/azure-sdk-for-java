@@ -36,12 +36,12 @@ final class LocationImpl extends
 
     @Override
     public String latitude() {
-        return this.inner().latitude();
+        return this.inner().metadata() == null ? null : this.inner().metadata().latitude();
     }
 
     @Override
     public String longitude() {
-        return this.inner().longitude();
+        return this.inner().metadata() == null ? null : this.inner().metadata().longitude();
     }
 
     @Override

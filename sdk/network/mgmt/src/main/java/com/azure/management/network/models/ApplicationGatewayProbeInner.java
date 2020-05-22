@@ -7,14 +7,18 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.management.network.ApplicationGatewayProtocol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayProbe model. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayProbeInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeInner.class);
+
     /*
      * Name of the probe that is unique within an Application Gateway.
      */
@@ -81,7 +85,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * Default value is false.
      */
     @JsonProperty(value = "properties.pickHostNameFromBackendHttpSettings")
-    private Boolean pickHostNameFromBackendHttpSettings;
+    private Boolean pickHostnameFromBackendHttpSettings;
 
     /*
      * Minimum number of servers that are always marked healthy. Default value
@@ -301,25 +305,25 @@ public class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Get the pickHostNameFromBackendHttpSettings property: Whether the host header should be picked from the backend
+     * Get the pickHostnameFromBackendHttpSettings property: Whether the host header should be picked from the backend
      * http settings. Default value is false.
      *
-     * @return the pickHostNameFromBackendHttpSettings value.
+     * @return the pickHostnameFromBackendHttpSettings value.
      */
-    public Boolean pickHostNameFromBackendHttpSettings() {
-        return this.pickHostNameFromBackendHttpSettings;
+    public Boolean pickHostnameFromBackendHttpSettings() {
+        return this.pickHostnameFromBackendHttpSettings;
     }
 
     /**
-     * Set the pickHostNameFromBackendHttpSettings property: Whether the host header should be picked from the backend
+     * Set the pickHostnameFromBackendHttpSettings property: Whether the host header should be picked from the backend
      * http settings. Default value is false.
      *
-     * @param pickHostNameFromBackendHttpSettings the pickHostNameFromBackendHttpSettings value to set.
+     * @param pickHostnameFromBackendHttpSettings the pickHostnameFromBackendHttpSettings value to set.
      * @return the ApplicationGatewayProbeInner object itself.
      */
-    public ApplicationGatewayProbeInner withPickHostNameFromBackendHttpSettings(
-        Boolean pickHostNameFromBackendHttpSettings) {
-        this.pickHostNameFromBackendHttpSettings = pickHostNameFromBackendHttpSettings;
+    public ApplicationGatewayProbeInner withPickHostnameFromBackendHttpSettings(
+        Boolean pickHostnameFromBackendHttpSettings) {
+        this.pickHostnameFromBackendHttpSettings = pickHostnameFromBackendHttpSettings;
         return this;
     }
 
@@ -407,5 +411,16 @@ public class ApplicationGatewayProbeInner extends SubResource {
     public ApplicationGatewayProbeInner withPort(Integer port) {
         this.port = port;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (match() != null) {
+            match().validate();
+        }
     }
 }

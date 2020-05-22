@@ -5,7 +5,7 @@ package com.azure.management.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -59,7 +59,7 @@ public class FunctionAppsTests extends AppServiceTest {
         if (rgName2 != null) {
             try {
                 resourceManager.resourceGroups().beginDeleteByName(rgName2);
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
                 // fine, RG_NAME_2 is not created
             }
         }
@@ -190,7 +190,7 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     private static final String FUNCTION_APP_PACKAGE_URL =
-        "https://raw.github.com/Azure/azure-libraries-for-java/master/azure-mgmt-appservice/src/test/resources/java-functions.zip";
+        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/java-functions.zip";
 
     @Test
     public void canCRUDLinuxFunctionApp() throws Exception {

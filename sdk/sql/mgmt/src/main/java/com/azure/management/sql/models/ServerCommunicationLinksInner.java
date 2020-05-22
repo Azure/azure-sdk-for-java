@@ -25,9 +25,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -35,6 +36,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerCommunicationLinks. */
 public final class ServerCommunicationLinksInner {
+    private final ClientLogger logger = new ClientLogger(ServerCommunicationLinksInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final ServerCommunicationLinksService service;
 
@@ -65,7 +68,7 @@ public final class ServerCommunicationLinksInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/communicationLinks/{communicationLinkName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -80,7 +83,7 @@ public final class ServerCommunicationLinksInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/communicationLinks/{communicationLinkName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ServerCommunicationLinkInner>> get(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -95,7 +98,7 @@ public final class ServerCommunicationLinksInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/communicationLinks/{communicationLinkName}")
         @ExpectedResponses({201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -111,7 +114,7 @@ public final class ServerCommunicationLinksInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/communicationLinks")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ServerCommunicationLinkListResultInner>> listByServer(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -125,7 +128,7 @@ public final class ServerCommunicationLinksInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/communicationLinks/{communicationLinkName}")
         @ExpectedResponses({201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ServerCommunicationLinkInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -145,13 +148,34 @@ public final class ServerCommunicationLinksInner {
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String serverName, String communicationLinkName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (communicationLinkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -175,8 +199,57 @@ public final class ServerCommunicationLinksInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String communicationLinkName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (communicationLinkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .delete(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                communicationLinkName,
+                context);
+    }
+
+    /**
+     * Deletes a server communication link.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param communicationLinkName The name of the server communication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -194,7 +267,7 @@ public final class ServerCommunicationLinksInner {
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -210,13 +283,34 @@ public final class ServerCommunicationLinksInner {
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ServerCommunicationLinkInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String communicationLinkName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (communicationLinkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -240,8 +334,57 @@ public final class ServerCommunicationLinksInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server communication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ServerCommunicationLinkInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String communicationLinkName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (communicationLinkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .get(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                communicationLinkName,
+                context);
+    }
+
+    /**
+     * Returns a server communication link.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param communicationLinkName The name of the server communication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
@@ -267,7 +410,7 @@ public final class ServerCommunicationLinksInner {
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
@@ -285,13 +428,34 @@ public final class ServerCommunicationLinksInner {
      * @param communicationLinkName The name of the server communication link.
      * @param partnerServer The name of the partner server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String serverName, String communicationLinkName, String partnerServer) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (communicationLinkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         ServerCommunicationLinkInner parameters = new ServerCommunicationLinkInner();
         parameters.withPartnerServer(partnerServer);
@@ -320,7 +484,7 @@ public final class ServerCommunicationLinksInner {
      * @param communicationLinkName The name of the server communication link.
      * @param partnerServer The name of the partner server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
@@ -349,7 +513,7 @@ public final class ServerCommunicationLinksInner {
      * @param communicationLinkName The name of the server communication link.
      * @param partnerServer The name of the partner server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
@@ -366,13 +530,30 @@ public final class ServerCommunicationLinksInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server communication links.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ServerCommunicationLinkInner>> listByServerSinglePageAsync(
         String resourceGroupName, String serverName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -398,8 +579,55 @@ public final class ServerCommunicationLinksInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server communication links.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ServerCommunicationLinkInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .listByServer(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Gets a list of server communication links.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server communication links.
      */
@@ -414,8 +642,26 @@ public final class ServerCommunicationLinksInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server communication links.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ServerCommunicationLinkInner> listByServerAsync(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context));
+    }
+
+    /**
+     * Gets a list of server communication links.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server communication links.
      */
@@ -433,13 +679,34 @@ public final class ServerCommunicationLinksInner {
      * @param communicationLinkName The name of the server communication link.
      * @param partnerServer The name of the partner server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ServerCommunicationLinkInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String serverName, String communicationLinkName, String partnerServer) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (communicationLinkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         ServerCommunicationLinkInner parameters = new ServerCommunicationLinkInner();
         parameters.withPartnerServer(partnerServer);
@@ -467,8 +734,65 @@ public final class ServerCommunicationLinksInner {
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
      * @param partnerServer The name of the partner server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server communication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ServerCommunicationLinkInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        String partnerServer,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (communicationLinkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        ServerCommunicationLinkInner parameters = new ServerCommunicationLinkInner();
+        parameters.withPartnerServer(partnerServer);
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                communicationLinkName,
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates a server communication link.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param communicationLinkName The name of the server communication link.
+     * @param partnerServer The name of the partner server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */
@@ -495,7 +819,7 @@ public final class ServerCommunicationLinksInner {
      * @param communicationLinkName The name of the server communication link.
      * @param partnerServer The name of the partner server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server communication link.
      */

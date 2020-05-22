@@ -5,12 +5,16 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AliasType model. */
 @Fluent
 public final class AliasType {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AliasType.class);
+
     /*
      * The alias name.
      */
@@ -61,5 +65,16 @@ public final class AliasType {
     public AliasType withPaths(List<AliasPathType> paths) {
         this.paths = paths;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (paths() != null) {
+            paths().forEach(e -> e.validate());
+        }
     }
 }

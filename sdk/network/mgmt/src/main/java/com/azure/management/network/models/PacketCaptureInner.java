@@ -6,8 +6,10 @@ package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.PacketCaptureFilter;
 import com.azure.management.network.PacketCaptureStorageLocation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class PacketCaptureInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureInner.class);
+
     /*
      * The ID of the targeted resource, only VM is currently supported.
      */
@@ -169,5 +173,29 @@ public class PacketCaptureInner {
     public PacketCaptureInner withFilters(List<PacketCaptureFilter> filters) {
         this.filters = filters;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (target() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property target in model PacketCaptureInner"));
+        }
+        if (storageLocation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property storageLocation in model PacketCaptureInner"));
+        } else {
+            storageLocation().validate();
+        }
+        if (filters() != null) {
+            filters().forEach(e -> e.validate());
+        }
     }
 }

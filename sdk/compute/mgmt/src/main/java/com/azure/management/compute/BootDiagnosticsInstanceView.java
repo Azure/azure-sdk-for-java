@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BootDiagnosticsInstanceView model. */
 @Immutable
 public final class BootDiagnosticsInstanceView {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnosticsInstanceView.class);
+
     /*
      * The console screenshot blob URI.
      */
@@ -56,5 +60,16 @@ public final class BootDiagnosticsInstanceView {
      */
     public InstanceViewStatus status() {
         return this.status;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (status() != null) {
+            status().validate();
+        }
     }
 }

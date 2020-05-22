@@ -360,8 +360,14 @@ public class ResourceId {
         return rid;
     }
 
+    /**
+     * Returns the long value of the document. The value computed is in Big Endian, so this method reverses the bytes
+     * and returns Little Endian order value of the long
+     *
+     * @return document long value
+     */
     public long getDocument() {
-        return this.document;
+        return Long.reverseBytes(this.document);
     }
 
     public ResourceId getDocumentId() {

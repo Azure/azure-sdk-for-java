@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceSkuRestrictions model. */
 @Immutable
 public final class ResourceSkuRestrictions {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictions.class);
+
     /*
      * The type of restrictions.
      */
@@ -71,5 +75,16 @@ public final class ResourceSkuRestrictions {
      */
     public ResourceSkuRestrictionsReasonCode reasonCode() {
         return this.reasonCode;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (restrictionInfo() != null) {
+            restrictionInfo().validate();
+        }
     }
 }

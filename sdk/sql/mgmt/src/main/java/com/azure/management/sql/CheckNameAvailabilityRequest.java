@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CheckNameAvailabilityRequest model. */
 @Fluent
 public final class CheckNameAvailabilityRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequest.class);
+
     /*
      * The name property.
      */
@@ -65,5 +69,19 @@ public final class CheckNameAvailabilityRequest {
     public CheckNameAvailabilityRequest withType(String type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model CheckNameAvailabilityRequest"));
+        }
     }
 }

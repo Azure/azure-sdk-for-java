@@ -5,12 +5,16 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The HostKeys model. */
 @Fluent
 public final class HostKeysInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostKeysInner.class);
+
     /*
      * Secret key.
      */
@@ -87,5 +91,13 @@ public final class HostKeysInner {
     public HostKeysInner withSystemKeys(Map<String, String> systemKeys) {
         this.systemKeys = systemKeys;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

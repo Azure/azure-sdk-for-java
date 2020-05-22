@@ -34,6 +34,7 @@ import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.containerservice.implementation.ContainerServiceManager;
 import com.azure.management.cosmosdb.CosmosDBAccounts;
 import com.azure.management.cosmosdb.implementation.CosmosDBManager;
+import com.azure.management.dns.DnsZones;
 import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.graphrbac.ActiveDirectoryApplications;
 import com.azure.management.graphrbac.ActiveDirectoryGroups;
@@ -65,7 +66,7 @@ import com.azure.management.network.NetworkSecurityGroups;
 import com.azure.management.network.NetworkUsages;
 import com.azure.management.network.NetworkWatchers;
 import com.azure.management.network.Networks;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.network.RouteFilters;
 import com.azure.management.network.RouteTables;
 import com.azure.management.network.VirtualNetworkGateways;
@@ -555,8 +556,8 @@ public final class Azure {
     }
 
     /** @return entry point to managing public IP addresses */
-    public PublicIPAddresses publicIPAddresses() {
-        return this.networkManager.publicIPAddresses();
+    public PublicIpAddresses publicIpAddresses() {
+        return this.networkManager.publicIpAddresses();
     }
 
     //    /**
@@ -609,12 +610,12 @@ public final class Azure {
     //        return cdnManager.profiles();
     //    }
 
-    //    /**
-    //     * @return entry point to managing DNS zones.
-    //     */
-    //    public DnsZones dnsZones() {
-    //        return dnsZoneManager.zones();
-    //    }
+    /**
+     * @return entry point to managing DNS zones.
+     */
+    public DnsZones dnsZones() {
+        return dnsZoneManager.zones();
+    }
 
     /** @return entry point to managing web apps. */
     public WebApps webApps() {

@@ -7,12 +7,12 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.Skillset;
+import com.azure.search.documents.models.SearchIndexerSkillset;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response from a list Skillset request. If successful, it includes the full
+ * Response from a list skillset request. If successful, it includes the full
  * definitions of all skillsets.
  */
 @Fluent
@@ -21,14 +21,14 @@ public final class ListSkillsetsResult {
      * The skillsets defined in the Search service.
      */
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<Skillset> skillsets;
+    private List<SearchIndexerSkillset> skillsets;
 
     /**
      * Get the skillsets property: The skillsets defined in the Search service.
      *
      * @return the skillsets value.
      */
-    public List<Skillset> getSkillsets() {
+    public List<SearchIndexerSkillset> getSkillsets() {
         return this.skillsets;
     }
 }

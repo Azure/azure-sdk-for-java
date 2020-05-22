@@ -32,7 +32,7 @@ final class DeploymentsImpl
     @Override
     public PagedIterable<Deployment> list() {
         return this.manager().inner().deployments().list()
-                .mapPage(inner -> new DeploymentImpl(inner, inner.getName(), resourceManager));
+                .mapPage(inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
     }
 
     @Override
@@ -49,7 +49,7 @@ final class DeploymentsImpl
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
         return this.manager().inner().deployments().getAtTenantScopeAsync(name)
-            .map(inner -> new DeploymentImpl(inner, inner.getName(), this.resourceManager));
+            .map(inner -> new DeploymentImpl(inner, inner.name(), this.resourceManager));
     }
 
     @Override
@@ -91,7 +91,7 @@ final class DeploymentsImpl
     }
 
     protected DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
-        return new DeploymentImpl(deploymentExtendedInner, deploymentExtendedInner.getName(), this.resourceManager);
+        return new DeploymentImpl(deploymentExtendedInner, deploymentExtendedInner.name(), this.resourceManager);
     }
 
     @Override

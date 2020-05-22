@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
@@ -19,7 +18,6 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -87,24 +85,15 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
-        return getManagementNode(entityPath, entityType, "");
-    }
-
-    @Override
-    public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType,
-        String sessionId) {
-
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
                 connectionId, entityPath))));
         }
 
-        final String path = CoreUtils.isNullOrEmpty(sessionId)
-            ? String.join("-", entityPath, entityType.toString())
-            : String.join("-", entityPath, entityType.toString(), sessionId);
+        final String entityTypePath = String.join("-", entityType.toString(), entityPath);
 
-        final ServiceBusManagementNode existing = managementNodes.get(path);
+        final ServiceBusManagementNode existing = managementNodes.get(entityTypePath);
         if (existing != null) {
             return Mono.just(existing);
         }
@@ -115,7 +104,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     fullyQualifiedNamespace, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE)
                     .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
 
-                return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
+                return tokenManager.authorize().thenReturn(managementNodes.compute(entityTypePath, (key, current) -> {
                     if (current != null) {
                         logger.info("A management node exists already, returning it.");
 
@@ -132,7 +121,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                         entityPath, address, linkName);
 
                     return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        fullyQualifiedNamespace, entityPath, sessionId, tokenManager, messageSerializer,
+                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
                         retryOptions.getTryTimeout());
                 }));
             }));
@@ -170,7 +159,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
@@ -196,7 +185,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType, String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
@@ -210,7 +199,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public void dispose() {
-        logger.info("Disposing of connection.");
+        logger.verbose("Disposing of connection.");
         sendLinks.forEach((key, value) -> value.dispose());
         sendLinks.clear();
 

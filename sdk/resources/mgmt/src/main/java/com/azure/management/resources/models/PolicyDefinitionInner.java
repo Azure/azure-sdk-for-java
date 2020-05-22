@@ -6,39 +6,33 @@ package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.management.resources.PolicyMode;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.resources.ParameterDefinitionsValue;
 import com.azure.management.resources.PolicyType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The PolicyDefinition model. */
 @JsonFlatten
 @Fluent
-public class PolicyDefinitionInner {
-    /*
-     * The ID of the policy definition.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /*
-     * The name of the policy definition.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
+public class PolicyDefinitionInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionInner.class);
 
     /*
      * The type of policy definition. Possible values are NotSpecified,
-     * BuiltIn, and Custom.
+     * BuiltIn, Custom, and Static.
      */
     @JsonProperty(value = "properties.policyType")
     private PolicyType policyType;
 
     /*
-     * The policy definition mode. Possible values are NotSpecified, Indexed,
-     * and All.
+     * The policy definition mode. Some examples are All, Indexed,
+     * Microsoft.KeyVault.Data.
      */
     @JsonProperty(value = "properties.mode")
-    private PolicyMode mode;
+    private String mode;
 
     /*
      * The display name of the policy definition.
@@ -59,38 +53,22 @@ public class PolicyDefinitionInner {
     private Object policyRule;
 
     /*
-     * The policy definition metadata.
+     * The policy definition metadata.  Metadata is an open ended object and is
+     * typically a collection of key value pairs.
      */
     @JsonProperty(value = "properties.metadata")
     private Object metadata;
 
     /*
-     * Required if a parameter is used in policy rule.
+     * The parameter definitions for parameters used in the policy rule. The
+     * keys are the parameter names.
      */
     @JsonProperty(value = "properties.parameters")
-    private Object parameters;
+    private Map<String, ParameterDefinitionsValue> parameters;
 
     /**
-     * Get the id property: The ID of the policy definition.
-     *
-     * @return the id value.
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the policy definition.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, and
-     * Custom.
+     * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
+     * and Static.
      *
      * @return the policyType value.
      */
@@ -99,8 +77,8 @@ public class PolicyDefinitionInner {
     }
 
     /**
-     * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, and
-     * Custom.
+     * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
+     * and Static.
      *
      * @param policyType the policyType value to set.
      * @return the PolicyDefinitionInner object itself.
@@ -111,21 +89,21 @@ public class PolicyDefinitionInner {
     }
 
     /**
-     * Get the mode property: The policy definition mode. Possible values are NotSpecified, Indexed, and All.
+     * Get the mode property: The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
      *
      * @return the mode value.
      */
-    public PolicyMode mode() {
+    public String mode() {
         return this.mode;
     }
 
     /**
-     * Set the mode property: The policy definition mode. Possible values are NotSpecified, Indexed, and All.
+     * Set the mode property: The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
      *
      * @param mode the mode value to set.
      * @return the PolicyDefinitionInner object itself.
      */
-    public PolicyDefinitionInner withMode(PolicyMode mode) {
+    public PolicyDefinitionInner withMode(String mode) {
         this.mode = mode;
         return this;
     }
@@ -191,7 +169,8 @@ public class PolicyDefinitionInner {
     }
 
     /**
-     * Get the metadata property: The policy definition metadata.
+     * Get the metadata property: The policy definition metadata. Metadata is an open ended object and is typically a
+     * collection of key value pairs.
      *
      * @return the metadata value.
      */
@@ -200,7 +179,8 @@ public class PolicyDefinitionInner {
     }
 
     /**
-     * Set the metadata property: The policy definition metadata.
+     * Set the metadata property: The policy definition metadata. Metadata is an open ended object and is typically a
+     * collection of key value pairs.
      *
      * @param metadata the metadata value to set.
      * @return the PolicyDefinitionInner object itself.
@@ -211,22 +191,35 @@ public class PolicyDefinitionInner {
     }
 
     /**
-     * Get the parameters property: Required if a parameter is used in policy rule.
+     * Get the parameters property: The parameter definitions for parameters used in the policy rule. The keys are the
+     * parameter names.
      *
      * @return the parameters value.
      */
-    public Object parameters() {
+    public Map<String, ParameterDefinitionsValue> parameters() {
         return this.parameters;
     }
 
     /**
-     * Set the parameters property: Required if a parameter is used in policy rule.
+     * Set the parameters property: The parameter definitions for parameters used in the policy rule. The keys are the
+     * parameter names.
      *
      * @param parameters the parameters value to set.
      * @return the PolicyDefinitionInner object itself.
      */
-    public PolicyDefinitionInner withParameters(Object parameters) {
+    public PolicyDefinitionInner withParameters(Map<String, ParameterDefinitionsValue> parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (parameters() != null) {
+            parameters().values().forEach(e -> e.validate());
+        }
     }
 }

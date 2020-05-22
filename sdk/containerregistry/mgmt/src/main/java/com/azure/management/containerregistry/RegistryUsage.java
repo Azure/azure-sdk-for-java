@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RegistryUsage model. */
 @Fluent
 public final class RegistryUsage {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryUsage.class);
+
     /*
      * The name of the usage.
      */
@@ -112,5 +116,13 @@ public final class RegistryUsage {
     public RegistryUsage withUnit(RegistryUsageUnit unit) {
         this.unit = unit;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

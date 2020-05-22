@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MongoIndex model. */
 @Fluent
 public final class MongoIndex {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoIndex.class);
+
     /*
      * Cosmos DB MongoDB collection index keys
      */
@@ -60,5 +64,19 @@ public final class MongoIndex {
     public MongoIndex withOptions(MongoIndexOptions options) {
         this.options = options;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (key() != null) {
+            key().validate();
+        }
+        if (options() != null) {
+            options().validate();
+        }
     }
 }

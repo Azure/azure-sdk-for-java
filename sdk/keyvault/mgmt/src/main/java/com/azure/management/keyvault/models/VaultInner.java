@@ -6,12 +6,16 @@ package com.azure.management.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.keyvault.VaultProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Vault model. */
 @Fluent
 public final class VaultInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultInner.class);
+
     /*
      * Properties of the vault
      */
@@ -36,5 +40,20 @@ public final class VaultInner extends Resource {
     public VaultInner withProperties(VaultProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property properties in model VaultInner"));
+        } else {
+            properties().validate();
+        }
     }
 }

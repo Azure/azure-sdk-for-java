@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExpressRouteConnectionId model. */
 @Immutable
 public final class ExpressRouteConnectionId {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionId.class);
+
     /*
      * The ID of the ExpressRouteConnection.
      */
@@ -21,7 +25,15 @@ public final class ExpressRouteConnectionId {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

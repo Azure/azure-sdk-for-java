@@ -16,26 +16,26 @@ com.microsoft.azure:azure-client-authentication;1.7.3
 com.microsoft.azure:azure-client-runtime;1.7.3
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
-com.microsoft.azure:qpid-proton-j-extensions;1.2.2
+com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.azure:spotbugs-maven-plugin;1.2.1
-com.microsoft.rest:client-runtime;1.7.3
+com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.squareup.okhttp3:okhttp;4.2.2
 commons-codec:commons-codec;1.13
 io.micrometer:micrometer-core;1.2.0
 io.micrometer:micrometer-registry-azure-monitor;1.2.0
 io.micrometer:micrometer-registry-graphite;1.2.0
-io.netty:netty-buffer;4.1.45.Final
-io.netty:netty-codec-http;4.1.45.Final
-io.netty:netty-codec-http2;4.1.45.Final
-io.netty:netty-handler;4.1.45.Final
-io.netty:netty-handler-proxy;4.1.45.Final
-io.netty:netty-tcnative;2.0.27.Final
-io.netty:netty-tcnative-boringssl-static;2.0.27.Final
-io.netty:netty-transport-native-epoll;4.1.45.Final
-io.netty:netty-transport-native-unix-common;4.1.45.Final
-io.projectreactor.netty:reactor-netty;0.9.5.RELEASE
-io.projectreactor:reactor-core;3.3.3.RELEASE
+io.netty:netty-buffer;4.1.49.Final
+io.netty:netty-codec-http;4.1.49.Final
+io.netty:netty-codec-http2;4.1.49.Final
+io.netty:netty-handler;4.1.49.Final
+io.netty:netty-handler-proxy;4.1.49.Final
+io.netty:netty-tcnative;2.0.29.Final
+io.netty:netty-tcnative-boringssl-static;2.0.29.Final
+io.netty:netty-transport-native-epoll;4.1.49.Final
+io.netty:netty-transport-native-unix-common;4.1.49.Final
+io.projectreactor.netty:reactor-netty;0.9.7.RELEASE
+io.projectreactor:reactor-core;3.3.5.RELEASE
 io.reactivex:rxjava;1.2.4
 javax.annotation:javax.annotation-api;1.3.2
 javax.servlet:javax.servlet-api;4.0.1
@@ -44,11 +44,12 @@ org.apache.httpcomponents:httpclient;4.3.6
 org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1
 org.apache.logging.log4j:log4j-slf4j-impl;2.13.0
-org.apache.qpid:proton-j;0.33.2
+org.apache.qpid:proton-j;0.33.4
 org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.hibernate.validator:hibernate-validator;6.0.17.Final
+org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
 org.slf4j:slf4j-api;1.7.28
@@ -68,7 +69,7 @@ org.springframework.security:spring-security-web;5.2.0.RELEASE
 org.springframework.security:spring-security-oauth2-client;5.2.0.RELEASE
 org.springframework.security:spring-security-oauth2-core;5.2.0.RELEASE
 org.springframework.security:spring-security-oauth2-jose;5.2.0.RELEASE
-org.springframework:spring-web;5.2.0.RELEASE
+org.springframework:spring-web;5.2.5.RELEASE
 pl.pragmatists:JUnitParams;1.1.1
 
 ## Test dependency versions
@@ -84,10 +85,11 @@ com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.3.0
+com.microsoft.azure:msal4j-persistence-extension;0.1
 com.sun.activation:jakarta.activation;1.2.1
 io.opentelemetry:opentelemetry-api;0.2.4
 io.opentelemetry:opentelemetry-sdk;0.2.4
-io.projectreactor:reactor-test;3.3.3.RELEASE
+io.projectreactor:reactor-test;3.3.5.RELEASE
 junit:junit;4.13-beta-3
 org.assertj:assertj-core;3.11.1
 org.bouncycastle:bcprov-jdk15on;1.60
@@ -100,20 +102,20 @@ org.hamcrest:hamcrest-library;2.2
 # https://youtrack.jetbrains.com/issue/IDEA-223700
 # org.junit:junit-bom;5.4.2 is a pom file that will add its dependencyManagement section to parent pom's which
 # effectively means that each dependency needs to be listed here.
-org.junit.jupiter:junit-jupiter;5.4.2
-org.junit.jupiter:junit-jupiter-api;5.4.2
-org.junit.jupiter:junit-jupiter-engine;5.4.2
-org.junit.jupiter:junit-jupiter-migrationsupport;5.4.2
-org.junit.jupiter:junit-jupiter-params;5.4.2
-org.junit.platform:junit-platform-commons;1.4.2
-org.junit.platform:junit-platform-console;1.4.2
-org.junit.platform:junit-platform-engine;1.4.2
-org.junit.platform:junit-platform-launcher;1.4.2
-org.junit.platform:junit-platform-reporting;1.4.2
-org.junit.platform:junit-platform-runner;1.4.2
-org.junit.platform:junit-platform-suite-api;1.4.2
-org.junit.platform:junit-platform-testkit;1.4.2
-org.junit.vintage:junit-vintage-engine;5.4.2
+org.junit.jupiter:junit-jupiter;5.6.2
+org.junit.jupiter:junit-jupiter-api;5.6.2
+org.junit.jupiter:junit-jupiter-engine;5.6.2
+org.junit.jupiter:junit-jupiter-migrationsupport;5.6.2
+org.junit.jupiter:junit-jupiter-params;5.6.2
+org.junit.platform:junit-platform-commons;1.6.2
+org.junit.platform:junit-platform-console;1.6.2
+org.junit.platform:junit-platform-engine;1.6.2
+org.junit.platform:junit-platform-launcher;1.6.2
+org.junit.platform:junit-platform-reporting;1.6.2
+org.junit.platform:junit-platform-runner;1.6.2
+org.junit.platform:junit-platform-suite-api;1.6.2
+org.junit.platform:junit-platform-testkit;1.6.2
+org.junit.vintage:junit-vintage-engine;5.6.2
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;1.3-groovy-2.5
@@ -194,13 +196,6 @@ cosmos_com.google.guava:guava;25.0-jre
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
-cosmos_io.netty:netty-buffer;4.1.45.Final
-cosmos_io.netty:netty-codec-http;4.1.45.Final
-cosmos_io.netty:netty-codec-http2;4.1.45.Final
-cosmos_io.netty:netty-handler;4.1.45.Final
-cosmos_io.netty:netty-handler-proxy;4.1.45.Final
-cosmos_io.netty:netty-tcnative;2.0.27.Final
-cosmos_io.netty:netty-transport-native-epoll;4.1.45.Final
 cosmos_org.mockito:mockito-core;1.10.19
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml

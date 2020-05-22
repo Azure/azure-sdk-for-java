@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -13,8 +14,8 @@ import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
 
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -64,17 +65,22 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
                     request.setApplicationProperties(applicationProperties);
                     request.setBody(new AmqpValue(accessToken.getToken()));
 
-                    return channel.sendWithAck(request).map(message -> {
-                        if (RequestResponseUtils.isSuccessful(message)) {
-                            return accessToken.getExpiresAt();
-                        }
+                    return channel.sendWithAck(request)
+                        .handle((Message message, SynchronousSink<OffsetDateTime> sink) -> {
+                            if (RequestResponseUtils.isSuccessful(message)) {
+                                sink.next(accessToken.getExpiresAt());
+                            } else {
+                                final String description = getStatusDescription(message);
+                                final AmqpResponseCode statusCode = getStatusCode(message);
+                                final Exception error = amqpResponseCodeToException(
+                                    statusCode.getValue(), description, channel.getErrorContext());
 
-                        final String description = getStatusDescription(message);
-                        final AmqpResponseCode statusCode = getStatusCode(message);
-
-                        throw logger.logExceptionAsError(Exceptions.propagate(amqpResponseCodeToException(
-                            statusCode.getValue(), description, channel.getErrorContext())));
-                    });
+                                sink.error(error);
+                            }
+                        })
+                        .switchIfEmpty(Mono.error(new AmqpException(true, String.format(
+                            "No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
+                            tokenAudience, scopes), channel.getErrorContext())));
                 }));
     }
 

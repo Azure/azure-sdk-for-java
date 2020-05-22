@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
 /**

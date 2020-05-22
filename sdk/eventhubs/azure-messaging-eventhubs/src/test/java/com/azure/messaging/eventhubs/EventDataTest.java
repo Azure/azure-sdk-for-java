@@ -85,6 +85,16 @@ public class EventDataTest {
         Assertions.assertEquals(PAYLOAD, new String(eventData.getBody(), UTF_8));
     }
 
+    @Test
+    public void testSystemProperties() {
+        EventData eventData = constructMessage(5);
+        Assertions.assertEquals(3, eventData.getSystemProperties().size());
+        Assertions.assertEquals(OFFSET, eventData.getSystemProperties().get(OFFSET_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(5L, eventData.getSystemProperties().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(ENQUEUED_TIME,
+            eventData.getSystemProperties().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+    }
+
     /**
      * Creates an event with the sequence number set.
      */

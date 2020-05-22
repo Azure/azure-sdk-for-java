@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -49,12 +49,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -79,12 +79,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -99,7 +99,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.1.0-beta.4</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.1.0-beta.5</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -119,17 +119,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -175,12 +175,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.0.1-beta.3</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.0.1-beta.4</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-sdk-template</artifactId>
+      <version>1.0.4-beta.20</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
   </dependencies>
 
@@ -199,6 +204,11 @@
             </goals>
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>

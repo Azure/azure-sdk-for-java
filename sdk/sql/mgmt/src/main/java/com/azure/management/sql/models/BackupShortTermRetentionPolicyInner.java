@@ -7,12 +7,16 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BackupShortTermRetentionPolicy model. */
 @JsonFlatten
 @Fluent
 public class BackupShortTermRetentionPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupShortTermRetentionPolicyInner.class);
+
     /*
      * The backup retention period in days. This is how many days Point-in-Time
      * Restore will be supported.
@@ -40,5 +44,13 @@ public class BackupShortTermRetentionPolicyInner extends ProxyResource {
     public BackupShortTermRetentionPolicyInner withRetentionDays(Integer retentionDays) {
         this.retentionDays = retentionDays;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

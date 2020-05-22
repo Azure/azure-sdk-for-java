@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
  */
-class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
+class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
     private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
     private final Timer timer = new Timer();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -53,7 +53,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * @param value Event to publish.
      */
     @Override
-    protected void hookOnNext(ServiceBusReceivedMessage value) {
+    protected void hookOnNext(ServiceBusReceivedMessageContext value) {
         work.next(value);
 
         if (work.isTerminal()) {

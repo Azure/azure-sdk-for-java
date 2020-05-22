@@ -5,12 +5,19 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The SignInName model. */
 @Fluent
 public final class SignInName {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignInName.class);
+
     /*
      * A string value that can be used to classify user sign-in types in your
      * directory, such as 'emailAddress' or 'userName'.
@@ -29,8 +36,7 @@ public final class SignInName {
      * Contains information about a sign-in name of a local account user in an
      * Azure Active Directory B2C tenant.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the type property: A string value that can be used to classify user sign-in types in your directory, such as
@@ -82,6 +88,7 @@ public final class SignInName {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -96,5 +103,21 @@ public final class SignInName {
     public SignInName withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

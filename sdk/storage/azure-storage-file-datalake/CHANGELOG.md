@@ -3,16 +3,20 @@
 ## 12.2.0-beta.1 (Unreleased)
 
 
+## 12.1.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
+
+
 ## 12.1.0 (2020-04-06)
 - Fixed a NPE caused due to deserializing a non existent lastModifiedTime.
-- Added an isDirectory property to PathProperties. 
-- Fixed DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to not overwrite by default 
+- Added an isDirectory property to PathProperties.
+- Fixed DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to not overwrite by default
 - Added overloads to DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to allow overwrite behavior.
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
 - Fixed a bug where rename would not work with Url encoded destinations.
 
 ## 12.0.1 (2020-03-11)
-- GA release. 
+- GA release.
 - Fixed bug that caused rename to fail on paths that are url encoded.
 - Mapped StorageErrorException and BlobStorageException to DataLakeStorageException on DataLakeServiceClient.listFileSystems
 - Removed DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
@@ -44,13 +48,13 @@ and
 - Added SAS generation methods on clients to improve discoverability and convenience of sas.
 - Mapped StorageErrorException and BlobStorageException to DataLakeStorageException.
 - Added support for exists method on FileClients and DirectoryClients
-- Added support for no overwrite by default on min create method on FileClients and DirectoryClients and flush method on FileClients 
+- Added support for no overwrite by default on min create method on FileClients and DirectoryClients and flush method on FileClients
 
 ## 12.0.0-beta.7 (2019-12-04)
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake) 
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 
 - Fixed bug in ClientBuilders that prevented OAuth from functioning.
 - Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
@@ -60,7 +64,7 @@ and
 - Renamed setters and getters in PathPermissions and RolePermissions to be more detailed.
 - Fixed camel-casing of the word SubDirectory.
 - Upgraded to version 1.1.0 of Azure Core.
-- Upgraded to version 12.1.0 of Azure Storage Blob. 
+- Upgraded to version 12.1.0 of Azure Storage Blob.
 
 ## 12.0.0-preview.5
 - Initial Release. Please see the README and wiki for information on the new design.
@@ -71,7 +75,7 @@ and
 - Support for DataLakeDirectoryClient: create, delete, rename, get properties, get access control, set metadata, set properties, set access control, create file, delete file, create sub-directory, delete sub-directory
 - Support for DataLakeFileClient: create, delete, rename, get properties, get access control, set metadata, set properties, set access control, append, flush, read
 
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake) 
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)

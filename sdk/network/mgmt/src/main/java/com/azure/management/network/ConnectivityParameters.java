@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnectivityParameters model. */
 @Fluent
 public final class ConnectivityParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityParameters.class);
+
     /*
      * Describes the source of the connection.
      */
@@ -112,5 +116,31 @@ public final class ConnectivityParameters {
     public ConnectivityParameters withProtocolConfiguration(ProtocolConfiguration protocolConfiguration) {
         this.protocolConfiguration = protocolConfiguration;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (source() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
+        } else {
+            source().validate();
+        }
+        if (destination() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property destination in model ConnectivityParameters"));
+        } else {
+            destination().validate();
+        }
+        if (protocolConfiguration() != null) {
+            protocolConfiguration().validate();
+        }
     }
 }

@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -28,14 +28,14 @@ public class RecognizeEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft.", "en"),
-            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.", "en")
+            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft.").setLanguage("en"),
+            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en")
         );
 
         // Request options: show statistics and model version
@@ -53,7 +53,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
 
                 // Recognized entities for each of documents from a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-                for (RecognizeCategorizedEntitiesResult entitiesResult : pagedResponse.getElements()) {
+                for (RecognizeEntitiesResult entitiesResult : pagedResponse.getElements()) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (entitiesResult.isError()) {
                         // Erroneous document
@@ -61,8 +61,8 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                     } else {
                         // Valid document
                         entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                            "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+                            "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
                     }
                 }
             },

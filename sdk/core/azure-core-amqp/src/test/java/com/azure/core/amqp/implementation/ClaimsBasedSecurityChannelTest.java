@@ -44,11 +44,18 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for {@link ClaimsBasedSecurityChannel}.
+ */
 class ClaimsBasedSecurityChannelTest {
     private final AmqpRetryOptions options = new AmqpRetryOptions()
         .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(45))
         .setMaxRetries(4);
+    private final String tokenAudience = "path.foo.bar";
+    private final String scopes = "scopes.cbs.foo";
+    private final OffsetDateTime validUntil = OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC);
+    private final AccessToken accessToken = new AccessToken("an-access-token?", validUntil);
 
     @Captor
     private ArgumentCaptor<Message> messageArgumentCaptor;
@@ -100,13 +107,8 @@ class ClaimsBasedSecurityChannelTest {
     @Test
     public void authorizesSasToken() {
         // Arrange
-        final String tokenAudience = "path.foo.bar";
-        final String scopes = "scopes.cbs.foo";
-        final OffsetDateTime validUntil = OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC);
-
         // Subtracting two minutes because the AccessToken does this internally.
         final Date expectedDate = Date.from(validUntil.minusMinutes(2).toInstant());
-        final AccessToken accessToken = new AccessToken("an-access-token?", validUntil);
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
@@ -139,15 +141,8 @@ class ClaimsBasedSecurityChannelTest {
     @Test
     public void authorizesJwt() {
         // Arrange
-        final String tokenAudience = "path.foo.bar";
-        final String scopes = "scopes.cbs.foo";
-        final OffsetDateTime validUntil = OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC);
-
-        // Subtracting two minutes because the AccessToken does this internally.
-        final AccessToken accessToken = new AccessToken("an-access-token?", validUntil);
-
-        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
-            CbsAuthorizationType.JSON_WEB_TOKEN, options);
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel),
+            tokenCredential, CbsAuthorizationType.JSON_WEB_TOKEN, options);
 
         when(requestResponseChannel.sendWithAck(any())).thenReturn(Mono.just(acceptedResponse));
         when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))
@@ -169,15 +164,12 @@ class ClaimsBasedSecurityChannelTest {
         Assertions.assertEquals("jwt", properties.get(PUT_TOKEN_TYPE));
     }
 
+    /**
+     * Tests that it errors when an unsuccessful response is returned.
+     */
     @Test
     void invalidReturn() {
         // Arrange
-        final String tokenAudience = "path.foo.bar";
-        final String scopes = "scopes.cbs.foo";
-        final OffsetDateTime validUntil = OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC);
-
-        // Subtracting two minutes because the AccessToken does this internally.
-        final AccessToken accessToken = new AccessToken("an-access-token?", validUntil);
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
@@ -191,6 +183,30 @@ class ClaimsBasedSecurityChannelTest {
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, ((AmqpException) error).getErrorCondition());
+            })
+            .verify();
+    }
+
+    /**
+     * Verifies that it errors when no response is received from CBS node.
+     */
+    @Test
+    void errorsWhenNoResponse() {
+        // Arrange
+        final AccessToken accessToken = new AccessToken("an-access-token?", validUntil);
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel),
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
+
+        when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))
+            .thenReturn(Mono.just(accessToken));
+
+        when(requestResponseChannel.sendWithAck(any())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertTrue(((AmqpException) error).isTransient());
             })
             .verify();
     }

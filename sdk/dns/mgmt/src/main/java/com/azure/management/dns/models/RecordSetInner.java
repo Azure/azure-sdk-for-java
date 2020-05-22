@@ -7,8 +7,9 @@ package com.azure.management.dns.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.management.dns.ARecord;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.dns.AaaaRecord;
+import com.azure.management.dns.ARecord;
 import com.azure.management.dns.CaaRecord;
 import com.azure.management.dns.CnameRecord;
 import com.azure.management.dns.MxRecord;
@@ -17,6 +18,7 @@ import com.azure.management.dns.PtrRecord;
 import com.azure.management.dns.SoaRecord;
 import com.azure.management.dns.SrvRecord;
 import com.azure.management.dns.TxtRecord;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class RecordSetInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetInner.class);
+
     /*
      * The etag of the record set.
      */
@@ -41,7 +45,7 @@ public class RecordSetInner extends ProxyResource {
      * The TTL (time-to-live) of the records in the record set.
      */
     @JsonProperty(value = "properties.TTL")
-    private Long tTL;
+    private Long ttl;
 
     /*
      * Fully qualified domain name of the record set.
@@ -150,22 +154,22 @@ public class RecordSetInner extends ProxyResource {
     }
 
     /**
-     * Get the tTL property: The TTL (time-to-live) of the records in the record set.
+     * Get the ttl property: The TTL (time-to-live) of the records in the record set.
      *
-     * @return the tTL value.
+     * @return the ttl value.
      */
-    public Long tTL() {
-        return this.tTL;
+    public Long ttl() {
+        return this.ttl;
     }
 
     /**
-     * Set the tTL property: The TTL (time-to-live) of the records in the record set.
+     * Set the ttl property: The TTL (time-to-live) of the records in the record set.
      *
-     * @param tTL the tTL value to set.
+     * @param ttl the ttl value to set.
      * @return the RecordSetInner object itself.
      */
-    public RecordSetInner withTTL(Long tTL) {
-        this.tTL = tTL;
+    public RecordSetInner withTtl(Long ttl) {
+        this.ttl = ttl;
         return this;
     }
 
@@ -376,5 +380,43 @@ public class RecordSetInner extends ProxyResource {
     public RecordSetInner withCaaRecords(List<CaaRecord> caaRecords) {
         this.caaRecords = caaRecords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (aRecords() != null) {
+            aRecords().forEach(e -> e.validate());
+        }
+        if (aaaaRecords() != null) {
+            aaaaRecords().forEach(e -> e.validate());
+        }
+        if (mxRecords() != null) {
+            mxRecords().forEach(e -> e.validate());
+        }
+        if (nsRecords() != null) {
+            nsRecords().forEach(e -> e.validate());
+        }
+        if (ptrRecords() != null) {
+            ptrRecords().forEach(e -> e.validate());
+        }
+        if (srvRecords() != null) {
+            srvRecords().forEach(e -> e.validate());
+        }
+        if (txtRecords() != null) {
+            txtRecords().forEach(e -> e.validate());
+        }
+        if (cnameRecord() != null) {
+            cnameRecord().validate();
+        }
+        if (soaRecord() != null) {
+            soaRecord().validate();
+        }
+        if (caaRecords() != null) {
+            caaRecords().forEach(e -> e.validate());
+        }
     }
 }

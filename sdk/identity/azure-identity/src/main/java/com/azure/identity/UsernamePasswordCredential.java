@@ -43,9 +43,6 @@ public class UsernamePasswordCredential implements TokenCredential {
         Objects.requireNonNull(password, "'password' cannot be null.");
         this.username = username;
         this.password = password;
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient =
             new IdentityClientBuilder()
                 .tenantId(tenantId)
@@ -59,7 +56,7 @@ public class UsernamePasswordCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
+                return identityClient.authenticateWithMsalAccount(request, cachedToken.get().getAccount())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();

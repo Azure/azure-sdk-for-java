@@ -12,5 +12,6 @@
     <!-- NOTE: Commenting out becuase we are now binary composed.
     -->
     <module>azure-identity</module>
+    <module>azure-identity-perf</module>
   </modules>
 </project>

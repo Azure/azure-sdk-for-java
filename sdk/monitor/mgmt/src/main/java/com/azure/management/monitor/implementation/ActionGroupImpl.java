@@ -219,7 +219,7 @@ class ActionGroupImpl
 
     @Override
     public Mono<ActionGroup> createResourceAsync() {
-        this.inner().setLocation("global");
+        this.inner().withLocation("global");
         return this
             .manager()
             .inner()

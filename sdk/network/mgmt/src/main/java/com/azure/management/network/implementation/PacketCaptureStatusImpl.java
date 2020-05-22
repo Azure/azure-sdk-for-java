@@ -23,7 +23,7 @@ class PacketCaptureStatusImpl extends WrapperImpl<PacketCaptureQueryStatusResult
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ElasticPoolDatabaseActivityListResult model. */
 @Fluent
 public final class ElasticPoolDatabaseActivityListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolDatabaseActivityListResultInner.class);
+
     /*
      * The list of elastic pool database activities.
      */
@@ -35,5 +39,21 @@ public final class ElasticPoolDatabaseActivityListResultInner {
     public ElasticPoolDatabaseActivityListResultInner withValue(List<ElasticPoolDatabaseActivityInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model ElasticPoolDatabaseActivityListResultInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

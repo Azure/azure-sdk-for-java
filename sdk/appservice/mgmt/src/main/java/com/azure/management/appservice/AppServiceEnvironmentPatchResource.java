@@ -6,7 +6,9 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.models.StampCapacityInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceEnvironmentPatchResource.class);
+
     /*
      * Name of the App Service Environment.
      */
@@ -162,7 +166,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * Description of IP SSL mapping for the App Service Environment.
      */
     @JsonProperty(value = "properties.vipMappings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<VirtualIPMapping> vipMappings;
+    private List<VirtualIpMapping> vipMappings;
 
     /*
      * Current total, used, and available worker capacities.
@@ -617,7 +621,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      *
      * @return the vipMappings value.
      */
-    public List<VirtualIPMapping> vipMappings() {
+    public List<VirtualIpMapping> vipMappings() {
         return this.vipMappings;
     }
 
@@ -878,5 +882,33 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
     public AppServiceEnvironmentPatchResource withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName) {
         this.sslCertKeyVaultSecretName = sslCertKeyVaultSecretName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (virtualNetwork() != null) {
+            virtualNetwork().validate();
+        }
+        if (workerPools() != null) {
+            workerPools().forEach(e -> e.validate());
+        }
+        if (vipMappings() != null) {
+            vipMappings().forEach(e -> e.validate());
+        }
+        if (environmentCapacities() != null) {
+            environmentCapacities().forEach(e -> e.validate());
+        }
+        if (networkAccessControlList() != null) {
+            networkAccessControlList().forEach(e -> e.validate());
+        }
+        if (clusterSettings() != null) {
+            clusterSettings().forEach(e -> e.validate());
+        }
     }
 }

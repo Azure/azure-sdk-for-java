@@ -26,7 +26,7 @@ import org.apache.commons.lang.time.StopWatch;
  */
 public class ManageLinuxFunctionAppSourceControl {
 
-    private static final String FUNCTION_APP_PACKAGE_URL = "https://raw.github.com/Azure/azure-libraries-for-java/master/azure-mgmt-appservice/src/test/resources/java-functions.zip";
+    private static final String FUNCTION_APP_PACKAGE_URL = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/java-functions.zip";
     private static final long TIMEOUT_IN_SECONDS = 5 * 60;
 
     /**

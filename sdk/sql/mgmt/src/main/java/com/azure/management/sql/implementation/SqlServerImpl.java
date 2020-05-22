@@ -5,7 +5,7 @@ package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -224,7 +224,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners =
             this.manager().inner().recommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
         for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
-            recommendedElasticPoolMap.put(inner.getName(), new RecommendedElasticPoolImpl(inner, this));
+            recommendedElasticPoolMap.put(inner.name(), new RecommendedElasticPoolImpl(inner, this));
         }
 
         return Collections.unmodifiableMap(recommendedElasticPoolMap);
@@ -273,7 +273,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .sqlServers()
                     .firewallRules()
                     .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() != 404) {
                 throw logger.logExceptionAsError(e);
             }
@@ -421,7 +421,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress) {
         return this
             .withNewFirewallRule(
-                startIPAddress, endIPAddress, this.manager().getSdkContext().randomResourceName("firewall_", 15));
+                startIPAddress, endIPAddress, this.manager().sdkContext().randomResourceName("firewall_", 15));
     }
 
     @Override

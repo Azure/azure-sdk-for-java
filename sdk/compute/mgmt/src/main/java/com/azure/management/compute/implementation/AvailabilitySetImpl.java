@@ -63,7 +63,7 @@ class AvailabilitySetImpl
         if (idOfVMsInSet == null) {
             idOfVMsInSet = new HashSet<>();
             for (SubResource resource : this.inner().virtualMachines()) {
-                idOfVMsInSet.add(resource.getId());
+                idOfVMsInSet.add(resource.id());
             }
         }
         return Collections.unmodifiableSet(idOfVMsInSet);
@@ -71,7 +71,7 @@ class AvailabilitySetImpl
 
     @Override
     public ProximityPlacementGroup proximityPlacementGroup() {
-        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().getId());
+        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
         ProximityPlacementGroupInner plgInner =
             manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
@@ -135,7 +135,7 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl withProximityPlacementGroup(String proximityPlacementGroupId) {
-        this.inner().withProximityPlacementGroup(new SubResource().setId(proximityPlacementGroupId));
+        this.inner().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
         this.newProximityPlacementGroupType = null;
         this.newProximityPlacementGroupName = null;
         return this;
@@ -190,7 +190,7 @@ class AvailabilitySetImpl
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
-                plgInner.setLocation(this.inner().getLocation());
+                plgInner.withLocation(this.inner().location());
                 return this
                     .manager()
                     .inner()
@@ -198,7 +198,7 @@ class AvailabilitySetImpl
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
                         createdPlgInner -> {
-                            this.inner().withProximityPlacementGroup(new SubResource().setId(createdPlgInner.getId()));
+                            this.inner().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
                             return this;
                         });
             }

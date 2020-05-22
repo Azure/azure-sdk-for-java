@@ -4,6 +4,7 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.compute.models.VirtualMachineScaleSetInner;
@@ -241,7 +242,7 @@ public interface VirtualMachineScaleSet
      *     the scale set
      * @throws IOException the IO exception
      */
-    List<String> primaryPublicIPAddressIds() throws IOException;
+    List<String> primaryPublicIpAddressIds() throws IOException;
 
     /** @return the URL to storage containers that store the VHDs of the virtual machines in the scale set */
     List<String> vhdContainers();
@@ -283,6 +284,15 @@ public interface VirtualMachineScaleSet
      * @return the network interfaces
      */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(
+        String virtualMachineInstanceId);
+
+    /**
+     * Lists the network interface associated with a specific virtual machine instance in the scale set asynchronously.
+     *
+     * @param virtualMachineInstanceId the instance ID
+     * @return the network interfaces
+     */
+    PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
         String virtualMachineInstanceId);
 
     /** @return true if managed disk is used for the virtual machine scale set's disks (os, data) */
@@ -328,7 +338,7 @@ public interface VirtualMachineScaleSet
     StorageAccountTypes managedOSDiskStorageAccountType();
 
     /** @return the public ip configuration of virtual machines in the scale set. */
-    VirtualMachineScaleSetPublicIPAddressConfiguration virtualMachinePublicIpConfig();
+    VirtualMachineScaleSetPublicIpAddressConfiguration virtualMachinePublicIpConfig();
 
     /** @return true if ip forwarding is enabled for the virtual machine scale set. */
     boolean isIpForwardingEnabled();
@@ -1549,7 +1559,7 @@ public interface VirtualMachineScaleSet
              * @param ipConfig the public ip address configuration
              * @return the next stage of the definition
              */
-            WithCreate withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIPAddressConfiguration ipConfig);
+            WithCreate withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIpAddressConfiguration ipConfig);
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure accelerated networking. */
@@ -2252,7 +2262,7 @@ public interface VirtualMachineScaleSet
              * @param ipConfig the public ip address configuration
              * @return the next stage of the update
              */
-            WithApply withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIPAddressConfiguration ipConfig);
+            WithApply withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIpAddressConfiguration ipConfig);
         }
 
         /** The stage of the virtual machine scale set update allowing to configure accelerated networking. */

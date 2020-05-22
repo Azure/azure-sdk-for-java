@@ -42,7 +42,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override

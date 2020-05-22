@@ -3,20 +3,19 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.models.ExcludedPath;
-import com.azure.cosmos.models.HashIndex;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingMode;
@@ -73,17 +72,14 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath();
-        excludedPath.setPath("/*");
+        ExcludedPath excludedPath = new ExcludedPath("/*");
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
-        IncludedPath includedPath1 = new IncludedPath();
-        includedPath1.setPath("/name/?");
+        IncludedPath includedPath1 = new IncludedPath("/name/?");
         includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
         includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
-        IncludedPath includedPath2 = new IncludedPath();
-        includedPath2.setPath("/description/?");
+        IncludedPath includedPath2 = new IncludedPath("/description/?");
         includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
         collectionDefinition.setIndexingPolicy(indexingPolicy);
@@ -182,16 +178,13 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath();
-        excludedPath.setPath("/*");
+        ExcludedPath excludedPath = new ExcludedPath("/*");
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
-        IncludedPath includedPath1 = new IncludedPath();
-        includedPath1.setPath("/name/?");
+        IncludedPath includedPath1 = new IncludedPath("/name/?");
         includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
-        IncludedPath includedPath2 = new IncludedPath();
-        includedPath2.setPath("/description/?");
+        IncludedPath includedPath2 = new IncludedPath("/description/?");
         includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
@@ -211,8 +204,8 @@ public class UniqueIndexTest extends TestSuiteBase {
                         ImmutableList.of(ImmutableList.of("/name", "/description")));
     }
 
-    private CosmosClientException getDocumentClientException(RuntimeException e) {
-        CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+    private CosmosException getDocumentClientException(RuntimeException e) {
+        CosmosException dce = Utils.as(e, CosmosException.class);
         assertThat(dce).isNotNull();
         return dce;
     }
@@ -223,8 +216,10 @@ public class UniqueIndexTest extends TestSuiteBase {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
-            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            .directMode(DirectConnectionConfig.getDefaultConfig())
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .contentResponseOnWriteEnabled(true)
+            .buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

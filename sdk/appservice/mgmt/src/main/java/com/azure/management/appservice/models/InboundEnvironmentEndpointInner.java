@@ -5,12 +5,16 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The InboundEnvironmentEndpoint model. */
 @Fluent
 public final class InboundEnvironmentEndpointInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundEnvironmentEndpointInner.class);
+
     /*
      * Short text describing the purpose of the network traffic.
      */
@@ -89,5 +93,13 @@ public final class InboundEnvironmentEndpointInner {
     public InboundEnvironmentEndpointInner withPorts(List<String> ports) {
         this.ports = ports;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

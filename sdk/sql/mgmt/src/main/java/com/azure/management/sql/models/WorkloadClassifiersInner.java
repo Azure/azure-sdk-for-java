@@ -25,9 +25,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -35,6 +36,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkloadClassifiers. */
 public final class WorkloadClassifiersInner {
+    private final ClientLogger logger = new ClientLogger(WorkloadClassifiersInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final WorkloadClassifiersService service;
 
@@ -65,7 +68,7 @@ public final class WorkloadClassifiersInner {
                 + "/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
                 + "/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<WorkloadClassifierInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -83,7 +86,7 @@ public final class WorkloadClassifiersInner {
                 + "/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
                 + "/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -102,7 +105,7 @@ public final class WorkloadClassifiersInner {
                 + "/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
                 + "/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -120,7 +123,7 @@ public final class WorkloadClassifiersInner {
                 + "/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
                 + "/workloadClassifiers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<WorkloadClassifierListResultInner>> listByWorkloadGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -137,7 +140,7 @@ public final class WorkloadClassifiersInner {
                 + "/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
                 + "/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<WorkloadClassifierInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -156,7 +159,7 @@ public final class WorkloadClassifiersInner {
                 + "/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
                 + "/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -171,7 +174,7 @@ public final class WorkloadClassifiersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<WorkloadClassifierListResultInner>> listByWorkloadGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -186,7 +189,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workload classifier.
      */
@@ -197,6 +200,35 @@ public final class WorkloadClassifiersInner {
         String databaseName,
         String workloadGroupName,
         String workloadClassifierName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
@@ -224,8 +256,74 @@ public final class WorkloadClassifiersInner {
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workload classifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<WorkloadClassifierInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                workloadGroupName,
+                workloadClassifierName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workload classifier.
      */
@@ -258,7 +356,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workload classifier.
      */
@@ -283,7 +381,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadClassifierName The name of the workload classifier to create/update.
      * @param parameters Workload classifier operations for a data warehouse.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
@@ -295,6 +393,40 @@ public final class WorkloadClassifiersInner {
         String workloadGroupName,
         String workloadClassifierName,
         WorkloadClassifierInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
@@ -325,7 +457,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadClassifierName The name of the workload classifier to create/update.
      * @param parameters Workload classifier operations for a data warehouse.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
@@ -359,7 +491,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadClassifierName The name of the workload classifier to create/update.
      * @param parameters Workload classifier operations for a data warehouse.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
@@ -386,7 +518,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -397,6 +529,35 @@ public final class WorkloadClassifiersInner {
         String databaseName,
         String workloadGroupName,
         String workloadClassifierName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
@@ -425,7 +586,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -456,7 +617,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -478,13 +639,37 @@ public final class WorkloadClassifiersInner {
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workload classifiers for a workload group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupSinglePageAsync(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
@@ -519,8 +704,71 @@ public final class WorkloadClassifiersInner {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload classifiers for a workload group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupSinglePageAsync(
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01-preview";
+        return service
+            .listByWorkloadGroup(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                workloadGroupName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets the list of workload classifiers for a workload group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workload classifiers for a workload group.
      */
@@ -540,8 +788,32 @@ public final class WorkloadClassifiersInner {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload classifiers for a workload group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByWorkloadGroupSinglePageAsync(
+                    resourceGroupName, serverName, databaseName, workloadGroupName, context),
+            nextLink -> listByWorkloadGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the list of workload classifiers for a workload group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workload classifiers for a workload group.
      */
@@ -563,7 +835,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadClassifierName The name of the workload classifier to create/update.
      * @param parameters Workload classifier operations for a data warehouse.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
@@ -575,6 +847,40 @@ public final class WorkloadClassifiersInner {
         String workloadGroupName,
         String workloadClassifierName,
         WorkloadClassifierInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
@@ -604,8 +910,82 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier to create/update.
      * @param parameters Workload classifier operations for a data warehouse.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workload classifier operations for a data warehouse.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<WorkloadClassifierInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName,
+        WorkloadClassifierInner parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01-preview";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                workloadGroupName,
+                workloadClassifierName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to create/update.
+     * @param parameters Workload classifier operations for a data warehouse.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
@@ -640,7 +1020,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadClassifierName The name of the workload classifier to create/update.
      * @param parameters Workload classifier operations for a data warehouse.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
@@ -667,7 +1047,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -678,6 +1058,35 @@ public final class WorkloadClassifiersInner {
         String databaseName,
         String workloadGroupName,
         String workloadClassifierName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
@@ -705,8 +1114,74 @@ public final class WorkloadClassifiersInner {
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier to delete.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (workloadGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
+        }
+        if (workloadClassifierName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01-preview";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                workloadGroupName,
+                workloadClassifierName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -732,7 +1207,7 @@ public final class WorkloadClassifiersInner {
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -751,12 +1226,15 @@ public final class WorkloadClassifiersInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workload classifiers for a workload group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByWorkloadGroupNext(nextLink, context))
             .<PagedResponse<WorkloadClassifierInner>>map(
@@ -769,5 +1247,34 @@ public final class WorkloadClassifiersInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload classifiers for a workload group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByWorkloadGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

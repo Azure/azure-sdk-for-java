@@ -99,7 +99,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             System.out.println("Auto-scale Setting: " + scaleSettings.id());
 
-            String deployedWebAppUrl = "https://" + webapp.hostNames().iterator().next() + "/";
+            String deployedWebAppUrl = "https://" + webapp.hostnames().iterator().next() + "/";
 
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {

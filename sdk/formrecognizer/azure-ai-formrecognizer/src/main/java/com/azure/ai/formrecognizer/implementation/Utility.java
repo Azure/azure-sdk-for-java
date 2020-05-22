@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.function.BiConsumer;
 
 /**
  * Utility method class.
@@ -26,7 +27,7 @@ public final class Utility {
 
     /**
      * Automatically detect byte buffer's content type.
-     *
+     * <p>
      * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"></a>.
      *
      * @param buffer The byte buffer input.
@@ -35,8 +36,8 @@ public final class Utility {
      */
     public static Mono<ContentType> detectContentType(Flux<ByteBuffer> buffer) {
         byte[] header = new byte[4];
-        int[] written = new int[] {0};
-        ContentType[] contentType = { ContentType.fromString("none")};
+        int[] written = new int[]{0};
+        ContentType[] contentType = {ContentType.fromString("none")};
         return buffer.map(chunk -> {
             final int len = chunk.remaining();
             for (int i = 0; i < len; i++) {
@@ -61,15 +62,15 @@ public final class Utility {
             // current chunk don't have enough bytes so return true to get next Chunk if there is one.
             return true;
         })
-        .takeWhile(doContinue -> doContinue)
-        .then(Mono.defer(() -> {
-            if (contentType[0] != null) {
-                return Mono.just(contentType[0]);
-            } else {
-                return Mono.error(new RuntimeException("Content type could not be detected. "
-                    + "Should use other overload API that takes content type."));
-            }
-        }));
+            .takeWhile(doContinue -> doContinue)
+            .then(Mono.defer(() -> {
+                if (contentType[0] != null) {
+                    return Mono.just(contentType[0]);
+                } else {
+                    return Mono.error(new RuntimeException("Content type could not be detected. "
+                        + "Should use other overload API that takes content type."));
+                }
+            }));
     }
 
     private static boolean isJpeg(byte[] header) {
@@ -85,7 +86,7 @@ public final class Utility {
 
     private static boolean isPng(byte[] header) {
         return header[0] == (byte) 0x89
-            &&  header[1] == (byte) 0x50
+            && header[1] == (byte) 0x50
             && header[2] == (byte) 0x4e
             && header[3] == (byte) 0x47;
     }
@@ -107,6 +108,7 @@ public final class Utility {
      * InputStream.
      *
      * @param inputStream InputStream to back the Flux
+     *
      * @return Flux of ByteBuffer backed by the InputStream
      */
     public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
@@ -132,6 +134,37 @@ public final class Utility {
             .cache();
     }
 
+    /**
+     * Extracts the result ID from the URL.
+     *
+     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
+     * resultId used to track the progress and obtain the result of the analyze operation.
+     *
+     * @return The resultId used to track the progress.
+     */
+    public static String parseModelId(String operationLocation) {
+        if (!CoreUtils.isNullOrEmpty(operationLocation)) {
+            int lastIndex = operationLocation.lastIndexOf('/');
+            if (lastIndex != -1) {
+                return operationLocation.substring(lastIndex + 1);
+            }
+        }
+        throw LOGGER.logExceptionAsError(
+            new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
+    }
+
+    /**
+     * Given an iterable will apply the indexing function to it and return the index and each item of the iterable.
+     *
+     * @param iterable the list to apply the mapping function to.
+     * @param biConsumer the function which accepts the index and the each value of the iterable.
+     * @param <T> the type of items being returned.
+     */
+    public static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
+        int[] index = new int[]{0};
+        iterable.forEach(element -> biConsumer.accept(index[0]++, element));
+    }
+
     private static class Pair {
         private ByteBuffer byteBuffer;
         private int readBytes;
@@ -153,24 +186,5 @@ public final class Utility {
             this.readBytes = cnt;
             return this;
         }
-    }
-
-    /**
-     * Extracts the result ID from the URL.
-     *
-     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
-     * resultId used to track the progress and obtain the result of the analyze operation.
-     *
-     * @return The resultId used to track the progress.
-     */
-    public static String parseModelId(String operationLocation) {
-        if (!CoreUtils.isNullOrEmpty(operationLocation)) {
-            int lastIndex = operationLocation.lastIndexOf('/');
-            if (lastIndex != -1) {
-                return operationLocation.substring(lastIndex + 1);
-            }
-        }
-        throw LOGGER.logExceptionAsError(
-            new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ContainerPartitionKey model. */
 @Fluent
 public final class ContainerPartitionKey {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerPartitionKey.class);
+
     /*
      * List of paths using which data within the container can be partitioned
      */
@@ -87,5 +91,13 @@ public final class ContainerPartitionKey {
     public ContainerPartitionKey withVersion(Integer version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

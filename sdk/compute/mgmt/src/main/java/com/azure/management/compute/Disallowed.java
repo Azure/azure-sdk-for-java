@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Disallowed model. */
 @Fluent
 public final class Disallowed {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Disallowed.class);
+
     /*
      * A list of disk types.
      */
@@ -35,5 +39,13 @@ public final class Disallowed {
     public Disallowed withDiskTypes(List<String> diskTypes) {
         this.diskTypes = diskTypes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DiskInstanceView model. */
 @Fluent
 public final class DiskInstanceView {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskInstanceView.class);
+
     /*
      * The disk name.
      */
@@ -90,5 +94,19 @@ public final class DiskInstanceView {
     public DiskInstanceView withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (encryptionSettings() != null) {
+            encryptionSettings().forEach(e -> e.validate());
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 }

@@ -32,7 +32,7 @@ class AppServiceDomainsImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceDomainImpl(inner.getName(), inner, this.manager());
+        return new AppServiceDomainImpl(inner.name(), inner, this.manager());
     }
 
     @Override

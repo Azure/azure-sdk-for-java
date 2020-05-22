@@ -52,7 +52,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase_withPropertiesAndOptions() throws CosmosClientException {
+    public void createDatabase_withPropertiesAndOptions() {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
 
@@ -84,8 +84,8 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         try {
             client.createDatabase(databaseProperties);
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 
@@ -106,7 +106,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         try {
             CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput, requestOptions);
             validateDatabaseResponse(databaseDefinition, createResponse);
-        } catch (CosmosClientException ex) {
+        } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
         }
     }
@@ -120,8 +120,8 @@ public class CosmosDatabaseTest extends TestSuiteBase {
             CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput);
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
-            if (ex instanceof CosmosClientException) {
-                assertThat(((CosmosClientException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
+            if (ex instanceof CosmosException) {
+                assertThat(((CosmosException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
             } else {
                 throw ex;
             }
@@ -136,8 +136,8 @@ public class CosmosDatabaseTest extends TestSuiteBase {
             CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId(), throughput);
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
-            if (ex instanceof CosmosClientException) {
-                assertThat(((CosmosClientException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
+            if (ex instanceof CosmosException) {
+                assertThat(((CosmosException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
             } else {
                 throw ex;
             }

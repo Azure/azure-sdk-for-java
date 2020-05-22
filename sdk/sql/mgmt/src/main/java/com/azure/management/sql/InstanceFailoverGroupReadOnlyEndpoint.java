@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InstanceFailoverGroupReadOnlyEndpoint model. */
 @Fluent
 public final class InstanceFailoverGroupReadOnlyEndpoint {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceFailoverGroupReadOnlyEndpoint.class);
+
     /*
      * Failover policy of the read-only endpoint for the failover group.
      */
@@ -34,5 +38,13 @@ public final class InstanceFailoverGroupReadOnlyEndpoint {
     public InstanceFailoverGroupReadOnlyEndpoint withFailoverPolicy(ReadOnlyEndpointFailoverPolicy failoverPolicy) {
         this.failoverPolicy = failoverPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

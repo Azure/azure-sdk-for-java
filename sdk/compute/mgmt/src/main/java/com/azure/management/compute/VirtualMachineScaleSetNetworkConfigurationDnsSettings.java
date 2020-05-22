@@ -5,12 +5,17 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetNetworkConfigurationDnsSettings model. */
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkConfigurationDnsSettings.class);
+
     /*
      * List of DNS servers IP addresses
      */
@@ -35,5 +40,13 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings withDnsServers(List<String> dnsServers) {
         this.dnsServers = dnsServers;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

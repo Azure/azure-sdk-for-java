@@ -221,7 +221,7 @@ class VirtualMachinesImpl
             return null;
         }
         return new VirtualMachineImpl(
-            virtualMachineInner.getName(),
+            virtualMachineInner.name(),
             virtualMachineInner,
             this.manager(),
             this.storageManager,

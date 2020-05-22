@@ -43,7 +43,7 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
             return null;
         }
         return new VirtualMachineScaleSetNetworkInterfaceImpl(
-            inner.getName(), this.scaleSetName, this.resourceGroupName, inner, this.manager());
+            inner.name(), this.scaleSetName, this.resourceGroupName, inner, this.manager());
     }
 
     @Override
@@ -78,6 +78,16 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
                 this
                     .inner()
                     .listVirtualMachineScaleSetVMNetworkInterfaces(
+                        this.resourceGroupName, this.scaleSetName, instanceId));
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineInstanceIdAsync(String instanceId) {
+        return super
+            .wrapPageAsync(
+                this
+                    .inner()
+                    .listVirtualMachineScaleSetVMNetworkInterfacesAsync(
                         this.resourceGroupName, this.scaleSetName, instanceId));
     }
 }

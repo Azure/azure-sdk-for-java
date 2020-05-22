@@ -43,7 +43,7 @@ public class ApplicationGatewayBackendHttpConfigurationHealthImpl
     @Override
     public String name() {
         if (this.inner.backendHttpSettings() != null) {
-            return ResourceUtils.nameFromResourceId(this.inner.backendHttpSettings().getId());
+            return ResourceUtils.nameFromResourceId(this.inner.backendHttpSettings().id());
         } else {
             return null;
         }
@@ -55,7 +55,7 @@ public class ApplicationGatewayBackendHttpConfigurationHealthImpl
             return null;
         }
 
-        String name = ResourceUtils.nameFromResourceId(this.inner.backendHttpSettings().getId());
+        String name = ResourceUtils.nameFromResourceId(this.inner.backendHttpSettings().id());
         return this.parent().parent().backendHttpConfigurations().get(name);
     }
 
