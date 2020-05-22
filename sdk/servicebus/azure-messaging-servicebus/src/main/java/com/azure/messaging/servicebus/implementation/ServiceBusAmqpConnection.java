@@ -79,5 +79,5 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A Mono that completes with that resources's management node.
      */
-    Mono<TransactionManager> getTransactionManager();
+    Mono<TransactionChannel> createChannel();
 }

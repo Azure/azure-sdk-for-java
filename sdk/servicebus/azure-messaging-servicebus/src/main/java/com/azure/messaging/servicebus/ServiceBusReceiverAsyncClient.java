@@ -23,7 +23,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import com.azure.messaging.servicebus.implementation.TransactionManager;
+import com.azure.messaging.servicebus.implementation.TransactionChannel;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.BaseSubscriber;
@@ -1097,8 +1097,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(TransactionManager::createTransaction)
+            .flatMap(connection -> connection.createChannel())
+            .flatMap(TransactionChannel::txSelect)
             .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 
@@ -1109,8 +1109,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, true))
+            .flatMap(connection -> connection.createChannel())
+            .flatMap(transactionChannel -> transactionChannel.txCommit(transactionContext))
             .then();
     }
 
@@ -1121,8 +1121,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, false))
+            .flatMap(connection -> connection.createChannel())
+            .flatMap(transactionChannel -> transactionChannel.txRollback(transactionContext))
             .then();
     }
 }

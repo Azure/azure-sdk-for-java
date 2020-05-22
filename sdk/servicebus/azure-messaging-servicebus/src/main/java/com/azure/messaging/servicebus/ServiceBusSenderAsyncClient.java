@@ -477,8 +477,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.createTransaction())
+            .flatMap(connection -> connection.createChannel())
+            .flatMap(transactionManager -> transactionManager.txSelect())
             .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 
@@ -489,8 +489,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, true))
+            .flatMap(connection -> connection.createChannel())
+            .flatMap(channel -> channel.txCommit(transactionContext))
             .then();
     }
 
@@ -501,8 +501,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, false))
+            .flatMap(connection -> connection.createChannel())
+            .flatMap(channel -> channel.txRollback(transactionContext))
             .then();
     }
 }

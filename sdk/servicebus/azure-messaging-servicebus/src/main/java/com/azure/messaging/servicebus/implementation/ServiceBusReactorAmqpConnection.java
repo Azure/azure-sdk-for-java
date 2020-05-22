@@ -46,7 +46,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, TransactionManager> transactionManagers = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, TransactionChannel> transactionManagers = new ConcurrentHashMap<>();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
@@ -222,7 +222,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     @Override
-    public Mono<TransactionManager> getTransactionManager() {
+    public Mono<TransactionChannel> createChannel() {
         final String linkName = "coordinator";
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
@@ -231,7 +231,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         }
 
 
-        final TransactionManager existing = transactionManagers.get(linkName);
+        final TransactionChannel existing = transactionManagers.get(linkName);
         if (existing != null) {
             return Mono.just(existing);
         }
@@ -248,7 +248,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     logger.info("Creating transaction coordinator. linkName: [{}]",
                         linkName);
 
-                    return  new TransactionManagerImpl(createTransactionSendLink(linkName, retryOptions),
+                    return  new TransactionChannelImpl(createTransactionSendLink(linkName, retryOptions),
                         fullyQualifiedNamespace, linkName);
                 }));
             }));
