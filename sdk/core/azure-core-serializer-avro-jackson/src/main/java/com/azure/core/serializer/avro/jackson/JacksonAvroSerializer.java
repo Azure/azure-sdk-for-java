@@ -28,9 +28,9 @@ public final class JacksonAvroSerializer implements AvroSerializer {
 
     @Override
     public <T> Mono<T> deserialize(byte[] input, String schema) {
-        Objects.requireNonNull(schema, "'schema' cannot be null.");
-
         return Mono.fromCallable(() -> {
+            Objects.requireNonNull(schema, "'schema' cannot be null.");
+
             if (input == null) {
                 return null;
             }
@@ -48,10 +48,11 @@ public final class JacksonAvroSerializer implements AvroSerializer {
 
     @Override
     public Mono<byte[]> serialize(Object value, String schema) {
-        Objects.requireNonNull(schema, "'schema' cannot be null.");
+        return Mono.fromCallable(() -> {
+            Objects.requireNonNull(schema, "'schema' cannot be null.");
 
-        return Mono.fromCallable(() ->
-            avroMapper.writer().with(avroMapper.schemaFrom(schema)).writeValueAsBytes(value));
+            return avroMapper.writer().with(avroMapper.schemaFrom(schema)).writeValueAsBytes(value);
+        });
     }
 
     private static Class<?> getReaderClass(String typeFullName) {

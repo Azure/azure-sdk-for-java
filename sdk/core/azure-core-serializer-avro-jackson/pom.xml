@@ -68,6 +68,12 @@
     </dependency>
 
     <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
@@ -103,6 +109,27 @@
             </bannedDependencies>
           </rules>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-maven-plugin</artifactId>
+        <version>1.8.2</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>schema</goal>
+            </goals>
+            <configuration>
+              <testSourceDirectory>${project.basedir}/src/test/avro/</testSourceDirectory>
+              <testOutputDirectory>${project.basedir}/src/test/java/</testOutputDirectory>
+              <testIncludes>
+                <testInclude>**/*.avro</testInclude>
+              </testIncludes>
+              <stringType>String</stringType>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
