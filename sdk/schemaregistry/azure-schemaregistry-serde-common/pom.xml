@@ -14,9 +14,10 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-schemaregistry-serde-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-common;current} -->
 
   <name>Microsoft Azure Schema Registry - Common SerDe Package for client library</name>
   <description>Common SerDe Package containing base serialization/deserialization implementation for Azure Schema Registry client library</description>
@@ -48,26 +49,26 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-schemaregistry-client</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-client;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-client;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -77,4 +78,23 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
