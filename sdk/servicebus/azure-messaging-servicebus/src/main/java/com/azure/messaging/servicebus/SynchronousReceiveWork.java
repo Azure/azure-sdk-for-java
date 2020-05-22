@@ -23,6 +23,9 @@ class SynchronousReceiveWork {
     // Indicate state that timeout has occurred for this work.
     private boolean workTimedOut = false;
 
+    // Indicate that if processing started or not.
+    private boolean processingStarted;
+
     private volatile Throwable error = null;
 
     /**
@@ -134,5 +137,20 @@ class SynchronousReceiveWork {
      */
     Throwable getError() {
         return this.error;
+    }
+
+    /**
+     * Indiate that processing is started for this work.
+     */
+    void startedProcessing() {
+        this.processingStarted = true;
+    }
+
+    /**
+     *
+     * @return flag indicting that processing is started or not.
+     */
+    boolean isProcessingStarted() {
+        return this.processingStarted;
     }
 }

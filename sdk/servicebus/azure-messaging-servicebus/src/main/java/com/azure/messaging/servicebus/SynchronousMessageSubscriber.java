@@ -139,7 +139,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             // from queue when we have delivered all the messages to currentWork.
 
             while ((currentWork = workQueue.peek()) != null
-                && (currentTimeoutOperation == null || bufferMessages.size() > 0)) {
+                && (!currentWork.isProcessingStarted() || bufferMessages.size() > 0)) {
 
                 // Additional check for safety, but normally this work should never be terminal
                 if (currentWork.isTerminal()) {
@@ -148,13 +148,13 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
                         currentTimeoutOperation.dispose();
                     }
-                    currentTimeoutOperation = null;
                     continue;
                 }
 
-                if (currentTimeoutOperation == null) {
+                if (!currentWork.isProcessingStarted()) {
                     // timer to complete the currentWork in case of timeout trigger
                     currentTimeoutOperation = getTimeoutOperation(currentWork);
+                    currentWork.startedProcessing();
                 }
 
                 // Send messages to currentWork from buffer
@@ -170,10 +170,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     }
                     // Now remove from queue since it is complete
                     workQueue.remove(currentWork);
-                    if (!currentTimeoutOperation.isDisposed()) {
+                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
                         currentTimeoutOperation.dispose();
                     }
-                    currentTimeoutOperation = null;
                     logger.verbose("The work [{}] is complete.", currentWork.getId());
                 } else {
                     // Since this work is not complete, find out how much we should request from upstream
@@ -239,5 +238,13 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     private boolean isTerminated() {
         return isDisposed.get();
+    }
+
+    int getWorkQueueSize() {
+        return this.workQueue.size();
+    }
+
+    long getRequested() {
+        return this.requested;
     }
 }

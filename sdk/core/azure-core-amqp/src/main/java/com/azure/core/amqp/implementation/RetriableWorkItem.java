@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Represents a work item that can be scheduled multiple times.
  */
-class RetriableWorkItem {
+class DeclaredRetriableWorkItem {
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final MonoSink<Void> monoSink;
     private final TimeoutTracker timeoutTracker;
