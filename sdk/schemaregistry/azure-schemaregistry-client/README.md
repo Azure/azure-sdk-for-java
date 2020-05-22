@@ -1,13 +1,13 @@
 # Azure Schema Registry client library for Java
 
-## Getting Started
+## Getting started
 
-## Key Concepts
+## Key concepts
 
 ## Examples
 
 ## Troubleshooting
 
-## Next Steps
+## Next steps
 
 ## Contributing
