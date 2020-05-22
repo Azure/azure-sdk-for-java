@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.models;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -81,13 +81,13 @@ public class CosmosItemResponseImpl<T> implements CosmosItemResponse<T> {
     }
 
     @Override
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return responseWrapper.getResponseDiagnostics();
+    public CosmosDiagnostics getDiagnostics() {
+        return responseWrapper.getDiagnostics();
     }
 
     @Override
-    public Duration getRequestLatency() {
-        return responseWrapper.getRequestLatency();
+    public Duration getDuration() {
+        return responseWrapper.getDuration();
     }
 
     @Override

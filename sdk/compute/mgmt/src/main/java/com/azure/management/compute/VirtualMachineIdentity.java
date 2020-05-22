@@ -45,8 +45,8 @@ public class VirtualMachineIdentity {
      * form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
-    @JsonInclude(content = JsonInclude.Include.ALWAYS)
     @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
@@ -125,11 +125,14 @@ public class VirtualMachineIdentity {
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

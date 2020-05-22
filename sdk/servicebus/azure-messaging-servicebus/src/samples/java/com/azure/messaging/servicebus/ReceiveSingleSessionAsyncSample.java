@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,23 +40,20 @@ public class ReceiveSingleSessionAsyncSample {
             .subscriptionName("<<subscription-name>>")
             .buildAsyncClient();
 
-        // Messages are continuously received until there are no more messages in the current session. Then, the Flux
-        // completes.
         Disposable subscription = receiver.receive()
-            .subscribe(context -> {
+            .flatMap(context -> {
                 if (context.hasError()) {
                     System.out.printf("An error occurred in session %s. Error: %s%n",
                         context.getSessionId(), context.getThrowable());
-                    return;
+                    return Mono.empty();
                 }
 
                 System.out.println("Processing message from session: " + context.getSessionId());
 
                 // Process message
-                // The message is automatically completed if no exceptions are thrown while processing message.
-            }, error -> {
-                    System.err.println("Error occurred: " + error);
-                });
+                return receiver.complete(context.getMessage());
+            }).subscribe(aVoid -> {
+            }, error -> System.err.println("Error occurred: " + error));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(60);

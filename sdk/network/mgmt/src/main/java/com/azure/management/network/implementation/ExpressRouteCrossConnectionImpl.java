@@ -101,7 +101,7 @@ public class ExpressRouteCrossConnectionImpl
     }
 
     @Override
-    public Integer sTag() {
+    public Integer stag() {
         return inner().stag();
     }
 

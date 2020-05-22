@@ -4,9 +4,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.FeedOptions;
@@ -246,7 +245,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                     logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                     assertThat(lsn).isEqualTo(sessionToken.getLSN());
                 } catch (Exception ex) {
-                    CosmosClientException clientException = (CosmosClientException) ex.getCause();
+                    CosmosException clientException = (CosmosException) ex.getCause();
                     if (clientException.getStatusCode() != 0) {
                         if (clientException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
                             // ignore

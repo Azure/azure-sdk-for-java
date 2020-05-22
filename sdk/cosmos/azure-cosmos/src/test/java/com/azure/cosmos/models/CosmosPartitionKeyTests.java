@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -95,7 +95,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         headers.put(HttpConstants.HttpHeaders.VERSION, "2018-09-17");
-        BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new CosmosKeyCredential(TestConfigurations.MASTER_KEY));
+        BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new AzureKeyCredential(TestConfigurations.MASTER_KEY));
         String authorization = base.generateKeyAuthorizationSignature(RequestVerb.POST, resourceId, Paths.COLLECTIONS_PATH_SEGMENT, headers);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, URLEncoder.encode(authorization, "UTF-8"));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,

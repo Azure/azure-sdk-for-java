@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class PhoneticTokenFilter extends TokenFilter {
     /*
      * The phonetic encoder to use. Default is "metaphone". Possible values
-     * include: 'metaphone', 'doubleMetaphone', 'soundex', 'refinedSoundex',
-     * 'caverphone1', 'caverphone2', 'cologne', 'nysiis', 'koelnerPhonetik',
-     * 'haasePhonetik', 'beiderMorse'
+     * include: 'Metaphone', 'DoubleMetaphone', 'Soundex', 'RefinedSoundex',
+     * 'Caverphone1', 'Caverphone2', 'Cologne', 'Nysiis', 'KoelnerPhonetik',
+     * 'HaasePhonetik', 'BeiderMorse'
      */
     @JsonProperty(value = "encoder")
     private PhoneticEncoder encoder;
@@ -37,9 +37,9 @@ public final class PhoneticTokenFilter extends TokenFilter {
 
     /**
      * Get the encoder property: The phonetic encoder to use. Default is
-     * "metaphone". Possible values include: 'metaphone', 'doubleMetaphone',
-     * 'soundex', 'refinedSoundex', 'caverphone1', 'caverphone2', 'cologne',
-     * 'nysiis', 'koelnerPhonetik', 'haasePhonetik', 'beiderMorse'.
+     * "metaphone". Possible values include: 'Metaphone', 'DoubleMetaphone',
+     * 'Soundex', 'RefinedSoundex', 'Caverphone1', 'Caverphone2', 'Cologne',
+     * 'Nysiis', 'KoelnerPhonetik', 'HaasePhonetik', 'BeiderMorse'.
      *
      * @return the encoder value.
      */
@@ -49,9 +49,9 @@ public final class PhoneticTokenFilter extends TokenFilter {
 
     /**
      * Set the encoder property: The phonetic encoder to use. Default is
-     * "metaphone". Possible values include: 'metaphone', 'doubleMetaphone',
-     * 'soundex', 'refinedSoundex', 'caverphone1', 'caverphone2', 'cologne',
-     * 'nysiis', 'koelnerPhonetik', 'haasePhonetik', 'beiderMorse'.
+     * "metaphone". Possible values include: 'Metaphone', 'DoubleMetaphone',
+     * 'Soundex', 'RefinedSoundex', 'Caverphone1', 'Caverphone2', 'Cologne',
+     * 'Nysiis', 'KoelnerPhonetik', 'HaasePhonetik', 'BeiderMorse'.
      *
      * @param encoder the encoder value to set.
      * @return the PhoneticTokenFilter object itself.

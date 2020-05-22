@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -33,10 +33,10 @@ public class SpyClientUnderTestFactory {
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
         public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
-            ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential,
+            ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
             JsonSerializer jsonSerializer, boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
-                cosmosKeyCredential, false, false, jsonSerializer, contentResponseOnWriteEnabled);
+                credential, false, false, jsonSerializer, contentResponseOnWriteEnabled);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -57,11 +57,10 @@ public class SpyClientUnderTestFactory {
 
         private List<RxDocumentServiceRequest> requests;
 
-
         ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
-            ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential,
+            ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
             JsonSerializer jsonSerializer, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential,
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
                 jsonSerializer, contentResponseOnWriteEnabled);
             init();
         }
@@ -124,9 +123,9 @@ public class SpyClientUnderTestFactory {
                 Collections.synchronizedList(new ArrayList<>());
 
         ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
-            ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential,
+            ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
             JsonSerializer jsonSerializer, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential,
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
                 jsonSerializer, contentResponseOnWriteEnabled);
             init();
         }
@@ -179,10 +178,10 @@ public class SpyClientUnderTestFactory {
                 Collections.synchronizedList(new ArrayList<>());
 
         DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
-            ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential,
+            ConsistencyLevel consistencyLevel, AzureKeyCredential credential,
             JsonSerializer jsonSerializer, boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS),
-                cosmosKeyCredential, jsonSerializer, contentResponseOnWriteEnabled);
+                credential, jsonSerializer, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
             init();
 
@@ -242,10 +241,11 @@ public class SpyClientUnderTestFactory {
                                                                   ConnectionPolicy connectionPolicy,
                                                                   ConsistencyLevel consistencyLevel,
                                                                   Configs configs,
-                                                                  CosmosKeyCredential cosmosKeyCredential,
+                                                                  AzureKeyCredential credential,
                                                                   JsonSerializer jsonSerializer,
                                                                   boolean contentResponseOnWriteEnabled) {
-        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, jsonSerializer, contentResponseOnWriteEnabled);
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs,
+            credential, jsonSerializer, contentResponseOnWriteEnabled);
     }
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
@@ -261,10 +261,11 @@ public class SpyClientUnderTestFactory {
                                                         ConnectionPolicy connectionPolicy,
                                                         ConsistencyLevel consistencyLevel,
                                                         Configs configs,
-                                                        CosmosKeyCredential cosmosKeyCredential,
+                                                        AzureKeyCredential credential,
                                                         JsonSerializer jsonSerializer,
                                                         boolean contentResponseOnWriteEnabled) {
-        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, jsonSerializer, contentResponseOnWriteEnabled) {
+        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
+            jsonSerializer, contentResponseOnWriteEnabled) {
 
             @Override
             RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
@@ -293,8 +294,9 @@ public class SpyClientUnderTestFactory {
     }
 
     public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey,
-        ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential,
+        ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential,
         JsonSerializer jsonSerializer, boolean contentResponseOnWriteEnabled) {
-        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, cosmosKeyCredential, jsonSerializer, contentResponseOnWriteEnabled);
+        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel,
+            credential, jsonSerializer, contentResponseOnWriteEnabled);
     }
 }

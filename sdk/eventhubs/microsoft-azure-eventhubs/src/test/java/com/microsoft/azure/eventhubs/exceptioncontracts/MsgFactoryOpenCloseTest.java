@@ -7,6 +7,7 @@ import com.microsoft.azure.eventhubs.CommunicationException;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubClientOptions;
 import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
@@ -125,10 +126,12 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
 
         try {
             final CompletableFuture<MessagingFactory> openFuture = MessagingFactory.createFromConnectionString(
-                    connStr.toString(), null,
+                    connStr.toString(),
+                    null,
                     executor,
                     networkOutageSimulator,
-                null);
+                    null,
+                    EventHubClientOptions.SILENT_OFF);
             try {
                 openFuture.get();
                 Assert.fail();

@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ClientUnderTestBuilder;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
@@ -36,10 +36,10 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      ConnectionPolicy connectionPolicy,
                                      ConsistencyLevel consistencyLevel,
                                      Configs configs,
-                                     CosmosKeyCredential cosmosKeyCredential,
+                                     AzureKeyCredential credential,
                                      JsonSerializer jsonSerializer,
                                      boolean contentResponseOnWriteEnabled) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false, jsonSerializer, contentResponseOnWriteEnabled);
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, false, false, jsonSerializer, contentResponseOnWriteEnabled);
         init();
     }
 

@@ -25,7 +25,7 @@ import java.util.List;
 @Fluent
 @JsonSerialize(using = CustomPatternAnalyzerSerializer.class)
 @JsonDeserialize(using = CustomPatternAnalyzerDeserializer.class)
-public final class PatternAnalyzer extends Analyzer {
+public final class PatternAnalyzer extends LexicalAnalyzer {
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
      */
@@ -34,7 +34,7 @@ public final class PatternAnalyzer extends Analyzer {
 
     /*
      * A regular expression pattern to match token separators. Default is an
-     * expression that matches one or more whitespace characters.
+     * expression that matches one or more non-word characters.
      */
     @JsonProperty(value = "pattern")
     private String pattern;
@@ -75,7 +75,7 @@ public final class PatternAnalyzer extends Analyzer {
 
     /**
      * Get the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more whitespace
+     * separators. Default is an expression that matches one or more non-word
      * characters.
      *
      * @return the pattern value.
@@ -86,7 +86,7 @@ public final class PatternAnalyzer extends Analyzer {
 
     /**
      * Set the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more whitespace
+     * separators. Default is an expression that matches one or more non-word
      * characters.
      *
      * @param pattern the pattern value to set.

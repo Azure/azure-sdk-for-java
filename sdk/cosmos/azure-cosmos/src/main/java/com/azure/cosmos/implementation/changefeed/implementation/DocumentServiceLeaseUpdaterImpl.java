@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -11,8 +11,6 @@ import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
@@ -71,8 +69,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                 // Partition lease update conflict. Reading the current version of lease.
                 return this.client.readItem(itemId, partitionKey, requestOptions, CosmosItemProperties.class)
                     .onErrorResume(throwable -> {
-                        if (throwable instanceof CosmosClientException) {
-                            CosmosClientException ex = (CosmosClientException) throwable;
+                        if (throwable instanceof CosmosException) {
+                            CosmosException ex = (CosmosException) throwable;
                             if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
                                 throw new LeaseLostException(cachedLease);
@@ -126,8 +124,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
             .map(CosmosAsyncItemResponseImpl::getProperties)
             .onErrorResume(re -> {
-                if (re instanceof CosmosClientException) {
-                    CosmosClientException ex = (CosmosClientException) re;
+                if (re instanceof CosmosException) {
+                    CosmosException ex = (CosmosException) re;
                     switch (ex.getStatusCode()) {
                         case HTTP_STATUS_CODE_PRECONDITION_FAILED: {
                             return Mono.empty();
@@ -148,12 +146,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     private CosmosItemRequestOptions getCreateIfMatchOptions(Lease lease) {
-        AccessCondition ifMatchCondition = new AccessCondition();
-        ifMatchCondition.setType(AccessConditionType.IF_MATCH);
-        ifMatchCondition.setCondition(lease.getConcurrencyToken());
-
         CosmosItemRequestOptions createIfMatchOptions = new CosmosItemRequestOptions();
-        createIfMatchOptions.setAccessCondition(ifMatchCondition);
+        createIfMatchOptions.setIfMatchETag(lease.getConcurrencyToken());
 
         return createIfMatchOptions;
     }

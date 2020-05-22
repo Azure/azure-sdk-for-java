@@ -56,8 +56,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container1 = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        client1 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
-        client2 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
+        client1 = copyCosmosClientBuilder(getClientBuilder()).connectionSharingAcrossClientsEnabled(true).buildClient();
+        client2 = copyCosmosClientBuilder(getClientBuilder()).connectionSharingAcrossClientsEnabled(true).buildClient();
 
         container1 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
         container2 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
@@ -96,8 +96,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         try {
             container1.createItem(properties, new CosmosItemRequestOptions());
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 

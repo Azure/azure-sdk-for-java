@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 
 import java.time.Duration;
 import java.util.Map;
@@ -75,14 +75,14 @@ public interface CosmosAsyncItemResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    CosmosResponseDiagnostics getResponseDiagnostics();
+    CosmosDiagnostics getDiagnostics();
 
     /**
      * Gets the end-to-end request latency for the current request to Azure Cosmos DB service.
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    Duration getRequestLatency();
+    Duration getDuration();
 
     /**
      * Gets the ETag from the response headers.

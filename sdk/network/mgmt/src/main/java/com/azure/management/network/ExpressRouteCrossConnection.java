@@ -31,7 +31,7 @@ public interface ExpressRouteCrossConnection
     String secondaryAzurePort();
 
     /** @return the identifier of the circuit traffic */
-    Integer sTag();
+    Integer stag();
 
     /** @return the peering location of the ExpressRoute circuit */
     String peeringLocation();

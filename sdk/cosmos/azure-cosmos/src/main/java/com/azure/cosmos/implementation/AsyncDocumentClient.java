@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.FeedOptions;
@@ -75,7 +75,7 @@ public interface AsyncDocumentClient {
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-        CosmosKeyCredential cosmosKeyCredential;
+        AzureKeyCredential credential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         JsonSerializer jsonSerializer;
@@ -153,11 +153,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
-            if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey())) {
+        public Builder withCredential(AzureKeyCredential credential) {
+            if (credential != null && StringUtils.isEmpty(credential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
             }
-            this.cosmosKeyCredential = cosmosKeyCredential;
+            this.credential = credential;
             return this;
         }
 
@@ -202,10 +202,10 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosKeyCredential == null,
+                        && this.credential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed and cosmos key credential");
-            ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
+                        "resource token, permissionFeed and azure key credential");
+            ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
             JsonSerializer buildJsonSerializer = (jsonSerializer == null)
@@ -219,7 +219,7 @@ public interface AsyncDocumentClient {
                 desiredConsistencyLevel,
                 configs,
                 cosmosAuthorizationTokenResolver,
-                cosmosKeyCredential,
+                credential,
                 sessionCapturingOverride,
                 transportClientSharing,
                 buildJsonSerializer,
@@ -284,8 +284,8 @@ public interface AsyncDocumentClient {
             this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         }
 
-        public CosmosKeyCredential getCosmosKeyCredential() {
-            return cosmosKeyCredential;
+        public AzureKeyCredential getCredential() {
+            return credential;
         }
     }
 
@@ -763,7 +763,7 @@ public interface AsyncDocumentClient {
      * @param procedureParams     the array of procedure parameter values.
      * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, Object[] procedureParams);
+    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, List<Object> procedureParams);
 
     /**
      * Executes a stored procedure by the stored procedure link.
@@ -778,7 +778,7 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
     Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
-                                                               Object[] procedureParams);
+                                                               List<Object> procedureParams);
 
     /**
      * Creates a trigger.

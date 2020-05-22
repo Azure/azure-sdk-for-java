@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.models;
 
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -60,7 +60,7 @@ public class CosmosAsyncItemResponseImpl<T> implements CosmosAsyncItemResponse<T
 
             itemSet = true;
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal
-                .getSerializationDiagnosticsContext(this.getResponseDiagnostics());
+                .getSerializationDiagnosticsContext(this.getDiagnostics());
 
 
             if (this.itemClassType == CosmosItemProperties.class) {
@@ -144,13 +144,13 @@ public class CosmosAsyncItemResponseImpl<T> implements CosmosAsyncItemResponse<T
     }
 
     @Override
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return resourceResponse.getResponseDiagnostics();
+    public CosmosDiagnostics getDiagnostics() {
+        return resourceResponse.getDiagnostics();
     }
 
     @Override
-    public Duration getRequestLatency() {
-        return resourceResponse.getRequestLatency();
+    public Duration getDuration() {
+        return resourceResponse.getDuration();
     }
 
     @Override

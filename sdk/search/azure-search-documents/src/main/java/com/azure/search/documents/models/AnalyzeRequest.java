@@ -48,7 +48,7 @@ public final class AnalyzeRequest {
      * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "analyzer")
-    private AnalyzerName analyzer;
+    private LexicalAnalyzerName analyzer;
 
     /*
      * The name of the tokenizer to use to break the given text. If this
@@ -60,7 +60,7 @@ public final class AnalyzeRequest {
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer")
-    private TokenizerName tokenizer;
+    private LexicalTokenizerName tokenizer;
 
     /*
      * An optional list of token filters to use when breaking the given text.
@@ -124,7 +124,7 @@ public final class AnalyzeRequest {
      *
      * @return the analyzer value.
      */
-    public AnalyzerName getAnalyzer() {
+    public LexicalAnalyzerName getAnalyzer() {
         return this.analyzer;
     }
 
@@ -157,7 +157,7 @@ public final class AnalyzeRequest {
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setAnalyzer(AnalyzerName analyzer) {
+    public AnalyzeRequest setAnalyzer(LexicalAnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -173,7 +173,7 @@ public final class AnalyzeRequest {
      *
      * @return the tokenizer value.
      */
-    public TokenizerName getTokenizer() {
+    public LexicalTokenizerName getTokenizer() {
         return this.tokenizer;
     }
 
@@ -189,7 +189,7 @@ public final class AnalyzeRequest {
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setTokenizer(TokenizerName tokenizer) {
+    public AnalyzeRequest setTokenizer(LexicalTokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }

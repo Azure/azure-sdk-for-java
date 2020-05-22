@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -221,7 +221,7 @@ public class DocumentCrudTest extends TestSuiteBase {
             options, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
-            .instanceOf(CosmosClientException.class)
+            .instanceOf(CosmosException.class)
             .statusCode(404)
             .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
             .build();
