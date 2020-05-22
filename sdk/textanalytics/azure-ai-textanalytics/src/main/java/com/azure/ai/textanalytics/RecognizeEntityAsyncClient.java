@@ -9,11 +9,13 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -147,14 +149,15 @@ class RecognizeEntityAsyncClient {
                 null,
                 new CategorizedEntityCollection(
                     new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                        new CategorizedEntity(entity.getText(), entity.getCategory(),
+                        new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
                             entity.getSubcategory(), entity.getConfidenceScore()))
                         .collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
                         .map(warning -> {
                             final WarningCodeValue warningCodeValue = warning.getCode();
                             return new TextAnalyticsWarning(
-                                warningCodeValue == null ? null : warningCodeValue.toString(), warning.getMessage());
+                                WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                                warning.getMessage());
                         }).collect(Collectors.toList())))
             )));
         // Document errors

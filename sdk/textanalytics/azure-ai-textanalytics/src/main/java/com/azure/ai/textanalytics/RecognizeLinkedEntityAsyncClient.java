@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResultCollection
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -154,7 +155,8 @@ class RecognizeLinkedEntityAsyncClient {
                         .map(warning -> {
                             final WarningCodeValue warningCodeValue = warning.getCode();
                             return new TextAnalyticsWarning(
-                                warningCodeValue == null ? null : warningCodeValue.toString(), warning.getMessage());
+                                WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                                warning.getMessage());
                         }).collect(Collectors.toList())))
             )));
         // Document errors

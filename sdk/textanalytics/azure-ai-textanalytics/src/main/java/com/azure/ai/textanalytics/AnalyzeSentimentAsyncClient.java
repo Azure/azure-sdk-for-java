@@ -19,6 +19,8 @@ import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -150,7 +152,7 @@ class AnalyzeSentimentAsyncClient {
                     sentenceSentiment.getConfidenceScores();
                 final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
                 return new SentenceSentiment(sentenceSentiment.getText(),
-                    sentenceSentimentValue == null ? null : sentenceSentimentValue.toString(),
+                    TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
             }).collect(Collectors.toList());
@@ -159,7 +161,8 @@ class AnalyzeSentimentAsyncClient {
         final List<TextAnalyticsWarning> warnings = documentSentiment.getWarnings().stream().map(
             warning -> {
                 final WarningCodeValue warningCodeValue = warning.getCode();
-                return new TextAnalyticsWarning(warningCodeValue == null ? null : warningCodeValue.toString(),
+                return new TextAnalyticsWarning(
+                    WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
                     warning.getMessage());
             }).collect(Collectors.toList());
 
@@ -170,7 +173,7 @@ class AnalyzeSentimentAsyncClient {
                 ? null : toTextDocumentStatistics(documentSentiment.getStatistics()),
             null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
-                documentSentimentValue == null ? null : documentSentimentValue.toString(),
+                TextSentiment.fromString(documentSentimentValue == null ? null : documentSentimentValue.toString()),
                 new SentimentConfidenceScores(
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),
