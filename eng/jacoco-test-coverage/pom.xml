@@ -187,6 +187,21 @@
       <artifactId>azure-sdk-template</artifactId>
       <version>1.0.4-beta.20</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-schemaregistry-client</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-client;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-schemaregistry-serde-avro</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-avro;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-schemaregistry-serde-common</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-common;current} -->
+    </dependency>
   </dependencies>
 
   <build>
