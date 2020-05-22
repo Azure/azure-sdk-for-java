@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;

@@ -13,7 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScore
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;

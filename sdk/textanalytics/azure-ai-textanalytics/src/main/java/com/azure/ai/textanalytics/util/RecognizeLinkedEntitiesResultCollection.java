@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.textanalytics.models;
+package com.azure.ai.textanalytics.util;
 
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.util.IterableStream;
 
 /**
