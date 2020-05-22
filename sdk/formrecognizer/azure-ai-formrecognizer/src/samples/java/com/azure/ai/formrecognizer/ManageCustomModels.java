@@ -6,6 +6,8 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -25,17 +27,17 @@ public class ManageCustomModels {
      */
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
-        FormTrainingClient client = new FormRecognizerClientBuilder()
+        FormTrainingClient client = new FormTrainingClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildClient().getFormTrainingClient();
+            .buildClient();
 
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = client.getAccountProperties();
         System.out.printf("The account has %s custom models, and we can have at most %s custom models",
-            accountProperties.getCount(), accountProperties.getLimit());
+            accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
         // Next, we get a paged list of all of our custom models
         PagedIterable<CustomFormModelInfo> customModels = client.getModelInfos();

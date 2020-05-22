@@ -5,13 +5,17 @@
 package com.azure.management.storage.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.BlobRestoreParameters;
 import com.azure.management.storage.BlobRestoreProgressStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BlobRestoreStatus model. */
 @Immutable
 public final class BlobRestoreStatusInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobRestoreStatusInner.class);
+
     /*
      * The status of blob restore progress. Possible values are: - InProgress:
      * Indicates that blob restore is ongoing. - Complete: Indicates that blob
@@ -75,5 +79,16 @@ public final class BlobRestoreStatusInner {
      */
     public BlobRestoreParameters parameters() {
         return this.parameters;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (parameters() != null) {
+            parameters().validate();
+        }
     }
 }

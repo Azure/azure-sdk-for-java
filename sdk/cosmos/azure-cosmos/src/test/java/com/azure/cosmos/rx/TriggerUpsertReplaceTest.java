@@ -8,6 +8,7 @@ import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import org.testng.annotations.AfterClass;

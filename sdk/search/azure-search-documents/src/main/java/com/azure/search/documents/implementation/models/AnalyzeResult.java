@@ -7,7 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.TokenInfo;
+import com.azure.search.documents.models.AnalyzedTokenInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public final class AnalyzeResult {
      * The list of tokens returned by the analyzer specified in the request.
      */
     @JsonProperty(value = "tokens", required = true)
-    private List<TokenInfo> tokens;
+    private List<AnalyzedTokenInfo> tokens;
 
     /**
      * Get the tokens property: The list of tokens returned by the analyzer
@@ -28,7 +28,7 @@ public final class AnalyzeResult {
      *
      * @return the tokens value.
      */
-    public List<TokenInfo> getTokens() {
+    public List<AnalyzedTokenInfo> getTokens() {
         return this.tokens;
     }
 
@@ -39,7 +39,7 @@ public final class AnalyzeResult {
      * @param tokens the tokens value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setTokens(List<TokenInfo> tokens) {
+    public AnalyzeResult setTokens(List<AnalyzedTokenInfo> tokens) {
         this.tokens = tokens;
         return this;
     }

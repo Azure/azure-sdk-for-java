@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateLinkConnectionState model. */
 @Fluent
 public final class PrivateLinkConnectionState {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkConnectionState.class);
+
     /*
      * Status of a private link connection
      */
@@ -86,5 +90,13 @@ public final class PrivateLinkConnectionState {
     public PrivateLinkConnectionState withActionsRequired(String actionsRequired) {
         this.actionsRequired = actionsRequired;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

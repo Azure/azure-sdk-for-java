@@ -166,7 +166,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -303,7 +303,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         for (ReplicationLinkInner inner : replicationLinkInners) {
             replicationLinkMap
                 .put(
-                    inner.getName(),
+                    inner.name(),
                     new ReplicationLinkImpl(
                         this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
         }
@@ -372,7 +372,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .databaseThreatDetectionPolicies()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return policyInner != null
-            ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.getName(), this, policyInner, this.sqlServerManager)
+            ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.name(), this, policyInner, this.sqlServerManager)
             : null;
     }
 
@@ -543,7 +543,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
             serviceTierAdvisorMap
                 .put(
-                    serviceTierAdvisorInner.getName(),
+                    serviceTierAdvisorInner.name(),
                     new ServiceTierAdvisorImpl(
                         this.resourceGroupName,
                         this.sqlServerName,
@@ -574,7 +574,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -627,7 +627,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public Mono<SqlDatabase> createResourceAsync() {
         final SqlDatabaseImpl self = this;
-        this.inner().setLocation(this.sqlServerLocation);
+        this.inner().withLocation(this.sqlServerLocation);
         if (this.importRequestInner != null) {
             this.importRequestInner.withDatabaseName(this.name());
             if (this.importRequestInner.edition() == null) {
@@ -679,7 +679,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             final SqlDatabaseImpl self = this;
             DatabaseUpdate databaseUpdateInner =
                 new DatabaseUpdate()
-                    .withTags(self.inner().getTags())
+                    .withTags(self.inner().tags())
                     .withCollation(self.inner().collation())
                     .withSourceDatabaseId(self.inner().sourceDatabaseId())
                     .withCreateMode(self.inner().createMode())
@@ -1061,23 +1061,23 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(new HashMap<>(tags));
+        this.inner().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withTag(String key, String value) {
-        if (this.inner().getTags() == null) {
-            this.inner().setTags(new HashMap<String, String>());
+        if (this.inner().tags() == null) {
+            this.inner().withTags(new HashMap<String, String>());
         }
-        this.inner().getTags().put(key, value);
+        this.inner().tags().put(key, value);
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withoutTag(String key) {
-        if (this.inner().getTags() != null) {
-            this.inner().getTags().remove(key);
+        if (this.inner().tags() != null) {
+            this.inner().tags().remove(key);
         }
         return this;
     }

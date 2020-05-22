@@ -49,7 +49,7 @@ class WebAppsImpl
         if (inner == null) {
             return null;
         }
-        return new WebAppImpl(inner.getName(), inner, siteConfig, logConfig, this.manager());
+        return new WebAppImpl(inner.name(), inner, siteConfig, logConfig, this.manager());
     }
 
     @Override
@@ -66,11 +66,11 @@ class WebAppsImpl
                     if (siteInner.kind() == null || Arrays.asList(siteInner.kind().split(",")).contains("app")) {
                         return Mono
                             .zip(
-                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.getName()),
+                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.name()),
                                 this
                                     .inner()
                                     .getDiagnosticLogsConfigurationAsync(
-                                        siteInner.resourceGroup(), siteInner.getName()),
+                                        siteInner.resourceGroup(), siteInner.name()),
                                 (siteConfigResourceInner, logsConfigInner) ->
                                     this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
                     } else {

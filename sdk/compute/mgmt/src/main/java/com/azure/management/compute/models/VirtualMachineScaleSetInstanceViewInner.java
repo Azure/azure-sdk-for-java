@@ -5,15 +5,19 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.InstanceViewStatus;
 import com.azure.management.compute.VirtualMachineScaleSetInstanceViewStatusesSummary;
 import com.azure.management.compute.VirtualMachineScaleSetVMExtensionsSummary;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetInstanceView model. */
 @Fluent
 public final class VirtualMachineScaleSetInstanceViewInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetInstanceViewInner.class);
+
     /*
      * The instance view status summary for the virtual machine scale set.
      */
@@ -68,5 +72,22 @@ public final class VirtualMachineScaleSetInstanceViewInner {
     public VirtualMachineScaleSetInstanceViewInner withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (virtualMachine() != null) {
+            virtualMachine().validate();
+        }
+        if (extensions() != null) {
+            extensions().forEach(e -> e.validate());
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 }

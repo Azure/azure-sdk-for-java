@@ -5,6 +5,8 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class FirewallPolicyRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRule.class);
+
     /*
      * Name of the Rule
      */
@@ -73,5 +77,13 @@ public class FirewallPolicyRule {
     public FirewallPolicyRule withPriority(Integer priority) {
         this.priority = priority;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

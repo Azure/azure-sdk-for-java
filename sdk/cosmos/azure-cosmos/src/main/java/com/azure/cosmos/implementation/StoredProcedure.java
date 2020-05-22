@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.Resource;
 
 /**
  * Represents a stored procedure in the Azure Cosmos DB database service.

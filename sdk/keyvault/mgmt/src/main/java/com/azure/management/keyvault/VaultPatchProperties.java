@@ -5,6 +5,8 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +14,8 @@ import java.util.UUID;
 /** The VaultPatchProperties model. */
 @Fluent
 public final class VaultPatchProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultPatchProperties.class);
+
     /*
      * The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
@@ -306,5 +310,22 @@ public final class VaultPatchProperties {
     public VaultPatchProperties withNetworkAcls(NetworkRuleSet networkAcls) {
         this.networkAcls = networkAcls;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (accessPolicies() != null) {
+            accessPolicies().forEach(e -> e.validate());
+        }
+        if (networkAcls() != null) {
+            networkAcls().validate();
+        }
     }
 }

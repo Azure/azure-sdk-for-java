@@ -6,12 +6,16 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ValidateRequest model. */
 @JsonFlatten
 @Fluent
 public class ValidateRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateRequest.class);
+
     /*
      * Resource name to verify.
      */
@@ -435,5 +439,28 @@ public class ValidateRequest {
     public ValidateRequest withContainerImagePlatform(String containerImagePlatform) {
         this.containerImagePlatform = containerImagePlatform;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model ValidateRequest"));
+        }
+        if (type() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model ValidateRequest"));
+        }
+        if (location() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property location in model ValidateRequest"));
+        }
     }
 }

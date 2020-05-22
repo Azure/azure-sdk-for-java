@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.NGramTokenizer")
 @Fluent
-public final class NGramTokenizer extends Tokenizer {
+public final class NGramTokenizer extends LexicalTokenizer {
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less
      * than the value of maxGram.

@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutomaticOSUpgradeProperties model. */
 @Fluent
 public final class AutomaticOSUpgradeProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticOSUpgradeProperties.class);
+
     /*
      * Specifies whether automatic OS upgrade is supported on the image.
      */
@@ -34,5 +38,13 @@ public final class AutomaticOSUpgradeProperties {
     public AutomaticOSUpgradeProperties withAutomaticOSUpgradeSupported(boolean automaticOSUpgradeSupported) {
         this.automaticOSUpgradeSupported = automaticOSUpgradeSupported;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

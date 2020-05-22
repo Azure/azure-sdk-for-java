@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer")
 @Fluent
-public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
+public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     /*
      * The maximum token length. Tokens longer than the maximum length are
      * split. Maximum token length that can be used is 300 characters. Tokens
@@ -39,14 +39,14 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
 
     /*
      * The language to use. The default is English. Possible values include:
-     * 'arabic', 'bangla', 'bulgarian', 'catalan', 'croatian', 'czech',
-     * 'danish', 'dutch', 'english', 'estonian', 'finnish', 'french', 'german',
-     * 'greek', 'gujarati', 'hebrew', 'hindi', 'hungarian', 'icelandic',
-     * 'indonesian', 'italian', 'kannada', 'latvian', 'lithuanian', 'malay',
-     * 'malayalam', 'marathi', 'norwegianBokmaal', 'polish', 'portuguese',
-     * 'portugueseBrazilian', 'punjabi', 'romanian', 'russian',
-     * 'serbianCyrillic', 'serbianLatin', 'slovak', 'slovenian', 'spanish',
-     * 'swedish', 'tamil', 'telugu', 'turkish', 'ukrainian', 'urdu'
+     * 'Arabic', 'Bangla', 'Bulgarian', 'Catalan', 'Croatian', 'Czech',
+     * 'Danish', 'Dutch', 'English', 'Estonian', 'Finnish', 'French', 'German',
+     * 'Greek', 'Gujarati', 'Hebrew', 'Hindi', 'Hungarian', 'Icelandic',
+     * 'Indonesian', 'Italian', 'Kannada', 'Latvian', 'Lithuanian', 'Malay',
+     * 'Malayalam', 'Marathi', 'NorwegianBokmaal', 'Polish', 'Portuguese',
+     * 'PortugueseBrazilian', 'Punjabi', 'Romanian', 'Russian',
+     * 'SerbianCyrillic', 'SerbianLatin', 'Slovak', 'Slovenian', 'Spanish',
+     * 'Swedish', 'Tamil', 'Telugu', 'Turkish', 'Ukrainian', 'Urdu'
      */
     @JsonProperty(value = "language")
     private MicrosoftStemmingTokenizerLanguage language;
@@ -105,14 +105,14 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
 
     /**
      * Get the language property: The language to use. The default is English.
-     * Possible values include: 'arabic', 'bangla', 'bulgarian', 'catalan',
-     * 'croatian', 'czech', 'danish', 'dutch', 'english', 'estonian',
-     * 'finnish', 'french', 'german', 'greek', 'gujarati', 'hebrew', 'hindi',
-     * 'hungarian', 'icelandic', 'indonesian', 'italian', 'kannada', 'latvian',
-     * 'lithuanian', 'malay', 'malayalam', 'marathi', 'norwegianBokmaal',
-     * 'polish', 'portuguese', 'portugueseBrazilian', 'punjabi', 'romanian',
-     * 'russian', 'serbianCyrillic', 'serbianLatin', 'slovak', 'slovenian',
-     * 'spanish', 'swedish', 'tamil', 'telugu', 'turkish', 'ukrainian', 'urdu'.
+     * Possible values include: 'Arabic', 'Bangla', 'Bulgarian', 'Catalan',
+     * 'Croatian', 'Czech', 'Danish', 'Dutch', 'English', 'Estonian',
+     * 'Finnish', 'French', 'German', 'Greek', 'Gujarati', 'Hebrew', 'Hindi',
+     * 'Hungarian', 'Icelandic', 'Indonesian', 'Italian', 'Kannada', 'Latvian',
+     * 'Lithuanian', 'Malay', 'Malayalam', 'Marathi', 'NorwegianBokmaal',
+     * 'Polish', 'Portuguese', 'PortugueseBrazilian', 'Punjabi', 'Romanian',
+     * 'Russian', 'SerbianCyrillic', 'SerbianLatin', 'Slovak', 'Slovenian',
+     * 'Spanish', 'Swedish', 'Tamil', 'Telugu', 'Turkish', 'Ukrainian', 'Urdu'.
      *
      * @return the language value.
      */
@@ -122,14 +122,14 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
 
     /**
      * Set the language property: The language to use. The default is English.
-     * Possible values include: 'arabic', 'bangla', 'bulgarian', 'catalan',
-     * 'croatian', 'czech', 'danish', 'dutch', 'english', 'estonian',
-     * 'finnish', 'french', 'german', 'greek', 'gujarati', 'hebrew', 'hindi',
-     * 'hungarian', 'icelandic', 'indonesian', 'italian', 'kannada', 'latvian',
-     * 'lithuanian', 'malay', 'malayalam', 'marathi', 'norwegianBokmaal',
-     * 'polish', 'portuguese', 'portugueseBrazilian', 'punjabi', 'romanian',
-     * 'russian', 'serbianCyrillic', 'serbianLatin', 'slovak', 'slovenian',
-     * 'spanish', 'swedish', 'tamil', 'telugu', 'turkish', 'ukrainian', 'urdu'.
+     * Possible values include: 'Arabic', 'Bangla', 'Bulgarian', 'Catalan',
+     * 'Croatian', 'Czech', 'Danish', 'Dutch', 'English', 'Estonian',
+     * 'Finnish', 'French', 'German', 'Greek', 'Gujarati', 'Hebrew', 'Hindi',
+     * 'Hungarian', 'Icelandic', 'Indonesian', 'Italian', 'Kannada', 'Latvian',
+     * 'Lithuanian', 'Malay', 'Malayalam', 'Marathi', 'NorwegianBokmaal',
+     * 'Polish', 'Portuguese', 'PortugueseBrazilian', 'Punjabi', 'Romanian',
+     * 'Russian', 'SerbianCyrillic', 'SerbianLatin', 'Slovak', 'Slovenian',
+     * 'Spanish', 'Swedish', 'Tamil', 'Telugu', 'Turkish', 'Ukrainian', 'Urdu'.
      *
      * @param language the language value to set.
      * @return the MicrosoftLanguageStemmingTokenizer object itself.

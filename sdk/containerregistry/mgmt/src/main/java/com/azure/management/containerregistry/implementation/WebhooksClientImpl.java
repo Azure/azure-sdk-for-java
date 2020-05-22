@@ -77,12 +77,12 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
                         inner -> {
                             if (self.containerRegistry != null) {
                                 return new WebhookImpl(
-                                    inner.getName(), self.containerRegistry, inner, self.containerRegistryManager);
+                                    inner.name(), self.containerRegistry, inner, self.containerRegistryManager);
                             } else {
                                 return new WebhookImpl(
                                     resourceGroupName,
                                     registryName,
-                                    inner.getName(),
+                                    inner.name(),
                                     inner,
                                     self.containerRegistryManager);
                             }

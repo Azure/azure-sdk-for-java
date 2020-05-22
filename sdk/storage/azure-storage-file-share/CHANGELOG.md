@@ -2,6 +2,8 @@
 
 ## 12.5.0-beta.1 (Unreleased)
 
+## 12.4.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
 
 ## 12.4.0 (2020-04-06)
 - Fixed an issue where whitespace would cause NtfsFileAttributes.toAttributes/fromAttributes to result in an error parsing the attributes.
@@ -42,7 +44,7 @@ and
 - GA release.
 - Changed return type for forceCloseHandle from void to CloseHandlesInfo.
 - Changed return type for forceCloseAllHandles from int to CloseHandlesInfo.
-- Upgraded to version 1.1.0 of Azure Core. 
+- Upgraded to version 1.1.0 of Azure Core.
 
 ## 12.0.0-preview.5 (2019-10-31)
 - Renamed FileReference to StorageFileItem
@@ -86,7 +88,7 @@ and
 - Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
 - Updated the return type of `downloadToFile` API to `FileProperties` on sync API and `Mono<FileProperties>` on async API.
 - `getFileServiceUrl`, `getShareUrl`, `getDirectoryUrl`, `getFileUrl` API now returns URL with scheme, host, resource name and snapshot if any.
-- Removed SAS token generation APIs from clients, use FileServiceSasSignatureValues to generate SAS tokens. 
+- Removed SAS token generation APIs from clients, use FileServiceSasSignatureValues to generate SAS tokens.
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
 ## 12.0.0-preview.3 (2019-09-10)
@@ -132,7 +134,7 @@ demonstrate the new API.
 ### Features included in `azure-storage-file`
 - This is initial SDK release for storage file service.
 - Packages scoped by functionality
-    - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations. 
+    - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations.
 - Client instances are scoped to storage file service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 

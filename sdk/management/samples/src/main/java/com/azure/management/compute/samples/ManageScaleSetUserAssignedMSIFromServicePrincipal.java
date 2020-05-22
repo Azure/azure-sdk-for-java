@@ -6,7 +6,7 @@ package com.azure.management.compute.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -134,7 +134,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 throw LOGGER.logExceptionAsError(
                     new RuntimeException("Should not be able to assign identity #2 as service principal does not have permissions")
                 );
-            } catch (CloudException ex) {
+            } catch (ManagementException ex) {
                 ex.printStackTrace();
             }
             return true;
@@ -142,13 +142,21 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             System.out.println(e.getMessage());
             e.printStackTrace();
         } finally {
-            azure.resourceGroups().beginDeleteByName(rgName);
-            try {
-                authenticated.servicePrincipals().deleteById(servicePrincipal.id());
-            } catch (Exception e) { }
+            if (azure != null) {
+                azure.resourceGroups().beginDeleteByName(rgName);
+                try {
+                    authenticated.servicePrincipals().deleteById(servicePrincipal.id());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
             try {
                 authenticated.activeDirectoryApplications().deleteById(authenticated.activeDirectoryApplications().getByName(servicePrincipal.applicationId()).id());
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
         return false;
     }

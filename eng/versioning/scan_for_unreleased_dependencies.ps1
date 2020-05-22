@@ -87,6 +87,26 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
                         Write-Error-With-Color "Error: Cannot release non-beta libraries with beta_ dependencies. dependency=$($versionUpdateTag)"
                     }
                     continue
+                } else {
+                    # If this is an external dependency then continue
+                    if ($versionUpdateTag -match "external_dependency}") {
+                        continue
+                    }
+                    # If the scope is test then a beta dependency is allowed
+                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test") {
+                        continue
+                    }
+                    # If this isn't an external dependency then ensure that if the dependency
+                    # version is beta, that we're releasing a beta, otherwise fail
+                    if ($versionNode.InnerText -like '*-beta.*') 
+                    {
+                        if (!$libraryIsBeta)
+                        {
+                            $script:FoundError = $true
+                            Write-Error-With-Color "Error: Cannot release non-beta libraries with beta dependencies. dependency=$($versionUpdateTag), version=$($versionNode.InnerText.Trim())"
+                        }
+                    }
                 }
             }
             else
@@ -106,8 +126,7 @@ if (-Not $script:FoundPomFile) {
     exit(1)
 }
 if ($script:FoundError) {
-    Write-Error-With-Color "Libaries with unreleased dependencies cannot be released."
     exit(1)
 }
 
-Write-Host "$($inputGroupId):$($inputArtifactId) looks goood to release" -ForegroundColor Green
+Write-Host "$($inputGroupId):$($inputArtifactId) looks good to release" -ForegroundColor Green

@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The ResourceIdentity model. */
 @Fluent
 public final class ResourceIdentity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
+
     /*
      * The Azure Active Directory principal id.
      */
@@ -69,5 +73,13 @@ public final class ResourceIdentity {
      */
     public UUID tenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

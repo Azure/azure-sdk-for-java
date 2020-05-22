@@ -7,10 +7,12 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.FailoverGroupReadOnlyEndpoint;
 import com.azure.management.sql.FailoverGroupReadWriteEndpoint;
 import com.azure.management.sql.FailoverGroupReplicationRole;
 import com.azure.management.sql.PartnerInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class FailoverGroupInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverGroupInner.class);
+
     /*
      * Resource location.
      */
@@ -192,5 +196,22 @@ public class FailoverGroupInner extends ProxyResource {
     public FailoverGroupInner withDatabases(List<String> databases) {
         this.databases = databases;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (readWriteEndpoint() != null) {
+            readWriteEndpoint().validate();
+        }
+        if (readOnlyEndpoint() != null) {
+            readOnlyEndpoint().validate();
+        }
+        if (partnerServers() != null) {
+            partnerServers().forEach(e -> e.validate());
+        }
     }
 }

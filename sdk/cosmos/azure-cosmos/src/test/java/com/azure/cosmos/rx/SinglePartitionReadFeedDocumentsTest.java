@@ -50,8 +50,6 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
-    // TODO (DANOBLE) SinglePartitionReadFeedDocumentsTest initialization consistently times out in CI environments.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6380
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_SinglePartitionReadFeedDocumentsTest() {
         client = getClientBuilder().buildAsyncClient();

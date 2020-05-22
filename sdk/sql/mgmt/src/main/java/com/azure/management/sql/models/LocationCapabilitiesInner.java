@@ -5,15 +5,19 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.CapabilityStatus;
 import com.azure.management.sql.ManagedInstanceVersionCapability;
 import com.azure.management.sql.ServerVersionCapability;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The LocationCapabilities model. */
 @Fluent
 public final class LocationCapabilitiesInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationCapabilitiesInner.class);
+
     /*
      * The location name.
      */
@@ -98,5 +102,19 @@ public final class LocationCapabilitiesInner {
     public LocationCapabilitiesInner withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedServerVersions() != null) {
+            supportedServerVersions().forEach(e -> e.validate());
+        }
+        if (supportedManagedInstanceVersions() != null) {
+            supportedManagedInstanceVersions().forEach(e -> e.validate());
+        }
     }
 }

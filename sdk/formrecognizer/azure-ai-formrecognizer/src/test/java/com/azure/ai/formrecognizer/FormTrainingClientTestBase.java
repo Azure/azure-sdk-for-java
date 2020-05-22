@@ -12,21 +12,7 @@ import com.azure.ai.formrecognizer.models.CustomFormSubModel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
@@ -36,16 +22,12 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,15 +39,13 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
+    static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String NAME = "name";
     static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    static final String VERSION = "version";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
-    private final String clientName = properties.getOrDefault(NAME, "UnknownName");
-    private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
     private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
         List<TrainingDocumentInfo> actualTrainingDocuments) {
@@ -97,8 +77,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     static void validateAccountProperties(AccountProperties expectedAccountProperties,
         AccountProperties actualAccountProperties) {
-        assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
-        assertNotNull(actualAccountProperties.getCount());
+        assertEquals(expectedAccountProperties.getCustomModelLimit(), actualAccountProperties.getCustomModelLimit());
+        assertNotNull(actualAccountProperties.getCustomModelCount());
     }
 
     /**
@@ -164,46 +144,43 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     @Test
-    abstract void getCustomModelNullModelId();
+    abstract void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelLabeled();
+    abstract void getCustomModelLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelUnlabeled();
+    abstract void getCustomModelUnlabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelInvalidModelId();
+    abstract void getCustomModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelWithResponse();
+    abstract void getCustomModelWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void validGetAccountProperties();
+    abstract void validGetAccountProperties(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void validGetAccountPropertiesWithResponse();
+    abstract void validGetAccountPropertiesWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void deleteModelInvalidModelId();
+    abstract void deleteModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void deleteModelValidModelIdWithResponse();
+    abstract void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getModelInfos();
+    abstract void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getModelInfosWithContext();
+    abstract void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingNullInput();
+    abstract void beginTrainingLabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingLabeledResult();
-
-    @Test
-    abstract void beginTrainingUnlabeledResult();
+    abstract void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
@@ -215,53 +192,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getTrainingSasUri(), false);
-    }
-
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        // TODO: #9252 AAD not supported by service
-        // TokenCredential credential = null;
-        AzureKeyCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new AzureKeyCredential(getApiKey());
-        }
-
-        HttpClient httpClient;
-        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        }
-
-        policies.add(new RetryPolicy());
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-        }
-        policies.add(interceptorManager.getRecordPolicy());
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
     }
 
     /**
@@ -284,11 +214,5 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://isPlaybackmode"
             : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
-    }
-
-    private String getTestingSasUri() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://isPlaybackmode"
-            : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
     }
 }

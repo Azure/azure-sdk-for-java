@@ -6,12 +6,16 @@ package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.PrivateLinkResourceProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateLinkResource model. */
 @Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
+
     /*
      * The private link resource group id.
      */
@@ -25,5 +29,16 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      */
     public PrivateLinkResourceProperties properties() {
         return this.properties;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

@@ -43,7 +43,7 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override

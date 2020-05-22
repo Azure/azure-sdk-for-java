@@ -3,11 +3,11 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -111,7 +111,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     feedOptions.getRequestContinuation());
 
             return Flux.just(context);
-        } catch (CosmosClientException dce) {
+        } catch (CosmosException dce) {
             return Flux.error(dce);
         }
     }
@@ -121,7 +121,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions,
             int initialPageSize,
-            String continuationToken) throws CosmosClientException {
+            String continuationToken) throws CosmosException {
         if (continuationToken == null) {
             // First iteration so use null continuation tokens and "true" filters
             Map<PartitionKeyRange, String> partitionKeyRangeToContinuationToken = new HashMap<PartitionKeyRange, String>();
@@ -144,7 +144,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     outOrderByContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for OrderBy~Context",
                         continuationToken);
-                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 
@@ -156,7 +156,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             if (compositeContinuationToken.getRange().isEmpty()) {
                 String message = String.format("INVALID RANGE in the continuation token %s for OrderBy~Context.",
                         continuationToken);
-                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 
@@ -233,7 +233,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             OrderByContinuationToken orderByContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
-            Collection<String> orderByExpressions) throws CosmosClientException {
+            Collection<String> orderByExpressions) {
         // Find the partition key range we left off on
         int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 orderByContinuationToken.getCompositeContinuationToken().getRange());

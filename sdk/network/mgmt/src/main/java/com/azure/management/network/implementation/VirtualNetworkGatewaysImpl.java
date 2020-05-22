@@ -97,6 +97,6 @@ class VirtualNetworkGatewaysImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualNetworkGatewayImpl(inner.getName(), inner, this.manager());
+        return new VirtualNetworkGatewayImpl(inner.name(), inner, this.manager());
     }
 }

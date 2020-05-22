@@ -5,11 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ProviderOperation model. */
 @Fluent
 public final class ProviderOperation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperation.class);
+
     /*
      * The operation name.
      */
@@ -164,5 +168,13 @@ public final class ProviderOperation {
     public ProviderOperation withIsDataAction(Boolean isDataAction) {
         this.isDataAction = isDataAction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

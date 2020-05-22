@@ -25,12 +25,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.appservice.DefaultErrorResponseException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.appservice.DefaultErrorResponseErrorException;
 import com.azure.management.appservice.TopLevelDomainAgreementOption;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TopLevelDomains. */
 public final class TopLevelDomainsInner {
+    private final ClientLogger logger = new ClientLogger(TopLevelDomainsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final TopLevelDomainsService service;
 
@@ -58,7 +61,7 @@ public final class TopLevelDomainsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<TopLevelDomainCollectionInner>> list(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -68,7 +71,7 @@ public final class TopLevelDomainsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<TopLevelDomainInner>> get(
             @HostParam("$host") String host,
             @PathParam("name") String name,
@@ -81,7 +84,7 @@ public final class TopLevelDomainsInner {
             "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}"
                 + "/listAgreements")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<TldLegalAgreementCollectionInner>> listAgreements(
             @HostParam("$host") String host,
             @PathParam("name") String name,
@@ -93,14 +96,14 @@ public final class TopLevelDomainsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<TopLevelDomainCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<TldLegalAgreementCollectionInner>> listAgreementsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -108,12 +111,22 @@ public final class TopLevelDomainsInner {
     /**
      * Description for Get all top-level domains supported for registration.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Top-level domains.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TopLevelDomainInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -138,7 +151,41 @@ public final class TopLevelDomainsInner {
     /**
      * Description for Get all top-level domains supported for registration.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Top-level domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TopLevelDomainInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get all top-level domains supported for registration.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Top-level domains.
      */
@@ -150,7 +197,21 @@ public final class TopLevelDomainsInner {
     /**
      * Description for Get all top-level domains supported for registration.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Top-level domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TopLevelDomainInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get all top-level domains supported for registration.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Top-level domains.
      */
@@ -164,12 +225,25 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a top level domain object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<TopLevelDomainInner>> getWithResponseAsync(String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -187,8 +261,37 @@ public final class TopLevelDomainsInner {
      * Description for Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a top level domain object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<TopLevelDomainInner>> getWithResponseAsync(String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .get(this.client.getHost(), name, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Description for Get details of a top-level domain.
+     *
+     * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a top level domain object.
      */
@@ -210,7 +313,7 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a top level domain object.
      */
@@ -225,13 +328,32 @@ public final class TopLevelDomainsInner {
      * @param name Name of the top-level domain.
      * @param agreementOption Options for retrieving the list of top level domain legal agreements.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(
         String name, TopLevelDomainAgreementOption agreementOption) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (agreementOption == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter agreementOption is required and cannot be null."));
+        } else {
+            agreementOption.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -260,8 +382,60 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Options for retrieving the list of top level domain legal agreements.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of top-level domain legal agreements.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(
+        String name, TopLevelDomainAgreementOption agreementOption, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (agreementOption == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter agreementOption is required and cannot be null."));
+        } else {
+            agreementOption.validate();
+        }
+        return service
+            .listAgreements(
+                this.client.getHost(),
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                agreementOption,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     *
+     * @param name Name of the top-level domain.
+     * @param agreementOption Options for retrieving the list of top level domain legal agreements.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements.
      */
@@ -278,8 +452,27 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Options for retrieving the list of top level domain legal agreements.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of top-level domain legal agreements.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TldLegalAgreementInner> listAgreementsAsync(
+        String name, TopLevelDomainAgreementOption agreementOption, Context context) {
+        return new PagedFlux<>(
+            () -> listAgreementsSinglePageAsync(name, agreementOption, context),
+            nextLink -> listAgreementsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     *
+     * @param name Name of the top-level domain.
+     * @param agreementOption Options for retrieving the list of top level domain legal agreements.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements.
      */
@@ -294,12 +487,15 @@ public final class TopLevelDomainsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Top-level domains.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TopLevelDomainInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<TopLevelDomainInner>>map(
@@ -318,13 +514,44 @@ public final class TopLevelDomainsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Top-level domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TopLevelDomainInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listAgreementsNext(nextLink, context))
             .<PagedResponse<TldLegalAgreementInner>>map(
@@ -337,5 +564,34 @@ public final class TopLevelDomainsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of top-level domain legal agreements.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listAgreementsNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

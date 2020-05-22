@@ -7,9 +7,11 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ResourceIdentity;
 import com.azure.management.sql.ServerPrivateEndpointConnection;
 import com.azure.management.sql.ServerPublicNetworkAccess;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ServerInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerInner.class);
+
     /*
      * The Azure Active Directory identity of the server.
      */
@@ -236,5 +240,19 @@ public class ServerInner extends Resource {
     public ServerInner withPublicNetworkAccess(ServerPublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 }

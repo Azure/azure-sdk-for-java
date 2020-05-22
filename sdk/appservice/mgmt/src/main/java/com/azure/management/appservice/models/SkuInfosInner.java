@@ -5,13 +5,17 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.GlobalCsmSkuDescription;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SkuInfos model. */
 @Fluent
 public final class SkuInfosInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInfosInner.class);
+
     /*
      * Resource type that this SKU applies to.
      */
@@ -62,5 +66,16 @@ public final class SkuInfosInner {
     public SkuInfosInner withSkus(List<GlobalCsmSkuDescription> skus) {
         this.skus = skus;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (skus() != null) {
+            skus().forEach(e -> e.validate());
+        }
     }
 }

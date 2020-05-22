@@ -3,13 +3,11 @@
 
 package com.azure.cosmos.rx.examples.multimaster.samples;
 
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Document;
@@ -493,8 +491,8 @@ public class ConflictWorker {
     }
 
     private boolean hasDocumentClientException(Throwable e, int statusCode) {
-        if (e instanceof CosmosClientException) {
-            CosmosClientException dce = (CosmosClientException) e;
+        if (e instanceof CosmosException) {
+            CosmosException dce = (CosmosException) e;
             return dce.getStatusCode() == statusCode;
         }
 
@@ -503,7 +501,7 @@ public class ConflictWorker {
 
     private boolean hasDocumentClientExceptionCause(Throwable e) {
         while (e != null) {
-            if (e instanceof CosmosClientException) {
+            if (e instanceof CosmosException) {
                 return true;
             }
 
@@ -514,8 +512,8 @@ public class ConflictWorker {
 
     private boolean hasDocumentClientExceptionCause(Throwable e, int statusCode) {
         while (e != null) {
-            if (e instanceof CosmosClientException) {
-                CosmosClientException dce = (CosmosClientException) e;
+            if (e instanceof CosmosException) {
+                CosmosException dce = (CosmosException) e;
                 return dce.getStatusCode() == statusCode;
             }
 
@@ -530,9 +528,7 @@ public class ConflictWorker {
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(new AccessCondition());
-        options.getAccessCondition().setType(AccessConditionType.IF_MATCH);
-        options.getAccessCondition().setCondition(document.getETag());
+        options.setIfMatchETag(document.getETag());
 
 
         return client.replaceDocument(document.getSelfLink(), document, null).onErrorResume(e -> {
@@ -552,9 +548,7 @@ public class ConflictWorker {
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(new AccessCondition());
-        options.getAccessCondition().setType(AccessConditionType.IF_MATCH);
-        options.getAccessCondition().setCondition(document.getETag());
+        options.setIfMatchETag(document.getETag());
 
 
         return client.deleteDocument(document.getSelfLink(), options).onErrorResume(e -> {

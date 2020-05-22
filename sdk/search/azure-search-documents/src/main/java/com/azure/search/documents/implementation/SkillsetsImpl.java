@@ -28,7 +28,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.Skillset;
+import com.azure.search.documents.models.SearchIndexerSkillset;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +68,7 @@ public final class SkillsetsImpl {
         @Put("skillsets('{skillsetName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Skillset>> createOrUpdate(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Skillset skillset, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchIndexerSkillset>> createOrUpdate(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndexerSkillset skillset, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Delete("skillsets('{skillsetName}')")
         @ExpectedResponses({204, 404})
@@ -78,7 +78,7 @@ public final class SkillsetsImpl {
         @Get("skillsets('{skillsetName}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Skillset>> get(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchIndexerSkillset>> get(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("skillsets")
         @ExpectedResponses({200})
@@ -88,7 +88,7 @@ public final class SkillsetsImpl {
         @Post("skillsets")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Skillset>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Skillset skillset, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchIndexerSkillset>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndexerSkillset skillset, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
     }
 
     /**
@@ -101,7 +101,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, Context context) {
+    public Mono<SimpleResponse<SearchIndexerSkillset>> createOrUpdateWithRestResponseAsync(String skillsetName, SearchIndexerSkillset skillset, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final String ifMatch = null;
@@ -124,7 +124,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchIndexerSkillset>> createOrUpdateWithRestResponseAsync(String skillsetName, SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final String prefer = "return=representation";
@@ -184,7 +184,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> getWithRestResponseAsync(String skillsetName, Context context) {
+    public Mono<SimpleResponse<SearchIndexerSkillset>> getWithRestResponseAsync(String skillsetName, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final UUID xMsClientRequestId = null;
@@ -201,7 +201,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> getWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchIndexerSkillset>> getWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         UUID xMsClientRequestId = null;
@@ -256,7 +256,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createWithRestResponseAsync(Skillset skillset, Context context) {
+    public Mono<SimpleResponse<SearchIndexerSkillset>> createWithRestResponseAsync(SearchIndexerSkillset skillset, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final UUID xMsClientRequestId = null;
@@ -273,7 +273,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createWithRestResponseAsync(Skillset skillset, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchIndexerSkillset>> createWithRestResponseAsync(SearchIndexerSkillset skillset, RequestOptions requestOptions, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         UUID xMsClientRequestId = null;

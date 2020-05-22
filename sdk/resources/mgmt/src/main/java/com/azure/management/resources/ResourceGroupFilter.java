@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceGroupFilter model. */
 @Fluent
 public final class ResourceGroupFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupFilter.class);
+
     /*
      * The tag name.
      */
@@ -60,5 +64,13 @@ public final class ResourceGroupFilter {
     public ResourceGroupFilter withTagValue(String tagValue) {
         this.tagValue = tagValue;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

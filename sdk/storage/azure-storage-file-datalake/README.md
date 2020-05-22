@@ -1,9 +1,9 @@
 # Azure File Data Lake client library for Java
 
-Azure Data Lake Storage is Microsoft's optimized storage solution for for big 
+Azure Data Lake Storage is Microsoft's optimized storage solution for for big
 data analytics workloads. A fundamental part of Data Lake Storage Gen2 is the
-addition of a hierarchical namespace to Blob storage. The hierarchical 
-namespace organizes objects/files into a hierarchy of directories for 
+addition of a hierarchical namespace to Blob storage. The hierarchical
+namespace organizes objects/files into a hierarchy of directories for
 efficient data access.
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
@@ -25,7 +25,7 @@ Add a dependency on Azure Storage File Datalake
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.1.0</version>
+    <version>12.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -128,7 +128,7 @@ Data Lake Storage Gen2 offers two types of resources:
 
 |ADLS Gen2                  | Blob       |
 | --------------------------| ---------- |
-|Filesystem                 | Container  | 
+|Filesystem                 | Container  |
 |Path (File or Directory)   | Blob       |
 
 Note: This client library does not support hierarchical namespace (HNS) disabled storage accounts.
@@ -381,19 +381,19 @@ status codes returned for [REST API][error_codes] requests. For example, if you 
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 
 ### Default HTTP Client
-All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
 [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
 
 ### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
-better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 
-Several Storage datalake  Java SDK samples are available to you in the SDK's GitHub repository. 
+Several Storage datalake  Java SDK samples are available to you in the SDK's GitHub repository.
 
 ## Contributing
 

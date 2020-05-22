@@ -35,12 +35,12 @@ class NetworkSecurityRuleImpl
         super(inner, parent);
         if (inner.sourceApplicationSecurityGroups() != null) {
             for (ApplicationSecurityGroupInner asg : inner.sourceApplicationSecurityGroups()) {
-                sourceAsgs.put(asg.getId(), asg);
+                sourceAsgs.put(asg.id(), asg);
             }
         }
         if (inner.destinationApplicationSecurityGroups() != null) {
             for (ApplicationSecurityGroupInner asg : inner.destinationApplicationSecurityGroups()) {
-                destinationAsgs.put(asg.getId(), asg);
+                destinationAsgs.put(asg.id(), asg);
             }
         }
     }
@@ -152,7 +152,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl withAnyProtocol() {
-        return this.withProtocol(SecurityRuleProtocol.STAR);
+        return this.withProtocol(SecurityRuleProtocol.ASTERISK);
     }
 
     @Override

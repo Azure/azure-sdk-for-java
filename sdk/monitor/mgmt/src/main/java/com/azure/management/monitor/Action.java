@@ -5,16 +5,18 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
 /** The Action model. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
+    property = "odata\\.type",
     defaultImpl = Action.class)
 @JsonTypeName("Action")
 @JsonSubTypes({
@@ -29,7 +31,16 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
                 + ".Resources.ScheduledQueryRules.LogToMetricAction",
         value = LogToMetricAction.class)
 })
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@JsonFlatten
 @Immutable
 public class Action {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Action.class);
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
 }

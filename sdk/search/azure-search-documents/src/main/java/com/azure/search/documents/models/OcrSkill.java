@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Vision.OcrSkill")
 @Fluent
-public final class OcrSkill extends Skill {
+public final class OcrSkill extends SearchIndexerSkill {
     /*
      * A value indicating which algorithm to use for extracting text. Default
-     * is printed. Possible values include: 'printed', 'handwritten'
+     * is printed. Possible values include: 'Printed', 'Handwritten'
      */
     @JsonProperty(value = "textExtractionAlgorithm")
     private TextExtractionAlgorithm textExtractionAlgorithm;
@@ -44,7 +44,7 @@ public final class OcrSkill extends Skill {
     /**
      * Get the textExtractionAlgorithm property: A value indicating which
      * algorithm to use for extracting text. Default is printed. Possible
-     * values include: 'printed', 'handwritten'.
+     * values include: 'Printed', 'Handwritten'.
      *
      * @return the textExtractionAlgorithm value.
      */
@@ -55,7 +55,7 @@ public final class OcrSkill extends Skill {
     /**
      * Set the textExtractionAlgorithm property: A value indicating which
      * algorithm to use for extracting text. Default is printed. Possible
-     * values include: 'printed', 'handwritten'.
+     * values include: 'Printed', 'Handwritten'.
      *
      * @param textExtractionAlgorithm the textExtractionAlgorithm value to set.
      * @return the OcrSkill object itself.

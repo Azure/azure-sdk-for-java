@@ -6,6 +6,7 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ApiDefinitionInfo;
 import com.azure.management.appservice.ApiManagementConfig;
 import com.azure.management.appservice.AutoHealRules;
@@ -24,6 +25,7 @@ import com.azure.management.appservice.SiteLoadBalancing;
 import com.azure.management.appservice.SiteMachineKey;
 import com.azure.management.appservice.SupportedTlsVersions;
 import com.azure.management.appservice.VirtualApplication;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -32,6 +34,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class SiteConfigResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteConfigResourceInner.class);
+
     /*
      * Number of workers.
      */
@@ -1481,5 +1485,57 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     public SiteConfigResourceInner withHealthCheckPath(String healthCheckPath) {
         this.healthCheckPath = healthCheckPath;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (appSettings() != null) {
+            appSettings().forEach(e -> e.validate());
+        }
+        if (connectionStrings() != null) {
+            connectionStrings().forEach(e -> e.validate());
+        }
+        if (machineKey() != null) {
+            machineKey().validate();
+        }
+        if (handlerMappings() != null) {
+            handlerMappings().forEach(e -> e.validate());
+        }
+        if (virtualApplications() != null) {
+            virtualApplications().forEach(e -> e.validate());
+        }
+        if (experiments() != null) {
+            experiments().validate();
+        }
+        if (limits() != null) {
+            limits().validate();
+        }
+        if (autoHealRules() != null) {
+            autoHealRules().validate();
+        }
+        if (cors() != null) {
+            cors().validate();
+        }
+        if (push() != null) {
+            push().validate();
+        }
+        if (apiDefinition() != null) {
+            apiDefinition().validate();
+        }
+        if (apiManagementConfig() != null) {
+            apiManagementConfig().validate();
+        }
+        if (ipSecurityRestrictions() != null) {
+            ipSecurityRestrictions().forEach(e -> e.validate());
+        }
+        if (scmIpSecurityRestrictions() != null) {
+            scmIpSecurityRestrictions().forEach(e -> e.validate());
+        }
     }
 }

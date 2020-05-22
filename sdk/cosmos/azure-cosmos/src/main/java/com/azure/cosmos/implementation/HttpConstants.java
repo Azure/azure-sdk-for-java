@@ -171,6 +171,9 @@ public class HttpConstants {
         public static final String OFFER_TYPE = "x-ms-offer-type";
         public static final String OFFER_THROUGHPUT = "x-ms-offer-throughput";
         public static final String OFFER_IS_RU_PER_MINUTE_THROUGHPUT_ENABLED = "x-ms-offer-is-ru-per-minute-throughput-enabled";
+        public static final String OFFER_MIN_THROUGHPUT = "x-ms-cosmos-min-throughput";
+        public static final String OFFER_AUTOPILOT_SETTINGS = "x-ms-cosmos-offer-autopilot-settings";
+        public static final String OFFER_REPLACE_PENDING = "x-ms-offer-replace-pending";
 
         // Upsert header
         public static final String IS_UPSERT = "x-ms-documentdb-is-upsert";
@@ -306,6 +309,7 @@ public class HttpConstants {
     }
 
     public static class HeaderValues {
-        public static final String NoCache = "no-cache";
+        public static final String NO_CACHE = "no-cache";
+        public static final String PREFER_RETURN_MINIMAL = "return=minimal";
     }
 }

@@ -97,7 +97,7 @@ class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, Gallery
 
     @Override
     protected GalleryImpl wrapModel(GalleryInner inner) {
-        return new GalleryImpl(inner.getName(), inner, manager());
+        return new GalleryImpl(inner.name(), inner, manager());
     }
 
     @Override

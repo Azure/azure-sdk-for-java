@@ -30,13 +30,13 @@ class BlobServicePropertiesImpl
     }
 
     BlobServicePropertiesImpl(BlobServicePropertiesInner inner, StorageManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.accountName = inner.getName();
+        this.accountName = inner.name();
         // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.accountName = IdParsingUtils.getValueFromIdByName(inner.getId(), "storageAccounts");
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
         //
     }
 
@@ -69,7 +69,7 @@ class BlobServicePropertiesImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -89,17 +89,17 @@ class BlobServicePropertiesImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override

@@ -40,7 +40,7 @@ public class SqlElasticPoolOperationsImpl
         ElasticPoolInner inner = this.manager.inner().elasticPools().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
             ? new SqlElasticPoolImpl(
-                resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager)
+                resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
             : null;
     }
 
@@ -55,7 +55,7 @@ public class SqlElasticPoolOperationsImpl
             .map(
                 inner ->
                     new SqlElasticPoolImpl(
-                        resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager));
+                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SqlElasticPoolOperationsImpl
         ElasticPoolInner inner =
             this.manager.inner().elasticPools().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null)
-            ? new SqlElasticPoolImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager)
+            ? new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager)
             : null;
     }
 
@@ -78,7 +78,7 @@ public class SqlElasticPoolOperationsImpl
             .inner()
             .elasticPools()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
-            .map(inner -> new SqlElasticPoolImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager));
+            .map(inner -> new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
     }
 
     @Override
@@ -186,7 +186,7 @@ public class SqlElasticPoolOperationsImpl
             elasticPoolSet
                 .add(
                     new SqlElasticPoolImpl(
-                        resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager));
+                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
         }
         return Collections.unmodifiableList(elasticPoolSet);
     }
@@ -201,7 +201,7 @@ public class SqlElasticPoolOperationsImpl
             .mapPage(
                 inner ->
                     new SqlElasticPoolImpl(
-                        resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager));
+                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
     }
 
     @Override
@@ -210,7 +210,7 @@ public class SqlElasticPoolOperationsImpl
         if (sqlServer != null) {
             for (ElasticPoolInner inner
                 : this.manager.inner().elasticPools().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
-                elasticPoolSet.add(new SqlElasticPoolImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager));
+                elasticPoolSet.add(new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }
         return Collections.unmodifiableList(elasticPoolSet);
@@ -224,7 +224,7 @@ public class SqlElasticPoolOperationsImpl
             .inner()
             .elasticPools()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(inner -> new SqlElasticPoolImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager));
+            .mapPage(inner -> new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
     }
 
     @Override

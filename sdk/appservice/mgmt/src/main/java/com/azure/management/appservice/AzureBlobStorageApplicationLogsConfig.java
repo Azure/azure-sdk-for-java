@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AzureBlobStorageApplicationLogsConfig model. */
 @Fluent
 public final class AzureBlobStorageApplicationLogsConfig {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobStorageApplicationLogsConfig.class);
+
     /*
      * Log level.
      */
@@ -91,5 +95,13 @@ public final class AzureBlobStorageApplicationLogsConfig {
     public AzureBlobStorageApplicationLogsConfig withRetentionInDays(Integer retentionInDays) {
         this.retentionInDays = retentionInDays;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

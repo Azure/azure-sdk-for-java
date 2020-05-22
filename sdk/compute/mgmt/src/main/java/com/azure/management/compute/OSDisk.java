@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OSDisk model. */
 @Fluent
 public final class OSDisk {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDisk.class);
+
     /*
      * This property allows you to specify the type of the OS that is included
      * in the disk if creating a VM from user-image or a specialized VHD.
@@ -341,5 +345,33 @@ public final class OSDisk {
     public OSDisk withManagedDisk(ManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (encryptionSettings() != null) {
+            encryptionSettings().validate();
+        }
+        if (vhd() != null) {
+            vhd().validate();
+        }
+        if (image() != null) {
+            image().validate();
+        }
+        if (diffDiskSettings() != null) {
+            diffDiskSettings().validate();
+        }
+        if (createOption() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property createOption in model OSDisk"));
+        }
+        if (managedDisk() != null) {
+            managedDisk().validate();
+        }
     }
 }

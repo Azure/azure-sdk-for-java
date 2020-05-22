@@ -21,15 +21,18 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobTargetExecutions. */
 public final class JobTargetExecutionsInner {
+    private final ClientLogger logger = new ClientLogger(JobTargetExecutionsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final JobTargetExecutionsService service;
 
@@ -59,7 +62,7 @@ public final class JobTargetExecutionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/targets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobExecutionListResultInner>> listByJobExecution(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -84,7 +87,7 @@ public final class JobTargetExecutionsInner {
                 + "/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps"
                 + "/{stepName}/targets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobExecutionListResultInner>> listByStep(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -110,7 +113,7 @@ public final class JobTargetExecutionsInner {
                 + "/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps"
                 + "/{stepName}/targets/{targetId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobExecutionInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -127,14 +130,14 @@ public final class JobTargetExecutionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobExecutionListResultInner>> listByJobExecutionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobExecutionListResultInner>> listByStepNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -156,7 +159,7 @@ public final class JobTargetExecutionsInner {
      * @param skip The number of elements in the collection to skip.
      * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -174,6 +177,32 @@ public final class JobTargetExecutionsInner {
         Boolean isActive,
         Integer skip,
         Integer top) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -224,8 +253,101 @@ public final class JobTargetExecutionsInner {
      * @param isActive If specified, only active or only completed job executions are included.
      * @param skip The number of elements in the collection to skip.
      * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .listByJobExecution(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -270,8 +392,64 @@ public final class JobTargetExecutionsInner {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
      * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<JobExecutionInner> listByJobExecutionAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByJobExecutionSinglePageAsync(
+                    resourceGroupName,
+                    serverName,
+                    jobAgentName,
+                    jobName,
+                    jobExecutionId,
+                    createTimeMin,
+                    createTimeMax,
+                    endTimeMin,
+                    endTimeMax,
+                    isActive,
+                    skip,
+                    top,
+                    context),
+            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -321,7 +499,7 @@ public final class JobTargetExecutionsInner {
      * @param skip The number of elements in the collection to skip.
      * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -365,7 +543,7 @@ public final class JobTargetExecutionsInner {
      * @param jobName The name of the job to get.
      * @param jobExecutionId The id of the job execution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -414,7 +592,7 @@ public final class JobTargetExecutionsInner {
      * @param skip The number of elements in the collection to skip.
      * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -433,6 +611,35 @@ public final class JobTargetExecutionsInner {
         Boolean isActive,
         Integer skip,
         Integer top) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (stepName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -485,8 +692,107 @@ public final class JobTargetExecutionsInner {
      * @param isActive If specified, only active or only completed job executions are included.
      * @param skip The number of elements in the collection to skip.
      * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<JobExecutionInner>> listByStepSinglePageAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        String stepName,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (stepName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .listByStep(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                stepName,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists the target executions of a job step execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param stepName The name of the step.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -534,8 +840,67 @@ public final class JobTargetExecutionsInner {
      * @param jobName The name of the job to get.
      * @param jobExecutionId The id of the job execution.
      * @param stepName The name of the step.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<JobExecutionInner> listByStepAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        String stepName,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByStepSinglePageAsync(
+                    resourceGroupName,
+                    serverName,
+                    jobAgentName,
+                    jobName,
+                    jobExecutionId,
+                    stepName,
+                    createTimeMin,
+                    createTimeMax,
+                    endTimeMin,
+                    endTimeMax,
+                    isActive,
+                    skip,
+                    top,
+                    context),
+            nextLink -> listByStepNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the target executions of a job step execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param stepName The name of the step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -592,7 +957,7 @@ public final class JobTargetExecutionsInner {
      * @param skip The number of elements in the collection to skip.
      * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -639,7 +1004,7 @@ public final class JobTargetExecutionsInner {
      * @param jobExecutionId The id of the job execution.
      * @param stepName The name of the step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
@@ -688,7 +1053,7 @@ public final class JobTargetExecutionsInner {
      * @param stepName The name of the step.
      * @param targetId The target id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a target execution.
      */
@@ -701,6 +1066,38 @@ public final class JobTargetExecutionsInner {
         UUID jobExecutionId,
         String stepName,
         UUID targetId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (stepName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
+        }
+        if (targetId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter targetId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -732,8 +1129,83 @@ public final class JobTargetExecutionsInner {
      * @param jobExecutionId The unique id of the job execution.
      * @param stepName The name of the step.
      * @param targetId The target id.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a target execution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<JobExecutionInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        String stepName,
+        UUID targetId,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (stepName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
+        }
+        if (targetId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter targetId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                stepName,
+                targetId,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets a target execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The unique id of the job execution.
+     * @param stepName The name of the step.
+     * @param targetId The target id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a target execution.
      */
@@ -770,7 +1242,7 @@ public final class JobTargetExecutionsInner {
      * @param stepName The name of the step.
      * @param targetId The target id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a target execution.
      */
@@ -792,12 +1264,15 @@ public final class JobTargetExecutionsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByJobExecutionNext(nextLink, context))
             .<PagedResponse<JobExecutionInner>>map(
@@ -816,13 +1291,45 @@ public final class JobTargetExecutionsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByJobExecutionNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<JobExecutionInner>> listByStepNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByStepNext(nextLink, context))
             .<PagedResponse<JobExecutionInner>>map(
@@ -835,5 +1342,33 @@ public final class JobTargetExecutionsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<JobExecutionInner>> listByStepNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByStepNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

@@ -327,7 +327,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         Assertions.assertEquals(customImage.dataDiskImages().size(), 5);
         for (ImageDataDisk imageDataDisk : customImage.dataDiskImages().values()) {
             Assertions.assertNull(imageDataDisk.blobUri());
-            Assertions.assertNotNull(imageDataDisk.managedDisk().getId());
+            Assertions.assertNotNull(imageDataDisk.managedDisk().id());
         }
 
         // Create virtual machine from the custom image

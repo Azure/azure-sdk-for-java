@@ -53,7 +53,7 @@ public class VirtualNetworkGatewayConnectionImpl
         if (inner().virtualNetworkGateway1() == null) {
             return null;
         }
-        return inner().virtualNetworkGateway1().getId();
+        return inner().virtualNetworkGateway1().id();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class VirtualNetworkGatewayConnectionImpl
         if (inner().virtualNetworkGateway2() == null) {
             return null;
         }
-        return inner().virtualNetworkGateway2().getId();
+        return inner().virtualNetworkGateway2().id();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class VirtualNetworkGatewayConnectionImpl
         if (inner().localNetworkGateway2() == null) {
             return null;
         }
-        return inner().localNetworkGateway2().getId();
+        return inner().localNetworkGateway2().id();
     }
 
     @Override
@@ -109,7 +109,7 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public String peerId() {
-        return inner().peer() == null ? null : inner().peer().getId();
+        return inner().peer() == null ? null : inner().peer().id();
     }
 
     @Override
@@ -147,7 +147,7 @@ public class VirtualNetworkGatewayConnectionImpl
     @Override
     public VirtualNetworkGatewayConnectionImpl withExpressRoute(String circuitId) {
         inner().withConnectionType(VirtualNetworkGatewayConnectionType.EXPRESS_ROUTE);
-        inner().withPeer(new SubResource().setId(circuitId));
+        inner().withPeer(new SubResource().withId(circuitId));
         return this;
     }
 
@@ -231,7 +231,7 @@ public class VirtualNetworkGatewayConnectionImpl
             .manager()
             .inner()
             .virtualNetworkGatewayConnections()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags())
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(inner -> refreshAsync());
     }
 }

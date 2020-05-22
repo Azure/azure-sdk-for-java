@@ -7,13 +7,17 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SensitivityLabelRank;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SensitivityLabel model. */
 @JsonFlatten
 @Fluent
 public class SensitivityLabelInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabelInner.class);
+
     /*
      * The label name.
      */
@@ -160,5 +164,13 @@ public class SensitivityLabelInner extends ProxyResource {
     public SensitivityLabelInner withRank(SensitivityLabelRank rank) {
         this.rank = rank;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

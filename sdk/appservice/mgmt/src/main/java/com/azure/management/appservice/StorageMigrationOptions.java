@@ -6,12 +6,16 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The StorageMigrationOptions model. */
 @JsonFlatten
 @Fluent
 public class StorageMigrationOptions extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageMigrationOptions.class);
+
     /*
      * AzureFiles connection string.
      */
@@ -120,5 +124,15 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     public StorageMigrationOptions withBlockWriteAccessToSite(Boolean blockWriteAccessToSite) {
         this.blockWriteAccessToSite = blockWriteAccessToSite;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

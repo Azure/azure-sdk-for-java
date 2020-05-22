@@ -5,13 +5,17 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.models.KeyCredentialInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The KeyCredentialsUpdateParameters model. */
 @Fluent
 public final class KeyCredentialsUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyCredentialsUpdateParameters.class);
+
     /*
      * A collection of KeyCredentials.
      */
@@ -36,5 +40,21 @@ public final class KeyCredentialsUpdateParameters {
     public KeyCredentialsUpdateParameters withValue(List<KeyCredentialInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model KeyCredentialsUpdateParameters"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

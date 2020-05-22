@@ -116,17 +116,17 @@ class VirtualMachineExtensionsImpl
         List<VirtualMachineExtensionImpl> childResources = new ArrayList<>();
         if (getParent().inner().resources() != null) {
             for (VirtualMachineExtensionInner inner : getParent().inner().resources()) {
-                if (inner.getName() == null) {
+                if (inner.name() == null) {
                     // This extension exists in the parent VM extension collection as a reference id.
-                    inner.setLocation(getParent().regionName());
+                    inner.withLocation(getParent().regionName());
                     childResources
                         .add(
                             new VirtualMachineExtensionImpl(
-                                ResourceUtils.nameFromResourceId(inner.getId()), this.getParent(), inner, this.client));
+                                ResourceUtils.nameFromResourceId(inner.id()), this.getParent(), inner, this.client));
                 } else {
                     // This extension exists in the parent VM as a fully blown object
                     childResources
-                        .add(new VirtualMachineExtensionImpl(inner.getName(), this.getParent(), inner, this.client));
+                        .add(new VirtualMachineExtensionImpl(inner.name(), this.getParent(), inner, this.client));
                 }
             }
         }
