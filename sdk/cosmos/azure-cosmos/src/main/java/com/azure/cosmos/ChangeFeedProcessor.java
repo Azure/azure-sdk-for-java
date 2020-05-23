@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -63,6 +64,19 @@ public interface ChangeFeedProcessor {
      * @return true if the change feed processor is currently active and running.
      */
     boolean isStarted();
+
+    /**
+     * Returns the current owner (host) and an approximation of the difference between the last processed item (defined
+     *   by the state of the feed container) and the latest change in the container for each partition (lease
+     *   document).
+     * <p>
+     * An empty map will be returned if the processor was not started or no lease documents matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a map representing the current owner and lease token, the current LSN and latest LSN, and the estimated
+     *         lag, asynchronously.
+     */
+    Mono<Map<String, Integer>> getEstimatedLag();
 
     /**
      * Helper static method to build a {@link ChangeFeedProcessor} instance.

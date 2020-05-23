@@ -198,6 +198,83 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void getEstimatedLag() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<CosmosItemProperties> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges((List<JsonNode> docs) -> {
+                    ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (JsonNode item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .build();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .then(Mono.just(changeFeedProcessor)
+                        .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .flatMap(value -> changeFeedProcessor.stop()
+                            .subscribeOn(Schedulers.elastic())
+                            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        ))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+            Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            // Test for "zero" lag
+            Map<String, Integer> estimatedLagResult = changeFeedProcessor.getEstimatedLag()
+                .map(getEstimatedLag -> {
+                    System.out.println(getEstimatedLag);
+                    return getEstimatedLag;
+                }).block();
+
+            int totalLag = 0;
+            for (int lag : estimatedLagResult.values()) {
+                totalLag += lag;
+            }
+
+            assertThat(totalLag == 0).as("Change Feed Processor estimated total lag at start").isTrue();
+
+            // Test for "FEED_COUNT total lag
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+            estimatedLagResult = changeFeedProcessor.getEstimatedLag()
+                .map(getEstimatedLag -> {
+                    System.out.println(getEstimatedLag);
+                    return getEstimatedLag;
+                }).block();
+
+            totalLag = 0;
+            for (int lag : estimatedLagResult.values()) {
+                totalLag += lag;
+            }
+
+            assertThat(totalLag == FEED_COUNT).as("Change Feed Processor estimated total lag").isTrue();
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void staledLeaseAcquiring() throws InterruptedException {
         final String ownerFirst = "Owner_First";
         final String ownerSecond = "Owner_Second";
