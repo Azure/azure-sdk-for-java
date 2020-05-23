@@ -201,10 +201,11 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void beginCopy() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization
-        final String resourceId = "target-resource-Id";
-        final String resourceRegion = "target-resource-region";
+        String resourceId = "target-resource-Id";
+        String resourceRegion = "target-resource-region";
+        String copyModelId = "copy-model-Id";
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
-            .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(resourceId, copyAuthorization)
+            .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization)
                 .subscribe(copyPoller -> copyPoller.getFinalResult().subscribe(customFormModelInfo -> {
                     System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
                             + " transfer completed on: %s.%n",
@@ -221,10 +222,11 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void beginCopyOverload() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-Duration
-        final String resourceId = "target-resource-Id";
-        final String resourceRegion = "target-resource-region";
+        String resourceId = "target-resource-Id";
+        String resourceRegion = "target-resource-region";
+        String copyModelId = "copy-model-Id";
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
-            .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(resourceId, copyAuthorization,
+            .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization,
                 Duration.ofSeconds(5)).subscribe(copyPoller ->
                 copyPoller.getFinalResult().subscribe(customFormModelInfo -> {
                     System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"

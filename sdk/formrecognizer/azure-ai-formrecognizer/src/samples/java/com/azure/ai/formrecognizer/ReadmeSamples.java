@@ -183,7 +183,8 @@ public class ReadmeSamples {
     public void beginCopy() {
         String resourceId = "target-resource-Id";
         String resourceRegion = "target-resource-region";
-        SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(resourceId,
+        String copyModelId = "copy-model-Id";
+        SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(copyModelId,
             formTrainingClient.getCopyAuthorization(resourceId, resourceRegion));
         CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
         System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"

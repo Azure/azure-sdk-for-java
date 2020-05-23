@@ -94,6 +94,7 @@ public final class FormTrainingClientBuilder {
     private FormRecognizerServiceVersion version;
 
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+
     /**
      * The constructor with defaults.
      */

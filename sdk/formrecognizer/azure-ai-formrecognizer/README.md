@@ -139,7 +139,7 @@ The following section provides several code snippets covering some of the most c
 * [Recognize Receipts](#recognize-receipts "Recognize receipts")
 * [Train a Model](#train-a-model "Train a model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
-- [Copy custom model between Form Recognizer resources](#copy-custom-model "Copy Custom Model between Form recognizer resources")
+- [Copy custom model between Form Recognizer resources](#copy-model "Copy Custom Model between Form recognizer resources")
 
 
 ### Recognize Forms Using a Custom Model
@@ -284,12 +284,16 @@ customModels.forEach(customFormModelInfo -> {
 // Delete Custom Model
 formTrainingClient.deleteModel(modelId.get());
 ```
-### Copy custom model
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L181-L191 -->
+### Copy model
+You can now copy models between regions and subscriptions using the new Copy Custom Model feature.
+For copying a Custom Model, you must first obtain authorization to copy into the target resource by calling the
+Copy Authorization operation against the target resource endpoint.
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L181-L192 -->
 ```java
 String resourceId = "target-resource-Id";
 String resourceRegion = "target-resource-region";
-SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(resourceId,
+String copyModelId = "copy-model-Id";
+SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(copyModelId,
     formTrainingClient.getCopyAuthorization(resourceId, resourceRegion));
 CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
 System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
@@ -342,6 +346,7 @@ The async versions of the samples show asynchronous operations with Form Recogni
 * Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model], ([async][train_unlabeled_model_async])
 * Train a model with labels: [TrainModelWithLabels][train_labeled_model], ([async][train_labeled_model_async])
 * Manage custom models: [ManageCustomModels][manage_custom_models], ([async_version][manage_custom_models_async])
+* Copy a model between Form Recognizer resources: [CopyModel][copy_model] ([async_version][copy_model_async])
 
 ### Additional documentation
 
@@ -400,6 +405,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabelsAsync.java
 [train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabels.java
 [train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabelsAsync.java
+[copy_model]: src/samples/java/com/azure/ai/formrecognizer/CopyModel.java
+[copy_model_async]: src/samples/java/com/azure/ai/formrecognizer/CopyModelAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_doc_train_unlabeled]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [service_doc_train_labeled]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-with-labels
