@@ -11,6 +11,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -704,20 +705,33 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
-     * needs to be in this transaction.
-     * @return a new transaction
+     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
+     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
+     * this transaction.
+     *
+     * @return a new {@link ServiceBusTransactionContext}.
      */
     public ServiceBusTransactionContext createTransaction() {
-        throw new UnsupportedOperationException("Not implemented");
+        return asyncClient.createTransaction().block(operationTimeout);
     }
 
+    /**
+     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be committed.
+     * @return a completable {@link Mono}.
+     */
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        asyncClient.commitTransaction(transactionContext).block(operationTimeout);
     }
 
+    /**
+     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be rollbacked.
+     * @return a completable {@link Mono}.
+     */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);
     }
-
 }

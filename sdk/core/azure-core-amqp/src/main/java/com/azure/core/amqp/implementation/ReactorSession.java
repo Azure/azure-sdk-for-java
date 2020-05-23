@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents an AMQP session using proton-j reactor.
@@ -60,6 +61,8 @@ public class ReactorSession implements AmqpSession {
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
+
+    private final AtomicReference<LinkSubscription<AmqpLink>> coordinator = new AtomicReference<>();
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -161,6 +164,80 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Duration getOperationTimeout() {
         return openTimeout;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create coordinator link '%s' from a closed session.", linkName))));
+        }
+
+        final LinkSubscription<AmqpLink> existing = coordinator.get();
+        if (existing != null) {
+            logger.verbose("linkName[{}]: Returning existing coordinator link.", linkName);
+            return Mono.just(existing.getLink());
+        }
+
+        return RetryUtil.withRetry(
+            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+            timeout, retry)
+            .then(Mono.<AmqpLink>create(sink -> {
+                try {
+                    // We have to invoke this in the same thread or else proton-j will not properly link up the created
+                    // sender because the link names are not unique. Link name == entity path.
+                    provider.getReactorDispatcher().invoke(() -> {
+                        LinkSubscription<AmqpLink> linkLinkSubscription = getCoordinator(linkName, timeout, retry);
+
+                        if (coordinator.compareAndSet(null, linkLinkSubscription)) {
+                            logger.info("linkName[{}]: coordinator link created.", linkName);
+                        } else {
+                            logger.info("linkName[{}]: Another coordinator link exists. Disposing of new one.",
+                                linkName);
+                            linkLinkSubscription.dispose();
+                        }
+
+                        sink.success(coordinator.get().getLink());
+                    });
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            }));
+    }
+
+    /**
+     * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
+     */
+    private LinkSubscription<AmqpLink> getCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+
+        final Sender sender = session.sender(linkName);
+        sender.setTarget(new Coordinator());
+
+        final Source source = new Source();
+        sender.setSource(source);
+        sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+        final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
+            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, linkName);
+        BaseHandler.setHandler(sender, sendLinkHandler);
+
+        sender.open();
+
+        final ReactorCoordinator coordinator = new ReactorCoordinator(sender, sendLinkHandler, provider,
+            messageSerializer, timeout, retry);
+
+        final Disposable subscription = coordinator.getEndpointStates().subscribe(state -> { },
+            error -> {
+                logger.info("linkName[{}]: Error occurred. Removing and disposing coordinator link.", linkName, error);
+                removeLink(openSendLinks, linkName);
+            }, () -> {
+                logger.info("linkName[{}]: Complete. Removing and disposing coordinator link.", linkName);
+                removeLink(openSendLinks, linkName);
+            });
+        return new LinkSubscription<>(coordinator, subscription);
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.implementation.AmqpCoordinatorLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
@@ -39,7 +40,7 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpSendLink> createTransactionSendLink(String linkName, AmqpRetryOptions retryOptions);
+    Mono<AmqpCoordinatorLink> createCoordinatorLink(String linkName, AmqpRetryOptions retryOptions);
 
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the

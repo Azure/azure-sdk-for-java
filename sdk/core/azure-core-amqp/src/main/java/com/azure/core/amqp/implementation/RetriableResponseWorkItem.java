@@ -18,7 +18,7 @@ final class RetriableResponseWorkItem extends WorkItem {
     RetriableResponseWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat,
         MonoSink<DeliveryState> monoSink, Duration timeout) {
 
-        super(amqpMessage, encodedMessageSize, messageFormat, timeout);
+        super(amqpMessage, encodedMessageSize, messageFormat, timeout, AmqpConstants.NULL_TRANSACTION);
         this.monoSink = monoSink;
     }
 

@@ -286,7 +286,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
-        String associatedLinkName) {
+        String associatedLinkName, ByteBuffer transactionId) {
         message.setScheduledEnqueueTime(scheduledEnqueueTime);
 
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).then(createChannel.flatMap(channel -> {
@@ -340,7 +340,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
 
-            return sendWithVerify(channel, requestMessage, AmqpConstants.NULL_TRANSACTION);
+            return sendWithVerify(channel, requestMessage, transactionId);
         }).handle((response, sink) -> {
             final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
 

@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.implementation.AmqpCoordinatorLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
@@ -152,7 +153,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     /**
-     * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
+     * Creates or gets a coordinator link. The same link is returned if there is an existing link with the same {@code
      * linkName}. Otherwise, a new link is created and returned.
      *
      * @param linkName The name of the link.
@@ -161,14 +162,13 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createTransactionSendLink(String linkName, AmqpRetryOptions retryOptions) {
+    public Mono<AmqpCoordinatorLink> createCoordinatorLink(String linkName, AmqpRetryOptions retryOptions) {
         return createSession(linkName).flatMap(session -> {
-            logger.verbose("Get or create producer for path: '{}'", linkName);
+            logger.verbose("Get or create coordinator link: '{}'", linkName);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName, linkName, retryOptions.getTryTimeout(), retryPolicy,
-                false, true)
-                .cast(AmqpSendLink.class);
+            return session.createTransactionCoordinator(linkName, retryOptions.getTryTimeout(), retryPolicy)
+                .cast(AmqpCoordinatorLink.class);
         });
     }
 
@@ -237,21 +237,19 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         }
 
         return getReactorConnection().then(
-            Mono.defer(() -> {
-                return Mono.just(transactionManagers.compute(linkName, (key, current) -> {
-                    if (current != null) {
-                        logger.info("A transaction coordinator exists already, returning it.");
+            Mono.defer(() -> Mono.just(transactionManagers.compute(linkName, (key, current) -> {
+                if (current != null) {
+                    logger.info("A transaction coordinator exists already, returning it.");
 
-                        return current;
-                    }
+                    return current;
+                }
 
-                    logger.info("Creating transaction coordinator. linkName: [{}]",
-                        linkName);
+                logger.info("Creating transaction coordinator. linkName: [{}]",
+                    linkName);
 
-                    return  new TransactionChannelImpl(createTransactionSendLink(linkName, retryOptions),
-                        fullyQualifiedNamespace, linkName);
-                }));
-            }));
+                return  new TransactionChannelImpl(createCoordinatorLink(linkName, retryOptions),
+                    fullyQualifiedNamespace, linkName);
+            }))));
     }
 
     @Override

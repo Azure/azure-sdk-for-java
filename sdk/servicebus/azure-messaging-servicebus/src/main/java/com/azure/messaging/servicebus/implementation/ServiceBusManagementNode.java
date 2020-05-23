@@ -94,12 +94,13 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @param message The message to be sent to the entity.
      * @param scheduledEnqueueTime The {@link Instant} at which the message should be enqueued in the entity.
+     * @param transactionId to be set on message before sending to Service Bus.
      *
      * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
     Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize,
-        String associatedLinkName);
+        String associatedLinkName, ByteBuffer transactionId);
 
     /**
      * Updates the session state.

@@ -20,6 +20,7 @@ import reactor.test.StepVerifier;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -149,9 +150,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         receiver.receive()
-            .map(messageContext -> {
-                return receiver.complete(messageContext.getMessage(), transaction.get());
-            })
+            .map(messageContext -> receiver.complete(messageContext.getMessage(), transaction.get()))
             .subscribe();
 
         StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
@@ -212,7 +211,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        logger.verbose("!!!! Test Got Transaction Id: ", new String(transaction.get().getTransactionId().array()));
         StepVerifier.create(receiver.commitTransaction(transaction.get()))
             .verifyComplete();
     }
@@ -247,7 +245,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         receiver.receive()
             .map(messageContext -> {
                 ServiceBusReceivedMessage received =  messageContext.getMessage();
-                logger.verbose("!!!! Test Received Message SQ [{}] LockToken [{}]", received.getSequenceNumber(), received.getLockToken());
                 messageLockToken.set(MessageLockToken.fromString(received.getLockToken()));
                 return messageContext;
             })
@@ -260,6 +257,118 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiverNonConnectionSharing.commitTransaction(transaction.get()))
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can do following
+     * 1. create transaction
+     * 2. send message  with transactionContext
+     * 3. receive and complete with transactionContext.
+     * 4. Rollback this transaction.
+     */
+    @Test
+    void transactionSendReceiveCompleteRollback() {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        //sendMessage(message).block(TIMEOUT);
+
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(sender.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message, transaction.get()))
+            .verifyComplete();
+
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+            .verifyComplete();
+
+    }
+
+    /**
+     * Verifies that we can do following
+     * 1. create transaction
+     * 2. send message  with transactionContext
+     * 3. commit this transaction.
+     */
+    @Test
+    void transactionMessageSendAndCommit() {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(sender.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+            .verifyComplete();
+
+        messagesPending.incrementAndGet();
+    }
+
+    /**
+     * Verifies that we can do following
+     * 1. create transaction
+     * 2. send message  with transactionContext
+     * 3. Rollback this transaction.
+     */
+    @Test
+    void transactionMessageSendAndRollback() {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(sender.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+            .verifyComplete();
+
     }
 
     /**

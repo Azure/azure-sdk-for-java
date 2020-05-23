@@ -10,6 +10,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -370,7 +371,7 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any()))
+        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), AmqpConstants.NULL_TRANSACTION))
             .thenReturn(just(sequenceNumberReturned));
 
         // Act & Assert
@@ -378,7 +379,7 @@ class ServiceBusSenderAsyncClientTest {
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES, LINK_NAME);
+        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES, LINK_NAME, AmqpConstants.NULL_TRANSACTION);
     }
 
     @Test

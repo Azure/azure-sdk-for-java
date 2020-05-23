@@ -71,4 +71,17 @@ public interface AmqpSession extends Disposable {
      * @return A stream of endpoint states for the AMQP session.
      */
     Flux<AmqpEndpointState> getEndpointStates();
+
+
+    /**
+     * Creates a new AMQP link that publishes events to the message broker.
+     *
+     * @param linkName Name of the link.
+     * @param timeout Timeout required for creating and opening AMQP link.
+     * @param retryPolicy The retry policy to use when sending messages.
+     *
+     * @return A newly created AMQP link.
+     */
+    Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout,
+                                             AmqpRetryPolicy retryPolicy);
 }

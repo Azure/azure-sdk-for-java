@@ -2,6 +2,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.implementation.AmqpCoordinatorLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
@@ -17,12 +18,12 @@ import java.util.Objects;
  */
 public class TransactionChannelImpl implements TransactionChannel {
 
-    private final Mono<AmqpSendLink> sendLink;
+    private final Mono<AmqpCoordinatorLink> sendLink;
     private final String fullyQualifiedNamespace;
     private final String linkName;
     private final ClientLogger logger =  new ClientLogger(TransactionChannelImpl.class);
 
-    TransactionChannelImpl(Mono<AmqpSendLink> sendLink, String fullyQualifiedNamespace, String linkName) {
+    TransactionChannelImpl(Mono<AmqpCoordinatorLink> sendLink, String fullyQualifiedNamespace, String linkName) {
         this.sendLink = Objects.requireNonNull(sendLink, "'sendLink' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -31,7 +32,7 @@ public class TransactionChannelImpl implements TransactionChannel {
     }
 
     @Override
-    public Mono<ByteBuffer> txSelect() {
+    public Mono<ByteBuffer> transactionSelect() {
 
         return  sendLink.flatMap(sendLink ->
             sendLink.createTransaction()).map(state -> {
@@ -50,13 +51,13 @@ public class TransactionChannelImpl implements TransactionChannel {
     }
 
     @Override
-    public Mono<Void> txCommit(ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> transactionCommit(ServiceBusTransactionContext transactionContext) {
         return sendLink.flatMap(sendLink ->
             sendLink.completeTransaction(transactionContext.getTransactionId(), true)).then();
     }
 
     @Override
-    public Mono<Void> txRollback(ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> transactionRollback(ServiceBusTransactionContext transactionContext) {
         return sendLink.flatMap(sendLink ->
             sendLink.completeTransaction(transactionContext.getTransactionId(), false)).then();
     }

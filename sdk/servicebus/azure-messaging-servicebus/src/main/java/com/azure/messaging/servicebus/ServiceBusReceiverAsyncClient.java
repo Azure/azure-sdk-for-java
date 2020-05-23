@@ -224,8 +224,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId());
     }
 
-    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
+        return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId(), transactionContext);
     }
 
     /**
@@ -250,8 +251,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
-
+        return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
+            propertiesToModify, sessionId, transactionContext.getTransactionId());
     }
 
     /**
@@ -357,8 +358,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
-
+        return defer(lockToken, propertiesToModify, receiverOptions.getSessionId(), transactionContext);
     }
 
     /**
@@ -383,8 +383,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
-
+        return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
+            propertiesToModify, sessionId, transactionContext.getTransactionId());
     }
 
     /**
@@ -422,8 +422,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId);
     }
 
-    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId,
+        ServiceBusTransactionContext transactionContext) {
+        return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId, transactionContext);
     }
 
     /**
@@ -445,8 +446,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
-
+        return deadLetter(lockToken, deadLetterOptions, receiverOptions.getSessionId(), transactionContext);
     }
 
     /**
@@ -475,7 +475,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
         ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
+            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId,
+            transactionContext.getTransactionId());
 
     }
 
@@ -1088,6 +1090,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     /**
      * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
      * needs to be in this transaction.
+     *
      * @return a new transaction
      */
     public Mono<ServiceBusTransactionContext> createTransaction() {
@@ -1098,10 +1101,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.createChannel())
-            .flatMap(TransactionChannel::txSelect)
+            .flatMap(TransactionChannel::transactionSelect)
             .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 
+    /**
+     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be committed.
+     * @return a completable {@link Mono}.
+     */
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
@@ -1110,10 +1119,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.createChannel())
-            .flatMap(transactionChannel -> transactionChannel.txCommit(transactionContext))
+            .flatMap(transactionChannel -> transactionChannel.transactionCommit(transactionContext))
             .then();
     }
 
+    /**
+     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be rollbacked.
+     * @return a completable {@link Mono}.
+     */
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
@@ -1122,7 +1137,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.createChannel())
-            .flatMap(transactionChannel -> transactionChannel.txRollback(transactionContext))
+            .flatMap(transactionChannel -> transactionChannel.transactionRollback(transactionContext))
             .then();
     }
 }

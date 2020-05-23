@@ -6,10 +6,14 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
 
 /**
  * A <b>synchronous</b> sender responsible for sending {@link ServiceBusMessage} to  specific queue or topic on
@@ -101,20 +105,60 @@ public class ServiceBusSenderClient implements AutoCloseable {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
     }
 
+    /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param message Message to be sent to the Service Bus Queue or Topic.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param transactionContext to be set on message before sending to Service Bus.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+                                ServiceBusTransactionContext transactionContext) {
+        return asyncClient.scheduleMessage(message, scheduledEnqueueTime, transactionContext).block(tryTimeout);
+    }
+
+    /**
+     * Sends a message to a Service Bus queue or topic.
+     *
+     * @param message Message to be sent to Service Bus queue or topic.
+     * @param transactionContext to be set on message before sending to Service Bus.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     */
     public void send(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        asyncClient.send(message, transactionContext).block(tryTimeout);
     }
 
+    /**
+     * Sends a set of {@link ServiceBusMessage} to a Service Bus queue or topic using a batched approach.
+     * If the size of messages exceed the maximum size of a single batch, an exception will be triggered and the send
+     * will fail. By default, the message size is the max amount allowed on the link.
+     *
+     * @param messages Messages to be sent to Service Bus queue or topic.
+     * @param transactionContext to be set on message before sending to Service Bus.
+     *
+     * @throws NullPointerException if {@code messages} is {@code null}.
+     * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
+     */
     public void send(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        asyncClient.send(messages, transactionContext).block(tryTimeout);
     }
 
-    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime, ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
+    /**
+     * Sends a message batch to the Azure Service Bus entity this sender is connected to.
+     *
+     * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
+     * @param transactionContext to be set on message before sending to Service Bus.
+     *
+     * @throws NullPointerException if {@code batch} is {@code null}.
+     */
     public void send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
-        throw new UnsupportedOperationException("Not implemented");
+        asyncClient.send(batch, transactionContext).block(tryTimeout);
     }
 
     /**
@@ -170,17 +214,33 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
-     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
-     * needs to be in this transaction.
-     * @return a new transaction
+     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
+     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
+     * this transaction.
+     *
+     * @return a new {@link ServiceBusTransactionContext}.
      */
     public ServiceBusTransactionContext createTransaction() {
-        return null;
+        return asyncClient.createTransaction().block(tryTimeout);
     }
 
+    /**
+     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be committed.
+     * @return a completable {@link Mono}.
+     */
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
-    }
-    public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
+        asyncClient.commitTransaction(transactionContext).block(tryTimeout);
     }
 
+    /**
+     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be rollbacked.
+     * @return a completable {@link Mono}.
+     */
+    public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
+        asyncClient.rollbackTransaction(transactionContext).block(tryTimeout);
+    }
 }
