@@ -384,6 +384,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]storage[/\\].*samples[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*"/>
 
+  <!-- FIXME temp -->
+  <suppress checks="ServiceClient" files="com.azure.messaging.signalr.*"/>
+
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleAssignmentsImpl"/>

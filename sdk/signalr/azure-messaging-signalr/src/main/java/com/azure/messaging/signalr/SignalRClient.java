@@ -44,188 +44,190 @@ public final class SignalRClient {
      * @return whether the service is considered healthy.
      */
     @ServiceMethod(returns = SINGLE)
-    public boolean isServiceHealthy() {
-        return asyncClient.isServiceHealthy().block();
+    public SignalRHubStatus getStatus() {
+        return asyncClient.getStatus().block();
     }
 
     /**
      * Broadcast a text message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final String data, final String... excludedUsers) {
-        broadcast(data, excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers));
+    public void sendToAll(final String message, final String... excludedConnectionIds) {
+        sendToAll(message, excludedConnectionIds == null
+                               ? Collections.emptyList() : Arrays.asList(excludedConnectionIds));
     }
 
     /**
      * Broadcast a text message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final String data, final List<String> excludedUsers) {
-        broadcastWithResponse(data, excludedUsers, Context.NONE);
+    public void sendToAll(final String message, final List<String> excludedConnectionIds) {
+        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
     }
 
     /**
      * Broadcast a text message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *     the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Void> broadcastWithResponse(final String data,
-                                                final List<String> excludedUsers,
+    public Response<Void> sendToAllWithResponse(final String message,
+                                                final List<String> excludedConnectionIds,
                                                 final Context context) {
-        return asyncClient.broadcast(data, excludedUsers, context).block();
+        return asyncClient.sendToAll(message, excludedConnectionIds, context).block();
     }
 
     /**
      * Broadcast a binary message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final byte[] data, final String... excludedUsers) {
-        broadcast(data, excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers));
+    public void sendToAll(final byte[] message, final String... excludedConnectionIds) {
+        sendToAll(message, excludedConnectionIds == null
+                               ? Collections.emptyList() : Arrays.asList(excludedConnectionIds));
     }
 
     /**
      * Broadcast a binary message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final byte[] data, final List<String> excludedUsers) {
-        broadcastWithResponse(data, excludedUsers, Context.NONE);
+    public void sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
+        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
     }
 
     /**
      * Broadcast a binary message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *     the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Void> broadcastWithResponse(final byte[] data,
-                                                final List<String> excludedUsers,
+    public Response<Void> sendToAllWithResponse(final byte[] message,
+                                                final List<String> excludedConnectionIds,
                                                 final Context context) {
-        return asyncClient.broadcast(data, excludedUsers, context).block();
+        return asyncClient.sendToAll(message, excludedConnectionIds, context).block();
     }
 
     /**
      * Send a text message to a specific user.
      *
      * @param userId User name to send to.
-     * @param data The message to send.
+     * @param message The message to send.
      */
     @ServiceMethod(returns = SINGLE)
-    public void sendToUser(final String userId, final String data) {
-        sendToUserWithResponse(userId, data, Context.NONE);
+    public void sendToUser(final String userId, final String message) {
+        sendToUserWithResponse(userId, message, Context.NONE);
     }
 
     /**
      * Send a text message to a specific user.
      *
      * @param userId User name to send to.
-     * @param data The message to send.
+     * @param message The message to send.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *     the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Void> sendToUserWithResponse(final String userId, final String data, final Context context) {
-        return asyncClient.sendToUser(userId, data, context).block();
+    public Response<Void> sendToUserWithResponse(final String userId, final String message, final Context context) {
+        return asyncClient.sendToUser(userId, message, context).block();
     }
 
     /**
      * Send a binary message to a specific user.
      *
      * @param userId User name to send to.
-     * @param data The binary message to send.
+     * @param message The binary message to send.
      */
     @ServiceMethod(returns = SINGLE)
-    public void sendToUser(final String userId, final byte[] data) {
-        sendToUserWithResponse(userId, data, Context.NONE);
+    public void sendToUser(final String userId, final byte[] message) {
+        sendToUserWithResponse(userId, message, Context.NONE);
     }
 
     /**
      * Send a binary message to a specific user.
      *
      * @param userId User name to send to.
-     * @param data The binary message to send.
+     * @param message The binary message to send.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *     the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Void> sendToUserWithResponse(final String userId, final byte[] data, final Context context) {
-        return asyncClient.sendToUser(userId, data, context).block();
+    public Response<Void> sendToUserWithResponse(final String userId, final byte[] message, final Context context) {
+        return asyncClient.sendToUser(userId, message, context).block();
     }
 
     /**
      * Send a message to a specific connection
      *
      * @param connectionId Connection ID to send to.
-     * @param data The message to send.
+     * @param message The message to send.
      */
     @ServiceMethod(returns = SINGLE)
-    public void sendToConnection(final String connectionId, final String data) {
-        sendToConnectionWithResponse(connectionId, data, Context.NONE);
+    public void sendToConnection(final String connectionId, final String message) {
+        sendToConnectionWithResponse(connectionId, message, Context.NONE);
     }
 
     /**
      * Send a message to a specific connection
      *
      * @param connectionId Connection ID to send to.
-     * @param data The message to send.
+     * @param message The message to send.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *     the service.
      */
     @ServiceMethod(returns = SINGLE)
     public Response<Void> sendToConnectionWithResponse(final String connectionId,
-                                                       final String data,
+                                                       final String message,
                                                        final Context context) {
-        return asyncClient.sendToConnection(connectionId, data, context).block();
+        return asyncClient.sendToConnection(connectionId, message, context).block();
     }
 
     /**
      * Send a binary message to a specific connection
      *
      * @param connectionId Connection ID to send to.
-     * @param data The binary message to send.
+     * @param message The binary message to send.
      */
     @ServiceMethod(returns = SINGLE)
-    public void sendToConnection(final String connectionId, final byte[] data) {
-        sendToConnectionWithResponse(connectionId, data, Context.NONE);
+    public void sendToConnection(final String connectionId, final byte[] message) {
+        sendToConnectionWithResponse(connectionId, message, Context.NONE);
     }
 
     /**
      * Send a binary message to a specific connection
      *
      * @param connectionId Connection ID to send to.
-     * @param data The binary message to send.
+     * @param message The binary message to send.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *     the service.
      */
     @ServiceMethod(returns = SINGLE)
     public Response<Void> sendToConnectionWithResponse(final String connectionId,
-                                                       final byte[] data,
+                                                       final byte[] message,
                                                        final Context context) {
-        return asyncClient.sendToConnectionWithResponse(connectionId, data, context).block();
+        return asyncClient.sendToConnectionWithResponse(connectionId, message, context).block();
     }
 
     /**
@@ -258,8 +260,8 @@ public final class SignalRClient {
      * @return A Boolean value representing whether the user exists in this hub.
      */
     @ServiceMethod(returns = SINGLE)
-    public boolean doesUserExist(final String userId) {
-        return doesUserExistWithResponse(userId, Context.NONE).getValue();
+    public boolean userExists(final String userId) {
+        return userExistsWithResponse(userId, Context.NONE).getValue();
     }
 
     /**
@@ -271,8 +273,8 @@ public final class SignalRClient {
      *      status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Boolean> doesUserExistWithResponse(final String userId, final Context context) {
-        return asyncClient.doesUserExistWithResponse(userId, context).block();
+    public Response<Boolean> userExistsWithResponse(final String userId, final Context context) {
+        return asyncClient.userExistsWithResponse(userId, context).block();
     }
 
     /**
@@ -282,8 +284,8 @@ public final class SignalRClient {
      * @return A Boolean value representing whether the group exists.
      */
     @ServiceMethod(returns = SINGLE)
-    public boolean doesGroupExist(final String group) {
-        return doesGroupExistWithResponse(group, Context.NONE).getValue();
+    public boolean groupExists(final String group) {
+        return groupExistsWithResponse(group, Context.NONE).getValue();
     }
 
     /**
@@ -295,8 +297,8 @@ public final class SignalRClient {
      *     status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Boolean> doesGroupExistWithResponse(final String group, final Context context) {
-        return asyncClient.doesGroupExistWithResponse(group, context).block();
+    public Response<Boolean> groupExistsWithResponse(final String group, final Context context) {
+        return asyncClient.groupExistsWithResponse(group, context).block();
     }
 
     /**
@@ -332,8 +334,8 @@ public final class SignalRClient {
      * @return A Boolean value representing whether the connection exists in this hub.
      */
     @ServiceMethod(returns = SINGLE)
-    public boolean doesConnectionExist(final String connectionId) {
-        return doesConnectionExistWithResponse(connectionId, Context.NONE).getValue();
+    public boolean connectionExists(final String connectionId) {
+        return connectionExistsWithResponse(connectionId, Context.NONE).getValue();
     }
 
     /**
@@ -345,7 +347,7 @@ public final class SignalRClient {
      *     as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Boolean> doesConnectionExistWithResponse(final String connectionId, final Context context) {
-        return asyncClient.doesConnectionExistWithResponse(connectionId, context).block();
+    public Response<Boolean> connectionExistsWithResponse(final String connectionId, final Context context) {
+        return asyncClient.connectionExistsWithResponse(connectionId, context).block();
     }
 }

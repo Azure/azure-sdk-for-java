@@ -74,81 +74,89 @@ public final class SignalRAsyncClient {
      * @return whether the service is considered healthy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> isServiceHealthy() {
+    public Mono<SignalRHubStatus> getStatus() {
         return innerClient.getHealthApis()
                    .headIndexWithResponseAsync(Context.NONE)// TODO (jgiles) we should introduce a withResponse overload
-                   .map(Response::getStatusCode)
-                   .map(code -> code == 200);
+                   .map(SignalRHubStatus::new);
     }
 
     /**
      * Broadcast a text message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final String data, final String... excludedUsers) {
-        return broadcast(data,
-            excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers),
+    public Mono<Response<Void>> sendToAll(final String message, final String... excludedConnectionIds) {
+        return sendToAll(message,
+            excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
             Context.NONE);
     }
 
     /**
      * Broadcast a text message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final String data, final List<String> excludedUsers) {
-        return broadcast(data, excludedUsers, Context.NONE);
+    public Mono<Response<Void>> sendToAll(final String message, final List<String> excludedConnectionIds) {
+        return sendToAll(message, excludedConnectionIds, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> broadcast(final String data, final List<String> excludedUsers, final Context context) {
-        return api.postBroadcastWithResponseAsync(hub, data, excludedUsers, configureTracing(context))
-           .doOnSubscribe(ignoredValue -> logger.info("Broadcasting data '{}'", data))
-           .doOnSuccess(response -> logger.info("Broadcasted data: '{}', response: {}", data, response.getValue()))
-           .doOnError(error -> logger.warning("Failed to broadcast data '{}', response: {}", data, error));
+    Mono<Response<Void>> sendToAll(final String data, final List<String> excludedUsers, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                    ? api.postDefaultHubBroadcastWithResponseAsync(data, excludedUsers, context)
+                    : api.postBroadcastWithResponseAsync(hub, data, excludedUsers, context))
+           .doOnSubscribe(ignoredValue -> logger.info("Broadcasting message '{}'", data))
+           .doOnSuccess(response -> logger.info("Broadcasted message: '{}', response: {}", data, response.getValue()))
+           .doOnError(error -> logger.warning("Failed to broadcast message '{}', response: {}", data, error));
     }
 
     /**
      * Broadcast a binary message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final byte[] data, final String... excludedUsers) {
-        return broadcast(data,
-            excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers),
+    public Mono<Response<Void>> sendToAll(final byte[] message, final String... excludedConnectionIds) {
+        return sendToAll(message,
+            excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
             Context.NONE);
     }
 
     /**
      * Broadcast a binary message to all connections on this hub.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final byte[] data, final List<String> excludedUsers) {
-        return broadcast(data, excludedUsers, Context.NONE);
+    public Mono<Response<Void>> sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
+        return sendToAll(message, excludedConnectionIds, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> broadcast(final byte[] data, final List<String> excludedUsers, final Context context) {
-        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(data));
-        return api.postBroadcastWithResponseAsync(hub, byteFlux, data.length, excludedUsers, context)
+    Mono<Response<Void>> sendToAll(final byte[] message,
+                                   final List<String> excludedConnectionIds,
+                                   Context context) {
+        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
+        context = configureTracing(context);
+
+        return (hub == null
+                ? api.postDefaultHubBroadcastWithResponseAsync(byteFlux, message.length, excludedConnectionIds, context)
+                : api.postBroadcastWithResponseAsync(hub, byteFlux, message.length, excludedConnectionIds, context))
            .doOnSubscribe(ignoredValue -> logger.info("Broadcasting binary data"))
            .doOnSuccess(response -> logger.info("Broadcasted binary data, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to broadcast binary data, response: {}", error));
@@ -158,42 +166,48 @@ public final class SignalRAsyncClient {
      * Send a text message to a specific user.
      *
      * @param userId User name to send to.
-     * @param data The message to send.
+     * @param message The message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUser(final String userId, final String data) {
-        return sendToUser(userId, data, Context.NONE);
+    public Mono<Response<Void>> sendToUser(final String userId, final String message) {
+        return sendToUser(userId, message, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> sendToUser(final String userId, final String data, final Context context) {
-        return api.postSendToUserWithResponseAsync(hub, userId, data, configureTracing(context))
-           .doOnSubscribe(ignoredValue -> logger.info("Sending to user '{}' data: '{}'", userId, data))
-           .doOnSuccess(response -> logger.info("Sent to user '{}' data: '{}', response: {}",
-               userId, data, response.getValue()))
-           .doOnError(error -> logger.warning("Failed to send data '{}' to user '{}', response: {}",
-               data, userId, error));
+    Mono<Response<Void>> sendToUser(final String userId, final String message, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.postSendToDefaultHubUserWithResponseAsync(userId, message, context)
+                : api.postSendToUserWithResponseAsync(hub, userId, message, context))
+           .doOnSubscribe(ignoredValue -> logger.info("Sending to user '{}' message: '{}'", userId, message))
+           .doOnSuccess(response -> logger.info("Sent to user '{}' message: '{}', response: {}",
+               userId, message, response.getValue()))
+           .doOnError(error -> logger.warning("Failed to send message '{}' to user '{}', response: {}",
+               message, userId, error));
     }
 
     /**
      * Send a binary message to a specific user.
      *
      * @param userId User name to send to.
-     * @param data The binary message to send.
+     * @param message The binary message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUser(final String userId, final byte[] data) {
-        return sendToUser(userId, data, Context.NONE);
+    public Mono<Response<Void>> sendToUser(final String userId, final byte[] message) {
+        return sendToUser(userId, message, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> sendToUser(final String userId, final byte[] data, final Context context) {
-        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(data));
-        return api.postSendToUserWithResponseAsync(hub, userId, byteFlux, data.length, configureTracing(context))
+    Mono<Response<Void>> sendToUser(final String userId, final byte[] message, Context context) {
+        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
+        context = configureTracing(context);
+        return (hub == null
+                ? api.postSendToDefaultHubUserWithResponseAsync(userId, byteFlux, message.length, context)
+                : api.postSendToUserWithResponseAsync(hub, userId, byteFlux, message.length, context))
            .doOnSubscribe(ignoredValue -> logger.info("Sending binary data to user"))
            .doOnSuccess(response -> logger.info("Sent binary data to user, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to send binary data to user, response: {}", error));
@@ -203,48 +217,56 @@ public final class SignalRAsyncClient {
      * Send a message to a specific connection
      *
      * @param connectionId Connection ID to send to.
-     * @param data The message to send.
+     * @param message The message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToConnection(final String connectionId, final String data) {
-        return sendToConnection(connectionId, data, Context.NONE);
+    public Mono<Response<Void>> sendToConnection(final String connectionId, final String message) {
+        return sendToConnection(connectionId, message, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> sendToConnection(final String connectionId, final String data, final Context context) {
-        return api.postSendToConnectionWithResponseAsync(hub, connectionId, data, configureTracing(context))
-           .doOnSubscribe(ignoredValue -> logger.info("Sending to connection '{}' data: '{}'", connectionId, data))
-           .doOnSuccess(response -> logger.info("Sent to connection '{}' data: '{}', response: {}",
-               connectionId, data, response.getValue()))
-           .doOnError(error -> logger.warning("Failed to send data '{}' to connection '{}', response: {}",
-               data, connectionId, error));
+    Mono<Response<Void>> sendToConnection(final String connectionId, final String message, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.postSendToDefaultHubConnectionWithResponseAsync(connectionId, message, context)
+                : api.postSendToConnectionWithResponseAsync(hub, connectionId, message, context))
+           .doOnSubscribe(ignoredValue ->
+               logger.info("Sending to connection '{}' message: '{}'", connectionId, message))
+           .doOnSuccess(response ->
+               logger.info("Sent to connection '{}' message: '{}', response: {}",
+                   connectionId, message, response.getValue()))
+           .doOnError(error ->
+               logger.warning("Failed to send message '{}' to connection '{}', response: {}",
+                   message, connectionId, error));
     }
 
     /**
      * Send a binary message to a specific connection
      *
      * @param connectionId Connection ID to send to.
-     * @param data The binary message to send.
+     * @param message The binary message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToConnection(final String connectionId, final byte[] data) {
-        return sendToConnectionWithResponse(connectionId, data, Context.NONE);
+    public Mono<Response<Void>> sendToConnection(final String connectionId, final byte[] message) {
+        return sendToConnectionWithResponse(connectionId, message, Context.NONE);
     }
 
     // package-private
     Mono<Response<Void>> sendToConnectionWithResponse(final String connectionId,
-                                                      final byte[] data,
-                                                      final Context context) {
-        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(data));
-        return api.postSendToConnectionWithResponseAsync(
-            hub, connectionId, byteFlux, data.length, configureTracing(context))
-           .doOnSubscribe(ignoredValue -> logger.info("Sending binary data to connection"))
-           .doOnSuccess(response -> logger.info("Sent binary data to connection, response: {}", response.getValue()))
-           .doOnError(error -> logger.warning("Failed to send binary data to connection, response: {}", error));
+                                                      final byte[] message,
+                                                      Context context) {
+        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
+        context = configureTracing(context);
+        return (hub == null
+                ? api.postSendToDefaultHubConnectionWithResponseAsync(connectionId, byteFlux, message.length, context)
+                : api.postSendToConnectionWithResponseAsync(hub, connectionId, byteFlux, message.length, context))
+           .doOnSubscribe(ignoredValue -> logger.info("Sending binary message to connection"))
+           .doOnSuccess(response -> logger.info("Sent binary message to connection, response: {}", response.getValue()))
+           .doOnError(error -> logger.warning("Failed to send binary message to connection, response: {}", error));
     }
 
     /**
@@ -260,8 +282,11 @@ public final class SignalRAsyncClient {
     }
 
     // package-private
-    Mono<Response<Void>> removeUserFromAllGroups(final String userId, final Context context) {
-        return api.deleteRemoveUserFromAllGroupsWithResponseAsync(hub, userId, configureTracing(context))
+    Mono<Response<Void>> removeUserFromAllGroups(final String userId, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.deleteRemoveUserFromAllDefaultHubGroupsWithResponseAsync(userId, context)
+                : api.deleteRemoveUserFromAllGroupsWithResponseAsync(hub, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Removing user '{}' from all groups"))
            .doOnSuccess(response -> logger.info("Removed user '{}' from all groups, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to remove user '{}' from all groups, response: {}", error));
@@ -275,8 +300,8 @@ public final class SignalRAsyncClient {
      *      this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> doesUserExist(final String userId) {
-        return doesUserExistWithResponse(userId).map(Response::getValue);
+    public Mono<Boolean> userExists(final String userId) {
+        return userExistsWithResponse(userId).map(Response::getValue);
     }
 
     /**
@@ -287,15 +312,16 @@ public final class SignalRAsyncClient {
      *      this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> doesUserExistWithResponse(final String userId) {
-        return doesUserExistWithResponse(userId, Context.NONE);
+    public Mono<Response<Boolean>> userExistsWithResponse(final String userId) {
+        return userExistsWithResponse(userId, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Boolean>> doesUserExistWithResponse(final String userId, final Context context) {
-        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
-        return api.headCheckUserExistenceWithResponseAsync(hub, userId, configureTracing(context))
-           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
+    Mono<Response<Boolean>> userExistsWithResponse(final String userId, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.headCheckDefaultHubUserExistenceWithResponseAsync(userId, context)
+                : api.headCheckUserExistenceWithResponseAsync(hub, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.info("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -310,8 +336,8 @@ public final class SignalRAsyncClient {
      *      as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> doesGroupExist(final String group) {
-        return doesGroupExistWithResponse(group).map(Response::getValue);
+    public Mono<Boolean> groupExists(final String group) {
+        return groupExistsWithResponse(group).map(Response::getValue);
     }
 
     /**
@@ -322,15 +348,16 @@ public final class SignalRAsyncClient {
      *      as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> doesGroupExistWithResponse(final String group) {
-        return doesGroupExistWithResponse(group, Context.NONE);
+    public Mono<Response<Boolean>> groupExistsWithResponse(final String group) {
+        return groupExistsWithResponse(group, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Boolean>> doesGroupExistWithResponse(final String group, final Context context) {
-        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
-        return api.headCheckUserExistenceWithResponseAsync(hub, group, configureTracing(context))
-           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
+    Mono<Response<Boolean>> groupExistsWithResponse(final String group, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.headCheckDefaultHubUserExistenceWithResponseAsync(group, context)
+                : api.headCheckUserExistenceWithResponseAsync(hub, group, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if group '{}' exists", group))
            .doOnSuccess(response -> logger.info("Checked if group '{}' exists, response: {}",
                group, response.getValue()))
@@ -365,8 +392,11 @@ public final class SignalRAsyncClient {
     // package-private
     Mono<Response<Void>> closeConnectionWithResponse(final String connectionId,
                                                      final String reason,
-                                                     final Context context) {
-        return api.deleteCloseClientConnectionWithResponseAsync(hub, connectionId, reason, configureTracing(context))
+                                                     Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.deleteCloseDefaultHubClientConnectionWithResponseAsync(connectionId, reason, context)
+                : api.deleteCloseClientConnectionWithResponseAsync(hub, connectionId, reason, context))
            .doOnSubscribe(ignoredValue -> logger.info("Closing connection {}", connectionId))
            .doOnSuccess(response -> logger.info("Closed connection {}, response: {}",
                connectionId, response.getValue()))
@@ -381,8 +411,8 @@ public final class SignalRAsyncClient {
      *     exists in this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> doesConnectionExist(final String connectionId) {
-        return doesConnectionExistWithResponse(connectionId).map(Response::getValue);
+    public Mono<Boolean> connectionExists(final String connectionId) {
+        return connectionExistsWithResponse(connectionId).map(Response::getValue);
     }
 
     /**
@@ -393,15 +423,16 @@ public final class SignalRAsyncClient {
      *     exists in this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> doesConnectionExistWithResponse(final String connectionId) {
-        return doesConnectionExistWithResponse(connectionId, Context.NONE);
+    public Mono<Response<Boolean>> connectionExistsWithResponse(final String connectionId) {
+        return connectionExistsWithResponse(connectionId, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Boolean>> doesConnectionExistWithResponse(final String connectionId, final Context context) {
-        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
-        return api.headCheckConnectionExistenceWithResponseAsync(hub, connectionId, configureTracing(context))
-           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
+    Mono<Response<Boolean>> connectionExistsWithResponse(final String connectionId, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.headCheckDefaultHubConnectionExistenceWithResponseAsync(connectionId, context)
+                : api.headCheckConnectionExistenceWithResponseAsync(hub, connectionId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if connection '{}' exists", connectionId))
            .doOnSuccess(response -> logger.info("Checked if connection '{}' exists, response: {}",
                connectionId, response.getValue()))

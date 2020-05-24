@@ -10,18 +10,14 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/**
- * Initializes a new instance of the AzureWebSocketServiceRestAPI type.
- */
+/** Initializes a new instance of the AzureWebSocketServiceRestAPI type. */
 public final class AzureWebSocketServiceRestAPI {
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the host value.
      */
     public String getHost() {
@@ -30,7 +26,7 @@ public final class AzureWebSocketServiceRestAPI {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the service client itself.
      */
@@ -39,58 +35,50 @@ public final class AzureWebSocketServiceRestAPI {
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
+    /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The HealthApis object to access its operations.
-     */
+    /** The HealthApis object to access its operations. */
     private final HealthApis healthApis;
 
     /**
      * Gets the HealthApis object to access its operations.
-     * 
+     *
      * @return the HealthApis object.
      */
     public HealthApis getHealthApis() {
         return this.healthApis;
     }
 
-    /**
-     * The WebSocketConnectionApis object to access its operations.
-     */
+    /** The WebSocketConnectionApis object to access its operations. */
     private final WebSocketConnectionApis webSocketConnectionApis;
 
     /**
      * Gets the WebSocketConnectionApis object to access its operations.
-     * 
+     *
      * @return the WebSocketConnectionApis object.
      */
     public WebSocketConnectionApis getWebSocketConnectionApis() {
         return this.webSocketConnectionApis;
     }
 
-    /**
-     * Initializes an instance of AzureWebSocketServiceRestAPI client.
-     */
+    /** Initializes an instance of AzureWebSocketServiceRestAPI client. */
     public AzureWebSocketServiceRestAPI() {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**
      * Initializes an instance of AzureWebSocketServiceRestAPI client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public AzureWebSocketServiceRestAPI(HttpPipeline httpPipeline) {

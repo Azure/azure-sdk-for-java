@@ -4,8 +4,8 @@
 package com.azure.messaging.signalr.client;
 
 import com.azure.core.util.Configuration;
+import com.azure.messaging.signalr.SignalRClient;
 import com.azure.messaging.signalr.SignalRClientBuilder;
-import com.azure.messaging.signalr.SignalRGroupClient;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -26,20 +26,25 @@ public class ChatApp {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("SIGNALR_CS");
     private static final String WEB_SOCKET_URL = ENDPOINT + "/ws/client/?user=JGApp";
 
-    private static SimpleChatClient wsClient;
-    private static SignalRGroupClient signalrClient;
+    private SimpleChatClient wsClient;
+    private SignalRClient signalrClient;
 
-    private static boolean useWebSocketForSending = false;
+    private JRadioButton useWSBtn;
+    private JRadioButton useSignalRBtn;
 
     public static void main(String[] args) {
+        new ChatApp().run();
+    }
+
+    private void run() {
         // This is a direct websocket connection to the service
         wsClient = new SimpleChatClient();
         wsClient.connect(WEB_SOCKET_URL);
 
+        // create a SignalR client that connects to the default hub with no group specified
         signalrClient = new SignalRClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .buildClient()
-            .getGroupClient("chat_app");
+            .buildClient();
 
         JFrame frame = new JFrame("Chat App");
         frame.addWindowListener(new WindowAdapter() {
@@ -53,10 +58,8 @@ public class ChatApp {
             }
         });
 
-        JRadioButton useWSBtn = new JRadioButton("Use WebSockets");
-        JRadioButton useSignalRBtn = new JRadioButton("Use SignalR Client");
-        useWSBtn.addActionListener(e -> useWebSocketForSending = useSignalRBtn.isSelected());
-        useSignalRBtn.addActionListener(e -> useWebSocketForSending = useSignalRBtn.isSelected());
+        useWSBtn = new JRadioButton("Use WebSockets");
+        useSignalRBtn = new JRadioButton("Use SignalR Client");
         useSignalRBtn.setSelected(true);
         ButtonGroup group = new ButtonGroup();
         group.add(useWSBtn);
@@ -83,6 +86,7 @@ public class ChatApp {
         JButton sendBtn = new JButton("Send");
         sendBtn.addActionListener(e -> {
             sendMessage(textField.getText());
+            textField.setText("");
         });
         southPanel.add(sendBtn, BorderLayout.EAST);
 
@@ -91,11 +95,13 @@ public class ChatApp {
         frame.setVisible(true);
     }
 
-    private static void sendMessage(String message) {
-        if (useWebSocketForSending) {
+    private void sendMessage(String message) {
+        if (useWSBtn.isSelected()) {
+            System.out.println("Sending using web services");
             wsClient.sendMessage(message);
         } else {
-            signalrClient.broadcast(message);
+            System.out.println("Sending using signalR");
+            signalrClient.sendToAll(message);
         }
     }
 }

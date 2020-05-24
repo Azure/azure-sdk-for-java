@@ -16,17 +16,17 @@ public class BroadcastingSample {
             .buildClient();
 
         // send a text message to the entire hub
-        chatHub.broadcast("Hi there!");
+        chatHub.sendToAll("Hi there!");
 
         // send a text message to a particular group
         SignalRGroupClient adminGroup = chatHub.getGroupClient("admin");
-        adminGroup.broadcast("Hi admins!");
+        adminGroup.sendToAll("Hi admins!");
 
         // send binary data to the entire hub
         byte[] data = new byte[10];
         for (int i = 0; i < 10; i++) {
             data[i] = (byte) i;
         }
-        chatHub.broadcast(data);
+        chatHub.sendToAll(data);
     }
 }

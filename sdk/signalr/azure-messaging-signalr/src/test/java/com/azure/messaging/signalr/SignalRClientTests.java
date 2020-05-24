@@ -56,12 +56,14 @@ public class SignalRClientTests {
 
     @Test
     public void testStatus() {
-        assertTrue(client.isServiceHealthy());
+        SignalRHubStatus status = client.getStatus();
+        assertNotNull(status);
+        assertTrue(status.isAvailable());
     }
 
     @Test
     public void testBroadcastString() {
-        assertResponse(client.broadcastWithResponse(
+        assertResponse(client.sendToAllWithResponse(
             "Hello World - Broadcast test!",
             Collections.emptyList(),
             Context.NONE),
@@ -71,7 +73,7 @@ public class SignalRClientTests {
     @Test
     public void testBroadcastBytes() {
         byte[] bytes = "Hello World - Broadcast test!".getBytes();
-        assertResponse(client.broadcastWithResponse(bytes,
+        assertResponse(client.sendToAllWithResponse(bytes,
             Collections.emptyList(),
             Context.NONE),
             202);
@@ -113,10 +115,10 @@ public class SignalRClientTests {
     public void testRemoveNonExistentUserFromGroup() {
         SignalRGroupClient javaGroup = client.getGroupClient("java");
 
-        assertFalse(javaGroup.doesUserExist("testRemoveNonExistentUserFromGroup"));
+        assertFalse(javaGroup.userExists("testRemoveNonExistentUserFromGroup"));
         Response<Void> removeUserResponse = javaGroup.removeUserWithResponse("testRemoveNonExistentUserFromGroup", Context.NONE);
         assertEquals(202, removeUserResponse.getStatusCode());
-        assertFalse(javaGroup.doesUserExist("testRemoveNonExistentUserFromGroup"));
+        assertFalse(javaGroup.userExists("testRemoveNonExistentUserFromGroup"));
     }
 
     @Test
@@ -125,13 +127,13 @@ public class SignalRClientTests {
         SignalRGroupClient javaGroup = client.getGroupClient("java");
 
         // TODO (jogiles) don't block
-        assertFalse(javaGroup.doesUserExist("Jonathan"));
+        assertFalse(javaGroup.userExists("Jonathan"));
         Response<Void> addUserResponse = javaGroup.addUserWithResponse("Jonathan", null, Context.NONE);
         assertEquals(202, addUserResponse.getStatusCode());
-        assertTrue(javaGroup.doesUserExist("Jonathan"));
+        assertTrue(javaGroup.userExists("Jonathan"));
         Response<Void> removeUserResponse = javaGroup.removeUserWithResponse("Jonathan", Context.NONE);
         assertEquals(202, removeUserResponse.getStatusCode());
-        assertFalse(javaGroup.doesUserExist("Jonathan"));
+        assertFalse(javaGroup.userExists("Jonathan"));
     }
 
 

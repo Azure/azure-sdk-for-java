@@ -37,77 +37,79 @@ public final class SignalRGroupClient {
     /**
      * Send a text message to every connection in this group.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final String data, final String... excludedUsers) {
-        broadcast(data, excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers));
+    public void sendToAll(final String message, final String... excludedConnectionIds) {
+        sendToAll(message, excludedConnectionIds == null
+                               ? Collections.emptyList() : Arrays.asList(excludedConnectionIds));
     }
 
     /**
      * Send a text message to every connection in this group.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final String data, final List<String> excludedUsers) {
-        broadcastWithResponse(data, excludedUsers, Context.NONE);
+    public void sendToAll(final String message, final List<String> excludedConnectionIds) {
+        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
     }
 
     /**
      * Send a text message to every connection in this group.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *      the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Void> broadcastWithResponse(final String data,
-                                                final List<String> excludedUsers,
+    public Response<Void> sendToAllWithResponse(final String message,
+                                                final List<String> excludedConnectionIds,
                                                 final Context context) {
-        return asyncGroupClient.broadcast(data, excludedUsers, context).block();
+        return asyncGroupClient.sendToAll(message, excludedConnectionIds, context).block();
     }
 
     /**
      * Send a binary message to every connection in this group.
      *
-     * @param data The binary message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The binary message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final byte[] data, final String... excludedUsers) {
-        broadcast(data, excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers));
+    public void sendToAll(final byte[] message, final String... excludedConnectionIds) {
+        sendToAll(message, excludedConnectionIds == null
+                               ? Collections.emptyList() : Arrays.asList(excludedConnectionIds));
     }
 
     /**
      * Send a binary message to every connection in this group.
      *
-     * @param data The binary message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The binary message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void broadcast(final byte[] data, final List<String> excludedUsers) {
-        broadcastWithResponse(data, excludedUsers, Context.NONE);
+    public void sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
+        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
     }
 
     /**
      * Send a binary message to every connection in this group.
      *
-     * @param data The binary message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The binary message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with a null value, but status code and response headers representing the response from
      *      the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Void> broadcastWithResponse(final byte[] data,
-                                                final List<String> excludedUsers,
+    public Response<Void> sendToAllWithResponse(final byte[] message,
+                                                final List<String> excludedConnectionIds,
                                                 final Context context) {
-        return asyncGroupClient.broadcast(data, excludedUsers, context).block();
+        return asyncGroupClient.sendToAll(message, excludedConnectionIds, context).block();
     }
 
     /**
@@ -178,8 +180,8 @@ public final class SignalRGroupClient {
      * @return Boolean true value if the user does exist in this group, and false if not.
      */
     @ServiceMethod(returns = SINGLE)
-    public boolean doesUserExist(final String userId) {
-        return doesUserExistWithResponse(userId, Context.NONE).getValue();
+    public boolean userExists(final String userId) {
+        return userExistsWithResponse(userId, Context.NONE).getValue();
     }
 
     /**
@@ -191,8 +193,8 @@ public final class SignalRGroupClient {
      *     status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = SINGLE)
-    public Response<Boolean> doesUserExistWithResponse(final String userId, final Context context) {
-        return asyncGroupClient.doesUserExistWithResponse(userId, context).block();
+    public Response<Boolean> userExistsWithResponse(final String userId, final Context context) {
+        return asyncGroupClient.userExistsWithResponse(userId, context).block();
     }
 
     /**

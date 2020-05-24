@@ -23,7 +23,6 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -32,24 +31,17 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * WebSocketConnectionApis.
- */
+/** An instance of this class provides access to all the operations defined in WebSocketConnectionApis. */
 public final class WebSocketConnectionApis {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final WebSocketConnectionApisService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureWebSocketServiceRestAPI client;
 
     /**
      * Initializes an instance of WebSocketConnectionApis.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     WebSocketConnectionApis(AzureWebSocketServiceRestAPI client) {
@@ -58,8 +50,7 @@ public final class WebSocketConnectionApis {
     }
 
     /**
-     * The interface defining all the services for
-     * AzureWebSocketServiceRestAPIWebSocketConnectionApis to be used by the
+     * The interface defining all the services for AzureWebSocketServiceRestAPIWebSocketConnectionApis to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
@@ -68,227 +59,411 @@ public final class WebSocketConnectionApis {
         @Post("/ws/api/v1")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postDefaultHubBroadcast(@HostParam("$host") String host, @QueryParam("excluded") String excluded, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postDefaultHubBroadcast(
+                @HostParam("$host") String host,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postDefaultHubBroadcast(@HostParam("$host") String host, @QueryParam("excluded") String excluded, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postDefaultHubBroadcast(
+                @HostParam("$host") String host,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Post("/ws/api/v1/hubs/{hub}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postBroadcast(@HostParam("$host") String host, @PathParam("hub") String hub, @QueryParam("excluded") String excluded, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postBroadcast(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1/hubs/{hub}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postBroadcast(@HostParam("$host") String host, @PathParam("hub") String hub, @QueryParam("excluded") String excluded, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postBroadcast(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Post("/ws/api/v1/users/{id}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToDefaultHubUser(@HostParam("$host") String host, @PathParam("id") String id, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postSendToDefaultHubUser(
+                @HostParam("$host") String host,
+                @PathParam("id") String id,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1/users/{id}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToDefaultHubUser(@HostParam("$host") String host, @PathParam("id") String id, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postSendToDefaultHubUser(
+                @HostParam("$host") String host,
+                @PathParam("id") String id,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Post("/ws/api/v1/hubs/{hub}/users/{id}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToUser(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("id") String id, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postSendToUser(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("id") String id,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1/hubs/{hub}/users/{id}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToUser(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("id") String id, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postSendToUser(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("id") String id,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Post("/ws/api/v1/connections/{connectionId}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToDefaultHubConnection(@HostParam("$host") String host, @PathParam("connectionId") String connectionId, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postSendToDefaultHubConnection(
+                @HostParam("$host") String host,
+                @PathParam("connectionId") String connectionId,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1/connections/{connectionId}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToDefaultHubConnection(@HostParam("$host") String host, @PathParam("connectionId") String connectionId, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postSendToDefaultHubConnection(
+                @HostParam("$host") String host,
+                @PathParam("connectionId") String connectionId,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Get("/ws/api/v1/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckDefaultHubConnectionExistence(@HostParam("$host") String host, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Void>> getCheckDefaultHubConnectionExistence(
+                @HostParam("$host") String host, @PathParam("connectionId") String connectionId, Context context);
 
         @Head("/ws/api/v1/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckDefaultHubConnectionExistence(@HostParam("$host") String host, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Boolean>> headCheckDefaultHubConnectionExistence(
+                @HostParam("$host") String host, @PathParam("connectionId") String connectionId, Context context);
 
         @Delete("/ws/api/v1/connections/{connectionId}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteCloseDefaultHubClientConnection(@HostParam("$host") String host, @PathParam("connectionId") String connectionId, @QueryParam("reason") String reason, Context context);
+        Mono<Response<Void>> deleteCloseDefaultHubClientConnection(
+                @HostParam("$host") String host,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("reason") String reason,
+                Context context);
 
         @Post("/ws/api/v1/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToConnection(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("connectionId") String connectionId, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postSendToConnection(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("connectionId") String connectionId,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postSendToConnection(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("connectionId") String connectionId, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postSendToConnection(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("connectionId") String connectionId,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Get("/ws/api/v1/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckConnectionExistence(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Void>> getCheckConnectionExistence(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("connectionId") String connectionId,
+                Context context);
 
         @Head("/ws/api/v1/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckConnectionExistence(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Boolean>> headCheckConnectionExistence(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("connectionId") String connectionId,
+                Context context);
 
         @Delete("/ws/api/v1/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteCloseClientConnection(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("connectionId") String connectionId, @QueryParam("reason") String reason, Context context);
+        Mono<Response<Void>> deleteCloseClientConnection(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("reason") String reason,
+                Context context);
 
         @Post("/ws/api/v1/groups/{group}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postDefaultHubGroupBroadcast(@HostParam("$host") String host, @PathParam("group") String group, @QueryParam("excluded") String excluded, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postDefaultHubGroupBroadcast(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1/groups/{group}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postDefaultHubGroupBroadcast(@HostParam("$host") String host, @PathParam("group") String group, @QueryParam("excluded") String excluded, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postDefaultHubGroupBroadcast(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Get("/ws/api/v1/groups/{group}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckDefaultHubGroupExistence(@HostParam("$host") String host, @PathParam("group") String group, Context context);
+        Mono<Response<Void>> getCheckDefaultHubGroupExistence(
+                @HostParam("$host") String host, @PathParam("group") String group, Context context);
 
         @Head("/ws/api/v1/groups/{group}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckDefaultHubGroupExistence(@HostParam("$host") String host, @PathParam("group") String group, Context context);
+        Mono<Response<Boolean>> headCheckDefaultHubGroupExistence(
+                @HostParam("$host") String host, @PathParam("group") String group, Context context);
 
         @Post("/ws/api/v1/hubs/{hub}/groups/{group}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postGroupBroadcast(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @QueryParam("excluded") String excluded, @BodyParam("application/octet-stream") Flux<ByteBuffer> data, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<Response<Void>> postGroupBroadcast(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
 
         @Post("/ws/api/v1/hubs/{hub}/groups/{group}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> postGroupBroadcast(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @QueryParam("excluded") String excluded, @BodyParam("text/plain") String data, Context context);
+        Mono<Response<Void>> postGroupBroadcast(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @QueryParam("excluded") String excluded,
+                @BodyParam("text/plain") String data,
+                Context context);
 
         @Get("/ws/api/v1/hubs/{hub}/groups/{group}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckGroupExistence(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, Context context);
+        Mono<Response<Void>> getCheckGroupExistence(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                Context context);
 
         @Head("/ws/api/v1/hubs/{hub}/groups/{group}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckGroupExistence(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, Context context);
+        Mono<Response<Boolean>> headCheckGroupExistence(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                Context context);
 
         @Get("/ws/api/v1/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckDefaultHubUserExistence(@HostParam("$host") String host, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> getCheckDefaultHubUserExistence(
+                @HostParam("$host") String host, @PathParam("user") String user, Context context);
 
         @Head("/ws/api/v1/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckDefaultHubUserExistence(@HostParam("$host") String host, @PathParam("user") String user, Context context);
+        Mono<Response<Boolean>> headCheckDefaultHubUserExistence(
+                @HostParam("$host") String host, @PathParam("user") String user, Context context);
 
         @Put("/ws/api/v1/groups/{group}/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> putAddConnectionToDefaultHubGroup(@HostParam("$host") String host, @PathParam("group") String group, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Void>> putAddConnectionToDefaultHubGroup(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @PathParam("connectionId") String connectionId,
+                Context context);
 
         @Delete("/ws/api/v1/groups/{group}/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteRemoveConnectionFromDefaultHubGroup(@HostParam("$host") String host, @PathParam("group") String group, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Void>> deleteRemoveConnectionFromDefaultHubGroup(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @PathParam("connectionId") String connectionId,
+                Context context);
 
         @Get("/ws/api/v1/groups/{group}/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckUserExistenceInDefaultHubGroup(@HostParam("$host") String host, @PathParam("group") String group, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> getCheckUserExistenceInDefaultHubGroup(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                Context context);
 
         @Head("/ws/api/v1/groups/{group}/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckUserExistenceInDefaultHubGroup(@HostParam("$host") String host, @PathParam("group") String group, @PathParam("user") String user, Context context);
+        Mono<Response<Boolean>> headCheckUserExistenceInDefaultHubGroup(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                Context context);
 
         @Put("/ws/api/v1/groups/{group}/users/{user}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> putAddUserToDefaultHubGroup(@HostParam("$host") String host, @PathParam("group") String group, @PathParam("user") String user, @QueryParam("ttl") Integer ttl, Context context);
+        Mono<Response<Void>> putAddUserToDefaultHubGroup(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                @QueryParam("ttl") Integer ttl,
+                Context context);
 
         @Delete("/ws/api/v1/groups/{group}/users/{user}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteRemoveUserFromDefaultHubGroup(@HostParam("$host") String host, @PathParam("group") String group, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> deleteRemoveUserFromDefaultHubGroup(
+                @HostParam("$host") String host,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                Context context);
 
         @Delete("/ws/api/v1/users/{user}/groups")
         @ExpectedResponses({200, 202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteRemoveUserFromAllDefaultHubGroups(@HostParam("$host") String host, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> deleteRemoveUserFromAllDefaultHubGroups(
+                @HostParam("$host") String host, @PathParam("user") String user, Context context);
 
         @Get("/ws/api/v1/hubs/{hub}/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckUserExistence(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> getCheckUserExistence(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("user") String user,
+                Context context);
 
         @Head("/ws/api/v1/hubs/{hub}/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckUserExistence(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("user") String user, Context context);
+        Mono<Response<Boolean>> headCheckUserExistence(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("user") String user,
+                Context context);
 
         @Put("/ws/api/v1/hubs/{hub}/groups/{group}/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> putAddConnectionToGroup(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Void>> putAddConnectionToGroup(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @PathParam("connectionId") String connectionId,
+                Context context);
 
         @Delete("/ws/api/v1/hubs/{hub}/groups/{group}/connections/{connectionId}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteRemoveConnectionFromGroup(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @PathParam("connectionId") String connectionId, Context context);
+        Mono<Response<Void>> deleteRemoveConnectionFromGroup(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @PathParam("connectionId") String connectionId,
+                Context context);
 
         @Get("/ws/api/v1/hubs/{hub}/groups/{group}/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getCheckUserExistenceInGroup(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> getCheckUserExistenceInGroup(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                Context context);
 
         @Head("/ws/api/v1/hubs/{hub}/groups/{group}/users/{user}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<Boolean>> headCheckUserExistenceInGroup(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @PathParam("user") String user, Context context);
+        Mono<Response<Boolean>> headCheckUserExistenceInGroup(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                Context context);
 
         @Put("/ws/api/v1/hubs/{hub}/groups/{group}/users/{user}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> putAddUserToGroup(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @PathParam("user") String user, @QueryParam("ttl") Integer ttl, Context context);
+        Mono<Response<Void>> putAddUserToGroup(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                @QueryParam("ttl") Integer ttl,
+                Context context);
 
         @Delete("/ws/api/v1/hubs/{hub}/groups/{group}/users/{user}")
         @ExpectedResponses({202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteRemoveUserFromGroup(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("group") String group, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> deleteRemoveUserFromGroup(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @PathParam("user") String user,
+                Context context);
 
         @Delete("/ws/api/v1/hubs/{hub}/users/{user}/groups")
         @ExpectedResponses({200, 202, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteRemoveUserFromAllGroups(@HostParam("$host") String host, @PathParam("hub") String hub, @PathParam("user") String user, Context context);
+        Mono<Response<Void>> deleteRemoveUserFromAllGroups(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @PathParam("user") String user,
+                Context context);
     }
 
     /**
      * Broadcast content inside request body to all the connected to endpoint "/ws/client".
-     * 
+     *
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
      * @param excluded Array of Post0ItemsItem.
@@ -299,20 +474,23 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postDefaultHubBroadcastWithResponseAsync(Flux<ByteBuffer> data, long contentLength, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postDefaultHubBroadcastWithResponseAsync(
+            Flux<ByteBuffer> data, long contentLength, List<String> excluded, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
         return service.postDefaultHubBroadcast(this.client.getHost(), excludedConverted, data, contentLength, context);
     }
 
     /**
      * Broadcast content inside request body to all the connected to endpoint "/ws/client".
-     * 
+     *
      * @param data simple string.
      * @param excluded Array of Post0ItemsItem.
      * @param context The context to associate with this operation.
@@ -322,21 +500,25 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postDefaultHubBroadcastWithResponseAsync(String data, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postDefaultHubBroadcastWithResponseAsync(
+            String data, List<String> excluded, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
         return service.postDefaultHubBroadcast(this.client.getHost(), excludedConverted, data, context);
     }
 
     /**
      * Broadcast content inside request body to all the connected connections in the same hub.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
      * @param excluded Array of Post1ItemsItem.
@@ -347,9 +529,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postBroadcastWithResponseAsync(String hub, Flux<ByteBuffer> data, long contentLength, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postBroadcastWithResponseAsync(
+            String hub, Flux<ByteBuffer> data, long contentLength, List<String> excluded, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -357,14 +541,16 @@ public final class WebSocketConnectionApis {
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
         return service.postBroadcast(this.client.getHost(), hub, excludedConverted, data, contentLength, context);
     }
 
     /**
      * Broadcast content inside request body to all the connected connections in the same hub.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param data simple string.
      * @param excluded Array of Post1ItemsItem.
      * @param context The context to associate with this operation.
@@ -374,9 +560,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postBroadcastWithResponseAsync(String hub, String data, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postBroadcastWithResponseAsync(
+            String hub, String data, List<String> excluded, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -384,13 +572,14 @@ public final class WebSocketConnectionApis {
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
         return service.postBroadcast(this.client.getHost(), hub, excludedConverted, data, context);
     }
 
     /**
      * Send content inside request body to the specific user.
-     * 
+     *
      * @param id The user Id.
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
@@ -401,9 +590,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postSendToDefaultHubUserWithResponseAsync(String id, Flux<ByteBuffer> data, long contentLength, Context context) {
+    public Mono<Response<Void>> postSendToDefaultHubUserWithResponseAsync(
+            String id, Flux<ByteBuffer> data, long contentLength, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
@@ -416,7 +607,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to the specific user.
-     * 
+     *
      * @param id The user Id.
      * @param data simple string.
      * @param context The context to associate with this operation.
@@ -428,7 +619,8 @@ public final class WebSocketConnectionApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> postSendToDefaultHubUserWithResponseAsync(String id, String data, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
@@ -441,8 +633,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to the specific user.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param id The user Id.
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
@@ -453,9 +646,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postSendToUserWithResponseAsync(String hub, String id, Flux<ByteBuffer> data, long contentLength, Context context) {
+    public Mono<Response<Void>> postSendToUserWithResponseAsync(
+            String hub, String id, Flux<ByteBuffer> data, long contentLength, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -471,8 +666,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to the specific user.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param id The user Id.
      * @param data simple string.
      * @param context The context to associate with this operation.
@@ -484,7 +680,8 @@ public final class WebSocketConnectionApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> postSendToUserWithResponseAsync(String hub, String id, String data, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -500,7 +697,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to the specific connection.
-     * 
+     *
      * @param connectionId The connection Id.
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
@@ -511,9 +708,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postSendToDefaultHubConnectionWithResponseAsync(String connectionId, Flux<ByteBuffer> data, long contentLength, Context context) {
+    public Mono<Response<Void>> postSendToDefaultHubConnectionWithResponseAsync(
+            String connectionId, Flux<ByteBuffer> data, long contentLength, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
@@ -521,12 +720,13 @@ public final class WebSocketConnectionApis {
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        return service.postSendToDefaultHubConnection(this.client.getHost(), connectionId, data, contentLength, context);
+        return service.postSendToDefaultHubConnection(
+                this.client.getHost(), connectionId, data, contentLength, context);
     }
 
     /**
      * Send content inside request body to the specific connection.
-     * 
+     *
      * @param connectionId The connection Id.
      * @param data simple string.
      * @param context The context to associate with this operation.
@@ -536,9 +736,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postSendToDefaultHubConnectionWithResponseAsync(String connectionId, String data, Context context) {
+    public Mono<Response<Void>> postSendToDefaultHubConnectionWithResponseAsync(
+            String connectionId, String data, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
@@ -551,7 +753,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if the connection with the given connectionId exists.
-     * 
+     *
      * @param connectionId The connectionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,9 +762,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getCheckDefaultHubConnectionExistenceWithResponseAsync(String connectionId, Context context) {
+    public Mono<Response<Void>> getCheckDefaultHubConnectionExistenceWithResponseAsync(
+            String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
@@ -572,7 +776,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if the connection with the given connectionId exists.
-     * 
+     *
      * @param connectionId The connectionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,9 +785,11 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckDefaultHubConnectionExistenceWithResponseAsync(String connectionId, Context context) {
+    public Mono<Response<Boolean>> headCheckDefaultHubConnectionExistenceWithResponseAsync(
+            String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
@@ -593,7 +799,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Close the client connection.
-     * 
+     *
      * @param connectionId The connectionId parameter.
      * @param reason The reason parameter.
      * @param context The context to associate with this operation.
@@ -603,9 +809,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCloseDefaultHubClientConnectionWithResponseAsync(String connectionId, String reason, Context context) {
+    public Mono<Response<Void>> deleteCloseDefaultHubClientConnectionWithResponseAsync(
+            String connectionId, String reason, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
@@ -615,8 +823,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to the specific connection.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param connectionId The connection Id.
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
@@ -627,9 +836,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postSendToConnectionWithResponseAsync(String hub, String connectionId, Flux<ByteBuffer> data, long contentLength, Context context) {
+    public Mono<Response<Void>> postSendToConnectionWithResponseAsync(
+            String hub, String connectionId, Flux<ByteBuffer> data, long contentLength, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -645,8 +856,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to the specific connection.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param connectionId The connection Id.
      * @param data simple string.
      * @param context The context to associate with this operation.
@@ -656,9 +868,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postSendToConnectionWithResponseAsync(String hub, String connectionId, String data, Context context) {
+    public Mono<Response<Void>> postSendToConnectionWithResponseAsync(
+            String hub, String connectionId, String data, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -674,7 +888,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if the connection with the given connectionId exists.
-     * 
+     *
      * @param hub The hub parameter.
      * @param connectionId The connectionId parameter.
      * @param context The context to associate with this operation.
@@ -684,9 +898,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getCheckConnectionExistenceWithResponseAsync(String hub, String connectionId, Context context) {
+    public Mono<Response<Void>> getCheckConnectionExistenceWithResponseAsync(
+            String hub, String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -699,7 +915,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if the connection with the given connectionId exists.
-     * 
+     *
      * @param hub The hub parameter.
      * @param connectionId The connectionId parameter.
      * @param context The context to associate with this operation.
@@ -709,9 +925,11 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckConnectionExistenceWithResponseAsync(String hub, String connectionId, Context context) {
+    public Mono<Response<Boolean>> headCheckConnectionExistenceWithResponseAsync(
+            String hub, String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -724,7 +942,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Close the client connection.
-     * 
+     *
      * @param hub The hub parameter.
      * @param connectionId The connectionId parameter.
      * @param reason The reason parameter.
@@ -735,9 +953,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCloseClientConnectionWithResponseAsync(String hub, String connectionId, String reason, Context context) {
+    public Mono<Response<Void>> deleteCloseClientConnectionWithResponseAsync(
+            String hub, String connectionId, String reason, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -750,7 +970,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to a group of connections.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
@@ -762,9 +982,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postDefaultHubGroupBroadcastWithResponseAsync(String group, Flux<ByteBuffer> data, long contentLength, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postDefaultHubGroupBroadcastWithResponseAsync(
+            String group, Flux<ByteBuffer> data, long contentLength, List<String> excluded, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -772,13 +994,15 @@ public final class WebSocketConnectionApis {
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
-        return service.postDefaultHubGroupBroadcast(this.client.getHost(), group, excludedConverted, data, contentLength, context);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        return service.postDefaultHubGroupBroadcast(
+                this.client.getHost(), group, excludedConverted, data, contentLength, context);
     }
 
     /**
      * Send content inside request body to a group of connections.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param data simple string.
      * @param excluded Array of String.
@@ -789,9 +1013,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postDefaultHubGroupBroadcastWithResponseAsync(String group, String data, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postDefaultHubGroupBroadcastWithResponseAsync(
+            String group, String data, List<String> excluded, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -799,13 +1025,14 @@ public final class WebSocketConnectionApis {
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
         return service.postDefaultHubGroupBroadcast(this.client.getHost(), group, excludedConverted, data, context);
     }
 
     /**
      * Check if there are any client connections inside the given group.
-     * 
+     *
      * @param group The group parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -816,7 +1043,8 @@ public final class WebSocketConnectionApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getCheckDefaultHubGroupExistenceWithResponseAsync(String group, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -826,7 +1054,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if there are any client connections inside the given group.
-     * 
+     *
      * @param group The group parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,9 +1063,10 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckDefaultHubGroupExistenceWithResponseAsync(String group, Context context) {
+    public Mono<Response<Boolean>> headCheckDefaultHubGroupExistenceWithResponseAsync(String group, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -847,8 +1076,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Send content inside request body to a group of connections.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param data The data parameter.
      * @param contentLength The contentLength parameter.
@@ -860,9 +1090,16 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postGroupBroadcastWithResponseAsync(String hub, String group, Flux<ByteBuffer> data, long contentLength, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postGroupBroadcastWithResponseAsync(
+            String hub,
+            String group,
+            Flux<ByteBuffer> data,
+            long contentLength,
+            List<String> excluded,
+            Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -873,14 +1110,17 @@ public final class WebSocketConnectionApis {
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
-        return service.postGroupBroadcast(this.client.getHost(), hub, group, excludedConverted, data, contentLength, context);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        return service.postGroupBroadcast(
+                this.client.getHost(), hub, group, excludedConverted, data, contentLength, context);
     }
 
     /**
      * Send content inside request body to a group of connections.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param data simple string.
      * @param excluded Array of Post2ItemsItem.
@@ -891,9 +1131,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> postGroupBroadcastWithResponseAsync(String hub, String group, String data, List<String> excluded, Context context) {
+    public Mono<Response<Void>> postGroupBroadcastWithResponseAsync(
+            String hub, String group, String data, List<String> excluded, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -904,13 +1146,14 @@ public final class WebSocketConnectionApis {
         if (data == null) {
             return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
         }
-        String excludedConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
+        String excludedConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(excluded, CollectionFormat.CSV);
         return service.postGroupBroadcast(this.client.getHost(), hub, group, excludedConverted, data, context);
     }
 
     /**
      * Check if there are any client connections inside the given group.
-     * 
+     *
      * @param hub The hub parameter.
      * @param group The group parameter.
      * @param context The context to associate with this operation.
@@ -922,7 +1165,8 @@ public final class WebSocketConnectionApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getCheckGroupExistenceWithResponseAsync(String hub, String group, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -935,7 +1179,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if there are any client connections inside the given group.
-     * 
+     *
      * @param hub The hub parameter.
      * @param group The group parameter.
      * @param context The context to associate with this operation.
@@ -945,9 +1189,10 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckGroupExistenceWithResponseAsync(String hub, String group, Context context) {
+    public Mono<Response<Boolean>> headCheckGroupExistenceWithResponseAsync(String hub, String group, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -960,7 +1205,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if there are any client connections connected for the given user.
-     * 
+     *
      * @param user The user parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -971,7 +1216,8 @@ public final class WebSocketConnectionApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getCheckDefaultHubUserExistenceWithResponseAsync(String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (user == null) {
             return Mono.error(new IllegalArgumentException("Parameter user is required and cannot be null."));
@@ -981,7 +1227,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if there are any client connections connected for the given user.
-     * 
+     *
      * @param user The user parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -990,9 +1236,10 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckDefaultHubUserExistenceWithResponseAsync(String user, Context context) {
+    public Mono<Response<Boolean>> headCheckDefaultHubUserExistenceWithResponseAsync(String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (user == null) {
             return Mono.error(new IllegalArgumentException("Parameter user is required and cannot be null."));
@@ -1002,7 +1249,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Add a connection to the target group.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param context The context to associate with this operation.
@@ -1012,9 +1259,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> putAddConnectionToDefaultHubGroupWithResponseAsync(String group, String connectionId, Context context) {
+    public Mono<Response<Void>> putAddConnectionToDefaultHubGroupWithResponseAsync(
+            String group, String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -1027,7 +1276,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Remove a connection from the target group.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param context The context to associate with this operation.
@@ -1037,9 +1286,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRemoveConnectionFromDefaultHubGroupWithResponseAsync(String group, String connectionId, Context context) {
+    public Mono<Response<Void>> deleteRemoveConnectionFromDefaultHubGroupWithResponseAsync(
+            String group, String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -1052,7 +1303,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check whether a user exists in the target group.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
      * @param context The context to associate with this operation.
@@ -1062,9 +1313,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getCheckUserExistenceInDefaultHubGroupWithResponseAsync(String group, String user, Context context) {
+    public Mono<Response<Void>> getCheckUserExistenceInDefaultHubGroupWithResponseAsync(
+            String group, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -1077,7 +1330,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check whether a user exists in the target group.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
      * @param context The context to associate with this operation.
@@ -1087,9 +1340,11 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckUserExistenceInDefaultHubGroupWithResponseAsync(String group, String user, Context context) {
+    public Mono<Response<Boolean>> headCheckUserExistenceInDefaultHubGroupWithResponseAsync(
+            String group, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -1102,10 +1357,11 @@ public final class WebSocketConnectionApis {
 
     /**
      * Add a user to the target group.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
-     * @param ttl Specifies the seconds that the user exists in the group. If not set, the user lives in the group forever.
+     * @param ttl Specifies the seconds that the user exists in the group. If not set, the user lives in the group
+     *     forever.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1113,9 +1369,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> putAddUserToDefaultHubGroupWithResponseAsync(String group, String user, Integer ttl, Context context) {
+    public Mono<Response<Void>> putAddUserToDefaultHubGroupWithResponseAsync(
+            String group, String user, Integer ttl, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -1128,7 +1386,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Remove a user from the target group.
-     * 
+     *
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
      * @param context The context to associate with this operation.
@@ -1138,9 +1396,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRemoveUserFromDefaultHubGroupWithResponseAsync(String group, String user, Context context) {
+    public Mono<Response<Void>> deleteRemoveUserFromDefaultHubGroupWithResponseAsync(
+            String group, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
@@ -1153,7 +1413,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Remove a user from all groups.
-     * 
+     *
      * @param user Target user Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1164,7 +1424,8 @@ public final class WebSocketConnectionApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRemoveUserFromAllDefaultHubGroupsWithResponseAsync(String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (user == null) {
             return Mono.error(new IllegalArgumentException("Parameter user is required and cannot be null."));
@@ -1174,7 +1435,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if there are any client connections connected for the given user.
-     * 
+     *
      * @param hub The hub parameter.
      * @param user The user parameter.
      * @param context The context to associate with this operation.
@@ -1186,7 +1447,8 @@ public final class WebSocketConnectionApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getCheckUserExistenceWithResponseAsync(String hub, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1199,7 +1461,7 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check if there are any client connections connected for the given user.
-     * 
+     *
      * @param hub The hub parameter.
      * @param user The user parameter.
      * @param context The context to associate with this operation.
@@ -1209,9 +1471,10 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckUserExistenceWithResponseAsync(String hub, String user, Context context) {
+    public Mono<Response<Boolean>> headCheckUserExistenceWithResponseAsync(String hub, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1224,8 +1487,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Add a connection to the target group.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param context The context to associate with this operation.
@@ -1235,9 +1499,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> putAddConnectionToGroupWithResponseAsync(String hub, String group, String connectionId, Context context) {
+    public Mono<Response<Void>> putAddConnectionToGroupWithResponseAsync(
+            String hub, String group, String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1253,8 +1519,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Remove a connection from the target group.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param context The context to associate with this operation.
@@ -1264,9 +1531,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRemoveConnectionFromGroupWithResponseAsync(String hub, String group, String connectionId, Context context) {
+    public Mono<Response<Void>> deleteRemoveConnectionFromGroupWithResponseAsync(
+            String hub, String group, String connectionId, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1282,8 +1551,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check whether a user exists in the target group.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
      * @param context The context to associate with this operation.
@@ -1293,9 +1563,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getCheckUserExistenceInGroupWithResponseAsync(String hub, String group, String user, Context context) {
+    public Mono<Response<Void>> getCheckUserExistenceInGroupWithResponseAsync(
+            String hub, String group, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1311,8 +1583,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Check whether a user exists in the target group.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
      * @param context The context to associate with this operation.
@@ -1322,9 +1595,11 @@ public final class WebSocketConnectionApis {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> headCheckUserExistenceInGroupWithResponseAsync(String hub, String group, String user, Context context) {
+    public Mono<Response<Boolean>> headCheckUserExistenceInGroupWithResponseAsync(
+            String hub, String group, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1340,11 +1615,13 @@ public final class WebSocketConnectionApis {
 
     /**
      * Add a user to the target group.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
-     * @param ttl Specifies the seconds that the user exists in the group. If not set, the user lives in the group forever.
+     * @param ttl Specifies the seconds that the user exists in the group. If not set, the user lives in the group
+     *     forever.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1352,9 +1629,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> putAddUserToGroupWithResponseAsync(String hub, String group, String user, Integer ttl, Context context) {
+    public Mono<Response<Void>> putAddUserToGroupWithResponseAsync(
+            String hub, String group, String user, Integer ttl, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1370,8 +1649,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Remove a user from the target group.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param user Target user Id.
      * @param context The context to associate with this operation.
@@ -1381,9 +1661,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRemoveUserFromGroupWithResponseAsync(String hub, String group, String user, Context context) {
+    public Mono<Response<Void>> deleteRemoveUserFromGroupWithResponseAsync(
+            String hub, String group, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
@@ -1399,8 +1681,9 @@ public final class WebSocketConnectionApis {
 
     /**
      * Remove a user from all groups.
-     * 
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
      * @param user Target user Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1409,9 +1692,11 @@ public final class WebSocketConnectionApis {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRemoveUserFromAllGroupsWithResponseAsync(String hub, String user, Context context) {
+    public Mono<Response<Void>> deleteRemoveUserFromAllGroupsWithResponseAsync(
+            String hub, String user, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));

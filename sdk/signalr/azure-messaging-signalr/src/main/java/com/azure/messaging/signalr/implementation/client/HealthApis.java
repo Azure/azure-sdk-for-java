@@ -18,24 +18,17 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * HealthApis.
- */
+/** An instance of this class provides access to all the operations defined in HealthApis. */
 public final class HealthApis {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final HealthApisService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureWebSocketServiceRestAPI client;
 
     /**
      * Initializes an instance of HealthApis.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     HealthApis(AzureWebSocketServiceRestAPI client) {
@@ -44,9 +37,8 @@ public final class HealthApis {
     }
 
     /**
-     * The interface defining all the services for
-     * AzureWebSocketServiceRestAPIHealthApis to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AzureWebSocketServiceRestAPIHealthApis to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureWebSocketServic")
@@ -59,7 +51,7 @@ public final class HealthApis {
 
     /**
      * Get service health status.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -69,7 +61,8 @@ public final class HealthApis {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> headIndexWithResponseAsync(Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         return service.headIndex(this.client.getHost(), context);
     }
