@@ -54,74 +54,87 @@ public final class SignalRGroupAsyncClient {
     /**
      * Send a text message to every connection in this group.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *     representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final String data, final String... excludedUsers) {
-        return broadcast(data,
-            excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers),
+    public Mono<Response<Void>> sendToAll(final String message, final String... excludedConnectionIds) {
+        return sendToAll(message,
+            excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
             Context.NONE);
     }
 
     /**
      * Send a text message to every connection in this group.
      *
-     * @param data The message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *     representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final String data, final List<String> excludedUsers) {
-        return broadcast(data, excludedUsers, Context.NONE);
+    public Mono<Response<Void>> sendToAll(final String message, final List<String> excludedConnectionIds) {
+        return sendToAll(message, excludedConnectionIds, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> broadcast(final String data, final List<String> excludedUsers, final Context context) {
-        return api.postGroupBroadcastWithResponseAsync(hub, group, data, excludedUsers, configureTracing(context))
-           .doOnSubscribe(ignoredValue -> logger.info("Broadcasting data '{}'", data))
-           .doOnSuccess(response -> logger.info("Broadcasted data: '{}', response: {}", data, response.getValue()))
-           .doOnError(error -> logger.warning("Failed to broadcast data '{}', response: {}", data, error));
+    Mono<Response<Void>> sendToAll(final String message,
+                                   final List<String> excludedConnectionIds,
+                                   Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.postDefaultHubGroupBroadcastWithResponseAsync(group, message, excludedConnectionIds, context)
+                : api.postGroupBroadcastWithResponseAsync(hub, group, message, excludedConnectionIds, context))
+           .doOnSubscribe(ignoredValue -> logger.info("Broadcasting message '{}'", message))
+           .doOnSuccess(response ->
+                            logger.info("Broadcasted message: '{}', response: {}", message, response.getValue()))
+           .doOnError(error -> logger.warning("Failed to broadcast message '{}', response: {}", message, error));
     }
 
     /**
      * Send a binary message to every connection in this group.
      *
-     * @param data The binary message to send.
-     * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @param message The binary message to send.
+     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final byte[] data, final String... excludedUsers) {
-        return broadcast(data,
-            excludedUsers == null ? Collections.emptyList() : Arrays.asList(excludedUsers),
+    public Mono<Response<Void>> sendToAll(final byte[] message, final String... excludedConnectionIds) {
+        return sendToAll(message,
+            excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
             Context.NONE);
     }
 
     /**
      * Send a binary message to every connection in this group.
      *
-     * @param data The binary message to send.
-     * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @param message The binary message to send.
+     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> broadcast(final byte[] data, final List<String> excludedUsers) {
-        return broadcast(data, excludedUsers, Context.NONE);
+    public Mono<Response<Void>> sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
+        return sendToAll(message, excludedConnectionIds, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> broadcast(final byte[] data, final List<String> excludedUsers, final Context context) {
-        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(data));
-        return api.postGroupBroadcastWithResponseAsync(hub, group, byteFlux, data.length, excludedUsers, context)
-           .doOnSubscribe(ignoredValue -> logger.info("Broadcasting binary data"))
-           .doOnSuccess(response -> logger.info("Broadcasted binary data, response: {}", response.getValue()))
-           .doOnError(error -> logger.warning("Failed to broadcast binary data, response: {}", error));
+    Mono<Response<Void>> sendToAll(final byte[] message,
+                                   final List<String> excludedConnectionIds,
+                                   Context context) {
+        final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
+        context = configureTracing(context);
+        return (hub == null
+                ? api.postDefaultHubGroupBroadcastWithResponseAsync(
+                    group, byteFlux, message.length, excludedConnectionIds, context)
+                : api.postGroupBroadcastWithResponseAsync(
+                    hub, group, byteFlux, message.length, excludedConnectionIds, context))
+           .doOnSubscribe(ignoredValue -> logger.info("Broadcasting binary message"))
+           .doOnSuccess(response -> logger.info("Broadcasted binary message, response: {}", response.getValue()))
+           .doOnError(error -> logger.warning("Failed to broadcast binary message, response: {}", error));
     }
 
     /**
@@ -152,14 +165,27 @@ public final class SignalRGroupAsyncClient {
     }
 
     // package-private
-    Mono<Response<Void>> addUserWithResponse(final String userId, final Duration timeToLive, final Context context) {
-        // TODO (jogiles) How to handle TTL > Integer.MAX_VALUE?
+    Mono<Response<Void>> addUserWithResponse(final String userId, final Duration timeToLive, Context context) {
         // The user can set a TTL for how long the added user may last in the group. We must null check it (as that
         // means 'indefinitely', but we also must be careful with the Duration object, as its 'getSeconds()' methods
-        // returns a long value. If the long value exceeds Integer.MAX_VALUE, then we will just use Integer.MAX_VALUE.
-        final Integer ttl = timeToLive == null ? null : (int) Math.min(Integer.MAX_VALUE, timeToLive.getSeconds());
+        // returns a long value. If the long value exceeds Integer.MAX_VALUE, then we will throw an exception
+        Integer ttl = null;
+        if (timeToLive != null) {
+            final long ttlLong = timeToLive.getSeconds();
+            if (ttlLong > Integer.MAX_VALUE) {
+                logger.logThrowableAsError(new IllegalArgumentException(
+                    "timeToLive represents how long the user is added to the group in seconds. Null is valid and"
+                    + "represents an indefinite existence in the group, otherwise the duration must be between 0 and "
+                    + "Integer.MAX_VALUE seconds. The provided value is " + ttlLong + " seconds."));
+            } else {
+                ttl = (int) Math.min(Integer.MAX_VALUE, ttlLong);
+            }
+        }
 
-        return api.putAddUserToGroupWithResponseAsync(hub, group, userId, ttl, configureTracing(context))
+        context = configureTracing(context);
+        return (hub == null
+                ? api.putAddUserToDefaultHubGroupWithResponseAsync(group, userId, ttl, context)
+                : api.putAddUserToGroupWithResponseAsync(hub, group, userId, ttl, context))
            .doOnSubscribe(ignoredValue -> logger.info("Adding user '{}'", userId))
            .doOnSuccess(response -> logger.info("Added user '{}', response: {}", userId, response.getValue()))
            .doOnError(error -> logger.warning("Failed to add user '{}', response: {}", userId, error));
@@ -178,8 +204,11 @@ public final class SignalRGroupAsyncClient {
     }
 
     // package-private
-    Mono<Response<Void>> removeUserWithResponse(final String userId, final Context context) {
-        return api.deleteRemoveUserFromGroupWithResponseAsync(hub, group, userId, configureTracing(context))
+    Mono<Response<Void>> removeUserWithResponse(final String userId, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.deleteRemoveUserFromDefaultHubGroupWithResponseAsync(group, userId, context)
+                : api.deleteRemoveUserFromGroupWithResponseAsync(hub, group, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Removing user '{}'", userId))
            .doOnSuccess(response -> logger.info("Removed user '{}', response: {}", userId, response.getValue()))
            .doOnError(error -> logger.warning("Failed to remove user '{}', response: {}", userId, error));
@@ -192,8 +221,8 @@ public final class SignalRGroupAsyncClient {
      * @return A {@link Mono} containing a Boolean value representing whether the user exists in this group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> doesUserExist(final String userId) {
-        return doesUserExistWithResponse(userId).map(Response::getValue);
+    public Mono<Boolean> userExists(final String userId) {
+        return userExistsWithResponse(userId).map(Response::getValue);
     }
 
     /**
@@ -204,15 +233,16 @@ public final class SignalRGroupAsyncClient {
      *     this group, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> doesUserExistWithResponse(final String userId) {
-        return doesUserExistWithResponse(userId, Context.NONE);
+    public Mono<Response<Boolean>> userExistsWithResponse(final String userId) {
+        return userExistsWithResponse(userId, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Boolean>> doesUserExistWithResponse(final String userId, final Context context) {
-        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
-        return api.headCheckUserExistenceInGroupWithResponseAsync(hub, group, userId, configureTracing(context))
-           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
+    Mono<Response<Boolean>> userExistsWithResponse(final String userId, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.headCheckUserExistenceInDefaultHubGroupWithResponseAsync(group, userId, context)
+                : api.headCheckUserExistenceInGroupWithResponseAsync(hub, group, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.info("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -232,8 +262,11 @@ public final class SignalRGroupAsyncClient {
     }
 
     // package-private
-    Mono<Response<Void>> addConnectionWithResponse(final String connectionId, final Context context) {
-        return api.putAddConnectionToGroupWithResponseAsync(hub, group, connectionId, configureTracing(context))
+    Mono<Response<Void>> addConnectionWithResponse(final String connectionId, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.putAddConnectionToDefaultHubGroupWithResponseAsync(group, connectionId, context)
+                : api.putAddConnectionToGroupWithResponseAsync(hub, group, connectionId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Adding connection '{}'", connectionId))
            .doOnSuccess(response -> logger.info("Added connection '{}', response: {}",
                connectionId, response.getValue()))
@@ -253,8 +286,11 @@ public final class SignalRGroupAsyncClient {
     }
 
     // package-private
-    Mono<Response<Void>> removeConnectionWithResponse(final String connectionId, final Context context) {
-        return api.deleteRemoveConnectionFromGroupWithResponseAsync(hub, group, connectionId, configureTracing(context))
+    Mono<Response<Void>> removeConnectionWithResponse(final String connectionId, Context context) {
+        context = configureTracing(context);
+        return (hub == null
+                ? api.deleteRemoveConnectionFromDefaultHubGroupWithResponseAsync(group, connectionId, context)
+                : api.deleteRemoveConnectionFromGroupWithResponseAsync(hub, group, connectionId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Removing connection '{}'", connectionId))
            .doOnSuccess(response -> logger.info("Removed connection '{}', response: {}",
                connectionId, response.getValue()))

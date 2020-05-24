@@ -42,7 +42,6 @@ import java.util.Objects;
  * <p><strong>Instantiating an asynchronous SignalR Client</strong></p>
  *
  * TODO (jogiles): fix me
- * codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation
  *
  * @see SignalRAsyncClient
  * @see SignalRClient
@@ -270,12 +269,9 @@ public final class SignalRClientBuilder {
         final SignalRServiceVersion serviceVersion =
             version != null ? version : SignalRServiceVersion.getLatest();
 
-        // hub
-        final String buildHub = hub == null ? "_default" : hub;
-
         if (pipeline != null) {
             innerBuilder.pipeline(pipeline);
-            return new SignalRAsyncClient(innerBuilder.buildClient(), buildHub, serviceVersion);
+            return new SignalRAsyncClient(innerBuilder.buildClient(), hub, serviceVersion);
         }
 
         if (credential == null) {
@@ -306,7 +302,7 @@ public final class SignalRClientBuilder {
                                   .policies(policies.toArray(new HttpPipelinePolicy[0]))
                                   .httpClient(httpClient)
                                   .build());
-        return new SignalRAsyncClient(innerBuilder.buildClient(), buildHub, serviceVersion);
+        return new SignalRAsyncClient(innerBuilder.buildClient(), hub, serviceVersion);
     }
 
     /**

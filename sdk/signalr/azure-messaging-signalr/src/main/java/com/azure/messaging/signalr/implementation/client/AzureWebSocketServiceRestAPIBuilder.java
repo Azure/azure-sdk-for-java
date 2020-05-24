@@ -11,9 +11,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/**
- * A builder for creating a new instance of the AzureWebSocketServiceRestAPI type.
- */
+/** A builder for creating a new instance of the AzureWebSocketServiceRestAPI type. */
 @ServiceClientBuilder(serviceClients = {AzureWebSocketServiceRestAPI.class})
 public final class AzureWebSocketServiceRestAPIBuilder {
     /*
@@ -23,7 +21,7 @@ public final class AzureWebSocketServiceRestAPIBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the AzureWebSocketServiceRestAPIBuilder.
      */
@@ -39,7 +37,7 @@ public final class AzureWebSocketServiceRestAPIBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the AzureWebSocketServiceRestAPIBuilder.
      */
@@ -50,7 +48,7 @@ public final class AzureWebSocketServiceRestAPIBuilder {
 
     /**
      * Builds an instance of AzureWebSocketServiceRestAPI with the provided parameters.
-     * 
+     *
      * @return an instance of AzureWebSocketServiceRestAPI.
      */
     public AzureWebSocketServiceRestAPI buildClient() {
@@ -58,7 +56,10 @@ public final class AzureWebSocketServiceRestAPIBuilder {
             this.host = "";
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                    new HttpPipelineBuilder()
+                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                            .build();
         }
         AzureWebSocketServiceRestAPI client = new AzureWebSocketServiceRestAPI(pipeline);
         client.setHost(this.host);
