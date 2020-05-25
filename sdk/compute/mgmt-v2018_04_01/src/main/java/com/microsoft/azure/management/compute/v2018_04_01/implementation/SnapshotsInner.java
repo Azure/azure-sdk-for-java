@@ -41,6 +41,8 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -1011,7 +1013,7 @@ public class SnapshotsInner implements InnerSupportsGet<SnapshotInner>, InnerSup
         }
         Validator.validate(grantAccessData);
         Observable<Response<ResponseBody>> observable = service.grantAccess(this.client.subscriptionId(), resourceGroupName, snapshotName, this.client.apiVersion(), grantAccessData, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<AccessUriInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<AccessUriInner>() { }.getType());
     }
 
     /**
@@ -1174,7 +1176,7 @@ public class SnapshotsInner implements InnerSupportsGet<SnapshotInner>, InnerSup
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.revokeAccess(this.client.subscriptionId(), resourceGroupName, snapshotName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
     }
 
     /**
