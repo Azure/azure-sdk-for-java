@@ -40,6 +40,3 @@ com.microsoft.azure.msi_auth_token_provider:azure-authentication-msi-token-provi
 com.microsoft.azure:azure-eventgrid;1.4.0-beta.1;1.4.0-beta.1
 com.microsoft.azure:azure-loganalytics;1.0.0-beta-2;1.0.0-beta.2
 com.microsoft.azure:azure-media;1.0.0-beta.1;1.0.0-beta.1
-com.microsoft.azure:azure-spring-boot;2.2.4;2.2.5-beta.1
-com.microsoft.azure:azure-spring-boot-starter;2.2.4;2.2.5-beta.1
-com.microsoft.azure:azure-active-directory-spring-boot-starter;2.2.4;2.2.5-beta.1
