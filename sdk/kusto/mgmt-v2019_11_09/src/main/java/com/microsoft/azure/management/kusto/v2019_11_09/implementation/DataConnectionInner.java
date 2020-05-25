@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.microsoft.azure.ProxyResource;
-import com.microsoft.azure.management.kusto.v2019_11_09.EventGridDataConnection;
-import com.microsoft.azure.management.kusto.v2019_11_09.EventHubDataConnection;
-import com.microsoft.azure.management.kusto.v2019_11_09.IotHubDataConnection;
 
 /**
  * Class representing an data connection.
