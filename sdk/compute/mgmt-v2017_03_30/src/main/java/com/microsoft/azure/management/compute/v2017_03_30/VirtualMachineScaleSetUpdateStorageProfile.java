@@ -34,7 +34,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
     private List<VirtualMachineScaleSetDataDisk> dataDisks;
 
     /**
-     * Get the imageReference value.
+     * Get the image reference.
      *
      * @return the imageReference value
      */
@@ -43,7 +43,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
     }
 
     /**
-     * Set the imageReference value.
+     * Set the image reference.
      *
      * @param imageReference the imageReference value to set
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
@@ -54,7 +54,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
     }
 
     /**
-     * Get the osDisk value.
+     * Get the OS disk.
      *
      * @return the osDisk value
      */
@@ -63,7 +63,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
     }
 
     /**
-     * Set the osDisk value.
+     * Set the OS disk.
      *
      * @param osDisk the osDisk value to set
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
@@ -74,7 +74,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
     }
 
     /**
-     * Get the dataDisks value.
+     * Get the data disks.
      *
      * @return the dataDisks value
      */
@@ -83,7 +83,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
     }
 
     /**
-     * Set the dataDisks value.
+     * Set the data disks.
      *
      * @param dataDisks the dataDisks value to set
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
