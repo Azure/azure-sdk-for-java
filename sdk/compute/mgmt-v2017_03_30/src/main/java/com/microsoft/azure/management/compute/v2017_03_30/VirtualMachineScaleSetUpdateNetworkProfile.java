@@ -22,7 +22,7 @@ public class VirtualMachineScaleSetUpdateNetworkProfile {
     private List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations;
 
     /**
-     * Get the networkInterfaceConfigurations value.
+     * Get the list of network configurations.
      *
      * @return the networkInterfaceConfigurations value
      */
@@ -31,7 +31,7 @@ public class VirtualMachineScaleSetUpdateNetworkProfile {
     }
 
     /**
-     * Set the networkInterfaceConfigurations value.
+     * Set the list of network configurations.
      *
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set
      * @return the VirtualMachineScaleSetUpdateNetworkProfile object itself.
