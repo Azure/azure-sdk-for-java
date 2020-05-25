@@ -248,6 +248,7 @@ var changePom = function(project) {
             var pomContent = fs.readFileSync(modulePom, {encoding: 'utf-8'});
             pomContent = pomContent.replace('<version>1.1.0</version>', '<version>1.3.0</version>');
             pomContent = pomContent.replace('<relativePath>../../../pom.management.xml</relativePath>', '<relativePath>../../parents/azure-arm-parent/pom.xml</relativePath>');
+            fs.writeFileSync(modulePom, pomContent, {encoding: 'utf-8'});
         }
     });
 }
