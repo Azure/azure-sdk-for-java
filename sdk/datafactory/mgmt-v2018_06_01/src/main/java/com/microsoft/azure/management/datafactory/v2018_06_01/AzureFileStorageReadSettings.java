@@ -40,6 +40,13 @@ public class AzureFileStorageReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /**
+     * The prefix filter for the Azure File name starting from root path. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "prefix")
+    private Object prefix;
+
+    /**
      * Point to a text file that lists each file (relative path to the path
      * configured in the dataset) that you want to copy. Type: string (or
      * Expression with resultType string).
@@ -52,6 +59,13 @@ public class AzureFileStorageReadSettings extends StoreReadSettings {
      */
     @JsonProperty(value = "enablePartitionDiscovery")
     private Boolean enablePartitionDiscovery;
+
+    /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
 
     /**
      * The start of file's modified datetime. Type: string (or Expression with
@@ -128,6 +142,26 @@ public class AzureFileStorageReadSettings extends StoreReadSettings {
     }
 
     /**
+     * Get the prefix filter for the Azure File name starting from root path. Type: string (or Expression with resultType string).
+     *
+     * @return the prefix value
+     */
+    public Object prefix() {
+        return this.prefix;
+    }
+
+    /**
+     * Set the prefix filter for the Azure File name starting from root path. Type: string (or Expression with resultType string).
+     *
+     * @param prefix the prefix value to set
+     * @return the AzureFileStorageReadSettings object itself.
+     */
+    public AzureFileStorageReadSettings withPrefix(Object prefix) {
+        this.prefix = prefix;
+        return this;
+    }
+
+    /**
      * Get point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
      *
      * @return the fileListPath value
@@ -164,6 +198,26 @@ public class AzureFileStorageReadSettings extends StoreReadSettings {
      */
     public AzureFileStorageReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the AzureFileStorageReadSettings object itself.
+     */
+    public AzureFileStorageReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
         return this;
     }
 
