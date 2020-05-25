@@ -16,6 +16,11 @@ import rx.Completable;
  * Type representing CognitiveServicesAccounts.
  */
 public interface CognitiveServicesAccounts {
+    /**
+     * Begins definition for a new Account resource.
+     * @param name resource name.
+     * @return the first stage of the new Account definition.
+     */
     CognitiveServicesAccount.DefinitionStages.Blank defineAccount(String name);
 
     /**
@@ -59,7 +64,7 @@ public interface CognitiveServicesAccounts {
      * Lists the account keys for the specified Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of the cognitive services account within the specified resource group. Congitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param accountName The name of the cognitive services account within the specified resource group. Cognitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

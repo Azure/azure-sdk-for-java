@@ -11,16 +11,20 @@ package com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.imp
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.CognitiveServicesAccount;
 import rx.Observable;
+import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.Sku;
+import java.util.Map;
 import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.CognitiveServicesAccountCreateParameters;
 import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.ProvisioningState;
-import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.Sku;
 import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.Kind;
 import rx.functions.Func1;
 
 class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveServicesAccount, CognitiveServicesAccountInner, CognitiveServicesAccountImpl, CognitiveServicesManager> implements CognitiveServicesAccount, CognitiveServicesAccount.Definition, CognitiveServicesAccount.Update {
+    private Sku usku;
+    private Map<String, String> utags;
     private CognitiveServicesAccountCreateParameters createParameter;
     CognitiveServicesAccountImpl(String name, CognitiveServicesAccountInner inner, CognitiveServicesManager manager) {
         super(name, inner, manager);
+        this.usku = new Sku();
         this.createParameter = new CognitiveServicesAccountCreateParameters();
     }
 
@@ -43,7 +47,7 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     @Override
     public Observable<CognitiveServicesAccount> updateResourceAsync() {
         CognitiveServicesAccountsInner client = this.manager().inner().cognitiveServicesAccounts();
-        return client.updateAsync(this.resourceGroupName(), this.name())
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.usku, this.utags)
             .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccountInner>() {
                @Override
                public CognitiveServicesAccountInner call(CognitiveServicesAccountInner resource) {
@@ -66,6 +70,7 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     private void resetCreateUpdateParameters() {
+        this.usku = new Sku();
         this.createParameter = new CognitiveServicesAccountCreateParameters();
     }
 
@@ -107,8 +112,18 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
+    public CognitiveServicesAccountImpl withTags(Map<String, String> tags) {
+        this.utags = tags;
+        return this;
+    }
+
+    @Override
     public CognitiveServicesAccountImpl withSku(Sku sku) {
-        this.createParameter.withSku(sku);
+        if (isInCreateMode()) {
+            this.createParameter.withSku(sku);
+        } else {
+            this.usku = sku;
+        }
         return this;
     }
 
