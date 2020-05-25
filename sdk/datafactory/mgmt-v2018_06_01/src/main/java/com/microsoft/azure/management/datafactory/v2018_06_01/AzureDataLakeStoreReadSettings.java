@@ -54,6 +54,13 @@ public class AzureDataLakeStoreReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /**
      * The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
      */
@@ -164,6 +171,26 @@ public class AzureDataLakeStoreReadSettings extends StoreReadSettings {
      */
     public AzureDataLakeStoreReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the AzureDataLakeStoreReadSettings object itself.
+     */
+    public AzureDataLakeStoreReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
         return this;
     }
 
