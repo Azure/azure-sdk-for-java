@@ -92,6 +92,7 @@ public final class SessionHandlerOptions {
      * <remarks>The session-pump (SDK) will accept MaxConcurrentSessions number of sessions in parallel and dispatch the messages.
      * The messages within a session are delivered sequentially. If more than MaxConcurrentSessions number of sessions are present
      * in the entity, they will be accepted one-by-one after closing the existing sessions.</remarks>
+     *
      * @return The maximum number of concurrent sessions
      */
     public int getMaxConcurrentSessions() {
@@ -110,7 +111,7 @@ public final class SessionHandlerOptions {
     /**
      * Gets the maximum duration within which the lock will be renewed automatically. This value should be greater than the longest message lock duration; for example, the LockDuration Property.
      * If a session lock is going to expire, this value is the max duration for the session lock to be automatically renewed.
-     * <remarks>If this auto renewal fails, clients will receive an exception in the ExceptionReceivedHandler. </remarks>
+     *
      * @return The maximum duration during which locks are automatically renewed.
      */
     public Duration getMaxAutoRenewDuration() {
@@ -124,6 +125,7 @@ public final class SessionHandlerOptions {
      * for this duration before closing to make sure that all the messages have been received. If users are having a lot of
      * sessions and fewer messages per session, try setting this to be a relative smaller value based on how frequent new
      * messages arrive in the session. </remarks>
+     * 
      * @return The wait duration for receive calls. Defaults to 1 minute.
      */
     public Duration getMessageWaitDuration() {
