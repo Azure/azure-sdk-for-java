@@ -18,7 +18,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.models.FilterBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
@@ -28,6 +30,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.FindBlobsOptions;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
@@ -46,6 +49,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -331,6 +335,73 @@ public final class BlobServiceAsyncClient {
                 options.getPrefix(), marker, options.getMaxResultsPerPage(),
                 toIncludeTypes(options.getDetails()),
                 null, null, Context.NONE), timeout);
+    }
+
+
+    // TODO: (rickle-msft) doc links
+    /**
+     * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String}
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @return A reactive response emitting the list of blobs.
+     */
+    public PagedFlux<FilterBlobItem> findBlobsByTags(String query) {
+        return this.findBlobsByTags(query, null, null);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions}
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @param options {@link FindBlobsOptions}
+     * @return A reactive response emitting the list of blobs.
+     */
+    public PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options) {
+        try {
+            return findBlobsByTags(query, options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options, Duration timeout) {
+        throwOnAnonymousAccess();
+        FindBlobsOptions finalOptions = options == null ? new FindBlobsOptions() : options;
+
+        Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
+            marker -> findBlobsByTags(query, marker, finalOptions.getMaxResultsPerPage(), timeout)
+                .map(response -> {
+                    List<FilterBlobItem> value = response.getValue().getBlobs() == null
+                        ? Collections.emptyList()
+                        : response.getValue().getBlobs();
+
+                    return new PagedResponseBase<>(
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
+                });
+        return new PagedFlux<>(() -> func.apply(null), func);
+    }
+
+    private Mono<ServicesFilterBlobsResponse> findBlobsByTags(String query, String marker, Integer maxResults,
+        Duration timeout) {
+        throwOnAnonymousAccess();
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null, query, marker, maxResults,
+                Context.NONE), timeout);
     }
 
     /**

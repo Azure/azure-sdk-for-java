@@ -159,7 +159,6 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test blob snapshot"() {
         setup:
-
         def data = "test".getBytes()
         def blobName = generateBlobName()
         def bu = getBlobClient(primaryCredential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
