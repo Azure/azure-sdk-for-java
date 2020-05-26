@@ -880,10 +880,22 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
+    /**
+     * Schedules the file for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     * @return A reactive response signalling completion.
+     */
     public Mono<Void> scheduleDeletion(FileScheduleDeletionOptions options) {
         return scheduleDeletionWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * Schedules the file for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     * @return A reactive response signalling completion.
+     */
     public Mono<Response<Void>> scheduleDeletionWithResponse(FileScheduleDeletionOptions options) {
         try {
             return blockBlobAsyncClient.scheduleDeletionWithResponse(Transforms.toBlobScheduleDeletionOptions(options))

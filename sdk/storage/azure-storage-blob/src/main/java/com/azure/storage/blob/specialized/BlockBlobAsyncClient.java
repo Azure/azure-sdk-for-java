@@ -551,6 +551,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             });
     }
 
+    /**
+     * Schedules the blob for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     * @return A reactive response signalling completion.
+     */
     public Mono<Void> scheduleDeletion(BlobScheduleDeletionOptions options) {
         try {
             return this.scheduleDeletionWithResponse(options)
@@ -560,6 +566,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    /**
+     * Schedules the blob for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     * @return A reactive response signalling completion.
+     */
     public Mono<Response<Void>> scheduleDeletionWithResponse(BlobScheduleDeletionOptions options) {
         try {
             return withContext(context -> scheduleDeletionWithResponse(options, context));

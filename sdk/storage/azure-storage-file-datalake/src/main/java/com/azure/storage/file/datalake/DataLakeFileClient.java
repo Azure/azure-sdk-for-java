@@ -549,10 +549,23 @@ public class DataLakeFileClient extends DataLakePathClient {
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
     }
 
+    /**
+     * Schedules the file for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     */
     public void scheduleDeletion(FileScheduleDeletionOptions options) {
         this.scheduleDeletionWithResponse(options, null, Context.NONE);
     }
 
+    /**
+     * Schedules the file for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
     public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options,
                                                        Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {

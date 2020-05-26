@@ -499,10 +499,23 @@ public final class BlockBlobClient extends BlobClientBase {
         return blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Schedules the blob for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     */
     public void scheduleDeletion(BlobScheduleDeletionOptions options) {
         scheduleDeletionWithResponse(options, null, Context.NONE);
     }
 
+    /**
+     * Schedules the blob for deletion.
+     *
+     * @param options Schedule deletion parameters.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers
+     */
     public Response<Void> scheduleDeletionWithResponse(BlobScheduleDeletionOptions options, Duration timeout,
                                                        Context context) {
         Mono<Response<Void>> response = client.scheduleDeletionWithResponse(options, context);
