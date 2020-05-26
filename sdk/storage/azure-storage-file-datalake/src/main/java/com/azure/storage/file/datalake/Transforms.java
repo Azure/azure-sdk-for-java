@@ -16,6 +16,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobScheduleDeletionOptions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
@@ -33,6 +34,7 @@ import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileReadHeaders;
 import com.azure.storage.file.datalake.models.FileReadResponse;
+import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.FileSystemItemProperties;
@@ -225,7 +227,7 @@ class Transforms {
                 properties.isServerEncrypted(), properties.isIncrementalCopy(),
                 Transforms.toDataLakeAccessTier(properties.getAccessTier()),
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
-                properties.getAccessTierChangeTime(), properties.getMetadata());
+                properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
         }
     }
 
@@ -452,5 +454,23 @@ class Transforms {
             return null;
         }
         return pr::reportProgress;
+    }
+
+    static BlobScheduleDeletionOptions toBlobScheduleDeletionOptions(
+        FileScheduleDeletionOptions fileScheduleDeletionOptions) {
+        if (fileScheduleDeletionOptions == null) {
+            return null;
+        }
+
+        if (fileScheduleDeletionOptions.getExpiresOn() != null) {
+            return new BlobScheduleDeletionOptions(fileScheduleDeletionOptions.getExpiresOn());
+        } else if (fileScheduleDeletionOptions.getTimeToExpire() != null) {
+            return new BlobScheduleDeletionOptions(
+                fileScheduleDeletionOptions.getTimeToExpire(),
+                fileScheduleDeletionOptions.getExpiryRelativeTo()
+            );
+        } else {
+            return new BlobScheduleDeletionOptions();
+        }
     }
 }

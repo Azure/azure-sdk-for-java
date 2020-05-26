@@ -21,6 +21,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
+import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -546,5 +547,18 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
+    }
+
+    public void scheduleDeletion(FileScheduleDeletionOptions options) {
+        this.scheduleDeletionWithResponse(options, null, Context.NONE);
+    }
+
+    public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options,
+                                                       Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<Void> response = blockBlobClient.scheduleDeletionWithResponse(
+                Transforms.toBlobScheduleDeletionOptions(options), timeout, context);
+            return new SimpleResponse<>(response, null);
+        }, logger);
     }
 }

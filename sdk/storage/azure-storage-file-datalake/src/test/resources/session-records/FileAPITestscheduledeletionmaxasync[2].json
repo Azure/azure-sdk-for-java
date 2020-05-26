@@ -1,0 +1,180 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "28dca7c5-1f5b-4a97-9f62-7e0fd6abb9f0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D801B9CE36286A",
+      "Last-Modified" : "Tue, 26 May 2020 21:14:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "4b85c8da-601e-0096-5ca2-334471000000",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-client-request-id" : "28dca7c5-1f5b-4a97-9f62-7e0fd6abb9f0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49/javapathscheduledeletionmaxasync150845aa406a85d4e1?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4372cf20-fdbd-4b4b-82a7-01c80c6910d0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D801B9CE45ACDB",
+      "Last-Modified" : "Tue, 26 May 2020 21:14:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e95e974b-601f-002f-6fa2-33406b000000",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-client-request-id" : "4372cf20-fdbd-4b4b-82a7-01c80c6910d0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49/javapathscheduledeletionmaxasync2371858fc08d5bc713?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e769e2ed-7e30-4574-b463-36d2d6f525a4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D801B9CE536958",
+      "Last-Modified" : "Tue, 26 May 2020 21:14:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e95e974c-601f-002f-70a2-33406b000000",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-client-request-id" : "e769e2ed-7e30-4574-b463-36d2d6f525a4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49/javapathscheduledeletionmaxasync2371858fc08d5bc713?comp=expiry",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a268d1e7-c6b9-45c1-a4ce-9c2adcd115e9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D801B9CE536958",
+      "Last-Modified" : "Tue, 26 May 2020 21:14:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "63fdf3da-b01e-0013-1da2-3369ac000000",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-client-request-id" : "a268d1e7-c6b9-45c1-a4ce-9c2adcd115e9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49/javapathscheduledeletionmaxasync2371858fc08d5bc713",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "20c1a04d-f773-4619-957e-6e4365379ad4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Tue, 26 May 2020 21:14:41 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-expiry-time" : "Wed, 27 May 2020 21:14:41 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-access-tier-inferred" : "true",
+      "x-ms-access-tier" : "Hot",
+      "ETag" : "0x8D801B9CE536958",
+      "x-ms-creation-time" : "Tue, 26 May 2020 21:14:41 GMT",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "4b85c902-601e-0096-7ea2-334471000000",
+      "x-ms-client-request-id" : "20c1a04d-f773-4619-957e-6e4365379ad4",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49/javapathscheduledeletionmaxasync2371858fc08d5bc713?comp=expiry",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "efd96e8b-303c-4613-879e-ae542e3554cf"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D801B9CE536958",
+      "Last-Modified" : "Tue, 26 May 2020 21:14:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "63fdf3e0-b01e-0013-22a2-3369ac000000",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-client-request-id" : "efd96e8b-303c-4613-879e-ae542e3554cf"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfsscheduledeletionmaxasync&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f4306026-2185-441d-aacf-d9f033974594"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "4b85c907-601e-0096-01a2-334471000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanaryhns.blob.core.windows.net/\"><Prefix>jtfsscheduledeletionmaxasync</Prefix><Containers><Container><Name>jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49</Name><Properties><Last-Modified>Tue, 26 May 2020 21:14:41 GMT</Last-Modified><Etag>\"0x8D801B9CE36286A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-client-request-id" : "f4306026-2185-441d-aacf-d9f033974594",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "94f08bde-eb9e-491a-af91-cfbe7a63e62e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "63fdf3fe-b01e-0013-3aa2-3369ac000000",
+      "Date" : "Tue, 26 May 2020 21:14:41 GMT",
+      "x-ms-client-request-id" : "94f08bde-eb9e-491a-af91-cfbe7a63e62e"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsscheduledeletionmaxasync027508ad7ee5bd1e8a49", "javapathscheduledeletionmaxasync150845aa406a85d4e1", "javapathscheduledeletionmaxasync2371858fc08d5bc713" ]
+}

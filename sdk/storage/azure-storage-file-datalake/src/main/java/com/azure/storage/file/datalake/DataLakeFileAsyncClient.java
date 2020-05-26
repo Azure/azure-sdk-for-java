@@ -27,6 +27,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
+import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -879,5 +880,16 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
+    public Mono<Void> scheduleDeletion(FileScheduleDeletionOptions options) {
+        return scheduleDeletionWithResponse(options).flatMap(FluxUtil::toMono);
+    }
 
+    public Mono<Response<Void>> scheduleDeletionWithResponse(FileScheduleDeletionOptions options) {
+        try {
+            return blockBlobAsyncClient.scheduleDeletionWithResponse(Transforms.toBlobScheduleDeletionOptions(options))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 }

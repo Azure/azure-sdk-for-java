@@ -4,20 +4,19 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.BlobAsyncClient
-import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobExpirationOffset
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
-import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.FileRange
+import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PathAccessControl
@@ -40,6 +39,7 @@ import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
+import java.time.OffsetDateTime
 
 class FileAPITest extends APISpec {
     DataLakeFileClient fc
@@ -2710,4 +2710,103 @@ class FileAPITest extends APISpec {
         file.delete()
     }
 
+    @Unroll
+    def "Schedule Deletion min"() {
+        given:
+        def fileClient = fsc.getFileClient(generatePathName())
+        fileClient.create()
+
+        when:
+        fileClient.scheduleDeletion(options)
+        def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
+
+        then:
+        (expiryTimeProperty != null) == hasExpiry
+
+        where:
+        options                                                                                | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
+    }
+
+    @Unroll
+    def "Schedule Deletion max"() {
+        given:
+        def fileClient = fsc.getFileClient(generatePathName())
+        fileClient.create()
+
+        when:
+        def resposne = fileClient.scheduleDeletionWithResponse(options, null, Context.NONE)
+        def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
+
+        then:
+        resposne.getStatusCode() == 200
+        (expiryTimeProperty != null) == hasExpiry
+
+        where:
+        options                                                                                | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
+    }
+
+    @Unroll
+    def "Schedule Deletion min async"() {
+        given:
+        def fileClient = fscAsync.getFileAsyncClient(generatePathName())
+        fileClient.create().block()
+
+        when:
+        def propertiesMono = fileClient.scheduleDeletion(options)
+            .then(fileClient.getProperties())
+
+        then:
+        StepVerifier.create(propertiesMono)
+            .assertNext {
+                assert (it.getExpiresOn() != null) == hasExpiry
+            }
+            .verifyComplete()
+
+        where:
+        options                                                                                | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
+    }
+
+    @Unroll
+    def "Schedule Deletion max async"() {
+        given:
+        def fileClient = fscAsync.getFileAsyncClient(generatePathName())
+        fileClient.create().block()
+
+        when:
+        def responseMono = fileClient.scheduleDeletionWithResponse(options)
+        def propertiesMono = fileClient.getProperties()
+        def resultMono = responseMono
+            .then(responseMono.zipWith(propertiesMono))
+
+        then:
+        StepVerifier.create(resultMono)
+            .assertNext {
+                assert it.getT1().getStatusCode() == 200
+                assert (it.getT2().getExpiresOn() != null) == hasExpiry
+            }
+            .verifyComplete()
+
+        where:
+        options                                                                                | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
+    }
 }
