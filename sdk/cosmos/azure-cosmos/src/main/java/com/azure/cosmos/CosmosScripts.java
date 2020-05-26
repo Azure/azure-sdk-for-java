@@ -266,7 +266,7 @@ public class CosmosScripts {
      */
     CosmosStoredProcedureResponse convertResponse(CosmosAsyncStoredProcedureResponse response) {
         if (response.getStoredProcedure() != null) {
-            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().id()));
+            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().getId()));
         } else {
             return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, null);
         }

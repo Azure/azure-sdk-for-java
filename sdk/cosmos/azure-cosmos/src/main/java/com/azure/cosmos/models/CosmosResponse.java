@@ -15,24 +15,24 @@ import java.util.Map;
  */
 public class CosmosResponse<T> {
     private T properties;
-    protected final ResourceResponse<?> resourceResponseWrapper;
+    final ResourceResponse<?> resourceResponseWrapper;
 
-    protected CosmosResponse(ResourceResponse<?> resourceResponse) {
+    CosmosResponse(ResourceResponse<?> resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;
     }
 
-    protected CosmosResponse(T properties) {
+    CosmosResponse(T properties) {
         this.properties = properties;
         this.resourceResponseWrapper = null;
     }
 
-    protected CosmosResponse(ResourceResponse<?> resourceResponse, T properties) {
+    CosmosResponse(ResourceResponse<?> resourceResponse, T properties) {
         this.resourceResponseWrapper = resourceResponse;
         this.properties = properties;
     }
 
     // Only used in CosmosAsyncStoredProcedureResponse compatibility with StoredProcedureResponse
-    protected CosmosResponse(StoredProcedureResponse response) {
+    CosmosResponse(StoredProcedureResponse response) {
         this.resourceResponseWrapper = null;
     }
 
@@ -45,7 +45,7 @@ public class CosmosResponse<T> {
         return properties;
     }
 
-    protected CosmosResponse<T> setProperties(T resourceSettings) {
+    CosmosResponse<T> setProperties(T resourceSettings) {
         this.properties = resourceSettings;
         return this;
     }

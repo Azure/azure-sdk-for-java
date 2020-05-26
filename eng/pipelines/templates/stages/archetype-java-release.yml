@@ -15,9 +15,10 @@ stages:
       - deployment: SignPackage
         environment: esrp
         timeoutInMinutes: 20
+        variables:
+          - template: ../variables/globals.yml
         pool:
           vmImage: ubuntu-18.04
-
         strategy:
           runOnce:
             deploy:
@@ -53,6 +54,8 @@ stages:
           - job: VerifyReleaseVersion
             displayName: "Verify release version"
             condition: ne(variables['Skip.VersionVerification'], 'true')
+            variables:
+              - template: ../variables/globals.yml
             pool:
               vmImage: ubuntu-18.04
 
@@ -78,10 +81,10 @@ stages:
             environment: github
             timeoutInMinutes: 5
             dependsOn: VerifyReleaseVersion
-
+            variables:
+              - template: ../variables/globals.yml
             pool:
               vmImage: vs2017-win2016
-
             strategy:
               runOnce:
                 deploy:
@@ -105,10 +108,10 @@ stages:
               condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
               environment: maven
               dependsOn: TagRepository
-
+              variables:
+                - template: ../variables/globals.yml
               pool:
-                vmImage: windows-2019
-
+                vmImage: vs2017-win2016
               strategy:
                 runOnce:
                   deploy:
@@ -145,10 +148,10 @@ stages:
               environment: github
               timeoutInMinutes: 5
               dependsOn: PublishPackage
-
+              variables:
+                - template: ../variables/globals.yml
               pool:
                 vmImage: vs2017-win2016
-
               strategy:
                 runOnce:
                   deploy:
@@ -179,10 +182,10 @@ stages:
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: githubio
               dependsOn: PublishPackage
-
+              variables:
+                - template: ../variables/globals.yml
               pool:
                 vmImage: windows-2019
-
               strategy:
                 runOnce:
                   deploy:
@@ -213,11 +216,10 @@ stages:
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
               environment: github
               dependsOn: PublishPackage
-
-
+              variables:
+                - template: ../variables/globals.yml
               pool:
                 vmImage: windows-2019
-
               strategy:
                 runOnce:
                   deploy:
@@ -252,10 +254,10 @@ stages:
     - job: PublishPackages
       condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
       displayName: Publish package to daily feed
-      pool:
-        vmImage: windows-2019
       variables:
-        skipComponentGovernanceDetection: true
+        - template: ../variables/globals.yml
+      pool:
+        vmImage: vs2017-win2016
       steps:
       - checkout: self
         path: azure-sdk-for-java

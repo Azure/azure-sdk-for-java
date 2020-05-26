@@ -11,7 +11,6 @@ import com.azure.search.documents.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.models.DataSourceCredentials;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SearchIndexerDataContainer;
 import com.azure.search.documents.models.SearchIndexerDataSource;
 import com.azure.search.documents.models.SearchIndexerDataSourceType;
@@ -180,7 +179,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         try {
             client.deleteDataSourceWithResponse(response, true, null, Context.NONE);
             fail("Second call to delete with specified ETag should have failed due to non existent data source.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
     }
@@ -198,7 +197,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         try {
             client.deleteDataSourceWithResponse(stale, true, null, Context.NONE);
             fail("Delete specifying a stale ETag should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -240,7 +239,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         try {
             client.createOrUpdateDataSourceWithResponse(original, true, null, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 

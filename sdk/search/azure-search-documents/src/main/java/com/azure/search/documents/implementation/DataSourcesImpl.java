@@ -26,9 +26,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.models.ListDataSourcesResult;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.SearchIndexerDataSource;
+import com.azure.search.documents.implementation.models.RequestOptions;
+import com.azure.search.documents.implementation.models.SearchErrorException;
+import com.azure.search.documents.implementation.models.SearchIndexerDataSource;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

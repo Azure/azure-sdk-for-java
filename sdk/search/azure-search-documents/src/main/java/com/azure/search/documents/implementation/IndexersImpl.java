@@ -26,10 +26,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.models.ListIndexersResult;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerStatus;
+import com.azure.search.documents.implementation.models.RequestOptions;
+import com.azure.search.documents.implementation.models.SearchErrorException;
+import com.azure.search.documents.implementation.models.SearchIndexer;
+import com.azure.search.documents.implementation.models.SearchIndexerStatus;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

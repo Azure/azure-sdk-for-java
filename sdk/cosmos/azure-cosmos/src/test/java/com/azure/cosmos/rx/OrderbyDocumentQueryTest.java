@@ -149,6 +149,38 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByWithValue(String sortOrder) throws Exception {
+        String query = String.format("SELECT value r.propInt FROM r ORDER BY r.propInt %s", sortOrder);
+        FeedOptions options = new FeedOptions();
+
+        int pageSize = 3;
+        CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,
+                                                                                Integer.class);
+        Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
+
+        List<Integer> expectedValues =
+            sortDocumentsAndCollectValues("propInt",
+                                               d -> ModelBridgeInternal
+                                                        .getIntFromJsonSerializable(d, "propInt"),
+                                               validatorComparator);
+        if ("DESC".equals(sortOrder)) {
+            Collections.reverse(expectedValues);
+        }
+
+        int expectedPageSize = expectedNumberOfPages(expectedValues.size(), pageSize);
+
+        FeedResponseListValidator<Integer> validator = new FeedResponseListValidator.Builder<Integer>()
+                                                           .containsExactlyValues(expectedValues)
+                                                           .numberOfPages(expectedPageSize)
+                                                           .allPagesSatisfy(new FeedResponseValidator.Builder<Integer>()
+                                                                                .hasRequestChargeHeader().build())
+                                                           .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+                                                           .build();
+
+        validateQuerySuccess(queryObservable.byPage(pageSize), validator);
+    }
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryOrderByInt() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propInt";
@@ -233,6 +265,16 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                                .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey(propName)) // removes undefined
                                .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
                                .map(Resource::getResourceId).collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> List<T> sortDocumentsAndCollectValues(String propName,
+                                                          Function<CosmosItemProperties, T> extractProp, Comparator<T> comparer) {
+        return createdDocuments.stream()
+                   .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey(propName)) // removes undefined
+                   .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
+                   .map(d -> (T)ModelBridgeInternal.getMapFromJsonSerializable(d).get(propName))
+                   .collect(Collectors.toList());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

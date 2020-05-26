@@ -27,7 +27,7 @@ public class CosmosAsyncPermission {
      *
      * @return the id of the {@link CosmosAsyncPermission}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -37,7 +37,7 @@ public class CosmosAsyncPermission {
      * @param id the id of the {@link CosmosAsyncPermission}
      * @return the same {@link CosmosAsyncPermission} that had the id set
      */
-    CosmosAsyncPermission id(String id) {
+    CosmosAsyncPermission setId(String id) {
         this.id = id;
         return this;
     }
@@ -122,7 +122,7 @@ public class CosmosAsyncPermission {
         builder.append("/");
         builder.append(getURIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 }

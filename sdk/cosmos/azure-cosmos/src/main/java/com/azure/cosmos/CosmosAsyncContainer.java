@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
@@ -23,9 +26,13 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.helpers.Util;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -71,7 +78,7 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads the document container by the container link.
+     * Reads the container
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single cosmos container response with
@@ -389,12 +396,29 @@ public class CosmosAsyncContainer {
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
+        QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
+        if (queryInfo != null && queryInfo.hasSelectValue()) {
+            List<T> transformedResults = response.getResults()
+                                             .stream()
+                                             .map(d -> d.get(Constants.Properties.VALUE))
+                                             .map(object -> transform(object, classType))
+                                             .collect(Collectors.toList());
+
+            return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
+                                                                     response.getResponseHeaders(),
+                                                                     ModelBridgeInternal.queryMetrics(response));
+
+        }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
-            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, classType))
+            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document
+                , classType))
                  .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response));
     }
 
+    private <T> T transform(Object object, Class<T> classType) {
+        return Utils.getSimpleObjectMapper().convertValue(object, classType);
+    }
 
     /**
      * Reads an item.
