@@ -191,7 +191,7 @@ azure.disks().deleteByIds(disks.stream().map(Disk::id).collect(Collectors.toList
 You can create storage account, then blob container, in reactive programming. 
 
 ```java
-azure.storageAccounts().define("mystorageaccount")
+azure.storageAccounts().define(storageAccountName)
     .withRegion(Region.US_EAST)
     .withNewResourceGroup(rgName)
     .withSku(StorageAccountSkuType.STANDARD_LRS)
