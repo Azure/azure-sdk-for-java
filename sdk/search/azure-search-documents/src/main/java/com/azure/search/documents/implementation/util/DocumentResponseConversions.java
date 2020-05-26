@@ -12,12 +12,6 @@ import com.azure.search.documents.implementation.models.SearchErrorException;
  * Utility class for Document Response conversions.
  */
 public final class DocumentResponseConversions {
-
-    /*
-     * Exception message to check for before mapping to document not found.
-     */
-    private static final String EMPTY_BODY_404 = "Status code 404, (empty body)";
-
     /*
      * Exception message to use if the document isn't found.
      */
@@ -36,7 +30,7 @@ public final class DocumentResponseConversions {
         }
 
         SearchErrorException exception = (SearchErrorException) throwable;
-        if (EMPTY_BODY_404.equalsIgnoreCase(throwable.getMessage())) {
+        if (exception.getResponse().getStatusCode() == 404) {
             return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
         }
         return new HttpResponseException(exception.getMessage(), exception.getResponse());
