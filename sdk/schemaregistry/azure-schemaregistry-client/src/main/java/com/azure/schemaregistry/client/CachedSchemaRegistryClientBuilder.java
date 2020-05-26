@@ -46,6 +46,8 @@ public class CachedSchemaRegistryClientBuilder {
     private static final String CLIENT_PROPERTIES = "azure-schemaregistry-client.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
+    private static final RetryPolicy DEFAULT_RETRY_POLICY =
+        new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final String schemaRegistryUrl;
     private final HashMap<String, Function<String, Object>> typeParserDictionary;
@@ -252,7 +254,8 @@ public class CachedSchemaRegistryClientBuilder {
 
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-            policies.add(retryPolicy);
+
+            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
 
             policies.add(new AddDatePolicy());
             // Authentications
