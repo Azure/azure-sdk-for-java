@@ -71,7 +71,7 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads the document container by the container link.
+     * Reads the container
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single cosmos container response with
