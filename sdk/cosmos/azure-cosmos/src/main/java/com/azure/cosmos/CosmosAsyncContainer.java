@@ -606,31 +606,6 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Gets the throughput of the current container.
-     *
-     * @return a {@link Mono} containing throughput or an error.
-     */
-    public Mono<Integer> readProvisionedThroughput() {
-        return this.read()
-                   .flatMap(cosmosContainerResponse ->
-                                database.getDocClientWrapper()
-                                    .queryOffers("select * from c where c.offerResourceId = '"
-                                                     + cosmosContainerResponse.getProperties()
-                                                           .getResourceId() + "'", new FeedOptions())
-                                    .single())
-                   .flatMap(offerFeedResponse -> {
-                       if (offerFeedResponse.getResults().isEmpty()) {
-                           return Mono.error(
-                               BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
-                                                                          "No offers found for the resource"));
-                       }
-                       return database.getDocClientWrapper()
-                                  .readOffer(offerFeedResponse.getResults().get(0).getSelfLink())
-                                  .single();
-                   }).map(cosmosOfferResponse -> cosmosOfferResponse.getResource().getThroughput());
-    }
-
-    /**
      * Replace the throughput provisioned for the current container.
      *
      * @param throughputProperties the throughput properties.

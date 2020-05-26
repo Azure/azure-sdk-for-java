@@ -383,7 +383,8 @@ public class CollectionCrudTest extends TestSuiteBase {
                                                                   new CosmosContainerRequestOptions())
                                              .block()
                                              .getContainer();
-        Integer throughput = container.readProvisionedThroughput().block();
+        Integer throughput = container.readThroughput().block()
+            .getProperties().getManualThroughput();
 
         assertThat(throughput).isEqualTo(1000);
 

@@ -115,15 +115,6 @@ public class CosmosContainer {
     }
 
     /**
-     * Read provisioned throughput for the current container.
-     *
-     * @return provisioned throughput for the current container or null response if doesn't have any provisioned RUs.
-     */
-    public Integer readProvisionedThroughput() {
-        return database.throughputResponseToBlock(this.asyncContainer.readProvisionedThroughput());
-    }
-
-    /**
      * Sets the throughput for the current container.
      *
      * @param throughputProperties the throughput properties.

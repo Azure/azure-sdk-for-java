@@ -27,8 +27,6 @@ import java.util.function.Consumer;
  *  - The delegate: the delegate is the code that defines what you, the developer, want to do with each batch of
  *    changes that the change feed processor reads.
  * <p>
- * @see <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/change-feed-processor">https://docs.microsoft.com/en-us/azure/cosmos-db/change-feed-processor</a>
- * <p>
  * {@code
  * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
  *     .hostName(hostName)

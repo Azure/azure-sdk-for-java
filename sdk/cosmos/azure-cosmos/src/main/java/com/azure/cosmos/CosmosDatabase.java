@@ -495,25 +495,6 @@ public class CosmosDatabase {
     }
 
     /**
-     * Read provisioned throughput integer.
-     *
-     * @return the integer. null response indicates database doesn't have any provisioned RUs.
-     */
-    public Integer readProvisionedThroughput() {
-        return throughputResponseToBlock(databaseWrapper.readProvisionedThroughput());
-    }
-
-    /**
-     * Replace provisioned throughput integer.
-     *
-     * @param requestUnitsPerSecond the request units per second.
-     * @return the integer.
-     */
-    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) {
-        return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
-    }
-
-    /**
      * Sets the throughput.
      *
      * @param throughputProperties the throughput properties.

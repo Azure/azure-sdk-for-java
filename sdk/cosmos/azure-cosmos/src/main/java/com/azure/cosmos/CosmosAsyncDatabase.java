@@ -678,68 +678,6 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Gets the throughput of the database
-     *
-     * @return a {@link Mono} containing throughput or an error.
-     */
-    public Mono<Integer> readProvisionedThroughput() {
-        return this.read()
-                   .flatMap(cosmosDatabaseResponse -> getDocClientWrapper()
-                                                          .queryOffers("select * from c where c.offerResourceId = '"
-                                                                           + cosmosDatabaseResponse.getProperties()
-                                                                                 .getResourceId() + "'",
-                                                                       new FeedOptions())
-                                                          .single()
-                                                          .flatMap(offerFeedResponse -> {
-                                                              if (offerFeedResponse.getResults().isEmpty()) {
-                                                                  return Mono.error(BridgeInternal
-                                                                            .createCosmosException(
-                                                                                HttpConstants.StatusCodes.BADREQUEST,
-                                                                                "No offers found for the resource"));
-                                                              }
-                                                              return getDocClientWrapper()
-                                                                         .readOffer(offerFeedResponse.getResults()
-                                                                                        .get(0)
-                                                                                        .getSelfLink())
-                                                                         .single();
-                                                          }).map(cosmosContainerResponse1 -> cosmosContainerResponse1
-                                                                                                 .getResource()
-                                                                                                 .getThroughput()));
-    }
-
-    /**
-     * Sets throughput provisioned for a container in measurement of
-     * Requests-per-Unit in the Azure Cosmos service.
-     *
-     * @param requestUnitsPerSecond the cosmos container throughput, expressed in
-     * Request Units per second
-     * @return a {@link Mono} containing throughput or an error.
-     */
-    public Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond) {
-        return this.read()
-                   .flatMap(cosmosDatabaseResponse -> this.getDocClientWrapper()
-                                                          .queryOffers("select * from c where c.offerResourceId = '"
-                                                                           + cosmosDatabaseResponse.getProperties()
-                                                                                 .getResourceId()
-                                                                           + "'", new FeedOptions())
-                                                          .single()
-                                                          .flatMap(offerFeedResponse -> {
-                                                              if (offerFeedResponse.getResults().isEmpty()) {
-                                                                  return Mono.error(BridgeInternal
-                                                                            .createCosmosException(
-                                                                                HttpConstants.StatusCodes.BADREQUEST,
-                                                                                "No offers found for the resource"));
-                                                              }
-                                                              Offer offer = offerFeedResponse.getResults().get(0);
-                                                              offer.setThroughput(requestUnitsPerSecond);
-                                                              return this.getDocClientWrapper().replaceOffer(offer)
-                                                                         .single();
-                                                          }).map(offerResourceResponse -> offerResourceResponse
-                                                                                              .getResource()
-                                                                                              .getThroughput()));
-    }
-
-    /**
      * Sets throughput provisioned for a container in measurement of
      * Requests-per-Unit in the Azure Cosmos service.
      *

@@ -452,7 +452,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 })
                 .then(
                     // increase throughput to force a single partition collection to go through a split
-                    createdFeedCollectionForSplit.readProvisionedThroughput().subscribeOn(Schedulers.elastic())
+                    createdFeedCollectionForSplit
+                        .readThroughput().subscribeOn(Schedulers.elastic())
                         .flatMap(currentThroughput ->
                             createdFeedCollectionForSplit
                                 .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT))
