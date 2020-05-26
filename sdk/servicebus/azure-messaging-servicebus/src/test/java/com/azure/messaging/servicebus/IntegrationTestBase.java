@@ -69,6 +69,8 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
 
+    ServiceBusClientBuilder sharedBuilder;
+
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
     }
@@ -232,14 +234,27 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        boolean isSessionAware) {
+        boolean isSessionAware){
+        return getSenderBuilder(useCredentials, entityType, isSessionAware, false);
+    }
+
+    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
+        boolean isSessionAware, boolean sharedConnection) {
+
+        ServiceBusClientBuilder builder;
+        if (sharedConnection && sharedBuilder ==  null) {
+            sharedBuilder = getBuilder(useCredentials);
+            builder = sharedBuilder;
+        } else {
+            builder = getBuilder(useCredentials);
+        }
 
         switch (entityType) {
             case QUEUE:
                 final String queueName = isSessionAware ? getSessionQueueName() : getQueueName();
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                return getBuilder(useCredentials).sender()
+                return builder.sender()
                     .queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
@@ -247,18 +262,35 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return getBuilder(useCredentials).sender().topicName(topicName);
+                return builder.sender().topicName(topicName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
+                                                                 MessagingEntityType entityType,
+                                                                 Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+        return getReceiverBuilder( useCredentials, entityType, onBuilderCreate);
+    }
+
+
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
         MessagingEntityType entityType,
-        Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+        Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
 
-        final ServiceBusClientBuilder builder = onBuilderCreate.apply(getBuilder(useCredentials));
+        ServiceBusClientBuilder builder;
 
+        if (sharedConnection && sharedBuilder ==  null) {
+            sharedBuilder = getBuilder(useCredentials);
+            builder = sharedBuilder;
+        } else if (sharedConnection && sharedBuilder !=  null) {
+            builder = sharedBuilder;
+        } else {
+            builder = getBuilder(useCredentials);
+        }
+
+        builder = onBuilderCreate.apply(builder);
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName();
@@ -278,13 +310,25 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
+        boolean sharedConnection) {
+
+        ServiceBusClientBuilder builder;
+        if (sharedConnection && sharedBuilder ==  null) {
+            sharedBuilder = getBuilder(useCredentials);
+            builder = sharedBuilder;
+        } else if (sharedConnection && sharedBuilder !=  null) {
+            builder = sharedBuilder;
+        } else {
+            builder = getBuilder(useCredentials);
+        }
+
         switch (entityType) {
             case QUEUE:
                 final String queueName = getSessionQueueName();
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                return onBuilderCreate.apply(getBuilder(useCredentials))
+                return onBuilderCreate.apply(builder)
                     .sessionReceiver()
                     .queueName(queueName);
 
@@ -294,7 +338,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return onBuilderCreate.apply(getBuilder(useCredentials))
+                return onBuilderCreate.apply(builder)
                     .sessionReceiver()
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
@@ -315,6 +359,51 @@ public abstract class IntegrationTestBase extends TestBase {
             Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
             Arguments.of(MessagingEntityType.QUEUE, true),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
+        );
+    }
+
+    protected static Stream<Arguments> messagingEntityTxnWithSessions() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.DEFERRED),
+
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.DEFERRED),
+
+            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.DEFERRED),
+
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.DEFERRED),
+
+            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.DEFERRED),
+
+
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.DEFERRED),
+
+            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.DEFERRED),
+
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.DEFERRED)
         );
     }
 

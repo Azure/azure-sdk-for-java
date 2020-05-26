@@ -181,7 +181,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
 
         this.sender = getSenderBuilder(false, entityType, true).buildAsyncClient();
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false, entityType,
-            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)));
+            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
 
         this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }

@@ -587,28 +587,34 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, isSessionEnabled, null);
+        setSenderAndReceiver(entityType, isSessionEnabled, null, false);
+    }
+    /**
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
+     */
+    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled, boolean sharedConnection) {
+        setSenderAndReceiver(entityType, isSessionEnabled, null, sharedConnection);
     }
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
-        Duration autoLockRenewal) {
-        this.sender = getSenderBuilder(false, entityType, isSessionEnabled).buildClient();
+        Duration autoLockRenewal, boolean sharedConnection) {
+        this.sender = getSenderBuilder(false, entityType, isSessionEnabled, sharedConnection).buildClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity())
+            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity(), sharedConnection)
                 .sessionId(sessionId)
                 .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, Function.identity())
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, Function.identity(), sharedConnection)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, Function.identity())
+            this.receiver = getReceiverBuilder(false, entityType, Function.identity(), sharedConnection)
                 .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity())
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity(), sharedConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }

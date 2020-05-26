@@ -80,7 +80,6 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             return monoError(logger,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-        logger.verbose("!!!! calling linkProcessor.updateDisposition Transactionid [{}]", (new String(transactionId.array(), Charset.defaultCharset())));
         return linkProcessor.updateDisposition(lockToken, deliveryState, transactionId);
     }
 

@@ -3,10 +3,10 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import org.junit.jupiter.api.Assertions;
@@ -17,10 +17,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -65,6 +63,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
+        sharedBuilder =  null;
         final int pending = messagesPending.get();
         if (pending < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
@@ -93,7 +92,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can create multiple transaction using sender and receiver.
+     * Verifies that we can create transaction.
      */
     @Test
     void createTansactionTest() {
@@ -189,7 +188,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
-
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
             .verifyComplete();
     }
@@ -260,21 +258,98 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following
+     * Verifies that we can do following using shared connection.
      * 1. create transaction
      * 2. send message  with transactionContext
-     * 3. receive and complete with transactionContext.
-     * 4. Rollback this transaction.
+     * 3. receive and settle with transactionContext.
+     * 4. commit Rollback this transaction.
+     */
+    @MethodSource("messagingEntityTxnWithSessions")
+    @ParameterizedTest
+    void transactionSendReceiveAndSettle(MessagingEntityType entityType, boolean isSessionEnabled,
+         boolean commitTxn, DispositionStatus dispositionStatus) {
+
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled, true);
+
+        final String messageId1 = UUID.randomUUID().toString();
+        final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
+        final String messageId2 = UUID.randomUUID().toString();
+        final ServiceBusMessage message2 = getMessage(messageId2, isSessionEnabled);
+
+        sendMessage(message1).block(TIMEOUT);
+
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message2, transaction.get()))
+            .verifyComplete();
+
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        final Mono<Void> operation;
+        if (DispositionStatus.ABANDONED == dispositionStatus && isSessionEnabled) {
+            operation = receiver.abandon(receivedMessage, null, sessionId, transaction.get());
+        } else if (DispositionStatus.ABANDONED == dispositionStatus && !isSessionEnabled) {
+            operation = receiver.abandon(receivedMessage, null, transaction.get());
+        } else if (DispositionStatus.SUSPENDED == dispositionStatus && isSessionEnabled) {
+            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
+            operation = receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction.get());
+        } else if (DispositionStatus.SUSPENDED == dispositionStatus && !isSessionEnabled) {
+            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
+            operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
+        } else if (DispositionStatus.COMPLETED == dispositionStatus && isSessionEnabled) {
+            operation = receiver.complete(receivedMessage, sessionId, transaction.get());
+        } else if (DispositionStatus.COMPLETED == dispositionStatus && !isSessionEnabled) {
+            operation = receiver.complete(receivedMessage, transaction.get());
+        } else if (DispositionStatus.DEFERRED == dispositionStatus && isSessionEnabled) {
+            operation = receiver.defer(receivedMessage, null, sessionId, transaction.get());
+        } else if (DispositionStatus.DEFERRED == dispositionStatus && !isSessionEnabled) {
+            operation = receiver.defer(receivedMessage, null, transaction.get());
+        }else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Disposition status not recognized for this test case: " + dispositionStatus));
+        }
+
+        StepVerifier.create(operation)
+            .verifyComplete();
+
+        if (commitTxn) {
+            StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+                .verifyComplete();
+        } else {
+            StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+                .verifyComplete();
+        }
+    }
+
+    /**
+     * Verifies that we can do following on different clients i.e. sender and receiver.
+     * 1. create transaction using sender
+     * 2. receive and complete with transactionContext.
+     * 3. Rollback this transaction using sender.
      */
     @Test
-    void transactionSendReceiveCompleteRollback() {
+    void transactionReceiveCompleteRollbackMixClient() {
         // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false, true);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        //sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block(TIMEOUT);
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -287,9 +362,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(transaction.get());
 
         // Assert & Act
-        StepVerifier.create(sender.send(message, transaction.get()))
-            .verifyComplete();
-
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
 
@@ -933,29 +1005,37 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, isSessionEnabled, null);
+        setSenderAndReceiver(entityType, isSessionEnabled, null, false);
+    }
+
+    /**
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
+     * shared connection as needed.
+     */
+    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled, boolean shareConnection) {
+        setSenderAndReceiver(entityType, isSessionEnabled, null, shareConnection);
     }
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
-        Duration autoLockRenewal) {
+        Duration autoLockRenewal, boolean shareConnection) {
         this.isSessionEnabled = isSessionEnabled;
-        this.sender = getSenderBuilder(false, entityType, isSessionEnabled).buildAsyncClient();
+        this.sender = getSenderBuilder(false, entityType, isSessionEnabled, shareConnection).buildAsyncClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity())
+            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity(), shareConnection)
                 .sessionId(sessionId)
                 .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, Function.identity())
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, Function.identity(), shareConnection)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, Function.identity())
+            this.receiver = getReceiverBuilder(false, entityType, Function.identity(), shareConnection)
                 .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity())
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity(), shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }
