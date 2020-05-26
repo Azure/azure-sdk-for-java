@@ -346,6 +346,20 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
+    protected static Stream<Arguments> messagingEntityWithSessionsWithTxn() {
+        return Stream.of(
+           Arguments.of(MessagingEntityType.QUEUE, false, true),
+           /* Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true),
+            Arguments.of(MessagingEntityType.QUEUE, true, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true),
+*/
+            Arguments.of(MessagingEntityType.QUEUE, false, false)//,
+          /*  Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false),
+            Arguments.of(MessagingEntityType.QUEUE, true, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false)*/
+        );
+    }
+
     protected static Stream<Arguments> messagingEntityProvider() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE),

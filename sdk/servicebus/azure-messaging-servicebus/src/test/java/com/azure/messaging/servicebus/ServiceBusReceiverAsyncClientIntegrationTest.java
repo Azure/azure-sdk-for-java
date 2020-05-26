@@ -127,6 +127,55 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can create transaction and scheduleMessage.
+     */
+    @MethodSource("messagingEntityWithSessionsWithTxn")
+    @ParameterizedTest
+    void createTansactionAndScheduleMessagesTest(MessagingEntityType entityType, boolean isSessionEnabled,
+        boolean commitTxn) {
+
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(sender.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+
+        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
+            .assertNext(sequenceNumber -> {
+                assertNotNull(sequenceNumber);
+                assertTrue(sequenceNumber.intValue() > 0);
+            })
+            .verifyComplete();
+
+
+        if (commitTxn) {
+            StepVerifier.create(sender.commitTransaction(transaction.get()))
+                .verifyComplete();
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiveAndDeleteReceiver.receive().next()))
+                .assertNext(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                })
+                .verifyComplete();
+
+        } else {
+            StepVerifier.create(sender.rollbackTransaction(transaction.get()))
+                .verifyComplete();
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiveAndDeleteReceiver.receive().next()))
+                .verifyComplete();
+        }
+    }
+
+    /**
      * Verifies that we can create transaction and complete.
      */
     @Test
