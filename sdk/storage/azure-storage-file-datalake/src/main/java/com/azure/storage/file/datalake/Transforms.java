@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobExpirationOffset;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
@@ -30,6 +31,7 @@ import com.azure.storage.file.datalake.models.CopyStatusType;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileReadHeaders;
@@ -467,10 +469,21 @@ class Transforms {
         } else if (fileScheduleDeletionOptions.getTimeToExpire() != null) {
             return new BlobScheduleDeletionOptions(
                 fileScheduleDeletionOptions.getTimeToExpire(),
-                fileScheduleDeletionOptions.getExpiryRelativeTo()
+                toBlobExpirationOffset(fileScheduleDeletionOptions.getExpiryRelativeTo())
             );
         } else {
             return new BlobScheduleDeletionOptions();
+        }
+    }
+
+    static BlobExpirationOffset toBlobExpirationOffset(FileExpirationOffset fileExpirationOffset) {
+        switch (fileExpirationOffset) {
+            case Now:
+                return BlobExpirationOffset.Now;
+            case CreationTime:
+                return BlobExpirationOffset.CreationTime;
+            default:
+                throw new IllegalArgumentException("Unknown fileExpirationOffset");
         }
     }
 }

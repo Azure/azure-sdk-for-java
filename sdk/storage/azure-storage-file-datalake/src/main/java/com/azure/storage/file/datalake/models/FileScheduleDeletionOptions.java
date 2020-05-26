@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.blob.models.BlobExpirationOffset;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
@@ -11,7 +10,7 @@ import java.time.OffsetDateTime;
 
 public class FileScheduleDeletionOptions {
     private final Duration timeToExpire;
-    private final BlobExpirationOffset expiryRelativeTo;
+    private final FileExpirationOffset expiryRelativeTo;
     private final OffsetDateTime expiresOn;
 
     public FileScheduleDeletionOptions() {
@@ -20,7 +19,7 @@ public class FileScheduleDeletionOptions {
         this.expiresOn = null;
     }
 
-    public FileScheduleDeletionOptions(Duration timeToExpire, BlobExpirationOffset expiryRelativeTo) {
+    public FileScheduleDeletionOptions(Duration timeToExpire, FileExpirationOffset expiryRelativeTo) {
         StorageImplUtils.assertNotNull("timeToExpire", timeToExpire);
         StorageImplUtils.assertNotNull("expiryRelativeTo", expiryRelativeTo);
         this.timeToExpire = timeToExpire;
@@ -39,7 +38,7 @@ public class FileScheduleDeletionOptions {
         return timeToExpire;
     }
 
-    public BlobExpirationOffset getExpiryRelativeTo() {
+    public FileExpirationOffset getExpiryRelativeTo() {
         return expiryRelativeTo;
     }
 

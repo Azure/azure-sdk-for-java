@@ -6,7 +6,6 @@ import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobExpirationOffset
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
@@ -15,6 +14,7 @@ import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
+import com.azure.storage.file.datalake.models.FileExpirationOffset
 import com.azure.storage.file.datalake.models.FileRange
 import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions
 import com.azure.storage.file.datalake.models.LeaseStateType
@@ -2726,8 +2726,8 @@ class FileAPITest extends APISpec {
         where:
         options                                                                                | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
         new FileScheduleDeletionOptions()                                                      | false
         null                                                                                   | false
     }
@@ -2749,8 +2749,8 @@ class FileAPITest extends APISpec {
         where:
         options                                                                                | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
         new FileScheduleDeletionOptions()                                                      | false
         null                                                                                   | false
     }
@@ -2775,8 +2775,8 @@ class FileAPITest extends APISpec {
         where:
         options                                                                                | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
         new FileScheduleDeletionOptions()                                                      | false
         null                                                                                   | false
     }
@@ -2804,8 +2804,8 @@ class FileAPITest extends APISpec {
         where:
         options                                                                                | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
         new FileScheduleDeletionOptions()                                                      | false
         null                                                                                   | false
     }
