@@ -3,19 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.AzureActiveDirectoryApplicationCredentials;
+import com.azure.search.documents.indexes.models.AzureActiveDirectoryApplicationCredentials;
 
 /**
  * A converter between
- * {@link com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials} and
+ * {@link com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials} and
  * {@link AzureActiveDirectoryApplicationCredentials}.
  */
 public final class AzureActiveDirectoryApplicationCredentialsConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials} to
      * {@link AzureActiveDirectoryApplicationCredentials}.
      */
-    public static AzureActiveDirectoryApplicationCredentials map(com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials obj) {
+    public static AzureActiveDirectoryApplicationCredentials map(com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials obj) {
         if (obj == null) {
             return null;
         }
@@ -32,13 +32,15 @@ public final class AzureActiveDirectoryApplicationCredentialsConverter {
 
     /**
      * Maps from {@link AzureActiveDirectoryApplicationCredentials} to
-     * {@link com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials}.
+     * {@link com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials}.
      */
-    public static com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials map(AzureActiveDirectoryApplicationCredentials obj) {
+    public static com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials map(AzureActiveDirectoryApplicationCredentials obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials azureActiveDirectoryApplicationCredentials = new com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials();
+        com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials
+            azureActiveDirectoryApplicationCredentials =
+            new com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials();
 
         String applicationId = obj.getApplicationId();
         azureActiveDirectoryApplicationCredentials.setApplicationId(applicationId);

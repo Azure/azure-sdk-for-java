@@ -3,12 +3,12 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.ComplexField;
-import com.azure.search.documents.models.LexicalAnalyzerName;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchableField;
-import com.azure.search.documents.models.SimpleField;
+import com.azure.search.documents.indexes.models.ComplexField;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchableField;
+import com.azure.search.documents.indexes.models.SimpleField;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
 import com.azure.search.documents.test.environment.models.HotelCircularDependencies;

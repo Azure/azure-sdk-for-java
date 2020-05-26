@@ -3,18 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.DefaultCognitiveServicesAccount;
+import com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.DefaultCognitiveServicesAccount} and
  * {@link DefaultCognitiveServicesAccount}.
  */
 public final class DefaultCognitiveServicesAccountConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.DefaultCognitiveServicesAccount} to
      * {@link DefaultCognitiveServicesAccount}.
      */
-    public static DefaultCognitiveServicesAccount map(com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount obj) {
+    public static DefaultCognitiveServicesAccount map(com.azure.search.documents.indexes.implementation.models.DefaultCognitiveServicesAccount obj) {
         if (obj == null) {
             return null;
         }
@@ -27,13 +27,13 @@ public final class DefaultCognitiveServicesAccountConverter {
 
     /**
      * Maps from {@link DefaultCognitiveServicesAccount} to
-     * {@link com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount}.
+     * {@link com.azure.search.documents.indexes.implementation.models.DefaultCognitiveServicesAccount}.
      */
-    public static com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount map(DefaultCognitiveServicesAccount obj) {
+    public static com.azure.search.documents.indexes.implementation.models.DefaultCognitiveServicesAccount map(DefaultCognitiveServicesAccount obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount defaultCognitiveServicesAccount = new com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount();
+        com.azure.search.documents.indexes.implementation.models.DefaultCognitiveServicesAccount defaultCognitiveServicesAccount = new com.azure.search.documents.indexes.implementation.models.DefaultCognitiveServicesAccount();
 
         String description = obj.getDescription();
         defaultCognitiveServicesAccount.setDescription(description);

@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.LuceneStandardTokenizer;
+import com.azure.search.documents.indexes.models.LuceneStandardTokenizer;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.LuceneStandardTokenizer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer} and
  * {@link LuceneStandardTokenizer}.
  */
 public final class LuceneStandardTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.LuceneStandardTokenizer} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer} to
      * {@link LuceneStandardTokenizer}.
      */
-    public static LuceneStandardTokenizer map(com.azure.search.documents.implementation.models.LuceneStandardTokenizer obj) {
+    public static LuceneStandardTokenizer map(com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -31,14 +30,14 @@ public final class LuceneStandardTokenizerConverter {
 
     /**
      * Maps from {@link LuceneStandardTokenizer} to
-     * {@link com.azure.search.documents.implementation.models.LuceneStandardTokenizer}.
+     * {@link com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.LuceneStandardTokenizer map(LuceneStandardTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer map(LuceneStandardTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.LuceneStandardTokenizer luceneStandardTokenizer =
-            new com.azure.search.documents.implementation.models.LuceneStandardTokenizer();
+        com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer luceneStandardTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer();
 
         String name = obj.getName();
         luceneStandardTokenizer.setName(name);

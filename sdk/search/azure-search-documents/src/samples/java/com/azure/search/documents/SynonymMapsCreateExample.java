@@ -5,10 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.Arrays;
 import java.util.Collections;

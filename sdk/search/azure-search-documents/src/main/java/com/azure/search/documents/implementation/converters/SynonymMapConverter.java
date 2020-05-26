@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.models.SearchResourceEncryptionKey;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
+import com.azure.search.documents.indexes.models.SynonymMap;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SynonymMap} and {@link SynonymMap}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} and {@link SynonymMap}.
  */
 public final class SynonymMapConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SynonymMap} to {@link SynonymMap}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} to {@link SynonymMap}.
      */
-    public static SynonymMap map(com.azure.search.documents.implementation.models.SynonymMap obj) {
+    public static SynonymMap map(com.azure.search.documents.indexes.implementation.models.SynonymMap obj) {
         if (obj == null) {
             return null;
         }
@@ -42,14 +41,14 @@ public final class SynonymMapConverter {
     }
 
     /**
-     * Maps from {@link SynonymMap} to {@link com.azure.search.documents.implementation.models.SynonymMap}.
+     * Maps from {@link SynonymMap} to {@link com.azure.search.documents.indexes.implementation.models.SynonymMap}.
      */
-    public static com.azure.search.documents.implementation.models.SynonymMap map(SynonymMap obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SynonymMap map(SynonymMap obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SynonymMap synonymMap =
-            new com.azure.search.documents.implementation.models.SynonymMap();
+        com.azure.search.documents.indexes.implementation.models.SynonymMap synonymMap =
+            new com.azure.search.documents.indexes.implementation.models.SynonymMap();
 
         String synonyms = obj.getSynonyms();
         synonymMap.setSynonyms(synonyms);
@@ -63,7 +62,7 @@ public final class SynonymMapConverter {
         synonymMap.setETag(eTag);
 
         if (obj.getEncryptionKey() != null) {
-            com.azure.search.documents.implementation.models.SearchResourceEncryptionKey encryptionKey =
+            com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey encryptionKey =
                 SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey());
             synonymMap.setEncryptionKey(encryptionKey);
         }

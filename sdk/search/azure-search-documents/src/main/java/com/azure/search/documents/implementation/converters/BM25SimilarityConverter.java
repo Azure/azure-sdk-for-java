@@ -3,17 +3,17 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.BM25Similarity;
+import com.azure.search.documents.indexes.models.BM25Similarity;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.BM25Similarity} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.BM25Similarity} and
  * {@link BM25Similarity}.
  */
 public final class BM25SimilarityConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.BM25Similarity} to {@link BM25Similarity}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.BM25Similarity} to {@link BM25Similarity}.
      */
-    public static BM25Similarity map(com.azure.search.documents.implementation.models.BM25Similarity obj) {
+    public static BM25Similarity map(com.azure.search.documents.indexes.implementation.models.BM25Similarity obj) {
         if (obj == null) {
             return null;
         }
@@ -28,14 +28,14 @@ public final class BM25SimilarityConverter {
     }
 
     /**
-     * Maps from {@link BM25Similarity} to {@link com.azure.search.documents.implementation.models.BM25Similarity}.
+     * Maps from {@link BM25Similarity} to {@link com.azure.search.documents.indexes.implementation.models.BM25Similarity}.
      */
-    public static com.azure.search.documents.implementation.models.BM25Similarity map(BM25Similarity obj) {
+    public static com.azure.search.documents.indexes.implementation.models.BM25Similarity map(BM25Similarity obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.BM25Similarity bM25Similarity =
-            new com.azure.search.documents.implementation.models.BM25Similarity();
+        com.azure.search.documents.indexes.implementation.models.BM25Similarity bM25Similarity =
+            new com.azure.search.documents.indexes.implementation.models.BM25Similarity();
 
         Double b = obj.getB();
         bM25Similarity.setB(b);

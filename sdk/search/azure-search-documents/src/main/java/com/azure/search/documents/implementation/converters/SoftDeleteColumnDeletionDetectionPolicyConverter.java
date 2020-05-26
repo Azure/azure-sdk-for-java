@@ -3,20 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 
 /**
  * A converter between
- * {@link com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy} and
+ * {@link com.azure.search.documents.indexes.implementation.models.SoftDeleteColumnDeletionDetectionPolicy} and
  * {@link SoftDeleteColumnDeletionDetectionPolicy}.
  */
 public final class SoftDeleteColumnDeletionDetectionPolicyConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SoftDeleteColumnDeletionDetectionPolicy} to
      * {@link SoftDeleteColumnDeletionDetectionPolicy}.
      */
-    public static SoftDeleteColumnDeletionDetectionPolicy map(com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy obj) {
+    public static SoftDeleteColumnDeletionDetectionPolicy map(com.azure.search.documents.indexes.implementation.models.SoftDeleteColumnDeletionDetectionPolicy obj) {
         if (obj == null) {
             return null;
         }
@@ -33,13 +32,13 @@ public final class SoftDeleteColumnDeletionDetectionPolicyConverter {
 
     /**
      * Maps from {@link SoftDeleteColumnDeletionDetectionPolicy} to
-     * {@link com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SoftDeleteColumnDeletionDetectionPolicy}.
      */
-    public static com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy map(SoftDeleteColumnDeletionDetectionPolicy obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SoftDeleteColumnDeletionDetectionPolicy map(SoftDeleteColumnDeletionDetectionPolicy obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy softDeleteColumnDeletionDetectionPolicy = new com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy();
+        com.azure.search.documents.indexes.implementation.models.SoftDeleteColumnDeletionDetectionPolicy softDeleteColumnDeletionDetectionPolicy = new com.azure.search.documents.indexes.implementation.models.SoftDeleteColumnDeletionDetectionPolicy();
 
         String softDeleteColumnName = obj.getSoftDeleteColumnName();
         softDeleteColumnDeletionDetectionPolicy.setSoftDeleteColumnName(softDeleteColumnName);

@@ -3,11 +3,11 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.SearchIndexerDataContainer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import org.junit.jupiter.api.Test;
 
 /**

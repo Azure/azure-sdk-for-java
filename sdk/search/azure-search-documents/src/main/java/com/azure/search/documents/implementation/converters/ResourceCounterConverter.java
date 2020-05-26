@@ -3,18 +3,17 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.ResourceCounter;
+import com.azure.search.documents.indexes.models.ResourceCounter;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ResourceCounter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ResourceCounter} and
  * {@link ResourceCounter}.
  */
 public final class ResourceCounterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ResourceCounter} to {@link ResourceCounter}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ResourceCounter} to {@link ResourceCounter}.
      */
-    public static ResourceCounter map(com.azure.search.documents.implementation.models.ResourceCounter obj) {
+    public static ResourceCounter map(com.azure.search.documents.indexes.implementation.models.ResourceCounter obj) {
         if (obj == null) {
             return null;
         }
@@ -29,14 +28,14 @@ public final class ResourceCounterConverter {
     }
 
     /**
-     * Maps from {@link ResourceCounter} to {@link com.azure.search.documents.implementation.models.ResourceCounter}.
+     * Maps from {@link ResourceCounter} to {@link com.azure.search.documents.indexes.implementation.models.ResourceCounter}.
      */
-    public static com.azure.search.documents.implementation.models.ResourceCounter map(ResourceCounter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ResourceCounter map(ResourceCounter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ResourceCounter resourceCounter =
-            new com.azure.search.documents.implementation.models.ResourceCounter();
+        com.azure.search.documents.indexes.implementation.models.ResourceCounter resourceCounter =
+            new com.azure.search.documents.indexes.implementation.models.ResourceCounter();
 
         long usage = obj.getUsage();
         resourceCounter.setUsage(usage);

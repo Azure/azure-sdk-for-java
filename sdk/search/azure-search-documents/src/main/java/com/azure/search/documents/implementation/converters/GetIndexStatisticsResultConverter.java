@@ -4,18 +4,18 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.GetIndexStatisticsResult} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult} and
  * {@link GetIndexStatisticsResult}.
  */
 public final class GetIndexStatisticsResultConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.GetIndexStatisticsResult} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult} to
      * {@link GetIndexStatisticsResult}.
      */
-    public static GetIndexStatisticsResult map(com.azure.search.documents.implementation.models.GetIndexStatisticsResult obj) {
+    public static GetIndexStatisticsResult map(com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult obj) {
         if (obj == null) {
             return null;
         }
@@ -31,14 +31,14 @@ public final class GetIndexStatisticsResultConverter {
 
     /**
      * Maps from {@link GetIndexStatisticsResult} to
-     * {@link com.azure.search.documents.implementation.models.GetIndexStatisticsResult}.
+     * {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult}.
      */
-    public static com.azure.search.documents.implementation.models.GetIndexStatisticsResult map(GetIndexStatisticsResult obj) {
+    public static com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult map(GetIndexStatisticsResult obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.GetIndexStatisticsResult getIndexStatisticsResult =
-            new com.azure.search.documents.implementation.models.GetIndexStatisticsResult();
+        com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult getIndexStatisticsResult =
+            new com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult();
 
         long documentCount = obj.getDocumentCount();
         PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", documentCount);

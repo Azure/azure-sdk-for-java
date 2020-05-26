@@ -719,13 +719,13 @@
       <Not>
         <Or>
           <!-- Hand-written classes should be specified here to be checked  -->
-          <Class name="com.azure.search.documents.models.CoordinateSystem"/>
-          <Class name="com.azure.search.documents.models.GeoPoint"/>
+          <Class name="com.azure.search.documents.indexes.models.CoordinateSystem"/>
+          <Class name="com.azure.search.documents.indexes.models.GeoPoint"/>
           <Class name="com.azure.search.documents.models.IndexBatch"/>
-          <Class name="com.azure.search.documents.models.ValueFacetResult"/>
-          <Class name="com.azure.search.documents.models.RangeFacetResult"/>
+          <Class name="com.azure.search.documents.indexes.models.ValueFacetResult"/>
+          <Class name="com.azure.search.documents.indexes.models.RangeFacetResult"/>
           <Class name="com.azure.search.documents.models.IndexBatchException"/>
-          <Class name="com.azure.search.documents.models.ScoringParameter"/>
+          <Class name="com.azure.search.documents.indexes.models.ScoringParameter"/>
         </Or>
       </Not>
     </And>

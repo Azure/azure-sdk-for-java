@@ -3,22 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.LuceneStandardAnalyzer;
+import com.azure.search.documents.indexes.models.LuceneStandardAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.LuceneStandardAnalyzer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.LuceneStandardAnalyzer} and
  * {@link LuceneStandardAnalyzer}.
  */
 public final class LuceneStandardAnalyzerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.LuceneStandardAnalyzer} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.LuceneStandardAnalyzer} to
      * {@link LuceneStandardAnalyzer}.
      */
-    public static LuceneStandardAnalyzer map(com.azure.search.documents.implementation.models.LuceneStandardAnalyzer obj) {
+    public static LuceneStandardAnalyzer map(com.azure.search.documents.indexes.implementation.models.LuceneStandardAnalyzer obj) {
         if (obj == null) {
             return null;
         }
@@ -39,14 +38,14 @@ public final class LuceneStandardAnalyzerConverter {
 
     /**
      * Maps from {@link LuceneStandardAnalyzer} to
-     * {@link com.azure.search.documents.implementation.models.LuceneStandardAnalyzer}.
+     * {@link com.azure.search.documents.indexes.implementation.models.LuceneStandardAnalyzer}.
      */
-    public static com.azure.search.documents.implementation.models.LuceneStandardAnalyzer map(LuceneStandardAnalyzer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.LuceneStandardAnalyzer map(LuceneStandardAnalyzer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.LuceneStandardAnalyzer luceneStandardAnalyzer =
-            new com.azure.search.documents.implementation.models.LuceneStandardAnalyzer();
+        com.azure.search.documents.indexes.implementation.models.LuceneStandardAnalyzer luceneStandardAnalyzer =
+            new com.azure.search.documents.indexes.implementation.models.LuceneStandardAnalyzer();
 
         String name = obj.getName();
         luceneStandardAnalyzer.setName(name);

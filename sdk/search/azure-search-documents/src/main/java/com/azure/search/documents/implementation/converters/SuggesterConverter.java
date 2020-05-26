@@ -3,21 +3,20 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.models.Suggester;
+import com.azure.search.documents.indexes.models.Suggester;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.Suggester} and {@link Suggester}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.Suggester} and {@link Suggester}.
  */
 public final class SuggesterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.Suggester} to {@link Suggester}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.Suggester} to {@link Suggester}.
      */
-    public static Suggester map(com.azure.search.documents.implementation.models.Suggester obj) {
+    public static Suggester map(com.azure.search.documents.indexes.implementation.models.Suggester obj) {
         if (obj == null) {
             return null;
         }
@@ -37,14 +36,14 @@ public final class SuggesterConverter {
     }
 
     /**
-     * Maps from {@link Suggester} to {@link com.azure.search.documents.implementation.models.Suggester}.
+     * Maps from {@link Suggester} to {@link com.azure.search.documents.indexes.implementation.models.Suggester}.
      */
-    public static com.azure.search.documents.implementation.models.Suggester map(Suggester obj) {
+    public static com.azure.search.documents.indexes.implementation.models.Suggester map(Suggester obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.Suggester suggester =
-            new com.azure.search.documents.implementation.models.Suggester();
+        com.azure.search.documents.indexes.implementation.models.Suggester suggester =
+            new com.azure.search.documents.indexes.implementation.models.Suggester();
 
         if (obj.getSourceFields() != null) {
             List<String> sourceFields = new ArrayList<>(obj.getSourceFields());

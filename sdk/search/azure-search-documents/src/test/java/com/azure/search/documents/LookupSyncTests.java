@@ -4,11 +4,11 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.indexes.models.GeoPoint;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;

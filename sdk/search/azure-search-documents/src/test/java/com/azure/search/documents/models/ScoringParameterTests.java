@@ -3,6 +3,8 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.search.documents.indexes.models.GeoPoint;
+import com.azure.search.documents.indexes.models.ScoringParameter;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

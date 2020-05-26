@@ -3,22 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.PatternCaptureTokenFilter;
+import com.azure.search.documents.indexes.models.PatternCaptureTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.PatternCaptureTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter} and
  * {@link PatternCaptureTokenFilter}.
  */
 public final class PatternCaptureTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.PatternCaptureTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter} to
      * {@link PatternCaptureTokenFilter}.
      */
-    public static PatternCaptureTokenFilter map(com.azure.search.documents.implementation.models.PatternCaptureTokenFilter obj) {
+    public static PatternCaptureTokenFilter map(com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -39,14 +38,14 @@ public final class PatternCaptureTokenFilterConverter {
 
     /**
      * Maps from {@link PatternCaptureTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.PatternCaptureTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.PatternCaptureTokenFilter map(PatternCaptureTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter map(PatternCaptureTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.PatternCaptureTokenFilter patternCaptureTokenFilter =
-            new com.azure.search.documents.implementation.models.PatternCaptureTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter patternCaptureTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter();
 
         String name = obj.getName();
         patternCaptureTokenFilter.setName(name);

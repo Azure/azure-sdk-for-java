@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation;
 
-import com.azure.search.documents.models.GeoPoint;
+import com.azure.search.documents.indexes.models.GeoPoint;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonTokenId;
 import com.fasterxml.jackson.databind.DeserializationContext;

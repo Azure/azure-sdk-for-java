@@ -4,23 +4,23 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.MicrosoftTokenizerLanguage;
+import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
 
 import static com.azure.search.documents.implementation.util.Constants.ENUM_EXTERNAL_ERROR_MSG;
 import static com.azure.search.documents.implementation.util.Constants.ENUM_INTERNAL_ERROR_MSG;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage} and
  * {@link MicrosoftTokenizerLanguage}.
  */
 public final class MicrosoftTokenizerLanguageConverter {
     private static final ClientLogger LOGGER = new ClientLogger(MicrosoftTokenizerLanguageConverter.class);
 
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage} to enum
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage} to enum
      * {@link MicrosoftTokenizerLanguage}.
      */
-    public static MicrosoftTokenizerLanguage map(com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage obj) {
+    public static MicrosoftTokenizerLanguage map(com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage obj) {
         if (obj == null) {
             return null;
         }
@@ -116,97 +116,97 @@ public final class MicrosoftTokenizerLanguageConverter {
 
     /**
      * Maps from enum {@link MicrosoftTokenizerLanguage} to enum
-     * {@link com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage}.
+     * {@link com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage}.
      */
-    public static com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage map(MicrosoftTokenizerLanguage obj) {
+    public static com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage map(MicrosoftTokenizerLanguage obj) {
         if (obj == null) {
             return null;
         }
         switch (obj) {
             case BANGLA:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.BANGLA;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.BANGLA;
             case BULGARIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.BULGARIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.BULGARIAN;
             case CATALAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.CATALAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.CATALAN;
             case CHINESE_SIMPLIFIED:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.CHINESE_SIMPLIFIED;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.CHINESE_SIMPLIFIED;
             case CHINESE_TRADITIONAL:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.CHINESE_TRADITIONAL;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.CHINESE_TRADITIONAL;
             case CROATIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.CROATIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.CROATIAN;
             case CZECH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.CZECH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.CZECH;
             case DANISH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.DANISH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.DANISH;
             case DUTCH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.DUTCH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.DUTCH;
             case ENGLISH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.ENGLISH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.ENGLISH;
             case FRENCH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.FRENCH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.FRENCH;
             case GERMAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.GERMAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.GERMAN;
             case GREEK:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.GREEK;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.GREEK;
             case GUJARATI:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.GUJARATI;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.GUJARATI;
             case HINDI:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.HINDI;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.HINDI;
             case ICELANDIC:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.ICELANDIC;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.ICELANDIC;
             case INDONESIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.INDONESIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.INDONESIAN;
             case ITALIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.ITALIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.ITALIAN;
             case JAPANESE:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.JAPANESE;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.JAPANESE;
             case KANNADA:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.KANNADA;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.KANNADA;
             case KOREAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.KOREAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.KOREAN;
             case MALAY:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.MALAY;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.MALAY;
             case MALAYALAM:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.MALAYALAM;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.MALAYALAM;
             case MARATHI:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.MARATHI;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.MARATHI;
             case NORWEGIAN_BOKMAAL:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.NORWEGIAN_BOKMAAL;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.NORWEGIAN_BOKMAAL;
             case POLISH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.POLISH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.POLISH;
             case PORTUGUESE:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.PORTUGUESE;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.PORTUGUESE;
             case PORTUGUESE_BRAZILIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.PORTUGUESE_BRAZILIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.PORTUGUESE_BRAZILIAN;
             case PUNJABI:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.PUNJABI;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.PUNJABI;
             case ROMANIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.ROMANIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.ROMANIAN;
             case RUSSIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.RUSSIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.RUSSIAN;
             case SERBIAN_CYRILLIC:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.SERBIAN_CYRILLIC;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.SERBIAN_CYRILLIC;
             case SERBIAN_LATIN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.SERBIAN_LATIN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.SERBIAN_LATIN;
             case SLOVENIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.SLOVENIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.SLOVENIAN;
             case SPANISH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.SPANISH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.SPANISH;
             case SWEDISH:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.SWEDISH;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.SWEDISH;
             case TAMIL:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.TAMIL;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.TAMIL;
             case TELUGU:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.TELUGU;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.TELUGU;
             case THAI:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.THAI;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.THAI;
             case UKRAINIAN:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.UKRAINIAN;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.UKRAINIAN;
             case URDU:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.URDU;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.URDU;
             case VIETNAMESE:
-                return com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage.VIETNAMESE;
+                return com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage.VIETNAMESE;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ENUM_INTERNAL_ERROR_MSG, obj)));
         }
