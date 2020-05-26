@@ -101,6 +101,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Upload numBlocks"() {
         setup:
+        if (numBlocks > 0 && !liveMode()) {
+            return // skip multipart upload for playback/record as it uses randomly generated block ids
+        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 

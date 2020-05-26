@@ -4,13 +4,16 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -18,6 +21,7 @@ import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -171,24 +175,11 @@ public class BlobClient extends BlobClientBase {
         Duration timeout, Context context) {
         final ParallelTransferOptions validatedParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        Mono<Object> upload = Mono.fromCallable(() -> {
-            try {
-                // BlobOutputStream will internally handle the decision for single-shot or multi-part upload.
-                BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
-                    validatedParallelTransferOptions, headers, metadata, tier, requestConditions, context);
-                StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
-                blobOutputStream.close();
-                return null;
-            } catch (IOException e) {
-                Throwable cause = e.getCause();
-                if (cause instanceof BlobStorageException) {
-                    throw logger.logExceptionAsError((BlobStorageException) cause);
-                } else {
-                    throw logger.logExceptionAsError(new UncheckedIOException(e));
-                }
-            }
-            // Subscribing has to happen on a different thread for the timeout to happen properly.
-        }).subscribeOn(Schedulers.elastic());
+
+        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(Utility.convertStreamToByteBuffer(data, length,
+            validatedParallelTransferOptions.getBlockSize()), validatedParallelTransferOptions, headers, metadata, tier,
+            requestConditions)
+            .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
