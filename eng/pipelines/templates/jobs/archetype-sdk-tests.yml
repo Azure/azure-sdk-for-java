@@ -105,12 +105,12 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: Maven@3
-        displayName: $(DisplayName)
-        inputs:
-          mavenPomFile: pom.xml
-          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
-        env: ${{ parameters.EnvVars }}
+      # - task: Maven@3
+      #   displayName: $(DisplayName)
+      #   inputs:
+      #     mavenPomFile: pom.xml
+      #     ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
+      #   env: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PostRunSteps }}
 
