@@ -113,7 +113,7 @@
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
-        <version>1.8.2</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
+        <version>1.8.2</version> <!-- {x-version-update;jacksonavro_org.apache.avro:avro-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>generate-test-sources</phase>
