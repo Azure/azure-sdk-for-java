@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.indexes.models;
+package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.search.documents.models.FacetResult;
 
 /**
  * A single bucket of a range facet query result that reports the number of documents

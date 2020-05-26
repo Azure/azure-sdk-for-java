@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.models.GeoPoint;
+import com.azure.search.documents.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;

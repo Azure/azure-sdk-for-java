@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.implementation;
 
-import com.azure.search.documents.indexes.models.GeoPoint;
+import com.azure.search.documents.models.GeoPoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;

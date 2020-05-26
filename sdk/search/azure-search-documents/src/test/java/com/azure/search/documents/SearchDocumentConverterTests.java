@@ -6,7 +6,7 @@ package com.azure.search.documents;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.indexes.models.GeoPoint;
+import com.azure.search.documents.models.GeoPoint;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

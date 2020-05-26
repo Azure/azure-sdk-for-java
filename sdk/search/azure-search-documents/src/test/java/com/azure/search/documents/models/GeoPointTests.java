@@ -7,7 +7,6 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchIndexClient;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.indexes.models.GeoPoint;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;

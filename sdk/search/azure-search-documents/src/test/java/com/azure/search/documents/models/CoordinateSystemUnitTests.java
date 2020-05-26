@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.search.documents.indexes.models.CoordinateSystem;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

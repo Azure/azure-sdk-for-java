@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.FieldIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 import com.azure.search.documents.indexes.SimpleFieldProperty;
-import com.azure.search.documents.indexes.models.GeoPoint;
+import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
