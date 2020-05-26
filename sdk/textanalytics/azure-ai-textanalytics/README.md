@@ -18,6 +18,7 @@ and includes six main functions:
 - [Cognitive Services or Text Analytics account][text_analytics_account] to use this package.
 
 ### Include the Package
+**Note:** This version targets Azure Text Analytics service API version v3.0.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
 ```xml
@@ -147,7 +148,7 @@ or the number of operation transactions that have gone through, simply call `get
 
 ### Return value collection
 An operation result collection, such as `AnalyzeSentimentResultCollection`, which is the collection of 
-the result of a Text Analytics analyzing sentiment operation, also it includes the model
+the result of a Text Analytics analyzing sentiment operation. It also includes the model
 version of the operation and statistics of the batch documents. 
 
 ### Operation on multiple documents

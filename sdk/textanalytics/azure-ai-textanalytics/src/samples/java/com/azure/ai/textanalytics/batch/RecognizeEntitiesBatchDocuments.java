@@ -29,8 +29,8 @@ public class RecognizeEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("184654c847d54432b8301a4b76f63045"))
-            .endpoint("https://westus2.ppe.cognitiveservices.azure.com")
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
         // The texts that need be analyzed.
