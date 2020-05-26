@@ -3,10 +3,10 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpTransaction;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.MonoSink;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
@@ -17,7 +17,7 @@ final class RetriableWorkItem extends WorkItem {
     private final MonoSink<Void> monoSink;
 
     RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-        Duration timeout, ByteBuffer transactionId) {
+        Duration timeout, AmqpTransaction transactionId) {
 
         super(amqpMessage, encodedMessageSize, messageFormat, timeout, transactionId);
         this.monoSink = monoSink;

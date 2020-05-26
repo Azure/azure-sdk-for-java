@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -36,7 +37,6 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -206,7 +206,7 @@ public class RequestResponseChannel implements Disposable {
      *
      * @return An AMQP message representing the service's response to the message.
      */
-    public Mono<Message> sendWithAck(final Message message, ByteBuffer transactionId) {
+    public Mono<Message> sendWithAck(final Message message, AmqpTransaction transactionId) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(
                 "Cannot send a message when request response channel is disposed."));
@@ -246,7 +246,7 @@ public class RequestResponseChannel implements Disposable {
                             if (transactionId != AmqpConstants.NULL_TRANSACTION) {
                                 logger.verbose("Setting transaction on delivery.");
                                 TransactionalState transactionalState = new TransactionalState();
-                                transactionalState.setTxnId(new Binary(transactionId.array()));
+                                transactionalState.setTxnId(new Binary(transactionId.getTransactionId().array()));
                                 delivery.disposition(transactionalState);
                             }
 

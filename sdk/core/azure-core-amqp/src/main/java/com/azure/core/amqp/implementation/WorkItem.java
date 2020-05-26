@@ -3,9 +3,9 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpTransaction;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,12 +20,12 @@ abstract class WorkItem {
     private final TimeoutTracker timeoutTracker;
     private final byte[] amqpMessage;
     private final int encodedMessageSize;
-    private final ByteBuffer transactionId;
+    private final AmqpTransaction transactionId;
 
     private Exception lastKnownException;
 
     WorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, Duration timeout,
-        ByteBuffer transactionId) {
+        AmqpTransaction transactionId) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
@@ -40,7 +40,7 @@ abstract class WorkItem {
         return amqpMessage;
     }
 
-    ByteBuffer getTransactionId() {
+    AmqpTransaction getTransactionId() {
         return transactionId;
     }
 

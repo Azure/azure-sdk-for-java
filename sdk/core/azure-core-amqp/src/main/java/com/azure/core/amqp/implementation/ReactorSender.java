@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -16,13 +17,10 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
-import org.apache.qpid.proton.amqp.transaction.Declare;
 import org.apache.qpid.proton.amqp.transaction.Declared;
-import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Delivery;
@@ -35,13 +33,11 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.BufferOverflowException;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
@@ -158,7 +154,7 @@ class ReactorSender implements AmqpSendLink {
     }
 
     @Override
-    public Mono<Void> send(Message message, ByteBuffer transactionId) {
+    public Mono<Void> send(Message message, AmqpTransaction transactionId) {
         return getLinkSize()
             .flatMap(maxMessageSize -> {
                 final int payloadSize = messageSerializer.getSize(message);
@@ -188,7 +184,7 @@ class ReactorSender implements AmqpSendLink {
     }
 
     @Override
-    public Mono<Void> send(List<Message> messageBatch, ByteBuffer transactionId) {
+    public Mono<Void> send(List<Message> messageBatch, AmqpTransaction transactionId) {
         if (messageBatch.size() == 1) {
             return send(messageBatch.get(0), transactionId);
         }
@@ -306,29 +302,7 @@ class ReactorSender implements AmqpSendLink {
         tokenManager.close();
     }
 
-    @Override
-    public Mono<DeliveryState> completeTransaction(ByteBuffer transactionId, boolean isCommit) {
-        if (hasConnected.get()) {
-            return Mono.create(sink -> send(getCompleteTransactionMessage(transactionId, isCommit), sink));
-        } else {
-            return RetryUtil.withRetry(
-                handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                .then(Mono.create(sink -> send(getCompleteTransactionMessage(transactionId, isCommit), sink)));
-        }
-    }
-
-    @Override
-    public Mono<DeliveryState> createTransaction() {
-        if (hasConnected.get()) {
-            return Mono.create(sink -> send(getCreateTransactionMessage(), sink));
-        } else {
-            return RetryUtil.withRetry(
-                handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                .then(Mono.create(sink -> send(getCreateTransactionMessage(), sink)));
-        }
-    }
-
-    Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat, ByteBuffer transactionId) {
+    Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat, AmqpTransaction transactionId) {
         if (hasConnected.get()) {
             return Mono.create(sink -> send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout,
                 transactionId)));
@@ -339,52 +313,6 @@ class ReactorSender implements AmqpSendLink {
                 .then(Mono.create(sink ->
                     send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout, transactionId))));
         }
-    }
-
-    /**
-     * Create AMQP {@link Message} for completing the transaction.
-     *
-     * @param transactionId to be used for completing the transaction.
-     * @param isCommit for commiting or rollback
-     * @return created AMQP {@link Message}.
-     */
-    private Message getCompleteTransactionMessage(ByteBuffer transactionId, boolean isCommit) {
-        Message message = Proton.message();
-        Discharge discharge = new Discharge();
-        discharge.setFail(!isCommit);
-        discharge.setTxnId(new Binary(transactionId.array()));
-        message.setBody(new AmqpValue(discharge));
-        return message;
-    }
-
-    /**
-     * Create AMQP {@link Message} for creating the transaction.
-     *
-     * @return created AMQP {@link Message}.
-     */
-    private Message getCreateTransactionMessage() {
-        Message message = Proton.message();
-        Declare declare = new Declare();
-        message.setBody(new AmqpValue(declare));
-        return message;
-    }
-
-    /**
-     * Send the AMQP {@link Message}.
-     *
-     * @param message AMQP {@link Message}
-     * @param sink to send back {@link DeliveryState}.
-     */
-    private void send(Message message, MonoSink<DeliveryState> sink) {
-
-        final int payloadSize = messageSerializer.getSize(message);
-        final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
-
-        final byte[] bytes = new byte[allocationSize];
-
-        int encodedSize = message.encode(bytes, 0, allocationSize);
-        send(new RetriableResponseWorkItem(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
-            sink, timeout));
     }
 
     /**
@@ -411,6 +339,7 @@ class ReactorSender implements AmqpSendLink {
             logger.warning("Not connected. Not processing send work.");
             return;
         }
+
         while (hasConnected.get() && sender.getCredit() > 0) {
             final WeightedDeliveryTag weightedDelivery;
             final WorkItem workItem;
@@ -425,6 +354,7 @@ class ReactorSender implements AmqpSendLink {
                     deliveryTag = null;
                 }
             }
+
             if (workItem == null) {
                 if (deliveryTag != null) {
                     logger.verbose(
@@ -445,10 +375,10 @@ class ReactorSender implements AmqpSendLink {
                 delivery = sender.delivery(deliveryTag.getBytes(UTF_8));
                 delivery.setMessageFormat(workItem.getMessageFormat());
 
-                ByteBuffer transactionId = workItem.getTransactionId();
+                AmqpTransaction transactionId = workItem.getTransactionId();
                 if (transactionId != AmqpConstants.NULL_TRANSACTION) {
                     TransactionalState transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionId.array()));
+                    transactionalState.setTxnId(new Binary(transactionId.getTransactionId().array()));
                     delivery.disposition(transactionalState);
                 }
                 sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
