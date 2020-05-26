@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
@@ -84,7 +83,7 @@ class BlobLazyDownloader {
 
                         // Make the download call.
                         return client.downloadWithResponse(chunkRange, null, finalConditions, false)
-                            .flatMapMany(ResponseBase::getValue);
+                            .flatMapMany(BlobDownloadAsyncResponse::getValue);
                     });
             });
     }
