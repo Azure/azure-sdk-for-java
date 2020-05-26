@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.models.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.UndeleteBlobContainerOptions;
@@ -101,6 +102,21 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
         client.listBlobContainers(options).subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions
+    }
+
+    /**
+     * Code snippets for {@link BlobServiceAsyncClient#findBlobsByTags(String)} and
+     * {@link BlobServiceAsyncClient#findBlobsByTags(String, com.azure.storage.blob.models.FindBlobsOptions)}
+     */
+    public void findBlobsByTag() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String
+        client.findBlobsByTags("where=tag=value").subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions
+        client.findBlobsByTags("where=tag=value", new FindBlobsOptions().setMaxResultsPerPage(10))
+            .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.paging.ContinuablePage
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.identity.EnvironmentCredentialBuilder
@@ -11,9 +12,11 @@ import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
+import com.azure.storage.blob.models.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.FindBlobsOptions
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
@@ -107,12 +110,16 @@ class ServiceAPITest extends APISpec {
             primaryBlobServiceClient.createBlobContainer(generateContainerName())
         }
 
-        def listResponse = primaryBlobServiceClient.listBlobContainers().iterator()
-        def firstContainerName = listResponse.next().getName()
+        def options = new ListBlobContainersOptions().setMaxResultsPerPage(5)
+        def firstPage = primaryBlobServiceClient.listBlobContainers(options, null).iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstContainerName = firstPage.getValue().first().getName()
+
+        def secondPage = primaryBlobServiceClient.listBlobContainers().iterableByPage(marker).iterator().next()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
-        firstContainerName < listResponse.next().getName()
+        firstContainerName < secondPage.getValue().first().getName()
     }
 
     def "List containers details"() {
@@ -241,6 +248,127 @@ class ServiceAPITest extends APISpec {
 
         cleanup:
         containers.each { container -> container.delete() }
+    }
+
+    def "Find blobs min"() {
+        when:
+        primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    def "Find blobs query"() {
+        setup:
+        def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, new BlobParallelUploadOptions()
+            .setTags(Collections.singletonMap("key", "value")), null, null)
+        blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, new BlobParallelUploadOptions()
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def results = primaryBlobServiceClient.findBlobsByTags("\"bar\"='foo'")
+
+        then:
+        results.size() == 1
+
+        cleanup:
+        containerClient.delete()
+    }
+
+    def "Find blobs marker"() {
+        setup:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+        for (int i = 0; i < 10; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize,
+                new BlobParallelUploadOptions().setTags(tags), null, null)
+        }
+
+        def firstPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+            new FindBlobsOptions().setMaxResultsPerPage(5), null)
+            .iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstBlobName = firstPage.getValue().first().getName()
+
+        def secondPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+            new FindBlobsOptions().setMaxResultsPerPage(5), null)
+            .iterableByPage(marker).iterator().next()
+
+        expect:
+        // Assert that the second segment is indeed after the first alphabetically
+        firstBlobName < secondPage.getValue().first().getName()
+
+        cleanup:
+        cc.delete()
+    }
+
+    def "Find blobs maxResults"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize,
+                new BlobParallelUploadOptions().setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+                new FindBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), null).iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+
+        cleanup:
+        cc.delete()
+    }
+
+    def "Find blobs error"() {
+        when:
+        primaryBlobServiceClient.findBlobsByTags("garbageTag").streamByPage().count()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Find blobs anonymous"() {
+        when:
+        // Invalid query, but the anonymous check will fail before hitting the wire
+        anonymousClient.findBlobsByTags("foo=bar").iterator()
+
+        then:
+        thrown(IllegalStateException)
+    }
+
+    def "Find blobs with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_BLOBS = 5
+        def PAGE_RESULTS = 3
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize,
+                new BlobParallelUploadOptions().setTags(tags), null, null)
+        }
+
+        when: "Consume results by page"
+        primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+            new FindBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10))
+            .streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
+
+        cleanup:
+        cc.delete()
     }
 
     def validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {

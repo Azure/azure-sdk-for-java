@@ -19,7 +19,9 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
@@ -205,26 +207,56 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
+        return this.uploadWithResponse(data, length, new BlockBlobSimpleUploadOptions().setHeaders(headers)
+            .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with PutBlob; the content of the existing blob is overwritten with the new content. To perform a partial update
+     * of a block blob's, use PutBlock and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlockBlobSimpleUploadOptions}
+     *
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @param options {@link BlockBlobSimpleUploadOptions}
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length,
+        BlockBlobSimpleUploadOptions options) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, contentMd5,
-                requestConditions, context));
+            return withContext(context -> uploadWithResponse(data, length, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
-        Context context) {
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length,
+        BlockBlobSimpleUploadOptions options, Context context) {
+        options = options == null ? new BlockBlobSimpleUploadOptions() : options;
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, contentMd5, metadata, requestConditions.getLeaseId(), tier,
-            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null,
-            null, headers, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            null, data, length, null, options.getContentMd5(), options.getMetadata(), requestConditions.getLeaseId(),
+            options.getTier(), requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()),
+            options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -518,26 +550,51 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions) {
+        return this.commitBlockListWithResponse(base64BlockIds, new BlockBlobCommitBlockListOptions()
+            .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Writes a blob by specifying the list of block IDs that are to make up the blob. In order to be written as part
+     * of a blob, a block must have been successfully written to the server in a prior stageBlock operation. You can
+     * call commitBlockList to update a blob by uploading only those blocks that have changed, then committing the new
+     * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlockBlobCommitBlockListOptions}
+     *
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param options {@link BlockBlobCommitBlockListOptions}
+     * @return A reactive response containing the information of the block blob.
+     */
+    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
+        BlockBlobCommitBlockListOptions options) {
         try {
-            return withContext(context -> commitBlockListWithResponse(base64BlockIds, headers,
-                metadata, tier, requestConditions, context));
+            return withContext(context -> commitBlockListWithResponse(base64BlockIds, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
-            BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
-            BlobRequestConditions requestConditions, Context context) {
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+            BlockBlobCommitBlockListOptions options, Context context) {
+        options = options == null ? new BlockBlobCommitBlockListOptions() : options;
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
-            new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, requestConditions.getLeaseId(),
-            tier, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null,
-            null, headers, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            new BlockLookupList().setLatest(base64BlockIds), null, null, null, options.getMetadata(),
+            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()), options.getHeaders(),
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

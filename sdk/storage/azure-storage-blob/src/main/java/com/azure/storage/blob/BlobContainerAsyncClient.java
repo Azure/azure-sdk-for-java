@@ -46,6 +46,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -777,9 +778,10 @@ public final class BlobContainerAsyncClient {
             marker -> listBlobsFlatSegment(marker, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
-                        ? new ArrayList<>(0)
+                        ? Collections.emptyList()
                         : response.getValue().getSegment().getBlobItems().stream()
-                        .map(BlobItem::new).collect(Collectors.toList());
+                        .map(BlobItem::new)
+                        .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
                         response.getRequest(),
@@ -917,7 +919,7 @@ public final class BlobContainerAsyncClient {
             marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
-                        ? new ArrayList<>(0)
+                        ? Collections.emptyList()
                         : Stream.concat(
                         response.getValue().getSegment().getBlobItems().stream().map(BlobItem::new),
                         response.getValue().getSegment().getBlobPrefixes().stream()

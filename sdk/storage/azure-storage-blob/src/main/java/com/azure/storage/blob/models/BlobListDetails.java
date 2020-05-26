@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public final class BlobListDetails {
     private boolean retrieveCopy;
     private boolean retrieveMetadata;
+    private boolean retrieveTags;
     private boolean retrieveSnapshots;
     private boolean retrieveUncommittedBlobs;
     private boolean retrieveDeletedBlobs;
@@ -66,6 +67,26 @@ public final class BlobListDetails {
      */
     public BlobListDetails setRetrieveMetadata(boolean retrieveMetadata) {
         this.retrieveMetadata = retrieveMetadata;
+        return this;
+    }
+
+    /**
+     * Whether blob tags should be returned.
+     *
+     * @return a flag indicating if tags will be returned in the listing
+     */
+    public boolean getRetrieveTags() {
+        return retrieveTags;
+    }
+
+    /**
+     * Whether blob tags should be returned.
+     *
+     * @param retrieveTags Flag indicating whether tags should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveTags(boolean retrieveTags) {
+        this.retrieveTags = retrieveTags;
         return this;
     }
 
@@ -164,6 +185,9 @@ public final class BlobListDetails {
         }
         if (this.retrieveMetadata) {
             details.add(ListBlobsIncludeItem.METADATA);
+        }
+        if (this.retrieveTags) {
+            details.add(ListBlobsIncludeItem.TAGS);
         }
         if (this.retrieveSnapshots) {
             details.add(ListBlobsIncludeItem.SNAPSHOTS);

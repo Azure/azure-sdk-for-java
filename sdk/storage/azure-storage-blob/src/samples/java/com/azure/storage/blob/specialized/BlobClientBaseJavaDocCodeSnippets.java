@@ -9,6 +9,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.BlobBeginCopyOptions;
+import com.azure.storage.blob.models.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -185,6 +187,26 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobClientBase#getTags()}
+     */
+    public void getTags() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getTags
+        Map<String, String> tags = client.getTags();
+        System.out.printf("Number of tags: %d%n", tags.size());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getTags
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#setTags(Map)}
+     */
+    public void setTags() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTags#Map
+        client.setTags(Collections.singletonMap("tag", "value"));
+        System.out.println("Set tag completed");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setTags#Map
+    }
+
+    /**
      * Code snippets for {@link BlobClientBase#createSnapshot()}
      */
     public void createSnapshot() {
@@ -253,6 +275,26 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobClientBase#beginCopy(String, BlobBeginCopyOptions)}
+     */
+    public void beginCopyFromUrl2() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-BlobBeginCopyOptions
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        RequestConditions modifiedRequestConditions = new RequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(url, new BlobBeginCopyOptions().setMetadata(metadata)
+            .setTags(tags).setTier(AccessTier.HOT).setRehydratePriority(RehydratePriority.STANDARD)
+            .setSourceRequestConditions(modifiedRequestConditions)
+            .setDestinationRequestConditions(blobRequestConditions).setPollInterval(Duration.ofSeconds(2)));
+
+        PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-BlobBeginCopyOptions
+    }
+
+    /**
      * Code snippets for {@link BlobClientBase#abortCopyFromUrlWithResponse(String, String, Duration, Context)}
      */
     public void abortCopyFromUrlWithResponseCodeSnippets() {
@@ -281,6 +323,27 @@ public class BlobClientBaseJavaDocCodeSnippets {
                 blobRequestConditions, timeout,
                 new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(String, BlobCopyFromUrlOptions, Duration,
+     * Context)}
+     */
+    public void copyFromUrlWithResponse2CodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        RequestConditions modifiedRequestConditions = new RequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+
+        System.out.printf("Copy identifier: %s%n",
+            client.copyFromUrlWithResponse(url, new BlobCopyFromUrlOptions().setMetadata(metadata).setTags(tags)
+                .setTier(AccessTier.HOT).setSourceRequestConditions(modifiedRequestConditions)
+                .setDestinationRequestConditions(blobRequestConditions), timeout,
+                new Context(key1, value1)).getValue());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions-Duration-Context
     }
 
     /**
@@ -354,6 +417,27 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), requestConditions, timeout,
                 new Context(key1, value1)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#getTagsWithResponse(Duration, Context)}
+     */
+    public void getTagsWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context
+        Map<String, String> tags = client.getTagsWithResponse(timeout, new Context(key1, value1)).getValue();
+        System.out.printf("Number of tags: %d%n", tags.size());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#setTagsWithResponse(Map, Duration, Context)}
+     */
+    public void setTagsWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
+        System.out.printf("Set metadata completed with status %d%n",
+            client.setTagsWithResponse(Collections.singletonMap("tag", "value"), timeout, new Context(key1, value1))
+                .getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
     }
 
     /**

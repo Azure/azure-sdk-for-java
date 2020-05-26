@@ -6,9 +6,11 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.models.BlobTag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +24,7 @@ public final class BlobItem {
      * Initializes a new BlobItem.
      */
     public BlobItem() {
-
+        tags = null;
     }
 
     /**
@@ -39,6 +41,13 @@ public final class BlobItem {
         this.versionId = blobItemInternal.getVersionId();
         this.isCurrentVersion = blobItemInternal.isCurrentVersion();
         this.isPrefix = blobItemInternal.isPrefix();
+
+        this.tags = new HashMap<>();
+        if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
+            for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
+                this.tags.put(tag.getKey(), tag.getValue());
+            }
+        }
     }
 
     /*
@@ -60,18 +69,6 @@ public final class BlobItem {
     private String snapshot;
 
     /*
-     * The versionId property.
-     */
-    @JsonProperty(value = "VersionId", required = true)
-    private String versionId;
-
-    /*
-     * The isCurrentVersion property.
-     */
-    @JsonProperty(value = "IsCurrentVersion")
-    private Boolean isCurrentVersion;
-
-    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
@@ -82,6 +79,16 @@ public final class BlobItem {
      */
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
+
+    private final Map<String, String> tags;
+
+    /*
+     * The versionId property.
+     */
+    @JsonProperty(value = "VersionId", required = true)
+    private String versionId;
+
+    private Boolean isCurrentVersion;
 
     /*
      * The objectReplicationPolicyId property.
@@ -162,46 +169,6 @@ public final class BlobItem {
     }
 
     /**
-     * Get the versionId property: The versionId property.
-     *
-     * @return the versionId value.
-     */
-    public String getVersionId() {
-        return this.versionId;
-    }
-
-    /**
-     * Set the versionId property: The versionId property.
-     *
-     * @param versionId the versionId value to set.
-     * @return the BlobItem object itself.
-     */
-    public BlobItem setVersionId(String versionId) {
-        this.versionId = versionId;
-        return this;
-    }
-
-    /**
-     * Get the isCurrentVersion property: The isCurrentVersion property.
-     *
-     * @return the isCurrentVersion value.
-     */
-    public Boolean isCurrentVersion() {
-        return this.isCurrentVersion;
-    }
-
-    /**
-     * Set the isCurrentVersion property: The isCurrentVersion property.
-     *
-     * @param isCurrentVersion the isCurrentVersion value to set.
-     * @return the BlobItem object itself.
-     */
-    public BlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
-        this.isCurrentVersion = isCurrentVersion;
-        return this;
-    }
-
-    /**
      * Get the properties property: The properties property.
      *
      * @return the properties value.
@@ -238,6 +205,55 @@ public final class BlobItem {
      */
     public BlobItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the tags property: The tag property.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the versionId property: The versionId property.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: The versionId property.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     *  Set the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
         return this;
     }
 

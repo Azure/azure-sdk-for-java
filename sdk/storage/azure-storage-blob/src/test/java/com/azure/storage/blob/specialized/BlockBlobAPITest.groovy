@@ -20,9 +20,13 @@ import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlobUploadFromFileOptions
+import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions
+import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -458,6 +462,33 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Commit block list tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        blockBlobClient.commitBlockListWithResponse(null, new BlockBlobCommitBlockListOptions().setTags(tags), null,
+            null)
+        def response = blockBlobClient.getTagsWithResponse(null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
+    }
+
+    @Unroll
     def "Commit block list AC"() {
         setup:
         match = setupBlobMatchCondition(blockBlobClient, match)
@@ -542,7 +573,7 @@ class BlockBlobAPITest extends APISpec {
         blockList.getUncommittedBlocks().collect { it.getName() } as Set == uncommittedBlocks as Set
 
         (blockList.getCommittedBlocks() + blockList.getUncommittedBlocks())
-            .each { assert it.getSize() == defaultDataSize }
+            .each { assert it.getSizeLong() == defaultDataSize }
     }
 
     def "Get block list min"() {
@@ -687,6 +718,25 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         metadata == blockBlobClient.getProperties().getMetadata()
+        blockBlobClient.download(outStream)
+        outStream.toByteArray() == Files.readAllBytes(file.toPath())
+
+        cleanup:
+        file.delete()
+    }
+
+    @Requires({ liveMode() })
+    def "Upload from file with tags"() {
+        given:
+        def tags = Collections.singletonMap("tag", "value")
+        def file = getRandomFile(Constants.KB)
+        def outStream = new ByteArrayOutputStream()
+
+        when:
+        blobClient.uploadFromFile(file.getAbsolutePath(), new BlobUploadFromFileOptions().setTags(tags), null)
+
+        then:
+        tags == blockBlobClient.getTags()
         blockBlobClient.download(outStream)
         outStream.toByteArray() == Files.readAllBytes(file.toPath())
 
@@ -942,6 +992,33 @@ class BlockBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Upload tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, new BlockBlobSimpleUploadOptions()
+            .setTags(tags), null, null)
+        def response = blockBlobClient.getTagsWithResponse(null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll
@@ -1233,7 +1310,8 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions((Long)null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(),
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1368,6 +1446,38 @@ class BlockBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    // Only run these tests in live mode as they use variables that can't be captured.
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null)
+        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
+            new BlobParallelUploadOptions().setParallelTransferOptions(parallelTransferOptions).setTags(tags))
+
+        then:
+        StepVerifier.create(uploadOperation.then(blobAsyncClient.getTagsWithResponse(null)))
+            .assertNext({
+                assert it.getStatusCode() == 200
+                assert it.getValue() == tags
+            }).verifyComplete()
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll
