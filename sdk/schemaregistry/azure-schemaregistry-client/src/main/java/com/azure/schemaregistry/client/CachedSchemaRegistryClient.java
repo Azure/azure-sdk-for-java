@@ -110,7 +110,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
         }
         this.typeParserDictionary.put(schemaType.toLowerCase(Locale.ENGLISH), parseMethod);
         logger.verbose(
-            String.format("Loaded parser for '%s' serialization format.", schemaType.toLowerCase(Locale.ENGLISH)));
+            "Loaded parser for '{}' serialization format.", schemaType.toLowerCase(Locale.ENGLISH));
     }
 
     @Override
