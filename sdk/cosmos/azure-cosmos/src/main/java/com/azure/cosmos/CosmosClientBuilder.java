@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
@@ -38,9 +39,9 @@ public class CosmosClientBuilder {
     private ConsistencyLevel desiredConsistencyLevel;
     private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-    private CosmosKeyCredential cosmosKeyCredential;
+    private AzureKeyCredential credential;
     private boolean sessionCapturingOverrideEnabled;
-    private boolean connectionReuseAcrossClientsEnabled;
+    private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
@@ -69,7 +70,7 @@ public class CosmosClientBuilder {
      * @param sessionCapturingOverrideEnabled session capturing override
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+    CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
         this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
         return this;
     }
@@ -95,7 +96,7 @@ public class CosmosClientBuilder {
      *         .key(key1)
      *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
-     *         .connectionReuseAcrossClientsEnabled(true)
+     *         .connectionSharingAcrossClientsEnabled(true)
      *         .buildAsyncClient();
      *
      * CosmosAsyncClient client2 = new CosmosClientBuilder()
@@ -103,7 +104,7 @@ public class CosmosClientBuilder {
      *         .key(key2)
      *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
-     *         .connectionReuseAcrossClientsEnabled(true)
+     *         .connectionSharingAcrossClientsEnabled(true)
      *         .buildAsyncClient();
      *
      * // when configured this way client1 and client2 will share connections when possible.
@@ -116,11 +117,11 @@ public class CosmosClientBuilder {
      * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout
      * config) of the first instantiated client will be used for all other client instances.
      *
-     * @param connectionReuseAcrossClientsEnabled connection sharing
+     * @param connectionSharingAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder connectionReuseAcrossClientsEnabled(boolean connectionReuseAcrossClientsEnabled) {
-        this.connectionReuseAcrossClientsEnabled = true;
+    public CosmosClientBuilder connectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) {
+        this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
         return this;
     }
 
@@ -132,8 +133,8 @@ public class CosmosClientBuilder {
      *
      * @return the connection sharing across multiple clients
      */
-    boolean isConnectionReuseAcrossClientsEnabled() {
-        return this.connectionReuseAcrossClientsEnabled;
+    boolean isConnectionSharingAcrossClientsEnabled() {
+        return this.connectionSharingAcrossClientsEnabled;
     }
 
     /**
@@ -273,22 +274,22 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Gets the {@link CosmosKeyCredential} to be used
+     * Gets the {@link AzureKeyCredential} to be used
      *
-     * @return cosmosKeyCredential
+     * @return {@link AzureKeyCredential}
      */
-    CosmosKeyCredential getKeyCredential() {
-        return cosmosKeyCredential;
+    AzureKeyCredential getCredential() {
+        return credential;
     }
 
     /**
-     * Sets the {@link CosmosKeyCredential} to be used
+     * Sets the {@link AzureKeyCredential} to be used
      *
-     * @param cosmosKeyCredential {@link CosmosKeyCredential}
+     * @param credential {@link AzureKeyCredential}
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder keyCredential(CosmosKeyCredential cosmosKeyCredential) {
-        this.cosmosKeyCredential = cosmosKeyCredential;
+    public CosmosClientBuilder credential(AzureKeyCredential credential) {
+        this.credential = credential;
         return this;
     }
 
@@ -634,10 +635,10 @@ public class CosmosClientBuilder {
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.cosmosKeyCredential == null,
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.credential == null,
             "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
-                + "cosmos key credential");
-        ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
+                + "azure key credential");
+        ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
             "cannot buildAsyncClient client without key credential");
         ifThrowIllegalArgException(directConnectionConfig == null && gatewayConnectionConfig == null,
             "cannot buildAsyncClient client without connection config");

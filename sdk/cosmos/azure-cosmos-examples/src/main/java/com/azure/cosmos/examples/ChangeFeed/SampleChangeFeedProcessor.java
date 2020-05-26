@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -145,10 +145,10 @@ public class SampleChangeFeedProcessor {
                 throw new IllegalArgumentException(String.format("Collection %s already exists in database %s.", collectionName, databaseName));
             }
         } catch (RuntimeException ex) {
-            if (ex instanceof CosmosClientException) {
-                CosmosClientException cosmosClientException = (CosmosClientException) ex;
+            if (ex instanceof CosmosException) {
+                CosmosException cosmosException = (CosmosException) ex;
 
-                if (cosmosClientException.getStatusCode() != 404) {
+                if (cosmosException.getStatusCode() != 404) {
                     throw ex;
                 }
             } else {
@@ -187,10 +187,10 @@ public class SampleChangeFeedProcessor {
                 }
             }
         } catch (RuntimeException ex) {
-            if (ex instanceof CosmosClientException) {
-                CosmosClientException cosmosClientException = (CosmosClientException) ex;
+            if (ex instanceof CosmosException) {
+                CosmosException cosmosException = (CosmosException) ex;
 
-                if (cosmosClientException.getStatusCode() != 404) {
+                if (cosmosException.getStatusCode() != 404) {
                     throw ex;
                 }
             } else {

@@ -13,7 +13,7 @@ public class TestCosmosDB extends TestTemplate<CosmosDBAccount, CosmosDBAccounts
 
     @Override
     public CosmosDBAccount createResource(CosmosDBAccounts resources) throws Exception {
-        final String newName = "docDB" + resources.manager().getSdkContext().randomResourceName("", 8);
+        final String newName = "docDB" + resources.manager().sdkContext().randomResourceName("", 8);
         CosmosDBAccount databaseAccount =
             resources
                 .define(newName)

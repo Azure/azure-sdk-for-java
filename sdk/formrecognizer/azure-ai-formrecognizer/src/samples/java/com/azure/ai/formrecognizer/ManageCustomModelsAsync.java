@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -22,10 +23,10 @@ public class ManageCustomModelsAsync {
      */
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
-        FormTrainingAsyncClient client = new FormRecognizerClientBuilder()
+        FormTrainingAsyncClient client = new FormTrainingClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildAsyncClient().getFormTrainingAsyncClient();
+            .buildAsyncClient();
 
         AtomicReference<String> modelId = new AtomicReference<>();
 

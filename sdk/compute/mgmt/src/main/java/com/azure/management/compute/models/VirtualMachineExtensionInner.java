@@ -121,22 +121,24 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the virtualMachineExtensionType property: Specifies the type of the extension; an example is
+     * "CustomScriptExtension".
      *
-     * @return the typePropertiesType value.
+     * @return the virtualMachineExtensionType value.
      */
     public String virtualMachineExtensionType() {
         return this.virtualMachineExtensionType;
     }
 
     /**
-     * Set the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Set the virtualMachineExtensionType property: Specifies the type of the extension; an example is
+     * "CustomScriptExtension".
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param virtualMachineExtensionType the typePropertiesType value to set.
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner withVirtualMachineExtensionType(String typePropertiesType) {
-        this.virtualMachineExtensionType = typePropertiesType;
+    public VirtualMachineExtensionInner withVirtualMachineExtensionType(String virtualMachineExtensionType) {
+        this.virtualMachineExtensionType = virtualMachineExtensionType;
         return this;
     }
 

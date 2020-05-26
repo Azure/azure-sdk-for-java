@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -47,7 +48,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     private FormTrainingAsyncClient getFormTrainingAsyncClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
-        FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -56,7 +57,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK)
             ? new AzureKeyCredential(INVALID_KEY) : new AzureKeyCredential(getApiKey());
         builder.credential(credential);
-        return builder.buildAsyncClient().getFormTrainingAsyncClient();
+        return builder.buildAsyncClient();
     }
 
     /**

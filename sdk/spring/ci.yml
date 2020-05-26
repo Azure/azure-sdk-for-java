@@ -47,6 +47,9 @@ stages:
         - name: azure-active-directory-spring-boot-starter
           groupId: com.microsoft.azure
           safeName: azurespringbootstarteractivedirectory
+        - name: azure-keyvault-secrets-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarterkeyvaultsecrets
 
 
 

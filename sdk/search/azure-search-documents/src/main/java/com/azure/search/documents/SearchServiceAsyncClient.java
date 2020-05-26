@@ -11,19 +11,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.AnalyzeRequest;
 import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
-import com.azure.search.documents.models.DataSource;
+import com.azure.search.documents.models.AnalyzeRequest;
+import com.azure.search.documents.models.AnalyzedTokenInfo;
 import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.Indexer;
-import com.azure.search.documents.models.IndexerExecutionInfo;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.models.SearchIndexer;
+import com.azure.search.documents.models.SearchIndexerDataSource;
+import com.azure.search.documents.models.SearchIndexerSkillset;
+import com.azure.search.documents.models.SearchIndexerStatus;
 import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SynonymMap;
-import com.azure.search.documents.models.TokenInfo;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -117,30 +117,30 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the {@link DataSource} to create or update.
+     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create or update.
      * @return the data source that was created or updated.
      */
-    public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
+    public Mono<SearchIndexerDataSource> createOrUpdateDataSource(SearchIndexerDataSource dataSource) {
         return createOrUpdateDataSourceWithResponse(dataSource, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the {@link DataSource} to create or update.
+     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a data source response.
      */
-    public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-        boolean onlyIfUnchanged, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(
+        SearchIndexerDataSource dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateDataSourceWithResponse(dataSource, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
+    Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(SearchIndexerDataSource dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
@@ -161,25 +161,25 @@ public final class SearchServiceAsyncClient {
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DataSource> createDataSource(DataSource dataSource) {
+    public Mono<SearchIndexerDataSource> createDataSource(SearchIndexerDataSource dataSource) {
         return createDataSourceWithResponse(dataSource, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource The definition of the {@link DataSource} to create.
+     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
+    public Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
         RequestOptions requestOptions) {
         return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
     }
 
-    Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource, RequestOptions requestOptions,
-        Context context) {
+    Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
+        RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
                 .createWithRestResponseAsync(dataSource, requestOptions, context)
@@ -192,27 +192,28 @@ public final class SearchServiceAsyncClient {
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the {@link DataSource} to retrieve.
+     * @param dataSourceName the name of the {@link SearchIndexerDataSource} to retrieve.
      * @return the DataSource.
      */
-    public Mono<DataSource> getDataSource(String dataSourceName) {
+    public Mono<SearchIndexerDataSource> getDataSource(String dataSourceName) {
         return getDataSourceWithResponse(dataSourceName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the {@link DataSource} to retrieve.
+     * @param dataSourceName the name of the {@link SearchIndexerDataSource} to retrieve.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a response containing the DataSource.
      */
-    public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexerDataSource>> getDataSourceWithResponse(String dataSourceName,
+        RequestOptions requestOptions) {
         return withContext(context -> getDataSourceWithResponse(dataSourceName, requestOptions, context));
     }
 
-    Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName, RequestOptions requestOptions,
-        Context context) {
+    Mono<Response<SearchIndexerDataSource>> getDataSourceWithResponse(String dataSourceName,
+        RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
                 .getWithRestResponseAsync(dataSourceName, requestOptions, context)
@@ -227,7 +228,7 @@ public final class SearchServiceAsyncClient {
      *
      * @return a list of DataSources
      */
-    public PagedFlux<DataSource> listDataSources() {
+    public PagedFlux<SearchIndexerDataSource> listDataSources() {
         return listDataSources(null, null);
     }
 
@@ -240,7 +241,7 @@ public final class SearchServiceAsyncClient {
      * help with debugging.
      * @return a list of DataSources
      */
-    public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)));
@@ -249,7 +250,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
         try {
             return new PagedFlux<>(() -> this.listDataSourcesWithResponse(select, requestOptions, context));
         } catch (RuntimeException ex) {
@@ -257,8 +258,8 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    private Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select, RequestOptions requestOptions,
-        Context context) {
+    private Mono<PagedResponse<SearchIndexerDataSource>> listDataSourcesWithResponse(String select,
+        RequestOptions requestOptions, Context context) {
         return restClient.dataSources()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -273,7 +274,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Delete a DataSource
      *
-     * @param dataSourceName the name of the {@link DataSource} for deletion
+     * @param dataSourceName the name of the {@link SearchIndexerDataSource} for deletion
      * @return a void Mono
      */
     public Mono<Void> deleteDataSource(String dataSourceName) {
@@ -284,15 +285,15 @@ public final class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSource The {@link DataSource} to delete.
+     * @param dataSource The {@link SearchIndexerDataSource} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a mono response
      */
-    public Mono<Response<Void>> deleteDataSourceWithResponse(DataSource dataSource, boolean onlyIfUnchanged,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDataSourceWithResponse(SearchIndexerDataSource dataSource,
+        boolean onlyIfUnchanged, RequestOptions requestOptions) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
         String etag = onlyIfUnchanged ? dataSource.getETag() : null;
         return withContext(context ->
@@ -319,7 +320,7 @@ public final class SearchServiceAsyncClient {
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
-    public Mono<Indexer> createIndexer(Indexer indexer) {
+    public Mono<SearchIndexer> createIndexer(SearchIndexer indexer) {
         return createIndexerWithResponse(indexer, null).map(Response::getValue);
     }
 
@@ -331,11 +332,13 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the created Indexer.
      */
-    public Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer,
+        RequestOptions requestOptions) {
         return withContext(context -> createIndexerWithResponse(indexer, requestOptions, context));
     }
 
-    Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
+        Context context) {
         try {
             return restClient.indexers()
                 .createWithRestResponseAsync(indexer, requestOptions, context)
@@ -351,27 +354,27 @@ public final class SearchServiceAsyncClient {
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
-    public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
+    public Mono<SearchIndexer> createOrUpdateIndexer(SearchIndexer indexer) {
         return createOrUpdateIndexerWithResponse(indexer, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
-     * @param indexer the definition of the {@link Indexer} to create or update
+     * @param indexer the definition of the {@link SearchIndexer} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response containing the created Indexer.
      */
-    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
-        RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
+        boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
+    Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
@@ -391,7 +394,7 @@ public final class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
      */
-    public Mono<Indexer> getIndexer(String indexerName) {
+    public Mono<SearchIndexer> getIndexer(String indexerName) {
         return getIndexerWithResponse(indexerName, null).map(Response::getValue);
     }
 
@@ -403,11 +406,12 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the indexer.
      */
-    public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> getIndexerWithResponse(indexerName, requestOptions, context));
     }
 
-    Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions,
+        Context context) {
         try {
             return restClient.indexers()
                 .getWithRestResponseAsync(indexerName, requestOptions, context)
@@ -420,7 +424,7 @@ public final class SearchServiceAsyncClient {
     /**
      * @return all Indexers from the Search service.
      */
-    public PagedFlux<Indexer> listIndexers() {
+    public PagedFlux<SearchIndexer> listIndexers() {
         return listIndexers(null, null);
     }
 
@@ -432,7 +436,7 @@ public final class SearchServiceAsyncClient {
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
-    public PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexer> listIndexers(String select, RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)));
@@ -441,7 +445,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
         try {
             return new PagedFlux<>(() -> this.listIndexersWithResponse(select, requestOptions, context));
         } catch (RuntimeException ex) {
@@ -449,7 +453,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    private Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select, RequestOptions requestOptions,
+    private Mono<PagedResponse<SearchIndexer>> listIndexersWithResponse(String select, RequestOptions requestOptions,
         Context context) {
         return restClient.indexers()
             .listWithRestResponseAsync(select, requestOptions, context)
@@ -476,14 +480,14 @@ public final class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexer the {@link Indexer} to delete
+     * @param indexer the {@link SearchIndexer} to delete
      * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
+    public Mono<Response<Void>> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(indexer, "'Indexer' cannot be null");
         String etag = onlyIfUnchanged ? indexer.getETag() : null;
@@ -580,7 +584,7 @@ public final class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer for which to retrieve status
      * @return the indexer execution info.
      */
-    public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
+    public Mono<SearchIndexerStatus> getIndexerStatus(String indexerName) {
         return getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
     }
 
@@ -592,12 +596,12 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response with the indexer execution info.
      */
-    public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
+    public Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String indexerName,
         RequestOptions requestOptions) {
         return withContext(context -> getIndexerStatusWithResponse(indexerName, requestOptions, context));
     }
 
-    Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName, RequestOptions requestOptions,
+    Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String indexerName, RequestOptions requestOptions,
         Context context) {
         try {
             return restClient.indexers()
@@ -614,7 +618,7 @@ public final class SearchServiceAsyncClient {
      * @param index definition of the index to create.
      * @return the created Index.
      */
-    public Mono<Index> createIndex(Index index) {
+    public Mono<SearchIndex> createIndex(SearchIndex index) {
         return createIndexWithResponse(index, null).map(Response::getValue);
     }
 
@@ -626,11 +630,12 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the created Index.
      */
-    public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
         return withContext(context -> createIndexWithResponse(index, requestOptions, context));
     }
 
-    Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions,
+        Context context) {
         Objects.requireNonNull(index, "'Index' cannot be null");
         try {
             return restClient.indexes()
@@ -647,7 +652,7 @@ public final class SearchServiceAsyncClient {
      * @param indexName The name of the index to retrieve
      * @return the Index.
      */
-    public Mono<Index> getIndex(String indexName) {
+    public Mono<SearchIndex> getIndex(String indexName) {
         return getIndexWithResponse(indexName, null).map(Response::getValue);
     }
 
@@ -659,11 +664,11 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the Index.
      */
-    public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndex>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
         return withContext(context -> getIndexWithResponse(indexName, requestOptions, context));
     }
 
-    Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndex>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
                 .getWithRestResponseAsync(indexName, requestOptions, context)
@@ -712,7 +717,7 @@ public final class SearchServiceAsyncClient {
      *
      * @return a reactive response emitting the list of indexes.
      */
-    public PagedFlux<Index> listIndexes() {
+    public PagedFlux<SearchIndex> listIndexes() {
         return listIndexes(null, null);
     }
 
@@ -725,7 +730,7 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a reactive response emitting the list of indexes.
      */
-    public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndex> listIndexes(String select, RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)));
@@ -734,7 +739,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndex> listIndexes(String select, RequestOptions requestOptions, Context context) {
         try {
             return new PagedFlux<>(() -> this.listIndexesWithResponse(select, requestOptions, context));
         } catch (RuntimeException ex) {
@@ -742,7 +747,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    private Mono<PagedResponse<Index>> listIndexesWithResponse(String select, RequestOptions requestOptions,
+    private Mono<PagedResponse<SearchIndex>> listIndexesWithResponse(String select, RequestOptions requestOptions,
         Context context) {
         return restClient.indexes()
             .listWithRestResponseAsync(select, requestOptions, context)
@@ -758,10 +763,10 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
-     * @param index the definition of the {@link Index} to create or update.
+     * @param index the definition of the {@link SearchIndex} to create or update.
      * @return the index that was created or updated.
      */
-    public Mono<Index> createOrUpdateIndex(Index index) {
+    public Mono<SearchIndex> createOrUpdateIndex(SearchIndex index) {
         return createOrUpdateIndexWithResponse(index, false, false, null).map(Response::getValue);
     }
 
@@ -779,13 +784,13 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the index that was created or updated
      */
-    public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
+    public Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
+    Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         try {
             Objects.requireNonNull(index, "'Index' cannot null.");
@@ -812,14 +817,14 @@ public final class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param index the {@link Index} to delete.
+     * @param index the {@link SearchIndex} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexWithResponse(Index index, boolean onlyIfUnchanged,
+    public Mono<Response<Void>> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(index, "'Index' cannot be null.");
         String etag = onlyIfUnchanged ? index.getETag() : null;
@@ -844,7 +849,7 @@ public final class SearchServiceAsyncClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
-    public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
+    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
         return analyzeText(indexName, analyzeRequest, null);
     }
 
@@ -857,7 +862,7 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing analyze result.
      */
-    public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
+    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
         RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
@@ -867,8 +872,8 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest, RequestOptions requestOptions,
-        Context context) {
+    PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
+        RequestOptions requestOptions, Context context) {
         try {
             return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeRequest, requestOptions, context));
         } catch (RuntimeException ex) {
@@ -876,8 +881,8 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    private Mono<PagedResponse<TokenInfo>> analyzeTextWithResponse(String indexName, AnalyzeRequest analyzeRequest,
-        RequestOptions requestOptions, Context context) {
+    private Mono<PagedResponse<AnalyzedTokenInfo>> analyzeTextWithResponse(String indexName,
+        AnalyzeRequest analyzeRequest, RequestOptions requestOptions, Context context) {
         return restClient.indexes()
             .analyzeWithRestResponseAsync(indexName, analyzeRequest, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -895,7 +900,7 @@ public final class SearchServiceAsyncClient {
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
      */
-    public Mono<Skillset> createSkillset(Skillset skillset) {
+    public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset) {
         return createSkillsetWithResponse(skillset, null).map(Response::getValue);
     }
 
@@ -907,11 +912,13 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the created Skillset.
      */
-    public Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+        RequestOptions requestOptions) {
         return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
     }
 
-    Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions,
+    Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+        RequestOptions requestOptions,
         Context context) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         try {
@@ -929,7 +936,7 @@ public final class SearchServiceAsyncClient {
      * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
      */
-    public Mono<Skillset> getSkillset(String skillsetName) {
+    public Mono<SearchIndexerSkillset> getSkillset(String skillsetName) {
         return getSkillsetWithResponse(skillsetName, null).map(Response::getValue);
     }
 
@@ -941,11 +948,12 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the Skillset.
      */
-    public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String skillsetName,
+        RequestOptions requestOptions) {
         return withContext(context -> getSkillsetWithResponse(skillsetName, requestOptions, context));
     }
 
-    Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions,
+    Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions,
         Context context) {
         try {
             return this.restClient.skillsets()
@@ -961,7 +969,7 @@ public final class SearchServiceAsyncClient {
      *
      * @return a reactive response emitting the list of skillsets.
      */
-    public PagedFlux<Skillset> listSkillsets() {
+    public PagedFlux<SearchIndexerSkillset> listSkillsets() {
         return listSkillsets(null, null);
     }
 
@@ -974,7 +982,7 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
-    public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> listSkillsetsWithResponse(select, requestOptions, context)));
@@ -983,7 +991,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
         try {
             return new PagedFlux<>(() -> listSkillsetsWithResponse(select, requestOptions, context));
         } catch (RuntimeException ex) {
@@ -991,7 +999,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    private Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select,
+    private Mono<PagedResponse<SearchIndexerSkillset>> listSkillsetsWithResponse(String select,
         RequestOptions requestOptions,
         Context context) {
         return this.restClient.skillsets()
@@ -1011,7 +1019,7 @@ public final class SearchServiceAsyncClient {
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
      */
-    public Mono<Skillset> createOrUpdateSkillset(Skillset skillset) {
+    public Mono<SearchIndexerSkillset> createOrUpdateSkillset(SearchIndexerSkillset skillset) {
         return createOrUpdateSkillsetWithResponse(skillset, false, null).map(Response::getValue);
     }
 
@@ -1025,14 +1033,14 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the skillset that was created or updated.
      */
-    public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
+    public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
-        RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
+        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
@@ -1059,14 +1067,14 @@ public final class SearchServiceAsyncClient {
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
-     * @param skillset the {@link Skillset} to delete.
+     * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
+    public Mono<Response<Void>> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         String etag = onlyIfUnchanged ? skillset.getETag() : null;

@@ -5,7 +5,6 @@ package com.azure.management;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificateOrders;
 import com.azure.management.appservice.AppServiceCertificates;
 import com.azure.management.appservice.AppServiceDomains;
@@ -73,6 +72,8 @@ import com.azure.management.network.VirtualNetworkGateways;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.GenericResources;
+import com.azure.management.resources.PolicyAssignments;
+import com.azure.management.resources.PolicyDefinitions;
 import com.azure.management.resources.Providers;
 import com.azure.management.resources.ResourceGroups;
 import com.azure.management.resources.Subscription;
@@ -83,6 +84,7 @@ import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigu
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.SqlServers;
 import com.azure.management.sql.implementation.SqlServerManager;
@@ -229,9 +231,10 @@ public final class Azure {
          * Selects the default subscription as the subscription for the APIs to work with.
          *
          * <p>The default subscription can be specified inside the Azure profile using {@link
-         * AzureProfile}. If no default subscription has been previously provided, the first subscription as
-         * returned by {@link Authenticated#subscriptions()} will be selected.</p>
+         * AzureProfile}. If no default subscription provided, we will try to set the only
+         * subscription if applicable returned by {@link Authenticated#subscriptions()}</p>
          *
+         * @throws IllegalStateException when no subscription or more than one subscription found in the tenant.
          * @return an authenticated Azure client configured to work with the default subscription
          */
         Azure withDefaultSubscription();
@@ -239,7 +242,6 @@ public final class Azure {
 
     /** The implementation for the Authenticated interface. */
     private static final class AuthenticatedImpl implements Authenticated {
-        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private final HttpPipeline httpPipeline;
         private final AzureProfile profile;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
@@ -325,8 +327,7 @@ public final class Azure {
         @Override
         public Azure withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+                profile.withSubscriptionId(Utils.defaultSubscription(this.subscriptions().list()));
             }
             return new Azure(httpPipeline, profile, this);
         }
@@ -416,19 +417,19 @@ public final class Azure {
         return resourceManager.providers();
     }
 
-    //    /**
-    //     * @return entry point to managing policy definitions.
-    //     */
-    //    public PolicyDefinitions policyDefinitions() {
-    //        return resourceManager.policyDefinitions();
-    //    }
-    //
-    //    /**
-    //     * @return entry point to managing policy assignments.
-    //     */
-    //    public PolicyAssignments policyAssignments() {
-    //        return resourceManager.policyAssignments();
-    //    }
+    /**
+     * @return entry point to managing policy definitions.
+     */
+    public PolicyDefinitions policyDefinitions() {
+        return resourceManager.policyDefinitions();
+    }
+
+    /**
+     * @return entry point to managing policy assignments.
+     */
+    public PolicyAssignments policyAssignments() {
+        return resourceManager.policyAssignments();
+    }
 
     /** @return entry point to managing storage accounts */
     public StorageAccounts storageAccounts() {
