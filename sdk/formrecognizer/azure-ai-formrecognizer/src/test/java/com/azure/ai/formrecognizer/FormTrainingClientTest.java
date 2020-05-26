@@ -264,14 +264,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 final SyncPoller<OperationResult,
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target);
                 final CustomFormModelInfo copyModel = copyPoller.getFinalResult();
-                assertEquals(actualModel.getModelId(), copyModel.getModelId());
+                assertEquals(target.getModelId(), copyModel.getModelId());
                 assertNotNull(actualModel.getCreatedOn());
-                // assertEquals(actualModel.getCreatedOn(), copyModel.getCreatedOn());
-                // Expected :2020-05-22T21:30:32Z
-                // Actual   :2020-05-22T21:30:58.511074200Z
-                // assertEquals(actualModel.getLastUpdatedOn(), copyModel.getLastUpdatedOn());
-                // Expected :2020-05-22T21:30:44Z
-                // Actual   :2020-05-22T21:30:58.511074900Z
                 assertNotNull(actualModel.getLastUpdatedOn());
                 assertEquals(CustomFormModelStatus.fromString("succeeded"), copyModel.getStatus());
             });

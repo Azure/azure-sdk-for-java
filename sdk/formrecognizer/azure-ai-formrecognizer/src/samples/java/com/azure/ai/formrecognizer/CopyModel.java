@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
@@ -22,33 +23,41 @@ public class CopyModel {
      * @param args Unused. Arguments to the program.
      */
     public static void main(final String[] args) {
-        // Instantiate a client that will be used to call the service.
+        // Instantiate a source client which has the model that we want to copy.
+        FormTrainingClient sourceClient = new FormTrainingClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .buildClient();
 
-        FormTrainingClient client = new FormTrainingClientBuilder()
+        // Instantiate the target client where we want to copy the custom model to.
+        FormTrainingClient targetClient = new FormTrainingClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
         String targetResourceId = "target-resource-Id";
         String targetResourceRegion = "target-resource-region";
-        final String copyModelId = "copy-model-Id";
 
         // Get authorization to copy the model to target resource
-        final CopyAuthorization modelCopyAuthorization =
-            client.getCopyAuthorization(targetResourceId, targetResourceRegion);
+        CopyAuthorization modelCopyAuthorization = targetClient.getCopyAuthorization(targetResourceId,
+            targetResourceRegion);
 
-        // Start copy operation
-        SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = client.beginCopyModel(copyModelId, modelCopyAuthorization);
+        // The Id of the model that needs to be copied to the target resource
+        String copyModelId = "copy-model-Id";
+        // Start copy operation from the source client
+        SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = sourceClient.beginCopyModel(copyModelId,
+            modelCopyAuthorization);
+        copyPoller.waitForCompletion();
 
         // Get the copied model
-        CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
+        CustomFormModel copiedModel = targetClient.getCustomModel(modelCopyAuthorization.getModelId());
 
         System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
                 + " last updated on: %s.%n",
-            modelCopy.getModelId(),
-            modelCopy.getStatus(),
-            modelCopy.getCreatedOn(),
-            modelCopy.getLastUpdatedOn());
+            copiedModel.getModelId(),
+            copiedModel.getModelStatus(),
+            copiedModel.getCreatedOn(),
+            copiedModel.getLastUpdatedOn());
     }
 }
 

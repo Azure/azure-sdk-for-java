@@ -243,7 +243,8 @@ public final class FormTrainingClient {
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
-     * @param target the copy authorization to the target Form Recognizer resource
+     * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
+     * generated from the target resource's call to {@link FormTrainingClient#getCopyAuthorization(String, String)}
      *
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
@@ -269,7 +270,8 @@ public final class FormTrainingClient {
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
-     * @param target the copy authorization to the target Form Recognizer resource
+     * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
+     * generated from the target resource's call to {@link FormTrainingClient#getCopyAuthorization(String, String)}
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -286,7 +288,7 @@ public final class FormTrainingClient {
      * Generate authorization for copying a custom model into the target Form Recognizer resource.
      *
      * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
-     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure  region name supported
+     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure region name supported
      * by Cognitive Services.
      *
      * <p><strong>Code sample</strong></p>
@@ -305,7 +307,7 @@ public final class FormTrainingClient {
      * the target parameter into {@link FormTrainingAsyncClient#beginCopyModel(String, CopyAuthorization)}.
      *
      * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
-     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure  region name supported by
+     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure region name supported by
      * Cognitive Services.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

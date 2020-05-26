@@ -139,8 +139,6 @@ The following section provides several code snippets covering some of the most c
 * [Recognize Receipts](#recognize-receipts "Recognize receipts")
 * [Train a Model](#train-a-model "Train a model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
-- [Copy custom model between Form Recognizer resources](#copy-model "Copy Custom Model between Form recognizer resources")
-
 
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
@@ -283,25 +281,6 @@ customModels.forEach(customFormModelInfo -> {
 });
 // Delete Custom Model
 formTrainingClient.deleteModel(modelId.get());
-```
-### Copy model
-You can now copy models between regions and subscriptions using the new Copy Custom Model feature.
-For copying a Custom Model, you must first obtain authorization to copy into the target resource by calling the
-Copy Authorization operation against the target resource endpoint.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L181-L192 -->
-```java
-String resourceId = "target-resource-Id";
-String resourceRegion = "target-resource-region";
-String copyModelId = "copy-model-Id";
-SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(copyModelId,
-    formTrainingClient.getCopyAuthorization(resourceId, resourceRegion));
-CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
-System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
-        + " last updated on: %s.%n",
-    modelCopy.getModelId(),
-    modelCopy.getStatus(),
-    modelCopy.getCreatedOn(),
-    modelCopy.getLastUpdatedOn());
 ```
 For more detailed examples, refer to [samples][sample_readme].
 
