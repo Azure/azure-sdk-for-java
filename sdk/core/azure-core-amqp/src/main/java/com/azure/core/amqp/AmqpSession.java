@@ -72,16 +72,23 @@ public interface AmqpSession extends Disposable {
      */
     Flux<AmqpEndpointState> getEndpointStates();
 
+    /**
+     *
+     * @return A newly created AMQPTransaction.
+     */
+    Mono<AmqpTransaction> createTransaction();
 
     /**
-     * Creates a new AMQP link that publishes events to the message broker.
-     *
-     * @param linkName Name of the link.
-     * @param timeout Timeout required for creating and opening AMQP link.
-     * @param retryPolicy The retry policy to use when sending messages.
-     *
-     * @return A newly created AMQP link.
+     * Commit the txn.
+     * @param transaction to commit.
+     * @return A completable mono.
      */
-    Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout,
-                                             AmqpRetryPolicy retryPolicy);
+    Mono<Void> commitTransaction(AmqpTransaction transaction);
+
+    /**
+     * Rollback the txn.
+     * @param transaction to rollback
+     * @return A completable mono.
+     */
+    Mono<Void> rollbackTransaction(AmqpTransaction transaction);
 }

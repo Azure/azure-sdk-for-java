@@ -4,7 +4,9 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -58,7 +60,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Handles messages via coordinator sender link with Serviceus.
  */
-class ReactorCoordinator implements AmqpCoordinatorLink {
+class ReactorCoordinator implements AmqpLink {
 
    // private final String entityPath;
     private final Sender sender;
@@ -157,18 +159,20 @@ class ReactorCoordinator implements AmqpCoordinatorLink {
         return message;
     }
 
-    @Override
-    public Mono<DeliveryState> completeTransaction(ByteBuffer transactionId, boolean isCommit) {
+    //@Override
+    public Mono<DeliveryState> completeTransaction(AmqpTransaction transactionId, boolean isCommit) {
         if (hasConnected.get()) {
-            return Mono.create(sink -> send(getCompleteTransactionMessage(transactionId, isCommit), sink));
+            return Mono.create(sink -> send(getCompleteTransactionMessage(transactionId.getTransactionId(),
+                isCommit), sink));
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                .then(Mono.create(sink -> send(getCompleteTransactionMessage(transactionId, isCommit), sink)));
+                .then(Mono.create(sink -> send(getCompleteTransactionMessage(transactionId.getTransactionId(),
+                    isCommit), sink)));
         }
     }
 
-    @Override
+    //@Override
     public Mono<DeliveryState> createTransaction() {
         if (hasConnected.get()) {
             return Mono.create(sink -> send(getCreateTransactionMessage(), sink));
@@ -430,15 +434,16 @@ class ReactorCoordinator implements AmqpCoordinatorLink {
         endpointStateSink.complete();
     }
 
+    public String getLinkName() {
+        return sender.getName();
+    }
+
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
         return endpointStates;
     }
 
-    @Override
-    public String getLinkName() {
-        return sender.getName();
-    }
+
 
     @Override
     public String getEntityPath() {

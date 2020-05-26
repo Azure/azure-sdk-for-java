@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -41,6 +42,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * Represents an AMQP session using proton-j reactor.
  */
 public class ReactorSession implements AmqpSession {
+
+    private static final String TRANSACTION_LINK_NAME = "coordinator";
+
     private final ConcurrentMap<String, LinkSubscription<AmqpSendLink>> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, LinkSubscription<AmqpReceiveLink>> openReceiveLinks = new ConcurrentHashMap<>();
 
@@ -57,6 +61,8 @@ public class ReactorSession implements AmqpSession {
     private final TokenManagerProvider tokenManagerProvider;
     private final MessageSerializer messageSerializer;
     private final Duration openTimeout;
+    Duration timeout;
+    AmqpRetryPolicy retry;
 
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
@@ -166,11 +172,14 @@ public class ReactorSession implements AmqpSession {
         return openTimeout;
     }
 
+    private Mono<AmqpLink> createTransactionCoordinator() {
+        return createTransactionCoordinator(TRANSACTION_LINK_NAME, openTimeout, retry);
+    }
     /**
      * {@inheritDoc}
      */
-    @Override
-    public Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+   // @Override
+    private Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot create coordinator link '%s' from a closed session.", linkName))));
@@ -238,6 +247,56 @@ public class ReactorSession implements AmqpSession {
                 removeLink(openSendLinks, linkName);
             });
         return new LinkSubscription<>(coordinator, subscription);
+    }
+
+    public Mono<AmqpTransaction> createTransaction() {
+       /* return Mono.defer(() -> {
+            ReactorCoordinator coordinator = null;
+
+            return coordinator
+                .createTransaction()
+                .map(deliveryState -> {
+                    return new AmqpTransaction(null);
+                });
+        });*/
+        return createTransactionCoordinator()
+            .cast(ReactorCoordinator.class)
+            .flatMap(amqpCoordinatorLink -> {
+                return amqpCoordinatorLink.createTransaction();
+            })
+            .map(deliveryState -> {
+                return new AmqpTransaction(null);
+            });
+
+    }
+
+    public Mono<Void> commitTransaction(AmqpTransaction transaction) {
+        /*return Mono.defer(() -> {
+            ReactorCoordinator coordinator = null;
+            return coordinator
+                .completeTransaction(transaction, true);
+        }).then();*/
+
+        return createTransactionCoordinator()
+            .cast(ReactorCoordinator.class)
+            .flatMap(amqpCoordinatorLink -> {
+                return amqpCoordinatorLink.completeTransaction(transaction, true);
+            })
+             .then();
+    }
+
+    public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
+       /* return Mono.defer(() -> {
+            ReactorCoordinator coordinator = null;
+            return coordinator
+                .completeTransaction(transaction, false);
+        }).then();*/
+        return createTransactionCoordinator()
+            .cast(ReactorCoordinator.class)
+            .flatMap(amqpCoordinatorLink -> {
+                return amqpCoordinatorLink.completeTransaction(transaction, false);
+            })
+            .then();
     }
 
     /**
