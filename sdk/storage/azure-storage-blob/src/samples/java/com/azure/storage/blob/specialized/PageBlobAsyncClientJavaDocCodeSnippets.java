@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class PageBlobAsyncClientJavaDocCodeSnippets {
     private PageBlobAsyncClient client = new SpecializedBlobClientBuilder().buildPageBlobAsyncClient();
     private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+    private Map<String, String> tags = Collections.singletonMap("tag", "value");
     private ByteBuffer[] bufferData = new ByteBuffer[]{
         ByteBuffer.wrap(new byte[]{1}),
         ByteBuffer.wrap(new byte[]{2})
@@ -79,6 +81,24 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
 
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(long, PageBlobCreateOptions)}
+     */
+    public void createWithResponse2CodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-PageBlobCreateOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+
+        client.createWithResponse(size, new PageBlobCreateOptions().setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata).setTags(tags).setRequestConditions(blobRequestConditions))
+            .subscribe(response -> System.out.printf(
+                "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
+
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-PageBlobCreateOptions
     }
 
     /**

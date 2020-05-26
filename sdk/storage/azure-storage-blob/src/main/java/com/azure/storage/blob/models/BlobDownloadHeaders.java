@@ -72,6 +72,7 @@ public final class BlobDownloadHeaders {
         this.blobContentMD5 = headers.getBlobContentMD5();
         this.contentCrc64 = headers.getContentCrc64();
         this.errorCode = headers.getErrorCode();
+        this.tagCount = headers.getTagCount();
 
         this.objectReplicationSourcePolicies = new HashMap<>();
         this.objectReplicationRuleStatus = headers.getObjectReplicationRules() == null ? new HashMap<>()
@@ -371,6 +372,12 @@ public final class BlobDownloadHeaders {
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
     private byte[] blobContentMD5;
+
+    /*
+     * The number of tags associated with the blob
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Long tagCount;
 
     /*
      * If the request is to read a specified range and the
@@ -1249,6 +1256,26 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = CoreUtils.clone(blobContentMD5);
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags associated with the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Long getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags associated with the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setTagCount(Long tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 

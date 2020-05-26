@@ -13,12 +13,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobBeginCopyOptions;
+import com.azure.storage.blob.models.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
@@ -309,10 +311,31 @@ public class BlobClientBase {
     public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
-
-        return client.beginCopy(sourceUrl, metadata, tier, priority, sourceModifiedRequestConditions,
-                destRequestConditions, pollInterval).getSyncPoller();
+        return this.beginCopy(sourceUrl, new BlobBeginCopyOptions().setMetadata(metadata).setTier(tier)
+            .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
+
+    /**
+     * Copies the data at the source URL to a blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-BlobBeginCopyOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     *
+     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param options {@link BlobBeginCopyOptions}
+     * @return A {@link SyncPoller} to poll the progress of blob copy operation.
+     */
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, BlobBeginCopyOptions options) {
+
+        return client.beginCopy(sourceUrl, options).getSyncPoller();
+    }
+
+
 
     /**
      * Stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
@@ -359,7 +382,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrl#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from.
      * @return The copy ID for the long running operation.
@@ -377,7 +400,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
@@ -395,9 +418,32 @@ public class BlobClientBase {
     public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
             RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
             Duration timeout, Context context) {
+        return this.copyFromUrlWithResponse(copySource, new BlobCopyFromUrlOptions().setMetadata(metadata)
+            .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setDestinationRequestConditions(destRequestConditions), timeout, context);
+    }
+
+    /**
+     * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
+     *
+     * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param options {@link BlobCopyFromUrlOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The copy ID for the long running operation.
+     * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
+     */
+    public Response<String> copyFromUrlWithResponse(String copySource, BlobCopyFromUrlOptions options, Duration timeout,
+        Context context) {
         Mono<Response<String>> response = client
-            .copyFromUrlWithResponse(copySource, metadata, tier, sourceModifiedRequestConditions, destRequestConditions,
-                context);
+            .copyFromUrlWithResponse(copySource, options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -739,6 +785,82 @@ public class BlobClientBase {
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, requestConditions, context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    // TODO: (rickle-msft) docs link
+    /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTags}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     *
+     * @return The blob's tags.
+     */
+    public Map<String, String> getTags() {
+        return this.getTagsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The blob's tags.
+     */
+    public Response<Map<String, String>> getTagsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTags#Map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     *
+     * @param tags Tags to associate with the blob.
+     */
+    public void setTags(Map<String, String> tags) {
+        this.setTagsWithResponse(tags, null, Context.NONE);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     *
+     * @param tags Tags to associate with the blob.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> setTagsWithResponse(Map<String, String> tags, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setTagsWithResponse(tags, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
