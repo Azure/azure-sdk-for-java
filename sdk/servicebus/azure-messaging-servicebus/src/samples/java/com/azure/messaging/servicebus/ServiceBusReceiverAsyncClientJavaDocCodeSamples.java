@@ -9,6 +9,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -56,7 +57,6 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
-
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
@@ -132,9 +132,38 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             error -> System.out.println("Error occurred: " + error));
 
         // When program ends, or you're done receiving all messages.
-        receiver.close();
         subscription.dispose();
+        receiver.close();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
+    }
+
+    /**
+     * Receives messages up to a time or duration.
+     */
+    public void receiveMaxTimeDuration() {
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .connectionString("fake-string")
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration
+        Disposable subscription = receiver.receive(15, Duration.ofSeconds(30))
+            .flatMap(context -> {
+                ServiceBusReceivedMessage message = context.getMessage();
+                System.out.printf("Received message id: %s%n", message.getMessageId());
+                System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
+                return receiver.complete(message);
+            }).subscribe(aVoid -> System.out.println("Processed message."),
+                error -> System.out.println("Error occurred: " + error));
+
+        // subscribe is a non-blocking call and program flow will continue before messages are fetched.
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration
+
+        // When program ends, or you're done receiving all messages.
+        subscription.dispose();
+
+        receiver.close();
     }
 
     /**
@@ -142,7 +171,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      */
     public void sessionReceiverSingleInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
-        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
             .sessionReceiver()
@@ -150,7 +179,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
 
-        consumer.close();
+        receiver.close();
     }
 
     /**

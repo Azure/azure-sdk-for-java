@@ -47,11 +47,17 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * <p><strong>Create an instance of receiver</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation}
  *
- * <p><strong>Create an instance of sender using default credential</strong></p>
+ * <p><strong>Create an instance of receiver using default credential</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
+ * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed or
+ * other terminal scenarios. See {@link #receive()} for more information.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
+ *
+ * <p><strong>Receive a maximum number of messages or until max a Duration</strong></p>
+ * <p>This receives at most 15 messages, or until a duration of 30 seconds elapses. Whichever occurs first.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration}
  *
  * <p><strong>Receive messages in {@link ReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
