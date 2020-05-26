@@ -25,6 +25,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -241,6 +242,7 @@ public class RequestResponseChannel implements Disposable {
                             Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
                                 .replace("-", "").getBytes(UTF_8));
 
+                            delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
                             if (transactionId != AmqpConstants.NULL_TRANSACTION) {
                                 logger.verbose("Setting transaction on delivery.");
                                 TransactionalState transactionalState = new TransactionalState();

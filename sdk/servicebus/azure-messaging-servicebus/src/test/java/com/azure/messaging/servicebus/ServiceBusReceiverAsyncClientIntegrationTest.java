@@ -149,7 +149,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
+            StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
             .assertNext(sequenceNumber -> {
                 assertNotNull(sequenceNumber);
                 assertTrue(sequenceNumber.intValue() > 0);
@@ -170,8 +170,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } else {
             StepVerifier.create(sender.rollbackTransaction(transaction.get()))
                 .verifyComplete();
-            StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiveAndDeleteReceiver.receive().next()))
-                .verifyComplete();
+
+            StepVerifier.create(receiveAndDeleteReceiver.receive())
+                .verifyTimeout(Duration.ofSeconds(10));
         }
     }
 
