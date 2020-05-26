@@ -63,6 +63,7 @@ public final class BlobItemProperties {
         this.customerProvidedKeySha256 = blobItemPropertiesInternal.getCustomerProvidedKeySha256();
         this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
         this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
+        this.tagCount = blobItemPropertiesInternal.getTagCount();
         this.expiresOn = blobItemPropertiesInternal.getExpiresOn();
 
         // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
@@ -286,6 +287,12 @@ public final class BlobItemProperties {
 
     private String objectReplicationDestinationPolicyId;
     */
+
+    /*
+     * The tagCount property.
+     */
+    @JsonProperty(value = "TagCount")
+    private Integer tagCount;
 
     private OffsetDateTime expiresOn;
 
@@ -953,6 +960,26 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
         this.accessTierChangeTime = accessTierChangeTime;
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The tagCount property.
+     *
+     * @return the tagCount value.
+     */
+    public Integer getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The tagCount property.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setTagCount(Integer tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 

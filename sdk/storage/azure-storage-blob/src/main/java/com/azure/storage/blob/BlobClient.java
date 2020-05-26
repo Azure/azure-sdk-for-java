@@ -8,9 +8,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -181,13 +184,37 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
+        this.uploadWithResponse(data, length, new BlobParallelUploadOptions()
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions), timeout, context);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @param options {@link BlobParallelUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     */
+    public void uploadWithResponse(InputStream data, long length, BlobParallelUploadOptions options, Duration timeout,
+        Context context) {
+        BlobParallelUploadOptions finalOptions = options == null ? new BlobParallelUploadOptions() : options;
         final ParallelTransferOptions validatedParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
+            ModelHelper.populateAndApplyDefaults(finalOptions.getParallelTransferOptions());
+
         Mono<Object> upload = Mono.fromCallable(() -> {
             try {
                 // BlobOutputStream will internally handle the decision for single-shot or multi-part upload.
                 BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
-                    validatedParallelTransferOptions, headers, metadata, tier, requestConditions, context);
+                    new BlockBlobOutputStreamOptions().setParallelTransferOptions(validatedParallelTransferOptions)
+                    .setHeaders(finalOptions.getHeaders()).setMetadata(finalOptions.getMetadata())
+                    .setTags(finalOptions.getTags()).setTier(finalOptions.getTier())
+                        .setRequestConditions(finalOptions.getRequestConditions()), context);
                 StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
                 blobOutputStream.close();
                 return null;
@@ -270,8 +297,27 @@ public class BlobClient extends BlobClientBase {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
-        Mono<Void> upload = this.client.uploadFromFile(
-            filePath, parallelTransferOptions, headers, metadata, tier, requestConditions);
+        this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTier(tier).setRequestConditions(requestConditions), null);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration}
+     *
+     * @param filePath Path of the file to upload
+     * @param options {@link BlobUploadFromFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void uploadFromFile(String filePath, BlobUploadFromFileOptions options, Duration timeout) {
+        Mono<Void> upload = this.client.uploadFromFile(filePath, options);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -72,6 +73,27 @@ public class AppendBlobClientJavaDocCodeSnippets {
         System.out.printf("Created AppendBlob at %s%n",
             client.createWithResponse(headers, metadata, requestConditions, timeout, context).getValue().getLastModified());
         // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobClient#createWithResponse(AppendBlobCreateOptions, Duration, Context)}
+     */
+    public void createWithResponse2() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tags", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("key", "value");
+
+        System.out.printf("Created AppendBlob at %s%n",
+            client.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+                .setTags(tags).setRequestConditions(requestConditions), timeout, context).getValue().getLastModified());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -11,6 +10,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
+import com.azure.storage.blob.models.BlobBeginCopyOptions
+import com.azure.storage.blob.models.BlobCopyFromUrlOptions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -81,7 +82,6 @@ class BlobAPITest extends APISpec {
         stream.toByteArray() == randomData
     }
 
-
     /* Tests an issue found where buffered upload would not deep copy buffers while determining what upload path to take. */
     @Unroll
     def "Upload input stream single upload" () {
@@ -138,11 +138,11 @@ class BlobAPITest extends APISpec {
         blocksUploaded.size() == (int) numBlocks
 
         where:
-        size            | maxUploadSize || numBlocks
-        0               | null          || 0
-        Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
-        Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
-        3 * Constants.MB| Constants.MB  || 3
+        size             | maxUploadSize || numBlocks
+        0                | null          || 0
+        Constants.KB     | null          || 0 // default is MAX_UPLOAD_BYTES
+        Constants.MB     | null          || 0 // default is MAX_UPLOAD_BYTES
+        3 * Constants.MB | Constants.MB  || 3
     }
 
     @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.
@@ -162,6 +162,7 @@ class BlobAPITest extends APISpec {
     def "Download all null"() {
         when:
         def stream = new ByteArrayOutputStream()
+        bc.setTags(Collections.singletonMap("foo", "bar"))
         def response = bc.downloadWithResponse(stream, null, null, null, false, null, null)
         def body = ByteBuffer.wrap(stream.toByteArray())
         def headers = response.getDeserializedHeaders()
@@ -169,6 +170,7 @@ class BlobAPITest extends APISpec {
         then:
         body == defaultData
         CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getTagCount() == 1
         headers.getContentLength() != null
         headers.getContentType() != null
         headers.getContentRange() == null
@@ -493,6 +495,7 @@ class BlobAPITest extends APISpec {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
+
     @Requires({ liveMode() })
     @Unroll
     def "Download file sync buffer copy"() {
@@ -539,6 +542,7 @@ class BlobAPITest extends APISpec {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
+
     @Requires({ liveMode() })
     @Unroll
     def "Download file async buffer copy"() {
@@ -863,6 +867,7 @@ class BlobAPITest extends APISpec {
 
     def "Get properties default"() {
         when:
+        bc.setTags(Collections.singletonMap("foo", "bar"))
         def response = bc.getPropertiesWithResponse(null, null, null)
         def headers = response.getHeaders()
         def properties = response.getValue()
@@ -897,6 +902,7 @@ class BlobAPITest extends APISpec {
         properties.isAccessTierInferred()
         properties.getArchiveStatus() == null
         properties.getCreationTime() != null
+        properties.getTagCount() == 1
     }
 
     def "Get properties min"() {
@@ -1220,6 +1226,60 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Set tags all null"() {
+        when:
+        def response = bc.setTagsWithResponse(null, null, null)
+
+        then:
+        bc.getTags().size() == 0
+        response.getStatusCode() == 204
+    }
+
+    def "Set tags min"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+
+        when:
+        bc.setTags(tags)
+
+        then:
+        bc.getTags() == tags
+    }
+
+    @Unroll
+    def "Set tags tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            tags.put(key2, value2)
+        }
+
+        expect:
+        bc.setTagsWithResponse(tags, null, null).getStatusCode() == statusCode
+        bc.getTags() == tags
+
+        where:
+        key1                | value1     | key2   | value2 || statusCode
+        null                | null       | null   | null   || 204
+        "foo"               | "bar"      | "fizz" | "buzz" || 204
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null   || 204
+    }
+
+    def "Set tags error"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName())
+
+        when:
+        bc.setTags(null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
     def "Snapshot"() {
         when:
         def response = bc.createSnapshotWithResponse(null, null, null, null)
@@ -1416,6 +1476,35 @@ class BlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Copy tags"() {
+        setup:
+        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
+        def tags = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        def poller = bu2.beginCopy(bc.getBlobUrl(), new BlobBeginCopyOptions().setTags(tags)
+            .setPollInterval(Duration.ofSeconds(1)))
+        poller.blockLast()
+
+        then:
+        StepVerifier.create(bu2.getTags())
+            .assertNext({ assert it == tags })
+            .verifyComplete()
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll
@@ -1701,6 +1790,32 @@ class BlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Sync copy tags"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def tags = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), new BlobCopyFromUrlOptions().setTags(tags), null, null)
+
+        then:
+        bu2.getTags() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll
@@ -2200,7 +2315,7 @@ class BlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
+        "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 

@@ -17,7 +17,10 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobScheduleDeletionOptions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
@@ -151,11 +154,26 @@ public final class BlockBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
+        return this.getBlobOutputStream(new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
+            .setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param options {@link BlockBlobOutputStreamOptions}
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
 
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
-        return BlobOutputStream.blockBlobOutputStream(blobClient, parallelTransferOptions, headers, metadata, tier,
-            requestConditions);
+        return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
     }
 
     private BlobClientBuilder prepareBuilder() {
@@ -257,12 +275,44 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
+        return this.uploadWithResponse(data, length, new BlockBlobSimpleUploadOptions().setHeaders(headers)
+                .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions),
+            timeout, context);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
+     * and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlockBlobSimpleUploadOptions-Duration-Context}
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @param options {@link BlockBlobSimpleUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The information of the uploaded block blob.
+     *
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length,
+        BlockBlobSimpleUploadOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = client
-            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier, contentMd5,
-                requestConditions, context);
+            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, options, context);
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
@@ -493,8 +543,36 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIds, BlobHttpHeaders headers,
             Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout,
             Context context) {
+        return this.commitBlockListWithResponse(base64BlockIds, new BlockBlobCommitBlockListOptions()
+                .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions),
+            timeout, context);
+    }
+
+    /**
+     * Writes a blob by specifying the list of block IDs that are to make up the blob. In order to be written as part
+     * of a blob, a block must have been successfully written to the server in a prior stageBlock operation. You can
+     * call commitBlockList to update a blob by uploading only those blocks that have changed, then committing the new
+     * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlockBlobCommitBlockListOptions-Duration-Context}
+     *
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param options {@link BlockBlobCommitBlockListOptions options}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The information of the block blob.
+     */
+    public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIds,
+        BlockBlobCommitBlockListOptions options, Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
-            base64BlockIds, headers, metadata, tier, requestConditions, context);
+            base64BlockIds, options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }

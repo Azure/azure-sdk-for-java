@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
@@ -160,8 +161,31 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
-            metadata, requestConditions, context);
+        return this.createWithResponse(size, new PageBlobCreateOptions().setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions), timeout, context);
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-PageBlobCreateOptions-Duration-Context}
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     * @param options {@link PageBlobCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the created page blob.
+     */
+    public Response<PageBlobItem> createWithResponse(long size, PageBlobCreateOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

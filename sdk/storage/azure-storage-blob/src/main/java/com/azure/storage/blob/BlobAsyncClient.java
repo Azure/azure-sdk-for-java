@@ -11,9 +11,13 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -368,23 +372,71 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
+        return this.uploadWithResponse(data, new BlobParallelUploadOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
+            .setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
+     * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * BlockBlobAsyncClient#commitBlockList(List) commitBlockList}. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
+     * <p>
+     * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
+     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method does
+     * support uploading any arbitrary data source, including network streams. This behavior is possible because this
+     * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
+     * this method may offer additional convenience, it will not be as performant as other options, which should be
+     * preferred when possible.
+     * <p>
+     * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
+     * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
+     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
+     * for a given scenario.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions}
+     *
+     * <p><strong>Using Progress Reporting</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions}
+     *
+     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
+     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
+     * to produce the same values across subscriptions.
+     * @param options {@link BlobParallelUploadOptions}
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, BlobParallelUploadOptions options) {
         try {
             Objects.requireNonNull(data, "'data' must not be null");
-            BlobRequestConditions validatedRequestConditions = requestConditions == null
-                ? new BlobRequestConditions() : requestConditions;
+            BlobParallelUploadOptions finalOptions = options == null ? new BlobParallelUploadOptions() : options;
+            BlobRequestConditions validatedRequestConditions = finalOptions.getRequestConditions() == null
+                ? new BlobRequestConditions() : finalOptions.getRequestConditions();
             final ParallelTransferOptions validatedParallelTransferOptions =
-                ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
+                ModelHelper.populateAndApplyDefaults(finalOptions.getParallelTransferOptions());
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions, headers, metadata, tier,
-                    validatedRequestConditions);
+                uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions,
+                    finalOptions.getHeaders(), finalOptions.getMetadata(), finalOptions.getTags(),
+                    finalOptions.getTier(), validatedRequestConditions);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
                 (stream, length) -> blockBlobAsyncClient.uploadWithResponse(ProgressReporter
                     .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
-                    length, headers, metadata, tier, null, validatedRequestConditions);
+                    length, new BlockBlobSimpleUploadOptions().setHeaders(finalOptions.getHeaders())
+                        .setMetadata(finalOptions.getMetadata()).setTags(finalOptions.getTags())
+                        .setTier(finalOptions.getTier()).setRequestConditions(finalOptions.getRequestConditions()));
 
             return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(validatedParallelTransferOptions),
                 uploadInChunksFunction, uploadFullBlobMethod);
@@ -395,7 +447,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions) {
+        Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
+        BlobRequestConditions requestConditions) {
         // TODO: Parallelism parameter? Or let Reactor handle it?
         // TODO: Sample/api reference
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
@@ -435,7 +488,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             }) // TODO: parallelism?
             .collect(Collectors.toList())
             .flatMap(ids ->
-                blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, metadata, tier, requestConditions));
+                blockBlobAsyncClient.commitBlockListWithResponse(ids, new BlockBlobCommitBlockListOptions()
+                    .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
+                        .setRequestConditions(requestConditions)));
     }
 
     /**
@@ -517,11 +572,33 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        Long originalBlockSize = (parallelTransferOptions == null)
+        return this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTier(tier).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
+     * file.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions}
+     *
+     * @param filePath Path to the upload file
+     * @param options {@link BlobUploadFromFileOptions}
+     * @return An empty response
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public Mono<Void> uploadFromFile(String filePath, BlobUploadFromFileOptions options) {
+        BlobUploadFromFileOptions finalOptions = options == null ? new BlobUploadFromFileOptions() : options;
+        Long originalBlockSize = (finalOptions.getParallelTransferOptions() == null)
             ? null
-            : parallelTransferOptions.getBlockSizeLong();
+            : finalOptions.getParallelTransferOptions().getBlockSizeLong();
         final ParallelTransferOptions finalParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
+            ModelHelper.populateAndApplyDefaults(finalOptions.getParallelTransferOptions());
         try {
             return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, logger),
                 channel -> {
@@ -532,8 +609,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         // If the file is larger than 256MB chunk it and stage it as blocks.
                         if (UploadUtils.shouldUploadInChunks(filePath,
                             finalParallelTransferOptions.getMaxSingleUploadSizeLong(), logger)) {
-                            return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize, headers,
-                                metadata, tier, requestConditions, channel, blockBlobAsyncClient);
+                            return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize,
+                                finalOptions.getHeaders(), finalOptions.getMetadata(), finalOptions.getTags(),
+                                finalOptions.getTier(), finalOptions.getRequestConditions(), channel,
+                                blockBlobAsyncClient);
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
                             Flux<ByteBuffer> data = FluxUtil.readFile(channel);
@@ -542,7 +621,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                                     finalParallelTransferOptions.getProgressReceiver());
                             }
                             return blockBlobAsyncClient.uploadWithResponse(data, fileSize,
-                                headers, metadata, tier, null, requestConditions)
+                                new BlockBlobSimpleUploadOptions().setHeaders(finalOptions.getHeaders())
+                                    .setMetadata(finalOptions.getMetadata()).setTags(finalOptions.getTags())
+                                    .setTier(finalOptions.getTier())
+                                    .setRequestConditions(finalOptions.getRequestConditions()))
                                 .then();
                         }
                     } catch (IOException ex) {
@@ -557,8 +639,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     private Mono<Void> uploadFileChunks(long fileSize, ParallelTransferOptions parallelTransferOptions,
-        Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
-        BlobRequestConditions requestConditions, AsynchronousFileChannel channel, BlockBlobAsyncClient client) {
+        Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
+        AccessTier tier, BlobRequestConditions requestConditions, AsynchronousFileChannel channel,
+        BlockBlobAsyncClient client) {
         final BlobRequestConditions finalRequestConditions = (requestConditions == null)
             ? new BlobRequestConditions() : requestConditions;
         // parallelTransferOptions are finalized in the calling method.
@@ -581,7 +664,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     finalRequestConditions.getLeaseId());
             })
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
-                new ArrayList<>(blockIds.values()), headers, metadata, tier, finalRequestConditions)))
+                new ArrayList<>(blockIds.values()), new BlockBlobCommitBlockListOptions()
+                    .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
+                    .setRequestConditions(finalRequestConditions))))
             .then();
     }
 
