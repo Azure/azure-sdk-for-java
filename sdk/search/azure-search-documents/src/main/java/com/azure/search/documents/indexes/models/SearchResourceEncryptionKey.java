@@ -131,7 +131,8 @@ public final class SearchResourceEncryptionKey {
      * @param accessCredentials the accessCredentials value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setAccessCredentials(AzureActiveDirectoryApplicationCredentials accessCredentials) {
+    public SearchResourceEncryptionKey setAccessCredentials(
+        AzureActiveDirectoryApplicationCredentials accessCredentials) {
         this.accessCredentials = accessCredentials;
         return this;
     }

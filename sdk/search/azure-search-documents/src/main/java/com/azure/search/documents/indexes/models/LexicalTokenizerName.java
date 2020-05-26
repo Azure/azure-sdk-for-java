@@ -44,7 +44,8 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
     /**
      * Static value microsoft_language_stemming_tokenizer for LexicalTokenizerName.
      */
-    public static final LexicalTokenizerName MICROSOFT_LANGUAGE_STEMMING_TOKENIZER = fromString("microsoft_language_stemming_tokenizer");
+    public static final LexicalTokenizerName MICROSOFT_LANGUAGE_STEMMING_TOKENIZER =
+        fromString("microsoft_language_stemming_tokenizer");
 
     /**
      * Static value nGram for LexicalTokenizerName.

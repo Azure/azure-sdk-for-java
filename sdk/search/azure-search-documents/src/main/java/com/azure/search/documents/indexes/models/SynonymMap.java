@@ -11,18 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class SynonymMap {
-    /*
-     * The name of the synonym map.
-     */
-    @JsonProperty(value = "name", required = true)
-    private String name;
 
     /*
      * The format of the synonym map. Only the 'solr' format is currently
      * supported.
      */
     @JsonProperty(value = "format", required = true)
-    private String format;
+    private static final String FORMAT = "solr";
+
+    /*
+     * The name of the synonym map.
+     */
+    @JsonProperty(value = "name", required = true)
+    private String name;
 
     /*
      * A series of synonym rules in the specified synonym map format. The rules
@@ -51,13 +52,6 @@ public final class SynonymMap {
      */
     @JsonProperty(value = "@odata.etag")
     private String eTag;
-
-    /**
-     * Creates an instance of SynonymMap class.
-     */
-    public SynonymMap() {
-        format = "solr";
-    }
 
     /**
      * Get the name property: The name of the synonym map.

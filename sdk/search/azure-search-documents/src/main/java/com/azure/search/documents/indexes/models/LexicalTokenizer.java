@@ -12,17 +12,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base type for tokenizers.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = LexicalTokenizer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
+    defaultImpl = LexicalTokenizer.class)
 @JsonTypeName("LexicalTokenizer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicTokenizer", value = ClassicTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.EdgeNGramTokenizer", value = EdgeNGramTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.KeywordTokenizer", value = KeywordTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.KeywordTokenizerV2", value = KeywordTokenizerV2.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer", value = MicrosoftLanguageTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer", value = MicrosoftLanguageStemmingTokenizer.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer",
+        value = MicrosoftLanguageTokenizer.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer",
+        value = MicrosoftLanguageStemmingTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.NGramTokenizer", value = NGramTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2", value = PathHierarchyTokenizerV2.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2",
+        value = PathHierarchyTokenizerV2.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternTokenizer", value = PatternTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizer", value = LuceneStandardTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizerV2", value = LuceneStandardTokenizerV2.class),

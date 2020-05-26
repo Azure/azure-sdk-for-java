@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
@@ -11,6 +10,7 @@ import com.azure.search.documents.indexes.models.SynonymMap;
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} and {@link SynonymMap}.
  */
 public final class SynonymMapConverter {
+    private static final String FORMAT = "solr";
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} to {@link SynonymMap}.
      */
@@ -25,9 +25,6 @@ public final class SynonymMapConverter {
 
         String name = obj.getName();
         synonymMap.setName(name);
-
-        String format = obj.getFormat();
-        PrivateFieldAccessHelper.set(synonymMap, "format", format);
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);
@@ -56,7 +53,7 @@ public final class SynonymMapConverter {
         String name = obj.getName();
         synonymMap.setName(name);
 
-        synonymMap.setFormat("solr");
+        synonymMap.setFormat(FORMAT);
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base type for functions that can modify document scores during ranking.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ScoringFunction.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type",
+    defaultImpl = ScoringFunction.class)
 @JsonTypeName("ScoringFunction")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "distance", value = DistanceScoringFunction.class),

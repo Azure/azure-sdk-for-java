@@ -12,11 +12,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base type for character filters.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = CharFilter.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
+    defaultImpl = CharFilter.class)
 @JsonTypeName("CharFilter")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MappingCharFilter", value = MappingCharFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternReplaceCharFilter", value = PatternReplaceCharFilter.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternReplaceCharFilter",
+        value = PatternReplaceCharFilter.class)
 })
 @Fluent
 public abstract class CharFilter {

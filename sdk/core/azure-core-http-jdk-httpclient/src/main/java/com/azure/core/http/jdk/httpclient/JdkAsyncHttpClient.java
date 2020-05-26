@@ -137,7 +137,7 @@ class JdkAsyncHttpClient implements HttpClient {
     /**
      * Get the java runtime major version.
      *
-     * @return the java major version
+     * @return the java major versionearchServiceAsyncClient.java
      */
     private int getJavaVersion() {
         String version = System.getProperty("java.version");

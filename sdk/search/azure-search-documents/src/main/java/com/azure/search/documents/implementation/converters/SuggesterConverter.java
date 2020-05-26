@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.Suggester;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.Suggester} and {@link Suggester}.
  */
 public final class SuggesterConverter {
+    private static final String SEARCH_MODE = "analyzingInfixMatching";
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.Suggester} to {@link Suggester}.
      */
@@ -30,8 +30,6 @@ public final class SuggesterConverter {
         String name = obj.getName();
         suggester.setName(name);
 
-        String searchMode = obj.getSearchMode();
-        PrivateFieldAccessHelper.set(suggester, "searchMode", searchMode);
         return suggester;
     }
 
@@ -53,7 +51,7 @@ public final class SuggesterConverter {
         String name = obj.getName();
         suggester.setName(name);
 
-        suggester.setSearchMode("analyzingInfixMatching");
+        suggester.setSearchMode(SEARCH_MODE);
         return suggester;
     }
 

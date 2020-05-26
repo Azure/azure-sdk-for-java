@@ -620,7 +620,8 @@ public final class SearchServiceAsyncClient {
         Context context) {
         try {
             return restClient.indexers()
-                .getStatusWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions), context)
+                .getStatusWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions),
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingIndexerStatus);
         } catch (RuntimeException ex) {
@@ -724,7 +725,8 @@ public final class SearchServiceAsyncClient {
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
-                .getStatisticsWithRestResponseAsync(indexName, RequestOptionsIndexesConverter.map(requestOptions), context)
+                .getStatisticsWithRestResponseAsync(indexName, RequestOptionsIndexesConverter.map(requestOptions),
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingGetIndexStatistics);
         } catch (RuntimeException ex) {

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base type for analyzers.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = LexicalAnalyzer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
+    defaultImpl = LexicalAnalyzer.class)
 @JsonTypeName("LexicalAnalyzer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CustomAnalyzer", value = CustomAnalyzer.class),

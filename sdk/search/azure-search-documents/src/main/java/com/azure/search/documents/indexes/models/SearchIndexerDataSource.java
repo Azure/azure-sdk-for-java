@@ -204,7 +204,8 @@ public final class SearchIndexerDataSource {
      * to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
+    public SearchIndexerDataSource setDataDeletionDetectionPolicy(
+        DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
         return this;
     }

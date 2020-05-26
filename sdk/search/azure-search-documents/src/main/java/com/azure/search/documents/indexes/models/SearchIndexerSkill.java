@@ -13,11 +13,13 @@ import java.util.List;
 /**
  * Base type for skills.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = SearchIndexerSkill.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
+    defaultImpl = SearchIndexerSkill.class)
 @JsonTypeName("SearchIndexerSkill")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.ConditionalSkill", value = ConditionalSkill.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill", value = KeyPhraseExtractionSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+        value = KeyPhraseExtractionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Vision.OcrSkill", value = OcrSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Vision.ImageAnalysisSkill", value = ImageAnalysisSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.LanguageDetectionSkill", value = LanguageDetectionSkill.class),

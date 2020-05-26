@@ -127,7 +127,8 @@ public final class ServiceLimits {
      * maxComplexObjectsInCollectionsPerDocument value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits setMaxComplexObjectsInCollectionsPerDocument(Integer maxComplexObjectsInCollectionsPerDocument) {
+    public ServiceLimits setMaxComplexObjectsInCollectionsPerDocument(
+        Integer maxComplexObjectsInCollectionsPerDocument) {
         this.maxComplexObjectsInCollectionsPerDocument = maxComplexObjectsInCollectionsPerDocument;
         return this;
     }

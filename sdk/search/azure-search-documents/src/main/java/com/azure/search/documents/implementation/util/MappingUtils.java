@@ -144,7 +144,8 @@ public class MappingUtils {
     }
 
     public static Response<GetIndexStatisticsResult> mappingGetIndexStatistics(
-        Response<com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult> indexStatisticsResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult>
+            indexStatisticsResponse) {
         return new SimpleResponse<>(indexStatisticsResponse.getRequest(), indexStatisticsResponse.getStatusCode(),
             indexStatisticsResponse.getHeaders(),
             GetIndexStatisticsResultConverter.map(indexStatisticsResponse.getValue()));

@@ -11,10 +11,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base type for data deletion detection policies.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = DataDeletionDetectionPolicy.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
+    defaultImpl = DataDeletionDetectionPolicy.class)
 @JsonTypeName("DataDeletionDetectionPolicy")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy", value = SoftDeleteColumnDeletionDetectionPolicy.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
+        value = SoftDeleteColumnDeletionDetectionPolicy.class)
 })
 @Fluent
 public abstract class DataDeletionDetectionPolicy {

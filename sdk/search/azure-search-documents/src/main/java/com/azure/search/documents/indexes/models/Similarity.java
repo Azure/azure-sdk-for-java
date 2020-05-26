@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * more relevant the document is to that specific query. Those scores are used
  * to rank the search results.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = Similarity.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
+    defaultImpl = Similarity.class)
 @JsonTypeName("Similarity")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicSimilarity", value = ClassicSimilarity.class),

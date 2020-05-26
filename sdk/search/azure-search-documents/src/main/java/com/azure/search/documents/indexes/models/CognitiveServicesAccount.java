@@ -13,11 +13,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Base type for describing any cognitive service resource attached to a
  * skillset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = CognitiveServicesAccount.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
+    defaultImpl = CognitiveServicesAccount.class)
 @JsonTypeName("CognitiveServicesAccount")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.DefaultCognitiveServices", value = DefaultCognitiveServicesAccount.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CognitiveServicesByKey", value = CognitiveServicesAccountKey.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.DefaultCognitiveServices",
+        value = DefaultCognitiveServicesAccount.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CognitiveServicesByKey",
+        value = CognitiveServicesAccountKey.class)
 })
 @Fluent
 public abstract class CognitiveServicesAccount {

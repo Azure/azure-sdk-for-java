@@ -364,7 +364,9 @@
   <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]converters[/\\]"/>
   <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\](DataSourcesImpl|DocumentsImpl|IndexersImpl|IndexesImpl|SkillsetsImpl|SynonymMapsImpl|SearchIndexRestClientBuilder|SearchIndexRestClientImpl|SearchServiceRestClientBuilder|SearchServiceRestClientImpl)"/>
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\](DocumentsImpl|SearchIndexRestClientBuilder|SearchIndexRestClientImpl)"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\](DataSourcesImpl|IndexersImpl|IndexesImpl|SkillsetsImpl|SynonymMapsImpl|SearchServiceRestClientBuilder|SearchServiceRestClientImpl)"/>
   <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult|ComplexField|SearchableField|SimpleField|SearchFieldBase|IndexBatchException|ScoringParameter)).*)"/>
   <suppress checks="GoodLoggingCheck" files="com.azure.search.documents.implementation.util.PrivateFieldAccessHelper.java"/>

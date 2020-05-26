@@ -13,16 +13,16 @@ import java.util.List;
 @Fluent
 public final class Suggester {
     /*
+     * A value indicating the capabilities of the suggester.
+     */
+    @JsonProperty(value = "searchMode", required = true)
+    private static final String SEARCH_MODE = "analyzingInfixMatching";
+
+    /*
      * The name of the suggester.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
-
-    /*
-     * A value indicating the capabilities of the suggester.
-     */
-    @JsonProperty(value = "searchMode", required = true)
-    private String searchMode;
 
     /*
      * The list of field names to which the suggester applies. Each field must
@@ -30,13 +30,6 @@ public final class Suggester {
      */
     @JsonProperty(value = "sourceFields", required = true)
     private List<String> sourceFields;
-
-    /**
-     * Creates an instance of Suggester class.
-     */
-    public Suggester() {
-        searchMode = "analyzingInfixMatching";
-    }
 
     /**
      * Get the name property: The name of the suggester.
