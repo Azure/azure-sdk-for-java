@@ -63,7 +63,7 @@ public class CosmosAsyncUser {
             return readInternal();
         }
 
-        return withContext(context -> readInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> readInternal(context));
     }
 
     /**
@@ -77,7 +77,7 @@ public class CosmosAsyncUser {
             return replaceInternal(userSettings);
         }
 
-        return withContext(context -> replaceInternal(userSettings, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> replaceInternal(userSettings, context));
     }
 
     /**
@@ -90,7 +90,7 @@ public class CosmosAsyncUser {
             return deleteInternal();
         }
 
-        return withContext(context -> deleteInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> deleteInternal(context));
     }
 
     /**
@@ -117,7 +117,7 @@ public class CosmosAsyncUser {
         }
 
         final CosmosPermissionRequestOptions requesOptions = options;
-        return withContext(context -> createPermissionInternal(permission, requesOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> createPermissionInternal(permission, requesOptions, context));
     }
 
     /**
@@ -144,7 +144,7 @@ public class CosmosAsyncUser {
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> upsertPermissionInternal(permission, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> upsertPermissionInternal(permission, requestOptions, context));
     }
 
 
@@ -172,7 +172,7 @@ public class CosmosAsyncUser {
                        .map(response -> BridgeInternal.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
-        });
+        }, this.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     /**
@@ -215,7 +215,7 @@ public class CosmosAsyncUser {
                        .map(response -> BridgeInternal.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
-        });
+        }, this.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     /**

@@ -76,7 +76,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         try {
             cosmosAsyncDatabase.readProvisionedThroughput().block();
-        } catch (CosmosClientException ex) {
+        } catch (CosmosException ex) {
             //do nothing
         }
 
@@ -103,7 +103,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         try {
             cosmosAsyncContainer.readProvisionedThroughput().block();
-        } catch (CosmosClientException ex) {
+        } catch (CosmosException ex) {
             //do nothing
         }
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.anyString(),

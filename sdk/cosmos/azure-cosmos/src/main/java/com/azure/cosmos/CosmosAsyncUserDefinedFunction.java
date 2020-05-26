@@ -62,7 +62,7 @@ public class CosmosAsyncUserDefinedFunction {
             return readInternal();
         }
 
-        return withContext(context -> readInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> readInternal(context));
     }
 
     /**
@@ -82,7 +82,7 @@ public class CosmosAsyncUserDefinedFunction {
             return replaceInternal(udfSettings);
         }
 
-        return withContext(context -> replaceInternal(udfSettings, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> replaceInternal(udfSettings, context));
     }
 
     /**
@@ -101,7 +101,7 @@ public class CosmosAsyncUserDefinedFunction {
             return deleteInternal();
         }
 
-        return withContext(context -> deleteInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> deleteInternal(context));
     }
 
     String getURIPathSegment() {

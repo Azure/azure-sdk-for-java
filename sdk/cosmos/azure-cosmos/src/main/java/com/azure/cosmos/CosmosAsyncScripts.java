@@ -79,7 +79,7 @@ public class CosmosAsyncScripts {
         }
 
         final CosmosStoredProcedureRequestOptions requestOptions = options;
-        return withContext(context -> createStoredProcedureInternal(sProc, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> createStoredProcedureInternal(sProc, requestOptions, context));
     }
 
 
@@ -109,7 +109,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        });
+        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     /**
@@ -182,7 +182,7 @@ public class CosmosAsyncScripts {
             return createUserDefinedFunctionInternal(udf);
         }
 
-        return withContext(context -> createUserDefinedFunctionInternal(udf, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> createUserDefinedFunctionInternal(udf, context));
     }
 
     /**
@@ -210,7 +210,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosUserDefinedFunctionPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        });
+        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     /**
@@ -280,7 +280,7 @@ public class CosmosAsyncScripts {
             return createTriggerInternal(properties);
         }
 
-        return withContext(context -> createTriggerInternal(properties, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> createTriggerInternal(properties, context));
     }
 
     /**
@@ -309,7 +309,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        });
+        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     /**
@@ -371,7 +371,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        });
+        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     private CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctionsInternal(
@@ -389,7 +389,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosUserDefinedFunctionPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        });
+        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     private CosmosPagedFlux<CosmosTriggerProperties> queryTriggersInternal(
@@ -414,7 +414,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        });
+        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
     }
 
     private Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,

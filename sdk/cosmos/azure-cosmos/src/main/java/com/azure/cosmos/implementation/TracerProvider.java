@@ -3,9 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import reactor.core.publisher.Mono;
@@ -16,6 +15,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -33,21 +33,8 @@ public class TracerProvider {
     public static final String ERROR_TYPE = "error.type";
     public static final String ERROR_STACK = "error.stack";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
+    public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
-
-
-    public final static Function<reactor.util.context.Context, reactor.util.context.Context> CALL_DEPTH_ATTRIBUTE_FUNC = (
-        reactor.util.context.Context reactorContext) -> {
-        CallDepth callDepth = reactorContext.getOrDefault(COSMOS_CALL_DEPTH, CallDepth.ZERO);
-        assert callDepth != null;
-        if (callDepth.equals(CallDepth.ZERO)) {
-            return reactorContext.put(COSMOS_CALL_DEPTH, CallDepth.ONE);
-        } else if (callDepth.equals(CallDepth.ONE)) {
-            return reactorContext.put(COSMOS_CALL_DEPTH, CallDepth.TWO_OR_MORE);
-        } else {
-            return reactorContext;
-        }
-    };
 
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
@@ -107,8 +94,8 @@ public class TracerProvider {
                     // The last status available is on error, this contains the thrown error.
                     throwable = signal.getThrowable();
 
-                    if (throwable instanceof CosmosClientException) {
-                        CosmosClientException exception = (CosmosClientException) throwable;
+                    if (throwable instanceof CosmosException) {
+                        CosmosException exception = (CosmosException) throwable;
                         // confirm ?
                         statusCode = exception.getStatusCode();
                     }
@@ -154,10 +141,8 @@ public class TracerProvider {
                                              String endpoint,
                                              Function<T, Integer> statusCodeFunc) {
         final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
-        CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
-            CallDepth.ZERO);
-        assert callDepth != null;
-        final boolean isNestedCall = callDepth.equals(CallDepth.TWO_OR_MORE);
+        Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
+        final boolean isNestedCall = callDepth.isPresent();
         return resultPublisher
             .doOnSubscribe(ignoredValue -> {
                 if (!isNestedCall) {
@@ -186,11 +171,5 @@ public class TracerProvider {
             }
             tracer.end(statusCode, throwable, context);
         }
-    }
-
-    public enum CallDepth {
-        ZERO,
-        ONE,
-        TWO_OR_MORE,
     }
 }

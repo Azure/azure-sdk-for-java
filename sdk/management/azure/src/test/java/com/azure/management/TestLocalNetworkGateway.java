@@ -23,7 +23,7 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
 
     @Override
     public LocalNetworkGateway createResource(LocalNetworkGateways localNetworkGateways) throws Exception {
-        initializeResourceNames(localNetworkGateways.manager().getSdkContext());
+        initializeResourceNames(localNetworkGateways.manager().sdkContext());
         LocalNetworkGateway gateway =
             localNetworkGateways
                 .define(lngwName)

@@ -9,7 +9,6 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.models.FeedResponse;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
@@ -17,8 +16,6 @@ import reactor.core.publisher.Signal;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-
-import static com.azure.cosmos.implementation.TracerProvider.COSMOS_CALL_DEPTH;
 
 /**
  * Cosmos implementation of {@link ContinuablePagedFlux}.
@@ -37,31 +34,43 @@ import static com.azure.cosmos.implementation.TracerProvider.COSMOS_CALL_DEPTH;
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
+    private final boolean isTracerEnable;
 
-    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
+    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction, boolean isTracerEnable) {
         this.optionsFluxFunction = optionsFluxFunction;
+        this.isTracerEnable = isTracerEnable;
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        if (!this.isTracerEnable) {
+            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        }
+
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(String continuationToken) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
+        if (!this.isTracerEnable) {
+            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        }
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
+        if (!this.isTracerEnable) {
+            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        }
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
@@ -69,8 +78,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
+        if (!this.isTracerEnable) {
+            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        }
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
     }
 
     /**
@@ -93,24 +105,16 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
-        final AtomicReference<Context> parentContext =  new AtomicReference<>(Context.NONE);
-        TracerProvider.CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
-            TracerProvider.CallDepth.ZERO);
-        assert callDepth != null;
-        final boolean isNestedCall = callDepth.equals(TracerProvider.CallDepth.TWO_OR_MORE);
+        final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
         return this.optionsFluxFunction.apply(pagedFluxOptions).doOnSubscribe(ignoredValue -> {
-            if ( pagedFluxOptions.getTracerProvider().isEnabled() && !isNestedCall) {
-                    parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(), pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
-                        context));
-            }
+            parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
+                pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
+                context));
         }).doOnComplete(() -> {
-            if ( pagedFluxOptions.getTracerProvider().isEnabled() && !isNestedCall) {
-                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(), HttpConstants.StatusCodes.OK);
-            }
+            pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
+                HttpConstants.StatusCodes.OK);
         }).doOnError(throwable -> {
-            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
-                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
-            }
+            pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
         });
     }
 }

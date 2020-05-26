@@ -22,7 +22,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.CustomAnalyzer")
 @Fluent
-public final class CustomAnalyzer extends Analyzer {
+public final class CustomAnalyzer extends LexicalAnalyzer {
     /*
      * The name of the tokenizer to use to divide continuous text into a
      * sequence of tokens, such as breaking a sentence into words. Possible
@@ -32,7 +32,7 @@ public final class CustomAnalyzer extends Analyzer {
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer", required = true)
-    private TokenizerName tokenizer;
+    private LexicalTokenizerName tokenizer;
 
     /*
      * A list of token filters used to filter out or modify the tokens
@@ -62,7 +62,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the tokenizer value.
      */
-    public TokenizerName getTokenizer() {
+    public LexicalTokenizerName getTokenizer() {
         return this.tokenizer;
     }
 
@@ -77,7 +77,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param tokenizer the tokenizer value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setTokenizer(TokenizerName tokenizer) {
+    public CustomAnalyzer setTokenizer(LexicalTokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }

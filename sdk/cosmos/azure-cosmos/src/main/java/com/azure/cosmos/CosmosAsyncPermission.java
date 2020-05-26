@@ -66,7 +66,7 @@ public class CosmosAsyncPermission {
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> readInternal(requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> readInternal(requestOptions, context));
     }
 
     /**
@@ -76,22 +76,22 @@ public class CosmosAsyncPermission {
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced permission.
      * In case of failure the {@link Mono} will error.
      *
-     * @param permissionSettings the permission properties to use.
+     * @param permissionProperties the permission properties to use.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the replaced permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> replace(CosmosPermissionProperties permissionSettings,
+    public Mono<CosmosAsyncPermissionResponse> replace(CosmosPermissionProperties permissionProperties,
                                                        CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
 
         if (!cosmosUser.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return replaceInternal(permissionSettings, options);
+            return replaceInternal(permissionProperties, options);
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> replaceInternal(permissionSettings, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> replaceInternal(permissionProperties, requestOptions, context));
     }
 
     /**
@@ -114,7 +114,7 @@ public class CosmosAsyncPermission {
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> deleteInternal(requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> deleteInternal(requestOptions, context));
     }
 
     String getURIPathSegment() {
@@ -152,21 +152,21 @@ public class CosmosAsyncPermission {
             .single();
     }
 
-    private Mono<CosmosAsyncPermissionResponse> replaceInternal(CosmosPermissionProperties permissionSettings,
+    private Mono<CosmosAsyncPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
                                                                 CosmosPermissionRequestOptions options,
                                                                 Context context) {
 
         String spanName = "replacePermission." + cosmosUser.getId();
-        Mono<CosmosAsyncPermissionResponse> responseMono = replaceInternal(permissionSettings, options);
+        Mono<CosmosAsyncPermissionResponse> responseMono = replaceInternal(permissionProperties, options);
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, cosmosUser.getDatabase().getId(), cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncPermissionResponse> replaceInternal(CosmosPermissionProperties permissionSettings,
+    private Mono<CosmosAsyncPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
                                                                 CosmosPermissionRequestOptions options) {
         return cosmosUser.getDatabase()
             .getDocClientWrapper()
-            .replacePermission(ModelBridgeInternal.getV2Permissions(permissionSettings),
+            .replacePermission(ModelBridgeInternal.getV2Permissions(permissionProperties),
                 ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
             .single();

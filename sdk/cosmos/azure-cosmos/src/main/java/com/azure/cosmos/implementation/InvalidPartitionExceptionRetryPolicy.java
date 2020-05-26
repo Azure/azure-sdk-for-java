@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedOptions;
 import reactor.core.publisher.Mono;
 
@@ -45,7 +45,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-        CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+        CosmosException clientException = Utils.as(e, CosmosException.class);
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE)) {
@@ -55,12 +55,12 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 // TODO: this is blocking. is that fine?
                 if(this.feedOptions != null) {
                     this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                         collectionLink,
                         this.feedOptions.getProperties());
                 } else {
                     this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                         collectionLink,
                         null);
                 }

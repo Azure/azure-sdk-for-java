@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseForTest;
@@ -77,7 +77,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         } catch (Exception e) {
 
             // when (e.StatusCode == HttpStatusCode.BadRequest)
-            CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+            CosmosException dce = Utils.as(e, CosmosException.class);
             if (dce != null && dce.getStatusCode() == 400) {
                 assertThat(dce.getMessage()).contains("Invalid path '\\/a\\/b' for last writer wins conflict resolution");
             } else {
@@ -94,7 +94,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             fail("Expected exception on invalid path.");
         } catch (Exception e) {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
-            CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+            CosmosException dce = Utils.as(e, CosmosException.class);
             if (dce != null && dce.getStatusCode() == 400) {
                 assertThat(dce.getMessage()).contains("Invalid path 'someText' for last writer wins conflict resolution");
             } else {
@@ -147,7 +147,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
                 new CosmosContainerRequestOptions());
 
         FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
+                .instanceOf(CosmosException.class)
                 .statusCode(400)
                 .errorMessageContains("LastWriterWins conflict resolution mode should not have conflict resolution procedure set.")
                 .build();
@@ -169,7 +169,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
                 new CosmosContainerRequestOptions());
 
         FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
+                .instanceOf(CosmosException.class)
                 .statusCode(400)
                 .errorMessageContains("Custom conflict resolution mode should not have conflict resolution path set.")
                 .build();

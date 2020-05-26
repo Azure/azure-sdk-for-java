@@ -46,14 +46,14 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         frps.add(BridgeInternal.createFeedResponse(dbs, null));
 
         Flux<FeedResponse<CosmosDatabaseProperties>> response = Flux.merge(Flux.fromIterable(frps))
-                                                                    .mergeWith(Flux.error(BridgeInternal.createCosmosClientException(0)))
+                                                                    .mergeWith(Flux.error(BridgeInternal.createCosmosException(0)))
                                                                     .mergeWith(Flux.fromIterable(frps));
 
         final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
         Mockito.when(mockedClientWrapper.readAllDatabases(null)).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerInformation(new TracerProvider(ServiceLoader.load(Tracer.class)), "testSpan", "testEndpoint,", "testDb");
             return response;
-        }));
+        }, false));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
         mockedClientWrapper.readAllDatabases(null).byPage().subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);

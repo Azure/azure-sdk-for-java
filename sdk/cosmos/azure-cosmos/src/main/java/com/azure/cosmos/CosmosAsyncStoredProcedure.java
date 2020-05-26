@@ -13,6 +13,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.withContext;
+import java.util.List;
 
 /**
  * The type Cosmos async stored procedure.
@@ -78,7 +79,7 @@ public class CosmosAsyncStoredProcedure {
             return readInternal(options);
         }
 
-        return withContext(context -> readInternal(options, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> readInternal(options, context));
     }
 
     /**
@@ -111,7 +112,7 @@ public class CosmosAsyncStoredProcedure {
             return deleteInternal(options);
         }
 
-        return withContext(context -> deleteInternal(options, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> deleteInternal(options, context));
     }
 
     /**
@@ -122,17 +123,17 @@ public class CosmosAsyncStoredProcedure {
      * response.
      * In case of failure the {@link Mono} will error.
      *
-     * @param procedureParams the array of procedure parameter values.
+     * @param procedureParams the list of procedure parameter values.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams,
+    public Mono<CosmosAsyncStoredProcedureResponse> execute(List<Object> procedureParams,
                                                             CosmosStoredProcedureRequestOptions options) {
         if (!cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled()) {
             return executeInternal(procedureParams, options);
         }
 
-        return withContext(context -> executeInternal(procedureParams, options, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+        return withContext(context -> executeInternal(procedureParams, options, context));
     }
 
     /**
@@ -169,7 +170,7 @@ public class CosmosAsyncStoredProcedure {
         }
 
         return withContext(context -> replaceInternal(storedProcedureSettings, options,
-            context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
+            context));
     }
 
     String getURIPathSegment() {
@@ -226,7 +227,7 @@ public class CosmosAsyncStoredProcedure {
             .single();
     }
 
-    private Mono<CosmosAsyncStoredProcedureResponse> executeInternal(Object[] procedureParams,
+    private Mono<CosmosAsyncStoredProcedureResponse> executeInternal(List<Object> procedureParams,
                                                              CosmosStoredProcedureRequestOptions options,
                                                              Context context) {
         String spanName = "executeStoredProcedure." + cosmosContainer.getId();
@@ -234,7 +235,7 @@ public class CosmosAsyncStoredProcedure {
         return this.cosmosContainer.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, cosmosContainer.getDatabase().getId(), cosmosContainer.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncStoredProcedureResponse> executeInternal(Object[] procedureParams,
+    private Mono<CosmosAsyncStoredProcedureResponse> executeInternal(List<Object> procedureParams,
                                                                      CosmosStoredProcedureRequestOptions options) {
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
