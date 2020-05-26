@@ -2851,7 +2851,7 @@ class FileAPITest extends APISpec {
         byte[] osData = os.toByteArray()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
         if (headersPresent) {
             assert osData.length == downloadedData.length - 16
             /* Account for 16 bytes of header. */
@@ -2881,6 +2881,44 @@ class FileAPITest extends APISpec {
         '\n'            | '>'             | false          || _
         '\n'            | '&'             | false          || _
         '\n'            | '\\'            | false          || _
+    }
+
+    @Unroll
+    def "Query csv serialization escape and field quote"() {
+        setup:
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\\' as char) /* Escape set here. */
+            .setFieldQuote('"' as char)  /* Field quote set here*/
+            .setHeadersPresent(false)
+        uploadCsv(ser, 32)
+
+        def expression = "SELECT * from BlobStorage"
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        fc.read(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, new FileQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        queryData == downloadedData
+
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        fc.queryWithResponse(os, expression, new FileQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(DataLakeStorageException)
+        osData == downloadedData
     }
 
     /* Note: Input delimited tested everywhere else. */

@@ -203,59 +203,43 @@ class BlobBaseAPITest extends APISpec {
         '\n'            | '\\'            | false          || _
     }
 
-//    @Unroll
-//    def "Query csv serialization escape"() {
-//        setup:
-//        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
-//            .setRecordSeparator('\n' as char)
-//            .setColumnSeparator(',' as char)
-//            .setEscapeChar('\0' as char)
-//            .setFieldQuote(':' as char)
-//            .setHeadersPresent(false)
-//
-//        String csv = String.join(new String(ser.getColumnSeparator()), escapeChar + "100" + escapeChar, escapeChar + "200" + escapeChar)
-//            .concat(new String(ser.getRecordSeparator()))
-//            .concat(String.join(new String(ser.getColumnSeparator()), escapeChar + "300" + escapeChar, escapeChar + "400" + escapeChar)
-//                .concat(new String(ser.getRecordSeparator())))
-//
-//        byte[] csvData = csv.getBytes()
-//
-//        InputStream inputStream = new ByteArrayInputStream(csvData)
-//
-//        bc.upload(inputStream, csvData.length, true)
-//
-//        def expression = "SELECT * from BlobStorage"
-//
-//        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
-//        bc.download(downloadData)
-//        byte[] downloadedData = downloadData.toByteArray()
-//
-//        /* Input Stream. */
-//        when:
-//        InputStream qqStream = bc.openQueryInputStream(expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
-//        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
-//
-//        then:
-//        notThrown(IOException)
-//        queryData == downloadedData
-//
-//
-//        /* Output Stream. */
-//        when:
-//        OutputStream os = new ByteArrayOutputStream()
-//        bc.queryWithResponse(os, expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
-//        byte[] osData = os.toByteArray()
-//
-//        then:
-//        notThrown(BlobStorageException)
-//        osData == downloadedData
-//
-//        where:
-//        escapeChar      || _
-//        '"'             || _
-//        '\''            || _
-//        '!'             || _
-//    }
+    @Unroll
+    def "Query csv serialization escape and field quote"() {
+        setup:
+        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\\' as char) /* Escape set here. */
+            .setFieldQuote('"' as char)  /* Field quote set here*/
+            .setHeadersPresent(false)
+        uploadCsv(ser, 32)
+
+        def expression = "SELECT * from BlobStorage"
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        bc.download(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = bc.openQueryInputStream(expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        queryData == downloadedData
+
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        bc.queryWithResponse(os, expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        osData == downloadedData
+    }
 
     /* Note: Input delimited tested everywhere */
     @Unroll
