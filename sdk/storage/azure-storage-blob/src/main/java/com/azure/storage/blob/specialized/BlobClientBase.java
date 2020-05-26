@@ -37,7 +37,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -45,7 +44,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -974,11 +972,14 @@ public class BlobClientBase {
     public InputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
-        Flux<ByteBuffer> data = client.queryWithResponse(expression, queryOptions)
-            .flatMapMany(BlobQueryAsyncResponse::getValue);
+        BlobQueryAsyncResponse response = client.queryWithResponse(expression, queryOptions)
+            .block();
 
         // Create input stream from the data.
-        return new FluxInputStream(data);
+        if (response == null) {
+            throw new IllegalStateException("Query response cannot be null");
+        }
+        return new FluxInputStream(response.getValue());
     }
 
     /**

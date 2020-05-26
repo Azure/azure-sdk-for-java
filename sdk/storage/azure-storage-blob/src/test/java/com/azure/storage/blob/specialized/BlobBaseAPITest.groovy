@@ -572,13 +572,10 @@ class BlobBaseAPITest extends APISpec {
             .setOutputSerialization(outSer)
 
         when:
-        InputStream stream = bc.openQueryInputStream(expression, options)
-        stream.read()
-        stream.close()
+        bc.openQueryInputStream(expression, options) /* Don't need to call read. */
 
         then:
-        def e = thrown(IOException)
-        assert e.getCause() instanceof IllegalArgumentException
+        thrown(IllegalArgumentException)
 
         when:
         bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
@@ -646,13 +643,10 @@ class BlobBaseAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        InputStream stream = bc.openQueryInputStream(expression, options)
-        stream.read()
-        stream.close()
+        bc.openQueryInputStream(expression, options) /* Don't need to call read. */
 
         then:
-        def e = thrown(IOException)
-        assert e.getCause() instanceof BlobStorageException
+        thrown(BlobStorageException)
 
         when:
         bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)

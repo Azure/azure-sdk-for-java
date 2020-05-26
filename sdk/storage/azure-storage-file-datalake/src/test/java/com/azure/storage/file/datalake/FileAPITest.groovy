@@ -3214,9 +3214,7 @@ class FileAPITest extends APISpec {
             .setOutputSerialization(outSer)
 
         when:
-        InputStream stream = fc.openQueryInputStream(expression, options)
-        stream.read()
-        stream.close()
+        InputStream stream = fc.openQueryInputStream(expression, options)  /* Don't need to call read. */
 
         then:
         thrown(IllegalArgumentException)
@@ -3287,13 +3285,10 @@ class FileAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        InputStream stream = fc.openQueryInputStream(expression, options)
-        stream.read()
-        stream.close()
+        fc.openQueryInputStream(expression, options) /* Don't need to call read. */
 
         then:
-        def e = thrown(IOException)
-        assert e.getCause() instanceof DataLakeStorageException
+        thrown(DataLakeStorageException)
 
         when:
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
