@@ -143,7 +143,7 @@ public class CosmosAsyncDatabase {
      * created container. In case of failure the {@link Mono} will error.
      *
      * @param containerProperties the container properties.
-     * @param throughput the throughput for the container
+     * @param throughput the throughput for the container.
      * @return a {@link Mono} containing the single cosmos container response with
      * the created container or an error.
      * @throws IllegalArgumentException thown if containerProerties are null
@@ -284,6 +284,9 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a document container if it does not exist on the service.
      * <p>
+     * The throughput setting will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created or existing container. In case of failure the {@link Mono} will
@@ -306,12 +309,37 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a document container if it does not exist on the service.
      * <p>
+     * The throughput properties will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a cosmos container response with the
+     * created or existing container. In case of failure the {@link Mono} will
+     * error.
+     *
+     * @param containerProperties the container properties.
+     * @param throughputProperties the throughput properties for the container.
+     * @return a {@link Mono} containing the cosmos container response with the
+     * created or existing container or an error.
+     */
+    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+        CosmosContainerProperties containerProperties,
+        ThroughputProperties throughputProperties) {
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
+        CosmosAsyncContainer container = getContainer(containerProperties.getId());
+        return createContainerIfNotExistsInternal(containerProperties, container, options);
+    }
+
+    /**
+     * Creates a document container if it does not exist on the service.
+     * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
-     * @param id the cosmos container id
-     * @param partitionKeyPath the partition key path
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
@@ -325,13 +353,16 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a document container if it does not exist on the service.
      * <p>
+     * The throughput setting will only be used if the specified container
+     * does not exist and a new container will be created.
+     *
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
-     * @param id the cosmos container id
-     * @param partitionKeyPath the partition key path
-     * @param throughput the throughput for the container
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughput the throughput for the container.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
@@ -343,6 +374,32 @@ public class CosmosAsyncDatabase {
         CosmosAsyncContainer container = getContainer(id);
         return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container,
                                                   options);
+    }
+
+    /**
+     * Creates a document container if it does not exist on the service.
+     * <p>
+     * The throughput properties will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a cosmos container response with the
+     * created container. In case of failure the {@link Mono} will error.
+     *
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughputProperties the throughput properties for the container.
+     * @return a {@link Mono} containing the cosmos container response with the
+     * created container or an error.
+     */
+    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+        String id, String partitionKeyPath,
+        ThroughputProperties throughputProperties) {
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
+        CosmosAsyncContainer container = getContainer(id);
+        return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container,
+            options);
     }
 
     private Mono<CosmosAsyncContainerResponse> createContainerIfNotExistsInternal(

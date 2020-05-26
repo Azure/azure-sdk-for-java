@@ -20,6 +20,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -453,7 +454,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     // increase throughput to force a single partition collection to go through a split
                     createdFeedCollectionForSplit.readProvisionedThroughput().subscribeOn(Schedulers.elastic())
                         .flatMap(currentThroughput ->
-                            createdFeedCollectionForSplit.replaceProvisionedThroughput(FEED_COLLECTION_THROUGHPUT).subscribeOn(Schedulers.elastic())
+                            createdFeedCollectionForSplit
+                                .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT))
+                                .subscribeOn(Schedulers.elastic())
                         )
                         .then()
                 )

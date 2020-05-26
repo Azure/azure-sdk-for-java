@@ -264,6 +264,12 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosContainerRequestOptions setThroughputProperties(CosmosContainerRequestOptions cosmosContainerRequestOptions,
+                                                                   ThroughputProperties throughputProperties) {
+        return cosmosContainerRequestOptions.setThroughputProperties(throughputProperties);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RequestOptions toRequestOptions(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions) {
         return cosmosDatabaseRequestOptions.toRequestOptions();
     }
