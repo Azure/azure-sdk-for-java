@@ -43,7 +43,7 @@ class ShardTest extends HelperSpec {
             Mono<PagedResponse<BlobItem>> get() {
                 return Mono.just(new PagedResponseBase<>(
                     null, 200, null,
-                    List.of(new BlobItem().setName("chunk0"), new BlobItem().setName("chunk1"), new BlobItem().setName("chunk2")),
+                   [new BlobItem().setName("chunk0"), new BlobItem().setName("chunk1"), new BlobItem().setName("chunk2")],
                     null, null))
             }
         }

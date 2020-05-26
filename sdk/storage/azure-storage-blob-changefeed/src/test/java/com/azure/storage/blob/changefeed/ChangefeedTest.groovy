@@ -129,8 +129,8 @@ class ChangefeedTest extends HelperSpec {
         Mono<PagedResponse<BlobItem>> get() {
             return Mono.just(new PagedResponseBase<>(
                 null, 200, null,
-                List.of(new BlobItem().setName("idx/segments/2017"), new BlobItem().setName("idx/segments/2018"),
-                    new BlobItem().setName("idx/segments/2019"), new BlobItem().setName("idx/segments/2020")),
+                [new BlobItem().setName("idx/segments/2017"), new BlobItem().setName("idx/segments/2018"),
+                    new BlobItem().setName("idx/segments/2019"), new BlobItem().setName("idx/segments/2020")],
                 null, null))
         }
     }
@@ -142,8 +142,8 @@ class ChangefeedTest extends HelperSpec {
             Mono<PagedResponse<BlobItem>> get() {
                 return Mono.just(new PagedResponseBase<>(
                     null, 200, null,
-                    List.of(new BlobItem().setName("idx/segments/" + year + "/01/01/1200/meta.json"), new BlobItem().setName("idx/segments/" + year + "/01/01/0300/meta.json"),
-                        new BlobItem().setName("idx/segments/"+ year +"/01/01/0500/meta.json"), new BlobItem().setName("idx/segments/" + year + "/01/01/0600/meta.json")),
+                    [new BlobItem().setName("idx/segments/" + year + "/01/01/1200/meta.json"), new BlobItem().setName("idx/segments/" + year + "/01/01/0300/meta.json"),
+                        new BlobItem().setName("idx/segments/"+ year +"/01/01/0500/meta.json"), new BlobItem().setName("idx/segments/" + year + "/01/01/0600/meta.json")],
                     null, null))
             }
         }
