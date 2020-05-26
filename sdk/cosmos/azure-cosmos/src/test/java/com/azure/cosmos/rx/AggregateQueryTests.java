@@ -11,6 +11,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -77,9 +78,10 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
+            CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryConfig.query, options,
+                                                                                     JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator = new FeedResponseListValidator.Builder<JsonNode>()
                 .withAggregateValue(queryConfig.expected)
                 .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)

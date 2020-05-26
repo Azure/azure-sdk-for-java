@@ -4,6 +4,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,15 @@ class MessageConverter {
         }
 
         if (brokeredMessage.getTimeToLive() != null) {
-            amqpMessage.setTtl(brokeredMessage.getTimeToLive().toMillis());
+        	long ttlMillis = brokeredMessage.getTimeToLive().toMillis();
+        	if (ttlMillis > ClientConstants.UNSIGNED_INT_MAX_VALUE) {
+        		ttlMillis = ClientConstants.UNSIGNED_INT_MAX_VALUE;
+        	}
+            amqpMessage.setTtl(ttlMillis);
+            Instant creationTime = Instant.now();
+            Instant absoluteExpiryTime = creationTime.plus(brokeredMessage.getTimeToLive());
+            amqpMessage.setCreationTime(creationTime.toEpochMilli());
+            amqpMessage.setExpiryTime(absoluteExpiryTime.toEpochMilli());
         }
 
         amqpMessage.setMessageId(brokeredMessage.getMessageId());
@@ -120,10 +129,15 @@ class MessageConverter {
         }
 
         // Header
-        brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
         brokeredMessage.setDeliveryCount(amqpMessage.getDeliveryCount());
+        brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
+        
 
         // Properties
+        // Override TimeToLive from CrationTime and ExpiryTime, as they support duration of any length, which ttl doesn't
+        if (amqpMessage.getCreationTime() != 0l && amqpMessage.getExpiryTime() != 0l) {
+        	brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getExpiryTime() - amqpMessage.getCreationTime()));
+        }
         Object messageId = amqpMessage.getMessageId();
         if (messageId != null) {
             brokeredMessage.setMessageId(messageId.toString());

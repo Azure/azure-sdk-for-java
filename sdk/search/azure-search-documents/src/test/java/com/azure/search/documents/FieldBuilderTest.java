@@ -3,7 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.ComplexSearchField;
+import com.azure.search.documents.models.ComplexField;
 import com.azure.search.documents.models.LexicalAnalyzerName;
 import com.azure.search.documents.models.SearchField;
 import com.azure.search.documents.models.SearchFieldDataType;
@@ -94,13 +94,13 @@ public class FieldBuilderTest {
     }
 
     private List<SearchField> buildHotelCircularDependenciesModel() {
-        SearchField homeAddress = new ComplexSearchField("homeAddress", false).setFields(buildHotelInAddress()).build();
-        SearchField billingAddress = new ComplexSearchField("billingAddress", false).setFields(buildHotelInAddress()).build();
+        SearchField homeAddress = new ComplexField("homeAddress", false).setFields(buildHotelInAddress()).build();
+        SearchField billingAddress = new ComplexField("billingAddress", false).setFields(buildHotelInAddress()).build();
         return Arrays.asList(homeAddress, billingAddress);
     }
 
     private List<SearchField> buildHotelInAddress() {
-        SearchField hotel = new ComplexSearchField("hotel", false).build();
+        SearchField hotel = new ComplexField("hotel", false).build();
         return Collections.singletonList(hotel);
     }
 
@@ -117,9 +117,9 @@ public class FieldBuilderTest {
         SearchField lastRenovationDate = new SimpleField("lastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET, false).build();
         SearchField rating = new SimpleField("rating", SearchFieldDataType.INT32, false).build();
         SearchField location = new SimpleField("location", SearchFieldDataType.GEOGRAPHY_POINT, false).build();
-        SearchField address = new ComplexSearchField("address", false)
+        SearchField address = new ComplexField("address", false)
             .setFields(buildHotelAddressField()).build();
-        SearchField rooms = new ComplexSearchField("rooms", true).setFields(buildHotelRoomField()).build();
+        SearchField rooms = new ComplexField("rooms", true).setFields(buildHotelRoomField()).build();
 
         return Arrays.asList(hotelId, hotelName, description, category, tags, parkingIncluded, smokingAllowed,
             lastRenovationDate, rating, location, address, rooms);
