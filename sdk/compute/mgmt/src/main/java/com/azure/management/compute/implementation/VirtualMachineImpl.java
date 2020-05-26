@@ -184,7 +184,7 @@ class VirtualMachineImpl
         this.networkManager = networkManager;
         this.vmName = name;
         this.isMarketplaceLinuxImage = false;
-        this.namer = this.manager().getSdkContext().getResourceNamerFactory().createResourceNamer(this.vmName);
+        this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =
