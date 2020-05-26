@@ -63,6 +63,7 @@ public final class BlobItemProperties {
         this.customerProvidedKeySha256 = blobItemPropertiesInternal.getCustomerProvidedKeySha256();
         this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
         this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
+        this.expiresOn = blobItemPropertiesInternal.getExpiresOn();
 
         // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
         /*this.objectReplicationSourcePolicies = new HashMap<>();
@@ -285,6 +286,8 @@ public final class BlobItemProperties {
 
     private String objectReplicationDestinationPolicyId;
     */
+
+    private OffsetDateTime expiresOn;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -950,6 +953,26 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
         this.accessTierChangeTime = accessTierChangeTime;
+        return this;
+    }
+
+    /**
+     * Get the expiresOn property: The expiresOn property.
+     *
+     * @return the expiresOn value.
+     */
+    public OffsetDateTime getExpiresOn() {
+        return expiresOn;
+    }
+
+    /**
+     * Set the expiresOn property: The expiresOn property.
+     *
+     * @param expiresOn the expiresOn value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setExpiresOn(OffsetDateTime expiresOn) {
+        this.expiresOn = expiresOn;
         return this;
     }
 }

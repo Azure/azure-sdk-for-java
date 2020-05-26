@@ -27,6 +27,7 @@ import com.azure.storage.blob.models.BlobScheduleDeletionOptions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.common.implementation.Constants
@@ -1677,16 +1678,125 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blobClient.getBlockBlobClient().scheduleDeletion(options)
+        def expiryTimeProperty = blobClient.getProperties().getExpiresOn()
+        def expiryTimeListProperty = containerClient
+            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
+            .first()
+            .getProperties()
+            .getExpiresOn()
 
         then:
-        blobClient.getBlockBlobClient().getProperties()
+        (expiryTimeProperty != null) == hasExpiry
+        (expiryTimeListProperty != null) == hasExpiry
+        expiryTimeProperty == expiryTimeListProperty
 
         where:
-        options                                                                                | _
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | _
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | _
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | _
-        new BlobScheduleDeletionOptions()                                                      | _
-        null                                                                                   | _
+        options                                                                                | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new BlobScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
+    }
+
+    @Unroll
+    def "Schedule Deletion max"() {
+        given:
+        def containerClient = dataLakeBlobServiceClient.createBlobContainer(getContainerName())
+        def blobClient = containerClient.getBlobClient(getBlobName())
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def resposne = blobClient.getBlockBlobClient().scheduleDeletionWithResponse(options, null, Context.NONE)
+        def expiryTimeProperty = blobClient.getProperties().getExpiresOn()
+        def expiryTimeListProperty = containerClient
+            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
+            .first()
+            .getProperties()
+            .getExpiresOn()
+
+        then:
+        resposne.getStatusCode() == 200
+        (expiryTimeProperty != null) == hasExpiry
+        (expiryTimeListProperty != null) == hasExpiry
+        expiryTimeProperty == expiryTimeListProperty
+
+        where:
+        options                                                                                | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new BlobScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
+    }
+
+    @Unroll
+    def "Schedule Deletion min async"() {
+        given:
+        def containerClient = dataLakeBlobServiceAsyncClient.createBlobContainer(getContainerName()).block()
+        def blobClient = containerClient.getBlobAsyncClient(getBlobName())
+        blobClient.upload(defaultFlux, null).block()
+
+        when:
+        def propertiesMono = blobClient.getProperties()
+        def listPropertiesMono = containerClient
+            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
+            .next()
+            .map { it.getProperties() }
+        def expiryTimeTupleMono = blobClient.getBlockBlobAsyncClient().scheduleDeletion(options)
+        .then(propertiesMono.zipWith(listPropertiesMono))
+
+        then:
+        StepVerifier.create(expiryTimeTupleMono)
+            .assertNext {
+                assert (it.getT1().getExpiresOn() != null) == hasExpiry
+                assert (it.getT2().getExpiresOn() != null) == hasExpiry
+                assert it.getT1().getExpiresOn() == it.getT2().getExpiresOn()
+            }
+            .verifyComplete()
+
+        where:
+        options                                                                                | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new BlobScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
+    }
+
+    @Unroll
+    def "Schedule Deletion max async"() {
+        given:
+        def containerClient = dataLakeBlobServiceAsyncClient.createBlobContainer(getContainerName()).block()
+        def blobClient = containerClient.getBlobAsyncClient(getBlobName())
+        blobClient.upload(defaultFlux, null).block()
+
+        when:
+        def propertiesMono = blobClient.getProperties()
+        def listPropertiesMono = containerClient
+            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
+            .next()
+            .map { it.getProperties() }
+        def responseMono = blobClient.getBlockBlobAsyncClient().scheduleDeletionWithResponse(options)
+        def aggregatedResultsMono = responseMono.
+            then(Mono.zip(propertiesMono, listPropertiesMono, responseMono))
+
+        then:
+        StepVerifier.create(aggregatedResultsMono)
+            .assertNext {
+                assert (it.getT1().getExpiresOn() != null) == hasExpiry
+                assert (it.getT2().getExpiresOn() != null) == hasExpiry
+                assert it.getT1().getExpiresOn() == it.getT2().getExpiresOn()
+                assert it.getT3().getStatusCode() == 200
+            }
+            .verifyComplete()
+
+        where:
+        options                                                                                | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
+        new BlobScheduleDeletionOptions()                                                      | false
+        null                                                                                   | false
     }
 }

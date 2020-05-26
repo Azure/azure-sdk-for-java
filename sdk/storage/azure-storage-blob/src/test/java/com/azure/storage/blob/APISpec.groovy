@@ -144,6 +144,7 @@ class APISpec extends Specification {
     BlobServiceClient managedDiskServiceClient
     BlobServiceClient versionedBlobServiceClient
     BlobServiceClient dataLakeBlobServiceClient
+    BlobServiceAsyncClient dataLakeBlobServiceAsyncClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -190,6 +191,7 @@ class APISpec extends Specification {
         managedDiskServiceClient = setClient(managedDiskCredential)
         versionedBlobServiceClient = setClient(versionedCredential)
         dataLakeBlobServiceClient = setClient(dataLakeCredential)
+        dataLakeBlobServiceAsyncClient = getServiceAsyncClient(dataLakeCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
