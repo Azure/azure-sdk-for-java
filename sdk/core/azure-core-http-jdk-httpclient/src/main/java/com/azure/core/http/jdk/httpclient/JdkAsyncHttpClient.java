@@ -123,11 +123,11 @@ class JdkAsyncHttpClient implements HttpClient {
         }
         final Flow.Publisher<ByteBuffer> bbFlowPublisher = JdkFlowAdapter.publisherToFlowPublisher(bbPublisher);
         if (CoreUtils.isNullOrEmpty(contentLength)) {
-            return fromPublisher(bbFlowPublisher);
+            return fromPublisher(bbFlowPublisher, 0);
         } else {
             long contentLengthLong = Long.parseLong(contentLength);
             if (contentLengthLong < 1) {
-                return fromPublisher(bbFlowPublisher);
+                return fromPublisher(bbFlowPublisher, 0);
             } else {
                 return fromPublisher(bbFlowPublisher, contentLengthLong);
             }
