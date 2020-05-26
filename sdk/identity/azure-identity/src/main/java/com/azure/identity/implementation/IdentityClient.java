@@ -415,7 +415,7 @@ public class IdentityClient {
             OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                                            .atZone(ZoneId.systemDefault())
                                            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            token = new IdentityToken(accessToken, expiresOn, options);
+            token = new AccessToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
@@ -493,7 +493,7 @@ public class IdentityClient {
                 throw logger.logExceptionAsError(Exceptions.propagate(e));
             }
         }).map(ar -> new MsalToken(ar, options))
-            .filter(t -> !t.isExpired())
+            .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(options.getTokenRefreshOffset())))
             .switchIfEmpty(Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
                     new HashSet<>(request.getScopes())).forceRefresh(true);
@@ -524,7 +524,7 @@ public class IdentityClient {
                 throw logger.logExceptionAsError(Exceptions.propagate(e));
             }
         }).map(ar -> new MsalToken(ar, options))
-            .filter(t -> !t.isExpired())
+            .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(options.getTokenRefreshOffset())))
             .switchIfEmpty(Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
                     new HashSet<>(request.getScopes())).forceRefresh(true);
@@ -728,7 +728,7 @@ public class IdentityClient {
                 String result = s.hasNext() ? s.next() : "";
 
                 MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-                return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
+                return new AccessToken(msiToken.getToken(), msiToken.getExpiresAt());
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -782,7 +782,7 @@ public class IdentityClient {
 
                     MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result,
                             MSIToken.class, SerializerEncoding.JSON);
-                    return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
+                    return new AccessToken(msiToken.getToken(), msiToken.getExpiresAt());
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(
