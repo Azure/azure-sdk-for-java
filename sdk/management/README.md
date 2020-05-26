@@ -160,7 +160,7 @@ FunctionApp linuxFunctionApp = azure.functionApps().define(functionAppName)
     .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
     .withNewStorageAccount(creatableStorageAccount)
     .withHttpsOnly(true)
-    .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+    .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", functionAppPackageUrl)
     .create();
 ```
 
