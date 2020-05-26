@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
  * {@link PatternAnalyzer}.
  */
 public final class PatternAnalyzerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternAnalyzer} to {@link PatternAnalyzer}.
      */

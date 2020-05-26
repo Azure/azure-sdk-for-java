@@ -11,8 +11,6 @@ import com.azure.search.documents.models.OutputFieldMappingEntry;
  * {@link OutputFieldMappingEntry}.
  */
 public final class OutputFieldMappingEntryConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.OutputFieldMappingEntry} to
      * {@link OutputFieldMappingEntry}.

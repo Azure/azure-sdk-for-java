@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SplitSkill} and {@link SplitSkill}.
  */
 public final class SplitSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SplitSkill} to {@link SplitSkill}.
      */

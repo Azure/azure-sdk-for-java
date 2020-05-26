@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.FacetResult} and {@link FacetResult}.
  */
 public final class FacetResultConverter {
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FacetResult} to {@link FacetResult}.
      */

@@ -11,8 +11,6 @@ import com.azure.search.documents.models.TagScoringParameters;
  * {@link TagScoringParameters}.
  */
 public final class TagScoringParametersConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TagScoringParameters} to
      * {@link TagScoringParameters}.

@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SearchIndex} and {@link SearchIndex}.
  */
 public final class SearchIndexConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndex} to {@link SearchIndex}.
      */

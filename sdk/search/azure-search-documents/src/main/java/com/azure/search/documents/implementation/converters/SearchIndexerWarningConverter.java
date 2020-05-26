@@ -12,8 +12,6 @@ import com.azure.search.documents.models.SearchIndexerWarning;
  * {@link SearchIndexerWarning}.
  */
 public final class SearchIndexerWarningConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerWarning} to
      * {@link SearchIndexerWarning}.

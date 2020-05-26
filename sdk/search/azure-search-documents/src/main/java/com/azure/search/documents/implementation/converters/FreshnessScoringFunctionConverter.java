@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.FreshnessScoringFunction;
 import com.azure.search.documents.models.FreshnessScoringParameters;
 import com.azure.search.documents.models.ScoringFunctionInterpolation;
@@ -13,8 +12,6 @@ import com.azure.search.documents.models.ScoringFunctionInterpolation;
  * {@link FreshnessScoringFunction}.
  */
 public final class FreshnessScoringFunctionConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FreshnessScoringFunction} to
      * {@link FreshnessScoringFunction}.

@@ -11,8 +11,6 @@ import com.azure.search.documents.models.SqlIntegratedChangeTrackingPolicy;
  * {@link SqlIntegratedChangeTrackingPolicy}.
  */
 public final class SqlIntegratedChangeTrackingPolicyConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy} to
      * {@link SqlIntegratedChangeTrackingPolicy}.

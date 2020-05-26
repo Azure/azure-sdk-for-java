@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.IndexingSchedule;
 
 import java.time.Duration;
@@ -14,8 +13,6 @@ import java.time.OffsetDateTime;
  * {@link IndexingSchedule}.
  */
 public final class IndexingScheduleConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexingSchedule} to {@link IndexingSchedule}.
      */

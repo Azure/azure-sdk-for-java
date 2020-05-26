@@ -10,8 +10,6 @@ import com.azure.search.documents.models.ServiceLimits;
  * A converter between {@link com.azure.search.documents.implementation.models.ServiceLimits} and {@link ServiceLimits}.
  */
 public final class ServiceLimitsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ServiceLimits} to {@link ServiceLimits}.
      */

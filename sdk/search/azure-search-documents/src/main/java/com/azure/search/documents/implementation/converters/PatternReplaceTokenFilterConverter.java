@@ -11,8 +11,6 @@ import com.azure.search.documents.models.PatternReplaceTokenFilter;
  * {@link PatternReplaceTokenFilter}.
  */
 public final class PatternReplaceTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternReplaceTokenFilter} to
      * {@link PatternReplaceTokenFilter}.

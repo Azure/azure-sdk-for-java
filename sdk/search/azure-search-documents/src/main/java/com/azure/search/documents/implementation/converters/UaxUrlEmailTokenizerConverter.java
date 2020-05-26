@@ -11,8 +11,6 @@ import com.azure.search.documents.models.UaxUrlEmailTokenizer;
  * {@link UaxUrlEmailTokenizer}.
  */
 public final class UaxUrlEmailTokenizerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer} to
      * {@link UaxUrlEmailTokenizer}.

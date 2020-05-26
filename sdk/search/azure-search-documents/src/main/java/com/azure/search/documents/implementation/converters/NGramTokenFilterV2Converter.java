@@ -11,8 +11,6 @@ import com.azure.search.documents.models.NGramTokenFilterV2;
  * {@link NGramTokenFilterV2}.
  */
 public final class NGramTokenFilterV2Converter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.NGramTokenFilterV2} to
      * {@link NGramTokenFilterV2}.

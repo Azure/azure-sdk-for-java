@@ -10,8 +10,6 @@ import com.azure.search.documents.models.RegexFlags;
  * A converter between {@link com.azure.search.documents.implementation.models.RegexFlags} and {@link RegexFlags}.
  */
 public final class RegexFlagsConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.RegexFlags} to enum {@link RegexFlags}.
      */

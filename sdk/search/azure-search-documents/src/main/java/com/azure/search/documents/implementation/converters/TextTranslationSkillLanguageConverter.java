@@ -11,8 +11,6 @@ import com.azure.search.documents.models.TextTranslationSkillLanguage;
  * {@link TextTranslationSkillLanguage}.
  */
 public final class TextTranslationSkillLanguageConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage} to enum
      * {@link TextTranslationSkillLanguage}.

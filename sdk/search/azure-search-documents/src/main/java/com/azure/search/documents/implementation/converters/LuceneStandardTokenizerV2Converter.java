@@ -11,8 +11,6 @@ import com.azure.search.documents.models.LuceneStandardTokenizerV2;
  * {@link LuceneStandardTokenizerV2}.
  */
 public final class LuceneStandardTokenizerV2Converter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LuceneStandardTokenizerV2} to
      * {@link LuceneStandardTokenizerV2}.

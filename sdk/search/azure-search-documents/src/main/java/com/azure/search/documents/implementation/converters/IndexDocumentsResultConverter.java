@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
@@ -16,8 +15,6 @@ import java.util.stream.Collectors;
  * {@link IndexDocumentsResult}.
  */
 public final class IndexDocumentsResultConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexDocumentsResult} to
      * {@link IndexDocumentsResult}.

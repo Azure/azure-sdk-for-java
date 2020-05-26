@@ -12,8 +12,6 @@ import com.azure.search.documents.models.SynonymMap;
  * A converter between {@link com.azure.search.documents.implementation.models.SynonymMap} and {@link SynonymMap}.
  */
 public final class SynonymMapConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SynonymMap} to {@link SynonymMap}.
      */

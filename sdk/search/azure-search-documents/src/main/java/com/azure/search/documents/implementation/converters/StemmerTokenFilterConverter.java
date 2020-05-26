@@ -12,8 +12,6 @@ import com.azure.search.documents.models.StemmerTokenFilterLanguage;
  * {@link StemmerTokenFilter}.
  */
 public final class StemmerTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.StemmerTokenFilter} to
      * {@link StemmerTokenFilter}.

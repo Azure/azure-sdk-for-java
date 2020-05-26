@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.InputFieldMappingEntry;
 
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.stream.Collectors;
  * {@link InputFieldMappingEntry}.
  */
 public final class InputFieldMappingEntryConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.InputFieldMappingEntry} to
      * {@link InputFieldMappingEntry}.

@@ -11,8 +11,6 @@ import com.azure.search.documents.models.SplitSkillLanguage;
  * {@link SplitSkillLanguage}.
  */
 public final class SplitSkillLanguageConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.SplitSkillLanguage} to enum
      * {@link SplitSkillLanguage}.

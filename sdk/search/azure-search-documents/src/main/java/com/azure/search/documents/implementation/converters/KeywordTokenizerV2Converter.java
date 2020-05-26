@@ -11,8 +11,6 @@ import com.azure.search.documents.models.KeywordTokenizerV2;
  * {@link KeywordTokenizerV2}.
  */
 public final class KeywordTokenizerV2Converter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.KeywordTokenizerV2} to
      * {@link KeywordTokenizerV2}.

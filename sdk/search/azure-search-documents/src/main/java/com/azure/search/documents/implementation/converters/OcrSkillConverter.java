@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.OcrSkill} and {@link OcrSkill}.
  */
 public final class OcrSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.OcrSkill} to {@link OcrSkill}.
      */

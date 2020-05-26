@@ -14,8 +14,6 @@ import java.time.Duration;
  * {@link SearchIndexerLimits}.
  */
 public final class SearchIndexerLimitsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerLimits} to
      * {@link SearchIndexerLimits}.

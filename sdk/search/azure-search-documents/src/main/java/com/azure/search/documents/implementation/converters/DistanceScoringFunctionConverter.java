@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.DistanceScoringFunction;
 import com.azure.search.documents.models.DistanceScoringParameters;
 import com.azure.search.documents.models.ScoringFunctionInterpolation;
@@ -13,8 +12,6 @@ import com.azure.search.documents.models.ScoringFunctionInterpolation;
  * {@link DistanceScoringFunction}.
  */
 public final class DistanceScoringFunctionConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DistanceScoringFunction} to
      * {@link DistanceScoringFunction}.

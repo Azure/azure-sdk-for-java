@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.CorsOptions;
 
@@ -14,8 +13,6 @@ import java.util.List;
  * A converter between {@link com.azure.search.documents.implementation.models.CorsOptions} and {@link CorsOptions}.
  */
 public final class CorsOptionsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.CorsOptions} to {@link CorsOptions}.
      */

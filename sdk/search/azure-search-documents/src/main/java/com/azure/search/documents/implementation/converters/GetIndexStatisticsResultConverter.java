@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.GetIndexStatisticsResult;
 
@@ -12,8 +11,6 @@ import com.azure.search.documents.models.GetIndexStatisticsResult;
  * {@link GetIndexStatisticsResult}.
  */
 public final class GetIndexStatisticsResultConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.GetIndexStatisticsResult} to
      * {@link GetIndexStatisticsResult}.

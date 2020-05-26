@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.IndexingParameters;
 
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.stream.Collectors;
  * {@link IndexingParameters}.
  */
 public final class IndexingParametersConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexingParameters} to
      * {@link IndexingParameters}.

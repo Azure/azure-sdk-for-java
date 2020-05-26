@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.FieldMapping;
 import com.azure.search.documents.models.FieldMappingFunction;
 
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.FieldMappingFunction;
  * A converter between {@link com.azure.search.documents.implementation.models.FieldMapping} and {@link FieldMapping}.
  */
 public final class FieldMappingConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FieldMapping} to {@link FieldMapping}.
      */

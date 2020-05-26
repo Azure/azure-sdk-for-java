@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.EdgeNGramTokenFilterSide;
 import com.azure.search.documents.models.EdgeNGramTokenFilterV2;
 
@@ -12,8 +11,6 @@ import com.azure.search.documents.models.EdgeNGramTokenFilterV2;
  * {@link EdgeNGramTokenFilterV2}.
  */
 public final class EdgeNGramTokenFilterV2Converter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.EdgeNGramTokenFilterV2} to
      * {@link EdgeNGramTokenFilterV2}.

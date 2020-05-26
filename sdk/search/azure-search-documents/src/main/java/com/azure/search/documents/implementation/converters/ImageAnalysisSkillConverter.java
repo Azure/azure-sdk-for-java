@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.ImageAnalysisSkill;
 import com.azure.search.documents.models.ImageAnalysisSkillLanguage;
 import com.azure.search.documents.models.ImageDetail;
@@ -19,8 +18,6 @@ import java.util.stream.Collectors;
  * {@link ImageAnalysisSkill}.
  */
 public final class ImageAnalysisSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ImageAnalysisSkill} to
      * {@link ImageAnalysisSkill}.

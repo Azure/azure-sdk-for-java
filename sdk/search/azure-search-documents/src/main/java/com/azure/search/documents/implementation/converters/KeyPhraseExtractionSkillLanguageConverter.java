@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.KeyPhraseExtractionSkillLanguage;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.KeyPhraseExtractionSkillLanguage;
  * {@link KeyPhraseExtractionSkillLanguage}.
  */
 public final class KeyPhraseExtractionSkillLanguageConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage} to enum
      * {@link KeyPhraseExtractionSkillLanguage}.

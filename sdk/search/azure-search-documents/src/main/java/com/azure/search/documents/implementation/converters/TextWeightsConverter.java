@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.TextWeights} and {@link TextWeights}.
  */
 public final class TextWeightsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TextWeights} to {@link TextWeights}.
      */

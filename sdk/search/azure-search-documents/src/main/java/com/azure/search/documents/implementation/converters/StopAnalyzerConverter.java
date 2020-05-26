@@ -13,8 +13,6 @@ import java.util.List;
  * A converter between {@link com.azure.search.documents.implementation.models.StopAnalyzer} and {@link StopAnalyzer}.
  */
 public final class StopAnalyzerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.StopAnalyzer} to {@link StopAnalyzer}.
      */

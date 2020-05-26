@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.CommonGramTokenFilter;
 
 import java.util.ArrayList;
@@ -14,8 +13,6 @@ import java.util.List;
  * {@link CommonGramTokenFilter}.
  */
 public final class CommonGramTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.CommonGramTokenFilter} to
      * {@link CommonGramTokenFilter}.

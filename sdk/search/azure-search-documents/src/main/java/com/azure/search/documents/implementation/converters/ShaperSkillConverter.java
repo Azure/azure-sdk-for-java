@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.ShaperSkill} and {@link ShaperSkill}.
  */
 public final class ShaperSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ShaperSkill} to {@link ShaperSkill}.
      */

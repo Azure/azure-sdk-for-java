@@ -12,8 +12,6 @@ import com.azure.search.documents.models.MicrosoftTokenizerLanguage;
  * {@link MicrosoftLanguageTokenizer}.
  */
 public final class MicrosoftLanguageTokenizerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer} to
      * {@link MicrosoftLanguageTokenizer}.

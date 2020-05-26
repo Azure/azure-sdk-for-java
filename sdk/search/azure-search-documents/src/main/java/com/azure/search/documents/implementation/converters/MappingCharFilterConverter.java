@@ -14,8 +14,6 @@ import java.util.List;
  * {@link MappingCharFilter}.
  */
 public final class MappingCharFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MappingCharFilter} to
      * {@link MappingCharFilter}.

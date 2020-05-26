@@ -11,8 +11,6 @@ import com.azure.search.documents.models.SearchIndexerDataContainer;
  * {@link SearchIndexerDataContainer}.
  */
 public final class SearchIndexerDataContainerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerDataContainer} to
      * {@link SearchIndexerDataContainer}.

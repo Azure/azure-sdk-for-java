@@ -12,8 +12,6 @@ import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy
  * {@link SoftDeleteColumnDeletionDetectionPolicy}.
  */
 public final class SoftDeleteColumnDeletionDetectionPolicyConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SoftDeleteColumnDeletionDetectionPolicy} to
      * {@link SoftDeleteColumnDeletionDetectionPolicy}.

@@ -11,8 +11,6 @@ import com.azure.search.documents.models.PatternReplaceCharFilter;
  * {@link PatternReplaceCharFilter}.
  */
 public final class PatternReplaceCharFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternReplaceCharFilter} to
      * {@link PatternReplaceCharFilter}.

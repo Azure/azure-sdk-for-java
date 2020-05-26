@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.ConditionalSkill;
 import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
@@ -16,8 +15,6 @@ import java.util.stream.Collectors;
  * {@link ConditionalSkill}.
  */
 public final class ConditionalSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ConditionalSkill} to {@link ConditionalSkill}.
      */

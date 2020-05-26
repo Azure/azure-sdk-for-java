@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
  * {@link NGramTokenizer}.
  */
 public final class NGramTokenizerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.NGramTokenizer} to {@link NGramTokenizer}.
      */

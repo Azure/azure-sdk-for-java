@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SearchResult} and {@link SearchResult}.
  */
 public final class SearchResultConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchResult} to {@link SearchResult}.
      */

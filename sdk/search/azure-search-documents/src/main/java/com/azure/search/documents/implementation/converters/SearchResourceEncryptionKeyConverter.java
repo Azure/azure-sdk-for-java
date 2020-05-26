@@ -12,8 +12,6 @@ import com.azure.search.documents.models.SearchResourceEncryptionKey;
  * {@link SearchResourceEncryptionKey}.
  */
 public final class SearchResourceEncryptionKeyConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchResourceEncryptionKey} to
      * {@link SearchResourceEncryptionKey}.

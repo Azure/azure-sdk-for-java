@@ -14,8 +14,6 @@ import java.util.List;
  * {@link SynonymTokenFilter}.
  */
 public final class SynonymTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SynonymTokenFilter} to
      * {@link SynonymTokenFilter}.

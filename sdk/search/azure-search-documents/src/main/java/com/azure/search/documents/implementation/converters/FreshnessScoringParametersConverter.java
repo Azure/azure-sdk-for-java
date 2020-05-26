@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.FreshnessScoringParameters;
 
 import java.time.Duration;
@@ -13,8 +12,6 @@ import java.time.Duration;
  * {@link FreshnessScoringParameters}.
  */
 public final class FreshnessScoringParametersConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.FreshnessScoringParameters} to
      * {@link FreshnessScoringParameters}.

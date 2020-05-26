@@ -11,8 +11,6 @@ import com.azure.search.documents.models.ShingleTokenFilter;
  * {@link ShingleTokenFilter}.
  */
 public final class ShingleTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ShingleTokenFilter} to
      * {@link ShingleTokenFilter}.

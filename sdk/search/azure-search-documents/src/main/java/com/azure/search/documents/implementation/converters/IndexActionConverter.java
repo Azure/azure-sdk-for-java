@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
@@ -17,8 +16,6 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
      */

@@ -11,8 +11,6 @@ import com.azure.search.documents.models.LimitTokenFilter;
  * {@link LimitTokenFilter}.
  */
 public final class LimitTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LimitTokenFilter} to {@link LimitTokenFilter}.
      */

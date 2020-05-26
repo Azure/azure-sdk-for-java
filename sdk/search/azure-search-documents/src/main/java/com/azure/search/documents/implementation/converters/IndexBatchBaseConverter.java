@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexBatchBase;
@@ -16,8 +15,6 @@ import java.util.stream.Collectors;
  * {@link IndexBatchBase}.
  */
 public final class IndexBatchBaseConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexBatch} to {@link IndexBatchBase}.
      */

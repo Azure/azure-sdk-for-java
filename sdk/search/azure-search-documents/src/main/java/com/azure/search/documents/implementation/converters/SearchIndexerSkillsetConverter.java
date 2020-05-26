@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
  * {@link SearchIndexerSkillset}.
  */
 public final class SearchIndexerSkillsetConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerSkillset} to
      * {@link SearchIndexerSkillset}.

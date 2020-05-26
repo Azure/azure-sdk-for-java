@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.SearchIndexer} and {@link SearchIndexer}.
  */
 public final class SearchIndexerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexer} to {@link SearchIndexer}.
      */

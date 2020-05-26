@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.EntityCategory;
 import com.azure.search.documents.models.EntityRecognitionSkill;
 import com.azure.search.documents.models.EntityRecognitionSkillLanguage;
@@ -18,8 +17,6 @@ import java.util.stream.Collectors;
  * {@link EntityRecognitionSkill}.
  */
 public final class EntityRecognitionSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.EntityRecognitionSkill} to
      * {@link EntityRecognitionSkill}.

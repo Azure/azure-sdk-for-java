@@ -12,8 +12,6 @@ import com.azure.search.documents.models.SearchIndexerError;
  * {@link SearchIndexerError}.
  */
 public final class SearchIndexerErrorConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerError} to
      * {@link SearchIndexerError}.

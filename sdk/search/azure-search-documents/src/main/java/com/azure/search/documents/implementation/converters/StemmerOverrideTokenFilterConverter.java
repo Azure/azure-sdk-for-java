@@ -14,8 +14,6 @@ import java.util.List;
  * {@link StemmerOverrideTokenFilter}.
  */
 public final class StemmerOverrideTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.StemmerOverrideTokenFilter} to
      * {@link StemmerOverrideTokenFilter}.

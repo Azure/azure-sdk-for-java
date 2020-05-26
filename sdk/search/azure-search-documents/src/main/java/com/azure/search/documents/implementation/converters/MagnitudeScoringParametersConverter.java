@@ -11,8 +11,6 @@ import com.azure.search.documents.models.MagnitudeScoringParameters;
  * {@link MagnitudeScoringParameters}.
  */
 public final class MagnitudeScoringParametersConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MagnitudeScoringParameters} to
      * {@link MagnitudeScoringParameters}.

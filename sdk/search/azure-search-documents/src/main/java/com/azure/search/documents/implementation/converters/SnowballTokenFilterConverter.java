@@ -12,8 +12,6 @@ import com.azure.search.documents.models.SnowballTokenFilterLanguage;
  * {@link SnowballTokenFilter}.
  */
 public final class SnowballTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SnowballTokenFilter} to
      * {@link SnowballTokenFilter}.

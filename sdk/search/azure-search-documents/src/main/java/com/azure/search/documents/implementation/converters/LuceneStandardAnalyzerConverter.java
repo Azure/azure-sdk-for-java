@@ -14,8 +14,6 @@ import java.util.List;
  * {@link LuceneStandardAnalyzer}.
  */
 public final class LuceneStandardAnalyzerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LuceneStandardAnalyzer} to
      * {@link LuceneStandardAnalyzer}.

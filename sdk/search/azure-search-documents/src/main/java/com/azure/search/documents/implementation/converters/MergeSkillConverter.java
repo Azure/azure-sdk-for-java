@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.search.documents.implementation.models.MergeSkill} and {@link MergeSkill}.
  */
 public final class MergeSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MergeSkill} to {@link MergeSkill}.
      */

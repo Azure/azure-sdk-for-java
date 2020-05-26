@@ -11,8 +11,6 @@ import com.azure.search.documents.models.LexicalAnalyzerName;
  * {@link LexicalAnalyzerName}.
  */
 public final class LexicalAnalyzerNameConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.LexicalAnalyzerName} to enum
      * {@link LexicalAnalyzerName}.

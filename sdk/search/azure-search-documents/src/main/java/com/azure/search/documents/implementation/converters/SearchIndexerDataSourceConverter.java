@@ -16,8 +16,6 @@ import com.azure.search.documents.models.SearchIndexerDataSourceType;
  * {@link SearchIndexerDataSource}.
  */
 public final class SearchIndexerDataSourceConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerDataSource} to
      * {@link SearchIndexerDataSource}.

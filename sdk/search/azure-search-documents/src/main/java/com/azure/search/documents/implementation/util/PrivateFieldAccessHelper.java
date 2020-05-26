@@ -27,13 +27,17 @@ public class PrivateFieldAccessHelper {
     public static <T> void set(T obj, String fieldName, Object value) {
         try {
             Field f1 = obj.getClass().getDeclaredField(fieldName);
-            AccessController.doPrivileged(new PrivilegedAction<T>() {
-                @Override
-                public T run() {
-                    f1.setAccessible(true);
-                    return null;
-                }
-            });
+            if (f1.canAccess(obj)) {
+                f1.setAccessible(true);
+            } else {
+                AccessController.doPrivileged(new PrivilegedAction<T>() {
+                    @Override
+                    public T run() {
+                        f1.setAccessible(true);
+                        return null;
+                    }
+                });
+            }
             f1.set(obj, value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
@@ -55,13 +59,17 @@ public class PrivateFieldAccessHelper {
 
         try {
             Field f1 = obj.getClass().getDeclaredField(fieldName);
-            AccessController.doPrivileged(new PrivilegedAction<T>() {
-                @Override
-                public T run() {
-                    f1.setAccessible(true);
-                    return null;
-                }
-            });
+            if (f1.canAccess(obj)) {
+                f1.setAccessible(true);
+            } else {
+                AccessController.doPrivileged(new PrivilegedAction<T>() {
+                    @Override
+                    public T run() {
+                        f1.setAccessible(true);
+                        return null;
+                    }
+                });
+            }
             return (I) f1.get(obj);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));

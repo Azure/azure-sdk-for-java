@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.ImageAnalysisSkillLanguage;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.ImageAnalysisSkillLanguage;
  * {@link ImageAnalysisSkillLanguage}.
  */
 public final class ImageAnalysisSkillLanguageConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage} to enum
      * {@link ImageAnalysisSkillLanguage}.

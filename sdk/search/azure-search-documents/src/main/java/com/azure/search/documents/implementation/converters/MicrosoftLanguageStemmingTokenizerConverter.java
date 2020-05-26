@@ -12,8 +12,6 @@ import com.azure.search.documents.models.MicrosoftStemmingTokenizerLanguage;
  * and {@link MicrosoftLanguageStemmingTokenizer}.
  */
 public final class MicrosoftLanguageStemmingTokenizerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer} to
      * {@link MicrosoftLanguageStemmingTokenizer}.

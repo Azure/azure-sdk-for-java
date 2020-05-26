@@ -11,8 +11,6 @@ import com.azure.search.documents.models.SearchIndexerDataSourceType;
  * {@link SearchIndexerDataSourceType}.
  */
 public final class SearchIndexerDataSourceTypeConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.SearchIndexerDataSourceType} to enum
      * {@link SearchIndexerDataSourceType}.

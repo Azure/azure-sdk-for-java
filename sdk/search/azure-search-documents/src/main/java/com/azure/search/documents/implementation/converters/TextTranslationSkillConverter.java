@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
  * {@link TextTranslationSkill}.
  */
 public final class TextTranslationSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TextTranslationSkill} to
      * {@link TextTranslationSkill}.

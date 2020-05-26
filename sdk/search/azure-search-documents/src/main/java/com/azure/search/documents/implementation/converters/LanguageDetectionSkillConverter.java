@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
  * {@link LanguageDetectionSkill}.
  */
 public final class LanguageDetectionSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LanguageDetectionSkill} to
      * {@link LanguageDetectionSkill}.

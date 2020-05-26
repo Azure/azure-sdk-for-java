@@ -11,8 +11,6 @@ import com.azure.search.documents.models.OcrSkillLanguage;
  * {@link OcrSkillLanguage}.
  */
 public final class OcrSkillLanguageConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.OcrSkillLanguage} to enum
      * {@link OcrSkillLanguage}.

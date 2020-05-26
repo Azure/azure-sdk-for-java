@@ -13,8 +13,6 @@ import com.azure.search.documents.models.ServiceStatistics;
  * {@link ServiceStatistics}.
  */
 public final class ServiceStatisticsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ServiceStatistics} to
      * {@link ServiceStatistics}.

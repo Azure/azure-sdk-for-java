@@ -13,8 +13,6 @@ import java.util.UUID;
  * {@link RequestOptions}.
  */
 public final class RequestOptionsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.RequestOptions} to {@link RequestOptions}.
      */

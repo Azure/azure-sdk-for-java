@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
  * {@link PatternTokenizer}.
  */
 public final class PatternTokenizerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternTokenizer} to {@link PatternTokenizer}.
      */

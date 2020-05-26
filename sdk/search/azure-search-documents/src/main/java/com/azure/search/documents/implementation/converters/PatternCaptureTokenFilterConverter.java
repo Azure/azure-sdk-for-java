@@ -14,8 +14,6 @@ import java.util.List;
  * {@link PatternCaptureTokenFilter}.
  */
 public final class PatternCaptureTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternCaptureTokenFilter} to
      * {@link PatternCaptureTokenFilter}.

@@ -12,8 +12,6 @@ import com.azure.search.documents.models.ServiceCounters;
  * {@link ServiceCounters}.
  */
 public final class ServiceCountersConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ServiceCounters} to {@link ServiceCounters}.
      */

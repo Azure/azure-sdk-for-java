@@ -15,8 +15,6 @@ import java.util.List;
  * {@link SuggestOptions}.
  */
 public final class SuggestOptionsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SuggestOptions} to {@link SuggestOptions}.
      */

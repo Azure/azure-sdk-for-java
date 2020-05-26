@@ -14,8 +14,6 @@ import java.util.List;
  * A converter between {@link com.azure.search.documents.implementation.models.Suggester} and {@link Suggester}.
  */
 public final class SuggesterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.Suggester} to {@link Suggester}.
      */

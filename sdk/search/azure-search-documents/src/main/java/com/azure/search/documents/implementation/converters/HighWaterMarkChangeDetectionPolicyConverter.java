@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
  * and {@link HighWaterMarkChangeDetectionPolicy}.
  */
 public final class HighWaterMarkChangeDetectionPolicyConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy} to
      * {@link HighWaterMarkChangeDetectionPolicy}.

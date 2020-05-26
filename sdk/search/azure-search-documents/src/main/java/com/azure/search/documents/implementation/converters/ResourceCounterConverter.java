@@ -11,8 +11,6 @@ import com.azure.search.documents.models.ResourceCounter;
  * {@link ResourceCounter}.
  */
 public final class ResourceCounterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ResourceCounter} to {@link ResourceCounter}.
      */

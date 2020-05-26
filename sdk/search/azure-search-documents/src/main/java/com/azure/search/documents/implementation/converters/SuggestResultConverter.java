@@ -14,8 +14,6 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.SuggestResult} and {@link SuggestResult}.
  */
 public final class SuggestResultConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SuggestResult} to {@link SuggestResult}.
      */

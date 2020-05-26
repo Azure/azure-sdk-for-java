@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.KeyPhraseExtractionSkill;
 import com.azure.search.documents.models.KeyPhraseExtractionSkillLanguage;
@@ -17,8 +16,6 @@ import java.util.stream.Collectors;
  * {@link KeyPhraseExtractionSkill}.
  */
 public final class KeyPhraseExtractionSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill} to
      * {@link KeyPhraseExtractionSkill}.

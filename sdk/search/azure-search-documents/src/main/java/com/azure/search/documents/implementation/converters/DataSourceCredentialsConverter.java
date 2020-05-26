@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.DataSourceCredentials;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.DataSourceCredentials;
  * {@link DataSourceCredentials}.
  */
 public final class DataSourceCredentialsConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DataSourceCredentials} to
      * {@link DataSourceCredentials}.

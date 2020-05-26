@@ -10,8 +10,6 @@ import com.azure.search.documents.models.Similarity;
  * A converter between {@link com.azure.search.documents.implementation.models.Similarity} and {@link Similarity}.
  */
 public final class SimilarityConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.Similarity} to {@link Similarity}.
      */

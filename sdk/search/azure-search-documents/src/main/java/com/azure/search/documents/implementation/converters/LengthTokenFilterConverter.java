@@ -11,8 +11,6 @@ import com.azure.search.documents.models.LengthTokenFilter;
  * {@link LengthTokenFilter}.
  */
 public final class LengthTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.LengthTokenFilter} to
      * {@link LengthTokenFilter}.

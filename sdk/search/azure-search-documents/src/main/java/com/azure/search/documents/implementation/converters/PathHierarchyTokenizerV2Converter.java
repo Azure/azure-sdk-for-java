@@ -11,8 +11,6 @@ import com.azure.search.documents.models.PathHierarchyTokenizerV2;
  * {@link PathHierarchyTokenizerV2}.
  */
 public final class PathHierarchyTokenizerV2Converter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PathHierarchyTokenizerV2} to
      * {@link PathHierarchyTokenizerV2}.

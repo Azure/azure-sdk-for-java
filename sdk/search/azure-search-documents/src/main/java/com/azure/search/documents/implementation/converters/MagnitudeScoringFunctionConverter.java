@@ -13,8 +13,6 @@ import com.azure.search.documents.models.ScoringFunctionInterpolation;
  * {@link MagnitudeScoringFunction}.
  */
 public final class MagnitudeScoringFunctionConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.MagnitudeScoringFunction} to
      * {@link MagnitudeScoringFunction}.

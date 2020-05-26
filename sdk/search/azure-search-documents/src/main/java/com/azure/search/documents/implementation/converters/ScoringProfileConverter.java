@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
  * {@link ScoringProfile}.
  */
 public final class ScoringProfileConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.ScoringProfile} to {@link ScoringProfile}.
      */

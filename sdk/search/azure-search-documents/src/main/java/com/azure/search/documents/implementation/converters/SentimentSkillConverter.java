@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
  * {@link SentimentSkill}.
  */
 public final class SentimentSkillConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SentimentSkill} to {@link SentimentSkill}.
      */

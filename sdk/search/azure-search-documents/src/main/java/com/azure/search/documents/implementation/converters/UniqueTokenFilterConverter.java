@@ -11,8 +11,6 @@ import com.azure.search.documents.models.UniqueTokenFilter;
  * {@link UniqueTokenFilter}.
  */
 public final class UniqueTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.UniqueTokenFilter} to
      * {@link UniqueTokenFilter}.

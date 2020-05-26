@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.DefaultCognitiveServicesAccount;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.DefaultCognitiveServicesAccount;
  * {@link DefaultCognitiveServicesAccount}.
  */
 public final class DefaultCognitiveServicesAccountConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.DefaultCognitiveServicesAccount} to
      * {@link DefaultCognitiveServicesAccount}.

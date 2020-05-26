@@ -11,8 +11,6 @@ import com.azure.search.documents.models.SearchFieldDataType;
  * {@link SearchFieldDataType}.
  */
 public final class SearchFieldDataTypeConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.SearchFieldDataType} to enum
      * {@link SearchFieldDataType}.

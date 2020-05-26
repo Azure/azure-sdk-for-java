@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.EntityRecognitionSkillLanguage;
 
 /**
@@ -11,8 +10,6 @@ import com.azure.search.documents.models.EntityRecognitionSkillLanguage;
  * {@link EntityRecognitionSkillLanguage}.
  */
 public final class EntityRecognitionSkillLanguageConverter {
-
-
     /**
      * Maps from enum {@link com.azure.search.documents.implementation.models.EntityRecognitionSkillLanguage} to enum
      * {@link EntityRecognitionSkillLanguage}.

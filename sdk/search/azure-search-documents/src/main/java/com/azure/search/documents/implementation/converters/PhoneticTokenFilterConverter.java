@@ -12,8 +12,6 @@ import com.azure.search.documents.models.PhoneticTokenFilter;
  * {@link PhoneticTokenFilter}.
  */
 public final class PhoneticTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PhoneticTokenFilter} to
      * {@link PhoneticTokenFilter}.

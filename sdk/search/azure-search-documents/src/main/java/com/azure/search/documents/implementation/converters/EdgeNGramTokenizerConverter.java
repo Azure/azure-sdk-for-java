@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.EdgeNGramTokenizer;
 import com.azure.search.documents.models.TokenCharacterKind;
 
@@ -15,8 +14,6 @@ import java.util.stream.Collectors;
  * {@link EdgeNGramTokenizer}.
  */
 public final class EdgeNGramTokenizerConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.EdgeNGramTokenizer} to
      * {@link EdgeNGramTokenizer}.

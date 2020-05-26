@@ -15,8 +15,6 @@ import java.util.List;
  * {@link StopwordsTokenFilter}.
  */
 public final class StopwordsTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.StopwordsTokenFilter} to
      * {@link StopwordsTokenFilter}.

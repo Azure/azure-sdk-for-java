@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * {@link CustomAnalyzer}.
  */
 public final class CustomAnalyzerConverter {
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.CustomAnalyzer} to {@link CustomAnalyzer}.
      */

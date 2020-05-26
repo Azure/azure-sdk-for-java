@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
  * {@link SearchIndexerStatus}.
  */
 public final class SearchIndexerStatusConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerStatus} to
      * {@link SearchIndexerStatus}.

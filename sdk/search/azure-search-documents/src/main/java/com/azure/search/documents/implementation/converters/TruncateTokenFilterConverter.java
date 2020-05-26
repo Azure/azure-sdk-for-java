@@ -11,8 +11,6 @@ import com.azure.search.documents.models.TruncateTokenFilter;
  * {@link TruncateTokenFilter}.
  */
 public final class TruncateTokenFilterConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TruncateTokenFilter} to
      * {@link TruncateTokenFilter}.

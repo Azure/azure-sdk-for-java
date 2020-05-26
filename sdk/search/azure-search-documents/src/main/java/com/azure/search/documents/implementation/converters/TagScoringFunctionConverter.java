@@ -13,8 +13,6 @@ import com.azure.search.documents.models.TagScoringParameters;
  * {@link TagScoringFunction}.
  */
 public final class TagScoringFunctionConverter {
-
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.TagScoringFunction} to
      * {@link TagScoringFunction}.
