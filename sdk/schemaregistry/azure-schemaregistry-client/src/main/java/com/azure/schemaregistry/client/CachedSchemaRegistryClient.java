@@ -23,12 +23,13 @@ import java.util.function.Function;
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  * <p>
- * Utilizes in-memory HashMap caching to minimize network I/O.
+ * Utilizes in-memory {@link Map} caching to minimize network I/O. Max size can be configured when instantiating by using {@link CachedSchemaRegistryClientBuilder#maxSchemaMapSize}, otherwise {@code 1000} will be used as the default.
  * <p>
- * Max HashMap size can be configured when instantiating.
- * Two maps are maintained -
- * - SchemaRegistryObject cache by GUID - stores GUIDs previously seen in payloads
- * - SchemaRegistryObject cache by schema string - minimizes HTTP calls when sending payloads of same schema
+ * Two maps are maintained.
+ * <ul>
+ * <li>SchemaRegistryObject cache by GUID - stores GUIDs previously seen in payloads.</li>
+ * <li>SchemaRegistryObject cache by schema string - minimizes HTTP calls when sending payloads of same schema.</li>
+ * </ul>
  * <p>
  * TODO: implement max age for schema maps? or will schemas always be immutable?
  *
