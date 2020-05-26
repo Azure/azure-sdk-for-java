@@ -26,19 +26,17 @@ public class PrivateFieldAccessHelper {
     @SuppressWarnings("unchecked")
     public static <T> void set(T obj, String fieldName, Object value) {
         try {
-            Field f1 = obj.getClass().getDeclaredField(fieldName);
-            if (f1.canAccess(obj)) {
-                f1.setAccessible(true);
-            } else {
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            if (!field.isAccessible()) {
                 AccessController.doPrivileged(new PrivilegedAction<T>() {
                     @Override
                     public T run() {
-                        f1.setAccessible(true);
+                        field.setAccessible(true);
                         return null;
                     }
                 });
             }
-            f1.set(obj, value);
+            field.set(obj, value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -58,19 +56,17 @@ public class PrivateFieldAccessHelper {
     public static <T, I> I get(T obj, String fieldName, Class<I> outputClass) {
 
         try {
-            Field f1 = obj.getClass().getDeclaredField(fieldName);
-            if (f1.canAccess(obj)) {
-                f1.setAccessible(true);
-            } else {
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            if (!field.isAccessible()) {
                 AccessController.doPrivileged(new PrivilegedAction<T>() {
                     @Override
                     public T run() {
-                        f1.setAccessible(true);
+                        field.setAccessible(true);
                         return null;
                     }
                 });
             }
-            return (I) f1.get(obj);
+            return (I) field.get(obj);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
