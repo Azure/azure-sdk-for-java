@@ -15,7 +15,6 @@ public class BlobParallelUploadOptions {
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
-    private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
 
@@ -64,22 +63,6 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * @return The tags to associate with the blob.
-     */
-    public Map<String, String> getTags() {
-        return tags;
-    }
-
-    /**
-     * @param tags The tags to associate with the blob.
-     * @return The updated options.
-     */
-    public BlobParallelUploadOptions setTags(Map<String, String> tags) {
-        this.tags = tags;
         return this;
     }
 
