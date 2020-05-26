@@ -250,15 +250,6 @@ public class ReactorSession implements AmqpSession {
     }
 
     public Mono<AmqpTransaction> createTransaction() {
-       /* return Mono.defer(() -> {
-            ReactorCoordinator coordinator = null;
-
-            return coordinator
-                .createTransaction()
-                .map(deliveryState -> {
-                    return new AmqpTransaction(null);
-                });
-        });*/
         return createTransactionCoordinator()
             .cast(ReactorCoordinator.class)
             .flatMap(amqpCoordinatorLink -> {
@@ -271,12 +262,6 @@ public class ReactorSession implements AmqpSession {
     }
 
     public Mono<Void> commitTransaction(AmqpTransaction transaction) {
-        /*return Mono.defer(() -> {
-            ReactorCoordinator coordinator = null;
-            return coordinator
-                .completeTransaction(transaction, true);
-        }).then();*/
-
         return createTransactionCoordinator()
             .cast(ReactorCoordinator.class)
             .flatMap(amqpCoordinatorLink -> {
@@ -286,11 +271,6 @@ public class ReactorSession implements AmqpSession {
     }
 
     public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
-       /* return Mono.defer(() -> {
-            ReactorCoordinator coordinator = null;
-            return coordinator
-                .completeTransaction(transaction, false);
-        }).then();*/
         return createTransactionCoordinator()
             .cast(ReactorCoordinator.class)
             .flatMap(amqpCoordinatorLink -> {
