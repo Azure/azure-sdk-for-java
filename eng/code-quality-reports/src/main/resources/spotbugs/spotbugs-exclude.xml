@@ -710,7 +710,7 @@
     <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
-  
+
   <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
