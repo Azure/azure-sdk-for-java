@@ -38,7 +38,7 @@ class SerializerEncodingTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"text/plain", "application/plain", "application/custom+plain"})
+    @ValueSource(strings = {"text/plain", "text/custom+plain"})
     void recognizeTest(String mimeType) {
         // Arrange
         HttpHeaders headers = new HttpHeaders(Collections.singletonMap(CONTENT_TYPE, mimeType));
