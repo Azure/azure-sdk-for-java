@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.azure.core.serializer.avro.jackson;
+package com.azure.core.serializer.avro.jackson.generatedtestsources;
 
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 8790627648222342141L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"HandOfCards\",\"namespace\":\"com.azure.core.serializer.avro.jackson\",\"fields\":[{\"name\":\"cards\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"PlayingCard\",\"fields\":[{\"name\":\"isFaceCard\",\"type\":\"boolean\"},{\"name\":\"cardValue\",\"type\":\"int\"},{\"name\":\"playingCardSuit\",\"type\":{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}}]}}}]}");
+  private static final long serialVersionUID = -8755587661505122008L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"HandOfCards\",\"namespace\":\"com.azure.core.serializer.avro.jackson.generatedtestsources\",\"fields\":[{\"name\":\"cards\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"PlayingCard\",\"fields\":[{\"name\":\"isFaceCard\",\"type\":\"boolean\"},{\"name\":\"cardValue\",\"type\":\"int\"},{\"name\":\"playingCardSuit\",\"type\":{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}}]}}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -51,7 +51,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard> cards;
+  @Deprecated public java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard> cards;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -64,7 +64,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * All-args constructor.
    * @param cards The new value for cards
    */
-  public HandOfCards(java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard> cards) {
+  public HandOfCards(java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard> cards) {
     this.cards = cards;
   }
 
@@ -81,7 +81,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: cards = (java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard>)value$; break;
+    case 0: cards = (java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -90,7 +90,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * Gets the value of the 'cards' field.
    * @return The value of the 'cards' field.
    */
-  public java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard> getCards() {
+  public java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard> getCards() {
     return cards;
   }
 
@@ -98,7 +98,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * Sets the value of the 'cards' field.
    * @param value the value to set.
    */
-  public void setCards(java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard> value) {
+  public void setCards(java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard> value) {
     this.cards = value;
   }
 
@@ -106,8 +106,8 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * Creates a new HandOfCards RecordBuilder.
    * @return A new HandOfCards RecordBuilder
    */
-  public static com.azure.core.serializer.avro.jackson.HandOfCards.Builder newBuilder() {
-    return new com.azure.core.serializer.avro.jackson.HandOfCards.Builder();
+  public static com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder newBuilder() {
+    return new com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder();
   }
 
   /**
@@ -115,8 +115,8 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * @param other The existing builder to copy.
    * @return A new HandOfCards RecordBuilder
    */
-  public static com.azure.core.serializer.avro.jackson.HandOfCards.Builder newBuilder(com.azure.core.serializer.avro.jackson.HandOfCards.Builder other) {
-    return new com.azure.core.serializer.avro.jackson.HandOfCards.Builder(other);
+  public static com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder newBuilder(com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder other) {
+    return new com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder(other);
   }
 
   /**
@@ -124,8 +124,8 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * @param other The existing instance to copy.
    * @return A new HandOfCards RecordBuilder
    */
-  public static com.azure.core.serializer.avro.jackson.HandOfCards.Builder newBuilder(com.azure.core.serializer.avro.jackson.HandOfCards other) {
-    return new com.azure.core.serializer.avro.jackson.HandOfCards.Builder(other);
+  public static com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder newBuilder(com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards other) {
+    return new com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder(other);
   }
 
   /**
@@ -134,7 +134,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<HandOfCards>
     implements org.apache.avro.data.RecordBuilder<HandOfCards> {
 
-    private java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard> cards;
+    private java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard> cards;
 
     /** Creates a new Builder */
     private Builder() {
@@ -145,7 +145,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.azure.core.serializer.avro.jackson.HandOfCards.Builder other) {
+    private Builder(com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.cards)) {
         this.cards = data().deepCopy(fields()[0].schema(), other.cards);
@@ -157,7 +157,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
      * Creates a Builder by copying an existing HandOfCards instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.azure.core.serializer.avro.jackson.HandOfCards other) {
+    private Builder(com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.cards)) {
         this.cards = data().deepCopy(fields()[0].schema(), other.cards);
@@ -169,7 +169,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
       * Gets the value of the 'cards' field.
       * @return The value.
       */
-    public java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard> getCards() {
+    public java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard> getCards() {
       return cards;
     }
 
@@ -178,7 +178,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'cards'.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.HandOfCards.Builder setCards(java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard> value) {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder setCards(java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard> value) {
       validate(fields()[0], value);
       this.cards = value;
       fieldSetFlags()[0] = true;
@@ -198,7 +198,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
       * Clears the value of the 'cards' field.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.HandOfCards.Builder clearCards() {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards.Builder clearCards() {
       cards = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -209,7 +209,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
     public HandOfCards build() {
       try {
         HandOfCards record = new HandOfCards();
-        record.cards = fieldSetFlags()[0] ? this.cards : (java.util.List<com.azure.core.serializer.avro.jackson.PlayingCard>) defaultValue(fields()[0]);
+        record.cards = fieldSetFlags()[0] ? this.cards : (java.util.List<com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard>) defaultValue(fields()[0]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

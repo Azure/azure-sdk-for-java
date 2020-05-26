@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.azure.core.serializer.avro.apache;
+package com.azure.core.serializer.avro.apache.generatedtestsources;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -2989178009892367550L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"LongLinkedList\",\"namespace\":\"com.azure.core.serializer.avro.apache\",\"fields\":[{\"name\":\"value\",\"type\":\"long\"},{\"name\":\"next\",\"type\":[\"null\",\"LongLinkedList\"]}]}");
+  private static final long serialVersionUID = -625315422198935082L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"LongLinkedList\",\"namespace\":\"com.azure.core.serializer.avro.apache.generatedtestsources\",\"fields\":[{\"name\":\"value\",\"type\":\"long\"},{\"name\":\"next\",\"type\":[\"null\",\"LongLinkedList\"]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,7 +72,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   @Deprecated public long value;
-  @Deprecated public com.azure.core.serializer.avro.apache.LongLinkedList next;
+  @Deprecated public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList next;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -86,7 +86,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
    * @param value The new value for value
    * @param next The new value for next
    */
-  public LongLinkedList(java.lang.Long value, com.azure.core.serializer.avro.apache.LongLinkedList next) {
+  public LongLinkedList(java.lang.Long value, com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList next) {
     this.value = value;
     this.next = next;
   }
@@ -107,7 +107,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: value = (java.lang.Long)value$; break;
-    case 1: next = (com.azure.core.serializer.avro.apache.LongLinkedList)value$; break;
+    case 1: next = (com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -133,7 +133,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'next' field.
    * @return The value of the 'next' field.
    */
-  public com.azure.core.serializer.avro.apache.LongLinkedList getNext() {
+  public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList getNext() {
     return next;
   }
 
@@ -142,7 +142,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
    * Sets the value of the 'next' field.
    * @param value the value to set.
    */
-  public void setNext(com.azure.core.serializer.avro.apache.LongLinkedList value) {
+  public void setNext(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList value) {
     this.next = value;
   }
 
@@ -150,8 +150,8 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
    * Creates a new LongLinkedList RecordBuilder.
    * @return A new LongLinkedList RecordBuilder
    */
-  public static com.azure.core.serializer.avro.apache.LongLinkedList.Builder newBuilder() {
-    return new com.azure.core.serializer.avro.apache.LongLinkedList.Builder();
+  public static com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder newBuilder() {
+    return new com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder();
   }
 
   /**
@@ -159,11 +159,11 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
    * @param other The existing builder to copy.
    * @return A new LongLinkedList RecordBuilder
    */
-  public static com.azure.core.serializer.avro.apache.LongLinkedList.Builder newBuilder(com.azure.core.serializer.avro.apache.LongLinkedList.Builder other) {
+  public static com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder newBuilder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder other) {
     if (other == null) {
-      return new com.azure.core.serializer.avro.apache.LongLinkedList.Builder();
+      return new com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder();
     } else {
-      return new com.azure.core.serializer.avro.apache.LongLinkedList.Builder(other);
+      return new com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder(other);
     }
   }
 
@@ -172,11 +172,11 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
    * @param other The existing instance to copy.
    * @return A new LongLinkedList RecordBuilder
    */
-  public static com.azure.core.serializer.avro.apache.LongLinkedList.Builder newBuilder(com.azure.core.serializer.avro.apache.LongLinkedList other) {
+  public static com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder newBuilder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList other) {
     if (other == null) {
-      return new com.azure.core.serializer.avro.apache.LongLinkedList.Builder();
+      return new com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder();
     } else {
-      return new com.azure.core.serializer.avro.apache.LongLinkedList.Builder(other);
+      return new com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder(other);
     }
   }
 
@@ -188,8 +188,8 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
     implements org.apache.avro.data.RecordBuilder<LongLinkedList> {
 
     private long value;
-    private com.azure.core.serializer.avro.apache.LongLinkedList next;
-    private com.azure.core.serializer.avro.apache.LongLinkedList.Builder nextBuilder;
+    private com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList next;
+    private com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder nextBuilder;
 
     /** Creates a new Builder */
     private Builder() {
@@ -200,7 +200,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.azure.core.serializer.avro.apache.LongLinkedList.Builder other) {
+    private Builder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.value)) {
         this.value = data().deepCopy(fields()[0].schema(), other.value);
@@ -211,7 +211,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (other.hasNextBuilder()) {
-        this.nextBuilder = com.azure.core.serializer.avro.apache.LongLinkedList.newBuilder(other.getNextBuilder());
+        this.nextBuilder = com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.newBuilder(other.getNextBuilder());
       }
     }
 
@@ -219,7 +219,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
      * Creates a Builder by copying an existing LongLinkedList instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.azure.core.serializer.avro.apache.LongLinkedList other) {
+    private Builder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.value)) {
         this.value = data().deepCopy(fields()[0].schema(), other.value);
@@ -246,7 +246,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.apache.LongLinkedList.Builder setValue(long value) {
+    public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder setValue(long value) {
       validate(fields()[0], value);
       this.value = value;
       fieldSetFlags()[0] = true;
@@ -266,7 +266,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
       * Clears the value of the 'value' field.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.apache.LongLinkedList.Builder clearValue() {
+    public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder clearValue() {
       fieldSetFlags()[0] = false;
       return this;
     }
@@ -275,7 +275,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
       * Gets the value of the 'next' field.
       * @return The value.
       */
-    public com.azure.core.serializer.avro.apache.LongLinkedList getNext() {
+    public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList getNext() {
       return next;
     }
 
@@ -285,7 +285,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'next'.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.apache.LongLinkedList.Builder setNext(com.azure.core.serializer.avro.apache.LongLinkedList value) {
+    public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder setNext(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList value) {
       validate(fields()[1], value);
       this.nextBuilder = null;
       this.next = value;
@@ -305,12 +305,12 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
      * Gets the Builder instance for the 'next' field and creates one if it doesn't exist yet.
      * @return This builder.
      */
-    public com.azure.core.serializer.avro.apache.LongLinkedList.Builder getNextBuilder() {
+    public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder getNextBuilder() {
       if (nextBuilder == null) {
         if (hasNext()) {
-          setNextBuilder(com.azure.core.serializer.avro.apache.LongLinkedList.newBuilder(next));
+          setNextBuilder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.newBuilder(next));
         } else {
-          setNextBuilder(com.azure.core.serializer.avro.apache.LongLinkedList.newBuilder());
+          setNextBuilder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.newBuilder());
         }
       }
       return nextBuilder;
@@ -321,7 +321,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
      * @param value The builder instance that must be set.
      * @return This builder.
      */
-    public com.azure.core.serializer.avro.apache.LongLinkedList.Builder setNextBuilder(com.azure.core.serializer.avro.apache.LongLinkedList.Builder value) {
+    public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder setNextBuilder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder value) {
       clearNext();
       nextBuilder = value;
       return this;
@@ -339,7 +339,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
       * Clears the value of the 'next' field.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.apache.LongLinkedList.Builder clearNext() {
+    public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder clearNext() {
       next = null;
       nextBuilder = null;
       fieldSetFlags()[1] = false;
@@ -360,7 +360,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
             throw e;
           }
         } else {
-          record.next = fieldSetFlags()[1] ? this.next : (com.azure.core.serializer.avro.apache.LongLinkedList) defaultValue(fields()[1]);
+          record.next = fieldSetFlags()[1] ? this.next : (com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList) defaultValue(fields()[1]);
         }
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
@@ -418,7 +418,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
         this.next = null;
       } else {
         if (this.next == null) {
-          this.next = new com.azure.core.serializer.avro.apache.LongLinkedList();
+          this.next = new com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList();
         }
         this.next.customDecode(in);
       }
@@ -436,7 +436,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
             this.next = null;
           } else {
             if (this.next == null) {
-              this.next = new com.azure.core.serializer.avro.apache.LongLinkedList();
+              this.next = new com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList();
             }
             this.next.customDecode(in);
           }

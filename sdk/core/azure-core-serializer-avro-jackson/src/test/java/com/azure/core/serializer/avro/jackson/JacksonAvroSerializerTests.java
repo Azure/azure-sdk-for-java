@@ -4,6 +4,10 @@
 package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.serializer.AvroSerializer;
+import com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards;
+import com.azure.core.serializer.avro.jackson.generatedtestsources.LongLinkedList;
+import com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard;
+import com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

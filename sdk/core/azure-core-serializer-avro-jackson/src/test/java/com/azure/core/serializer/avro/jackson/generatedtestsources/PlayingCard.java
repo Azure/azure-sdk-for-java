@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.azure.core.serializer.avro.jackson;
+package com.azure.core.serializer.avro.jackson.generatedtestsources;
 
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -8817427380885223863L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PlayingCard\",\"namespace\":\"com.azure.core.serializer.avro.jackson\",\"fields\":[{\"name\":\"isFaceCard\",\"type\":\"boolean\"},{\"name\":\"cardValue\",\"type\":\"int\"},{\"name\":\"playingCardSuit\",\"type\":{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}}]}");
+  private static final long serialVersionUID = -753700996651643516L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PlayingCard\",\"namespace\":\"com.azure.core.serializer.avro.jackson.generatedtestsources\",\"fields\":[{\"name\":\"isFaceCard\",\"type\":\"boolean\"},{\"name\":\"cardValue\",\"type\":\"int\"},{\"name\":\"playingCardSuit\",\"type\":{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -53,7 +53,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
 
   @Deprecated public boolean isFaceCard;
   @Deprecated public int cardValue;
-  @Deprecated public com.azure.core.serializer.avro.jackson.PlayingCardSuit playingCardSuit;
+  @Deprecated public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit playingCardSuit;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -68,7 +68,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
    * @param cardValue The new value for cardValue
    * @param playingCardSuit The new value for playingCardSuit
    */
-  public PlayingCard(java.lang.Boolean isFaceCard, java.lang.Integer cardValue, com.azure.core.serializer.avro.jackson.PlayingCardSuit playingCardSuit) {
+  public PlayingCard(java.lang.Boolean isFaceCard, java.lang.Integer cardValue, com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit playingCardSuit) {
     this.isFaceCard = isFaceCard;
     this.cardValue = cardValue;
     this.playingCardSuit = playingCardSuit;
@@ -91,7 +91,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
     switch (field$) {
     case 0: isFaceCard = (java.lang.Boolean)value$; break;
     case 1: cardValue = (java.lang.Integer)value$; break;
-    case 2: playingCardSuit = (com.azure.core.serializer.avro.jackson.PlayingCardSuit)value$; break;
+    case 2: playingCardSuit = (com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -132,7 +132,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
    * Gets the value of the 'playingCardSuit' field.
    * @return The value of the 'playingCardSuit' field.
    */
-  public com.azure.core.serializer.avro.jackson.PlayingCardSuit getPlayingCardSuit() {
+  public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit getPlayingCardSuit() {
     return playingCardSuit;
   }
 
@@ -140,7 +140,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
    * Sets the value of the 'playingCardSuit' field.
    * @param value the value to set.
    */
-  public void setPlayingCardSuit(com.azure.core.serializer.avro.jackson.PlayingCardSuit value) {
+  public void setPlayingCardSuit(com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit value) {
     this.playingCardSuit = value;
   }
 
@@ -148,8 +148,8 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
    * Creates a new PlayingCard RecordBuilder.
    * @return A new PlayingCard RecordBuilder
    */
-  public static com.azure.core.serializer.avro.jackson.PlayingCard.Builder newBuilder() {
-    return new com.azure.core.serializer.avro.jackson.PlayingCard.Builder();
+  public static com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder newBuilder() {
+    return new com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder();
   }
 
   /**
@@ -157,8 +157,8 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
    * @param other The existing builder to copy.
    * @return A new PlayingCard RecordBuilder
    */
-  public static com.azure.core.serializer.avro.jackson.PlayingCard.Builder newBuilder(com.azure.core.serializer.avro.jackson.PlayingCard.Builder other) {
-    return new com.azure.core.serializer.avro.jackson.PlayingCard.Builder(other);
+  public static com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder newBuilder(com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder other) {
+    return new com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder(other);
   }
 
   /**
@@ -166,8 +166,8 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
    * @param other The existing instance to copy.
    * @return A new PlayingCard RecordBuilder
    */
-  public static com.azure.core.serializer.avro.jackson.PlayingCard.Builder newBuilder(com.azure.core.serializer.avro.jackson.PlayingCard other) {
-    return new com.azure.core.serializer.avro.jackson.PlayingCard.Builder(other);
+  public static com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder newBuilder(com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard other) {
+    return new com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder(other);
   }
 
   /**
@@ -178,7 +178,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
 
     private boolean isFaceCard;
     private int cardValue;
-    private com.azure.core.serializer.avro.jackson.PlayingCardSuit playingCardSuit;
+    private com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit playingCardSuit;
 
     /** Creates a new Builder */
     private Builder() {
@@ -189,7 +189,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.azure.core.serializer.avro.jackson.PlayingCard.Builder other) {
+    private Builder(com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.isFaceCard)) {
         this.isFaceCard = data().deepCopy(fields()[0].schema(), other.isFaceCard);
@@ -209,7 +209,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
      * Creates a Builder by copying an existing PlayingCard instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.azure.core.serializer.avro.jackson.PlayingCard other) {
+    private Builder(com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.isFaceCard)) {
         this.isFaceCard = data().deepCopy(fields()[0].schema(), other.isFaceCard);
@@ -238,7 +238,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'isFaceCard'.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.PlayingCard.Builder setIsFaceCard(boolean value) {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder setIsFaceCard(boolean value) {
       validate(fields()[0], value);
       this.isFaceCard = value;
       fieldSetFlags()[0] = true;
@@ -258,7 +258,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
       * Clears the value of the 'isFaceCard' field.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.PlayingCard.Builder clearIsFaceCard() {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder clearIsFaceCard() {
       fieldSetFlags()[0] = false;
       return this;
     }
@@ -276,7 +276,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'cardValue'.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.PlayingCard.Builder setCardValue(int value) {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder setCardValue(int value) {
       validate(fields()[1], value);
       this.cardValue = value;
       fieldSetFlags()[1] = true;
@@ -296,7 +296,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
       * Clears the value of the 'cardValue' field.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.PlayingCard.Builder clearCardValue() {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder clearCardValue() {
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -305,7 +305,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
       * Gets the value of the 'playingCardSuit' field.
       * @return The value.
       */
-    public com.azure.core.serializer.avro.jackson.PlayingCardSuit getPlayingCardSuit() {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit getPlayingCardSuit() {
       return playingCardSuit;
     }
 
@@ -314,7 +314,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'playingCardSuit'.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.PlayingCard.Builder setPlayingCardSuit(com.azure.core.serializer.avro.jackson.PlayingCardSuit value) {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder setPlayingCardSuit(com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit value) {
       validate(fields()[2], value);
       this.playingCardSuit = value;
       fieldSetFlags()[2] = true;
@@ -334,7 +334,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
       * Clears the value of the 'playingCardSuit' field.
       * @return This builder.
       */
-    public com.azure.core.serializer.avro.jackson.PlayingCard.Builder clearPlayingCardSuit() {
+    public com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard.Builder clearPlayingCardSuit() {
       playingCardSuit = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -347,7 +347,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
         PlayingCard record = new PlayingCard();
         record.isFaceCard = fieldSetFlags()[0] ? this.isFaceCard : (java.lang.Boolean) defaultValue(fields()[0]);
         record.cardValue = fieldSetFlags()[1] ? this.cardValue : (java.lang.Integer) defaultValue(fields()[1]);
-        record.playingCardSuit = fieldSetFlags()[2] ? this.playingCardSuit : (com.azure.core.serializer.avro.jackson.PlayingCardSuit) defaultValue(fields()[2]);
+        record.playingCardSuit = fieldSetFlags()[2] ? this.playingCardSuit : (com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit) defaultValue(fields()[2]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

@@ -344,7 +344,7 @@
             files="com.azure.storage.blob.BlobClient.java"/>
 
   <!-- Checkstyle rules should not check files in generated-test-sources -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\](generated-test-sources|generatedtestsources)[/\\]"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>

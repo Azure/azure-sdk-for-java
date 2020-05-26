@@ -5,6 +5,7 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import java.util.Stack;
@@ -121,7 +122,8 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
         }
 
         DetailAST annotationToken = modifiersToken.findFirstToken(TokenTypes.ANNOTATION);
-        if (!SERVICE_CLIENT_BUILDER.equals(annotationToken.findFirstToken(TokenTypes.IDENT).getText())) {
+
+        if (!SERVICE_CLIENT_BUILDER.equals(FullIdent.createFullIdent(annotationToken).getText())) {
             return null;
         }
 

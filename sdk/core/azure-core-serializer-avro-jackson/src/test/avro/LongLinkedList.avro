@@ -1,5 +1,5 @@
 {
-  "namespace": "com.azure.core.serializer.avro.jackson",
+  "namespace": "com.azure.core.serializer.avro.jackson.generatedtestsources",
   "type": "record",
   "name": "LongLinkedList",
   "fields": [
