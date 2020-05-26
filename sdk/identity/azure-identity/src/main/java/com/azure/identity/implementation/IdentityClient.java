@@ -480,7 +480,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithPublicClientCache(TokenRequestContext request, IAccount account) {
-        return Mono.defer(() -> Mono.fromFuture(() -> {
+        return Mono.fromFuture(() -> {
             SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                 new HashSet<>(request.getScopes()));
             if (account != null) {
@@ -505,7 +505,7 @@ public class IdentityClient {
                 } catch (MalformedURLException e) {
                     throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
-            }).map(result -> new MsalToken(result, options))));
+            }).map(result -> new MsalToken(result, options)));
     }
 
     /**
@@ -515,7 +515,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request) {
-        return Mono.defer(() -> Mono.fromFuture(() -> {
+        return Mono.fromFuture(() -> {
             SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                 new HashSet<>(request.getScopes()));
             try {
@@ -523,17 +523,8 @@ public class IdentityClient {
             } catch (MalformedURLException e) {
                 throw logger.logExceptionAsError(Exceptions.propagate(e));
             }
-        }).map(ar -> new MsalToken(ar, options))
-            .filter(t -> !t.isExpired())
-            .switchIfEmpty(Mono.fromFuture(() -> {
-                SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
-                    new HashSet<>(request.getScopes())).forceRefresh(true);
-                try {
-                    return getConfidentialClientApplication().acquireTokenSilently(forceParametersBuilder.build());
-                } catch (MalformedURLException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                }
-            }).map(result -> new MsalToken(result, options))));
+        }).map(ar -> (AccessToken) new MsalToken(ar, options))
+            .filter(t -> !t.isExpired());
     }
 
     /**
