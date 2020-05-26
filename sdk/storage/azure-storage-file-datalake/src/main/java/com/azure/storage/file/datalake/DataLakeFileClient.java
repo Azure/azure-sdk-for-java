@@ -594,7 +594,7 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         // Create input stream from the data.
         if (response == null) {
-            throw new IllegalStateException("Query response cannot be null");
+            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
         return new FluxInputStream(response.getValue());
     }
