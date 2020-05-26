@@ -10,6 +10,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -173,16 +174,38 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
+        uploadWithResponse(data, length, new BlobParallelUploadOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
+        .setRequestConditions(requestConditions), timeout, context);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @param options {@link BlobParallelUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     */
+    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobParallelUploadOptions options,
+        Duration timeout, Context context) {
+        BlobParallelUploadOptions blobParallelUploadOptions = options == null ? new BlobParallelUploadOptions()
+            : options;
         final ParallelTransferOptions validatedParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
+            ModelHelper.populateAndApplyDefaults(blobParallelUploadOptions.getParallelTransferOptions());
 
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(Utility.convertStreamToByteBuffer(data, length,
-            validatedParallelTransferOptions.getBlockSize()), validatedParallelTransferOptions, headers, metadata, tier,
-            requestConditions)
+            validatedParallelTransferOptions.getBlockSize()), validatedParallelTransferOptions,
+            blobParallelUploadOptions.getHeaders(), blobParallelUploadOptions.getMetadata(),
+            blobParallelUploadOptions.getTier(), blobParallelUploadOptions.getRequestConditions())
             .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
