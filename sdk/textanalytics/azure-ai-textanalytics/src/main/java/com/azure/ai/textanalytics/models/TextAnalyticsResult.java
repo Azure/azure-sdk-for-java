@@ -80,7 +80,7 @@ public class TextAnalyticsResult {
                 String.format(Locale.ROOT,
                     "Error in accessing the property on document id: %s, when %s returned with an error: %s",
                     this.id, this.getClass().getSimpleName(), this.error.getMessage()),
-                this.error.getErrorCode().toString(), null));
+                this.error.getErrorCode(), null));
         }
     }
 }
