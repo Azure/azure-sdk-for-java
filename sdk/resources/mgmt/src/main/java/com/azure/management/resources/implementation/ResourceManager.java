@@ -5,7 +5,6 @@ package com.azure.management.resources.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.Features;
 import com.azure.management.resources.GenericResources;
@@ -22,6 +21,7 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.resources.models.FeatureClientBuilder;
 import com.azure.management.resources.models.FeatureClientImpl;
 import com.azure.management.resources.models.PolicyClientBuilder;
@@ -133,8 +133,10 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         ResourceManager withSubscription(String subscriptionId);
 
         /**
-         * Specifies to use subscription from Azure profile.
+         * Specifies to use subscription from {@link AzureProfile}. If no subscription provided, we will
+         * try to set the only subscription if applicable returned by {@link Authenticated#subscriptions()}.
          *
+         * @throws IllegalStateException when no subscription or more than one subscription found in the tenant.
          * @return the ResourceManager instance with entry points that work in a subscription
          */
         ResourceManager withDefaultSubscription();
@@ -144,7 +146,6 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * The implementation for Authenticated interface.
      */
     private static final class AuthenticatedImpl implements Authenticated {
-        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private HttpPipeline httpPipeline;
         private AzureProfile profile;
         private SdkContext sdkContext;
@@ -192,8 +193,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+                profile.withSubscriptionId(Utils.defaultSubscription(this.subscriptions().list()));
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
