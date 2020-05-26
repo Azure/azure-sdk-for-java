@@ -24,7 +24,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static com.azure.ai.formrecognizer.FormTrainingAsyncClientTest.EXPECTED_COPY_REQUEST_INVALID_FIELD_TARGET_RESOURCE_REGION;
+import static com.azure.ai.formrecognizer.FormTrainingAsyncClientTest.EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
@@ -296,7 +296,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                     client.getCopyAuthorization(resourceId, resourceRegion);
                 Exception thrown = assertThrows(ErrorResponseException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target));
-                assertEquals(EXPECTED_COPY_REQUEST_INVALID_FIELD_TARGET_RESOURCE_REGION, thrown.getMessage());
+                assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
             });
         });
     }

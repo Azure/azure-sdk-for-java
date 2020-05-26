@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
@@ -33,7 +34,6 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
-import static com.azure.ai.formrecognizer.models.CustomFormModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
-    static final String EXPECTED_COPY_REQUEST_INVALID_FIELD_TARGET_RESOURCE_REGION = "Status code 400, \"{\"error\":{\"code\":\"1002\",\"message\":\"Copy request is invalid. Field 'TargetResourceRegion' must be a valid Azure region name.\"}}\"";
+    static final String EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION = "Status code 400, \"{\"error\":{\"code\":\"1002\",\"message\":\"Copy request is invalid. Field 'TargetResourceRegion' must be a valid Azure region name.\"}}\"";
     private FormTrainingAsyncClient client;
 
     @BeforeAll
@@ -292,7 +292,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 // Expected :2020-05-22T21:30:44Z
                 // Actual   :2020-05-22T21:30:58.511074900Z
                 assertNotNull(actualModel.getLastUpdatedOn());
-                assertEquals(READY, copyModel.getStatus());
+                assertEquals(CustomFormModelStatus.fromString("succeeded"), copyModel.getStatus());
             });
         });
     }
@@ -318,7 +318,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
                 Exception thrown = assertThrows(ErrorResponseException.class,
                     () -> copyPoller.getSyncPoller().getFinalResult());
-                assertEquals(EXPECTED_COPY_REQUEST_INVALID_FIELD_TARGET_RESOURCE_REGION, thrown.getMessage());
+                assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
             });
         });
     }
