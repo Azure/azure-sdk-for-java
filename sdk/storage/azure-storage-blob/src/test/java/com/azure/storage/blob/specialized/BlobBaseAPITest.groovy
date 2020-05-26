@@ -130,13 +130,13 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
-    def "Query csv serialization"() {
+    def "Query csv serialization separator"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
             .setRecordSeparator(recordSeparator as char)
             .setColumnSeparator(columnSeparator as char)
-            .setEscapeChar(escapeChar as char)
-            .setFieldQuote(fieldQuote as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
             .setHeadersPresent(headersPresent)
         uploadCsv(ser, 32)
         def expression = "SELECT * from BlobStorage"
@@ -182,22 +182,82 @@ class BlobBaseAPITest extends APISpec {
             osData == downloadedData
         }
 
-        // To calculate the size of data being tested = numCopies * 32 bytes
         where:
-        recordSeparator | columnSeparator | escapeChar | fieldQuote | headersPresent || _
-        '\n'            | ','             | '\0'       | '\0'       | false          || _ /* Default. */
-        '\n'            | ','             | '\0'       | '\0'       | true           || _ /* Headers. */
-        '\t'            | ','             | '\0'       | '\0'       | false          || _ /* Record Separators. */
-        '\r'            | ','             | '\0'       | '\0'       | false          || _
-        '<'             | ','             | '\0'       | '\0'       | false          || _
-        '>'             | ','             | '\0'       | '\0'       | false          || _
-        '&'             | ','             | '\0'       | '\0'       | false          || _
-        '\\'            | ','             | '\0'       | '\0'       | false          || _
-        ','             | '.'             | '\0'       | '\0'       | false          || _ /* Column separator. */
-//        | ','             | '\0'       | '\\'       | false          || _ /* Field quote. */
+        recordSeparator | columnSeparator | headersPresent || _
+        '\n'            | ','             | false          || _ /* Default. */
+        '\n'            | ','             | true           || _ /* Headers. */
+        '\t'            | ','             | false          || _ /* Record separator. */
+        '\r'            | ','             | false          || _
+        '<'             | ','             | false          || _
+        '>'             | ','             | false          || _
+        '&'             | ','             | false          || _
+        '\\'            | ','             | false          || _
+        ','             | '.'             | false          || _ /* Column separator. */
+//        ','             | '\n'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        ','             | ';'             | false          || _
+        '\n'            | '\t'            | false          || _
+//        '\n'            | '\r'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        '\n'            | '<'             | false          || _
+        '\n'            | '>'             | false          || _
+        '\n'            | '&'             | false          || _
+        '\n'            | '\\'            | false          || _
     }
 
-    /* Note: Input delimited tested everywhere else. */
+//    @Unroll
+//    def "Query csv serialization escape"() {
+//        setup:
+//        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
+//            .setRecordSeparator('\n' as char)
+//            .setColumnSeparator(',' as char)
+//            .setEscapeChar('\0' as char)
+//            .setFieldQuote(':' as char)
+//            .setHeadersPresent(false)
+//
+//        String csv = String.join(new String(ser.getColumnSeparator()), escapeChar + "100" + escapeChar, escapeChar + "200" + escapeChar)
+//            .concat(new String(ser.getRecordSeparator()))
+//            .concat(String.join(new String(ser.getColumnSeparator()), escapeChar + "300" + escapeChar, escapeChar + "400" + escapeChar)
+//                .concat(new String(ser.getRecordSeparator())))
+//
+//        byte[] csvData = csv.getBytes()
+//
+//        InputStream inputStream = new ByteArrayInputStream(csvData)
+//
+//        bc.upload(inputStream, csvData.length, true)
+//
+//        def expression = "SELECT * from BlobStorage"
+//
+//        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+//        bc.download(downloadData)
+//        byte[] downloadedData = downloadData.toByteArray()
+//
+//        /* Input Stream. */
+//        when:
+//        InputStream qqStream = bc.openQueryInputStream(expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
+//        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+//
+//        then:
+//        notThrown(IOException)
+//        queryData == downloadedData
+//
+//
+//        /* Output Stream. */
+//        when:
+//        OutputStream os = new ByteArrayOutputStream()
+//        bc.queryWithResponse(os, expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
+//        byte[] osData = os.toByteArray()
+//
+//        then:
+//        notThrown(BlobStorageException)
+//        osData == downloadedData
+//
+//        where:
+//        escapeChar      || _
+//        '"'             || _
+//        '\''            || _
+//        '!'             || _
+//    }
+
+    /* Note: Input delimited tested everywhere */
     @Unroll
     def "Query Input json"() {
         setup:

@@ -2809,6 +2809,80 @@ class FileAPITest extends APISpec {
         4000      | _ // 125 KB
     }
 
+    @Unroll
+    def "Query csv serialization separator"() {
+        setup:
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
+            .setRecordSeparator(recordSeparator as char)
+            .setColumnSeparator(columnSeparator as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(headersPresent)
+        uploadCsv(ser, 32)
+        def expression = "SELECT * from BlobStorage"
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        fc.read(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, new FileQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        if (headersPresent) {
+            /* Account for 16 bytes of header. */
+            for (int j = 16; j < downloadedData.length; j++) {
+                assert queryData[j - 16] == downloadedData[j]
+            }
+            for (int k = downloadedData.length - 16; k < downloadedData.length; k++) {
+                assert queryData[k] == 0
+            }
+        } else {
+            queryData == downloadedData
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        fc.queryWithResponse(os, expression, new FileQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        if (headersPresent) {
+            assert osData.length == downloadedData.length - 16
+            /* Account for 16 bytes of header. */
+            for (int j = 16; j < downloadedData.length; j++) {
+                assert osData[j - 16] == downloadedData[j]
+            }
+        } else {
+            osData == downloadedData
+        }
+
+        where:
+        recordSeparator | columnSeparator | headersPresent || _
+        '\n'            | ','             | false          || _ /* Default. */
+        '\n'            | ','             | true           || _ /* Headers. */
+        '\t'            | ','             | false          || _ /* Record separator. */
+        '\r'            | ','             | false          || _
+        '<'             | ','             | false          || _
+        '>'             | ','             | false          || _
+        '&'             | ','             | false          || _
+        '\\'            | ','             | false          || _
+        ','             | '.'             | false          || _ /* Column separator. */
+//        ','             | '\n'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        ','             | ';'             | false          || _
+        '\n'            | '\t'            | false          || _
+//        '\n'            | '\r'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        '\n'            | '<'             | false          || _
+        '\n'            | '>'             | false          || _
+        '\n'            | '&'             | false          || _
+        '\n'            | '\\'            | false          || _
+    }
+
     /* Note: Input delimited tested everywhere else. */
     @Unroll
     def "Query Input json"() {
