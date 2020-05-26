@@ -28,14 +28,13 @@ public interface ByteEncoder extends Codec {
      */
     String getSchemaString(Object object) throws SerializationException;
 
+    // TODO: Method does not currently require schema object to be passed since schemas can be derived from
+    // Avro objects. JSON implementation would be the same.
     /**
      * Converts object into stream containing the encoded representation of the object.
      * @param object Object to be encoded into byte stream
      * @return output stream containing byte representation of object
      * @throws SerializationException if generating byte representation of object fails
-     *
-     * TODO: Method does not currently require schema object to be passed since schemas can be derived from
-     *              Avro objects. JSON implementation would be the same.
      */
     ByteArrayOutputStream encode(Object object) throws SerializationException;
 }

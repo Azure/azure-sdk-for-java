@@ -113,6 +113,7 @@ public class CachedSchemaRegistryClientBuilder {
                 String.format("Schema map size must be greater than %s entries",
                     CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
+
         this.maxSchemaMapSize = maxSchemaMapSize;
         return this;
     }

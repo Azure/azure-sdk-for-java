@@ -30,7 +30,6 @@ import java.util.function.Function;
  * - SchemaRegistryObject cache by GUID - stores GUIDs previously seen in payloads
  * - SchemaRegistryObject cache by schema string - minimizes HTTP calls when sending payloads of same schema
  * <p>
- * TODO: implement max age for schema maps? or will schemas always be immutable?
  *
  * @see SchemaRegistryClient Implements SchemaRegistryClient interface to allow for testing with mock
  * @see CachedSchemaRegistryClientBuilder Follows builder pattern for object instantiation
@@ -41,8 +40,9 @@ import java.util.function.Function;
 public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClient.class);
 
-    public static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
     public static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
+
+    static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
     static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
 
     private final AzureSchemaRegistryRestService restService;
@@ -59,12 +59,6 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
         if (registryUrl == null || registryUrl.isEmpty()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Schema Registry URL cannot be null or empty."));
-        }
-
-        if (maxSchemaMapSize < MAX_SCHEMA_MAP_SIZE_MINIMUM) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    String.format("Max schema map size must be greater than %d schemas", MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
 
         this.restService = new AzureSchemaRegistryRestServiceClientBuilder()
@@ -249,6 +243,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
         typeParserDictionary.clear();
     }
 
+    // TODO: max age for schema maps? or will schemas always be immutable?
     /**
      * Checks if caches should be reinitialized to satisfy initial configuration
      */
