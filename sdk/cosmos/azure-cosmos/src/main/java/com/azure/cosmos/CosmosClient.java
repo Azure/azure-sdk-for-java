@@ -21,7 +21,7 @@ import java.io.Closeable;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos database service.
- * SyncClient is used to perform operations in a synchronous way
+ * This a synchronous client and is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
 public final class CosmosClient implements Closeable {

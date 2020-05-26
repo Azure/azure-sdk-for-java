@@ -154,7 +154,8 @@ public class SessionTokenHelper {
     public static void validateAndRemoveSessionToken(RxDocumentServiceRequest request) {
         String sessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(sessionToken)) {
-            getLocalSessionToken(request, sessionToken, StringUtils.EMPTY);
+            String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
+            getLocalSessionToken(request, sessionToken, partitionKeyRangeId);
             request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
         }
     }

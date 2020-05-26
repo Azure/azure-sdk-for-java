@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
@@ -422,7 +423,7 @@ public class PartitionKeyInternalTest {
         partitionKeyDefinition.setKind(PartitionKind.HASH);
         partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         ArrayList<String> paths = new ArrayList<String>();
-        for (int i = 0; i < partitionKey.getComponents().size(); i++) {
+        for (int i = 0; i < Utils.getCollectionSize(partitionKey.getComponents()); i++) {
             paths.add("/path" + i);
         }
 

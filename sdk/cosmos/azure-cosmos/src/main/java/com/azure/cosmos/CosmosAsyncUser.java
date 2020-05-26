@@ -62,7 +62,7 @@ public class CosmosAsyncUser {
     }
 
     /**
-     * REPLACE a cosmos user
+     * Replace a cosmos user
      *
      * @param userSettings the user properties to use
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
@@ -226,7 +226,7 @@ public class CosmosAsyncUser {
      *
      * @return the (@link CosmosAsyncDatabase)
      */
-    public CosmosAsyncDatabase getDatabase() {
+    CosmosAsyncDatabase getDatabase() {
         return database;
     }
 }

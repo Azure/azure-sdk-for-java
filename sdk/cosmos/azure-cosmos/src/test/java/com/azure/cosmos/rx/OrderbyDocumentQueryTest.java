@@ -75,7 +75,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             , ModelBridgeInternal.getStringFromJsonSerializable(expectedDocument,"propStr"));
 
         FeedOptions options = new FeedOptions();
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 

@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.RequestOptions;
  */
 public final class CosmosContainerRequestOptions {
     private Integer offerThroughput;
-    private boolean populateQuotaInfo;
+    private boolean quotaInfoEnabled;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private String ifMatchETag;
@@ -38,26 +38,26 @@ public final class CosmosContainerRequestOptions {
     }
 
     /**
-     * Gets the PopulateQuotaInfo setting for cosmos container read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting cosmos container quota related stats for document
+     * Gets the quotaInfoEnabled setting for cosmos container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for document
      * collection read requests.
      *
-     * @return true if PopulateQuotaInfo is enabled
+     * @return true if quotaInfoEnabled is enabled
      */
-    public boolean isQuotaInfoPopulated() {
-        return populateQuotaInfo;
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
     }
 
     /**
-     * Sets the PopulateQuotaInfo setting for cosmos container read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting cosmos container quota related stats for document
+     * Sets the quotaInfoEnabled setting for cosmos container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for document
      * collection read requests.
      *
-     * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setQuotaInfoPopulated(boolean populateQuotaInfo) {
-        this.populateQuotaInfo = populateQuotaInfo;
+    public CosmosContainerRequestOptions setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
         return this;
     }
 
@@ -151,7 +151,7 @@ public final class CosmosContainerRequestOptions {
         options.setIfMatchETag(getIfMatchETag());
         options.setIfNoneMatchETag(getIfNoneMatchETag());
         options.setOfferThroughput(offerThroughput);
-        options.setPopulateQuotaInfo(populateQuotaInfo);
+        options.setQuotaInfoEnabled(quotaInfoEnabled);
         options.setSessionToken(sessionToken);
         options.setConsistencyLevel(consistencyLevel);
         options.setThroughputProperties(this.throughputProperties);

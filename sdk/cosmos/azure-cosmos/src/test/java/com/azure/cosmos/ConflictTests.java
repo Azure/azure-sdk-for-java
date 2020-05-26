@@ -5,7 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import org.apache.commons.io.IOUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -37,7 +36,7 @@ public class ConflictTests {
     @Test(groups = { "unit" })
     public void getResourceType() {
         Conflict conf = new Conflict(conflictAsString);
-        assertThat(conf.getResouceType()).isEqualTo("document");
+        assertThat(conf.getResourceType()).isEqualTo("document");
         conf.getSourceResourceId();
     }
 
