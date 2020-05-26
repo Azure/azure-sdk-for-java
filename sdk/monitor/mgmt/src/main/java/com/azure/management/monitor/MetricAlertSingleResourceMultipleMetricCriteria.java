@@ -6,6 +6,8 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,7 +18,10 @@ import java.util.List;
 @JsonTypeName("Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria")
 @JsonFlatten
 @Fluent
-public final class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlertCriteria {
+public class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlertCriteria {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MetricAlertSingleResourceMultipleMetricCriteria.class);
+
     /*
      * The list of metric criteria for this 'all of' operation.
      */
@@ -41,5 +46,18 @@ public final class MetricAlertSingleResourceMultipleMetricCriteria extends Metri
     public MetricAlertSingleResourceMultipleMetricCriteria withAllOf(List<MetricCriteria> allOf) {
         this.allOf = allOf;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (allOf() != null) {
+            allOf().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServicePrincipalObjectResult model. */
 @Fluent
 public final class ServicePrincipalObjectResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalObjectResultInner.class);
+
     /*
      * The Object ID of the service principal with the specified application
      * ID.
@@ -61,5 +65,13 @@ public final class ServicePrincipalObjectResultInner {
     public ServicePrincipalObjectResultInner withOdataMetadata(String odataMetadata) {
         this.odataMetadata = odataMetadata;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

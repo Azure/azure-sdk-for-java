@@ -5,16 +5,20 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KeyVaultSecretRef model. */
 @Fluent
 public final class KeyVaultSecretRef {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultSecretRef.class);
+
     /*
      * Key vault identifier.
      */
     @JsonProperty(value = "vaultID", required = true)
-    private String vaultID;
+    private String vaultId;
 
     /*
      * The secret name.
@@ -29,22 +33,22 @@ public final class KeyVaultSecretRef {
     private String version;
 
     /**
-     * Get the vaultID property: Key vault identifier.
+     * Get the vaultId property: Key vault identifier.
      *
-     * @return the vaultID value.
+     * @return the vaultId value.
      */
-    public String vaultID() {
-        return this.vaultID;
+    public String vaultId() {
+        return this.vaultId;
     }
 
     /**
-     * Set the vaultID property: Key vault identifier.
+     * Set the vaultId property: Key vault identifier.
      *
-     * @param vaultID the vaultID value to set.
+     * @param vaultId the vaultId value to set.
      * @return the KeyVaultSecretRef object itself.
      */
-    public KeyVaultSecretRef withVaultID(String vaultID) {
-        this.vaultID = vaultID;
+    public KeyVaultSecretRef withVaultId(String vaultId) {
+        this.vaultId = vaultId;
         return this;
     }
 
@@ -86,5 +90,23 @@ public final class KeyVaultSecretRef {
     public KeyVaultSecretRef withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vaultId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property vaultId in model KeyVaultSecretRef"));
+        }
+        if (secretName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property secretName in model KeyVaultSecretRef"));
+        }
     }
 }

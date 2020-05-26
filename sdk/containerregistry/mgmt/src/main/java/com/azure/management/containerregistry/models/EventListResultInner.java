@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The EventListResult model. */
 @Fluent
 public final class EventListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventListResultInner.class);
+
     /*
      * The list of events. Since this list may be incomplete, the nextLink
      * field should be used to request the next list of events.
@@ -64,5 +68,16 @@ public final class EventListResultInner {
     public EventListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

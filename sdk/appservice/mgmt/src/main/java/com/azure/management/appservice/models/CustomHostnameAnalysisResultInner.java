@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.DnsVerificationTestResult;
 import com.azure.management.appservice.ErrorEntity;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomHostnameAnalysisResultInner.class);
+
     /*
      * <code>true</code> if hostname is already verified; otherwise,
      * <code>false</code>.
@@ -242,5 +246,18 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     public CustomHostnameAnalysisResultInner withAlternateTxtRecords(List<String> alternateTxtRecords) {
         this.alternateTxtRecords = alternateTxtRecords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (customDomainVerificationFailureInfo() != null) {
+            customDomainVerificationFailureInfo().validate();
+        }
     }
 }

@@ -64,7 +64,7 @@ import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -154,7 +154,7 @@ class VirtualMachineImpl
     // Utility to setup MSI for the virtual machine
     private VirtualMachineMsiHandler virtualMachineMsiHandler;
     // Reference to the PublicIp creatable that is implicitly created
-    private PublicIPAddress.DefinitionStages.WithCreate implicitPipCreatable;
+    private PublicIpAddress.DefinitionStages.WithCreate implicitPipCreatable;
     // Name of the new proximity placement group
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
@@ -459,7 +459,7 @@ class VirtualMachineImpl
 
     // Fluent methods for defining public IP association for the new primary network interface
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIpAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withNewPrimaryPublicIPAddress(creatable);
         this.creatablePrimaryNetworkInterfaceKey = this.addDependency(nicCreatable);
@@ -468,13 +468,13 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
-        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup =
+        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
             this
                 .networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(this.namer.randomName("pip", 15))
                 .withRegion(this.regionName());
-        PublicIPAddress.DefinitionStages.WithCreate definitionAfterGroup;
+        PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.creatableGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
@@ -489,7 +489,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress) {
+    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress) {
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withExistingPrimaryPublicIPAddress(publicIPAddress);
         this.creatablePrimaryNetworkInterfaceKey = this.addDependency(nicCreatable);
@@ -1435,13 +1435,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIPAddress getPrimaryPublicIPAddress() {
-        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIPAddress();
+    public PublicIpAddress getPrimaryPublicIPAddress() {
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIpAddress();
     }
 
     @Override
     public String getPrimaryPublicIPAddressId() {
-        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIPAddressId();
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIpAddressId();
     }
 
     @Override

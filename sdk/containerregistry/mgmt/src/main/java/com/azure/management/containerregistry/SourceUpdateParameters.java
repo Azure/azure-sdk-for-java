@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SourceUpdateParameters model. */
 @Fluent
 public final class SourceUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceUpdateParameters.class);
+
     /*
      * The type of source control service.
      */
@@ -117,5 +121,16 @@ public final class SourceUpdateParameters {
         AuthInfoUpdateParameters sourceControlAuthProperties) {
         this.sourceControlAuthProperties = sourceControlAuthProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sourceControlAuthProperties() != null) {
+            sourceControlAuthProperties().validate();
+        }
     }
 }

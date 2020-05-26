@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IpSecurityRestriction model. */
 @Fluent
 public final class IpSecurityRestriction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpSecurityRestriction.class);
+
     /*
      * IP address the security restriction is valid for.
      * It can be in form of pure ipv4 address (required SubnetMask property) or
@@ -276,5 +280,13 @@ public final class IpSecurityRestriction {
     public IpSecurityRestriction withDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

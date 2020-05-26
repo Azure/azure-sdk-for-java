@@ -6,7 +6,9 @@ package com.azure.management.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AgentPoolAvailableVersionsInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolAvailableVersionsInner.class);
+
     /*
      * Id of the agent pool available versions.
      */
@@ -84,5 +88,16 @@ public class AgentPoolAvailableVersionsInner {
         List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
         this.agentPoolVersions = agentPoolVersions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (agentPoolVersions() != null) {
+            agentPoolVersions().forEach(e -> e.validate());
+        }
     }
 }

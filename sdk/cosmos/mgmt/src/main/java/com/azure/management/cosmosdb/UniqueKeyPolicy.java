@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The UniqueKeyPolicy model. */
 @Fluent
 public final class UniqueKeyPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UniqueKeyPolicy.class);
+
     /*
      * List of unique keys on that enforces uniqueness constraint on documents
      * in the collection in the Azure Cosmos DB service.
@@ -38,5 +42,16 @@ public final class UniqueKeyPolicy {
     public UniqueKeyPolicy withUniqueKeys(List<UniqueKey> uniqueKeys) {
         this.uniqueKeys = uniqueKeys;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (uniqueKeys() != null) {
+            uniqueKeys().forEach(e -> e.validate());
+        }
     }
 }

@@ -12,7 +12,7 @@ import com.azure.core.util.ServiceVersion;
 public enum ShareServiceVersion implements ServiceVersion {
     V2019_02_02("2019-02-02"),
     V2019_07_07("2019-07-07"),
-    V2019_12_12("2019-10-10"); // TODO (gapra) : Change this to 12-12 once stage gets to 12-12
+    V2019_12_12("2019-12-12");
 
     private final String version;
 

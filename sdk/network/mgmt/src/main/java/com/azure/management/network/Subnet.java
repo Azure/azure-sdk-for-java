@@ -26,14 +26,14 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
      * @deprecated Use {@link Subnet#listNetworkInterfaceIPConfigurations()} instead.
      */
     @Deprecated
-    Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations();
+    Set<NicIpConfiguration> getNetworkInterfaceIPConfigurations();
 
     /**
      * @return network interface IP configurations that are associated with this subnet
      *     <p>Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time
      *     it is invoked.
      */
-    Collection<NicIPConfiguration> listNetworkInterfaceIPConfigurations();
+    Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations();
 
     /** @return available private IP addresses within this network */
     Set<String> listAvailablePrivateIPAddresses();

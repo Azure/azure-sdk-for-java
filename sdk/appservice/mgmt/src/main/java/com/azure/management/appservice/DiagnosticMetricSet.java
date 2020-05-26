@@ -5,6 +5,8 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The DiagnosticMetricSet model. */
 @Fluent
 public final class DiagnosticMetricSet {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticMetricSet.class);
+
     /*
      * Name of the metric
      */
@@ -169,5 +173,16 @@ public final class DiagnosticMetricSet {
     public DiagnosticMetricSet withValues(List<DiagnosticMetricSample> values) {
         this.values = values;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (values() != null) {
+            values().forEach(e -> e.validate());
+        }
     }
 }

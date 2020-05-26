@@ -22,7 +22,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -59,7 +59,7 @@ public final class ProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderInner>> unregister(
             @HostParam("$host") String host,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
@@ -70,7 +70,7 @@ public final class ProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderInner>> register(
             @HostParam("$host") String host,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
@@ -81,7 +81,7 @@ public final class ProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("$top") Integer top,
@@ -93,7 +93,7 @@ public final class ProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderListResultInner>> listAtTenantScope(
             @HostParam("$host") String host,
             @QueryParam("$top") Integer top,
@@ -104,7 +104,7 @@ public final class ProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderInner>> get(
             @HostParam("$host") String host,
             @QueryParam("$expand") String expand,
@@ -116,7 +116,7 @@ public final class ProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/{resourceProviderNamespace}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderInner>> getAtTenantScope(
             @HostParam("$host") String host,
             @QueryParam("$expand") String expand,
@@ -127,14 +127,14 @@ public final class ProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ProviderListResultInner>> listAtTenantScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -144,7 +144,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -185,7 +185,7 @@ public final class ProvidersInner {
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -222,7 +222,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -244,7 +244,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -258,7 +258,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -299,7 +299,7 @@ public final class ProvidersInner {
      * @param resourceProviderNamespace The namespace of the resource provider to register.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -336,7 +336,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -358,7 +358,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource provider information.
      */
@@ -375,7 +375,7 @@ public final class ProvidersInner {
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for a subscription.
      */
@@ -423,7 +423,7 @@ public final class ProvidersInner {
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for a subscription.
      */
@@ -466,7 +466,7 @@ public final class ProvidersInner {
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for a subscription.
      */
@@ -484,7 +484,7 @@ public final class ProvidersInner {
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for a subscription.
      */
@@ -497,7 +497,7 @@ public final class ProvidersInner {
     /**
      * Gets all resource providers for a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for a subscription.
      */
@@ -517,7 +517,7 @@ public final class ProvidersInner {
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for a subscription.
      */
@@ -529,7 +529,7 @@ public final class ProvidersInner {
     /**
      * Gets all resource providers for a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for a subscription.
      */
@@ -549,7 +549,7 @@ public final class ProvidersInner {
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for the tenant.
      */
@@ -584,7 +584,7 @@ public final class ProvidersInner {
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for the tenant.
      */
@@ -616,7 +616,7 @@ public final class ProvidersInner {
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for the tenant.
      */
@@ -636,7 +636,7 @@ public final class ProvidersInner {
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for the tenant.
      */
@@ -650,7 +650,7 @@ public final class ProvidersInner {
     /**
      * Gets all resource providers for the tenant.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for the tenant.
      */
@@ -672,7 +672,7 @@ public final class ProvidersInner {
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for the tenant.
      */
@@ -684,7 +684,7 @@ public final class ProvidersInner {
     /**
      * Gets all resource providers for the tenant.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all resource providers for the tenant.
      */
@@ -703,7 +703,7 @@ public final class ProvidersInner {
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider.
      */
@@ -747,7 +747,7 @@ public final class ProvidersInner {
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider.
      */
@@ -787,7 +787,7 @@ public final class ProvidersInner {
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider.
      */
@@ -809,7 +809,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider.
      */
@@ -835,7 +835,7 @@ public final class ProvidersInner {
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider.
      */
@@ -849,7 +849,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider.
      */
@@ -867,7 +867,7 @@ public final class ProvidersInner {
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider at the tenant level.
      */
@@ -905,7 +905,7 @@ public final class ProvidersInner {
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider at the tenant level.
      */
@@ -934,7 +934,7 @@ public final class ProvidersInner {
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider at the tenant level.
      */
@@ -956,7 +956,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider at the tenant level.
      */
@@ -982,7 +982,7 @@ public final class ProvidersInner {
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider at the tenant level.
      */
@@ -996,7 +996,7 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified resource provider at the tenant level.
      */
@@ -1012,7 +1012,7 @@ public final class ProvidersInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource providers.
      */
@@ -1041,7 +1041,7 @@ public final class ProvidersInner {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource providers.
      */
@@ -1068,7 +1068,7 @@ public final class ProvidersInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource providers.
      */
@@ -1097,7 +1097,7 @@ public final class ProvidersInner {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource providers.
      */

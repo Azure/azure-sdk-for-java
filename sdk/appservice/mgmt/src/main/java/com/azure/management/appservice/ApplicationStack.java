@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationStack model. */
 @Fluent
 public final class ApplicationStack {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationStack.class);
+
     /*
      * Application stack name.
      */
@@ -139,5 +143,19 @@ public final class ApplicationStack {
     public ApplicationStack withFrameworks(List<ApplicationStack> frameworks) {
         this.frameworks = frameworks;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (majorVersions() != null) {
+            majorVersions().forEach(e -> e.validate());
+        }
+        if (frameworks() != null) {
+            frameworks().forEach(e -> e.validate());
+        }
     }
 }

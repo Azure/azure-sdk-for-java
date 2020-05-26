@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutoHealCustomAction model. */
 @Fluent
 public final class AutoHealCustomAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoHealCustomAction.class);
+
     /*
      * Executable to be run.
      */
@@ -60,5 +64,13 @@ public final class AutoHealCustomAction {
     public AutoHealCustomAction withParameters(String parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

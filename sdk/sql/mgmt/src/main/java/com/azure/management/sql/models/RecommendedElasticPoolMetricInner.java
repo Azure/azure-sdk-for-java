@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The RecommendedElasticPoolMetric model. */
 @Fluent
 public final class RecommendedElasticPoolMetricInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedElasticPoolMetricInner.class);
+
     /*
      * The time of metric (ISO8601 format).
      */
@@ -90,5 +94,13 @@ public final class RecommendedElasticPoolMetricInner {
     public RecommendedElasticPoolMetricInner withSizeGB(Double sizeGB) {
         this.sizeGB = sizeGB;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

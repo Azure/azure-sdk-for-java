@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Solution model. */
 @Fluent
 public final class Solution {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Solution.class);
+
     /*
      * Solution Id.
      */
@@ -191,5 +195,19 @@ public final class Solution {
     public Solution withMetadata(List<List<NameValuePair>> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (data() != null) {
+            data().forEach(e -> e.forEach(e1 -> e1.validate()));
+        }
+        if (metadata() != null) {
+            metadata().forEach(e -> e.forEach(e1 -> e1.validate()));
+        }
     }
 }

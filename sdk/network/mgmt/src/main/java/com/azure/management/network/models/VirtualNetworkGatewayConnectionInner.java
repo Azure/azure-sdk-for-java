@@ -8,11 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.IpsecPolicy;
 import com.azure.management.network.TunnelConnectionHealth;
 import com.azure.management.network.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.management.network.VirtualNetworkGatewayConnectionStatus;
 import com.azure.management.network.VirtualNetworkGatewayConnectionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,6 +22,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualNetworkGatewayConnectionInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayConnectionInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -518,5 +522,40 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     public VirtualNetworkGatewayConnectionInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (virtualNetworkGateway1() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property virtualNetworkGateway1 in model"
+                            + " VirtualNetworkGatewayConnectionInner"));
+        } else {
+            virtualNetworkGateway1().validate();
+        }
+        if (virtualNetworkGateway2() != null) {
+            virtualNetworkGateway2().validate();
+        }
+        if (localNetworkGateway2() != null) {
+            localNetworkGateway2().validate();
+        }
+        if (connectionType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property connectionType in model VirtualNetworkGatewayConnectionInner"));
+        }
+        if (tunnelConnectionStatus() != null) {
+            tunnelConnectionStatus().forEach(e -> e.validate());
+        }
+        if (ipsecPolicies() != null) {
+            ipsecPolicies().forEach(e -> e.validate());
+        }
     }
 }

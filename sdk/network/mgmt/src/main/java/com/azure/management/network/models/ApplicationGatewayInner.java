@@ -8,11 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGatewayAutoscaleConfiguration;
 import com.azure.management.network.ApplicationGatewayBackendAddressPool;
 import com.azure.management.network.ApplicationGatewayBackendHttpSettings;
 import com.azure.management.network.ApplicationGatewayCustomError;
-import com.azure.management.network.ApplicationGatewayFrontendIPConfiguration;
+import com.azure.management.network.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.management.network.ApplicationGatewayFrontendPort;
 import com.azure.management.network.ApplicationGatewayHttpListener;
 import com.azure.management.network.ApplicationGatewayOperationalState;
@@ -22,6 +23,7 @@ import com.azure.management.network.ApplicationGatewaySslPolicy;
 import com.azure.management.network.ApplicationGatewayTrustedRootCertificate;
 import com.azure.management.network.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.management.network.ManagedServiceIdentity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -29,6 +31,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -72,7 +76,7 @@ public class ApplicationGatewayInner extends Resource {
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      */
     @JsonProperty(value = "properties.gatewayIPConfigurations")
-    private List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations;
+    private List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations;
 
     /*
      * Authentication certificates of the application gateway resource. For
@@ -104,7 +108,7 @@ public class ApplicationGatewayInner extends Resource {
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
-    private List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations;
+    private List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations;
 
     /*
      * Frontend ports of the application gateway resource. For default limits,
@@ -337,27 +341,27 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the gatewayIPConfigurations property: Subnets of the application gateway resource. For default limits, see
+     * Get the gatewayIpConfigurations property: Subnets of the application gateway resource. For default limits, see
      * [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      *
-     * @return the gatewayIPConfigurations value.
+     * @return the gatewayIpConfigurations value.
      */
-    public List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations() {
-        return this.gatewayIPConfigurations;
+    public List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations() {
+        return this.gatewayIpConfigurations;
     }
 
     /**
-     * Set the gatewayIPConfigurations property: Subnets of the application gateway resource. For default limits, see
+     * Set the gatewayIpConfigurations property: Subnets of the application gateway resource. For default limits, see
      * [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      *
-     * @param gatewayIPConfigurations the gatewayIPConfigurations value to set.
+     * @param gatewayIpConfigurations the gatewayIpConfigurations value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withGatewayIPConfigurations(
-        List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations) {
-        this.gatewayIPConfigurations = gatewayIPConfigurations;
+    public ApplicationGatewayInner withGatewayIpConfigurations(
+        List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations) {
+        this.gatewayIpConfigurations = gatewayIpConfigurations;
         return this;
     }
 
@@ -436,27 +440,27 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the frontendIPConfigurations property: Frontend IP addresses of the application gateway resource. For default
+     * Get the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource. For default
      * limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      *
-     * @return the frontendIPConfigurations value.
+     * @return the frontendIpConfigurations value.
      */
-    public List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations() {
-        return this.frontendIPConfigurations;
+    public List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations() {
+        return this.frontendIpConfigurations;
     }
 
     /**
-     * Set the frontendIPConfigurations property: Frontend IP addresses of the application gateway resource. For default
+     * Set the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource. For default
      * limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      *
-     * @param frontendIPConfigurations the frontendIPConfigurations value to set.
+     * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withFrontendIPConfigurations(
-        List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations) {
-        this.frontendIPConfigurations = frontendIPConfigurations;
+    public ApplicationGatewayInner withFrontendIpConfigurations(
+        List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations) {
+        this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
 
@@ -851,5 +855,73 @@ public class ApplicationGatewayInner extends Resource {
     public ApplicationGatewayInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (sslPolicy() != null) {
+            sslPolicy().validate();
+        }
+        if (gatewayIpConfigurations() != null) {
+            gatewayIpConfigurations().forEach(e -> e.validate());
+        }
+        if (authenticationCertificates() != null) {
+            authenticationCertificates().forEach(e -> e.validate());
+        }
+        if (trustedRootCertificates() != null) {
+            trustedRootCertificates().forEach(e -> e.validate());
+        }
+        if (sslCertificates() != null) {
+            sslCertificates().forEach(e -> e.validate());
+        }
+        if (frontendIpConfigurations() != null) {
+            frontendIpConfigurations().forEach(e -> e.validate());
+        }
+        if (frontendPorts() != null) {
+            frontendPorts().forEach(e -> e.validate());
+        }
+        if (probes() != null) {
+            probes().forEach(e -> e.validate());
+        }
+        if (backendAddressPools() != null) {
+            backendAddressPools().forEach(e -> e.validate());
+        }
+        if (backendHttpSettingsCollection() != null) {
+            backendHttpSettingsCollection().forEach(e -> e.validate());
+        }
+        if (httpListeners() != null) {
+            httpListeners().forEach(e -> e.validate());
+        }
+        if (urlPathMaps() != null) {
+            urlPathMaps().forEach(e -> e.validate());
+        }
+        if (requestRoutingRules() != null) {
+            requestRoutingRules().forEach(e -> e.validate());
+        }
+        if (rewriteRuleSets() != null) {
+            rewriteRuleSets().forEach(e -> e.validate());
+        }
+        if (redirectConfigurations() != null) {
+            redirectConfigurations().forEach(e -> e.validate());
+        }
+        if (webApplicationFirewallConfiguration() != null) {
+            webApplicationFirewallConfiguration().validate();
+        }
+        if (autoscaleConfiguration() != null) {
+            autoscaleConfiguration().validate();
+        }
+        if (customErrorConfigurations() != null) {
+            customErrorConfigurations().forEach(e -> e.validate());
+        }
     }
 }

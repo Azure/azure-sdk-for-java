@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateLinkServiceConnectionStateProperty model. */
 @Fluent
 public final class PrivateLinkServiceConnectionStateProperty {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionStateProperty.class);
+
     /*
      * The private link service connection status.
      */
@@ -77,5 +81,13 @@ public final class PrivateLinkServiceConnectionStateProperty {
      */
     public String actionsRequired() {
         return this.actionsRequired;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

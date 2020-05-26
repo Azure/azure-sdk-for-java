@@ -7,12 +7,16 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AzureFirewallFqdnTag model. */
 @JsonFlatten
 @Fluent
 public class AzureFirewallFqdnTagInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -83,5 +87,13 @@ public class AzureFirewallFqdnTagInner extends Resource {
     public AzureFirewallFqdnTagInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

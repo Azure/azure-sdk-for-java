@@ -7,12 +7,16 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayTrustedRootCertificate model. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayTrustedRootCertificate extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayTrustedRootCertificate.class);
+
     /*
      * Name of the trusted root certificate that is unique within an
      * Application Gateway.
@@ -174,5 +178,13 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
     public ApplicationGatewayTrustedRootCertificate withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

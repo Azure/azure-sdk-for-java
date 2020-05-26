@@ -16,13 +16,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Operations. */
 public final class OperationsInner {
+    private final ClientLogger logger = new ClientLogger(OperationsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final OperationsService service;
 
@@ -50,7 +53,7 @@ public final class OperationsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/microsoft.insights/operations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<OperationListResultInner>> list(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
     }
@@ -58,12 +61,16 @@ public final class OperationsInner {
     /**
      * Lists all of the available operations from Microsoft.Insights provider.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<OperationListResultInner>> listWithResponseAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(context -> service.list(this.client.getHost(), apiVersion, context))
@@ -73,7 +80,26 @@ public final class OperationsInner {
     /**
      * Lists all of the available operations from Microsoft.Insights provider.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<OperationListResultInner>> listWithResponseAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        final String apiVersion = "2015-04-01";
+        return service.list(this.client.getHost(), apiVersion, context);
+    }
+
+    /**
+     * Lists all of the available operations from Microsoft.Insights provider.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Microsoft.
      */
@@ -93,7 +119,7 @@ public final class OperationsInner {
     /**
      * Lists all of the available operations from Microsoft.Insights provider.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Microsoft.
      */

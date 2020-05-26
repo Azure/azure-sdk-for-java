@@ -5,13 +5,17 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.EndpointDependency;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OutboundEnvironmentEndpoint model. */
 @Fluent
 public final class OutboundEnvironmentEndpointInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundEnvironmentEndpointInner.class);
+
     /*
      * The type of service accessed by the App Service Environment, e.g., Azure
      * Storage, Azure SQL Database, and Azure Active Directory.
@@ -65,5 +69,16 @@ public final class OutboundEnvironmentEndpointInner {
     public OutboundEnvironmentEndpointInner withEndpoints(List<EndpointDependency> endpoints) {
         this.endpoints = endpoints;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (endpoints() != null) {
+            endpoints().forEach(e -> e.validate());
+        }
     }
 }

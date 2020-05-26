@@ -71,5 +71,5 @@ public interface NetworkInterfaceBase extends HasManager<NetworkManager>, HasInn
     /**
      * @return the private IP allocation method (Dynamic, Static) of this network interface's primary IP configuration.
      */
-    IPAllocationMethod primaryPrivateIPAllocationMethod();
+    IpAllocationMethod primaryPrivateIpAllocationMethod();
 }

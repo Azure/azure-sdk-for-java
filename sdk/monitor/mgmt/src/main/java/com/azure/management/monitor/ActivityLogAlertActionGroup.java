@@ -5,12 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ActivityLogAlertActionGroup model. */
 @Fluent
 public final class ActivityLogAlertActionGroup {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertActionGroup.class);
+
     /*
      * The resourceId of the action group. This cannot be null or empty.
      */
@@ -64,5 +68,19 @@ public final class ActivityLogAlertActionGroup {
     public ActivityLogAlertActionGroup withWebhookProperties(Map<String, String> webhookProperties) {
         this.webhookProperties = webhookProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (actionGroupId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property actionGroupId in model ActivityLogAlertActionGroup"));
+        }
     }
 }

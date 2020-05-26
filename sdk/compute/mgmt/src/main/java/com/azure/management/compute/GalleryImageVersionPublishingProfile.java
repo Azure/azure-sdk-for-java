@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryImageVersionPublishingProfile model. */
 @Fluent
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
+
     /*
      * The source image from which the Image Version is going to be created.
      */
@@ -34,5 +38,23 @@ public final class GalleryImageVersionPublishingProfile extends GalleryArtifactP
     public GalleryImageVersionPublishingProfile withSource(GalleryArtifactSource source) {
         this.source = source;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (source() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property source in model GalleryImageVersionPublishingProfile"));
+        } else {
+            source().validate();
+        }
     }
 }

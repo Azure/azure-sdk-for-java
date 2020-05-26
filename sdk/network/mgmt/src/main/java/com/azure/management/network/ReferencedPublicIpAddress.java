@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ReferencedPublicIpAddress model. */
 @Fluent
 public final class ReferencedPublicIpAddress {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferencedPublicIpAddress.class);
+
     /*
      * The PublicIPAddress Reference.
      */
@@ -34,5 +38,13 @@ public final class ReferencedPublicIpAddress {
     public ReferencedPublicIpAddress withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

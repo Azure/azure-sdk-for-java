@@ -5,8 +5,10 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.AppRole;
 import com.azure.management.graphrbac.OAuth2Permission;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonTypeName("ServicePrincipal")
 @Fluent
 public final class ServicePrincipalInner extends DirectoryObjectInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalInner.class);
+
     /*
      * whether or not the service principal account is enabled
      */
@@ -547,5 +551,27 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     public ServicePrincipalInner withTags(List<String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (appRoles() != null) {
+            appRoles().forEach(e -> e.validate());
+        }
+        if (keyCredentials() != null) {
+            keyCredentials().forEach(e -> e.validate());
+        }
+        if (oauth2Permissions() != null) {
+            oauth2Permissions().forEach(e -> e.validate());
+        }
+        if (passwordCredentials() != null) {
+            passwordCredentials().forEach(e -> e.validate());
+        }
     }
 }

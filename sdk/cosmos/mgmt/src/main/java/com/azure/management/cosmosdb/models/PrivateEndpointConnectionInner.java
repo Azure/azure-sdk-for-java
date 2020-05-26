@@ -7,14 +7,18 @@ package com.azure.management.cosmosdb.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.cosmosdb.PrivateEndpointProperty;
 import com.azure.management.cosmosdb.PrivateLinkServiceConnectionStateProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateEndpointConnection model. */
 @JsonFlatten
 @Fluent
 public class PrivateEndpointConnectionInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+
     /*
      * Private endpoint which the connection belongs to.
      */
@@ -26,6 +30,18 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState;
+
+    /*
+     * Group id of the private endpoint.
+     */
+    @JsonProperty(value = "properties.groupId")
+    private String groupId;
+
+    /*
+     * Provisioning state of the private endpoint.
+     */
+    @JsonProperty(value = "properties.provisioningState")
+    private String provisioningState;
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
@@ -66,5 +82,59 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
         PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
+    }
+
+    /**
+     * Get the groupId property: Group id of the private endpoint.
+     *
+     * @return the groupId value.
+     */
+    public String groupId() {
+        return this.groupId;
+    }
+
+    /**
+     * Set the groupId property: Group id of the private endpoint.
+     *
+     * @param groupId the groupId value to set.
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withGroupId(String groupId) {
+        this.groupId = groupId;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the private endpoint.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the private endpoint.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (privateEndpoint() != null) {
+            privateEndpoint().validate();
+        }
+        if (privateLinkServiceConnectionState() != null) {
+            privateLinkServiceConnectionState().validate();
+        }
     }
 }

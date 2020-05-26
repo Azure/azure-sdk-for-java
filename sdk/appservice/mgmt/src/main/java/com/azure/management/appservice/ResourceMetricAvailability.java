@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceMetricAvailability model. */
 @Immutable
 public final class ResourceMetricAvailability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetricAvailability.class);
+
     /*
      * Time grain .
      */
@@ -38,5 +42,13 @@ public final class ResourceMetricAvailability {
      */
     public String retention() {
         return this.retention;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

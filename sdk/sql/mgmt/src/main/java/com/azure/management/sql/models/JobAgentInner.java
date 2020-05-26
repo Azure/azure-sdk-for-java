@@ -7,14 +7,18 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.JobAgentState;
 import com.azure.management.sql.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JobAgent model. */
 @JsonFlatten
 @Fluent
 public class JobAgentInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobAgentInner.class);
+
     /*
      * The name and tier of the SKU.
      */
@@ -80,5 +84,16 @@ public class JobAgentInner extends Resource {
      */
     public JobAgentState state() {
         return this.state;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 }

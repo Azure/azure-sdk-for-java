@@ -5,13 +5,17 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.PrivateLinkResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PrivateLinkResourcesWrapper model. */
 @Fluent
 public final class PrivateLinkResourcesWrapperInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesWrapperInner.class);
+
     /*
      * The value property.
      */
@@ -36,5 +40,21 @@ public final class PrivateLinkResourcesWrapperInner {
     public PrivateLinkResourcesWrapperInner withValue(List<PrivateLinkResource> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model PrivateLinkResourcesWrapperInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

@@ -62,7 +62,7 @@ public final class ManageExpressRoute {
                     .withPrimaryPeerAddressPrefix("123.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("123.0.0.4/30")
                     .withVlanId(200)
-                    .withPeerASN(100)
+                    .withPeerAsn(100)
                     .create();
             System.out.println("Created express route circuit peering");
 

@@ -8,6 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class DdosProtectionPlanInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosProtectionPlanInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -81,5 +85,13 @@ public class DdosProtectionPlanInner extends Resource {
      */
     public List<SubResource> virtualNetworks() {
         return this.virtualNetworks;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

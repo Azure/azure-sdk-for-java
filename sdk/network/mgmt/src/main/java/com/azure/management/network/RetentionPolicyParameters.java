@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RetentionPolicyParameters model. */
 @Fluent
 public final class RetentionPolicyParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicyParameters.class);
+
     /*
      * Number of days to retain flow log records.
      */
@@ -60,5 +64,13 @@ public final class RetentionPolicyParameters {
     public RetentionPolicyParameters withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

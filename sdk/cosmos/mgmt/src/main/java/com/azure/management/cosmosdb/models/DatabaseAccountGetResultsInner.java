@@ -6,7 +6,8 @@ package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.management.cosmosdb.ARMResourceProperties;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.cosmosdb.ArmResourceProperties;
 import com.azure.management.cosmosdb.Capability;
 import com.azure.management.cosmosdb.ConnectorOffer;
 import com.azure.management.cosmosdb.ConsistencyPolicy;
@@ -15,13 +16,16 @@ import com.azure.management.cosmosdb.DatabaseAccountOfferType;
 import com.azure.management.cosmosdb.FailoverPolicy;
 import com.azure.management.cosmosdb.Location;
 import com.azure.management.cosmosdb.VirtualNetworkRule;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DatabaseAccountGetResults model. */
 @JsonFlatten
 @Fluent
-public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
+public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountGetResultsInner.class);
+
     /*
      * Indicates the type of database account. This can only be set at database
      * account creation.
@@ -38,7 +42,7 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
      * for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting'
      * – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB
      * account failed creation. 'Offline' - the Cosmos DB account is not
-     * active.
+     * active. 'DeletionFailed' – the Cosmos DB account deletion failed.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -176,7 +180,7 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
-     * 'Offline' - the Cosmos DB account is not active.
+     * 'Offline' - the Cosmos DB account is not active. 'DeletionFailed' – the Cosmos DB account deletion failed.
      *
      * @return the provisioningState value.
      */
@@ -450,5 +454,36 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
         Boolean disableKeyBasedMetadataWriteAccess) {
         this.disableKeyBasedMetadataWriteAccess = disableKeyBasedMetadataWriteAccess;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (consistencyPolicy() != null) {
+            consistencyPolicy().validate();
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
+        }
+        if (writeLocations() != null) {
+            writeLocations().forEach(e -> e.validate());
+        }
+        if (readLocations() != null) {
+            readLocations().forEach(e -> e.validate());
+        }
+        if (locations() != null) {
+            locations().forEach(e -> e.validate());
+        }
+        if (failoverPolicies() != null) {
+            failoverPolicies().forEach(e -> e.validate());
+        }
+        if (virtualNetworkRules() != null) {
+            virtualNetworkRules().forEach(e -> e.validate());
+        }
     }
 }

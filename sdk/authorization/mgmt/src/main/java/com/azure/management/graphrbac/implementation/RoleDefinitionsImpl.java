@@ -5,7 +5,7 @@ package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.graphrbac.RoleDefinition;
 import com.azure.management.graphrbac.RoleDefinitions;
 import com.azure.management.graphrbac.models.RoleDefinitionInner;
@@ -40,7 +40,7 @@ class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefin
     public Mono<RoleDefinition> getByIdAsync(String id) {
         return inner()
             .getByIdAsync(id)
-            .onErrorResume(CloudException.class, e -> Mono.empty())
+            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
@@ -53,7 +53,7 @@ class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefin
     public Mono<RoleDefinition> getByScopeAsync(String scope, String name) {
         return inner()
             .getAsync(scope, name)
-            .onErrorResume(CloudException.class, e -> Mono.empty())
+            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
@@ -78,7 +78,7 @@ class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefin
     public Mono<RoleDefinition> getByScopeAndRoleNameAsync(String scope, String roleName) {
         return inner()
             .listAsync(scope, String.format("roleName eq '%s'", roleName))
-            .onErrorResume(CloudException.class, e -> Mono.empty())
+            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .singleOrEmpty()
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }

@@ -7,11 +7,13 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CreationData;
 import com.azure.management.compute.EncryptionSettingsCollection;
 import com.azure.management.compute.HyperVGeneration;
 import com.azure.management.compute.OperatingSystemTypes;
 import com.azure.management.compute.SnapshotSku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -19,6 +21,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class SnapshotInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
+
     /*
      * Unused. Always Null.
      */
@@ -295,5 +299,22 @@ public class SnapshotInner extends Resource {
     public SnapshotInner withIncremental(Boolean incremental) {
         this.incremental = incremental;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (creationData() != null) {
+            creationData().validate();
+        }
+        if (encryptionSettingsCollection() != null) {
+            encryptionSettingsCollection().validate();
+        }
     }
 }

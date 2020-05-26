@@ -6,6 +6,8 @@ package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,6 +16,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class ManagedDatabaseUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDatabaseUpdate.class);
+
     /*
      * Resource tags.
      */
@@ -417,5 +421,13 @@ public class ManagedDatabaseUpdate {
     public ManagedDatabaseUpdate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
         this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

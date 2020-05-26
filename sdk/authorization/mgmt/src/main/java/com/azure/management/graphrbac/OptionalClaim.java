@@ -5,11 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OptionalClaim model. */
 @Fluent
 public final class OptionalClaim {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OptionalClaim.class);
+
     /*
      * Claim name.
      */
@@ -112,5 +116,13 @@ public final class OptionalClaim {
     public OptionalClaim withAdditionalProperties(Object additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

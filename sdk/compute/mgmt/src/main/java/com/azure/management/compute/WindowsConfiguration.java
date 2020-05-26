@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The WindowsConfiguration model. */
 @Fluent
 public final class WindowsConfiguration {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsConfiguration.class);
+
     /*
      * Indicates whether virtual machine agent should be provisioned on the
      * virtual machine. <br><br> When this property is not specified in the
@@ -164,5 +168,19 @@ public final class WindowsConfiguration {
     public WindowsConfiguration withWinRM(WinRMConfiguration winRM) {
         this.winRM = winRM;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (additionalUnattendContent() != null) {
+            additionalUnattendContent().forEach(e -> e.validate());
+        }
+        if (winRM() != null) {
+            winRM().validate();
+        }
     }
 }

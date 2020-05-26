@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HttpHeader model. */
 @Fluent
 public final class HttpHeader {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpHeader.class);
+
     /*
      * The name in HTTP header.
      */
@@ -60,5 +64,13 @@ public final class HttpHeader {
     public HttpHeader withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

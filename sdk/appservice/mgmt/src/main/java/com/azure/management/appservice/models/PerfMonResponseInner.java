@@ -5,12 +5,16 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.PerfMonSet;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PerfMonResponse model. */
 @Fluent
 public final class PerfMonResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerfMonResponseInner.class);
+
     /*
      * The response code.
      */
@@ -87,5 +91,16 @@ public final class PerfMonResponseInner {
     public PerfMonResponseInner withData(PerfMonSet data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (data() != null) {
+            data().validate();
+        }
     }
 }

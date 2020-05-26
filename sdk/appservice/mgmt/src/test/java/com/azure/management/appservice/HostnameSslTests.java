@@ -41,7 +41,7 @@ public class HostnameSslTests extends AppServiceTest {
             .defineHostnameBinding()
             .withAzureManagedDomain(domain)
             .withSubDomain(webappName)
-            .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+            .withDnsRecordType(CustomHostnameDnsRecordType.CNAME)
             .attach()
             .create();
 

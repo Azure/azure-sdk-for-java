@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The InstancePoolListResult model. */
 @Immutable
 public final class InstancePoolListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolListResultInner.class);
+
     /*
      * Array of results.
      */
@@ -39,5 +43,16 @@ public final class InstancePoolListResultInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

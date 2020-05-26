@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnectivitySource model. */
 @Fluent
 public final class ConnectivitySource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivitySource.class);
+
     /*
      * The ID of the resource from which a connectivity check will be
      * initiated.
@@ -61,5 +65,18 @@ public final class ConnectivitySource {
     public ConnectivitySource withPort(Integer port) {
         this.port = port;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (resourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property resourceId in model ConnectivitySource"));
+        }
     }
 }

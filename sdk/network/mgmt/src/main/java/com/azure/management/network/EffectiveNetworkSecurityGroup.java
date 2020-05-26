@@ -6,12 +6,16 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The EffectiveNetworkSecurityGroup model. */
 @Fluent
 public final class EffectiveNetworkSecurityGroup {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroup.class);
+
     /*
      * The ID of network security group that is applied.
      */
@@ -115,5 +119,19 @@ public final class EffectiveNetworkSecurityGroup {
     public EffectiveNetworkSecurityGroup withTagMap(String tagMap) {
         this.tagMap = tagMap;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (association() != null) {
+            association().validate();
+        }
+        if (effectiveSecurityRules() != null) {
+            effectiveSecurityRules().forEach(e -> e.validate());
+        }
     }
 }

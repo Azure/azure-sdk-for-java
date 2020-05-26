@@ -6,8 +6,10 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.ResourceMetricAvailability;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,8 @@ import java.util.Map;
 @JsonFlatten
 @Immutable
 public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetricDefinitionInner.class);
+
     /*
      * Unit of the metric.
      */
@@ -91,5 +95,18 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
      */
     public Map<String, String> properties() {
         return this.properties;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (metricAvailabilities() != null) {
+            metricAvailabilities().forEach(e -> e.validate());
+        }
     }
 }

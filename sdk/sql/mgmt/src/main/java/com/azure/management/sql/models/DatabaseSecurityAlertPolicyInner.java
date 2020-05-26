@@ -7,15 +7,19 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SecurityAlertPolicyEmailAccountAdmins;
 import com.azure.management.sql.SecurityAlertPolicyState;
 import com.azure.management.sql.SecurityAlertPolicyUseServerDefault;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatabaseSecurityAlertPolicy model. */
 @JsonFlatten
 @Fluent
 public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseSecurityAlertPolicyInner.class);
+
     /*
      * The geo-location where the resource lives
      */
@@ -287,5 +291,13 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     public DatabaseSecurityAlertPolicyInner withUseServerDefault(SecurityAlertPolicyUseServerDefault useServerDefault) {
         this.useServerDefault = useServerDefault;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

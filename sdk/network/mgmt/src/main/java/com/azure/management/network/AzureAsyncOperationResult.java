@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AzureAsyncOperationResult model. */
 @Fluent
 public final class AzureAsyncOperationResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureAsyncOperationResult.class);
+
     /*
      * Status of the Azure async operation.
      */
@@ -60,5 +64,16 @@ public final class AzureAsyncOperationResult {
     public AzureAsyncOperationResult withError(Error error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
     }
 }
