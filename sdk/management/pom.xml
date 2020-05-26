@@ -68,11 +68,6 @@
             </dependency>
             <dependency>
                 <groupId>com.azure</groupId>
-                <artifactId>azure-identity</artifactId>
-                <version>1.1.0-beta.3</version>
-            </dependency>
-            <dependency>
-                <groupId>com.azure</groupId>
                 <artifactId>azure-security-keyvault-certificates</artifactId>
                 <version>4.1.0-beta.2</version>
             </dependency>
@@ -125,6 +120,12 @@
                 <groupId>com.azure</groupId>
                 <artifactId>azure-core-http-netty</artifactId>
                 <version>1.4.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-identity</artifactId>
+                <version>1.1.0-beta.3</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -237,7 +238,7 @@
                 </analysisConfigurationFiles>
                 <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
                 <checkDependencies>true</checkDependencies>
-                <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
                 </configuration>
                 <dependencies>
                 <dependency>
