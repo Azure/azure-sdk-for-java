@@ -8,6 +8,8 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-analytics-synapse</module>
+    <module>azure-analytics-synapse-accesscontrol</module>
+    <module>azure-analytics-synapse-development</module>
+    <module>azure-analytics-synapse-spark</module>
   </modules>
 </project>
