@@ -9,6 +9,93 @@ process change events that occur in your Blob Storage account at a low cost.
 TODO (gapra) : This is a placeholder. Add docs and point users to blob readme and add changefeed specific samples. 
 
 ## Getting started
+### Prerequisites
+
+- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Azure Subscription][azure_subscription]
+- [Create Storage Account][storage_account]
+
+### Include the package
+
+[//]: # ({x-version-update-start;com.azure:azure-storage-blob-changefeed;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-blob-changefeed</artifactId>
+    <version>12.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+### Create a Storage Account
+To create a Storage Account you can use the [Azure Portal][storage_account_create_portal] or [Azure CLI][storage_account_create_cli].
+
+```bash
+az storage account create \
+    --resource-group <resource-group-name> \
+    --name <storage-account-name> \
+    --location <location>
+```
+
+Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
+http(s)://<storage-account-name>.blob.core.windows.net
+
+### Authenticate the client
+
+In order to interact with the Storage Service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
+To make this possible you'll need the Account SAS (shared access signature) string of the Storage Account. Learn more at [SAS Token][sas_token]
+
+#### Get credentials
+
+##### SAS Token
+
+a. Use the Azure CLI snippet below to get the SAS token from the Storage Account.
+
+```bash
+az storage blob generate-sas \
+    --account-name {Storage Account name} \
+    --container-name {container name} \
+    --name {blob name} \
+    --permissions {permissions to grant} \
+    --expiry {datetime to expire the SAS token} \
+    --services {storage services the SAS allows} \
+    --resource-types {resource types the SAS allows}
+```
+
+Example:
+
+```bash
+CONNECTION_STRING=<connection-string>
+
+az storage blob generate-sas \
+    --account-name MyStorageAccount \
+    --container-name MyContainer \
+    --name MyBlob \
+    --permissions racdw \
+    --expiry 2020-06-15
+```
+
+b. Alternatively, get the Account SAS Token from the Azure Portal.
+
+1. Go to your Storage Account
+2. Select `Shared access signature` from the menu on the left
+3. Click on `Generate SAS and connection string` (after setup)
+
+##### **Shared Key Credential**
+
+a. Use Account name and Account key. Account name is your Storage Account name.
+
+1. Go to your Storage Account
+2. Select `Access keys` from the menu on the left
+3. Under `key1`/`key2` copy the contents of the `Key` field
+
+or
+
+b. Use the connection string.
+
+1. Go to your Storage Account
+2. Select `Access keys` from the menu on the left
+3. Under `key1`/`key2` copy the contents of the `Connection string` field
 
 ## Key concepts
 
