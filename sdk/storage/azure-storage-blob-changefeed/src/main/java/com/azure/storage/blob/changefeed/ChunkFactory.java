@@ -19,8 +19,8 @@ import java.nio.ByteBuffer;
  */
 class ChunkFactory {
 
-    /* TODO (gapra): This should probably be configurable by a user. */
     private static final long DEFAULT_HEADER_SIZE = 4 * Constants.KB;
+    /* TODO (gapra): This should probably be configurable by a user. */
     private static final long DEFAULT_BODY_SIZE = Constants.MB;
 
     private final AvroReaderFactory avroReaderFactory;

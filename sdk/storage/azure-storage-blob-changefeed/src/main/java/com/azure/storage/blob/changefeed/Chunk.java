@@ -18,12 +18,13 @@ import reactor.core.publisher.Flux;
 class Chunk {
 
     private final ChangefeedCursor shardCursor; /* Cursor associated with parent shard. */
-    private final AvroReader avroReader;
+    private final AvroReader avroReader; /* AvroReader to read objects off of. */
 
     /**
      * Creates a new Chunk.
      */
     Chunk(ChangefeedCursor shardCursor, AvroReader avroReader) {
+        StorageImplUtils.assertNotNull("shardCursor", shardCursor);
         StorageImplUtils.assertNotNull("avroReader", avroReader);
         this.shardCursor = shardCursor;
         this.avroReader = avroReader;

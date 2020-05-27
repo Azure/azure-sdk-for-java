@@ -52,12 +52,17 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
         return this.events;
     }
 
+    public String getContinuationToken() {
+        throw new UnsupportedOperationException("continuationToken not supported. Use "
+            + "client.getEvents(String) to pass in a cursor.");
+    }
+
     /**
      * Gets a reference to the next page, should you want to re-initialize the BlobChangefeed.
      *
      * @return The {@link String cursor} that references the next page.
      */
-    public String getContinuationToken() {
+    public String getCursor() {
         /* Serialize the cursor and return it to the user as a String. */
         return cursor.serialize();
     }
