@@ -5,6 +5,7 @@
 - Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
 - Fixed a bug that caused auth failures when constructing a client to a secondary endpoint using token auth.
 - Added support for restoring blob container.
+- Added support to query a blob. 
 
 ## 12.6.1 (2020-05-06)
 - Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
