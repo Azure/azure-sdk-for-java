@@ -178,7 +178,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
                         }
 
                         Integer currentLsn = new Integer(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
-                        Integer estimatedLag = new Integer(latestLsn);
+                        Integer estimatedLag = Integer.valueOf(latestLsn);
                         estimatedLag = estimatedLag - currentLsn + 1;
 
                         return Pair.of(ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn, estimatedLag);
