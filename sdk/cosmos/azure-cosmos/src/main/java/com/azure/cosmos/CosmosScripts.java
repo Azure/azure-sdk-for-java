@@ -3,12 +3,11 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
@@ -48,9 +47,7 @@ public class CosmosScripts {
      * @return the cosmos sync stored procedure response
      */
     public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties) {
-        return mapStoredProcedureResponseAndBlock(
-            asyncScripts.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions())
-        );
+        return asyncScripts.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions()).block();
     }
 
     /**
@@ -63,8 +60,7 @@ public class CosmosScripts {
     public CosmosStoredProcedureResponse createStoredProcedure(
         CosmosStoredProcedureProperties properties,
         CosmosStoredProcedureRequestOptions options) {
-        return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
-                                                                                     options));
+        return asyncScripts.createStoredProcedure(properties, options).block();
     }
 
     /**
@@ -111,9 +107,7 @@ public class CosmosScripts {
      * @return the stored procedure
      */
     public CosmosStoredProcedure getStoredProcedure(String id) {
-        return new CosmosStoredProcedure(id,
-                                         this.container,
-                                         asyncScripts.getStoredProcedure(id));
+        return new CosmosStoredProcedure(id, asyncScripts.getStoredProcedure(id));
     }
 
 
@@ -234,42 +228,6 @@ public class CosmosScripts {
         return new CosmosTrigger(id,
                                  this.container,
                                  asyncScripts.getTrigger(id));
-    }
-
-    /**
-     * Map stored procedure response and block cosmos sync stored procedure response.
-     *
-     * @param storedProcedureResponseMono the stored procedure response mono
-     * @return the cosmos sync stored procedure response
-     */
-    CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(
-        Mono<CosmosAsyncStoredProcedureResponse> storedProcedureResponseMono) {
-        try {
-            return storedProcedureResponseMono
-                       .map(this::convertResponse)
-                       .block();
-        } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw ex;
-            }
-        }
-    }
-
-    /**
-     * Convert response cosmos sync stored procedure response.
-     *
-     * @param response the response
-     * @return the cosmos sync stored procedure response
-     */
-    CosmosStoredProcedureResponse convertResponse(CosmosAsyncStoredProcedureResponse response) {
-        if (response.getStoredProcedure() != null) {
-            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().getId()));
-        } else {
-            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, null);
-        }
     }
 
     /**

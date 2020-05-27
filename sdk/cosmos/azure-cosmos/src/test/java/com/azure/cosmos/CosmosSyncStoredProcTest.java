@@ -4,9 +4,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -60,7 +60,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         storedProcedureDef.setId(UUID.randomUUID().toString());
         storedProcedureDef.setBody("function() {var x = 11;}");
         CosmosStoredProcedureResponse response1 = container.getScripts()
-                                                              .createStoredProcedure(storedProcedureDef,
+                                                           .createStoredProcedure(storedProcedureDef,
                                                                       new CosmosStoredProcedureRequestOptions());
         validateResponse(storedProcedureDef, response1);
 
@@ -106,21 +106,21 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateResponse(storedProcedureDef, response);
 
         CosmosStoredProcedureResponse readResponse = container.getScripts()
-                                                                 .getStoredProcedure(storedProcedureDef.getId())
-                                                                 .read();
+                                                              .getStoredProcedure(storedProcedureDef.getId())
+                                                              .read();
         validateResponse(storedProcedureDef, readResponse);
         //replace
         storedProcedureDef = readResponse.getProperties();
         storedProcedureDef.setBody("function(){ var y = 20;}");
         CosmosStoredProcedureResponse replaceResponse = container.getScripts()
-                                                                    .getStoredProcedure(storedProcedureDef.getId())
-                                                                    .replace(storedProcedureDef);
+                                                                 .getStoredProcedure(storedProcedureDef.getId())
+                                                                 .replace(storedProcedureDef);
         validateResponse(storedProcedureDef, replaceResponse);
 
         storedProcedureDef.setBody("function(){ var z = 2;}");
         CosmosStoredProcedureResponse replaceResponse2 = container.getScripts()
-                                                                     .getStoredProcedure(storedProcedureDef.getId())
-                                                                     .replace(storedProcedureDef,
+                                                                  .getStoredProcedure(storedProcedureDef.getId())
+                                                                  .replace(storedProcedureDef,
                                                                              new CosmosStoredProcedureRequestOptions());
         validateResponse(storedProcedureDef, replaceResponse2);
 
@@ -154,8 +154,8 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
         CosmosStoredProcedureResponse executeResponse = container.getScripts()
-                                                         .getStoredProcedure(sproc.getId())
-                                                         .execute(null, options);
+                                                                 .getStoredProcedure(sproc.getId())
+                                                                 .execute(null, options);
 
         assertThat(executeResponse.getActivityId()).isNotEmpty();
     }
