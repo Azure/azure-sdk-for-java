@@ -65,7 +65,7 @@ public class SessionTokenHelper {
             String globalSessionToken,
             String partitionKeyRangeId) {
 
-        if (partitionKeyRangeId == null || partitionKeyRangeId.isEmpty()) {
+        if (partitionKeyRangeId == null) {
             // AddressCache/address resolution didn't produce partition key range id.
             // In this case it is a bug.
             throw new IllegalStateException("Partition key range Id is absent in the context.");
@@ -154,8 +154,7 @@ public class SessionTokenHelper {
     public static void validateAndRemoveSessionToken(RxDocumentServiceRequest request) {
         String sessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(sessionToken)) {
-            String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
-            getLocalSessionToken(request, sessionToken, partitionKeyRangeId);
+            getLocalSessionToken(request, sessionToken, StringUtils.EMPTY);
             request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
         }
     }
