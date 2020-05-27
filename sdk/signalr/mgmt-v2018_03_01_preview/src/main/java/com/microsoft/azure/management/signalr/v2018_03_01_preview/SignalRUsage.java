@@ -9,32 +9,37 @@
 package com.microsoft.azure.management.signalr.v2018_03_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRUsageInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRServiceManager;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.OperationInner;
 
 /**
- * Type representing Operation.
+ * Type representing SignalRUsage.
  */
-public interface Operation extends HasInner<OperationInner>, HasManager<SignalRServiceManager> {
+public interface SignalRUsage extends HasInner<SignalRUsageInner>, HasManager<SignalRServiceManager> {
     /**
-     * @return the display value.
+     * @return the currentValue value.
      */
-    OperationDisplay display();
+    Long currentValue();
+
+    /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * @return the limit value.
+     */
+    Long limit();
 
     /**
      * @return the name value.
      */
-    String name();
+    SignalRUsageName name();
 
     /**
-     * @return the origin value.
+     * @return the unit value.
      */
-    String origin();
-
-    /**
-     * @return the properties value.
-     */
-    OperationProperties properties();
+    String unit();
 
 }
