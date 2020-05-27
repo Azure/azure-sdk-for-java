@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VpnLinkBgpSettings model. */
 @Fluent
 public final class VpnLinkBgpSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnLinkBgpSettings.class);
+
     /*
      * The BGP speaker's ASN.
      */
@@ -60,5 +64,13 @@ public final class VpnLinkBgpSettings {
     public VpnLinkBgpSettings withBgpPeeringAddress(String bgpPeeringAddress) {
         this.bgpPeeringAddress = bgpPeeringAddress;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -7,6 +7,8 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ContainerNetworkInterface extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterface.class);
+
     /*
      * The name of the resource. This name can be used to access the resource.
      */
@@ -44,7 +48,7 @@ public class ContainerNetworkInterface extends SubResource {
      * attached.
      */
     @JsonProperty(value = "properties.container")
-    private Container container;
+    private SubResource container;
 
     /*
      * Reference to the ip configuration on this container nic.
@@ -135,7 +139,7 @@ public class ContainerNetworkInterface extends SubResource {
      *
      * @return the container value.
      */
-    public Container container() {
+    public SubResource container() {
         return this.container;
     }
 
@@ -145,7 +149,7 @@ public class ContainerNetworkInterface extends SubResource {
      * @param container the container value to set.
      * @return the ContainerNetworkInterface object itself.
      */
-    public ContainerNetworkInterface withContainer(Container container) {
+    public ContainerNetworkInterface withContainer(SubResource container) {
         this.container = container;
         return this;
     }
@@ -178,5 +182,19 @@ public class ContainerNetworkInterface extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (containerNetworkInterfaceConfiguration() != null) {
+            containerNetworkInterfaceConfiguration().validate();
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
     }
 }

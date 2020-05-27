@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayFirewallExclusion model. */
 @Fluent
 public final class ApplicationGatewayFirewallExclusion {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallExclusion.class);
+
     /*
      * The variable to be excluded.
      */
@@ -92,5 +96,32 @@ public final class ApplicationGatewayFirewallExclusion {
     public ApplicationGatewayFirewallExclusion withSelector(String selector) {
         this.selector = selector;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (matchVariable() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
+        }
+        if (selectorMatchOperator() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property selectorMatchOperator in model"
+                            + " ApplicationGatewayFirewallExclusion"));
+        }
+        if (selector() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property selector in model ApplicationGatewayFirewallExclusion"));
+        }
     }
 }

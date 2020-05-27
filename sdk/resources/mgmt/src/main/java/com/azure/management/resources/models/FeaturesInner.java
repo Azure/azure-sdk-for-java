@@ -22,13 +22,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Features. */
 public final class FeaturesInner {
+    private final ClientLogger logger = new ClientLogger(FeaturesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final FeaturesService service;
 
@@ -55,7 +58,7 @@ public final class FeaturesInner {
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FeatureOperationsListResultInner>> listAll(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -64,10 +67,10 @@ public final class FeaturesInner {
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers"
+                + "/{resourceProviderNamespace}/features")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FeatureOperationsListResultInner>> list(
             @HostParam("$host") String host,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
@@ -77,10 +80,10 @@ public final class FeaturesInner {
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers"
+                + "/{resourceProviderNamespace}/features/{featureName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FeatureResultInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
@@ -91,11 +94,25 @@ public final class FeaturesInner {
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}/register")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers"
+                + "/{resourceProviderNamespace}/features/{featureName}/register")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FeatureResultInner>> register(
+            @HostParam("$host") String host,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam("featureName") String featureName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
+
+        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers"
+                + "/{resourceProviderNamespace}/features/{featureName}/unregister")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<SimpleResponse<FeatureResultInner>> unregister(
             @HostParam("$host") String host,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam("featureName") String featureName,
@@ -106,14 +123,14 @@ public final class FeaturesInner {
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FeatureOperationsListResultInner>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FeatureOperationsListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -121,12 +138,22 @@ public final class FeaturesInner {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -151,7 +178,41 @@ public final class FeaturesInner {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the preview features that are available through AFEC for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listAll(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all the preview features that are available through AFEC for the subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
      */
@@ -163,7 +224,21 @@ public final class FeaturesInner {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the preview features that are available through AFEC for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FeatureResultInner> listAllAsync(Context context) {
+        return new PagedFlux<>(() -> listAllSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all the preview features that are available through AFEC for the subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
      */
@@ -177,12 +252,28 @@ public final class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(String resourceProviderNamespace) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -209,8 +300,55 @@ public final class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(
+        String resourceProviderNamespace, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(
+                this.client.getHost(),
+                resourceProviderNamespace,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
      */
@@ -224,8 +362,25 @@ public final class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FeatureResultInner> listAsync(String resourceProviderNamespace, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceProviderNamespace, context),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
      */
@@ -240,13 +395,32 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the preview feature with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FeatureResultInner>> getWithResponseAsync(
         String resourceProviderNamespace, String featureName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (featureName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -266,8 +440,51 @@ public final class FeaturesInner {
      *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the preview feature with the specified name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FeatureResultInner>> getWithResponseAsync(
+        String resourceProviderNamespace, String featureName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (featureName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .get(
+                this.client.getHost(),
+                resourceProviderNamespace,
+                featureName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets the preview feature with the specified name.
+     *
+     * @param resourceProviderNamespace The resource provider namespace for the feature.
+     * @param featureName The name of the feature to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the preview feature with the specified name.
      */
@@ -290,7 +507,7 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the preview feature with the specified name.
      */
@@ -305,13 +522,32 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FeatureResultInner>> registerWithResponseAsync(
         String resourceProviderNamespace, String featureName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (featureName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -331,8 +567,51 @@ public final class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FeatureResultInner>> registerWithResponseAsync(
+        String resourceProviderNamespace, String featureName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (featureName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .register(
+                this.client.getHost(),
+                resourceProviderNamespace,
+                featureName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Registers the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return previewed feature information.
      */
@@ -355,7 +634,7 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return previewed feature information.
      */
@@ -365,16 +644,146 @@ public final class FeaturesInner {
     }
 
     /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FeatureResultInner>> unregisterWithResponseAsync(
+        String resourceProviderNamespace, String featureName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (featureName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .unregister(
+                            this.client.getHost(),
+                            resourceProviderNamespace,
+                            featureName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FeatureResultInner>> unregisterWithResponseAsync(
+        String resourceProviderNamespace, String featureName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (featureName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .unregister(
+                this.client.getHost(),
+                resourceProviderNamespace,
+                featureName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName) {
+        return unregisterWithResponseAsync(resourceProviderNamespace, featureName)
+            .flatMap(
+                (SimpleResponse<FeatureResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureResultInner unregister(String resourceProviderNamespace, String featureName) {
+        return unregisterAsync(resourceProviderNamespace, featureName).block();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of previewed features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listAllNext(nextLink, context))
             .<PagedResponse<FeatureResultInner>>map(
@@ -392,14 +801,45 @@ public final class FeaturesInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of previewed features.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listAllNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of previewed features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<FeatureResultInner>>map(
@@ -412,5 +852,33 @@ public final class FeaturesInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of previewed features.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

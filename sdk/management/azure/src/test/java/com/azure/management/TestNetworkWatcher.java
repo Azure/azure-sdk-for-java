@@ -40,7 +40,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
     @Override
     public NetworkWatcher createResource(NetworkWatchers networkWatchers) throws Exception {
         // Network Watcher should be in the same region as monitored resources
-        initializeResourceNames(networkWatchers.manager().getSdkContext());
+        initializeResourceNames(networkWatchers.manager().sdkContext());
 
         // make sure Network Watcher is disabled in current subscription and region as only one can exist
         PagedIterable<NetworkWatcher> nwList = networkWatchers.list();
@@ -113,7 +113,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
 
         Creatable<VirtualMachine> vm1 =
             vms
-                .define(networks.manager().getSdkContext().randomResourceName("vm", 15))
+                .define(networks.manager().sdkContext().randomResourceName("vm", 15))
                 .withRegion(REGION)
                 .withExistingResourceGroup(groupName)
                 .withExistingPrimaryNetworkInterface(nic)
@@ -128,7 +128,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withMinorVersionAutoUpgrade()
                 .attach();
 
-        String vmName = networks.manager().getSdkContext().randomResourceName("vm", 15);
+        String vmName = networks.manager().sdkContext().randomResourceName("vm", 15);
 
         Creatable<VirtualMachine> vm2 =
             vms

@@ -10,7 +10,7 @@ import com.azure.management.network.LoadBalancerProbe;
 import com.azure.management.network.LoadBalancingRule;
 import com.azure.management.network.LoadDistribution;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.network.models.HasNetworkInterfaces;
@@ -47,7 +47,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public boolean floatingIPEnabled() {
-        return this.inner().enableFloatingIP();
+        return this.inner().enableFloatingIp();
     }
 
     @Override
@@ -72,7 +72,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public LoadBalancerFrontend frontend() {
-        SubResource frontendRef = this.inner().frontendIPConfiguration();
+        SubResource frontendRef = this.inner().frontendIpConfiguration();
         if (frontendRef == null) {
             return null;
         } else {
@@ -112,7 +112,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
     // Fluent withers
 
     @Override
-    public LoadBalancingRuleImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+    public LoadBalancingRuleImpl fromExistingPublicIPAddress(PublicIpAddress publicIPAddress) {
         return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
@@ -125,21 +125,21 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress(String leafDnsLabel) {
-        String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
-    public LoadBalancingRuleImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
-        String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+    public LoadBalancingRuleImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
+        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress() {
-        String dnsLabel = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         return this.fromNewPublicIPAddress(dnsLabel);
     }
 
@@ -168,7 +168,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public LoadBalancingRuleImpl withFloatingIP(boolean enable) {
-        this.inner().withEnableFloatingIP(enable);
+        this.inner().withEnableFloatingIp(enable);
         return this;
     }
 
@@ -230,7 +230,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
     public LoadBalancingRuleImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
-            this.inner().withFrontendIPConfiguration(frontendRef);
+            this.inner().withFrontendIpConfiguration(frontendRef);
         }
         return this;
     }

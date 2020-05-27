@@ -7,8 +7,10 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ExpressRouteCircuitReference;
 import com.azure.management.network.ServiceProviderProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ExpressRouteCrossConnectionInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -39,7 +43,7 @@ public class ExpressRouteCrossConnectionInner extends Resource {
      * The identifier of the circuit traffic.
      */
     @JsonProperty(value = "properties.sTag", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer sTag;
+    private Integer stag;
 
     /*
      * The peering location of the ExpressRoute circuit.
@@ -119,12 +123,12 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the sTag property: The identifier of the circuit traffic.
+     * Get the stag property: The identifier of the circuit traffic.
      *
-     * @return the sTag value.
+     * @return the stag value.
      */
-    public Integer sTag() {
-        return this.sTag;
+    public Integer stag() {
+        return this.stag;
     }
 
     /**
@@ -278,5 +282,19 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     public ExpressRouteCrossConnectionInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (expressRouteCircuit() != null) {
+            expressRouteCircuit().validate();
+        }
+        if (peerings() != null) {
+            peerings().forEach(e -> e.validate());
+        }
     }
 }

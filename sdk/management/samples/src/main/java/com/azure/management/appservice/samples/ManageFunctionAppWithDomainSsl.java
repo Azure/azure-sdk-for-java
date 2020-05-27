@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServiceDomain;
-import com.azure.management.appservice.CustomHostNameDnsRecordType;
+import com.azure.management.appservice.CustomHostnameDnsRecordType;
 import com.azure.management.appservice.FunctionApp;
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
@@ -107,7 +107,7 @@ public final class ManageFunctionAppWithDomainSsl {
                     .defineHostnameBinding()
                         .withAzureManagedDomain(domain)
                         .withSubDomain(app1Name)
-                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                        .withDnsRecordType(CustomHostnameDnsRecordType.CNAME)
                         .attach()
                     .apply();
 
@@ -187,7 +187,7 @@ public final class ManageFunctionAppWithDomainSsl {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -28,6 +28,7 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.models.ThroughputProperties;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -331,13 +332,13 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             CosmosAsyncItemResponse<CosmosItemProperties> readDocumentResponse =
                 collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
+            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
 
             //  DELETE the existing collection
             deleteCollection(client2, dbId, collectionId);
@@ -356,8 +357,8 @@ public class CollectionCrudTest extends TestSuiteBase {
                                                  new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getDuration());
 
             CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
@@ -378,15 +379,19 @@ public class CollectionCrudTest extends TestSuiteBase {
                                            .block()
                                            .getDatabase();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
+        CosmosAsyncContainer container = database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(1000),
                                                                   new CosmosContainerRequestOptions())
                                              .block()
                                              .getContainer();
-        Integer throughput = container.readProvisionedThroughput().block();
+        Integer throughput = container.readThroughput().block()
+            .getProperties().getManualThroughput();
 
         assertThat(throughput).isEqualTo(1000);
 
-        throughput = container.replaceProvisionedThroughput(2000).block();
+        throughput = container.replaceThroughput(ThroughputProperties.createManualThroughput(2000))
+            .block()
+            .getProperties()
+            .getManualThroughput();
         assertThat(throughput).isEqualTo(2000);
     }
 

@@ -5,7 +5,9 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.TopologyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 /** The Topology model. */
 @Fluent
 public final class TopologyInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyInner.class);
+
     /*
      * GUID representing the operation id.
      */
@@ -83,5 +87,16 @@ public final class TopologyInner {
     public TopologyInner withResources(List<TopologyResource> resources) {
         this.resources = resources;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (resources() != null) {
+            resources().forEach(e -> e.validate());
+        }
     }
 }

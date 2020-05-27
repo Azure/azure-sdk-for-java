@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutoPauseDelayTimeRange model. */
 @Immutable
 public final class AutoPauseDelayTimeRange {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoPauseDelayTimeRange.class);
+
     /*
      * Minimum value
      */
@@ -99,5 +103,13 @@ public final class AutoPauseDelayTimeRange {
      */
     public Integer doNotPauseValue() {
         return this.doNotPauseValue;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

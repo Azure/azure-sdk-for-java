@@ -5,12 +5,16 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationCreateParameters model. */
 @Fluent
 public final class ApplicationCreateParameters extends ApplicationBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationCreateParameters.class);
+
     /*
      * The display name of the application.
      */
@@ -61,5 +65,21 @@ public final class ApplicationCreateParameters extends ApplicationBase {
     public ApplicationCreateParameters withIdentifierUris(List<String> identifierUris) {
         this.identifierUris = identifierUris;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (displayName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property displayName in model ApplicationCreateParameters"));
+        }
     }
 }

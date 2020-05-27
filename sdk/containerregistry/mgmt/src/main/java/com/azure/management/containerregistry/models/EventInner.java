@@ -5,13 +5,17 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.EventRequestMessage;
 import com.azure.management.containerregistry.EventResponseMessage;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Event model. */
 @Fluent
 public final class EventInner extends EventInfoInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventInner.class);
+
     /*
      * The event request message sent to the service URI.
      */
@@ -62,5 +66,21 @@ public final class EventInner extends EventInfoInner {
     public EventInner withEventResponseMessage(EventResponseMessage eventResponseMessage) {
         this.eventResponseMessage = eventResponseMessage;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (eventRequestMessage() != null) {
+            eventRequestMessage().validate();
+        }
+        if (eventResponseMessage() != null) {
+            eventResponseMessage().validate();
+        }
     }
 }

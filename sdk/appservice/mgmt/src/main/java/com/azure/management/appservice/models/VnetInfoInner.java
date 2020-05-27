@@ -6,7 +6,9 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VnetInfoInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetInfoInner.class);
+
     /*
      * The Virtual Network's resource ID.
      */
@@ -170,5 +174,18 @@ public class VnetInfoInner extends ProxyOnlyResource {
     public VnetInfoInner withIsSwift(Boolean isSwift) {
         this.isSwift = isSwift;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (routes() != null) {
+            routes().forEach(e -> e.validate());
+        }
     }
 }

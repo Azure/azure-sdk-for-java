@@ -5,12 +5,16 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.OperatingSystemTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RunCommandDocumentBase model. */
 @Fluent
 public class RunCommandDocumentBaseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandDocumentBaseInner.class);
+
     /*
      * The VM run command schema.
      */
@@ -139,5 +143,42 @@ public class RunCommandDocumentBaseInner {
     public RunCommandDocumentBaseInner withDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (schema() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property schema in model RunCommandDocumentBaseInner"));
+        }
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model RunCommandDocumentBaseInner"));
+        }
+        if (osType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property osType in model RunCommandDocumentBaseInner"));
+        }
+        if (label() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property label in model RunCommandDocumentBaseInner"));
+        }
+        if (description() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property description in model RunCommandDocumentBaseInner"));
+        }
     }
 }

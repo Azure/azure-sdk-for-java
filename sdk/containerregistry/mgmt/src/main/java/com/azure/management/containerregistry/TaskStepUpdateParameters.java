@@ -5,6 +5,8 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -24,6 +26,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class TaskStepUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskStepUpdateParameters.class);
+
     /*
      * The URL(absolute or relative) of the source context for the task step.
      */
@@ -77,5 +81,13 @@ public class TaskStepUpdateParameters {
     public TaskStepUpdateParameters withContextAccessToken(String contextAccessToken) {
         this.contextAccessToken = contextAccessToken;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

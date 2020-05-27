@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExpressRouteCircuitSku model. */
 @Fluent
 public final class ExpressRouteCircuitSku {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitSku.class);
+
     /*
      * The name of the SKU.
      */
@@ -86,5 +90,13 @@ public final class ExpressRouteCircuitSku {
     public ExpressRouteCircuitSku withFamily(ExpressRouteCircuitSkuFamily family) {
         this.family = family;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

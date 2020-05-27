@@ -4,7 +4,9 @@ parameters:
   ServiceDirectory: not-specified
   Skip.UpdatePackageVersion: true
   Skip.VersionVerification: true
-
+  TargetDocRepoOwner: 'Azure'
+  TargetDocRepoName: 'azure-docs-sdk-java'
+  
 stages:
   - stage: Build
     jobs:
@@ -23,3 +25,5 @@ stages:
           SDKType: ${{parameters.SDKType}}
           Artifacts: ${{parameters.Artifacts}}
           ArtifactName: packages
+          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+          TargetDocRepoName: ${{parameters.TargetDocRepoName}} 

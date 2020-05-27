@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Usages. */
 public final class UsagesInner {
+    private final ClientLogger logger = new ClientLogger(UsagesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final UsagesService service;
 
@@ -54,7 +57,7 @@ public final class UsagesInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UsageListResultInner>> listByLocation(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -68,12 +71,25 @@ public final class UsagesInner {
      *
      * @param location The location of the Azure Storage resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage count and the limit for the resources of the location under the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -95,8 +111,42 @@ public final class UsagesInner {
      * Gets the current usage count and the limit for the resources of the location under the subscription.
      *
      * @param location The location of the Azure Storage resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current usage count and the limit for the resources of the location under the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        return service
+            .listByLocation(
+                this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), location, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Gets the current usage count and the limit for the resources of the location under the subscription.
+     *
+     * @param location The location of the Azure Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage count and the limit for the resources of the location under the subscription.
      */
@@ -109,8 +159,23 @@ public final class UsagesInner {
      * Gets the current usage count and the limit for the resources of the location under the subscription.
      *
      * @param location The location of the Azure Storage resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current usage count and the limit for the resources of the location under the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<UsageInner> listByLocationAsync(String location, Context context) {
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, context));
+    }
+
+    /**
+     * Gets the current usage count and the limit for the resources of the location under the subscription.
+     *
+     * @param location The location of the Azure Storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage count and the limit for the resources of the location under the subscription.
      */

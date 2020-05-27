@@ -5,11 +5,15 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CsmCopySlotEntity model. */
 @Fluent
 public final class CsmCopySlotEntityInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmCopySlotEntityInner.class);
+
     /*
      * Destination deployment slot during copy operation.
      */
@@ -68,5 +72,27 @@ public final class CsmCopySlotEntityInner {
     public CsmCopySlotEntityInner withSiteConfig(SiteConfigInner siteConfig) {
         this.siteConfig = siteConfig;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetSlot() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetSlot in model CsmCopySlotEntityInner"));
+        }
+        if (siteConfig() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property siteConfig in model CsmCopySlotEntityInner"));
+        } else {
+            siteConfig().validate();
+        }
     }
 }

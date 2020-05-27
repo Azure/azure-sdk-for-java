@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import reactor.core.Disposable;
 
+import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,20 +33,30 @@ public class ReceiveMessageAsyncSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-        ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiverAsyncClient.receive()
-            .subscribe(context -> {
+        Disposable subscription = receiver.receive()
+            .flatMap(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
-                System.out.println("Received Message Id:" + message.getMessageId());
-                System.out.println("Received Message:" + new String(message.getBody()));
 
-                // By default, the message will be auto completed.
-            },
+                // process message
+                System.out.println("Received Message Id: " + message.getMessageId());
+                System.out.println("Received Message: " + new String(message.getBody()));
+
+                boolean isSuccessfullyProcessed = processMessage(message);
+
+                // When we are finished processing the message, then complete or abandon it.
+                if (isSuccessfullyProcessed) {
+                    return receiver.complete(message).thenReturn("Completed: " + message.getMessageId());
+                } else {
+                    return receiver.abandon(message).thenReturn("Abandoned: " + message.getMessageId());
+                }
+            })
+            .subscribe(message -> System.out.printf("Processed at %s. %s%n", Instant.now(), message),
                 error -> System.err.println("Error occurred while receiving message: " + error),
                 () -> System.out.println("Receiving complete."));
 
@@ -57,6 +68,10 @@ public class ReceiveMessageAsyncSample {
         subscription.dispose();
 
         // Close the receiver.
-        receiverAsyncClient.close();
+        receiver.close();
+    }
+
+    private static boolean processMessage(ServiceBusReceivedMessage message) {
+        return true;
     }
 }

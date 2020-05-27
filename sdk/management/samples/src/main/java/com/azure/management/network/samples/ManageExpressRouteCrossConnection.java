@@ -49,7 +49,7 @@ public final class ManageExpressRouteCrossConnection {
                     .withPrimaryPeerAddressPrefix("10.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("10.0.0.4/30")
                     .withVlanId(100)
-                    .withPeerASN(500)
+                    .withPeerAsn(500)
                     .withSharedKey("A1B2C3D4")
                     .create();
 
@@ -58,16 +58,16 @@ public final class ManageExpressRouteCrossConnection {
             crossConnection.peerings()
                     .defineMicrosoftPeering()
                     .withAdvertisedPublicPrefixes("123.1.0.0/24")
-                    .withCustomerASN(45)
+                    .withCustomerAsn(45)
                     .withRoutingRegistryName("ARIN")
                     .withPrimaryPeerAddressPrefix("10.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("10.0.0.4/30")
                     .withVlanId(600)
-                    .withPeerASN(500)
+                    .withPeerAsn(500)
                     .withSharedKey("A1B2C3D4")
                     .defineIpv6Config()
                     .withAdvertisedPublicPrefix("3FFE:FFFF:0:CD31::/120")
-                    .withCustomerASN(23)
+                    .withCustomerAsn(23)
                     .withRoutingRegistryName("ARIN")
                     .withPrimaryPeerAddressPrefix("3FFE:FFFF:0:CD30::/126")
                     .withSecondaryPeerAddressPrefix("3FFE:FFFF:0:CD30::4/126")
@@ -112,7 +112,7 @@ public final class ManageExpressRouteCrossConnection {
         try {
             //=============================================================
             // Authenticate
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

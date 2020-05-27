@@ -7,10 +7,12 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.DedicatedHostInstanceView;
 import com.azure.management.compute.DedicatedHostLicenseTypes;
 import com.azure.management.compute.Sku;
 import com.azure.management.compute.SubResourceReadOnly;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DedicatedHostInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostInner.class);
+
     /*
      * SKU of the dedicated host for Hardware Generation and VM family. Only
      * name is required to be set. List Microsoft.Compute SKUs for a list of
@@ -214,5 +218,26 @@ public class DedicatedHostInner extends Resource {
      */
     public DedicatedHostInstanceView instanceView() {
         return this.instanceView;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sku in model DedicatedHostInner"));
+        } else {
+            sku().validate();
+        }
+        if (virtualMachines() != null) {
+            virtualMachines().forEach(e -> e.validate());
+        }
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
     }
 }

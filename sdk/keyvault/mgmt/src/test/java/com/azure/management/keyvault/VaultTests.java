@@ -4,7 +4,7 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.graphrbac.ActiveDirectoryUser;
 import com.azure.management.graphrbac.ServicePrincipal;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -263,7 +263,7 @@ public class VaultTests extends KeyVaultManagementTest {
         boolean deleted = false;
         try {
             keyVaultManager.vaults().getDeleted(name, location);
-        } catch (CloudException exception) {
+        } catch (ManagementException exception) {
             if (exception.getResponse().getStatusCode() == 404) {
                 deleted = true;
             }

@@ -5,6 +5,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The TimeSeriesInformation model. */
 @Fluent
 public final class TimeSeriesInformation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesInformation.class);
+
     /*
      * the list of sensitivities for calculating the baseline.
      */
@@ -88,5 +92,24 @@ public final class TimeSeriesInformation {
     public TimeSeriesInformation withTimestamps(List<OffsetDateTime> timestamps) {
         this.timestamps = timestamps;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sensitivities() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sensitivities in model TimeSeriesInformation"));
+        }
+        if (values() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property values in model TimeSeriesInformation"));
+        }
     }
 }

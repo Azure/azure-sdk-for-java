@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AvailableProvidersListCountry model. */
 @Fluent
 public final class AvailableProvidersListCountry {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListCountry.class);
+
     /*
      * The country name.
      */
@@ -87,5 +91,16 @@ public final class AvailableProvidersListCountry {
     public AvailableProvidersListCountry withStates(List<AvailableProvidersListState> states) {
         this.states = states;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (states() != null) {
+            states().forEach(e -> e.validate());
+        }
     }
 }

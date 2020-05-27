@@ -10,10 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the AuthorizationManagementClientImpl type. */
 public final class AuthorizationManagementClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(AuthorizationManagementClientImpl.class);
+
     /** The ID of the target subscription. */
     private String subscriptionId;
 

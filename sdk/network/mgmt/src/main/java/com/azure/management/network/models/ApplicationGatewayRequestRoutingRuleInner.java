@@ -7,13 +7,17 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayRequestRoutingRule model. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRequestRoutingRuleInner.class);
+
     /*
      * Name of the request routing rule that is unique within an Application
      * Gateway.
@@ -302,5 +306,13 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     public ApplicationGatewayRequestRoutingRuleInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

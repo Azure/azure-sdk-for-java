@@ -8,9 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.management.network.ExpressRouteCircuitSku;
 import com.azure.management.network.ServiceProviderProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ExpressRouteCircuitInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitInner.class);
+
     /*
      * The SKU.
      */
@@ -448,5 +452,25 @@ public class ExpressRouteCircuitInner extends Resource {
     public ExpressRouteCircuitInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (authorizations() != null) {
+            authorizations().forEach(e -> e.validate());
+        }
+        if (peerings() != null) {
+            peerings().forEach(e -> e.validate());
+        }
+        if (serviceProviderProperties() != null) {
+            serviceProviderProperties().validate();
+        }
     }
 }

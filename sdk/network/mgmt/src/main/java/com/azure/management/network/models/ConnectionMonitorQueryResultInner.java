@@ -5,14 +5,18 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ConnectionMonitorSourceStatus;
 import com.azure.management.network.ConnectionStateSnapshot;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ConnectionMonitorQueryResult model. */
 @Fluent
 public final class ConnectionMonitorQueryResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorQueryResultInner.class);
+
     /*
      * Status of connection monitor source.
      */
@@ -63,5 +67,16 @@ public final class ConnectionMonitorQueryResultInner {
     public ConnectionMonitorQueryResultInner withStates(List<ConnectionStateSnapshot> states) {
         this.states = states;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (states() != null) {
+            states().forEach(e -> e.validate());
+        }
     }
 }

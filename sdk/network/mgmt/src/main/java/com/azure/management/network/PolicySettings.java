@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PolicySettings model. */
 @Fluent
 public final class PolicySettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySettings.class);
+
     /*
      * Describes if the policy is in enabled state or disabled state.
      */
@@ -60,5 +64,13 @@ public final class PolicySettings {
     public PolicySettings withMode(WebApplicationFirewallMode mode) {
         this.mode = mode;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

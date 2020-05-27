@@ -6,6 +6,8 @@ package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class VirtualClusterUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualClusterUpdate.class);
+
     /*
      * Resource tags.
      */
@@ -97,5 +101,13 @@ public class VirtualClusterUpdate {
      */
     public List<String> childResources() {
         return this.childResources;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

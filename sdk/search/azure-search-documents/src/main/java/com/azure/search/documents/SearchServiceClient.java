@@ -7,17 +7,17 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.AnalyzeRequest;
-import com.azure.search.documents.models.DataSource;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.Indexer;
-import com.azure.search.documents.models.IndexerExecutionInfo;
+import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.Skillset;
-import com.azure.search.documents.models.SynonymMap;
-import com.azure.search.documents.models.TokenInfo;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SynonymMap;
 
 /**
  * Synchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
@@ -74,14 +74,14 @@ public final class SearchServiceClient {
      * @param dataSource The definition of the data source to create or update.
      * @return the data source that was created or updated.
      */
-    public DataSource createOrUpdateDataSource(DataSource dataSource) {
+    public SearchIndexerDataSource createOrUpdateDataSource(SearchIndexerDataSource dataSource) {
         return createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the {@link DataSource} to create or update
+     * @param dataSource the {@link SearchIndexerDataSource} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -89,8 +89,8 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created or updated.
      */
-    public Response<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource, boolean onlyIfUnchanged,
-        RequestOptions requestOptions, Context context) {
+    public Response<SearchIndexerDataSource> createOrUpdateDataSourceWithResponse(SearchIndexerDataSource dataSource,
+        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateDataSourceWithResponse(dataSource, onlyIfUnchanged, requestOptions, context)
             .block();
     }
@@ -101,7 +101,7 @@ public final class SearchServiceClient {
      * @param dataSource The definition of the data source to create
      * @return the data source that was created.
      */
-    public DataSource createDataSource(DataSource dataSource) {
+    public SearchIndexerDataSource createDataSource(SearchIndexerDataSource dataSource) {
         return createDataSourceWithResponse(dataSource, null, Context.NONE).getValue();
     }
 
@@ -114,8 +114,8 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created.
      */
-    public Response<DataSource> createDataSourceWithResponse(DataSource dataSource, RequestOptions requestOptions,
-        Context context) {
+    public Response<SearchIndexerDataSource> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
+        RequestOptions requestOptions, Context context) {
         return asyncClient.createDataSourceWithResponse(dataSource, requestOptions, context).block();
     }
 
@@ -125,7 +125,7 @@ public final class SearchServiceClient {
      * @param dataSourceName the name of the data source to retrieve
      * @return the DataSource.
      */
-    public DataSource getDataSource(String dataSourceName) {
+    public SearchIndexerDataSource getDataSource(String dataSourceName) {
         return getDataSourceWithResponse(dataSourceName, null, Context.NONE).getValue();
     }
 
@@ -138,8 +138,8 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the DataSource.
      */
-    public Response<DataSource> getDataSourceWithResponse(String dataSourceName, RequestOptions requestOptions,
-        Context context) {
+    public Response<SearchIndexerDataSource> getDataSourceWithResponse(String dataSourceName,
+        RequestOptions requestOptions, Context context) {
         return asyncClient.getDataSourceWithResponse(dataSourceName, requestOptions, context).block();
     }
 
@@ -148,7 +148,7 @@ public final class SearchServiceClient {
      *
      * @return a list of DataSources
      */
-    public PagedIterable<DataSource> listDataSources() {
+    public PagedIterable<SearchIndexerDataSource> listDataSources() {
         return listDataSources(null, null, Context.NONE);
     }
 
@@ -162,7 +162,8 @@ public final class SearchServiceClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return a response containing the list of DataSources.
      */
-    public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+    public PagedIterable<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions,
+        Context context) {
         return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
     }
 
@@ -172,13 +173,13 @@ public final class SearchServiceClient {
      * @param dataSourceName the name of the data source to be deleted
      */
     public void deleteDataSource(String dataSourceName) {
-        deleteDataSourceWithResponse(new DataSource().setName(dataSourceName), false, null, Context.NONE);
+        deleteDataSourceWithResponse(new SearchIndexerDataSource().setName(dataSourceName), false, null, Context.NONE);
     }
 
     /**
      * Delete a DataSource with Response
      *
-     * @param dataSource the {@link DataSource} to be deleted.
+     * @param dataSource the {@link SearchIndexerDataSource} to be deleted.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -186,7 +187,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return an empty response
      */
-    public Response<Void> deleteDataSourceWithResponse(DataSource dataSource, boolean onlyIfUnchanged,
+    public Response<Void> deleteDataSourceWithResponse(SearchIndexerDataSource dataSource, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? dataSource.getETag() : null;
         return asyncClient.deleteDataSourceWithResponse(dataSource.getName(), etag, requestOptions, context).block();
@@ -198,7 +199,7 @@ public final class SearchServiceClient {
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
-    public Indexer createIndexer(Indexer indexer) {
+    public SearchIndexer createIndexer(SearchIndexer indexer) {
         return createIndexerWithResponse(indexer, null, Context.NONE).getValue();
     }
 
@@ -211,7 +212,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Indexer.
      */
-    public Response<Indexer> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions,
+    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
         Context context) {
         return asyncClient.createIndexerWithResponse(indexer, requestOptions, context).block();
     }
@@ -222,14 +223,14 @@ public final class SearchServiceClient {
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
-    public Indexer createOrUpdateIndexer(Indexer indexer) {
+    public SearchIndexer createOrUpdateIndexer(SearchIndexer indexer) {
         return createOrUpdateIndexerWithResponse(indexer, false, null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
-     * @param indexer The {@link Indexer} to create or update.
+     * @param indexer The {@link SearchIndexer} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -237,7 +238,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return A response object containing the Indexer.
      */
-    public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
+    public Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, requestOptions, context).block();
     }
@@ -247,7 +248,7 @@ public final class SearchServiceClient {
      *
      * @return all Indexers from the Search service.
      */
-    public PagedIterable<Indexer> listIndexers() {
+    public PagedIterable<SearchIndexer> listIndexers() {
         return listIndexers(null, null, Context.NONE);
     }
 
@@ -260,7 +261,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexers from the Search service.
      */
-    public PagedIterable<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
+    public PagedIterable<SearchIndexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions, context));
     }
 
@@ -270,7 +271,7 @@ public final class SearchServiceClient {
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
      */
-    public Indexer getIndexer(String indexerName) {
+    public SearchIndexer getIndexer(String indexerName) {
         return getIndexerWithResponse(indexerName, null, Context.NONE).getValue();
     }
 
@@ -283,7 +284,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the indexer.
      */
-    public Response<Indexer> getIndexerWithResponse(String indexerName, RequestOptions requestOptions,
+    public Response<SearchIndexer> getIndexerWithResponse(String indexerName, RequestOptions requestOptions,
         Context context) {
         return asyncClient.getIndexerWithResponse(indexerName, requestOptions, context).block();
     }
@@ -294,13 +295,13 @@ public final class SearchServiceClient {
      * @param indexerName the name of the indexer to delete
      */
     public void deleteIndexer(String indexerName) {
-        deleteIndexerWithResponse(new Indexer().setName(indexerName), false, null, Context.NONE);
+        deleteIndexerWithResponse(new SearchIndexer().setName(indexerName), false, null, Context.NONE);
     }
 
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexer the search {@link Indexer}
+     * @param indexer the search {@link SearchIndexer}
      * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -308,7 +309,7 @@ public final class SearchServiceClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
+    public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? indexer.getETag() : null;
         return asyncClient.deleteIndexerWithResponse(indexer.getName(), etag, requestOptions, context).block();
@@ -364,7 +365,7 @@ public final class SearchServiceClient {
      * @param indexerName the name of the indexer for which to retrieve status
      * @return a response with the indexer execution info.
      */
-    public IndexerExecutionInfo getIndexerStatus(String indexerName) {
+    public SearchIndexerStatus getIndexerStatus(String indexerName) {
         return getIndexerStatusWithResponse(indexerName, null, Context.NONE).getValue();
     }
 
@@ -377,7 +378,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response with the indexer execution info.
      */
-    public Response<IndexerExecutionInfo> getIndexerStatusWithResponse(String indexerName,
+    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName,
         RequestOptions requestOptions, Context context) {
         return asyncClient.getIndexerStatusWithResponse(indexerName, requestOptions, context).block();
     }
@@ -388,7 +389,7 @@ public final class SearchServiceClient {
      * @param index definition of the index to create
      * @return the created Index.
      */
-    public Index createIndex(Index index) {
+    public SearchIndex createIndex(SearchIndex index) {
         return createIndexWithResponse(index, null, Context.NONE).getValue();
     }
 
@@ -401,7 +402,8 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Index.
      */
-    public Response<Index> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
+    public Response<SearchIndex> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions,
+        Context context) {
         return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
     }
 
@@ -411,7 +413,7 @@ public final class SearchServiceClient {
      * @param indexName the name of the index to retrieve
      * @return the Index.
      */
-    public Index getIndex(String indexName) {
+    public SearchIndex getIndex(String indexName) {
         return getIndexWithResponse(indexName, null, Context.NONE).getValue();
     }
 
@@ -424,7 +426,8 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index.
      */
-    public Response<Index> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
+    public Response<SearchIndex> getIndexWithResponse(String indexName, RequestOptions requestOptions,
+        Context context) {
         return asyncClient.getIndexWithResponse(indexName, requestOptions, context).block();
     }
 
@@ -457,7 +460,7 @@ public final class SearchServiceClient {
      *
      * @return the list of indexes.
      */
-    public PagedIterable<Index> listIndexes() {
+    public PagedIterable<SearchIndex> listIndexes() {
         return listIndexes(null, null, Context.NONE);
     }
 
@@ -471,7 +474,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
-    public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
+    public PagedIterable<SearchIndex> listIndexes(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions, context));
     }
 
@@ -481,14 +484,14 @@ public final class SearchServiceClient {
      * @param index the definition of the index to create or update
      * @return the index that was created or updated.
      */
-    public Index createOrUpdateIndex(Index index) {
+    public SearchIndex createOrUpdateIndex(SearchIndex index) {
         return createOrUpdateIndexWithResponse(index, false, false, null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
-     * @param index the {@link Index} to create or update
+     * @param index the {@link SearchIndex} to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
      * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
      * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
@@ -500,7 +503,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
-    public Response<Index> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
+    public Response<SearchIndex> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions,
             context).block();
@@ -512,13 +515,13 @@ public final class SearchServiceClient {
      * @param indexName the name of the index to delete
      */
     public void deleteIndex(String indexName) {
-        deleteIndexWithResponse(new Index().setName(indexName), false, null, Context.NONE);
+        deleteIndexWithResponse(new SearchIndex().setName(indexName), false, null, Context.NONE);
     }
 
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param index the Search {@link Index} to delete.
+     * @param index the Search {@link SearchIndex} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -526,7 +529,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexWithResponse(Index index, boolean onlyIfUnchanged,
+    public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? index.getETag() : null;
         return asyncClient.deleteIndexWithResponse(index.getName(), etag, requestOptions, context).block();
@@ -539,7 +542,7 @@ public final class SearchServiceClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
-    public PagedIterable<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
+    public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
         return analyzeText(indexName, analyzeRequest, null, Context.NONE);
     }
 
@@ -553,7 +556,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */
-    public PagedIterable<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
+    public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
         RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeRequest, requestOptions, context));
     }
@@ -562,9 +565,9 @@ public final class SearchServiceClient {
      * Creates a new skillset in an Azure Cognitive Search service.
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
-     * @return the created Skillset.
+     * @return the created SearchIndexerSkillset.
      */
-    public Skillset createSkillset(Skillset skillset) {
+    public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset) {
         return createSkillsetWithResponse(skillset, null, Context.NONE).getValue();
     }
 
@@ -575,9 +578,10 @@ public final class SearchServiceClient {
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing the created Skillset.
+     * @return a response containing the created SearchIndexerSkillset.
      */
-    public Response<Skillset> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions,
+    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+        RequestOptions requestOptions,
         Context context) {
         return asyncClient.createSkillsetWithResponse(skillset, requestOptions, context).block();
     }
@@ -586,9 +590,9 @@ public final class SearchServiceClient {
      * Retrieves a skillset definition.
      *
      * @param skillsetName the name of the skillset to retrieve
-     * @return the Skillset.
+     * @return the SearchIndexerSkillset.
      */
-    public Skillset getSkillset(String skillsetName) {
+    public SearchIndexerSkillset getSkillset(String skillsetName) {
         return getSkillsetWithResponse(skillsetName, null, Context.NONE).getValue();
     }
 
@@ -599,9 +603,9 @@ public final class SearchServiceClient {
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing the Skillset.
+     * @return a response containing the SearchIndexerSkillset.
      */
-    public Response<Skillset> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions,
+    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions,
         Context context) {
         return asyncClient.getSkillsetWithResponse(skillsetName, requestOptions, context).block();
     }
@@ -611,7 +615,7 @@ public final class SearchServiceClient {
      *
      * @return the list of skillsets.
      */
-    public PagedIterable<Skillset> listSkillsets() {
+    public PagedIterable<SearchIndexerSkillset> listSkillsets() {
         return listSkillsets(null, null, Context.NONE);
     }
 
@@ -625,24 +629,25 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of skillsets.
      */
-    public PagedIterable<Skillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
+    public PagedIterable<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions,
+        Context context) {
         return new PagedIterable<>(asyncClient.listSkillsets(select, requestOptions, context));
     }
 
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
-     * @param skillset the {@link Skillset} to create or update.
+     * @param skillset the {@link SearchIndexerSkillset} to create or update.
      * @return the skillset that was created or updated.
      */
-    public Skillset createOrUpdateSkillset(Skillset skillset) {
+    public SearchIndexerSkillset createOrUpdateSkillset(SearchIndexerSkillset skillset) {
         return createOrUpdateSkillsetWithResponse(skillset, false, null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
-     * @param skillset the {@link Skillset} to create or update.
+     * @param skillset the {@link SearchIndexerSkillset} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code skillset} is the same as the current service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -650,8 +655,8 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the skillset that was created or updated.
      */
-    public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
-        RequestOptions requestOptions, Context context) {
+    public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
+        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, context)
             .block();
     }
@@ -662,13 +667,13 @@ public final class SearchServiceClient {
      * @param skillsetName the name of the skillset to delete
      */
     public void deleteSkillset(String skillsetName) {
-        deleteSkillsetWithResponse(new Skillset().setName(skillsetName), false, null, Context.NONE);
+        deleteSkillsetWithResponse(new SearchIndexerSkillset().setName(skillsetName), false, null, Context.NONE);
     }
 
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
-     * @param skillset the {@link Skillset} to delete.
+     * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -676,7 +681,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
+    public Response<Void> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? skillset.getETag() : null;
         return asyncClient.deleteSkillsetWithResponse(skillset.getName(), etag, requestOptions, context).block();

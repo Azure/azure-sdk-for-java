@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VpnLinkProviderProperties model. */
 @Fluent
 public final class VpnLinkProviderProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnLinkProviderProperties.class);
+
     /*
      * Name of the link provider.
      */
@@ -60,5 +64,13 @@ public final class VpnLinkProviderProperties {
     public VpnLinkProviderProperties withLinkSpeedInMbps(Integer linkSpeedInMbps) {
         this.linkSpeedInMbps = linkSpeedInMbps;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

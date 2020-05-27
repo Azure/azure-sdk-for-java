@@ -7,11 +7,13 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.Action;
 import com.azure.management.monitor.Enabled;
 import com.azure.management.monitor.ProvisioningState;
 import com.azure.management.monitor.Schedule;
 import com.azure.management.monitor.Source;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -19,6 +21,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class LogSearchRuleResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSearchRuleResourceInner.class);
+
     /*
      * The description of the Log Search rule.
      */
@@ -181,5 +185,32 @@ public class LogSearchRuleResourceInner extends Resource {
     public LogSearchRuleResourceInner withAction(Action action) {
         this.action = action;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (source() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property source in model LogSearchRuleResourceInner"));
+        } else {
+            source().validate();
+        }
+        if (schedule() != null) {
+            schedule().validate();
+        }
+        if (action() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property action in model LogSearchRuleResourceInner"));
+        } else {
+            action().validate();
+        }
     }
 }

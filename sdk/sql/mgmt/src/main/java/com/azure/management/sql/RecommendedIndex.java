@@ -7,6 +7,8 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class RecommendedIndex extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedIndex.class);
+
     /*
      * The proposed index action. You can create a missing index, drop an
      * unused index, or rebuild an existing index to improve its performance.
@@ -198,5 +202,19 @@ public class RecommendedIndex extends ProxyResource {
      */
     public List<OperationImpact> reportedImpact() {
         return this.reportedImpact;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (estimatedImpact() != null) {
+            estimatedImpact().forEach(e -> e.validate());
+        }
+        if (reportedImpact() != null) {
+            reportedImpact().forEach(e -> e.validate());
+        }
     }
 }

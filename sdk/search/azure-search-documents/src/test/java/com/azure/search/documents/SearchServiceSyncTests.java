@@ -5,8 +5,8 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ServiceCounters;
-import com.azure.search.documents.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.ServiceCounters;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

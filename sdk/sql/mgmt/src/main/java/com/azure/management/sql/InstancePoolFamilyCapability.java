@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The InstancePoolFamilyCapability model. */
 @Fluent
 public final class InstancePoolFamilyCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolFamilyCapability.class);
+
     /*
      * Family name.
      */
@@ -95,5 +99,19 @@ public final class InstancePoolFamilyCapability {
     public InstancePoolFamilyCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedLicenseTypes() != null) {
+            supportedLicenseTypes().forEach(e -> e.validate());
+        }
+        if (supportedVcoresValues() != null) {
+            supportedVcoresValues().forEach(e -> e.validate());
+        }
     }
 }

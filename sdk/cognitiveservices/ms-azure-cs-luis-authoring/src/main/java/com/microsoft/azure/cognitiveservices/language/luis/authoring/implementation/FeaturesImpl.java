@@ -17,6 +17,7 @@ import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.FeaturesResponseObject;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraselistCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraseListFeatureInfo;
@@ -92,10 +93,18 @@ public class FeaturesImpl implements Features {
         @HTTP(path = "apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features addIntentFeature" })
+        @POST("apps/{appId}/versions/{versionId}/intents/{intentId}/features")
+        Observable<Response<ResponseBody>> addIntentFeature(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Body ModelFeatureInformation featureRelationCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features addEntityFeature" })
+        @POST("apps/{appId}/versions/{versionId}/entities/{entityId}/features")
+        Observable<Response<ResponseBody>> addEntityFeature(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Body ModelFeatureInformation featureRelationCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
     }
 
     /**
-     * Creates a new phraselist feature.
+     * Creates a new phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -110,7 +119,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Creates a new phraselist feature.
+     * Creates a new phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -124,7 +133,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Creates a new phraselist feature.
+     * Creates a new phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -142,7 +151,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Creates a new phraselist feature.
+     * Creates a new phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -188,7 +197,7 @@ public class FeaturesImpl implements Features {
 
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -203,7 +212,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -217,7 +226,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -235,7 +244,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -260,7 +269,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -366,7 +375,7 @@ public class FeaturesImpl implements Features {
 
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -381,7 +390,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -395,7 +404,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -413,7 +422,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -438,7 +447,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -543,7 +552,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets phraselist feature info.
+     * Gets phraselist feature info in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -558,7 +567,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets phraselist feature info.
+     * Gets phraselist feature info in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -572,7 +581,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets phraselist feature info.
+     * Gets phraselist feature info in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -590,7 +599,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Gets phraselist feature info.
+     * Gets phraselist feature info in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -632,7 +641,7 @@ public class FeaturesImpl implements Features {
 
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -648,7 +657,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -663,7 +672,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -682,7 +691,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -707,7 +716,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -813,7 +822,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Deletes a phraselist feature.
+     * Deletes a phraselist feature from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -828,7 +837,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Deletes a phraselist feature.
+     * Deletes a phraselist feature from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -842,7 +851,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Deletes a phraselist feature.
+     * Deletes a phraselist feature from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -860,7 +869,7 @@ public class FeaturesImpl implements Features {
     }
 
     /**
-     * Deletes a phraselist feature.
+     * Deletes a phraselist feature from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -894,6 +903,204 @@ public class FeaturesImpl implements Features {
     }
 
     private ServiceResponse<OperationStatus> deletePhraseListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatus>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Adds a new feature relation to be used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    public OperationStatus addIntentFeature(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationCreateObject) {
+        return addIntentFeatureWithServiceResponseAsync(appId, versionId, intentId, featureRelationCreateObject).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a new feature relation to be used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationStatus> addIntentFeatureAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationCreateObject, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(addIntentFeatureWithServiceResponseAsync(appId, versionId, intentId, featureRelationCreateObject), serviceCallback);
+    }
+
+    /**
+     * Adds a new feature relation to be used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<OperationStatus> addIntentFeatureAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationCreateObject) {
+        return addIntentFeatureWithServiceResponseAsync(appId, versionId, intentId, featureRelationCreateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            @Override
+            public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a new feature relation to be used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> addIntentFeatureWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (intentId == null) {
+            throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
+        }
+        if (featureRelationCreateObject == null) {
+            throw new IllegalArgumentException("Parameter featureRelationCreateObject is required and cannot be null.");
+        }
+        Validator.validate(featureRelationCreateObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addIntentFeature(appId, versionId, intentId, featureRelationCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationStatus> clientResponse = addIntentFeatureDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationStatus> addIntentFeatureDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatus>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Adds a new feature relation to be used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    public OperationStatus addEntityFeature(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationCreateObject) {
+        return addEntityFeatureWithServiceResponseAsync(appId, versionId, entityId, featureRelationCreateObject).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a new feature relation to be used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationStatus> addEntityFeatureAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationCreateObject, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(addEntityFeatureWithServiceResponseAsync(appId, versionId, entityId, featureRelationCreateObject), serviceCallback);
+    }
+
+    /**
+     * Adds a new feature relation to be used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<OperationStatus> addEntityFeatureAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationCreateObject) {
+        return addEntityFeatureWithServiceResponseAsync(appId, versionId, entityId, featureRelationCreateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            @Override
+            public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a new feature relation to be used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> addEntityFeatureWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (entityId == null) {
+            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
+        }
+        if (featureRelationCreateObject == null) {
+            throw new IllegalArgumentException("Parameter featureRelationCreateObject is required and cannot be null.");
+        }
+        Validator.validate(featureRelationCreateObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addEntityFeature(appId, versionId, entityId, featureRelationCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationStatus> clientResponse = addEntityFeatureDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationStatus> addEntityFeatureDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)

@@ -7,15 +7,19 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.management.network.IPAllocationMethod;
-import com.azure.management.network.IPVersion;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.network.IpAllocationMethod;
+import com.azure.management.network.IpVersion;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateLinkServiceIpConfiguration model. */
 @JsonFlatten
 @Fluent
 public class PrivateLinkServiceIpConfigurationInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceIpConfigurationInner.class);
+
     /*
      * The name of private link service ip configuration.
      */
@@ -38,13 +42,13 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * The private IP address of the IP configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IPAllocationMethod privateIPAllocationMethod;
+    private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * The reference of the subnet resource.
@@ -69,7 +73,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
-    private IPVersion privateIPAddressVersion;
+    private IpVersion privateIpAddressVersion;
 
     /**
      * Get the name property: The name of private link service ip configuration.
@@ -110,43 +114,43 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIPAddress property: The private IP address of the IP configuration.
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
      *
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
-     * Set the privateIPAddress property: The private IP address of the IP configuration.
+     * Set the privateIpAddress property: The private IP address of the IP configuration.
      *
-     * @param privateIPAddress the privateIPAddress value to set.
+     * @param privateIpAddress the privateIpAddress value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
-    public PrivateLinkServiceIpConfigurationInner withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
+    public PrivateLinkServiceIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 
     /**
-     * Get the privateIPAllocationMethod property: The private IP address allocation method.
+     * Get the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @return the privateIPAllocationMethod value.
+     * @return the privateIpAllocationMethod value.
      */
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.privateIPAllocationMethod;
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.privateIpAllocationMethod;
     }
 
     /**
-     * Set the privateIPAllocationMethod property: The private IP address allocation method.
+     * Set the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @param privateIPAllocationMethod the privateIPAllocationMethod value to set.
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
-    public PrivateLinkServiceIpConfigurationInner withPrivateIPAllocationMethod(
-        IPAllocationMethod privateIPAllocationMethod) {
-        this.privateIPAllocationMethod = privateIPAllocationMethod;
+    public PrivateLinkServiceIpConfigurationInner withPrivateIpAllocationMethod(
+        IpAllocationMethod privateIpAllocationMethod) {
+        this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
@@ -200,24 +204,35 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIPAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
+     * Get the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      *
-     * @return the privateIPAddressVersion value.
+     * @return the privateIpAddressVersion value.
      */
-    public IPVersion privateIPAddressVersion() {
-        return this.privateIPAddressVersion;
+    public IpVersion privateIpAddressVersion() {
+        return this.privateIpAddressVersion;
     }
 
     /**
-     * Set the privateIPAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
+     * Set the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      *
-     * @param privateIPAddressVersion the privateIPAddressVersion value to set.
+     * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
-    public PrivateLinkServiceIpConfigurationInner withPrivateIPAddressVersion(IPVersion privateIPAddressVersion) {
-        this.privateIPAddressVersion = privateIPAddressVersion;
+    public PrivateLinkServiceIpConfigurationInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
+        this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (subnet() != null) {
+            subnet().validate();
+        }
     }
 }

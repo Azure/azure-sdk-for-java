@@ -26,10 +26,11 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.AutoscaleSettingResourcePatch;
-import com.azure.management.monitor.ErrorResponseException;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
@@ -40,6 +41,8 @@ public final class AutoscaleSettingsInner
     implements InnerSupportsGet<AutoscaleSettingResourceInner>,
         InnerSupportsListing<AutoscaleSettingResourceInner>,
         InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(AutoscaleSettingsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final AutoscaleSettingsService service;
 
@@ -69,7 +72,7 @@ public final class AutoscaleSettingsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
                 + "/autoscalesettings")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AutoscaleSettingResourceCollectionInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -82,7 +85,7 @@ public final class AutoscaleSettingsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AutoscaleSettingResourceInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -97,7 +100,7 @@ public final class AutoscaleSettingsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -111,7 +114,7 @@ public final class AutoscaleSettingsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AutoscaleSettingResourceInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -125,7 +128,7 @@ public final class AutoscaleSettingsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AutoscaleSettingResourceInner>> update(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -138,7 +141,7 @@ public final class AutoscaleSettingsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/autoscalesettings")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AutoscaleSettingResourceCollectionInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -148,14 +151,14 @@ public final class AutoscaleSettingsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AutoscaleSettingResourceCollectionInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AutoscaleSettingResourceCollectionInner>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -165,13 +168,27 @@ public final class AutoscaleSettingsInner
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AutoscaleSettingResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(
@@ -199,8 +216,50 @@ public final class AutoscaleSettingsInner
      * Lists the autoscale settings for a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of autoscale setting resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AutoscaleSettingResourceInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2015-04-01";
+        return service
+            .listByResourceGroup(
+                this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists the autoscale settings for a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
@@ -215,8 +274,26 @@ public final class AutoscaleSettingsInner
      * Lists the autoscale settings for a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of autoscale setting resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AutoscaleSettingResourceInner> listByResourceGroupAsync(
+        String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the autoscale settings for a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
@@ -232,13 +309,36 @@ public final class AutoscaleSettingsInner
      * @param autoscaleSettingName The autoscale setting name.
      * @param parameters The autoscale setting resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the autoscale setting resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AutoscaleSettingResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(
@@ -261,8 +361,61 @@ public final class AutoscaleSettingsInner
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
      * @param parameters The autoscale setting resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the autoscale setting resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<AutoscaleSettingResourceInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String autoscaleSettingName,
+        AutoscaleSettingResourceInner parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2015-04-01";
+        return service
+            .createOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                autoscaleSettingName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates an autoscale setting.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @param parameters The autoscale setting resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the autoscale setting resource.
      */
@@ -287,7 +440,7 @@ public final class AutoscaleSettingsInner
      * @param autoscaleSettingName The autoscale setting name.
      * @param parameters The autoscale setting resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the autoscale setting resource.
      */
@@ -303,12 +456,30 @@ public final class AutoscaleSettingsInner
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String autoscaleSettingName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(
@@ -329,8 +500,51 @@ public final class AutoscaleSettingsInner
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String autoscaleSettingName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2015-04-01";
+        return service
+            .delete(
+                this.client.getHost(),
+                resourceGroupName,
+                autoscaleSettingName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes and autoscale setting.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -346,7 +560,7 @@ public final class AutoscaleSettingsInner
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -360,13 +574,31 @@ public final class AutoscaleSettingsInner
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an autoscale setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AutoscaleSettingResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String autoscaleSettingName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(
@@ -387,8 +619,51 @@ public final class AutoscaleSettingsInner
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an autoscale setting.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<AutoscaleSettingResourceInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String autoscaleSettingName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2015-04-01";
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                resourceGroupName,
+                autoscaleSettingName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets an autoscale setting.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an autoscale setting.
      */
@@ -412,7 +687,7 @@ public final class AutoscaleSettingsInner
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an autoscale setting.
      */
@@ -428,13 +703,38 @@ public final class AutoscaleSettingsInner
      * @param autoscaleSettingName The autoscale setting name.
      * @param autoscaleSettingResource The autoscale setting object for patch operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the autoscale setting resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AutoscaleSettingResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (autoscaleSettingResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter autoscaleSettingResource is required and cannot be null."));
+        } else {
+            autoscaleSettingResource.validate();
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(
@@ -457,8 +757,63 @@ public final class AutoscaleSettingsInner
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
      * @param autoscaleSettingResource The autoscale setting object for patch operations.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the autoscale setting resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<AutoscaleSettingResourceInner>> updateWithResponseAsync(
+        String resourceGroupName,
+        String autoscaleSettingName,
+        AutoscaleSettingResourcePatch autoscaleSettingResource,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autoscaleSettingName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter autoscaleSettingName is required and cannot be null."));
+        }
+        if (autoscaleSettingResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter autoscaleSettingResource is required and cannot be null."));
+        } else {
+            autoscaleSettingResource.validate();
+        }
+        final String apiVersion = "2015-04-01";
+        return service
+            .update(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                autoscaleSettingName,
+                apiVersion,
+                autoscaleSettingResource,
+                context);
+    }
+
+    /**
+     * Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param autoscaleSettingName The autoscale setting name.
+     * @param autoscaleSettingResource The autoscale setting object for patch operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the autoscale setting resource.
      */
@@ -483,7 +838,7 @@ public final class AutoscaleSettingsInner
      * @param autoscaleSettingName The autoscale setting name.
      * @param autoscaleSettingResource The autoscale setting object for patch operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the autoscale setting resource.
      */
@@ -496,12 +851,22 @@ public final class AutoscaleSettingsInner
     /**
      * Lists the autoscale settings for a subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AutoscaleSettingResourceInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(
@@ -521,7 +886,42 @@ public final class AutoscaleSettingsInner
     /**
      * Lists the autoscale settings for a subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of autoscale setting resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AutoscaleSettingResourceInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2015-04-01";
+        return service
+            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists the autoscale settings for a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
@@ -534,7 +934,22 @@ public final class AutoscaleSettingsInner
     /**
      * Lists the autoscale settings for a subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of autoscale setting resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AutoscaleSettingResourceInner> listAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the autoscale settings for a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
@@ -548,12 +963,15 @@ public final class AutoscaleSettingsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AutoscaleSettingResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByResourceGroupNext(nextLink, context))
             .<PagedResponse<AutoscaleSettingResourceInner>>map(
@@ -572,13 +990,45 @@ public final class AutoscaleSettingsInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of autoscale setting resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AutoscaleSettingResourceInner>> listByResourceGroupNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of autoscale setting resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AutoscaleSettingResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listBySubscriptionNext(nextLink, context))
             .<PagedResponse<AutoscaleSettingResourceInner>>map(
@@ -591,5 +1041,34 @@ public final class AutoscaleSettingsInner
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of autoscale setting resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AutoscaleSettingResourceInner>> listBySubscriptionNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listBySubscriptionNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

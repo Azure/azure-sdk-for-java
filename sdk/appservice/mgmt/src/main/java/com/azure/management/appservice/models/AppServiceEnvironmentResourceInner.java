@@ -7,14 +7,16 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.HostingEnvironmentStatus;
 import com.azure.management.appservice.InternalLoadBalancingMode;
 import com.azure.management.appservice.NameValuePair;
 import com.azure.management.appservice.NetworkAccessControlEntry;
 import com.azure.management.appservice.ProvisioningState;
-import com.azure.management.appservice.VirtualIPMapping;
+import com.azure.management.appservice.VirtualIpMapping;
 import com.azure.management.appservice.VirtualNetworkProfile;
 import com.azure.management.appservice.WorkerPool;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -22,6 +24,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AppServiceEnvironmentResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceEnvironmentResourceInner.class);
+
     /*
      * Name of the App Service Environment.
      */
@@ -170,7 +174,7 @@ public class AppServiceEnvironmentResourceInner extends Resource {
      * Description of IP SSL mapping for the App Service Environment.
      */
     @JsonProperty(value = "properties.vipMappings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<VirtualIPMapping> vipMappings;
+    private List<VirtualIpMapping> vipMappings;
 
     /*
      * Current total, used, and available worker capacities.
@@ -631,7 +635,7 @@ public class AppServiceEnvironmentResourceInner extends Resource {
      *
      * @return the vipMappings value.
      */
-    public List<VirtualIPMapping> vipMappings() {
+    public List<VirtualIpMapping> vipMappings() {
         return this.vipMappings;
     }
 
@@ -912,5 +916,31 @@ public class AppServiceEnvironmentResourceInner extends Resource {
     public AppServiceEnvironmentResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (virtualNetwork() != null) {
+            virtualNetwork().validate();
+        }
+        if (workerPools() != null) {
+            workerPools().forEach(e -> e.validate());
+        }
+        if (vipMappings() != null) {
+            vipMappings().forEach(e -> e.validate());
+        }
+        if (environmentCapacities() != null) {
+            environmentCapacities().forEach(e -> e.validate());
+        }
+        if (networkAccessControlList() != null) {
+            networkAccessControlList().forEach(e -> e.validate());
+        }
+        if (clusterSettings() != null) {
+            clusterSettings().forEach(e -> e.validate());
+        }
     }
 }
