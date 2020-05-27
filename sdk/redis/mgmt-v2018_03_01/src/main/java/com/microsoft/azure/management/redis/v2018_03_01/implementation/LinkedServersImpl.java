@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.redis.v2018_03_01.RedisLinkedServerWithProperties;
 
 class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements LinkedServers {
-    private final RedisManager manager;
+    private final CacheManager manager;
 
-    LinkedServersImpl(RedisManager manager) {
+    LinkedServersImpl(CacheManager manager) {
         super(manager.inner().linkedServers());
         this.manager = manager;
     }
 
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 
@@ -64,10 +64,14 @@ class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements Linke
     public Observable<RedisLinkedServerWithProperties> getAsync(String resourceGroupName, String name, String linkedServerName) {
         LinkedServersInner client = this.inner();
         return client.getAsync(resourceGroupName, name, linkedServerName)
-        .map(new Func1<RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithProperties>() {
+        .flatMap(new Func1<RedisLinkedServerWithPropertiesInner, Observable<RedisLinkedServerWithProperties>>() {
             @Override
-            public RedisLinkedServerWithProperties call(RedisLinkedServerWithPropertiesInner inner) {
-                return wrapModel(inner);
+            public Observable<RedisLinkedServerWithProperties> call(RedisLinkedServerWithPropertiesInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RedisLinkedServerWithProperties)wrapModel(inner));
+                }
             }
        });
     }
