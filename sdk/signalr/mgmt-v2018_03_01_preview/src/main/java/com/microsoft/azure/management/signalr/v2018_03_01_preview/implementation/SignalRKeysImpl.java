@@ -12,20 +12,30 @@ import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRKeys;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class SignalRKeysImpl extends WrapperImpl<SignalRKeysInner> implements SignalRKeys {
-    private final SignalRManager manager;
-    SignalRKeysImpl(SignalRKeysInner inner, SignalRManager manager) {
+    private final SignalRServiceManager manager;
+    SignalRKeysImpl(SignalRKeysInner inner, SignalRServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public SignalRManager manager() {
+    public SignalRServiceManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public String primaryConnectionString() {
+        return this.inner().primaryConnectionString();
     }
 
     @Override
     public String primaryKey() {
         return this.inner().primaryKey();
+    }
+
+    @Override
+    public String secondaryConnectionString() {
+        return this.inner().secondaryConnectionString();
     }
 
     @Override

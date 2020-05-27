@@ -10,13 +10,13 @@ package com.microsoft.azure.management.signalr.v2018_03_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRManager;
+import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRServiceManager;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.NameAvailabilityInner;
 
 /**
  * Type representing NameAvailability.
  */
-public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<SignalRManager> {
+public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<SignalRServiceManager> {
     /**
      * @return the message value.
      */

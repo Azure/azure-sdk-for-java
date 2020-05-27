@@ -23,7 +23,8 @@ public class SignalRCreateOrUpdateProperties {
     private String hostNamePrefix;
 
     /**
-     * Get the hostNamePrefix value.
+     * Get prefix for the hostName of the SignalR service. Retained for future use.
+     The hostname will be of format: &amp;lt;hostNamePrefix&amp;gt;.service.signalr.net.
      *
      * @return the hostNamePrefix value
      */
@@ -32,7 +33,8 @@ public class SignalRCreateOrUpdateProperties {
     }
 
     /**
-     * Set the hostNamePrefix value.
+     * Set prefix for the hostName of the SignalR service. Retained for future use.
+     The hostname will be of format: &amp;lt;hostNamePrefix&amp;gt;.service.signalr.net.
      *
      * @param hostNamePrefix the hostNamePrefix value to set
      * @return the SignalRCreateOrUpdateProperties object itself.
