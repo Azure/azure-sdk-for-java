@@ -440,4 +440,7 @@
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
+            
+            
+  <suppress checks="ModifierOrder" files="AuthenticationRecord.java"/>
 </suppressions>
