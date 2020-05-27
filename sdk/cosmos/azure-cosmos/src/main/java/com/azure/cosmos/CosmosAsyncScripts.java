@@ -73,7 +73,7 @@ public class CosmosAsyncScripts {
         sProc.setBody(properties.getBody());
         return database.getDocClientWrapper()
                    .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response, this.container))
+                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
                    .single();
     }
 

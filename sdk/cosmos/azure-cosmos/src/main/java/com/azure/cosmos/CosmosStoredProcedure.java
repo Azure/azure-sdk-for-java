@@ -22,7 +22,7 @@ public class CosmosStoredProcedure {
      * @param id the id
      * @param storedProcedure the stored procedure
      */
-    public CosmosStoredProcedure(String id, CosmosAsyncStoredProcedure storedProcedure) {
+    CosmosStoredProcedure(String id, CosmosAsyncStoredProcedure storedProcedure) {
         this.id = id;
         this.storedProcedure = storedProcedure;
     }

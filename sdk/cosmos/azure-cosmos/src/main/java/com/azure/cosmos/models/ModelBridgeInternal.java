@@ -103,15 +103,12 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(ResourceResponse<StoredProcedure> response,
-                                                                                         CosmosAsyncContainer cosmosContainer) {
+    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(ResourceResponse<StoredProcedure> response) {
         return new CosmosStoredProcedureResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(StoredProcedureResponse response,
-                                                                                         CosmosAsyncContainer cosmosContainer,
-                                                                                         String storedProcedureId) {
+    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(StoredProcedureResponse response) {
         return new CosmosStoredProcedureResponse(response);
     }
 

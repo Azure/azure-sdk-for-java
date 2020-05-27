@@ -77,7 +77,7 @@ public class CosmosAsyncStoredProcedure {
         }
         return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-                              .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response, cosmosContainer)).single();
+                              .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response)).single();
     }
 
     /**
@@ -112,7 +112,7 @@ public class CosmosAsyncStoredProcedure {
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
                    .deleteStoredProcedure(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response, cosmosContainer))
+                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
                    .single();
     }
 
@@ -136,7 +136,7 @@ public class CosmosAsyncStoredProcedure {
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
                    .executeStoredProcedure(getLink(), ModelBridgeInternal.toRequestOptions(options), procedureParams)
-                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response, cosmosContainer, this.id))
+                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
                    .single();
     }
 
@@ -177,7 +177,7 @@ public class CosmosAsyncStoredProcedure {
                    .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(
                        ModelBridgeInternal.getResource(storedProcedureSettings))),
                        ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response, cosmosContainer))
+                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
                    .single();
     }
 
