@@ -44,20 +44,20 @@ and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-ap
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L40-L43 -->
 ```Java
-SearchServiceClient searchIndexClient = new SearchServiceClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .buildClient();
+private SearchClient searchClient = new SearchClientBuilder().buildClient();
+
+public void createSearchClient() {
+    SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L47-L50 -->
 ```Java
-SearchServiceAsyncClient searchIndexAsyncClient = new SearchServiceClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .buildAsyncClient();
+}
+
+public void createAsyncSearchClient() {
+    SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 ```
 
 #### Create a SearchIndexClient
@@ -69,22 +69,22 @@ Note that you will need an admin key to index documents (query keys only work fo
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L54-L58 -->
 ```Java
-SearchIndexClient searchClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .indexName(indexName)
-    .buildClient();
+}
+
+public void createIndexClient() {
+    SearchClient searchClient = new SearchClientBuilder()
+        .endpoint(endpoint)
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L66 -->
 ```Java
-SearchIndexAsyncClient searchAsyncClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .indexName(indexName)
-    .buildAsyncClient();
+}
+
+public void createAsyncIndexClient() {
+    SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
+        .endpoint(endpoint)
 ```
 
 ## Key concepts
@@ -110,18 +110,18 @@ Create Index using `searchClient` instantiated in [Create a SearchServiceClient]
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L96-L107 -->
 ```java
-SearchIndex newIndex = new SearchIndex()
-    .setName("index_name")
-    .setFields(
-        Arrays.asList(new SearchField()
-                .setName("Name")
-                .setType(SearchFieldDataType.STRING)
-                .setKey(Boolean.TRUE),
-            new SearchField()
-                .setName("Cuisine")
-                .setType(SearchFieldDataType.STRING)));
-// Create index.
-searchIndexClient.createIndex(newIndex);
+}
+
+public void createIndexWithSyncClient() {
+    SearchIndex newIndex = new SearchIndex()
+        .setName("index_name")
+        .setFields(
+            Arrays.asList(new SearchField()
+                    .setName("Name")
+                    .setType(SearchFieldDataType.STRING)
+                    .setKey(Boolean.TRUE),
+                new SearchField()
+                    .setName("Cuisine")
 ```
 ### Upload a Document
 
@@ -129,12 +129,12 @@ Upload hotel document to Search Index using `searchClient` instantiated [Create 
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L111-L116 -->
 ```java
-List<Hotel> hotels = new ArrayList<>();
-hotels.add(new Hotel().setHotelId("100"));
-hotels.add(new Hotel().setHotelId("200"));
-hotels.add(new Hotel().setHotelId("300"));
-// Upload hotel.
-searchClient.uploadDocuments(hotels);
+}
+
+public void uploadDocumentWithSyncClient() {
+    List<Hotel> hotels = new ArrayList<>();
+    hotels.add(new Hotel().setHotelId("100"));
+    hotels.add(new Hotel().setHotelId("200"));
 ```
 
 ### Search on hotel name
@@ -143,17 +143,17 @@ Search hotel using keyword using `searchClient` instantiated in [Create a Search
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L120-L130 -->
 ```java
-// Perform a text-based search
-for (SearchResult result : searchClient.search("luxury hotel",
-    new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
-    // Each result is a dynamic Map
-    SearchDocument doc = result.getDocument();
-    String hotelName = (String) doc.get("HotelName");
-    Double rating = (Double) doc.get("Rating");
 
-    System.out.printf("%s: %s%n", hotelName, rating);
-}
+oid searchTextWithSyncClient() {
+erform a text-based search
+(SearchResult result : searchClient.search("luxury hotel",
+new SearchOptions(), new RequestOptions(), Context.NONE)) {
+
+// Each result is a dynamic Map
+SearchDocument doc = result.getDocument();
+String hotelName = (String) doc.get("HotelName");
+Double rating = (Double) doc.get("Rating");
 ```
 
 - Samples are explained in detail [here][samples_readme].

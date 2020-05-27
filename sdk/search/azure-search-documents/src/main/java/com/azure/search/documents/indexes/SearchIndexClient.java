@@ -18,7 +18,7 @@ import com.azure.search.documents.indexes.models.ServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
 /**
- * Synchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
+ * Synchronous Client to manage and query indexes, as well as manage Synonym Map, on a Cognitive Search service
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public final class SearchIndexClient {

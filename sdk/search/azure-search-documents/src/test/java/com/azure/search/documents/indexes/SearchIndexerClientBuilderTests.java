@@ -146,37 +146,37 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void verifyEmptyApiVersionSetsLatest() {
-        SearchIndexerClient SearchIndexerClient = new SearchIndexerClientBuilder()
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
 
-        assertEquals(SearchServiceVersion.getLatest(), SearchIndexerClient.getServiceVersion());
+        assertEquals(SearchServiceVersion.getLatest(), searchIndexerClient.getServiceVersion());
     }
 
     @Test
     public void verifyEmptyApiVersionSetsLatestAsync() {
-        SearchIndexerAsyncClient SearchIndexerAsyncClient = new SearchIndexerClientBuilder()
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
 
-        assertEquals(SearchServiceVersion.getLatest(), SearchIndexerAsyncClient.getServiceVersion());
+        assertEquals(SearchServiceVersion.getLatest(), searchIndexerAsyncClient.getServiceVersion());
     }
 
     @Test
     public void serviceClientFreshDateOnRetry() throws MalformedURLException {
         byte[] randomData = new byte[256];
         new SecureRandom().nextBytes(randomData);
-        SearchIndexerAsyncClient SearchIndexerAsyncClient = new SearchIndexerClientBuilder()
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .httpClient(new FreshDateTestClient())
             .buildAsyncClient();
 
 
-        StepVerifier.create(SearchIndexerAsyncClient.getHttpPipeline().send(
-            request(SearchIndexerAsyncClient.getEndpoint())))
+        StepVerifier.create(searchIndexerAsyncClient.getHttpPipeline().send(
+            request(searchIndexerAsyncClient.getEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }

@@ -32,6 +32,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
+/**
+ * Asynchronous Client to manage and query indexers, as well as manage other resources, on a Cognitive Search service
+ */
 public class SearchIndexerAsyncClient {
     /**
      * Search REST API Version
@@ -46,7 +49,7 @@ public class SearchIndexerAsyncClient {
     /**
      * The logger to be used
      */
-    private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(SearchIndexerAsyncClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Search service

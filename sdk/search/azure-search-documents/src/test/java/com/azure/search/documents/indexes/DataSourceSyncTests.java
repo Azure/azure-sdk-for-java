@@ -9,8 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.indexes.SearchIndexerClient;
-import com.azure.search.documents.indexes.SearchIndexerDataSources;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;

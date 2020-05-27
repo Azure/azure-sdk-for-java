@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;

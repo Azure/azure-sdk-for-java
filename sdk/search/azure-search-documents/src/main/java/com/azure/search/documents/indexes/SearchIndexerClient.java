@@ -14,6 +14,9 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.models.RequestOptions;
 
+/**
+ * Synchronous Client to manage and query indexers, as well as manage other resources, on a Cognitive Search service
+ */
 public class SearchIndexerClient {
     private final SearchIndexerAsyncClient asyncClient;
 

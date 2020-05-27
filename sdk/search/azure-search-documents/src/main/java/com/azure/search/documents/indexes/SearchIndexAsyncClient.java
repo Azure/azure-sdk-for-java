@@ -37,7 +37,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
+ * Asynchronous Client to manage and query indexes, as well as Synonym Map, on a Cognitive Search service
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
