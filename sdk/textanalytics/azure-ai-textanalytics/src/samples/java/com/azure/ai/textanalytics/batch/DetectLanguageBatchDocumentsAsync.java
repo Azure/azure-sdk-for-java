@@ -50,7 +50,6 @@ public class DetectLanguageBatchDocumentsAsync {
                 System.out.printf("Status code of request response: %d%n", detectedLanguageResultResponse.getStatusCode());
                 DetectLanguageResultCollection detectedLanguageResultCollection = detectedLanguageResultResponse.getValue();
 
-
                 System.out.printf("Results of Azure Text Analytics \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());
 
                 // Batch statistics

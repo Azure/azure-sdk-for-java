@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -57,10 +58,9 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
             batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        // Recognizing linked entities for each document in a batch of documents
+        // Recognized linked entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        linkedEntitiesResultCollection.forEach(entitiesResult -> {
-            // Recognized linked entities from documents
+        for (RecognizeLinkedEntitiesResult entitiesResult : linkedEntitiesResultCollection) {
             System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
             if (entitiesResult.isError()) {
                 // Erroneous document
@@ -76,6 +76,6 @@ public class RecognizeLinkedEntitiesBatchDocuments {
                         entityMatch.getText(), entityMatch.getConfidenceScore()));
                 });
             }
-        });
+        }
     }
 }

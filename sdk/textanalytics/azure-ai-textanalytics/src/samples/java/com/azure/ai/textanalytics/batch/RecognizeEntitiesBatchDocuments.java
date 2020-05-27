@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -60,7 +61,7 @@ public class RecognizeEntitiesBatchDocuments {
 
         // Recognized entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        recognizeEntitiesResultCollection.forEach(entitiesResult -> {
+        for (RecognizeEntitiesResult entitiesResult : recognizeEntitiesResultCollection) {
             // Recognized entities for each document in a batch of documents
             System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
             if (entitiesResult.isError()) {
@@ -73,6 +74,6 @@ public class RecognizeEntitiesBatchDocuments {
                     entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())
                 );
             }
-        });
+        }
     }
 }
