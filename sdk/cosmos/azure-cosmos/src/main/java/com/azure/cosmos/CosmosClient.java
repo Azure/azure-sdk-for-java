@@ -22,7 +22,7 @@ import java.io.Closeable;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
- * SyncClient is used to perform operations in a synchronous way
+ * Calls to CosmosClient API's are blocked for completion.
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
 public final class CosmosClient implements Closeable {
@@ -38,12 +38,15 @@ public final class CosmosClient implements Closeable {
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
-    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
+    CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
     }
 
     /**
      * Create a Database if it does not already exist on the service.
+     * <p>
+     * The throughputProperties will only be used if the specified database
+     * does not exist and therefor a new database will be created with throughputProperties.
      *
      * @param id the id of the database.
      * @param throughputProperties the throughputProperties.

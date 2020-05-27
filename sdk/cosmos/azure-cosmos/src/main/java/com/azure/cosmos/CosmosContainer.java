@@ -197,10 +197,8 @@ public class CosmosContainer {
      * @param options the options.
      * @return the Cosmos sync item response.
      */
-    @SuppressWarnings("unchecked")
-    // Note: @kushagraThapar and @moderakh to ensure this casting is valid
-    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) {
-        return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
+    public <T> CosmosItemResponse<T> upsertItem(T item, CosmosItemRequestOptions options) {
+        return this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
     /**

@@ -42,7 +42,7 @@ public final class Conflict extends Resource {
      *
      * @return the resource type.
      */
-    public String getResouceType() {
+    public String getResourceType() {
         return super.getString(Constants.Properties.RESOURCE_TYPE);
     }
 

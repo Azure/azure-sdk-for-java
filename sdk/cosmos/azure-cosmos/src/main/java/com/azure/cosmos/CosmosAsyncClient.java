@@ -194,7 +194,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link Mono} containing the cosmos database response with the created or existing database or
      * an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
+    Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
         return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.getId()));
     }
 
@@ -228,6 +228,9 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Create a Database if it does not already exist on the service.
+     * <p>
+     * The throughputProperties will only be used if the specified database
+     * does not exist and therefor a new database will be created with throughputProperties.
      * <p>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
