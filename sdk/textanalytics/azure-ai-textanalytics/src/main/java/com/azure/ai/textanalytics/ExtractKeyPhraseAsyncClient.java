@@ -76,18 +76,18 @@ class ExtractKeyPhraseAsyncClient {
             textDocumentInput.setLanguage(language);
             return extractKeyPhrasesWithResponse(Collections.singletonList(textDocumentInput), null)
                     .map(resultCollectionResponse -> {
-                        IterableStream<String> keyPhrases = IterableStream.of(null);
-                        IterableStream<TextAnalyticsWarning> warnings = IterableStream.of(null);
+                        KeyPhrasesCollection keyPhrasesCollection = null;
                         // for each loop will have only one entry inside
                         for (ExtractKeyPhraseResult keyPhraseResult : resultCollectionResponse.getValue()) {
                             if (keyPhraseResult.isError()) {
                                 throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
                             }
-                            keyPhrases = keyPhraseResult.getKeyPhrases();
-                            warnings = keyPhraseResult.getKeyPhrases().getWarnings();
+                            keyPhrasesCollection = new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
+                                keyPhraseResult.getKeyPhrases().getWarnings());
                         }
-                        return new KeyPhrasesCollection(keyPhrases, warnings);
+                        return keyPhrasesCollection;
                     });
+
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

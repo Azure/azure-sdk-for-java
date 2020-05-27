@@ -76,17 +76,16 @@ class RecognizeEntityAsyncClient {
             textDocumentInput.setLanguage(language);
             return recognizeEntitiesBatch(Collections.singletonList(textDocumentInput), null)
                 .map(resultCollectionResponse -> {
-                    IterableStream<CategorizedEntity> recognizedEntities = IterableStream.of(null);
-                    IterableStream<TextAnalyticsWarning> warnings = IterableStream.of(null);
+                    CategorizedEntityCollection entityCollection = null;
                     // for each loop will have only one entry inside
                     for (RecognizeEntitiesResult entitiesResult : resultCollectionResponse.getValue()) {
                         if (entitiesResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                         }
-                        recognizedEntities = entitiesResult.getEntities();
-                        warnings = entitiesResult.getEntities().getWarnings();
+                        entityCollection = new CategorizedEntityCollection(entitiesResult.getEntities(),
+                            entitiesResult.getEntities().getWarnings());
                     }
-                    return new CategorizedEntityCollection(recognizedEntities, warnings);
+                    return entityCollection;
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

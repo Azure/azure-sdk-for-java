@@ -75,17 +75,16 @@ class RecognizeLinkedEntityAsyncClient {
             textDocumentInput.setLanguage(language);
             return recognizeLinkedEntitiesBatch(Collections.singletonList(textDocumentInput), null)
                 .map(resultCollectionResponse -> {
-                    IterableStream<LinkedEntity> linkedEntities = IterableStream.of(null);
-                    IterableStream<TextAnalyticsWarning> warnings = IterableStream.of(null);
+                    LinkedEntityCollection linkedEntityCollection = null;
                     // for each loop will have only one entry inside
                     for (RecognizeLinkedEntitiesResult entitiesResult : resultCollectionResponse.getValue()) {
                         if (entitiesResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                         }
-                        linkedEntities = entitiesResult.getEntities();
-                        warnings = entitiesResult.getEntities().getWarnings();
+                        linkedEntityCollection = new LinkedEntityCollection(entitiesResult.getEntities(),
+                            entitiesResult.getEntities().getWarnings());
                     }
-                    return new LinkedEntityCollection(linkedEntities, warnings);
+                    return linkedEntityCollection;
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

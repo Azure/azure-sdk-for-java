@@ -5,28 +5,27 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
-import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -162,16 +161,16 @@ public final class TextAnalyticsAsyncClient {
             Objects.requireNonNull(document, "'document' cannot be null.");
             return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
                 .map(detectLanguageResultCollection ->  {
+                    DetectedLanguage detectedLanguage = null;
                     for (DetectLanguageResult detectLanguageResult : detectLanguageResultCollection) {
                         if (detectLanguageResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(detectLanguageResult.getError()));
                         }
-                        return detectLanguageResult.getPrimaryLanguage();
+                        detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     }
-
                     // When the detected language result collection is empty,
                     // return empty result for the empty collection returned by the service.
-                    return new DetectedLanguage("", "", -1, IterableStream.of(null));
+                    return detectedLanguage;
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -659,15 +658,16 @@ public final class TextAnalyticsAsyncClient {
             Objects.requireNonNull(document, "'document' cannot be null.");
             return analyzeSentimentBatch(Collections.singletonList(document), language, null)
                 .map(sentimentResultCollection -> {
+                    DocumentSentiment documentSentiment = null;
                     for (AnalyzeSentimentResult sentimentResult : sentimentResultCollection) {
                         if (sentimentResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(sentimentResult.getError()));
                         }
-                        return sentimentResult.getDocumentSentiment();
+                        documentSentiment = sentimentResult.getDocumentSentiment();
                     }
                     // When the sentiment result collection is empty,
                     // return empty result for the empty collection returned by the service.
-                    return new DocumentSentiment(null, null, null, IterableStream.of(null));
+                    return documentSentiment;
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
