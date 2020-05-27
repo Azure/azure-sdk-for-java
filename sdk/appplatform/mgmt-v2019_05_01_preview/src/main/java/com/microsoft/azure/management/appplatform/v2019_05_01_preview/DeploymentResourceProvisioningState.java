@@ -19,8 +19,8 @@ public final class DeploymentResourceProvisioningState extends ExpandableStringE
     /** Static value Creating for DeploymentResourceProvisioningState. */
     public static final DeploymentResourceProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Processing for DeploymentResourceProvisioningState. */
-    public static final DeploymentResourceProvisioningState PROCESSING = fromString("Processing");
+    /** Static value Updating for DeploymentResourceProvisioningState. */
+    public static final DeploymentResourceProvisioningState UPDATING = fromString("Updating");
 
     /** Static value Succeeded for DeploymentResourceProvisioningState. */
     public static final DeploymentResourceProvisioningState SUCCEEDED = fromString("Succeeded");
