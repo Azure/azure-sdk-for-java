@@ -92,6 +92,7 @@ The key concepts of Azure Management Libraries includes:
 - Fluent interface to manage Azure resources.
 - Dependency across Azure resources.
 - Batch Azure resource provisioning.
+- Integration with Azure role-based access control.
 - Asynchronous operations with [Reactor][reactor].
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 
@@ -184,6 +185,20 @@ List<Creatable<Disk>> creatableDisks = diskNames.stream()
 Collection<Disk> disks = azure.disks().create(creatableDisks).values();
 
 azure.disks().deleteByIds(disks.stream().map(Disk::id).collect(Collectors.toList()));
+```
+
+### Integration with Azure role-based access control
+
+You can assign Contributor for an Azure resource to a service principal.
+
+```java
+String raName = UUID.randomUUID().toString();
+RoleAssignment roleAssignment = azure.accessManagement().roleAssignments()
+    .define(raName)
+    .forServicePrincipal(servicePrincipal)
+    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+    .withScope(resource.id())
+    .create();
 ```
 
 ### Asynchronous operations
