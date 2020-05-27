@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -60,9 +61,10 @@ public class ReadmeSamples {
      * Code snippet for getting async client using AAD authentication.
      */
     public void useAadAsyncClient() {
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(defaultCredential)
             .buildAsyncClient();
     }
 
