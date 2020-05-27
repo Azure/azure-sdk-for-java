@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -112,7 +112,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         CosmosPagedFlux<CosmosPermissionProperties> queryObservable = createdUser.queryPermissions(query);
 
         FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
+                .instanceOf(CosmosException.class)
                 .statusCode(400)
                 .notNullActivityId()
                 .build();

@@ -26,13 +26,22 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import org.junit.jupiter.params.provider.Arguments;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.getHttpClients;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -43,6 +52,7 @@ final class TestUtils {
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String FAKE_API_KEY = "1234567890";
+    static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
 
     static final List<String> SENTIMENT_INPUTS = Arrays.asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
@@ -82,6 +92,10 @@ final class TestUtils {
         DETECTED_LANGUAGE_ENGLISH, DETECTED_LANGUAGE_ENGLISH);
 
     static final HttpResponseException HTTP_RESPONSE_EXCEPTION_CLASS = new HttpResponseException("", null);
+
+    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+    private static final String AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS =
+        "AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS";
 
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return Arrays.asList(
@@ -167,9 +181,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT.toString(), null, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION.toString(), "GPE", 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME.toString(), "DateRange", 0.0);
         return Arrays.asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -177,7 +191,7 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION.toString(), null, 0.0);
         return Arrays.asList(categorizedEntity3);
     }
 
@@ -256,18 +270,18 @@ final class TestUtils {
     static TextAnalyticsPagedResponse<AnalyzeSentimentResult> getExpectedBatchTextSentiment() {
         final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
 
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED.toString(),
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                new SentenceSentiment("", TextSentiment.NEGATIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.POSITIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0))
             )), null);
 
-        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentiment.MIXED,
+        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentiment.MIXED.toString(),
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                new SentenceSentiment("", TextSentiment.POSITIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.NEGATIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0))
             )), null);
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",
@@ -279,6 +293,56 @@ final class TestUtils {
         return new TextAnalyticsPagedResponse<>(null, 200, null,
             Arrays.asList(analyzeSentimentResult1, analyzeSentimentResult2),
             null, DEFAULT_MODEL_VERSION, new TextDocumentBatchStatistics(2, 2, 0, 2));
+    }
+
+
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    static Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                Arrays.stream(TextAnalyticsServiceVersion.values()).filter(
+                    TestUtils::shouldServiceVersionBeTested)
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+            });
+        return argumentsList.stream();
+    }
+
+    /**
+     * Returns whether the given service version match the rules of test framework.
+     *
+     * <ul>
+     * <li>Using latest service version as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all Service versions in {@link TextAnalyticsServiceVersion} will be tested.</li>
+     * <li>Otherwise, Service version string should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "${version}".
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
+     *
+     * @param serviceVersion ServiceVersion needs to check
+     * @return Boolean indicates whether filters out the service version or not.
+     */
+    private static boolean shouldServiceVersionBeTested(TextAnalyticsServiceVersion serviceVersion) {
+        String serviceVersionFromEnv =
+            Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS);
+        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
+            return TextAnalyticsServiceVersion.getLatest().equals(serviceVersion);
+        }
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 
     private TestUtils() {

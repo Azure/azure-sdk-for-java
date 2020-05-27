@@ -7,6 +7,8 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkConfiguration.class);
+
     /*
      * The network configuration name.
      */
@@ -50,13 +54,13 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
      * Specifies the IP configurations of the network interface.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<VirtualMachineScaleSetIPConfiguration> ipConfigurations;
+    private List<VirtualMachineScaleSetIpConfiguration> ipConfigurations;
 
     /*
      * Whether IP forwarding enabled on this NIC.
      */
     @JsonProperty(value = "properties.enableIPForwarding")
-    private Boolean enableIPForwarding;
+    private Boolean enableIpForwarding;
 
     /**
      * Get the name property: The network configuration name.
@@ -169,7 +173,7 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
      *
      * @return the ipConfigurations value.
      */
-    public List<VirtualMachineScaleSetIPConfiguration> ipConfigurations() {
+    public List<VirtualMachineScaleSetIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -180,28 +184,48 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
      * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetNetworkConfiguration withIpConfigurations(
-        List<VirtualMachineScaleSetIPConfiguration> ipConfigurations) {
+        List<VirtualMachineScaleSetIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
 
     /**
-     * Get the enableIPForwarding property: Whether IP forwarding enabled on this NIC.
+     * Get the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
      *
-     * @return the enableIPForwarding value.
+     * @return the enableIpForwarding value.
      */
-    public Boolean enableIPForwarding() {
-        return this.enableIPForwarding;
+    public Boolean enableIpForwarding() {
+        return this.enableIpForwarding;
     }
 
     /**
-     * Set the enableIPForwarding property: Whether IP forwarding enabled on this NIC.
+     * Set the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
      *
-     * @param enableIPForwarding the enableIPForwarding value to set.
+     * @param enableIpForwarding the enableIpForwarding value to set.
      * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
      */
-    public VirtualMachineScaleSetNetworkConfiguration withEnableIPForwarding(Boolean enableIPForwarding) {
-        this.enableIPForwarding = enableIPForwarding;
+    public VirtualMachineScaleSetNetworkConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
+        this.enableIpForwarding = enableIpForwarding;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model VirtualMachineScaleSetNetworkConfiguration"));
+        }
+        if (dnsSettings() != null) {
+            dnsSettings().validate();
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
     }
 }

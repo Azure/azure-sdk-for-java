@@ -125,7 +125,7 @@ class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
     }
 
     @Override
-    public Duration coolDown() {
+    public Duration cooldown() {
         if (this.inner().scaleAction() != null) {
             return this.inner().scaleAction().cooldown();
         }

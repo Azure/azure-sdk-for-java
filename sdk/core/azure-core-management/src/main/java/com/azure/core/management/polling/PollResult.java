@@ -38,7 +38,7 @@ public final class PollResult<T> {
      *
      * @return the value
      */
-    public T value() {
+    public T getValue() {
         return this.value;
     }
 
@@ -47,7 +47,7 @@ public final class PollResult<T> {
      *
      * @return the error
      */
-    public Error error() {
+    public Error getError() {
         return this.error;
     }
 

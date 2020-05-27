@@ -13,61 +13,61 @@ jobs:
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
-          CloudType: AzureCloud
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java LTS Windows (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
-          CloudType: AzureCloud
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java 8 Linux (AzureCloud):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: ubuntu-18.04
-          CloudType: AzureCloud
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java LTS Linux (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: ubuntu-18.04
-          CloudType: AzureCloud
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java 8 MacOS (AzureCloud):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: macOS-10.15
-          CloudType: AzureCloud
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java LTS MacOS (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: macOS-10.15
-          CloudType: AzureCloud
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java 8 Windows (AzureUSGovernment):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
-          CloudType: AzureUSGovernment
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
         Java LTS Windows (AzureUSGovernment):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
-          CloudType: AzureUSGovernment
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
         Java 8 Windows (AzureChinaCloud):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
-          CloudType: AzureChinaCloud
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
         Java LTS Windows (AzureChinaCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
-          CloudType: AzureChinaCloud
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
 
     pool:
@@ -80,6 +80,8 @@ jobs:
 
 
     steps:
+      - template: /eng/pipelines/templates/steps/update-version-fix.yml
+
       - task: Maven@3
         displayName: Use the latest package version from the dev feed
         inputs:
@@ -131,8 +133,8 @@ jobs:
       - template: /eng/common/TestResources/deploy-test-resources.yml
         parameters:
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
-          CloudType: $(CloudType)
           ArmTemplateParameters: $(ArmTemplateParameters)
+          SubscriptionConfiguration: $(SubscriptionConfiguration)
 
       - task: Maven@3
         displayName: 'Run Smoke Tests'
@@ -150,3 +152,4 @@ jobs:
       - template: /eng/common/TestResources/remove-test-resources.yml
         parameters:
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+          SubscriptionConfiguration: $(SubscriptionConfiguration)

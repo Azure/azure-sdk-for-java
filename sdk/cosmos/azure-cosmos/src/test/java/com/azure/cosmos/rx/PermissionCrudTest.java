@@ -174,7 +174,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
         // validate getPermission creation
         CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
-                .withId(readBackPermissionResponse.getPermission().id())
+                .withId(readBackPermissionResponse.getPermission().getId())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
                 .notNullEtag()

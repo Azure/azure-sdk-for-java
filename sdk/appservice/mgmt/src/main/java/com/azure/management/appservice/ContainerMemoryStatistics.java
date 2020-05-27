@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerMemoryStatistics model. */
 @Fluent
 public final class ContainerMemoryStatistics {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerMemoryStatistics.class);
+
     /*
      * The usage property.
      */
@@ -86,5 +90,13 @@ public final class ContainerMemoryStatistics {
     public ContainerMemoryStatistics withLimit(Long limit) {
         this.limit = limit;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

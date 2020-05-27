@@ -92,6 +92,11 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
                     if ($versionUpdateTag -match "external_dependency}") {
                         continue
                     }
+                    # If the scope is test then a beta dependency is allowed
+                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test") {
+                        continue
+                    }
                     # If this isn't an external dependency then ensure that if the dependency
                     # version is beta, that we're releasing a beta, otherwise fail
                     if ($versionNode.InnerText -like '*-beta.*') 

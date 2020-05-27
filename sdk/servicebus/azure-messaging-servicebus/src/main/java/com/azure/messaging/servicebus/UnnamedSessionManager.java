@@ -17,7 +17,6 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -40,7 +39,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE;
@@ -75,7 +73,6 @@ class UnnamedSessionManager implements AutoCloseable {
     private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink;
 
     private volatile Flux<ServiceBusReceivedMessageContext> receiveFlux;
-    private volatile ReceiveAsyncOptions receiveAsyncOptions;
 
     UnnamedSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
@@ -141,17 +138,12 @@ class UnnamedSessionManager implements AutoCloseable {
      *
      * @return A Flux of messages merged from different sessions.
      */
-    Flux<ServiceBusReceivedMessageContext> receive(ReceiveAsyncOptions options) {
-        if (options == null) {
-            return fluxError(logger, new NullPointerException("'options' cannot be null."));
-        }
-
+    Flux<ServiceBusReceivedMessageContext> receive() {
         if (!isStarted.getAndSet(true)) {
-            receiveAsyncOptions = options;
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
             if (!receiverOptions.isRollingSessionReceiver()) {
-                receiveFlux = getSession(options, schedulers.get(0));
+                receiveFlux = getSession(schedulers.get(0), false);
             } else {
                 receiveFlux = Flux.merge(processor, receiverOptions.getMaxConcurrentSessions());
             }
@@ -279,20 +271,21 @@ class UnnamedSessionManager implements AutoCloseable {
      * Gets the next available unnamed session with the given receive options and publishes its contents on the given
      * {@code scheduler}.
      *
-     * @param options Receive options.
-     *
+     * @param scheduler Scheduler to coordinate received methods on.
+     * @param disposeOnIdle true to dispose receiver when it idles; false otherwise.
      * @return A Mono that completes with an unnamed session receiver.
      */
-    private Flux<ServiceBusReceivedMessageContext> getSession(ReceiveAsyncOptions options, Scheduler scheduler) {
+    private Flux<ServiceBusReceivedMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
         return getActiveLink().flatMap(link -> link.getSessionId()
             .map(linkName -> sessionReceivers.compute(linkName, (key, existing) -> {
                 if (existing != null) {
                     return existing;
                 }
 
-                return new UnnamedSessionReceiver(link, messageSerializer, options.isAutoCompleteEnabled(),
-                    options.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
-                    receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock);
+                return new UnnamedSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
+                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler,
+                    receiverOptions.autoLockRenewalEnabled(), receiverOptions.getMaxAutoLockRenewalDuration(),
+                    this::renewSessionLock);
             })))
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
@@ -312,12 +305,6 @@ class UnnamedSessionManager implements AutoCloseable {
      * @param request Number of unnamed active sessions to emit.
      */
     private void onSessionRequest(long request) {
-        if (receiveAsyncOptions == null) {
-            sessionReceiveSink.error(new IllegalStateException(
-                "Cannot create receiver when there are no receive options set."));
-            return;
-        }
-
         if (isDisposed.get()) {
             logger.info("Session manager is disposed. Not emitting more unnamed sessions.");
             return;
@@ -337,7 +324,7 @@ class UnnamedSessionManager implements AutoCloseable {
                 return;
             }
 
-            Flux<ServiceBusReceivedMessageContext> session = getSession(receiveAsyncOptions, scheduler);
+            Flux<ServiceBusReceivedMessageContext> session = getSession(scheduler, true);
 
             sessionReceiveSink.next(session);
         }

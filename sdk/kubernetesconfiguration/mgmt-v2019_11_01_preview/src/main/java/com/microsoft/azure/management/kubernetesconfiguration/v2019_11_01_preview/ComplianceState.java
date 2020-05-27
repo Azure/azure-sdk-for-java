@@ -25,6 +25,12 @@ public final class ComplianceState extends ExpandableStringEnum<ComplianceState>
     /** Static value Noncompliant for ComplianceState. */
     public static final ComplianceState NONCOMPLIANT = fromString("Noncompliant");
 
+    /** Static value Installed for ComplianceState. */
+    public static final ComplianceState INSTALLED = fromString("Installed");
+
+    /** Static value Failed for ComplianceState. */
+    public static final ComplianceState FAILED = fromString("Failed");
+
     /**
      * Creates or finds a ComplianceState from its string representation.
      * @param name a name to look for

@@ -5,11 +5,15 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateEndpointConnectionsDeleteHeaders model. */
 @Fluent
 public final class PrivateEndpointConnectionsDeleteHeaders {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsDeleteHeaders.class);
+
     /*
      * The Retry-After property.
      */
@@ -60,5 +64,13 @@ public final class PrivateEndpointConnectionsDeleteHeaders {
     public PrivateEndpointConnectionsDeleteHeaders withLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The MaintenanceRedeployStatus model. */
 @Fluent
 public final class MaintenanceRedeployStatus {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceRedeployStatus.class);
+
     /*
      * True, if customer is allowed to perform Maintenance.
      */
@@ -193,5 +197,13 @@ public final class MaintenanceRedeployStatus {
     public MaintenanceRedeployStatus withLastOperationMessage(String lastOperationMessage) {
         this.lastOperationMessage = lastOperationMessage;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

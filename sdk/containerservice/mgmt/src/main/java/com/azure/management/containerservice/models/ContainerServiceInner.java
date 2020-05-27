@@ -7,6 +7,7 @@ package com.azure.management.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.ContainerServiceAgentPoolProfile;
 import com.azure.management.containerservice.ContainerServiceCustomProfile;
 import com.azure.management.containerservice.ContainerServiceDiagnosticsProfile;
@@ -15,6 +16,7 @@ import com.azure.management.containerservice.ContainerServiceMasterProfile;
 import com.azure.management.containerservice.ContainerServiceOrchestratorProfile;
 import com.azure.management.containerservice.ContainerServicePrincipalProfile;
 import com.azure.management.containerservice.ContainerServiceWindowsProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -22,6 +24,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ContainerServiceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceInner.class);
+
     /*
      * The current deployment or provisioning state, which only appears in the
      * response.
@@ -249,5 +253,37 @@ public class ContainerServiceInner extends Resource {
     public ContainerServiceInner withDiagnosticsProfile(ContainerServiceDiagnosticsProfile diagnosticsProfile) {
         this.diagnosticsProfile = diagnosticsProfile;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (orchestratorProfile() != null) {
+            orchestratorProfile().validate();
+        }
+        if (customProfile() != null) {
+            customProfile().validate();
+        }
+        if (servicePrincipalProfile() != null) {
+            servicePrincipalProfile().validate();
+        }
+        if (masterProfile() != null) {
+            masterProfile().validate();
+        }
+        if (agentPoolProfiles() != null) {
+            agentPoolProfiles().forEach(e -> e.validate());
+        }
+        if (windowsProfile() != null) {
+            windowsProfile().validate();
+        }
+        if (linuxProfile() != null) {
+            linuxProfile().validate();
+        }
+        if (diagnosticsProfile() != null) {
+            diagnosticsProfile().validate();
+        }
     }
 }

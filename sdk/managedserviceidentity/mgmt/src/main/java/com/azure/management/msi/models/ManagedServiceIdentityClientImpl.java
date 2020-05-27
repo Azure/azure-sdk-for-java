@@ -10,10 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the ManagedServiceIdentityClientImpl type. */
 public final class ManagedServiceIdentityClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(ManagedServiceIdentityClientImpl.class);
+
     /** The Id of the Subscription to which the identity belongs. */
     private String subscriptionId;
 
@@ -95,6 +98,18 @@ public final class ManagedServiceIdentityClientImpl extends AzureServiceClient {
         return this.httpPipeline;
     }
 
+    /** The SystemAssignedIdentitiesInner object to access its operations. */
+    private final SystemAssignedIdentitiesInner systemAssignedIdentities;
+
+    /**
+     * Gets the SystemAssignedIdentitiesInner object to access its operations.
+     *
+     * @return the SystemAssignedIdentitiesInner object.
+     */
+    public SystemAssignedIdentitiesInner systemAssignedIdentities() {
+        return this.systemAssignedIdentities;
+    }
+
     /** The OperationsInner object to access its operations. */
     private final OperationsInner operations;
 
@@ -144,6 +159,7 @@ public final class ManagedServiceIdentityClientImpl extends AzureServiceClient {
     public ManagedServiceIdentityClientImpl(HttpPipeline httpPipeline, AzureEnvironment environment) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
+        this.systemAssignedIdentities = new SystemAssignedIdentitiesInner(this);
         this.operations = new OperationsInner(this);
         this.userAssignedIdentities = new UserAssignedIdentitiesInner(this);
     }

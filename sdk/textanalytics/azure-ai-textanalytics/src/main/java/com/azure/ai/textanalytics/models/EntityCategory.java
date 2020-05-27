@@ -91,7 +91,7 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
      * @return The corresponding {@link EntityCategory}.
      */
     @JsonCreator
-    public static EntityCategory fromString(String name) {
+    static EntityCategory fromString(String name) {
         return fromString(name, EntityCategory.class);
     }
 }

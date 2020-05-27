@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -18,6 +19,7 @@ import java.util.stream.IntStream;
 /**
  * Long running tests that are manually executed.
  */
+@Tag(TestUtils.INTEGRATION)
 class LongRunningTest extends IntegrationTestBase {
     private final Duration duration = Duration.ofHours(8);
 

@@ -7,8 +7,10 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.management.network.BastionHostIPConfiguration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.network.BastionHostIpConfiguration;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class BastionHostInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -27,7 +31,7 @@ public class BastionHostInner extends Resource {
      * IP configuration of the Bastion Host resource.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<BastionHostIPConfiguration> ipConfigurations;
+    private List<BastionHostIpConfiguration> ipConfigurations;
 
     /*
      * FQDN for the endpoint on which bastion host is accessible.
@@ -61,7 +65,7 @@ public class BastionHostInner extends Resource {
      *
      * @return the ipConfigurations value.
      */
-    public List<BastionHostIPConfiguration> ipConfigurations() {
+    public List<BastionHostIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -71,7 +75,7 @@ public class BastionHostInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the BastionHostInner object itself.
      */
-    public BastionHostInner withIpConfigurations(List<BastionHostIPConfiguration> ipConfigurations) {
+    public BastionHostInner withIpConfigurations(List<BastionHostIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -123,5 +127,16 @@ public class BastionHostInner extends Resource {
     public BastionHostInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
     }
 }

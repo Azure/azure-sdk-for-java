@@ -8,8 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.DhcpOptions;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualNetworkInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -318,5 +322,25 @@ public class VirtualNetworkInner extends Resource {
     public VirtualNetworkInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (addressSpace() != null) {
+            addressSpace().validate();
+        }
+        if (dhcpOptions() != null) {
+            dhcpOptions().validate();
+        }
+        if (subnets() != null) {
+            subnets().forEach(e -> e.validate());
+        }
+        if (virtualNetworkPeerings() != null) {
+            virtualNetworkPeerings().forEach(e -> e.validate());
+        }
     }
 }

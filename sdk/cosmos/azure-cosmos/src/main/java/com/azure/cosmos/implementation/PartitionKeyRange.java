@@ -3,10 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;

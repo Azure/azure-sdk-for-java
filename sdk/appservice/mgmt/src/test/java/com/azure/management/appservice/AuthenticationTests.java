@@ -50,7 +50,7 @@ public class AuthenticationTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
-        String response = curl("http://" + webApp1.defaultHostName()).getValue();
+        String response = curl("http://" + webApp1.defaultHostname()).getValue();
         Assertions.assertTrue(response.contains("do not have permission"));
 
         // Update
@@ -62,7 +62,7 @@ public class AuthenticationTests extends AppServiceTest {
             .attach()
             .apply();
 
-        response = curl("http://" + webApp1.defaultHostName()).getValue();
+        response = curl("http://" + webApp1.defaultHostname()).getValue();
         Assertions.assertFalse(response.contains("do not have permission"));
     }
 }

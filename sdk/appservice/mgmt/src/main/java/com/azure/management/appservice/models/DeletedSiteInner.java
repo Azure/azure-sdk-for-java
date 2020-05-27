@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeletedSite model. */
 @JsonFlatten
 @Immutable
 public class DeletedSiteInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedSiteInner.class);
+
     /*
      * Numeric id for the deleted site
      */
@@ -131,5 +135,15 @@ public class DeletedSiteInner extends ProxyOnlyResource {
      */
     public String geoRegionName() {
         return this.geoRegionName;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

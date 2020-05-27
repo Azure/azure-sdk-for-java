@@ -7,16 +7,20 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.ExpressRoutePeeringState;
 import com.azure.management.network.ExpressRoutePeeringType;
 import com.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExpressRouteCrossConnectionPeering model. */
 @JsonFlatten
 @Fluent
 public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringInner.class);
+
     /*
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -46,13 +50,13 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * The Azure ASN.
      */
     @JsonProperty(value = "properties.azureASN", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer azureASN;
+    private Integer azureAsn;
 
     /*
      * The peer ASN.
      */
     @JsonProperty(value = "properties.peerASN")
-    private Long peerASN;
+    private Long peerAsn;
 
     /*
      * The primary address prefix.
@@ -193,31 +197,31 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     }
 
     /**
-     * Get the azureASN property: The Azure ASN.
+     * Get the azureAsn property: The Azure ASN.
      *
-     * @return the azureASN value.
+     * @return the azureAsn value.
      */
-    public Integer azureASN() {
-        return this.azureASN;
+    public Integer azureAsn() {
+        return this.azureAsn;
     }
 
     /**
-     * Get the peerASN property: The peer ASN.
+     * Get the peerAsn property: The peer ASN.
      *
-     * @return the peerASN value.
+     * @return the peerAsn value.
      */
-    public Long peerASN() {
-        return this.peerASN;
+    public Long peerAsn() {
+        return this.peerAsn;
     }
 
     /**
-     * Set the peerASN property: The peer ASN.
+     * Set the peerAsn property: The peer ASN.
      *
-     * @param peerASN the peerASN value to set.
+     * @param peerAsn the peerAsn value to set.
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
-    public ExpressRouteCrossConnectionPeeringInner withPeerASN(Long peerASN) {
-        this.peerASN = peerASN;
+    public ExpressRouteCrossConnectionPeeringInner withPeerAsn(Long peerAsn) {
+        this.peerAsn = peerAsn;
         return this;
     }
 
@@ -409,5 +413,19 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
         Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
         this.ipv6PeeringConfig = ipv6PeeringConfig;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (microsoftPeeringConfig() != null) {
+            microsoftPeeringConfig().validate();
+        }
+        if (ipv6PeeringConfig() != null) {
+            ipv6PeeringConfig().validate();
+        }
     }
 }

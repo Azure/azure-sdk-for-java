@@ -115,8 +115,8 @@ public class CosmosContainerTest extends TestSuiteBase {
         try {
             createdDatabase.createContainer(containerProperties);
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 

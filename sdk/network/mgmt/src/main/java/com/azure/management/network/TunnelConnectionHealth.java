@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TunnelConnectionHealth model. */
 @Immutable
 public final class TunnelConnectionHealth {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TunnelConnectionHealth.class);
+
     /*
      * Tunnel name.
      */
@@ -83,5 +87,13 @@ public final class TunnelConnectionHealth {
      */
     public String lastConnectionEstablishedUtcTime() {
         return this.lastConnectionEstablishedUtcTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

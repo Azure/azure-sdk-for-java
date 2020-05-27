@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The WebApplicationFirewallCustomRule model. */
 @Fluent
 public final class WebApplicationFirewallCustomRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallCustomRule.class);
+
     /*
      * Gets name of the resource that is unique within a policy. This name can
      * be used to access the resource.
@@ -161,5 +165,33 @@ public final class WebApplicationFirewallCustomRule {
     public WebApplicationFirewallCustomRule withAction(WebApplicationFirewallAction action) {
         this.action = action;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ruleType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ruleType in model WebApplicationFirewallCustomRule"));
+        }
+        if (matchConditions() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property matchConditions in model WebApplicationFirewallCustomRule"));
+        } else {
+            matchConditions().forEach(e -> e.validate());
+        }
+        if (action() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property action in model WebApplicationFirewallCustomRule"));
+        }
     }
 }

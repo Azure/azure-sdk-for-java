@@ -5,12 +5,16 @@
 package com.azure.management.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.keyvault.DeletedVaultProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeletedVault model. */
 @Fluent
 public final class DeletedVaultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedVaultInner.class);
+
     /*
      * The resource ID for the deleted key vault.
      */
@@ -80,5 +84,16 @@ public final class DeletedVaultInner {
     public DeletedVaultInner withProperties(DeletedVaultProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

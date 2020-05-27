@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HybridConnection model. */
 @JsonFlatten
 @Fluent
 public class HybridConnectionInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridConnectionInner.class);
+
     /*
      * The name of the Service Bus namespace.
      */
@@ -229,5 +233,15 @@ public class HybridConnectionInner extends ProxyOnlyResource {
     public HybridConnectionInner withServiceBusSuffix(String serviceBusSuffix) {
         this.serviceBusSuffix = serviceBusSuffix;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

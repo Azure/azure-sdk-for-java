@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The IndexingPolicy model. */
 @Fluent
 public final class IndexingPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IndexingPolicy.class);
+
     /*
      * Indicates if the indexing policy is automatic
      */
@@ -165,5 +169,25 @@ public final class IndexingPolicy {
     public IndexingPolicy withSpatialIndexes(List<SpatialSpec> spatialIndexes) {
         this.spatialIndexes = spatialIndexes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (includedPaths() != null) {
+            includedPaths().forEach(e -> e.validate());
+        }
+        if (excludedPaths() != null) {
+            excludedPaths().forEach(e -> e.validate());
+        }
+        if (compositeIndexes() != null) {
+            compositeIndexes().forEach(e -> e.forEach(e1 -> e1.validate()));
+        }
+        if (spatialIndexes() != null) {
+            spatialIndexes().forEach(e -> e.validate());
+        }
     }
 }

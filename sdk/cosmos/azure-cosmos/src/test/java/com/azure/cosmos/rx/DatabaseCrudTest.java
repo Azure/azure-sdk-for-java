@@ -4,15 +4,15 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -21,9 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class DatabaseCrudTest extends TestSuiteBase {
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
@@ -61,7 +58,10 @@ public class DatabaseCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
-        FailureValidator validator = new FailureValidator.Builder().resourceAlreadyExists().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceAlreadyExists()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateFailure(createObservable, validator);
     }
 
@@ -82,7 +82,10 @@ public class DatabaseCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncDatabaseResponse> readObservable = client.getDatabase("I don't exist").read();
 
         // validate
-        FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateFailure(readObservable, validator);
     }
 
@@ -109,7 +112,10 @@ public class DatabaseCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncDatabaseResponse> deleteObservable = client.getDatabase("I don't exist").delete();
 
         // validate
-        FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateFailure(deleteObservable, validator);
     }
 

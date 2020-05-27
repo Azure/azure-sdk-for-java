@@ -10,9 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.IndexerExecutionInfo;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
@@ -52,7 +52,7 @@ public class RunningSearchSolutionExample {
         serviceClient.runIndexer(INDEXER_NAME);
 
         // get indexer status
-        IndexerExecutionInfo indexerStatus = serviceClient.getIndexerStatus(INDEXER_NAME);
+        SearchIndexerStatus indexerStatus = serviceClient.getIndexerStatus(INDEXER_NAME);
         System.out.printf("Indexer %s status = %s%n", INDEXER_NAME, indexerStatus.getStatus());
 
         // run a search query

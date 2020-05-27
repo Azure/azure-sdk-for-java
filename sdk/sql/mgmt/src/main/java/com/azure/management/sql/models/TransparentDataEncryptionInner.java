@@ -7,13 +7,17 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.TransparentDataEncryptionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TransparentDataEncryption model. */
 @JsonFlatten
 @Fluent
 public class TransparentDataEncryptionInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransparentDataEncryptionInner.class);
+
     /*
      * Resource location.
      */
@@ -53,5 +57,13 @@ public class TransparentDataEncryptionInner extends ProxyResource {
     public TransparentDataEncryptionInner withStatus(TransparentDataEncryptionStatus status) {
         this.status = status;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

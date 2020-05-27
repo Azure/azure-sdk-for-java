@@ -1,75 +1,75 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azsjavacancreateanddeletesynonymmapbda1579801c318e4.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "fe581b3c-f950-47d6-b9d8-55c92c68b1a1",
+      "x-ms-client-request-id" : "4a453212-f93c-4f60-831c-30762753824a",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "fe581b3c-f950-47d6-b9d8-55c92c68b1a1",
+      "request-id" : "4a453212-f93c-4f60-831c-30762753824a",
       "StatusCode" : "201",
-      "Date" : "Tue, 21 Apr 2020 19:14:11 GMT",
+      "Date" : "Mon, 11 May 2020 18:11:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "fe581b3c-f950-47d6-b9d8-55c92c68b1a1",
-      "ETag" : "W/\"0x8D7E6282CBEFF7B\"",
-      "elapsed-time" : "63",
+      "client-request-id" : "4a453212-f93c-4f60-831c-30762753824a",
+      "ETag" : "W/\"0x8D7F5D6AD5C7F03\"",
+      "elapsed-time" : "30",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "251",
-      "Body" : "{\"@odata.context\":\"https://azsjavacancreateanddeletesynonymmapbda1579801c318e4.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E6282CBEFF7B\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "227",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D6AD5C7F03\\\"\",\"name\":\"test-synonym38004c4e3bc6\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azsjavacancreateanddeletesynonymmapbda1579801c318e4.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview"
+      "Location" : "https://alzimmer-search.search.windows.net/synonymmaps('test-synonym38004c4e3bc6')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azsjavacancreateanddeletesynonymmapbda1579801c318e4.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym38004c4e3bc6')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "b4cc14fa-99a5-48cb-a34d-a2de82ee2533"
+      "x-ms-client-request-id" : "f15e38bd-9bf5-4115-ac60-4e481827cf21"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "b4cc14fa-99a5-48cb-a34d-a2de82ee2533",
-      "elapsed-time" : "106",
+      "client-request-id" : "f15e38bd-9bf5-4115-ac60-4e481827cf21",
+      "elapsed-time" : "13",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b4cc14fa-99a5-48cb-a34d-a2de82ee2533",
+      "request-id" : "f15e38bd-9bf5-4115-ac60-4e481827cf21",
       "StatusCode" : "204",
-      "Date" : "Tue, 21 Apr 2020 19:14:11 GMT"
+      "Date" : "Mon, 11 May 2020 18:11:07 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azsjavacancreateanddeletesynonymmapbda1579801c318e4.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym38004c4e3bc6')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "693f6440-bc01-45e4-a609-5df4322ea079"
+      "x-ms-client-request-id" : "d5da2142-0418-49a7-95db-4b8b53c69a1f"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "693f6440-bc01-45e4-a609-5df4322ea079",
+      "request-id" : "d5da2142-0418-49a7-95db-4b8b53c69a1f",
       "StatusCode" : "404",
-      "Date" : "Tue, 21 Apr 2020 19:14:11 GMT",
+      "Date" : "Mon, 11 May 2020 18:11:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "693f6440-bc01-45e4-a609-5df4322ea079",
-      "elapsed-time" : "9",
+      "client-request-id" : "d5da2142-0418-49a7-95db-4b8b53c69a1f",
+      "elapsed-time" : "26",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "153",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'test-synonym' was found in service 'azsjavacancreateanddeletesynonymmapbda1579801c318e4'.\"}}",
+      "Content-Length" : "129",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'test-synonym38004c4e3bc6' was found in service 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavacancreateanddeletesynonymmapbda1579801c318e4" ]
+  "variables" : [ "test-synonym38004c4e3bc6" ]
 }

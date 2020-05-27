@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ProtocolCustomSettingsFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DdosCustomPolicyInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosCustomPolicyInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -42,7 +46,7 @@ public class DdosCustomPolicyInner extends Resource {
      * This list is read-only.
      */
     @JsonProperty(value = "properties.publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> publicIPAddresses;
+    private List<SubResource> publicIpAddresses;
 
     /*
      * The protocol-specific DDoS policy customization parameters.
@@ -87,13 +91,13 @@ public class DdosCustomPolicyInner extends Resource {
     }
 
     /**
-     * Get the publicIPAddresses property: The list of public IPs associated with the DDoS custom policy resource. This
+     * Get the publicIpAddresses property: The list of public IPs associated with the DDoS custom policy resource. This
      * list is read-only.
      *
-     * @return the publicIPAddresses value.
+     * @return the publicIpAddresses value.
      */
-    public List<SubResource> publicIPAddresses() {
-        return this.publicIPAddresses;
+    public List<SubResource> publicIpAddresses() {
+        return this.publicIpAddresses;
     }
 
     /**
@@ -134,5 +138,16 @@ public class DdosCustomPolicyInner extends Resource {
     public DdosCustomPolicyInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (protocolCustomSettings() != null) {
+            protocolCustomSettings().forEach(e -> e.validate());
+        }
     }
 }

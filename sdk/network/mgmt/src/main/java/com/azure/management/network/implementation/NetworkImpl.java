@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
@@ -12,7 +12,7 @@ import com.azure.management.network.Network;
 import com.azure.management.network.NetworkPeerings;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.models.GroupableParentResourceWithTagsImpl;
-import com.azure.management.network.models.IPAddressAvailabilityResultInner;
+import com.azure.management.network.models.IpAddressAvailabilityResultInner;
 import com.azure.management.network.models.SubnetInner;
 import com.azure.management.network.models.VirtualNetworkInner;
 import com.azure.management.resources.fluentcore.model.Creatable;
@@ -83,31 +83,31 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public boolean isPrivateIPAddressAvailable(String ipAddress) {
-        IPAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
+        IpAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
         return (result != null) ? result.available() : false;
     }
 
     @Override
     public boolean isPrivateIPAddressInNetwork(String ipAddress) {
-        IPAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
+        IpAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
         return (result != null) ? true : false;
     }
 
     // Helpers
 
-    private IPAddressAvailabilityResultInner checkIPAvailability(String ipAddress) {
+    private IpAddressAvailabilityResultInner checkIPAvailability(String ipAddress) {
         if (ipAddress == null) {
             return null;
         }
-        IPAddressAvailabilityResultInner result = null;
+        IpAddressAvailabilityResultInner result = null;
         try {
             result =
                 this
                     .manager()
                     .networks()
                     .inner()
-                    .checkIPAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
-        } catch (CloudException e) {
+                    .checkIpAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
+        } catch (ManagementException e) {
             if (!e.getValue().getCode().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
                 throw logger.logExceptionAsError(e);
                 // Rethrow if the exception reason is anything other than IP address not found
@@ -285,7 +285,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup =
             manager()
                 .ddosProtectionPlans()
-                .define(this.manager().getSdkContext().randomResourceName(name(), 20))
+                .define(this.manager().sdkContext().randomResourceName(name(), 20))
                 .withRegion(region());
         if (super.creatableGroup != null && isInCreateMode()) {
             ddosProtectionPlanCreatable = ddosProtectionPlanWithGroup.withNewResourceGroup(super.creatableGroup);

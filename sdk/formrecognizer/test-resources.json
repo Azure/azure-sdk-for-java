@@ -48,15 +48,24 @@
                 "signedPermission": "rl",
                 "signedResource": "c"
             }
+        },
+        "multiPageTestingDataContainer": {
+            "type": "string",
+            "defaultValue": "multipage-training-data"
+        },
+        "multiPageTestingDataSasProperties": {
+            "type": "object",
+            "defaultValue": {
+                "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('multiPageTestingDataContainer'))]",
+                "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+                "signedPermission": "rl",
+                "signedResource": "c"
+            }
         }
     },
     "variables": {
-        "storageApiVersion": "2019-04-01",
         "authorizationApiVersion": "2018-09-01-preview",
-        "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-        "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "formRecognizerBaseName": "[concat('formRecognizer', parameters('baseName'))]",
-        "location": "[resourceGroup().location]",
         "formRecognizerApiVersion": "2017-04-18",
         "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('formRecognizerEndpointSuffix'))]",
         "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
@@ -104,6 +113,10 @@
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL": {
             "type": "string",
             "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('testingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('testingDataSasProperties')).serviceSasToken)]"
+        },
+        "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL": {
+            "type": "string",
+            "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('multiPageTestingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('multiPageTestingDataSasProperties')).serviceSasToken)]"
         }
     }
 }

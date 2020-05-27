@@ -5,12 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The TagProperty model. */
 @Immutable
 public final class TagProperty {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagProperty.class);
+
     /*
      * The tag value.
      */
@@ -85,5 +89,13 @@ public final class TagProperty {
      */
     public String upn() {
         return this.upn;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

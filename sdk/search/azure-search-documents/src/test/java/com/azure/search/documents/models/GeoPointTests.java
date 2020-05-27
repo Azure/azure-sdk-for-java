@@ -5,10 +5,14 @@ package com.azure.search.documents.models;
 
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchIndexClient;
-import com.azure.search.documents.SearchIndexClientTestBase;
-import com.azure.search.documents.util.SearchPagedResponse;
+import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.util.SearchPagedResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -20,37 +24,40 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GeoPointTests extends SearchIndexClientTestBase {
-
-    private static final String INDEX_NAME_HOTELS = "hotels";
+public class GeoPointTests extends SearchTestBase {
     private static final String DATA_JSON_HOTELS = "HotelsDataArray.json";
 
     private SearchIndexClient client;
 
-    @SuppressWarnings("unchecked")
-    private List<Map<String, Object>> uploadDocuments() throws Exception {
-        Reader docsData = new InputStreamReader(
-            getClass().getClassLoader().getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS));
+    private void uploadDocuments() throws Exception {
+        Reader docsData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+            .getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS)));
 
         ObjectMapper mapper = new ObjectMapper();
         SerializationUtil.configureMapper(mapper);
-        List<Map<String, Object>> documents = mapper.readValue(docsData, List.class);
+        List<Map<String, Object>> documents = mapper.readValue(docsData,
+            new TypeReference<List<Map<String, Object>>>() {
+            });
         client.uploadDocuments(documents);
 
         waitForIndexing();
+    }
 
-        return documents;
+    @Override
+    protected void afterTest() {
+        getSearchServiceClientBuilder().buildClient().deleteIndex(client.getIndexName());
     }
 
     @Test
     public void canDeserializeGeoPoint() throws Exception {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME_HOTELS).buildClient();
+        client = getSearchIndexClientBuilder(createHotelIndex()).buildClient();
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
@@ -67,30 +74,29 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("geopoints")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("Id")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new Field()
+                new SearchField()
                     .setName("Name")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new Field()
+                new SearchField()
                     .setName("Location")
-                    .setType(DataType.EDM_GEOGRAPHY_POINT)
+                    .setType(SearchFieldDataType.GEOGRAPHY_POINT)
                     .setFilterable(true)
                     .setSortable(true)
             ));
 
-        setupIndex(index);
-        client = getSearchIndexClientBuilder(index.getName()).buildClient();
+        client = getSearchIndexClientBuilder(setupIndex(index)).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 

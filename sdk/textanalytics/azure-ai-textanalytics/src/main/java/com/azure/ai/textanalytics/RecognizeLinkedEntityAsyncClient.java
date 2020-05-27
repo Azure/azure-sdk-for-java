@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -13,7 +14,6 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -30,13 +30,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -101,8 +102,7 @@ class RecognizeLinkedEntityAsyncClient {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getRecognizedLinkedEntitiesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
     }
 
@@ -149,10 +149,12 @@ class RecognizeLinkedEntityAsyncClient {
                 null,
                 new LinkedEntityCollection(
                     mapLinkedEntity(documentLinkedEntities.getEntities()),
-                    new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(warning ->
-                        new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                            warning.getMessage()))
-                        .collect(Collectors.toList())))
+                    new IterableStream<>(documentLinkedEntities.getWarnings().stream()
+                        .map(warning -> {
+                            final WarningCodeValue warningCodeValue = warning.getCode();
+                            return new TextAnalyticsWarning(
+                                warningCodeValue == null ? null : warningCodeValue.toString(), warning.getMessage());
+                        }).collect(Collectors.toList())))
             )));
         // Document errors
         entityLinkingResult.getErrors().forEach(documentError -> {
@@ -206,7 +208,7 @@ class RecognizeLinkedEntityAsyncClient {
     private Mono<TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult>> getRecognizedLinkedEntitiesResponseInPage(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.entitiesLinkingWithResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics())

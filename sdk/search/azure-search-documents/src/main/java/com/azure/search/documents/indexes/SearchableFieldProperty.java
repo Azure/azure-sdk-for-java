@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.models.AnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -55,21 +55,21 @@ public @interface SearchableFieldProperty {
     /**
      * Optional arguments defines the name of the analyzer used for the field.
      *
-     * @return {@link AnalyzerName} String value. Or default to "null" String type.
+     * @return {@link LexicalAnalyzerName} String value. Or default to "null" String type.
      */
     String analyzer() default "";
 
     /**
      * Optional arguments defines the name of the search analyzer used for the field.
      *
-     * @return {@link AnalyzerName} String value. Or default to an empty String.
+     * @return {@link LexicalAnalyzerName} String value. Or default to an empty String.
      */
     String searchAnalyzer() default "";
 
     /**
      * Optional arguments defines the name of the analyzer used for the field.
      *
-     * @return {@link AnalyzerName} String value. Or default to an empty String.
+     * @return {@link LexicalAnalyzerName} String value. Or default to an empty String.
      */
     String indexAnalyzer() default "";
 

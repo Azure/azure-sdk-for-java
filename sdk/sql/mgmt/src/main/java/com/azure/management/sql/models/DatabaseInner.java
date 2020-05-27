@@ -7,6 +7,7 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.CatalogCollationType;
 import com.azure.management.sql.CreateMode;
 import com.azure.management.sql.DatabaseLicenseType;
@@ -14,6 +15,7 @@ import com.azure.management.sql.DatabaseReadScale;
 import com.azure.management.sql.DatabaseStatus;
 import com.azure.management.sql.SampleName;
 import com.azure.management.sql.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -22,6 +24,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class DatabaseInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseInner.class);
+
     /*
      * The database SKU.
      *
@@ -222,7 +226,9 @@ public class DatabaseInner extends Resource {
     private Boolean zoneRedundant;
 
     /*
-     * The license type to apply for this database.
+     * The license type to apply for this database. `LicenseIncluded` if you
+     * need a license, or `BasePrice` if you have a license and are eligible
+     * for the Azure Hybrid Benefit.
      */
     @JsonProperty(value = "properties.licenseType")
     private DatabaseLicenseType licenseType;
@@ -752,7 +758,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this database.
+     * Get the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @return the licenseType value.
      */
@@ -761,7 +768,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this database.
+     * Set the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @param licenseType the licenseType value to set.
      * @return the DatabaseInner object itself.
@@ -907,5 +915,19 @@ public class DatabaseInner extends Resource {
      */
     public OffsetDateTime resumedDate() {
         return this.resumedDate;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (currentSku() != null) {
+            currentSku().validate();
+        }
     }
 }

@@ -1,31 +1,50 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azsjava885476cc59f6072284e3a82893d91.search.windows.net/skillsets?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "c2f0ae0e-9251-49bb-803e-93fecbbb782d",
+      "x-ms-client-request-id" : "690e14b3-fb0d-4f9c-a54c-513fe383bf10",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c2f0ae0e-9251-49bb-803e-93fecbbb782d",
+      "request-id" : "690e14b3-fb0d-4f9c-a54c-513fe383bf10",
       "StatusCode" : "201",
-      "Date" : "Tue, 21 Apr 2020 19:12:06 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:08 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "c2f0ae0e-9251-49bb-803e-93fecbbb782d",
-      "ETag" : "W/\"0x8D7E627E1C4C083\"",
-      "elapsed-time" : "103",
+      "client-request-id" : "690e14b3-fb0d-4f9c-a54c-513fe383bf10",
+      "ETag" : "W/\"0x8D7F5D68A404441\"",
+      "elapsed-time" : "214",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "747",
-      "Body" : "{\"@odata.context\":\"https://azsjava885476cc59f6072284e3a82893d91.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627E1C4C083\\\"\",\"name\":\"conditional-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ConditionalSkill\",\"name\":\"myconditional\",\"description\":\"Tested Conditional skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"condition\",\"source\":\"= $(/document/language) == null\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenTrue\",\"source\":\"= 'es'\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenFalse\",\"source\":\"= $(/document/language)\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Content-Length" : "742",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D68A404441\\\"\",\"name\":\"conditional-skillset120555ccedea68f8\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ConditionalSkill\",\"name\":\"myconditional\",\"description\":\"Tested Conditional skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"condition\",\"source\":\"= $(/document/language) == null\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenTrue\",\"source\":\"= 'es'\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenFalse\",\"source\":\"= $(/document/language)\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azsjava885476cc59f6072284e3a82893d91.search.windows.net/skillsets('conditional-skillset')?api-version=2019-05-06-Preview"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('conditional-skillset120555ccedea68f8')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('conditional-skillset120555ccedea68f8')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "ccd0bff2-2fb6-43ad-9c0a-2331a11f872a"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ccd0bff2-2fb6-43ad-9c0a-2331a11f872a",
+      "elapsed-time" : "107",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "ccd0bff2-2fb6-43ad-9c0a-2331a11f872a",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 May 2020 18:10:08 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjava885476cc59f6072284e3a82893d91" ]
+  "variables" : [ "conditional-skillset120555ccedea68f8" ]
 }

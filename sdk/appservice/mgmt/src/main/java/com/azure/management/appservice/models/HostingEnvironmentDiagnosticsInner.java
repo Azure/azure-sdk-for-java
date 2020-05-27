@@ -5,11 +5,15 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HostingEnvironmentDiagnostics model. */
 @Fluent
 public final class HostingEnvironmentDiagnosticsInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostingEnvironmentDiagnosticsInner.class);
+
     /*
      * Name/identifier of the diagnostics.
      */
@@ -60,5 +64,13 @@ public final class HostingEnvironmentDiagnosticsInner {
     public HostingEnvironmentDiagnosticsInner withDiagnosticsOutput(String diagnosticsOutput) {
         this.diagnosticsOutput = diagnosticsOutput;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

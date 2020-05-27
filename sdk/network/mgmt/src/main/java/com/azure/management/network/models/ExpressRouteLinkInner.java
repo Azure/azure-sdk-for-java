@@ -7,14 +7,18 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ExpressRouteLinkAdminState;
 import com.azure.management.network.ExpressRouteLinkConnectorType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRouteLinknull. */
 @JsonFlatten
 @Fluent
 public class ExpressRouteLinkInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkInner.class);
+
     /*
      * Name of child port resource that is unique among child port resources of
      * the parent.
@@ -173,5 +177,13 @@ public class ExpressRouteLinkInner extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

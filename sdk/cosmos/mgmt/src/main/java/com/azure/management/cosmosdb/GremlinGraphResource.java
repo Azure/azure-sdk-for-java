@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GremlinGraphResource model. */
 @Fluent
 public class GremlinGraphResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinGraphResource.class);
+
     /*
      * Name of the Cosmos DB Gremlin graph
      */
@@ -174,5 +178,30 @@ public class GremlinGraphResource {
     public GremlinGraphResource withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
         this.conflictResolutionPolicy = conflictResolutionPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
+        }
+        if (indexingPolicy() != null) {
+            indexingPolicy().validate();
+        }
+        if (partitionKey() != null) {
+            partitionKey().validate();
+        }
+        if (uniqueKeyPolicy() != null) {
+            uniqueKeyPolicy().validate();
+        }
+        if (conflictResolutionPolicy() != null) {
+            conflictResolutionPolicy().validate();
+        }
     }
 }

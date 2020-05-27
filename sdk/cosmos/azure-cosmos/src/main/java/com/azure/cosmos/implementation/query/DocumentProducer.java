@@ -3,12 +3,11 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -179,7 +178,7 @@ class DocumentProducer<T extends Resource> {
 
     private Flux<DocumentProducerFeedResponse> splitProof(Flux<DocumentProducerFeedResponse> sourceFeedResponseObservable) {
         return sourceFeedResponseObservable.onErrorResume( t -> {
-            CosmosClientException dce = Utils.as(t, CosmosClientException.class);
+            CosmosException dce = Utils.as(t, CosmosException.class);
             if (dce == null || !isSplit(dce)) {
                 logger.error("Unexpected failure", t);
                 return Flux.error(t);
@@ -247,7 +246,7 @@ class DocumentProducer<T extends Resource> {
         return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(null, collectionRid, range, true, feedOptions.getProperties());
     }
 
-    private boolean isSplit(CosmosClientException e) {
+    private boolean isSplit(CosmosException e) {
         return Exceptions.isPartitionSplit(e);
     }
 }

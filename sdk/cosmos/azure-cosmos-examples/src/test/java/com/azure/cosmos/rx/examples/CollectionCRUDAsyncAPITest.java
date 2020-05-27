@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.models.FeedResponse;
@@ -28,7 +27,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -75,7 +73,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_CollectionCRUDAsyncAPITest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -234,7 +232,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
             collectionForTestObservable.single() // Gets the single result
                     .block(); // Blocks
             assertThat("Should not reach here", false);
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             assertThat("Collection already exists.", e.getStatusCode(),
                        equalTo(409));
         }
@@ -378,16 +376,10 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "getPrecision", -1);
-        indexes.add(numberIndex);
+        IncludedPath includedPath = new IncludedPath("/*");
+        List<Index> indexes = new ArrayList<>();
+        indexes.add(Index.range(DataType.STRING, -1));
+        indexes.add(Index.range(DataType.NUMBER, -1));
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);

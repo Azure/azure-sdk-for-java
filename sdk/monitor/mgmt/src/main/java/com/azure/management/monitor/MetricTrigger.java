@@ -5,12 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** The MetricTrigger model. */
 @Fluent
 public final class MetricTrigger {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricTrigger.class);
+
     /*
      * the name of the metric that defines what the rule monitors.
      */
@@ -231,5 +235,48 @@ public final class MetricTrigger {
     public MetricTrigger withThreshold(double threshold) {
         this.threshold = threshold;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metricName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property metricName in model MetricTrigger"));
+        }
+        if (metricResourceUri() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property metricResourceUri in model MetricTrigger"));
+        }
+        if (timeGrain() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property timeGrain in model MetricTrigger"));
+        }
+        if (statistic() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property statistic in model MetricTrigger"));
+        }
+        if (timeWindow() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property timeWindow in model MetricTrigger"));
+        }
+        if (timeAggregation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property timeAggregation in model MetricTrigger"));
+        }
+        if (operator() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property operator in model MetricTrigger"));
+        }
     }
 }

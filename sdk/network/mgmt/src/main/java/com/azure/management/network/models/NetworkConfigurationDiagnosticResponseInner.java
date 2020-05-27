@@ -5,13 +5,17 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.NetworkConfigurationDiagnosticResult;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The NetworkConfigurationDiagnosticResponse model. */
 @Immutable
 public final class NetworkConfigurationDiagnosticResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticResponseInner.class);
+
     /*
      * List of network configuration diagnostic results.
      */
@@ -25,5 +29,16 @@ public final class NetworkConfigurationDiagnosticResponseInner {
      */
     public List<NetworkConfigurationDiagnosticResult> results() {
         return this.results;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (results() != null) {
+            results().forEach(e -> e.validate());
+        }
     }
 }

@@ -26,7 +26,7 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
             super.setProperties(null);
             database = null;
         } else {
-            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
             ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
             CosmosDatabaseProperties props =  new CosmosDatabaseProperties(bodyAsString, null);
             ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);

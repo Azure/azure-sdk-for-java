@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Operation model. */
 @Fluent
 public final class Operation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
+
     /*
      * Operation name: {provider}/{resource}/{operation}
      */
@@ -60,5 +64,16 @@ public final class Operation {
     public Operation withDisplay(OperationDisplay display) {
         this.display = display;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (display() != null) {
+            display().validate();
+        }
     }
 }

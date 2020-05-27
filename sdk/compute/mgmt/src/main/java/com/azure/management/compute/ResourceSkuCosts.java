@@ -5,16 +5,20 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceSkuCosts model. */
 @Immutable
 public final class ResourceSkuCosts {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCosts.class);
+
     /*
      * Used for querying price from commerce.
      */
     @JsonProperty(value = "meterID", access = JsonProperty.Access.WRITE_ONLY)
-    private String meterID;
+    private String meterId;
 
     /*
      * The multiplier is needed to extend the base metered cost.
@@ -29,12 +33,12 @@ public final class ResourceSkuCosts {
     private String extendedUnit;
 
     /**
-     * Get the meterID property: Used for querying price from commerce.
+     * Get the meterId property: Used for querying price from commerce.
      *
-     * @return the meterID value.
+     * @return the meterId value.
      */
-    public String meterID() {
-        return this.meterID;
+    public String meterId() {
+        return this.meterId;
     }
 
     /**
@@ -53,5 +57,13 @@ public final class ResourceSkuCosts {
      */
     public String extendedUnit() {
         return this.extendedUnit;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

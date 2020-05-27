@@ -11,7 +11,6 @@ import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedOptions;
@@ -155,7 +154,6 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        ModelBridgeInternal.validateResource(containerProperties);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createContainer(containerProperties, options);
@@ -196,7 +194,6 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        ModelBridgeInternal.validateResource(containerProperties);
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
@@ -353,9 +350,9 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options) {
         return container.read(options).onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosClientException) {
-                final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
-                if (cosmosClientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+            if (unwrappedException instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) unwrappedException;
+                if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     return createContainer(containerProperties, options);
                 }
             }
@@ -632,15 +629,14 @@ public class CosmosAsyncDatabase {
         return this.read()
                    .flatMap(cosmosDatabaseResponse -> getDocClientWrapper()
                                                           .queryOffers("select * from c where c.offerResourceId = '"
-                                                                           + cosmosDatabaseResponse
-                                                                                 .getProperties()
+                                                                           + cosmosDatabaseResponse.getProperties()
                                                                                  .getResourceId() + "'",
                                                                        new FeedOptions())
                                                           .single()
                                                           .flatMap(offerFeedResponse -> {
                                                               if (offerFeedResponse.getResults().isEmpty()) {
                                                                   return Mono.error(BridgeInternal
-                                                                            .createCosmosClientException(
+                                                                            .createCosmosException(
                                                                                 HttpConstants.StatusCodes.BADREQUEST,
                                                                                 "No offers found for the resource"));
                                                               }
@@ -673,7 +669,7 @@ public class CosmosAsyncDatabase {
                                                           .flatMap(offerFeedResponse -> {
                                                               if (offerFeedResponse.getResults().isEmpty()) {
                                                                   return Mono.error(BridgeInternal
-                                                                            .createCosmosClientException(
+                                                                            .createCosmosException(
                                                                                 HttpConstants.StatusCodes.BADREQUEST,
                                                                                 "No offers found for the resource"));
                                                               }
@@ -696,14 +692,13 @@ public class CosmosAsyncDatabase {
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return this.read()
                    .flatMap(response -> this.getDocClientWrapper()
-                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties()
-                                                                                             .getResourceId()),
+                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
                                                          new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
                                                     return Mono.error(BridgeInternal
-                                                                          .createCosmosClientException(
+                                                                          .createCosmosException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
                                                                                   "resource " + this.getId()));
@@ -729,14 +724,13 @@ public class CosmosAsyncDatabase {
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
                    .flatMap(response -> getDocClientWrapper()
-                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties()
-                                                                                            .getResourceId()),
+                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
                                                          new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
                                                     return Mono.error(BridgeInternal
-                                                                          .createCosmosClientException(
+                                                                          .createCosmosException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
                                                                                   "resource " + this.getId()));

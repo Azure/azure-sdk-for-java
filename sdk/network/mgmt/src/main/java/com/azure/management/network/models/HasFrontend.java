@@ -5,7 +5,7 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
 import com.azure.management.resources.fluentcore.model.Creatable;
 
@@ -54,7 +54,7 @@ public interface HasFrontend {
              * @param pipDefinition a definition for the new public IP
              * @return the next stage of the definition
              */
-            ReturnT fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition);
+            ReturnT fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition);
 
             /**
              * Specifies that network traffic should be received on a new public IP address that is to be automatically
@@ -77,7 +77,7 @@ public interface HasFrontend {
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+            ReturnT fromExistingPublicIPAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Specifies an existing public IP address to receive network traffic from.
@@ -175,7 +175,7 @@ public interface HasFrontend {
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+            ReturnT fromExistingPublicIPAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Specifies an existing public IP address to receive network traffic from.

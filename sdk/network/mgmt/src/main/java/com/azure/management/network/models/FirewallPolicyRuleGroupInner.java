@@ -7,8 +7,10 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.FirewallPolicyRule;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class FirewallPolicyRuleGroupInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleGroupInner.class);
+
     /*
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -141,5 +145,16 @@ public class FirewallPolicyRuleGroupInner extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (rules() != null) {
+            rules().forEach(e -> e.validate());
+        }
     }
 }

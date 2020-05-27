@@ -6,12 +6,16 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VnetValidationTestFailure model. */
 @JsonFlatten
 @Fluent
 public class VnetValidationTestFailure extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationTestFailure.class);
+
     /*
      * The name of the test that failed.
      */
@@ -63,5 +67,15 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
     public VnetValidationTestFailure withDetails(String details) {
         this.details = details;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }
