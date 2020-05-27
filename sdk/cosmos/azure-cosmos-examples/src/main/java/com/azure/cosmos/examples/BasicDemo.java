@@ -100,11 +100,12 @@ public class BasicDemo {
 
     private void createDbAndContainerBlocking() {
 
-        CosmosAsyncDatabase database = client.createDatabaseIfNotExists(DATABASE_NAME)
-            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId())).block().getDatabase();
-
-        database.createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country"))
-            .doOnSuccess(cosmosContainerResponse -> log("Container: " + database.getContainer(cosmosContainerResponse.getProperties().getId())))
+        client.createDatabaseIfNotExists(DATABASE_NAME)
+            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + DATABASE_NAME))
+            .flatMap(dbResponse -> dbResponse.getDatabase()
+                .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
+                    "/country")))
+            .doOnSuccess(cosmosContainerResponse -> log("Container: " + CONTAINER_NAME))
             .doOnError(throwable -> log(throwable.getMessage()))
             .publishOn(Schedulers.elastic())
             .block();
