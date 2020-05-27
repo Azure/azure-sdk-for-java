@@ -47,7 +47,9 @@ public class CosmosScripts {
      * @return the cosmos sync stored procedure response
      */
     public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties) {
-        return asyncScripts.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions()).block();
+        return mapStoredProcedureResponseAndBlock(
+            asyncScripts.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions())
+        );
     }
 
     /**
@@ -60,7 +62,8 @@ public class CosmosScripts {
     public CosmosStoredProcedureResponse createStoredProcedure(
         CosmosStoredProcedureProperties properties,
         CosmosStoredProcedureRequestOptions options) {
-        return asyncScripts.createStoredProcedure(properties, options).block();
+        return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
+                                                                                     options));
     }
 
     /**
@@ -107,7 +110,9 @@ public class CosmosScripts {
      * @return the stored procedure
      */
     public CosmosStoredProcedure getStoredProcedure(String id) {
-        return new CosmosStoredProcedure(id, asyncScripts.getStoredProcedure(id));
+        return new CosmosStoredProcedure(id,
+                                         this.container,
+                                         asyncScripts.getStoredProcedure(id));
     }
 
 
@@ -228,6 +233,26 @@ public class CosmosScripts {
         return new CosmosTrigger(id,
                                  this.container,
                                  asyncScripts.getTrigger(id));
+    }
+
+    /**
+     * Map stored procedure response and block cosmos sync stored procedure response.
+     *
+     * @param storedProcedureResponseMono the stored procedure response mono
+     * @return the cosmos sync stored procedure response
+     */
+    CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(
+        Mono<CosmosStoredProcedureResponse> storedProcedureResponseMono) {
+        try {
+            return storedProcedureResponseMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
     }
 
     /**

@@ -14,16 +14,20 @@ import java.util.List;
  */
 public class CosmosStoredProcedure {
     private final String id;
+    private final CosmosContainer container;
     private final CosmosAsyncStoredProcedure storedProcedure;
 
     /**
      * Instantiates a new Cosmos sync stored procedure.
      *
      * @param id the id
+     * @param container the container
      * @param storedProcedure the stored procedure
      */
-    CosmosStoredProcedure(String id, CosmosAsyncStoredProcedure storedProcedure) {
+    public CosmosStoredProcedure(String id, CosmosContainer container, CosmosAsyncStoredProcedure storedProcedure) {
+
         this.id = id;
+        this.container = container;
         this.storedProcedure = storedProcedure;
     }
 
@@ -42,7 +46,8 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync stored procedure response
      */
     public CosmosStoredProcedureResponse read() {
-        return storedProcedure.read().block();
+        return container.getScripts()
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.read());
     }
 
     /**
@@ -52,7 +57,8 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync stored procedure response
      */
     public CosmosStoredProcedureResponse read(CosmosStoredProcedureRequestOptions options) {
-        return storedProcedure.read(options).block();
+        return container.getScripts()
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.read(options));
     }
 
     /**
@@ -61,7 +67,8 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync response
      */
     public CosmosStoredProcedureResponse delete() {
-        return storedProcedure.delete().block();
+        return container.getScripts()
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.delete());
     }
 
     /**
@@ -71,7 +78,8 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync response
      */
     CosmosStoredProcedureResponse delete(CosmosStoredProcedureRequestOptions options) {
-        return storedProcedure.delete(options).block();
+        return container.getScripts()
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.delete(options));
     }
 
     /**
@@ -84,7 +92,8 @@ public class CosmosStoredProcedure {
     public CosmosStoredProcedureResponse execute(
         List<Object> procedureParams,
         CosmosStoredProcedureRequestOptions options) {
-        return storedProcedure.execute(procedureParams, options).block();
+        return container.getScripts()
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.execute(procedureParams, options));
     }
 
     /**
@@ -94,7 +103,8 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync stored procedure response
      */
     public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings) {
-        return storedProcedure.replace(storedProcedureSettings).block();
+        return container.getScripts()
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings));
     }
 
     /**
@@ -107,7 +117,8 @@ public class CosmosStoredProcedure {
     public CosmosStoredProcedureResponse replace(
         CosmosStoredProcedureProperties storedProcedureSettings,
         CosmosStoredProcedureRequestOptions options) {
-        return storedProcedure.replace(storedProcedureSettings, options).block();
+        return container.getScripts()
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings, options));
 
     }
 }
