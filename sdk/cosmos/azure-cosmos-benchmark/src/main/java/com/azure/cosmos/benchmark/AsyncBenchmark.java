@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
@@ -108,7 +109,7 @@ abstract class AsyncBenchmark<T> {
                 cosmosAsyncContainer = cosmosAsyncDatabase.createContainer(
                     this.configuration.getCollectionId(),
                     Configuration.DEFAULT_PARTITION_KEY_PATH,
-                    this.configuration.getThroughput()
+                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
                 ).block().getContainer();
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;

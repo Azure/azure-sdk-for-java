@@ -3,18 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.ImageAnalysisSkillLanguage;
+import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkillLanguage} and
  * {@link ImageAnalysisSkillLanguage}.
  */
 public final class ImageAnalysisSkillLanguageConverter {
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage} to enum
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkillLanguage} to enum
      * {@link ImageAnalysisSkillLanguage}.
      */
-    public static ImageAnalysisSkillLanguage map(com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage obj) {
+    public static ImageAnalysisSkillLanguage map(com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
@@ -23,13 +23,13 @@ public final class ImageAnalysisSkillLanguageConverter {
 
     /**
      * Maps from enum {@link ImageAnalysisSkillLanguage} to enum
-     * {@link com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage}.
+     * {@link com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkillLanguage}.
      */
-    public static com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage map(ImageAnalysisSkillLanguage obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkillLanguage map(ImageAnalysisSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
-        return com.azure.search.documents.implementation.models.ImageAnalysisSkillLanguage.fromString(obj.toString());
+        return com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkillLanguage.fromString(obj.toString());
     }
 
     private ImageAnalysisSkillLanguageConverter() {

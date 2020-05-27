@@ -3,18 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy}
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy}
  * and {@link HighWaterMarkChangeDetectionPolicy}.
  */
 public final class HighWaterMarkChangeDetectionPolicyConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy} to
      * {@link HighWaterMarkChangeDetectionPolicy}.
      */
-    public static HighWaterMarkChangeDetectionPolicy map(com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy obj) {
+    public static HighWaterMarkChangeDetectionPolicy map(com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy obj) {
         if (obj == null) {
             return null;
         }
@@ -28,13 +28,14 @@ public final class HighWaterMarkChangeDetectionPolicyConverter {
 
     /**
      * Maps from {@link HighWaterMarkChangeDetectionPolicy} to
-     * {@link com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy}.
+     * {@link com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy}.
      */
-    public static com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy map(HighWaterMarkChangeDetectionPolicy obj) {
+    public static com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy map(HighWaterMarkChangeDetectionPolicy obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy = new com.azure.search.documents.implementation.models.HighWaterMarkChangeDetectionPolicy();
+        com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =
+            new com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy();
 
         String highWaterMarkColumnName = obj.getHighWaterMarkColumnName();
         highWaterMarkChangeDetectionPolicy.setHighWaterMarkColumnName(highWaterMarkColumnName);

@@ -20,24 +20,24 @@ import com.azure.search.documents.implementation.converters.SearchIndexerSkillse
 import com.azure.search.documents.implementation.converters.SearchIndexerStatusConverter;
 import com.azure.search.documents.implementation.converters.ServiceStatisticsConverter;
 import com.azure.search.documents.implementation.converters.SynonymMapConverter;
-import com.azure.search.documents.implementation.models.AnalyzeResult;
+import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
 import com.azure.search.documents.implementation.models.AutocompleteResult;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.implementation.models.ListDataSourcesResult;
-import com.azure.search.documents.implementation.models.ListIndexersResult;
-import com.azure.search.documents.implementation.models.ListIndexesResult;
-import com.azure.search.documents.implementation.models.ListSkillsetsResult;
-import com.azure.search.documents.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.implementation.models.SearchErrorException;
-import com.azure.search.documents.models.AnalyzedTokenInfo;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerSkillset;
-import com.azure.search.documents.models.SearchIndexerStatus;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
+import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
+import com.azure.search.documents.indexes.implementation.models.ListIndexesResult;
+import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
+import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
+import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
+import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 
 import java.util.List;
@@ -47,7 +47,7 @@ import static java.util.stream.Collectors.toList;
 public class MappingUtils {
 
     public static Response<SearchIndexerDataSource> mappingExternalDataSource(
-        Response<com.azure.search.documents.implementation.models.SearchIndexerDataSource> dataSourceResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource> dataSourceResponse) {
         return new SimpleResponse<>(dataSourceResponse,
             SearchIndexerDataSourceConverter.map(dataSourceResponse.getValue()));
     }
@@ -71,7 +71,7 @@ public class MappingUtils {
     }
 
     public static Response<SearchIndex> mappingExternalSearchIndex(
-        Response<com.azure.search.documents.implementation.models.SearchIndex> indexResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.SearchIndex> indexResponse) {
         return new SimpleResponse<>(indexResponse, SearchIndexConverter.map(indexResponse.getValue()));
     }
 
@@ -85,12 +85,12 @@ public class MappingUtils {
     }
 
     public static Response<SearchIndexer> mappingExternalSearchIndexer(
-        Response<com.azure.search.documents.implementation.models.SearchIndexer> indexerResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.SearchIndexer> indexerResponse) {
         return new SimpleResponse<>(indexerResponse, SearchIndexerConverter.map(indexerResponse.getValue()));
     }
 
     public static Response<SearchIndexerSkillset> mappingExternalSkillset(
-        Response<com.azure.search.documents.implementation.models.SearchIndexerSkillset> skillsetResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset> skillsetResponse) {
         return new SimpleResponse<>(skillsetResponse,
             SearchIndexerSkillsetConverter.map(skillsetResponse.getValue()));
     }
@@ -105,7 +105,7 @@ public class MappingUtils {
     }
 
     public static Response<SynonymMap> mappingExternalSynonymMap(
-        Response<com.azure.search.documents.implementation.models.SynonymMap> synonymMapResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.SynonymMap> synonymMapResponse) {
         return new SimpleResponse<>(synonymMapResponse, SynonymMapConverter.map(synonymMapResponse.getValue()));
     }
 
@@ -119,7 +119,7 @@ public class MappingUtils {
     }
 
     public static Response<ServiceStatistics> mappingExternalServiceStatistics(
-        Response<com.azure.search.documents.implementation.models.ServiceStatistics> statisticsResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.ServiceStatistics> statisticsResponse) {
         return new SimpleResponse<>(statisticsResponse,
             ServiceStatisticsConverter.map(statisticsResponse.getValue()));
     }
@@ -128,7 +128,7 @@ public class MappingUtils {
         Response<AnalyzeResult> resultResponse) {
         List<AnalyzedTokenInfo> tokenInfos = resultResponse.getValue().getTokens().stream()
             .map(AnalyzedTokenInfoConverter::map).collect(toList());
-        return new PagedResponseBase<HttpHeaders, com.azure.search.documents.models.AnalyzedTokenInfo>(
+        return new PagedResponseBase<HttpHeaders, AnalyzedTokenInfo>(
             resultResponse.getRequest(),
             resultResponse.getStatusCode(),
             resultResponse.getHeaders(), tokenInfos,
@@ -138,13 +138,14 @@ public class MappingUtils {
     }
 
     public static Response<SearchIndexerStatus> mappingIndexerStatus(
-        Response<com.azure.search.documents.implementation.models.SearchIndexerStatus> indexerStatusResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.SearchIndexerStatus> indexerStatusResponse) {
         return new SimpleResponse<>(indexerStatusResponse, SearchIndexerStatusConverter.map(
             indexerStatusResponse.getValue()));
     }
 
     public static Response<GetIndexStatisticsResult> mappingGetIndexStatistics(
-        Response<com.azure.search.documents.implementation.models.GetIndexStatisticsResult> indexStatisticsResponse) {
+        Response<com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult>
+            indexStatisticsResponse) {
         return new SimpleResponse<>(indexStatisticsResponse.getRequest(), indexStatisticsResponse.getStatusCode(),
             indexStatisticsResponse.getHeaders(),
             GetIndexStatisticsResultConverter.map(indexStatisticsResponse.getValue()));
@@ -167,6 +168,13 @@ public class MappingUtils {
             SearchErrorException exception = (SearchErrorException) throwable;
             return new HttpResponseException(exception.getMessage(), exception.getResponse());
         }
+
+        if (throwable instanceof com.azure.search.documents.implementation.models.SearchErrorException) {
+            com.azure.search.documents.implementation.models.SearchErrorException exception =
+                (com.azure.search.documents.implementation.models.SearchErrorException) throwable;
+            return new HttpResponseException(exception.getMessage(), exception.getResponse());
+        }
+
         return throwable;
     }
 }

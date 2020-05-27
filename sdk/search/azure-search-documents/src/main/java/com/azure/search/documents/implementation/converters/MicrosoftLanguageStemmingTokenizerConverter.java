@@ -3,20 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.MicrosoftLanguageStemmingTokenizer;
-import com.azure.search.documents.models.MicrosoftStemmingTokenizerLanguage;
+import com.azure.search.documents.indexes.models.MicrosoftLanguageStemmingTokenizer;
+import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer}
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer}
  * and {@link MicrosoftLanguageStemmingTokenizer}.
  */
 public final class MicrosoftLanguageStemmingTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer} to
      * {@link MicrosoftLanguageStemmingTokenizer}.
      */
-    public static MicrosoftLanguageStemmingTokenizer map(com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer obj) {
+    public static MicrosoftLanguageStemmingTokenizer map(com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -42,13 +41,13 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
 
     /**
      * Maps from {@link MicrosoftLanguageStemmingTokenizer} to
-     * {@link com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer}.
+     * {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer map(MicrosoftLanguageStemmingTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer map(MicrosoftLanguageStemmingTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer = new com.azure.search.documents.implementation.models.MicrosoftLanguageStemmingTokenizer();
+        com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer = new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer();
 
         String name = obj.getName();
         microsoftLanguageStemmingTokenizer.setName(name);
@@ -57,7 +56,7 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.implementation.models.MicrosoftStemmingTokenizerLanguage language =
+            com.azure.search.documents.indexes.implementation.models.MicrosoftStemmingTokenizerLanguage language =
                 MicrosoftStemmingTokenizerLanguageConverter.map(obj.getLanguage());
             microsoftLanguageStemmingTokenizer.setLanguage(language);
         }

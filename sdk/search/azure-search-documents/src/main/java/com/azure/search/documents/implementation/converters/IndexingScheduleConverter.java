@@ -3,20 +3,20 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.IndexingSchedule;
+import com.azure.search.documents.indexes.models.IndexingSchedule;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.IndexingSchedule} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.IndexingSchedule} and
  * {@link IndexingSchedule}.
  */
 public final class IndexingScheduleConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.IndexingSchedule} to {@link IndexingSchedule}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.IndexingSchedule} to {@link IndexingSchedule}.
      */
-    public static IndexingSchedule map(com.azure.search.documents.implementation.models.IndexingSchedule obj) {
+    public static IndexingSchedule map(com.azure.search.documents.indexes.implementation.models.IndexingSchedule obj) {
         if (obj == null) {
             return null;
         }
@@ -31,14 +31,14 @@ public final class IndexingScheduleConverter {
     }
 
     /**
-     * Maps from {@link IndexingSchedule} to {@link com.azure.search.documents.implementation.models.IndexingSchedule}.
+     * Maps from {@link IndexingSchedule} to {@link com.azure.search.documents.indexes.implementation.models.IndexingSchedule}.
      */
-    public static com.azure.search.documents.implementation.models.IndexingSchedule map(IndexingSchedule obj) {
+    public static com.azure.search.documents.indexes.implementation.models.IndexingSchedule map(IndexingSchedule obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.IndexingSchedule indexingSchedule =
-            new com.azure.search.documents.implementation.models.IndexingSchedule();
+        com.azure.search.documents.indexes.implementation.models.IndexingSchedule indexingSchedule =
+            new com.azure.search.documents.indexes.implementation.models.IndexingSchedule();
 
         Duration interval = obj.getInterval();
         indexingSchedule.setInterval(interval);

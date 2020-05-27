@@ -3,22 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.SynonymTokenFilter;
+import com.azure.search.documents.indexes.models.SynonymTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SynonymTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter} and
  * {@link SynonymTokenFilter}.
  */
 public final class SynonymTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SynonymTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter} to
      * {@link SynonymTokenFilter}.
      */
-    public static SynonymTokenFilter map(com.azure.search.documents.implementation.models.SynonymTokenFilter obj) {
+    public static SynonymTokenFilter map(com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -42,14 +41,14 @@ public final class SynonymTokenFilterConverter {
 
     /**
      * Maps from {@link SynonymTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.SynonymTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.SynonymTokenFilter map(SynonymTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter map(SynonymTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SynonymTokenFilter synonymTokenFilter =
-            new com.azure.search.documents.implementation.models.SynonymTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter synonymTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter();
 
         String name = obj.getName();
         synonymTokenFilter.setName(name);

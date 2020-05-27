@@ -3,24 +3,23 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.SentimentSkill;
-import com.azure.search.documents.models.SentimentSkillLanguage;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SentimentSkill;
+import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SentimentSkill} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SentimentSkill} and
  * {@link SentimentSkill}.
  */
 public final class SentimentSkillConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SentimentSkill} to {@link SentimentSkill}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SentimentSkill} to {@link SentimentSkill}.
      */
-    public static SentimentSkill map(com.azure.search.documents.implementation.models.SentimentSkill obj) {
+    public static SentimentSkill map(com.azure.search.documents.indexes.implementation.models.SentimentSkill obj) {
         if (obj == null) {
             return null;
         }
@@ -56,23 +55,23 @@ public final class SentimentSkillConverter {
     }
 
     /**
-     * Maps from {@link SentimentSkill} to {@link com.azure.search.documents.implementation.models.SentimentSkill}.
+     * Maps from {@link SentimentSkill} to {@link com.azure.search.documents.indexes.implementation.models.SentimentSkill}.
      */
-    public static com.azure.search.documents.implementation.models.SentimentSkill map(SentimentSkill obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SentimentSkill map(SentimentSkill obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SentimentSkill sentimentSkill =
-            new com.azure.search.documents.implementation.models.SentimentSkill();
+        com.azure.search.documents.indexes.implementation.models.SentimentSkill sentimentSkill =
+            new com.azure.search.documents.indexes.implementation.models.SentimentSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
+            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
             sentimentSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
+            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             sentimentSkill.setInputs(inputs);
         }
@@ -87,7 +86,7 @@ public final class SentimentSkillConverter {
         sentimentSkill.setDescription(description);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.SentimentSkillLanguage defaultLanguageCode =
+            com.azure.search.documents.indexes.implementation.models.SentimentSkillLanguage defaultLanguageCode =
                 SentimentSkillLanguageConverter.map(obj.getDefaultLanguageCode());
             sentimentSkill.setDefaultLanguageCode(defaultLanguageCode);
         }

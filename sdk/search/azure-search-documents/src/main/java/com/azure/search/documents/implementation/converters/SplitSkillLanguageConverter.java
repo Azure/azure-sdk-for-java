@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.SplitSkillLanguage;
+import com.azure.search.documents.indexes.models.SplitSkillLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SplitSkillLanguage} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SplitSkillLanguage} and
  * {@link SplitSkillLanguage}.
  */
 public final class SplitSkillLanguageConverter {
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.SplitSkillLanguage} to enum
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.SplitSkillLanguage} to enum
      * {@link SplitSkillLanguage}.
      */
-    public static SplitSkillLanguage map(com.azure.search.documents.implementation.models.SplitSkillLanguage obj) {
+    public static SplitSkillLanguage map(com.azure.search.documents.indexes.implementation.models.SplitSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
@@ -24,13 +23,13 @@ public final class SplitSkillLanguageConverter {
 
     /**
      * Maps from enum {@link SplitSkillLanguage} to enum
-     * {@link com.azure.search.documents.implementation.models.SplitSkillLanguage}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SplitSkillLanguage}.
      */
-    public static com.azure.search.documents.implementation.models.SplitSkillLanguage map(SplitSkillLanguage obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SplitSkillLanguage map(SplitSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
-        return com.azure.search.documents.implementation.models.SplitSkillLanguage.fromString(obj.toString());
+        return com.azure.search.documents.indexes.implementation.models.SplitSkillLanguage.fromString(obj.toString());
     }
 
     private SplitSkillLanguageConverter() {

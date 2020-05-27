@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 
 package com.azure.search.documents.models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.azure.search.documents.SearchDocument;
-
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.SearchDocument;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 

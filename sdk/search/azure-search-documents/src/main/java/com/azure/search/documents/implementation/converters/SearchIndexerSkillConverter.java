@@ -4,35 +4,35 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.implementation.models.ConditionalSkill;
-import com.azure.search.documents.implementation.models.EntityRecognitionSkill;
-import com.azure.search.documents.implementation.models.ImageAnalysisSkill;
-import com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill;
-import com.azure.search.documents.implementation.models.LanguageDetectionSkill;
-import com.azure.search.documents.implementation.models.MergeSkill;
-import com.azure.search.documents.implementation.models.OcrSkill;
-import com.azure.search.documents.implementation.models.SentimentSkill;
-import com.azure.search.documents.implementation.models.ShaperSkill;
-import com.azure.search.documents.implementation.models.SplitSkill;
-import com.azure.search.documents.implementation.models.TextTranslationSkill;
-import com.azure.search.documents.implementation.models.WebApiSkill;
-import com.azure.search.documents.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.implementation.models.ConditionalSkill;
+import com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill;
+import com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill;
+import com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill;
+import com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill;
+import com.azure.search.documents.indexes.implementation.models.MergeSkill;
+import com.azure.search.documents.indexes.implementation.models.OcrSkill;
+import com.azure.search.documents.indexes.implementation.models.SentimentSkill;
+import com.azure.search.documents.indexes.implementation.models.ShaperSkill;
+import com.azure.search.documents.indexes.implementation.models.SplitSkill;
+import com.azure.search.documents.indexes.implementation.models.TextTranslationSkill;
+import com.azure.search.documents.indexes.implementation.models.WebApiSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 
 import static com.azure.search.documents.implementation.util.Constants.ABSTRACT_EXTERNAL_ERROR_MSG;
 import static com.azure.search.documents.implementation.util.Constants.ABSTRACT_INTERNAL_ERROR_MSG;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SearchIndexerSkill} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill} and
  * {@link SearchIndexerSkill}.
  */
 public final class SearchIndexerSkillConverter {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerSkillConverter.class);
 
     /**
-     * Maps abstract class from {@link com.azure.search.documents.implementation.models.SearchIndexerSkill} to
+     * Maps abstract class from {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill} to
      * {@link SearchIndexerSkill}. Dedicate works to sub class converter.
      */
-    public static SearchIndexerSkill map(com.azure.search.documents.implementation.models.SearchIndexerSkill obj) {
+    public static SearchIndexerSkill map(com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill obj) {
         if (obj instanceof TextTranslationSkill) {
             return TextTranslationSkillConverter.map((TextTranslationSkill) obj);
         }
@@ -75,45 +75,45 @@ public final class SearchIndexerSkillConverter {
 
     /**
      * Maps abstract class from {@link SearchIndexerSkill} to
-     * {@link com.azure.search.documents.implementation.models.SearchIndexerSkill}. Dedicate works to sub class
+     * {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill}. Dedicate works to sub class
      * converter.
      */
-    public static com.azure.search.documents.implementation.models.SearchIndexerSkill map(SearchIndexerSkill obj) {
-        if (obj instanceof com.azure.search.documents.models.LanguageDetectionSkill) {
-            return LanguageDetectionSkillConverter.map((com.azure.search.documents.models.LanguageDetectionSkill) obj);
+    public static com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill map(SearchIndexerSkill obj) {
+        if (obj instanceof com.azure.search.documents.indexes.models.LanguageDetectionSkill) {
+            return LanguageDetectionSkillConverter.map((com.azure.search.documents.indexes.models.LanguageDetectionSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.WebApiSkill) {
-            return WebApiSkillConverter.map((com.azure.search.documents.models.WebApiSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.WebApiSkill) {
+            return WebApiSkillConverter.map((com.azure.search.documents.indexes.models.WebApiSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.OcrSkill) {
-            return OcrSkillConverter.map((com.azure.search.documents.models.OcrSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.OcrSkill) {
+            return OcrSkillConverter.map((com.azure.search.documents.indexes.models.OcrSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.TextTranslationSkill) {
-            return TextTranslationSkillConverter.map((com.azure.search.documents.models.TextTranslationSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.TextTranslationSkill) {
+            return TextTranslationSkillConverter.map((com.azure.search.documents.indexes.models.TextTranslationSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.EntityRecognitionSkill) {
-            return EntityRecognitionSkillConverter.map((com.azure.search.documents.models.EntityRecognitionSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.EntityRecognitionSkill) {
+            return EntityRecognitionSkillConverter.map((com.azure.search.documents.indexes.models.EntityRecognitionSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.ImageAnalysisSkill) {
-            return ImageAnalysisSkillConverter.map((com.azure.search.documents.models.ImageAnalysisSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.ImageAnalysisSkill) {
+            return ImageAnalysisSkillConverter.map((com.azure.search.documents.indexes.models.ImageAnalysisSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.SplitSkill) {
-            return SplitSkillConverter.map((com.azure.search.documents.models.SplitSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.SplitSkill) {
+            return SplitSkillConverter.map((com.azure.search.documents.indexes.models.SplitSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.KeyPhraseExtractionSkill) {
-            return KeyPhraseExtractionSkillConverter.map((com.azure.search.documents.models.KeyPhraseExtractionSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.KeyPhraseExtractionSkill) {
+            return KeyPhraseExtractionSkillConverter.map((com.azure.search.documents.indexes.models.KeyPhraseExtractionSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.SentimentSkill) {
-            return SentimentSkillConverter.map((com.azure.search.documents.models.SentimentSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.SentimentSkill) {
+            return SentimentSkillConverter.map((com.azure.search.documents.indexes.models.SentimentSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.ConditionalSkill) {
-            return ConditionalSkillConverter.map((com.azure.search.documents.models.ConditionalSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.ConditionalSkill) {
+            return ConditionalSkillConverter.map((com.azure.search.documents.indexes.models.ConditionalSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.ShaperSkill) {
-            return ShaperSkillConverter.map((com.azure.search.documents.models.ShaperSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.ShaperSkill) {
+            return ShaperSkillConverter.map((com.azure.search.documents.indexes.models.ShaperSkill) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.MergeSkill) {
-            return MergeSkillConverter.map((com.azure.search.documents.models.MergeSkill) obj);
+        if (obj instanceof com.azure.search.documents.indexes.models.MergeSkill) {
+            return MergeSkillConverter.map((com.azure.search.documents.indexes.models.MergeSkill) obj);
         }
         throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
             obj.getClass().getSimpleName())));

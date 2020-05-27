@@ -3,17 +3,16 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.RegexFlags;
+import com.azure.search.documents.indexes.models.RegexFlags;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.RegexFlags} and {@link RegexFlags}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.RegexFlags} and {@link RegexFlags}.
  */
 public final class RegexFlagsConverter {
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.RegexFlags} to enum {@link RegexFlags}.
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.RegexFlags} to enum {@link RegexFlags}.
      */
-    public static RegexFlags map(com.azure.search.documents.implementation.models.RegexFlags obj) {
+    public static RegexFlags map(com.azure.search.documents.indexes.implementation.models.RegexFlags obj) {
         if (obj == null) {
             return null;
         }
@@ -21,13 +20,13 @@ public final class RegexFlagsConverter {
     }
 
     /**
-     * Maps from enum {@link RegexFlags} to enum {@link com.azure.search.documents.implementation.models.RegexFlags}.
+     * Maps from enum {@link RegexFlags} to enum {@link com.azure.search.documents.indexes.implementation.models.RegexFlags}.
      */
-    public static com.azure.search.documents.implementation.models.RegexFlags map(RegexFlags obj) {
+    public static com.azure.search.documents.indexes.implementation.models.RegexFlags map(RegexFlags obj) {
         if (obj == null) {
             return null;
         }
-        return com.azure.search.documents.implementation.models.RegexFlags.fromString(obj.toString());
+        return com.azure.search.documents.indexes.implementation.models.RegexFlags.fromString(obj.toString());
     }
 
     private RegexFlagsConverter() {

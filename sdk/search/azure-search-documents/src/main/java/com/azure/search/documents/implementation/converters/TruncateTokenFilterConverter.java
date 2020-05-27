@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.TruncateTokenFilter;
+import com.azure.search.documents.indexes.models.TruncateTokenFilter;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.TruncateTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter} and
  * {@link TruncateTokenFilter}.
  */
 public final class TruncateTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.TruncateTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter} to
      * {@link TruncateTokenFilter}.
      */
-    public static TruncateTokenFilter map(com.azure.search.documents.implementation.models.TruncateTokenFilter obj) {
+    public static TruncateTokenFilter map(com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -31,14 +30,14 @@ public final class TruncateTokenFilterConverter {
 
     /**
      * Maps from {@link TruncateTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.TruncateTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.TruncateTokenFilter map(TruncateTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter map(TruncateTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.TruncateTokenFilter truncateTokenFilter =
-            new com.azure.search.documents.implementation.models.TruncateTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter truncateTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter();
 
         String name = obj.getName();
         truncateTokenFilter.setName(name);

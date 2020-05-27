@@ -15,6 +15,7 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -259,7 +260,11 @@ public class AsynReadWithMultipleClients<T> {
                     } catch (CosmosException e) {
                         if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                             cosmosAsyncContainer =
-                                cosmosAsyncDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).block().getContainer();
+                                cosmosAsyncDatabase.createContainer(
+                                    this.configuration.getCollectionId(),
+                                    Configuration.DEFAULT_PARTITION_KEY_PATH,
+                                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+                                ).block().getContainer();
                             logger.info("Collection {} is created for this test on host {}", this.configuration.getCollectionId(), endpoint);
                             if(!databaseCreated) {
                                 collectionListToClear.add(cosmosAsyncContainer);

@@ -3,25 +3,25 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.EntityCategory;
-import com.azure.search.documents.models.EntityRecognitionSkill;
-import com.azure.search.documents.models.EntityRecognitionSkillLanguage;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.EntityCategory;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.EntityRecognitionSkill} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill} and
  * {@link EntityRecognitionSkill}.
  */
 public final class EntityRecognitionSkillConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.EntityRecognitionSkill} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill} to
      * {@link EntityRecognitionSkill}.
      */
-    public static EntityRecognitionSkill map(com.azure.search.documents.implementation.models.EntityRecognitionSkill obj) {
+    public static EntityRecognitionSkill map(com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill obj) {
         if (obj == null) {
             return null;
         }
@@ -70,23 +70,23 @@ public final class EntityRecognitionSkillConverter {
 
     /**
      * Maps from {@link EntityRecognitionSkill} to
-     * {@link com.azure.search.documents.implementation.models.EntityRecognitionSkill}.
+     * {@link com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill}.
      */
-    public static com.azure.search.documents.implementation.models.EntityRecognitionSkill map(EntityRecognitionSkill obj) {
+    public static com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill map(EntityRecognitionSkill obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.EntityRecognitionSkill entityRecognitionSkill =
-            new com.azure.search.documents.implementation.models.EntityRecognitionSkill();
+        com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill entityRecognitionSkill =
+            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
+            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
             entityRecognitionSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
+            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             entityRecognitionSkill.setInputs(inputs);
         }
@@ -104,13 +104,13 @@ public final class EntityRecognitionSkillConverter {
         entityRecognitionSkill.setIncludeTypelessEntities(includeTypelessEntities);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.EntityRecognitionSkillLanguage defaultLanguageCode =
+            com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillLanguage defaultLanguageCode =
                 EntityRecognitionSkillLanguageConverter.map(obj.getDefaultLanguageCode());
             entityRecognitionSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
 
         if (obj.getCategories() != null) {
-            List<com.azure.search.documents.implementation.models.EntityCategory> categories =
+            List<com.azure.search.documents.indexes.implementation.models.EntityCategory> categories =
                 obj.getCategories().stream().map(EntityCategoryConverter::map).collect(Collectors.toList());
             entityRecognitionSkill.setCategories(categories);
         }

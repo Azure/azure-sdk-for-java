@@ -3,18 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.DataSourceCredentials} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.DataSourceCredentials} and
  * {@link DataSourceCredentials}.
  */
 public final class DataSourceCredentialsConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.DataSourceCredentials} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.DataSourceCredentials} to
      * {@link DataSourceCredentials}.
      */
-    public static DataSourceCredentials map(com.azure.search.documents.implementation.models.DataSourceCredentials obj) {
+    public static DataSourceCredentials map(com.azure.search.documents.indexes.implementation.models.DataSourceCredentials obj) {
         if (obj == null) {
             return null;
         }
@@ -27,14 +27,14 @@ public final class DataSourceCredentialsConverter {
 
     /**
      * Maps from {@link DataSourceCredentials} to
-     * {@link com.azure.search.documents.implementation.models.DataSourceCredentials}.
+     * {@link com.azure.search.documents.indexes.implementation.models.DataSourceCredentials}.
      */
-    public static com.azure.search.documents.implementation.models.DataSourceCredentials map(DataSourceCredentials obj) {
+    public static com.azure.search.documents.indexes.implementation.models.DataSourceCredentials map(DataSourceCredentials obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.DataSourceCredentials dataSourceCredentials =
-            new com.azure.search.documents.implementation.models.DataSourceCredentials();
+        com.azure.search.documents.indexes.implementation.models.DataSourceCredentials dataSourceCredentials =
+            new com.azure.search.documents.indexes.implementation.models.DataSourceCredentials();
 
         String connectionString = obj.getConnectionString();
         dataSourceCredentials.setConnectionString(connectionString);

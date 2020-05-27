@@ -7,7 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexer;
 
 import java.util.List;
 

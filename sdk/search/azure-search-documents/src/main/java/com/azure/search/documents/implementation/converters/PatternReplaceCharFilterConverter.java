@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.PatternReplaceCharFilter;
+import com.azure.search.documents.indexes.models.PatternReplaceCharFilter;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.PatternReplaceCharFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter} and
  * {@link PatternReplaceCharFilter}.
  */
 public final class PatternReplaceCharFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.PatternReplaceCharFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter} to
      * {@link PatternReplaceCharFilter}.
      */
-    public static PatternReplaceCharFilter map(com.azure.search.documents.implementation.models.PatternReplaceCharFilter obj) {
+    public static PatternReplaceCharFilter map(com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -34,14 +33,14 @@ public final class PatternReplaceCharFilterConverter {
 
     /**
      * Maps from {@link PatternReplaceCharFilter} to
-     * {@link com.azure.search.documents.implementation.models.PatternReplaceCharFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter}.
      */
-    public static com.azure.search.documents.implementation.models.PatternReplaceCharFilter map(PatternReplaceCharFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter map(PatternReplaceCharFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.PatternReplaceCharFilter patternReplaceCharFilter =
-            new com.azure.search.documents.implementation.models.PatternReplaceCharFilter();
+        com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter patternReplaceCharFilter =
+            new com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter();
 
         String name = obj.getName();
         patternReplaceCharFilter.setName(name);

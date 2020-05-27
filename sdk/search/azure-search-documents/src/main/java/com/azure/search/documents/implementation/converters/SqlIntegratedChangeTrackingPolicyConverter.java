@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.SqlIntegratedChangeTrackingPolicy;
+import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SqlIntegratedChangeTrackingPolicy} and
  * {@link SqlIntegratedChangeTrackingPolicy}.
  */
 public final class SqlIntegratedChangeTrackingPolicyConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SqlIntegratedChangeTrackingPolicy} to
      * {@link SqlIntegratedChangeTrackingPolicy}.
      */
-    public static SqlIntegratedChangeTrackingPolicy map(com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy obj) {
+    public static SqlIntegratedChangeTrackingPolicy map(com.azure.search.documents.indexes.implementation.models.SqlIntegratedChangeTrackingPolicy obj) {
         if (obj == null) {
             return null;
         }
@@ -25,13 +24,13 @@ public final class SqlIntegratedChangeTrackingPolicyConverter {
 
     /**
      * Maps from {@link SqlIntegratedChangeTrackingPolicy} to
-     * {@link com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SqlIntegratedChangeTrackingPolicy}.
      */
-    public static com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy map(SqlIntegratedChangeTrackingPolicy obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SqlIntegratedChangeTrackingPolicy map(SqlIntegratedChangeTrackingPolicy obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy sqlIntegratedChangeTrackingPolicy = new com.azure.search.documents.implementation.models.SqlIntegratedChangeTrackingPolicy();
+        com.azure.search.documents.indexes.implementation.models.SqlIntegratedChangeTrackingPolicy sqlIntegratedChangeTrackingPolicy = new com.azure.search.documents.indexes.implementation.models.SqlIntegratedChangeTrackingPolicy();
         return sqlIntegratedChangeTrackingPolicy;
     }
 

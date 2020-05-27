@@ -3,22 +3,22 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.CjkBigramTokenFilter;
-import com.azure.search.documents.models.CjkBigramTokenFilterScripts;
+import com.azure.search.documents.indexes.models.CjkBigramTokenFilter;
+import com.azure.search.documents.indexes.models.CjkBigramTokenFilterScripts;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.CjkBigramTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter} and
  * {@link CjkBigramTokenFilter}.
  */
 public final class CjkBigramTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.CjkBigramTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter} to
      * {@link CjkBigramTokenFilter}.
      */
-    public static CjkBigramTokenFilter map(com.azure.search.documents.implementation.models.CjkBigramTokenFilter obj) {
+    public static CjkBigramTokenFilter map(com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -40,14 +40,14 @@ public final class CjkBigramTokenFilterConverter {
 
     /**
      * Maps from {@link CjkBigramTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.CjkBigramTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.CjkBigramTokenFilter map(CjkBigramTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter map(CjkBigramTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.CjkBigramTokenFilter cjkBigramTokenFilter =
-            new com.azure.search.documents.implementation.models.CjkBigramTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter cjkBigramTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter();
 
         String name = obj.getName();
         cjkBigramTokenFilter.setName(name);
@@ -56,7 +56,7 @@ public final class CjkBigramTokenFilterConverter {
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
 
         if (obj.getIgnoreScripts() != null) {
-            List<com.azure.search.documents.implementation.models.CjkBigramTokenFilterScripts> ignoreScripts =
+            List<com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilterScripts> ignoreScripts =
                 obj.getIgnoreScripts().stream().map(CjkBigramTokenFilterScriptsConverter::map).collect(Collectors.toList());
             cjkBigramTokenFilter.setIgnoreScripts(ignoreScripts);
         }

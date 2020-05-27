@@ -7,17 +7,17 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.AnalyzeRequest;
-import com.azure.search.documents.models.AnalyzedTokenInfo;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerSkillset;
-import com.azure.search.documents.models.SearchIndexerStatus;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SynonymMap;
 
 /**
  * Synchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service

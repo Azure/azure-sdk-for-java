@@ -28,6 +28,7 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.models.ThroughputProperties;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -378,15 +379,19 @@ public class CollectionCrudTest extends TestSuiteBase {
                                            .block()
                                            .getDatabase();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
+        CosmosAsyncContainer container = database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(1000),
                                                                   new CosmosContainerRequestOptions())
                                              .block()
                                              .getContainer();
-        Integer throughput = container.readProvisionedThroughput().block();
+        Integer throughput = container.readThroughput().block()
+            .getProperties().getManualThroughput();
 
         assertThat(throughput).isEqualTo(1000);
 
-        throughput = container.replaceProvisionedThroughput(2000).block();
+        throughput = container.replaceThroughput(ThroughputProperties.createManualThroughput(2000))
+            .block()
+            .getProperties()
+            .getManualThroughput();
         assertThat(throughput).isEqualTo(2000);
     }
 

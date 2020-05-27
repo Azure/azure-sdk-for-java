@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.NGramTokenFilterV2;
+import com.azure.search.documents.indexes.models.NGramTokenFilterV2;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.NGramTokenFilterV2} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2} and
  * {@link NGramTokenFilterV2}.
  */
 public final class NGramTokenFilterV2Converter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.NGramTokenFilterV2} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2} to
      * {@link NGramTokenFilterV2}.
      */
-    public static NGramTokenFilterV2 map(com.azure.search.documents.implementation.models.NGramTokenFilterV2 obj) {
+    public static NGramTokenFilterV2 map(com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 obj) {
         if (obj == null) {
             return null;
         }
@@ -34,14 +33,14 @@ public final class NGramTokenFilterV2Converter {
 
     /**
      * Maps from {@link NGramTokenFilterV2} to
-     * {@link com.azure.search.documents.implementation.models.NGramTokenFilterV2}.
+     * {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2}.
      */
-    public static com.azure.search.documents.implementation.models.NGramTokenFilterV2 map(NGramTokenFilterV2 obj) {
+    public static com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 map(NGramTokenFilterV2 obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.NGramTokenFilterV2 nGramTokenFilterV2 =
-            new com.azure.search.documents.implementation.models.NGramTokenFilterV2();
+        com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 nGramTokenFilterV2 =
+            new com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2();
 
         String name = obj.getName();
         nGramTokenFilterV2.setName(name);
