@@ -1,9 +1,10 @@
-# Azure Tables client library for Java
-Azure Tables is a managed service helps developers harness Azure Cloud storage.
+# Azure Table client library for Java
+Azure Tables Azure Table storage is a service that stores structured NoSQL data in the cloud, providing a key/attribute store with a schemaless design.
 Tables storage gives developers flexibility and scalability with all the best parts of Azure cloud.
 
-Use the client library for Tables to create and manage data as well as storage configuration.
-
+Use the client library for Tables to:
+- manages tables
+- edit and access table contents 
 
 ## Getting started
 
@@ -20,7 +21,7 @@ Use the client library for Tables to create and manage data as well as storage c
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-table</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-beta</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

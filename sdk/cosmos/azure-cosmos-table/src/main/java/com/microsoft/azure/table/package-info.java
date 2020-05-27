@@ -1,2 +1,2 @@
 /** Package containing the classes for AzureTable. null. */
-package com.microsoft.azure.tables;
+package com.microsoft.azure.table;

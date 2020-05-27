@@ -1,4 +1,4 @@
-package com.microsoft.azure.tables;
+package com.microsoft.azure.table;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
