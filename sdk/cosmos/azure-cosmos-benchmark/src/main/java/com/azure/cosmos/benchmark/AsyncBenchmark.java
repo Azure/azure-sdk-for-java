@@ -115,7 +115,7 @@ abstract class AsyncBenchmark<T> {
                 ).block();
 
                 cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
-                    logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
+                logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
                 throw e;
