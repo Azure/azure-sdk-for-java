@@ -70,10 +70,19 @@ public class CosmosScripts {
     /**
      * Read all stored procedures {@link CosmosPagedIterable}.
      *
+     * @return the {@link CosmosPagedIterable}
+     */
+    public CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures() {
+        return getCosmosPagedIterable(asyncScripts.readAllStoredProcedures(new FeedOptions()));
+    }
+
+    /**
+     * Read all stored procedures {@link CosmosPagedIterable}.
+     *
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    public CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
+    CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllStoredProcedures(options));
     }
 
@@ -132,10 +141,19 @@ public class CosmosScripts {
     /**
      * Read all user defined functions {@link CosmosPagedIterable}.
      *
+     * @return the {@link CosmosPagedIterable}
+     */
+    public CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions() {
+        return getCosmosPagedIterable(asyncScripts.readAllUserDefinedFunctions(new FeedOptions()));
+    }
+
+    /**
+     * Read all user defined functions {@link CosmosPagedIterable}.
+     *
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    public CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(
+    CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(
         FeedOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllUserDefinedFunctions(options));
     }
@@ -193,10 +211,19 @@ public class CosmosScripts {
     /**
      * Read all triggers {@link CosmosPagedIterable}.
      *
+     * @return the {@link CosmosPagedIterable}
+     */
+    public CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers() {
+        return getCosmosPagedIterable(asyncScripts.readAllTriggers(new FeedOptions()));
+    }
+
+    /**
+     * Read all triggers {@link CosmosPagedIterable}.
+     *
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    public CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
+    CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllTriggers(options));
     }
 

@@ -140,11 +140,25 @@ public class CosmosAsyncUser {
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
+     * error.
+     */
+    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions() {
+        return readAllPermissions(new FeedOptions());
+    }
+
+    /**
+     * Reads all permissions.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
+     *
      * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an 
      * error.
      */
-    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
+    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()

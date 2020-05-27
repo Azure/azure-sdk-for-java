@@ -43,7 +43,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
     public void readPermissions() throws Exception {
         int maxItemCount = 2;
 
-        CosmosPagedFlux<CosmosPermissionProperties> feedObservable = createdUser.readAllPermissions(new FeedOptions());
+        CosmosPagedFlux<CosmosPermissionProperties> feedObservable = createdUser.readAllPermissions();
 
         int expectedPageSize = (createdPermissions.size() + maxItemCount - 1) / maxItemCount;
 
