@@ -549,8 +549,15 @@ public class DataLakeFileClient extends DataLakePathClient {
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
     }
 
+    // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the file for deletion.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletion#FileScheduleDeletionOptions}
      *
      * @param options Schedule deletion parameters.
      */
@@ -558,8 +565,15 @@ public class DataLakeFileClient extends DataLakePathClient {
         this.scheduleDeletionWithResponse(options, null, Context.NONE);
     }
 
+    // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the file for deletion.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context}
      *
      * @param options Schedule deletion parameters.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

@@ -10,6 +10,7 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 
@@ -241,4 +242,28 @@ public class DataLakeFileClientJavaDocSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions-Duration-Context
     }
 
+    /**
+     * Code snippet for {@link DataLakeFileClient#scheduleDeletion(FileScheduleDeletionOptions)}
+     */
+    public void scheduleDeletion() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletion#FileScheduleDeletionOptions
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+
+        client.scheduleDeletion(options);
+        System.out.println("File deletion has been scheduled");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletion#FileScheduleDeletionOptions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileClient#scheduleDeletionWithResponse(FileScheduleDeletionOptions, Duration, Context)}
+     */
+    public void scheduleDeletionWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+        Context context = new Context("key", "value");
+
+        client.scheduleDeletionWithResponse(options, timeout, context);
+        System.out.println("File deletion has been scheduled");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context
+    }
 }

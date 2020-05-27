@@ -577,8 +577,15 @@ public final class BlockBlobClient extends BlobClientBase {
         return blockWithOptionalTimeout(response, timeout);
     }
 
+    // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the blob for deletion.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletion#BlobScheduleDeletionOptions}
      *
      * @param options Schedule deletion parameters.
      */
@@ -586,8 +593,15 @@ public final class BlockBlobClient extends BlobClientBase {
         scheduleDeletionWithResponse(options, null, Context.NONE);
     }
 
+    // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the blob for deletion.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletionWithResponse#BlobScheduleDeletionOptions-Duration-Context}
      *
      * @param options Schedule deletion parameters.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

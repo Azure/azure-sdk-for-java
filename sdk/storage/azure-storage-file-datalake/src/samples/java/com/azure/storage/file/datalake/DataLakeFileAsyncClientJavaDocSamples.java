@@ -8,6 +8,7 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Flux;
 
@@ -290,4 +291,27 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
     }
 
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#scheduleDeletion(FileScheduleDeletionOptions)}
+     */
+    public void scheduleDeletion() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletion#FileScheduleDeletionOptions
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+
+        client.scheduleDeletion(options)
+            .subscribe(r -> System.out.println("File deletion has been scheduled"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletion#FileScheduleDeletionOptions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#scheduleDeletionWithResponse(FileScheduleDeletionOptions)}
+     */
+    public void scheduleDeletionWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+
+        client.scheduleDeletionWithResponse(options)
+            .subscribe(r -> System.out.println("File deletion has been scheduled"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions
+    }
 }

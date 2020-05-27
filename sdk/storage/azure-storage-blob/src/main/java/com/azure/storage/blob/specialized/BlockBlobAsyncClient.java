@@ -608,8 +608,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             });
     }
 
+    // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the blob for deletion.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.scheduleDeletion#BlobScheduleDeletionOptions}
      *
      * @param options Schedule deletion parameters.
      * @return A reactive response signalling completion.
@@ -623,8 +630,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the blob for deletion.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.scheduleDeletionWithResponse#BlobScheduleDeletionOptions}
      *
      * @param options Schedule deletion parameters.
      * @return A reactive response signalling completion.
