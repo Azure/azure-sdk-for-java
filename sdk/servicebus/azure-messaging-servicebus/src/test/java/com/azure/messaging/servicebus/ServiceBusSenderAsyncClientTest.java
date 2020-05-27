@@ -371,7 +371,7 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), AmqpConstants.NULL_TRANSACTION))
+        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), null))
             .thenReturn(just(sequenceNumberReturned));
 
         // Act & Assert
@@ -379,7 +379,7 @@ class ServiceBusSenderAsyncClientTest {
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES, LINK_NAME, AmqpConstants.NULL_TRANSACTION);
+        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES, LINK_NAME, null);
     }
 
     @Test

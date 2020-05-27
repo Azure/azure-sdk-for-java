@@ -13,10 +13,12 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
+import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -61,14 +63,40 @@ public class ReactorSession implements AmqpSession {
     private final TokenManagerProvider tokenManagerProvider;
     private final MessageSerializer messageSerializer;
     private final Duration openTimeout;
-    Duration timeout;
-    AmqpRetryPolicy retry;
 
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
     private final AtomicReference<LinkSubscription<AmqpLink>> coordinator = new AtomicReference<>();
+
+    private AmqpRetryPolicy retryPolicy;
+
+    /**
+     *
+     * Creates a new AMQP session using proton-j.
+     *
+     * @param session Proton-j session for this AMQP session.
+     * @param sessionHandler Handler for events that occur in the session.
+     * @param sessionName Name of the session.
+     * @param provider Provides reactor instances for messages to sent with.
+     * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
+     * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
+     *     operations on the message broker.
+     * @param retryPolicy for the session operation to complete.
+     */
+    public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
+                          ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
+                          TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+                          Duration openTimeout, AmqpRetryPolicy retryPolicy) {
+
+        this(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
+            messageSerializer, openTimeout);
+        logger.verbose("retryPolicy", retryPolicy);
+        this.retryPolicy = retryPolicy;
+
+    }
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -173,7 +201,7 @@ public class ReactorSession implements AmqpSession {
     }
 
     private Mono<AmqpLink> createTransactionCoordinator() {
-        return createTransactionCoordinator(TRANSACTION_LINK_NAME, openTimeout, retry);
+        return createTransactionCoordinator(TRANSACTION_LINK_NAME, openTimeout, retryPolicy);
     }
     /**
      * {@inheritDoc}
@@ -252,11 +280,20 @@ public class ReactorSession implements AmqpSession {
     public Mono<AmqpTransaction> createTransaction() {
         return createTransactionCoordinator()
             .cast(ReactorCoordinator.class)
-            .flatMap(amqpCoordinatorLink -> {
-                return amqpCoordinatorLink.createTransaction();
+            .flatMap(coordinator -> {
+                return coordinator.createTransaction();
             })
-            .map(deliveryState -> {
-                return new AmqpTransaction(null);
+            .map(state -> {
+                Binary txnId = null;
+                if (state instanceof Declared) {
+                    Declared declared = (Declared) state;
+                    txnId = declared.getTxnId();
+                    logger.verbose("Created new TX started: {}", txnId);
+                } else {
+                    logger.error("Error in creating transaction, Not supported response: state {}", state);
+                }
+
+                return new AmqpTransaction(txnId.asByteBuffer());
             });
 
     }
@@ -264,8 +301,8 @@ public class ReactorSession implements AmqpSession {
     public Mono<Void> commitTransaction(AmqpTransaction transaction) {
         return createTransactionCoordinator()
             .cast(ReactorCoordinator.class)
-            .flatMap(amqpCoordinatorLink -> {
-                return amqpCoordinatorLink.completeTransaction(transaction, true);
+            .flatMap(coordinator -> {
+                return coordinator.completeTransaction(transaction, true);
             })
              .then();
     }
@@ -273,8 +310,8 @@ public class ReactorSession implements AmqpSession {
     public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
         return createTransactionCoordinator()
             .cast(ReactorCoordinator.class)
-            .flatMap(amqpCoordinatorLink -> {
-                return amqpCoordinatorLink.completeTransaction(transaction, false);
+            .flatMap(coordinator -> {
+                return coordinator.completeTransaction(transaction, false);
             })
             .then();
     }
@@ -282,10 +319,8 @@ public class ReactorSession implements AmqpSession {
     /**
      * {@inheritDoc}
      */
-
     @Override
-    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
-        boolean authNeeded, boolean isTransactionCoordinator) {
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
@@ -301,13 +336,7 @@ public class ReactorSession implements AmqpSession {
         return RetryUtil.withRetry(
             getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
             timeout, retry)
-            .then(Mono.defer(() -> {
-                if (authNeeded) {
-                    return tokenManager.authorize();
-                } else {
-                    return Mono.empty();
-                }
-            }).then(Mono.<AmqpLink>create(sink -> {
+            .then(tokenManager.authorize().then(Mono.<AmqpLink>create(sink -> {
                 try {
                     // We have to invoke this in the same thread or else proton-j will not properly link up the created
                     // sender because the link names are not unique. Link name == entity path.
@@ -321,8 +350,7 @@ public class ReactorSession implements AmqpSession {
                                     return existingLink;
                                 }
 
-                                return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager,
-                                    isTransactionCoordinator);
+                                return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager);
                             });
 
                         sink.success(computed.getLink());
@@ -444,17 +472,12 @@ public class ReactorSession implements AmqpSession {
      * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
      */
     private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, TokenManager tokenManager, boolean isTransactionCoordinator) {
+        AmqpRetryPolicy retry, TokenManager tokenManager) {
         final Sender sender = session.sender(linkName);
+        final Target target = new Target();
 
-        if (isTransactionCoordinator) {
-            sender.setTarget(new Coordinator());
-        } else {
-            final Target target = new Target();
-
-            target.setAddress(entityPath);
-            sender.setTarget(target);
-        }
+        target.setAddress(entityPath);
+        sender.setTarget(target);
 
         final Source source = new Source();
         sender.setSource(source);

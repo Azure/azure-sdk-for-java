@@ -262,7 +262,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
         when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull(),
-            isNull(), isNull(), AmqpConstants.NULL_TRANSACTION))
+            isNull(), isNull(), null))
             .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
 
         when(receivedMessage.getLockToken()).thenReturn(null);
@@ -272,7 +272,7 @@ class ServiceBusReceiverAsyncClientTest {
             .verify();
 
         verify(managementNode, never()).updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(),
-            isNull(), isNull(), isNull(), AmqpConstants.NULL_TRANSACTION);
+            isNull(), isNull(), isNull(), null);
     }
 
     /**
@@ -365,7 +365,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
-        when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == DeliveryStateType.Rejected), AmqpConstants.NULL_TRANSACTION)).thenReturn(Mono.empty());
+        when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == DeliveryStateType.Rejected), null)).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(receiver.receive()
@@ -375,7 +375,7 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNext()
             .verifyComplete();
 
-        verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class), AmqpConstants.NULL_TRANSACTION);
+        verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class), null);
     }
 
     /**
@@ -420,9 +420,9 @@ class ServiceBusReceiverAsyncClientTest {
         })))
             .thenReturn(Flux.just(receivedMessage, receivedMessage2));
 
-        when(managementNode.updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null, AmqpConstants.NULL_TRANSACTION))
+        when(managementNode.updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null, null))
             .thenReturn(Mono.empty());
-        when(managementNode.updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null, AmqpConstants.NULL_TRANSACTION))
+        when(managementNode.updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null, null))
             .thenReturn(Mono.empty());
 
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
@@ -453,8 +453,8 @@ class ServiceBusReceiverAsyncClientTest {
         StepVerifier.create(operation)
             .verifyComplete();
 
-        verify(managementNode).updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null, AmqpConstants.NULL_TRANSACTION);
-        verify(managementNode, never()).updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null, AmqpConstants.NULL_TRANSACTION);
+        verify(managementNode).updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null, null);
+        verify(managementNode, never()).updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null, null);
     }
 
     /**

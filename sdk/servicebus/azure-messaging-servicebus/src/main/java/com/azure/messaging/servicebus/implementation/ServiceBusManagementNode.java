@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -100,7 +101,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
     Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize,
-        String associatedLinkName, ByteBuffer transactionId);
+        String associatedLinkName, AmqpTransaction transactionId);
 
     /**
      * Updates the session state.
@@ -119,7 +120,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-        String associatedLinkName, ByteBuffer transactionId);
+        String associatedLinkName, AmqpTransaction transactionId);
 
     @Override
     void close();

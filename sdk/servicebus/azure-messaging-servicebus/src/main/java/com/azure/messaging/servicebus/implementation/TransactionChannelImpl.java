@@ -1,13 +1,11 @@
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.SessionErrorContext;
-import com.azure.core.amqp.implementation.AmqpCoordinatorLink;
-import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.transaction.Declared;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
@@ -18,13 +16,13 @@ import java.util.Objects;
  */
 public class TransactionChannelImpl implements TransactionChannel {
 
-    private final Mono<AmqpCoordinatorLink> sendLink;
+    private final Mono<AmqpSession> session;
     private final String fullyQualifiedNamespace;
     private final String linkName;
     private final ClientLogger logger =  new ClientLogger(TransactionChannelImpl.class);
 
-    TransactionChannelImpl(Mono<AmqpCoordinatorLink> sendLink, String fullyQualifiedNamespace, String linkName) {
-        this.sendLink = Objects.requireNonNull(sendLink, "'sendLink' cannot be null.");
+    TransactionChannelImpl(Mono<AmqpSession> session, String fullyQualifiedNamespace, String linkName) {
+        this.session = Objects.requireNonNull(session, "'session' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
@@ -33,33 +31,20 @@ public class TransactionChannelImpl implements TransactionChannel {
 
     @Override
     public Mono<ByteBuffer> transactionSelect() {
-
-        return  sendLink.flatMap(sendLink ->
-            sendLink.createTransaction()).map(state -> {
-            Binary txnId = null;
-            if (state instanceof Declared) {
-                Declared declared = (Declared) state;
-                txnId = declared.getTxnId();
-                logger.verbose("Created new TX started: {}", txnId);
-            } else {
-                logger.error("Error in creating transaction, Not supported response: state {}", state);
-            }
-
-            return txnId.asByteBuffer();
-        });
-
+        return  session.flatMap(session ->
+            session.createTransaction()).map(transaction -> transaction.getTransactionId());
     }
 
     @Override
     public Mono<Void> transactionCommit(ServiceBusTransactionContext transactionContext) {
-        return sendLink.flatMap(sendLink ->
-            sendLink.completeTransaction(transactionContext.getTransactionId(), true)).then();
+        return session.flatMap(session ->
+            session.commitTransaction(new AmqpTransaction(transactionContext.getTransactionId()))).then();
     }
 
     @Override
     public Mono<Void> transactionRollback(ServiceBusTransactionContext transactionContext) {
-        return sendLink.flatMap(sendLink ->
-            sendLink.completeTransaction(transactionContext.getTransactionId(), false)).then();
+        return session.flatMap(session ->
+            session.rollbackTransaction(new AmqpTransaction(transactionContext.getTransactionId()))).then();
     }
 
     private AmqpErrorContext getErrorContext() {

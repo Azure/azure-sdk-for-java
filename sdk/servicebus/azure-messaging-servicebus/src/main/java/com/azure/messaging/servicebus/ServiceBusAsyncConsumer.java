@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -71,7 +72,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, ByteBuffer transactionId) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, AmqpTransaction transactionId) {
 
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
             deadLetterErrorDescription, propertiesToModify, transactionId);
@@ -105,7 +106,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         }
 
         @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
+        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId) {
             return link.updateDisposition(lockToken, deliveryState, transactionId);
         }
 

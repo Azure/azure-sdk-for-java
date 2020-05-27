@@ -27,5 +27,4 @@ public class AmqpTransaction {
     public ByteBuffer getTransactionId() {
         return transactionId;
     }
-
 }

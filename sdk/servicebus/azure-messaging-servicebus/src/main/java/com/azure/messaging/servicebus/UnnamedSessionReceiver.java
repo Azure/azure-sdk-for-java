@@ -3,6 +3,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -192,7 +193,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
         sessionLockedUntil.set(lockedUntil);
     }
 
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
+    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId) {
         return receiveLink.updateDisposition(lockToken, deliveryState, transactionId);
     }
 
@@ -274,7 +275,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
         }
 
         @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
+        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId) {
             return link.updateDisposition(lockToken, deliveryState, transactionId);
         }
 

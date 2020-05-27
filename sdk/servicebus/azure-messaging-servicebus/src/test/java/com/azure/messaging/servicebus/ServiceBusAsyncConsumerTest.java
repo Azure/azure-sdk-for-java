@@ -98,7 +98,7 @@ class ServiceBusAsyncConsumerTest {
             new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link.updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.NULL_TRANSACTION)).thenReturn(Mono.empty());
+        when(link.updateDisposition(anyString(), any(DeliveryState.class), null)).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -142,7 +142,7 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1, receivedMessage2)
             .verifyComplete();
 
-        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()), AmqpConstants.NULL_TRANSACTION);
+        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()), null);
     }
 
     /**
@@ -177,7 +177,7 @@ class ServiceBusAsyncConsumerTest {
             .thenCancel()
             .verify();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.NULL_TRANSACTION);
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), null);
     }
 
     /**
@@ -188,7 +188,7 @@ class ServiceBusAsyncConsumerTest {
         // Arrange
         final boolean isAutoComplete = false;
         final String lockToken = UUID.randomUUID().toString();
-        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION))
+        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance(), null))
             .thenReturn(Mono.error(new IllegalArgumentException("Should not have called complete.")));
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor,
@@ -210,6 +210,6 @@ class ServiceBusAsyncConsumerTest {
             .then(() -> consumer.close())
             .verifyComplete();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.NULL_TRANSACTION);
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), null);
     }
 }

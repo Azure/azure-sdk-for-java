@@ -28,23 +28,23 @@ public interface AmqpSendLink extends AmqpLink {
     /**
      * Batches the messages given into a single proton-j message that is sent down the wire.
      *
-     * @param messageBatch The batch of messages to send to the service.
-     * @param transactionId to be sent along with message.
+     * @param messages The list of messages to send to the service.
+     * @param transaction to be sent along with message.
      * @return A Mono that completes when all the batched messages are successfully transmitted to Event Hub.
      * @throws AmqpException if the serialized contents of {@code messageBatch} exceed the link's capacity for a single
      * message.
      */
-    Mono<Void> send(List<Message> messageBatch, AmqpTransaction transactionId);
+    Mono<Void> send(List<Message> messages, AmqpTransaction transaction);
 
     /**
      * Sends a single message to the remote endpoint.
      *
      * @param message Message to send.
-     * @param transactionId to be sent along with message.
+     * @param transaction to be sent along with message.
      * @return A Mono that completes when the message has been sent.
      * @throws AmqpException if the serialized {@code message} exceed the links capacity for a single message.
      */
-    Mono<Void> send(Message message, AmqpTransaction transactionId);
+    Mono<Void> send(Message message, AmqpTransaction transaction);
 
     /**
      * Batches the messages given into a single proton-j message that is sent down the wire.

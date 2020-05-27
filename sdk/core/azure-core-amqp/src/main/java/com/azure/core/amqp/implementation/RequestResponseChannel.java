@@ -195,18 +195,18 @@ public class RequestResponseChannel implements Disposable {
      * @return An AMQP message representing the service's response to the message.
      */
     public Mono<Message> sendWithAck(final Message message) {
-        return sendWithAck(message, AmqpConstants.NULL_TRANSACTION);
+        return sendWithAck(message, null);
     }
 
     /**
      * Sends a message to the message broker using the {@code dispatcher} and gets the response.
      *
      * @param message AMQP message to send.
-     * @param transactionId Transaction id to be sent to service bus with message.
+     * @param transaction Transaction id to be sent to service bus with message.
      *
      * @return An AMQP message representing the service's response to the message.
      */
-    public Mono<Message> sendWithAck(final Message message, AmqpTransaction transactionId) {
+    public Mono<Message> sendWithAck(final Message message, AmqpTransaction transaction) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(
                 "Cannot send a message when request response channel is disposed."));
@@ -243,10 +243,10 @@ public class RequestResponseChannel implements Disposable {
                                 .replace("-", "").getBytes(UTF_8));
 
                             delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
-                            if (transactionId != AmqpConstants.NULL_TRANSACTION) {
+                            if (transaction != null) {
                                 logger.verbose("Setting transaction on delivery.");
                                 TransactionalState transactionalState = new TransactionalState();
-                                transactionalState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                                transactionalState.setTxnId(new Binary(transaction.getTransactionId().array()));
                                 delivery.disposition(transactionalState);
                             }
 

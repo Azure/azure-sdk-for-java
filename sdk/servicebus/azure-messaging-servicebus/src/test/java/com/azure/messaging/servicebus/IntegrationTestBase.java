@@ -271,7 +271,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
                                                                  MessagingEntityType entityType,
                                                                  Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
-        return getReceiverBuilder( useCredentials, entityType, onBuilderCreate);
+        return getReceiverBuilder( useCredentials, entityType, onBuilderCreate, false);
     }
 
 

@@ -337,7 +337,7 @@ class ManagementChannelTests {
         // Act & Assert
         StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
             options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
-            sessionId, associatedLinkName, AmqpConstants.NULL_TRANSACTION))
+            sessionId, associatedLinkName, null))
             .verifyComplete();
 
         // Verify the contents of our request to make sure the correct properties were given.

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -110,13 +111,13 @@ public final class MessageUtils {
      * @return The corresponding DeliveryState, or null if the disposition status is unknown.
      */
     public static DeliveryState getDeliveryState(DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, ByteBuffer transactionId) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, AmqpTransaction transactionId) {
         final DeliveryState state;
         switch (dispositionStatus) {
             case COMPLETED:
-                if (transactionId != AmqpConstants.NULL_TRANSACTION) {
+                if (transactionId != null) {
                     TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionId.array()));
+                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
                     tState.setOutcome(Accepted.getInstance());
                     state = tState;
                 } else {

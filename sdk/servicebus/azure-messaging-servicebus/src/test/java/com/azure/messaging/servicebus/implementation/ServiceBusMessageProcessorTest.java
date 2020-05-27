@@ -58,7 +58,7 @@ class ServiceBusMessageProcessorTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        when(messageManagementOperations.updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.NULL_TRANSACTION))
+        when(messageManagementOperations.updateDisposition(anyString(), any(DeliveryState.class), null))
             .thenReturn(Mono.empty());
     }
 
@@ -92,9 +92,9 @@ class ServiceBusMessageProcessorTest {
             .expectNext(message1, message2, message3, message4)
             .verifyComplete();
 
-        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(),AmqpConstants.NULL_TRANSACTION);
-        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION);
-        verify(messageManagementOperations).updateDisposition(lock3, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION);
+        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), null);
+        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance(), null);
+        verify(messageManagementOperations).updateDisposition(lock3, Accepted.getInstance(), null);
     }
 
     /**
@@ -137,8 +137,8 @@ class ServiceBusMessageProcessorTest {
             .verifyComplete();
 
         verify(messageManagementOperations, atLeast(3)).renewMessageLock(lock1, LINK_NAME);
-        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION);
-        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION);
+        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), null);
+        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance(), null);
     }
 
     /**
@@ -202,7 +202,7 @@ class ServiceBusMessageProcessorTest {
 
         verify(messageManagementOperations).renewMessageLock(lock1, LINK_NAME);
         verifyZeroInteractions(message2);
-        verify(messageManagementOperations, never()).updateDisposition(anyString(), any(), AmqpConstants.NULL_TRANSACTION);
+        verify(messageManagementOperations, never()).updateDisposition(anyString(), any(), null);
     }
 
     /**
@@ -244,7 +244,7 @@ class ServiceBusMessageProcessorTest {
             .verify();
 
         verifyZeroInteractions(message2);
-        verify(messageManagementOperations, never()).updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION);
+        verify(messageManagementOperations, never()).updateDisposition(lock1, Accepted.getInstance(), null);
     }
 
     /**
@@ -262,7 +262,7 @@ class ServiceBusMessageProcessorTest {
         when(message2.getLockToken()).thenReturn(lock2);
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
 
-        when(messageManagementOperations.updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION)).thenAnswer(
+        when(messageManagementOperations.updateDisposition(lock1, Accepted.getInstance(), null)).thenAnswer(
             invocationOnMock -> Mono.error(new IllegalArgumentException("Test error occurred.")));
 
         when(messageManagementOperations.renewMessageLock(anyString(), anyString())).thenReturn(Mono.empty());
@@ -277,7 +277,7 @@ class ServiceBusMessageProcessorTest {
             .expectError(IllegalArgumentException.class)
             .verify();
 
-        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION);
+        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), null);
 
         verifyZeroInteractions(message2);
         verify(messageManagementOperations, never()).renewMessageLock(anyString(), anyString());

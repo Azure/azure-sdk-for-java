@@ -1,19 +1,19 @@
 package com.azure.messaging.servicebus;
 
 import java.nio.ByteBuffer;
-import java.util.function.Consumer;
 
 public class ServiceBusTransactionContext {
-    private ByteBuffer txnId;
+    private final ByteBuffer transactionId;
 
-    ServiceBusTransactionContext(ByteBuffer txnId){
-        this.txnId = txnId;
+    ServiceBusTransactionContext(ByteBuffer transactionId){
+        this.transactionId = transactionId;
     }
+
     /**
      * Represents the service-side transactionID
      * @return transaction ID
      */
     public ByteBuffer getTransactionId() {
-        return this.txnId;
+        return this.transactionId;
     }
 }

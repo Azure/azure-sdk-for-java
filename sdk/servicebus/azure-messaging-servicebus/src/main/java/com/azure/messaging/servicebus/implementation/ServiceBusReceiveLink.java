@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -37,5 +38,5 @@ public interface ServiceBusReceiveLink extends AmqpReceiveLink {
      * @param transactionId of the transaction in which this operation is taking part.
      * @return A Mono that completes when the state is successfully updated and acknowledged by message broker.
      */
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId);
+    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId);
 }

@@ -326,7 +326,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
         final String messageId2 = UUID.randomUUID().toString();
         final ServiceBusMessage message2 = getMessage(messageId2, isSessionEnabled);
-
         sendMessage(message1).block(TIMEOUT);
 
         // Assert & Act
@@ -338,17 +337,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
         assertNotNull(transaction.get());
-
         // Assert & Act
         StepVerifier.create(sender.send(message2, transaction.get()))
             .verifyComplete();
-
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
-
         final Mono<Void> operation;
         if (DispositionStatus.ABANDONED == dispositionStatus && isSessionEnabled) {
             operation = receiver.abandon(receivedMessage, null, sessionId, transaction.get());

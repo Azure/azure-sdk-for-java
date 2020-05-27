@@ -150,7 +150,7 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<Void> send(Message message) {
-        return send(message, AmqpConstants.NULL_TRANSACTION);
+        return send(message, null);
     }
 
     @Override
@@ -180,13 +180,13 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<Void> send(List<Message> messageBatch) {
-        return send(messageBatch, AmqpConstants.NULL_TRANSACTION);
+        return send(messageBatch, null);
     }
 
     @Override
-    public Mono<Void> send(List<Message> messageBatch, AmqpTransaction transactionId) {
+    public Mono<Void> send(List<Message> messageBatch, AmqpTransaction transaction) {
         if (messageBatch.size() == 1) {
-            return send(messageBatch.get(0), transactionId);
+            return send(messageBatch.get(0), transaction);
         }
 
         return getLinkSize()
@@ -234,7 +234,7 @@ class ReactorSender implements AmqpSendLink {
                     byteArrayOffset = byteArrayOffset + encodedSize;
                 }
 
-                return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, transactionId);
+                return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, transaction);
             });
 
     }
@@ -376,7 +376,7 @@ class ReactorSender implements AmqpSendLink {
                 delivery.setMessageFormat(workItem.getMessageFormat());
 
                 AmqpTransaction transactionId = workItem.getTransactionId();
-                if (transactionId != AmqpConstants.NULL_TRANSACTION) {
+                if (transactionId != null) {
                     TransactionalState transactionalState = new TransactionalState();
                     transactionalState.setTxnId(new Binary(transactionId.getTransactionId().array()));
                     delivery.disposition(transactionalState);

@@ -3,6 +3,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -185,7 +186,7 @@ class UnnamedSessionManager implements AutoCloseable {
      */
     Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
-        String deadLetterDescription, ByteBuffer transactionId) {
+        String deadLetterDescription, AmqpTransaction transactionId) {
 
         final String operation = "updateDisposition";
         return Mono.when(

@@ -172,7 +172,7 @@ class UnnamedSessionManagerTest {
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
-        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION)).thenReturn(Mono.empty());
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance(), null)).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
@@ -224,7 +224,7 @@ class UnnamedSessionManagerTest {
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
-        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance(), AmqpConstants.NULL_TRANSACTION)).thenReturn(Mono.empty());
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance(), null)).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));

@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -246,13 +247,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
-            propertiesToModify, sessionId, AmqpConstants.NULL_TRANSACTION);
+            propertiesToModify, sessionId, null);
     }
 
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
-            propertiesToModify, sessionId, transactionContext.getTransactionId());
+            propertiesToModify, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
     }
 
     /**
@@ -295,12 +296,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> complete(MessageLockToken lockToken, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-            null, sessionId, AmqpConstants.NULL_TRANSACTION);
+            null, sessionId, null);
     }
 
     public Mono<Void> complete(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-            null, sessionId, transactionContext.getTransactionId());
+            null, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
     }
 
     /**
@@ -378,13 +379,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
-            propertiesToModify, sessionId, AmqpConstants.NULL_TRANSACTION);
+            propertiesToModify, sessionId, null);
     }
 
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
-            propertiesToModify, sessionId, transactionContext.getTransactionId());
+            propertiesToModify, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
     }
 
     /**
@@ -470,14 +471,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId,
-            AmqpConstants.NULL_TRANSACTION);
+            null);
     }
 
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId,
-            transactionContext.getTransactionId());
+            new AmqpTransaction(transactionContext.getTransactionId()));
 
     }
 
@@ -925,7 +926,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String sessionId, ByteBuffer transactionId) {
+        String sessionId, AmqpTransaction transactionId) {
 
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
@@ -1100,7 +1101,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.createChannel())
-            .flatMap(TransactionChannel::transactionSelect)
+
+            .flatMap(transactionChannel -> transactionChannel.transactionSelect())
             .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 

@@ -39,7 +39,6 @@ import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
@@ -134,15 +133,15 @@ class ReactorCoordinator implements AmqpLink {
     /**
      * Create AMQP {@link Message} for completing the transaction.
      *
-     * @param transactionId to be used for completing the transaction.
+     * @param transaction to be used for completing the transaction.
      * @param isCommit for commiting or rollback
      * @return created AMQP {@link Message}.
      */
-    private Message getCompleteTransactionMessage(ByteBuffer transactionId, boolean isCommit) {
+    private Message getCompleteTransactionMessage(AmqpTransaction transaction, boolean isCommit) {
         Message message = Proton.message();
         Discharge discharge = new Discharge();
         discharge.setFail(!isCommit);
-        discharge.setTxnId(new Binary(transactionId.array()));
+        discharge.setTxnId(new Binary(transaction.getTransactionId().array()));
         message.setBody(new AmqpValue(discharge));
         return message;
     }
@@ -160,14 +159,14 @@ class ReactorCoordinator implements AmqpLink {
     }
 
     //@Override
-    public Mono<DeliveryState> completeTransaction(AmqpTransaction transactionId, boolean isCommit) {
+    public Mono<DeliveryState> completeTransaction(AmqpTransaction transaction, boolean isCommit) {
         if (hasConnected.get()) {
-            return Mono.create(sink -> send(getCompleteTransactionMessage(transactionId.getTransactionId(),
+            return Mono.create(sink -> send(getCompleteTransactionMessage(transaction,
                 isCommit), sink));
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                .then(Mono.create(sink -> send(getCompleteTransactionMessage(transactionId.getTransactionId(),
+                .then(Mono.create(sink -> send(getCompleteTransactionMessage(transaction,
                     isCommit), sink)));
         }
     }
