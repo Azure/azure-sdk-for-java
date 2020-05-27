@@ -38,8 +38,7 @@ public interface SchemaRegistryClient {
      * @return SchemaRegistryObject containing information regarding registered schema.
      * @throws SchemaRegistryClientException if registration operation fails
      */
-    SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String serializationType)
-        throws SchemaRegistryClientException;
+    SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String serializationType);
 
     /**
      * Fetches schema specified by the GUID.
@@ -50,7 +49,7 @@ public interface SchemaRegistryClient {
      * @return SchemaRegistryObject containing information regarding matching schema.
      * @throws SchemaRegistryClientException if fetch operation fails
      */
-    SchemaRegistryObject getSchemaByGuid(String schemaGuid) throws SchemaRegistryClientException;
+    SchemaRegistryObject getSchemaByGuid(String schemaGuid);
 
     /**
      * Fetches schema GUID given schema group, name, string representation, and serialization type
@@ -62,8 +61,7 @@ public interface SchemaRegistryClient {
      * @return SchemaRegistryObject containing information regarding requested schema.
      * @throws SchemaRegistryClientException if fetch operation fails
      */
-    String getSchemaId(String schemaGroup, String schemaName, String schemaString, String serializationType)
-        throws SchemaRegistryClientException;
+    String getSchemaId(String schemaGroup, String schemaName, String schemaString, String serializationType);
 
     /**
      * Not currently implemented.
@@ -74,8 +72,7 @@ public interface SchemaRegistryClient {
      * @return GUID of delete schema
      * @throws SchemaRegistryClientException deletion operation failed
      */
-    String deleteSchemaVersion(String schemaGroup, String schemaName, int version)
-        throws SchemaRegistryClientException;
+    String deleteSchemaVersion(String schemaGroup, String schemaName, int version);
 
     /**
      * Not currently implemented.
@@ -85,7 +82,7 @@ public interface SchemaRegistryClient {
      * @return GUID of deleted schema
      * @throws SchemaRegistryClientException deletion operation failed
      */
-    String deleteLatestSchemaVersion(String schemaGroup, String schemaName) throws SchemaRegistryClientException;
+    String deleteLatestSchemaVersion(String schemaGroup, String schemaName);
 
     /**
      * Not currently implemented.
@@ -95,5 +92,5 @@ public interface SchemaRegistryClient {
      * @return list of GUID references to deleted schemas
      * @throws SchemaRegistryClientException deletion operation failed
      */
-    List<String> deleteSchema(String schemaGroup, String schemaName) throws SchemaRegistryClientException;
+    List<String> deleteSchema(String schemaGroup, String schemaName);
 }
