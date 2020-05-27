@@ -109,11 +109,12 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      *
      * @return the headers as map
      */
-    public Map<String, String> toMap() {
-        final Map<String, String> result = new HashMap<>(headers.size());
+    public com.azure.core.http.HttpHeaders asCoreHttpHeaders() {
+        final com.azure.core.http.HttpHeaders result = new com.azure.core.http.HttpHeaders();
         for (final HttpHeader header : headers.values()) {
             result.put(header.name(), header.value());
         }
+
         return result;
     }
 
@@ -124,7 +125,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
 
     @Override
     public void serialize(JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeObject(toMap());
+        jsonGenerator.writeObject(asCoreHttpHeaders());
     }
 
     @Override

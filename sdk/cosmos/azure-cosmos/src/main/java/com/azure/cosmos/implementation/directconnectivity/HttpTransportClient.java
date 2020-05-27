@@ -111,7 +111,7 @@ public class HttpTransportClient extends TransportClient {
             String activityId = request.getActivityId().toString();
 
             if (resourceOperation.operationType == OperationType.Recreate) {
-                Map<String, String> errorResponseHeaders = new HashMap<>();
+                com.azure.core.http.HttpHeaders errorResponseHeaders = new com.azure.core.http.HttpHeaders();
                 errorResponseHeaders.put(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE, "1");
 
                 logger.error("Received Recreate request on Http client");
@@ -974,7 +974,7 @@ public class HttpTransportClient extends TransportClient {
                     BridgeInternal.setLSN(exception, responseLSN);
                     BridgeInternal.setPartitionKeyRangeId(exception, responsePartitionKeyRangeId);
                     BridgeInternal.setResourceAddress(exception, resourceAddress);
-                    BridgeInternal.setRequestHeaders(exception, HttpUtils.asMap(request.headers()));
+                    BridgeInternal.setRequestHeaders(exception, HttpUtils.asCoreHttpHeaders(request.headers()));
 
                     return Mono.error(exception);
                 }

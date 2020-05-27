@@ -14,13 +14,8 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class HttpUtils {
 
@@ -44,10 +39,28 @@ public class HttpUtils {
         }
     }
 
+    public static com.azure.core.http.HttpHeaders asCoreHttpHeaders(HttpHeaders headers) {
+        if (headers == null) {
+            return new com.azure.core.http.HttpHeaders();
+        }
+
+        com.azure.core.http.HttpHeaders coreHttpHeaders = new com.azure.core.http.HttpHeaders();
+        for (Entry<String, String> entry : headers.asCoreHttpHeaders().entrySet()) {
+            if (entry.getKey().equals(HttpConstants.Headers.OWNER_FULL_NAME)) {
+                coreHttpHeaders.put(entry.getKey(), HttpUtils.urlDecode(entry.getValue()));
+            } else {
+                coreHttpHeaders.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return coreHttpHeaders;
+    }
+
     public static Map<String, String> asMap(HttpHeaders headers) {
         if (headers == null) {
             return new HashMap<>();
         }
+
         HashMap<String, String> map = new HashMap<>(headers.size());
         for (Entry<String, String> entry : headers.toMap().entrySet()) {
             if (entry.getKey().equals(HttpConstants.Headers.OWNER_FULL_NAME)) {
@@ -56,6 +69,7 @@ public class HttpUtils {
                 map.put(entry.getKey(), entry.getValue());
             }
         }
+
         return map;
     }
 
@@ -74,15 +88,11 @@ public class HttpUtils {
         return date != null ? date : StringUtils.EMPTY;
     }
 
-    public static List<Entry<String, String>> unescape(Set<Entry<String, String>> headers) {
-        List<Entry<String, String>> result = new ArrayList<>(headers.size());
-        for (Entry<String, String> entry : headers) {
-            if (entry.getKey().equals(HttpConstants.Headers.OWNER_FULL_NAME)) {
-                String unescapedUrl = HttpUtils.urlDecode(entry.getValue());
-                entry = new AbstractMap.SimpleEntry<>(entry.getKey(), unescapedUrl);
-            }
-            result.add(entry);
+    public static void OwnerFullName(com.azure.core.http.HttpHeaders httpHeaders) {
+        String ownerValue = httpHeaders.getValue(HttpConstants.Headers.OWNER_FULL_NAME);
+        if (StringUtils.isNotEmpty(ownerValue)) {
+            String unescapedUrl = HttpUtils.urlDecode(ownerValue);
+            httpHeaders.put(HttpConstants.Headers.OWNER_FULL_NAME, unescapedUrl);
         }
-        return result;
     }
 }

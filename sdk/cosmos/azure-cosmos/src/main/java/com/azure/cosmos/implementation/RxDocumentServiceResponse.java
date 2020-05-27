@@ -29,18 +29,10 @@ public class RxDocumentServiceResponse {
     private final StoreResponse storeResponse;
 
     public RxDocumentServiceResponse(StoreResponse response) {
-        String[] headerNames = response.getResponseHeaderNames();
-        String[] headerValues = response.getResponseHeaderValues();
-
-        // Extracts headers.
-        this.headersMap = new HttpHeaders();
-        for (int i = 0; i < headerNames.length; i++) {
-            headersMap.put(headerNames[i], headerValues[i]);
-        }
-
         // Gets status code.
         this.statusCode = response.getStatus();
         this.storeResponse = response;
+        this.headersMap = response.getHeaders();
     }
 
     public static <T extends Resource> String getResourceKey(Class<T> c) {

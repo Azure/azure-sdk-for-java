@@ -34,7 +34,7 @@ public class RequestRateTooLargeException extends CosmosException {
     public RequestRateTooLargeException(CosmosError cosmosError,
                                         long lsn,
                                         String partitionKeyRangeId,
-                                        Map<String, String> responseHeaders) {
+                                        com.azure.core.http.HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.TOO_MANY_REQUESTS, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -62,19 +62,19 @@ public class RequestRateTooLargeException extends CosmosException {
      * @param requestUri the request uri
      */
     public RequestRateTooLargeException(String message, HttpHeaders headers, URI requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
             requestUri != null ? requestUri.toString() : null);
     }
 
     RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
+        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
     }
 
     RequestRateTooLargeException(String message,
                                  Exception innerException,
                                  HttpHeaders headers,
                                  URI requestUri) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+        super(message, innerException, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
             requestUri != null ? requestUri.toString() : null);
     }
 }

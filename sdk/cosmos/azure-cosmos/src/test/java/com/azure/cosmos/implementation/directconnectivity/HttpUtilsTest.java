@@ -26,14 +26,14 @@ public class HttpUtilsTest {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         Mockito.when(httpResponse.headers()).thenReturn(headersMap);
         HttpHeaders httpResponseHeaders = httpResponse.headers();
-        Set<Entry<String, String>> resultHeadersSet = HttpUtils.asMap(httpResponseHeaders).entrySet();
+        Set<Entry<String, String>> resultHeadersSet = HttpUtils.asCoreHttpHeaders(httpResponseHeaders).entrySet();
 
         assertThat(resultHeadersSet.size()).isEqualTo(1);
         Entry<String, String> entry = resultHeadersSet.iterator().next();
         assertThat(entry.getKey()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
 
-        List<Entry<String, String>> resultHeadersList = HttpUtils.unescape(httpResponseHeaders.toMap().entrySet());
+        List<Entry<String, String>> resultHeadersList = HttpUtils.OwnerFullName(httpResponseHeaders.asCoreHttpHeaders().entrySet());
         assertThat(resultHeadersList.size()).isEqualTo(1);
         entry = resultHeadersSet.iterator().next();
         assertThat(entry.getKey()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);

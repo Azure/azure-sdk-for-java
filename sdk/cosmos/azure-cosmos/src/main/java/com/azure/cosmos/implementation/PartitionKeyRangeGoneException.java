@@ -38,7 +38,7 @@ public class PartitionKeyRangeGoneException extends CosmosException {
     public PartitionKeyRangeGoneException(CosmosError cosmosError,
                                           long lsn,
                                           String partitionKeyRangeId,
-                                          Map<String, String> responseHeaders) {
+                                          com.azure.core.http.HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -71,13 +71,13 @@ public class PartitionKeyRangeGoneException extends CosmosException {
      * @param requestUriString the request uri string
      */
     public PartitionKeyRangeGoneException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
+        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.GONE, requestUriString);
         this.setSubstatus();
     }
 
     PartitionKeyRangeGoneException(String message, Exception innerException, HttpHeaders headers,
                                    String requestUriString) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
+        super(message, innerException, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.GONE, requestUriString);
         this.setSubstatus();
     }
 

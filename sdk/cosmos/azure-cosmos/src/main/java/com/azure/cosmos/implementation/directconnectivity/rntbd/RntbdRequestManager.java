@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
@@ -670,7 +671,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
             final String requestUri = record.args().physicalAddress().toString();
 
-            final GoneException error = new GoneException(message, cause, (Map<String, String>) null, requestUri);
+            final GoneException error = new GoneException(message, cause, (com.azure.core.http.HttpHeaders) null, requestUri);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
 
             record.completeExceptionally(error);
@@ -730,7 +731,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             // ..Map RNTBD response headers to HTTP response headers
 
-            final Map<String, String> responseHeaders = response.getHeaders().asMap(
+            final HttpHeaders responseHeaders = response.getHeaders().asCoreHttpHeaders(
                 this.rntbdContext().orElseThrow(IllegalStateException::new), activityId
             );
 

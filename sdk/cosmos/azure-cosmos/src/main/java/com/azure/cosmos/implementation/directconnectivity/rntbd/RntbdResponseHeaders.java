@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -208,19 +209,20 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         return builder.build();
     }
 
-    public Map<String, String> asMap(final RntbdContext context, final UUID activityId) {
+    public HttpHeaders asCoreHttpHeaders(final RntbdContext context, final UUID activityId) {
 
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
-        builder.put(new Entry(Headers.SERVER_VERSION, context.serverVersion()));
-        builder.put(new Entry(Headers.ACTIVITY_ID, activityId.toString()));
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put(Headers.SERVER_VERSION, context.serverVersion());
+        httpHeaders.put(Headers.ACTIVITY_ID, activityId.toString());
 
         this.collectEntries((token, toEntry) -> {
             if (token.isPresent()) {
-                builder.put(toEntry.apply(token));
+                Map.Entry<String, String> local = toEntry.apply(token);
+                httpHeaders.put(local.getKey(), local.getValue());
             }
         });
 
-        return builder.build();
+        return httpHeaders;
     }
 
     static RntbdResponseHeaders decode(final ByteBuf in) {

@@ -35,7 +35,7 @@ public class InternalServerErrorException extends CosmosException {
     public InternalServerErrorException(CosmosError cosmosError,
                                         long lsn,
                                         String partitionKeyRangeId,
-                                        Map<String, String> responseHeaders) {
+                                        com.azure.core.http.HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -47,7 +47,7 @@ public class InternalServerErrorException extends CosmosException {
      * @param message the message
      */
     public InternalServerErrorException(String message) {
-        this(message, null, (Map<String, String>) null, null);
+        this(message, null, (com.azure.core.http.HttpHeaders) null, null);
     }
 
 
@@ -67,23 +67,23 @@ public class InternalServerErrorException extends CosmosException {
      * @param requestUri the request uri
      */
     public InternalServerErrorException(String message, HttpHeaders headers, URI requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUri != null ? requestUri.toString() : null);
     }
 
     InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUriString);
     }
 
     InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, URI requestUri) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+        super(message, innerException, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUri != null ? requestUri.toString() : null);
     }
 
     InternalServerErrorException(String message, Exception innerException, HttpHeaders headers,
                                  String requestUriString) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+        super(message, innerException, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUriString);
     }
 
@@ -95,7 +95,7 @@ public class InternalServerErrorException extends CosmosException {
      * @param headers the headers
      * @param requestUriString the request uri string
      */
-    public InternalServerErrorException(String message, Exception innerException, Map<String, String> headers,
+    public InternalServerErrorException(String message, Exception innerException, com.azure.core.http.HttpHeaders headers,
                                         String requestUriString) {
         super(message, innerException, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUriString);
     }

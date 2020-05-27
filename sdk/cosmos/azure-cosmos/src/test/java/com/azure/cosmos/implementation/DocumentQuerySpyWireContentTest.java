@@ -111,7 +111,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     }
 
     private void validateRequestHasContinuationTokenLimit(HttpRequest request, Integer expectedValue) {
-        Map<String, String> headers = request.headers().toMap();
+        Map<String, String> headers = request.headers().asCoreHttpHeaders();
         if (headers.get(HttpConstants.Headers.IS_QUERY) != null) {
             if (expectedValue != null && expectedValue > 0) {
                 assertThat(headers

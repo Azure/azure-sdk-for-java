@@ -29,7 +29,7 @@ public class UnauthorizedException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public UnauthorizedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                                 Map<String, String> responseHeaders) {
+                                 com.azure.core.http.HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.UNAUTHORIZED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -64,7 +64,7 @@ public class UnauthorizedException extends CosmosException {
                           String requestUri) {
         super(String.format("%s: %s", RMResources.Unauthorized, message),
             innerException,
-            HttpUtils.asMap(headers),
+            HttpUtils.asCoreHttpHeaders(headers),
             HttpConstants.StatusCodes.UNAUTHORIZED,
             requestUri);
     }

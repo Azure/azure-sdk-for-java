@@ -273,8 +273,10 @@ class RxGatewayStoreModel implements RxStoreModel {
                                validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
                                // transforms to Observable<StoreResponse>
+                               com.azure.core.http.HttpHeaders httpHeaders = httpResponseHeaders.asCoreHttpHeaders();
+                               HttpUtils.OwnerFullName(httpHeaders);
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                                   HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
+                                   httpHeaders,
                                    content);
                                DirectBridgeInternal.setRequestTimeline(rsp, reactorNettyRequestRecord.takeTimelineSnapshot());
                                if (request.requestContext.cosmosDiagnostics != null) {
@@ -331,7 +333,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers.asCoreHttpHeaders());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }

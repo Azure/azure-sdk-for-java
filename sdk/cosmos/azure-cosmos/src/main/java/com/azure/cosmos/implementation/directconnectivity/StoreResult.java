@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -119,14 +120,11 @@ public class StoreResult {
                     Double.toString(totalRequestCharge));
         }
         // Set total charge as final charge for the response.
-        else if (response.getResponseHeaderNames() != null) {
-            for (int i = 0; i < response.getResponseHeaderNames().length; ++i) {
-                if (Strings.areEqualIgnoreCase(
-                        response.getResponseHeaderNames()[i],
-                        HttpConstants.Headers.REQUEST_CHARGE)) {
-                    response.getResponseHeaderValues()[i] = Double.toString(totalRequestCharge);
-                    break;
-                }
+        else {
+            HttpHeaders responseHeaders = response.getHeaders();
+
+            if (responseHeaders != null) {
+                responseHeaders.put(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(totalRequestCharge));
             }
         }
     }

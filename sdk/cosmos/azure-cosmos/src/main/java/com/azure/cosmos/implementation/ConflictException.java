@@ -30,7 +30,7 @@ public class ConflictException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public ConflictException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                             Map<String, String> responseHeaders) {
+                             com.azure.core.http.HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.CONFLICT, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -38,10 +38,6 @@ public class ConflictException extends CosmosException {
 
     ConflictException(String msg) {
         super(HttpConstants.StatusCodes.CONFLICT, msg);
-    }
-
-    ConflictException(String msg, String resourceAddress) {
-        super(msg, null, null, HttpConstants.StatusCodes.CONFLICT, resourceAddress);
     }
 
     /**
@@ -59,17 +55,13 @@ public class ConflictException extends CosmosException {
         this(RMResources.EntityAlreadyExists, innerException, null, null);
     }
 
-    ConflictException(CosmosError cosmosError, Map<String, String> headers) {
-        super(HttpConstants.StatusCodes.CONFLICT, cosmosError, headers);
-    }
-
     ConflictException(String message,
                       Exception innerException,
                       HttpHeaders headers,
                       String requestUriString) {
         super(String.format("%s: %s", RMResources.EntityAlreadyExists, message),
             innerException,
-            HttpUtils.asMap(headers),
+            HttpUtils.asCoreHttpHeaders(headers),
             HttpConstants.StatusCodes.CONFLICT,
             requestUriString);
     }

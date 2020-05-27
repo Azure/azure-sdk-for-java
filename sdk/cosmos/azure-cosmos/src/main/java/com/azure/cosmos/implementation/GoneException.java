@@ -42,7 +42,7 @@ public class GoneException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public GoneException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                         Map<String, String> responseHeaders) {
+                         com.azure.core.http.HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -55,7 +55,7 @@ public class GoneException extends CosmosException {
      * @param requestUri the request uri
      */
     public GoneException(String message, String requestUri) {
-        this(message, null, new HashMap<>(), requestUri);
+        this(message, null, new com.azure.core.http.HttpHeaders(), requestUri);
     }
 
     GoneException(String message,
@@ -66,7 +66,7 @@ public class GoneException extends CosmosException {
     }
 
     GoneException(Exception innerException) {
-        this(RMResources.Gone, innerException, new HashMap<>(), null);
+        this(RMResources.Gone, innerException, new com.azure.core.http.HttpHeaders(), null);
     }
 
     /**
@@ -77,13 +77,13 @@ public class GoneException extends CosmosException {
      * @param requestUrl the request url
      */
     public GoneException(String message, HttpHeaders headers, URI requestUrl) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null
+        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.GONE, requestUrl != null
                                                                                            ? requestUrl.toString()
                                                                                            : null);
     }
 
     GoneException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
+        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
     /**
@@ -100,7 +100,7 @@ public class GoneException extends CosmosException {
                          URI requestUrl) {
         super(message,
             innerException,
-            HttpUtils.asMap(headers),
+            HttpUtils.asCoreHttpHeaders(headers),
             HttpConstants.StatusCodes.GONE,
             requestUrl != null
                 ? requestUrl.toString()
@@ -117,13 +117,9 @@ public class GoneException extends CosmosException {
      */
     public GoneException(String message,
                          Exception innerException,
-                         Map<String, String> headers,
+                         com.azure.core.http.HttpHeaders headers,
                          String requestUriString) {
         super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUriString);
-    }
-
-    GoneException(CosmosError cosmosError, Map<String, String> headers) {
-        super(HttpConstants.StatusCodes.GONE, cosmosError, headers);
     }
 
     private static String message(String localIP, String baseMessage) {

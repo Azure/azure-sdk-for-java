@@ -142,10 +142,8 @@ class ClientSideRequestStatistics {
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
-                this.gatewayStatistics.sessionToken = storeResponse
-                                                          .getHeaderValue(HttpConstants.Headers.SESSION_TOKEN);
-                this.gatewayStatistics.requestCharge = storeResponse
-                                                           .getHeaderValue(HttpConstants.Headers.REQUEST_CHARGE);
+                this.gatewayStatistics.sessionToken = storeResponse.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+                this.gatewayStatistics.requestCharge = storeResponse.getHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();

@@ -50,11 +50,11 @@ public class CosmosException extends AzureException {
     Uri requestUri;
     String resourceAddress;
 
-    protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
+    protected CosmosException(int statusCode, String message, HttpHeaders responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
         this.requestTimeline = RequestTimeline.empty();
-        this.responseHeaders = responseHeaders == null ? new HttpHeaders() : new HttpHeaders(responseHeaders);
+        this.responseHeaders = responseHeaders == null ? new HttpHeaders() : responseHeaders;
     }
 
     /**
@@ -95,7 +95,7 @@ public class CosmosException extends AzureException {
      * @param cosmosErrorResource the error resource object.
      * @param responseHeaders the response headers.
      */
-    protected CosmosException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+    protected CosmosException(int statusCode, CosmosError cosmosErrorResource, HttpHeaders responseHeaders) {
         this(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
     }
 
@@ -111,7 +111,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(String resourceAddress,
                               int statusCode,
                               CosmosError cosmosErrorResource,
-                              Map<String, String> responseHeaders) {
+                              HttpHeaders responseHeaders) {
         this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
         this.resourceAddress = resourceAddress;
         this.cosmosError = cosmosErrorResource;
@@ -126,7 +126,7 @@ public class CosmosException extends AzureException {
      * @param responseHeaders the response headers.
      * @param resourceAddress the address of the resource the request is associated with.
      */
-    protected CosmosException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode,
+    protected CosmosException(String message, Exception exception, HttpHeaders responseHeaders, int statusCode,
                               String resourceAddress) {
         this(statusCode, message, responseHeaders, exception);
         this.resourceAddress = resourceAddress;
