@@ -5,6 +5,7 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
@@ -98,12 +99,12 @@ public class BasicDemo {
     }
 
     private void createDbAndContainerBlocking() {
-        client.createDatabaseIfNotExists(DATABASE_NAME)
-            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
-            .flatMap(dbResponse -> dbResponse.getDatabase()
-                                       .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
-                                                                                                 "/country")))
-            .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
+
+        CosmosAsyncDatabase database = client.createDatabaseIfNotExists(DATABASE_NAME)
+            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId())).block().getDatabase();
+
+        database.createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country"))
+            .doOnSuccess(cosmosContainerResponse -> log("Container: " + database.getContainer(cosmosContainerResponse.getProperties().getId())))
             .doOnError(throwable -> log(throwable.getMessage()))
             .publishOn(Schedulers.elastic())
             .block();

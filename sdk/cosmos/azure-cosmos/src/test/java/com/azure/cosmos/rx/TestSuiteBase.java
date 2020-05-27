@@ -336,12 +336,14 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
-        return database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block().getContainer();
+        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block();
+        return database.getContainer(cosmosContainerProperties.getId());
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options) {
-        return database.createContainer(cosmosContainerProperties, options).block().getContainer();
+        database.createContainer(cosmosContainerProperties, options).block();
+        return database.getContainer(cosmosContainerProperties.getId());
     }
 
     private static CosmosContainerProperties getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes() {
@@ -458,7 +460,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncClient client, String dbId, CosmosContainerProperties collectionDefinition) {
-        return client.getDatabase(dbId).createContainer(collectionDefinition).block().getContainer();
+        CosmosAsyncDatabase database = client.getDatabase(dbId);
+        database.createContainer(collectionDefinition).block();
+        return database.getContainer(collectionDefinition.getId());
     }
 
     public static void deleteCollection(CosmosAsyncClient client, String dbId, String collectionId) {

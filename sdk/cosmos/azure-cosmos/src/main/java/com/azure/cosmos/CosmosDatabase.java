@@ -3,11 +3,10 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
@@ -166,44 +165,44 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container cosmos sync container response.
+     * Create container cosmos container response.
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainer(String id, String partitionKeyPath) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath));
     }
 
     /**
-     * Create container cosmos sync container response.
+     * Create container cosmos container response.
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
      * @param throughputProperties the throughput properties.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath, throughputProperties));
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if not exists cosmos container response.
      *
      * @param containerProperties the container properties.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(CosmosContainerProperties containerProperties) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties));
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if not exists cosmos container response.
      *
      * @param containerProperties the container properties.
      * @param throughput the throughput.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
@@ -213,14 +212,14 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if not exists cosmos container response.
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
      *
      * @param containerProperties the container properties.
      * @param throughputProperties the throughput properties for the container.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
@@ -230,11 +229,11 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if not exists cosmos container response.
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         String id,
@@ -243,7 +242,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if not exists cosmos container response.
      * <p>
      * The throughput settings will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -251,7 +250,7 @@ public class CosmosDatabase {
      * @param id the id.
      * @param partitionKeyPath the partition key path.
      * @param throughput the throughput.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         String id, String partitionKeyPath,
@@ -262,7 +261,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if not exists cosmos container response.
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -270,7 +269,7 @@ public class CosmosDatabase {
      * @param id the id.
      * @param partitionKeyPath the partition key path.
      * @param throughputProperties the throughput properties for the container.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         String id, String partitionKeyPath,
@@ -281,16 +280,14 @@ public class CosmosDatabase {
     }
 
     /**
-     * Map container response and block cosmos sync container response.
+     * Map container response and block cosmos container response.
      *
      * @param containerMono the container mono.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
-    CosmosContainerResponse mapContainerResponseAndBlock(Mono<CosmosAsyncContainerResponse> containerMono) {
+    CosmosContainerResponse mapContainerResponseAndBlock(Mono<CosmosContainerResponse> containerMono) {
         try {
-            return containerMono
-                       .map(this::convertResponse)
-                       .block();
+            return containerMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -372,16 +369,6 @@ public class CosmosDatabase {
      */
     public CosmosContainer getContainer(String id) {
         return new CosmosContainer(id, this, databaseWrapper.getContainer(id));
-    }
-
-    /**
-     * Convert response cosmos sync container response.
-     *
-     * @param response the response.
-     * @return the cosmos sync container response.
-     */
-    CosmosContainerResponse convertResponse(CosmosAsyncContainerResponse response) {
-        return ModelBridgeInternal.createCosmosContainerResponse(response, this, client);
     }
 
     /* Users */

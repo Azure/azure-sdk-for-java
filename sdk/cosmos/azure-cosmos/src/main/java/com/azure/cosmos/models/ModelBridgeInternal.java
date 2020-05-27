@@ -76,9 +76,9 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncContainerResponse createCosmosAsyncContainerResponse(ResourceResponse<DocumentCollection> response,
-                                                                                  CosmosAsyncDatabase database) {
-        return new CosmosAsyncContainerResponse(response, database);
+    public static CosmosContainerResponse createCosmosContainerResponse(ResourceResponse<DocumentCollection> response,
+                                                                        CosmosAsyncDatabase database) {
+        return new CosmosContainerResponse(response, database);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -141,12 +141,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosAsyncUserResponse createCosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
         return new CosmosAsyncUserResponse(response, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainerResponse createCosmosContainerResponse(CosmosAsyncContainerResponse response,
-                                                                        CosmosDatabase database, CosmosClient client) {
-        return new CosmosContainerResponse(response, database, client);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

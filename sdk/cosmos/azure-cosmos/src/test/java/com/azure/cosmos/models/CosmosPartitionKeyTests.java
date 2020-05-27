@@ -289,7 +289,8 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         String partitionedCollectionId = "PartitionedCollection" + UUID.randomUUID().toString();
         String IdOfDocumentWithNoPk = UUID.randomUUID().toString();
         CosmosContainerProperties containerSettings = new CosmosContainerProperties(partitionedCollectionId, "/mypk");
-        CosmosAsyncContainer createdContainer = createdDatabase.createContainer(containerSettings).block().getContainer();
+        createdDatabase.createContainer(containerSettings).block();
+        CosmosAsyncContainer createdContainer = createdDatabase.getContainer(containerSettings.getId());
         CosmosItemProperties cosmosItemProperties = new CosmosItemProperties();
         cosmosItemProperties.setId(IdOfDocumentWithNoPk);
         createdContainer.createItem(cosmosItemProperties).block();

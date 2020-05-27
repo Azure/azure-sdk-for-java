@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -26,9 +26,6 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.helpers.Util;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -73,7 +70,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single Cosmos container response with
      * the read container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> read() {
+    public Mono<CosmosContainerResponse> read() {
         return read(new CosmosContainerRequestOptions());
     }
 
@@ -88,12 +85,12 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single Cosmos container response with
      * the read container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> read(CosmosContainerRequestOptions options) {
+    public Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options) {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().readCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, database)).single();
     }
 
     /**
@@ -107,12 +104,12 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single Cosmos container response for
      * the deleted database or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> delete(CosmosContainerRequestOptions options) {
+    public Mono<CosmosContainerResponse> delete(CosmosContainerRequestOptions options) {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().deleteCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, database)).single();
     }
 
     /**
@@ -125,7 +122,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single Cosmos container response for
      * the deleted container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> delete() {
+    public Mono<CosmosContainerResponse> delete() {
         return delete(new CosmosContainerRequestOptions());
     }
 
@@ -141,7 +138,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single Cosmos container response with
      * the replaced container properties or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> replace(CosmosContainerProperties containerProperties) {
+    public Mono<CosmosContainerResponse> replace(CosmosContainerProperties containerProperties) {
         return replace(containerProperties, null);
     }
 
@@ -158,7 +155,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single Cosmos container response with
      * the replaced container properties or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> replace(
+    public Mono<CosmosContainerResponse> replace(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
         if (options == null) {
@@ -166,7 +163,7 @@ public class CosmosAsyncContainer {
         }
         return database.getDocClientWrapper()
                    .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, database)).single();
     }
 
     /* CosmosAsyncItem operations */

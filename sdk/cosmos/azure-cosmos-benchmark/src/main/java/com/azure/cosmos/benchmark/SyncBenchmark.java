@@ -131,13 +131,14 @@ abstract class SyncBenchmark<T> {
         }
 
         try {
-            cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId()).read().getContainer();
+            cosmosDatabase.getContainer(this.configuration.getCollectionId()).read();
+            cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId());
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(),
+                cosmosDatabase.createContainer(this.configuration.getCollectionId(),
                     Configuration.DEFAULT_PARTITION_KEY_PATH,
-                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput()))
-                    .getContainer();
+                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput()));
+                cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId());
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {

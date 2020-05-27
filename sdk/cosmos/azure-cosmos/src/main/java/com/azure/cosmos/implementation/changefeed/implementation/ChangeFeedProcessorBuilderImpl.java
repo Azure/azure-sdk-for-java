@@ -426,7 +426,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    this.collectionResourceId = documentCollectionResourceResponse.getContainer().getId();
+                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getId();
                     return this;
                 }));
     }
