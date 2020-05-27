@@ -11,8 +11,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 
 import java.time.Duration;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Map;
 
 /**
@@ -46,9 +45,9 @@ public class CosmosAsyncItemResponse<T> {
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
         if (item == null && this.itemClassType == CosmosItemProperties.class) {
-            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationStartTime = Instant.now();
             item =(T) getProperties();
-            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationEndTime = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,
                 serializationEndTime,
@@ -61,9 +60,9 @@ public class CosmosAsyncItemResponse<T> {
         if (item == null) {
             synchronized (this) {
                 if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
-                    ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+                    Instant serializationStartTime = Instant.now();
                     item = Utils.parse(responseBodyAsByteArray, itemClassType);
-                    ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                    Instant serializationEndTime = Instant.now();
                     SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                         serializationStartTime,
                         serializationEndTime,

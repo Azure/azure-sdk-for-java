@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ChangeFeedProcessor;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Specifies the options associated with {@link ChangeFeedProcessor}.
@@ -24,7 +24,7 @@ public final class ChangeFeedProcessorOptions {
     private String leasePrefix;
     private int maxItemCount;
     private String startContinuation;
-    private OffsetDateTime startTime;
+    private Instant startTime;
     private boolean startFromBeginning;
     private int minScaleCount;
     private int maxScaleCount;
@@ -214,7 +214,7 @@ public final class ChangeFeedProcessorOptions {
      *
      * @return the time (exclusive) to start looking for changes after.
      */
-    public OffsetDateTime getStartTime() {
+    public Instant getStartTime() {
         return this.startTime;
     }
 
@@ -230,7 +230,7 @@ public final class ChangeFeedProcessorOptions {
      * @param startTime the time (exclusive) to start looking for changes after.
      * @return the current ChangeFeedProcessorOptions instance.
      */
-    public ChangeFeedProcessorOptions setStartTime(OffsetDateTime startTime) {
+    public ChangeFeedProcessorOptions setStartTime(Instant startTime) {
         this.startTime = startTime;
         return this;
     }

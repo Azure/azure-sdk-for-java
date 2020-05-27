@@ -26,9 +26,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,8 +52,8 @@ class ClientSideRequestStatistics {
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
-    private ZonedDateTime requestStartTimeUTC;
-    private ZonedDateTime requestEndTimeUTC;
+    private Instant requestStartTimeUTC;
+    private Instant requestEndTimeUTC;
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
@@ -64,8 +62,8 @@ class ClientSideRequestStatistics {
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     ClientSideRequestStatistics() {
-        this.requestStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
-        this.requestEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        this.requestStartTimeUTC = Instant.now();
+        this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
         this.supplementalResponseStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
@@ -83,7 +81,7 @@ class ClientSideRequestStatistics {
 
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
-        ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant responseTime = Instant.now();
         connectionMode = ConnectionMode.DIRECT;
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
@@ -121,7 +119,7 @@ class ClientSideRequestStatistics {
     void recordGatewayResponse(
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
         CosmosException exception) {
-        ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant responseTime = Instant.now();
         connectionMode = ConnectionMode.GATEWAY;
         synchronized (this) {
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
@@ -131,7 +129,7 @@ class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null
                     && rxDocumentServiceRequest.requestContext != null
                     && rxDocumentServiceRequest.requestContext.retryContext != null) {
-                rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = Instant.now();
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
             }
 
@@ -163,9 +161,9 @@ class ClientSideRequestStatistics {
         String identifier = Utils.randomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
-        resolutionStatistics.startTime = ZonedDateTime.now(ZoneOffset.UTC);
+        resolutionStatistics.startTime = Instant.now();
         //  Very far in the future
-        resolutionStatistics.endTime = ZonedDateTime.of(LocalDateTime.MAX, ZoneOffset.UTC);
+        resolutionStatistics.endTime = Instant.MAX;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
 
         synchronized (this) {
@@ -179,7 +177,7 @@ class ClientSideRequestStatistics {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
-        ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant responseTime = Instant.now();
 
         synchronized (this) {
             if (!this.addressResolutionStatistics.containsKey(identifier)) {
@@ -230,7 +228,7 @@ class ClientSideRequestStatistics {
 
     void recordRetryContext(RxDocumentServiceRequest request) {
         if(request.requestContext.retryContext != null) {
-            request.requestContext.retryContext.retryEndTime =  ZonedDateTime.now(ZoneOffset.UTC);
+            request.requestContext.retryContext.retryEndTime =  Instant.now();
             this.retryContext = new RetryContext(request.requestContext.retryContext);
         }
     }
@@ -239,7 +237,7 @@ class ClientSideRequestStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
         StoreResult storeResult;
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
-        ZonedDateTime requestResponseTime;
+        Instant requestResponseTime;
         ResourceType requestResourceType;
         OperationType requestOperationType;
     }
@@ -329,9 +327,9 @@ class ClientSideRequestStatistics {
 
     private static class AddressResolutionStatistics {
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
-        ZonedDateTime startTime;
+        Instant startTime;
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
-        ZonedDateTime endTime;
+        Instant endTime;
         String targetEndpoint;
     }
 

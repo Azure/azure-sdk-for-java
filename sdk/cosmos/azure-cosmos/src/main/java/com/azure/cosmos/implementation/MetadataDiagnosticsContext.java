@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,11 +28,11 @@ public class MetadataDiagnosticsContext {
 
     @JsonSerialize(using = MetaDataDiagnosticSerializer.class)
     public static class MetadataDiagnostics {
-        public volatile ZonedDateTime startTimeUTC;
-        public volatile ZonedDateTime endTimeUTC;
+        public volatile Instant startTimeUTC;
+        public volatile Instant endTimeUTC;
         public volatile MetadataType metaDataName;
 
-        public MetadataDiagnostics(ZonedDateTime startTimeUTC, ZonedDateTime endTimeUTC, MetadataType metaDataName) {
+        public MetadataDiagnostics(Instant startTimeUTC, Instant endTimeUTC, MetadataType metaDataName) {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
             this.metaDataName = metaDataName;

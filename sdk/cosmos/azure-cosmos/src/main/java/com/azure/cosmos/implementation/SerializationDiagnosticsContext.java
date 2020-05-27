@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,11 +28,11 @@ public class SerializationDiagnosticsContext {
 
     @JsonSerialize(using = SerializationDiagnosticsContext.SerializationDiagnosticsSerializer.class)
     public static class SerializationDiagnostics {
-        public volatile ZonedDateTime startTimeUTC;
-        public volatile ZonedDateTime endTimeUTC;
+        public volatile Instant startTimeUTC;
+        public volatile Instant endTimeUTC;
         public volatile SerializationDiagnosticsContext.SerializationType serializationType;
 
-        public SerializationDiagnostics(ZonedDateTime startTimeUTC, ZonedDateTime endTimeUTC, SerializationDiagnosticsContext.SerializationType serializationType) {
+        public SerializationDiagnostics(Instant startTimeUTC, Instant endTimeUTC, SerializationDiagnosticsContext.SerializationType serializationType) {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
             this.serializationType = serializationType;

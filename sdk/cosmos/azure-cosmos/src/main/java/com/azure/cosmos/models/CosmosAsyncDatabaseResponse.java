@@ -10,8 +10,8 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.time.Instant;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 /**
  * The type Cosmos async database response.
@@ -27,9 +27,9 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
             database = null;
         } else {
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
-            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationStartTime = Instant.now();
             CosmosDatabaseProperties props =  new CosmosDatabaseProperties(bodyAsString, null);
-            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationEndTime = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,
                 serializationEndTime,

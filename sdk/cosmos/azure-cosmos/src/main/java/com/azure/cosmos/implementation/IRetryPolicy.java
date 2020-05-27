@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.List;
 
 // TODO update documentation
@@ -36,9 +36,9 @@ public interface IRetryPolicy  {
 
     Duration getRetryLatency();
 
-    ZonedDateTime getStartTime();
+    Instant getStartTime();
 
-    ZonedDateTime getEndTime();
+    Instant getEndTime();
 
     void addStatusAndSubStatusCode(Integer index, int statusCode, int subStatusCode);
 

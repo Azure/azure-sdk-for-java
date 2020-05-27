@@ -23,7 +23,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -173,7 +173,7 @@ public class DocumentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void timestamp(String documentId) throws Exception {
-        OffsetDateTime before = OffsetDateTime.now();
+        Instant before = Instant.now();
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
         Thread.sleep(1000);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
@@ -187,7 +187,7 @@ public class DocumentCrudTest extends TestSuiteBase {
                                                                CosmosItemProperties.class)
                                                 .block());
         Thread.sleep(1000);
-        OffsetDateTime after = OffsetDateTime.now();
+        Instant after = Instant.now();
 
         assertThat(readDocument.getTimestamp()).isAfterOrEqualTo(before);
         assertThat(readDocument.getTimestamp()).isBeforeOrEqualTo(after);

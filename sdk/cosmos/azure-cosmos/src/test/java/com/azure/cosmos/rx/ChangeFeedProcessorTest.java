@@ -38,7 +38,12 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -158,7 +163,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setFeedPollDelay(Duration.ofSeconds(1))
                     .setLeasePrefix("TEST")
                     .setMaxItemCount(10)
-                    .setStartTime(OffsetDateTime.now().minusDays(1))
+                    .setStartTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1).toInstant())
                     .setMinScaleCount(1)
                     .setMaxScaleCount(3)
                 )

@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Trigger;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,7 +129,7 @@ public final class CosmosTriggerProperties {
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.trigger.getTimestamp();
     }
 

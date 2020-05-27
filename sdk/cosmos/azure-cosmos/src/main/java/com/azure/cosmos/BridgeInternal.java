@@ -40,7 +40,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -341,7 +341,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTimestamp(Resource resource, OffsetDateTime date) {
+    public static void setTimestamp(Resource resource, Instant date) {
         ModelBridgeInternal.setTimestamp(resource, date);
     }
 
