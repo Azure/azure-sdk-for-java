@@ -26,6 +26,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -167,8 +168,10 @@ public final class TextAnalyticsAsyncClient {
                         }
                         return detectLanguageResult.getPrimaryLanguage();
                     }
-                    // this step should never be executed, if executed, we get an empty collection above.
-                    return new DetectedLanguage(null, null, -1, null);
+
+                    // When the detected language result collection is empty,
+                    // return empty result for the empty collection returned by the service.
+                    return new DetectedLanguage("", "", -1, IterableStream.of(null));
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -662,8 +665,9 @@ public final class TextAnalyticsAsyncClient {
                         }
                         return sentimentResult.getDocumentSentiment();
                     }
-                    // this step should never be executed, if executed, we get an empty collection above.
-                    return new DocumentSentiment(null, null, null, null);
+                    // When the sentiment result collection is empty,
+                    // return empty result for the empty collection returned by the service.
+                    return new DocumentSentiment(null, null, null, IterableStream.of(null));
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
