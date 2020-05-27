@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
@@ -414,6 +415,12 @@ public class PartitionKeyInternalTest {
 
         verifyEffectivePartitionKeyEncoding(nonLatin, 101, "05C1E3653D9F3E08D1B1D1B2D1B3D1B4D1B5D1B6D292D1B7D1B8D1B9D1BAD1BBD1BCD1BDD1BED1BFD1C0D281D282D283D284D285D286D287D288D289D28AD28BD28CD28DD28ED28FD290D1B1D1B2D1B3D1B4D1B5D1B6D292D1B7D1B8D1B9D1BAD1BBD1BCD1BDD1BED1BFD1C0D2", false);
         verifyEffectivePartitionKeyEncoding(nonLatin, 101, "0B6D25D07748AB9CA0F523D4BAD146C8", true);
+    }
+
+    @Test(groups = "unit")
+    private void serializeNonePartitionKey() {
+        String nonePartitionKey = PartitionKey.NONE.toString();
+        assertThat(nonePartitionKey).isEqualTo("");
     }
 
     private static void validateEffectivePartitionKeyV2(String partitionKeyRangeJson, String expectedHexEncoding) {

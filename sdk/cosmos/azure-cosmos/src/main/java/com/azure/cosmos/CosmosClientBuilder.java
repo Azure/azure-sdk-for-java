@@ -20,7 +20,7 @@ import java.util.List;
  * When building client, endpoint() and key() are mandatory APIs, without these the initialization will fail.
  * <p>
  * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
- * By default, SESSION consistency level is used if none is provided.
+ * By default, account consistency level is used if none is provided.
  * <p>
  * By default, direct connection mode is used if none specified. 
  * <pre>
