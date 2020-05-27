@@ -93,7 +93,6 @@ public class ReactorSession implements AmqpSession {
 
         this(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
             messageSerializer, openTimeout);
-        logger.verbose("retryPolicy", retryPolicy);
         this.retryPolicy = retryPolicy;
 
     }
@@ -203,10 +202,7 @@ public class ReactorSession implements AmqpSession {
     private Mono<AmqpLink> createTransactionCoordinator() {
         return createTransactionCoordinator(TRANSACTION_LINK_NAME, openTimeout, retryPolicy);
     }
-    /**
-     * {@inheritDoc}
-     */
-   // @Override
+
     private Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(

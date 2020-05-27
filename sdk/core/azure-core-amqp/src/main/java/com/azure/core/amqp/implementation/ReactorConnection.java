@@ -239,8 +239,6 @@ public class ReactorConnection implements AmqpConnection {
      * @return A new instance of AMQP session.
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        logger.verbose("!!!! createSession sessionName[{}],  connectionOptions.getRetry [{}].", sessionName,
-            connectionOptions.getRetry());
         return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
             getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
             connectionOptions.getRetry().getTryTimeout());
