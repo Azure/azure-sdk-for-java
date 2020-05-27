@@ -14,6 +14,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -133,7 +134,10 @@ abstract class SyncBenchmark<T> {
             cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId()).read().getContainer();
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).getContainer();
+                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(),
+                    Configuration.DEFAULT_PARTITION_KEY_PATH,
+                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput()))
+                    .getContainer();
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {

@@ -6,36 +6,15 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**
- * Encapsulates options that can be specified for a request issued to cosmos container.
+ * Encapsulates options that can be specified for a request issued to Cosmos container.
  */
 public final class CosmosContainerRequestOptions {
-    private Integer offerThroughput;
     private boolean populateQuotaInfo;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private ThroughputProperties throughputProperties;
-
-    /**
-     * Gets the throughput in the form of Request Units per second when creating a cosmos container.
-     *
-     * @return the throughput value.
-     */
-    Integer getOfferThroughput() {
-        return offerThroughput;
-    }
-
-    /**
-     * Sets the throughput in the form of Request Units per second when creating a cosmos container.
-     *
-     * @param offerThroughput the throughput value.
-     * @return the current request options
-     */
-    CosmosContainerRequestOptions setOfferThroughput(Integer offerThroughput) {
-        this.offerThroughput = offerThroughput;
-        return this;
-    }
 
     /**
      * Gets the PopulateQuotaInfo setting for cosmos container read requests in the Azure Cosmos DB database service.
@@ -150,7 +129,6 @@ public final class CosmosContainerRequestOptions {
         RequestOptions options = new RequestOptions();
         options.setIfMatchETag(getIfMatchETag());
         options.setIfNoneMatchETag(getIfNoneMatchETag());
-        options.setOfferThroughput(offerThroughput);
         options.setPopulateQuotaInfo(populateQuotaInfo);
         options.setSessionToken(sessionToken);
         options.setConsistencyLevel(consistencyLevel);
