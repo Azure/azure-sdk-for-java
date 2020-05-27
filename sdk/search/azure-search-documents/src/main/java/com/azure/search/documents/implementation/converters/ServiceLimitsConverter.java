@@ -3,17 +3,16 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.ServiceLimits;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ServiceLimits} and {@link ServiceLimits}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits} and {@link ServiceLimits}.
  */
 public final class ServiceLimitsConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ServiceLimits} to {@link ServiceLimits}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits} to {@link ServiceLimits}.
      */
-    public static ServiceLimits map(com.azure.search.documents.implementation.models.ServiceLimits obj) {
+    public static ServiceLimits map(com.azure.search.documents.indexes.implementation.models.ServiceLimits obj) {
         if (obj == null) {
             return null;
         }
@@ -34,14 +33,14 @@ public final class ServiceLimitsConverter {
     }
 
     /**
-     * Maps from {@link ServiceLimits} to {@link com.azure.search.documents.implementation.models.ServiceLimits}.
+     * Maps from {@link ServiceLimits} to {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits}.
      */
-    public static com.azure.search.documents.implementation.models.ServiceLimits map(ServiceLimits obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ServiceLimits map(ServiceLimits obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ServiceLimits serviceLimits =
-            new com.azure.search.documents.implementation.models.ServiceLimits();
+        com.azure.search.documents.indexes.implementation.models.ServiceLimits serviceLimits =
+            new com.azure.search.documents.indexes.implementation.models.ServiceLimits();
 
         Integer maxFieldNestingDepthPerIndex = obj.getMaxFieldNestingDepthPerIndex();
         serviceLimits.setMaxFieldNestingDepthPerIndex(maxFieldNestingDepthPerIndex);

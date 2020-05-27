@@ -3,19 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.EdgeNGramTokenFilter;
-import com.azure.search.documents.models.EdgeNGramTokenFilterSide;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenFilter;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.EdgeNGramTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter} and
  * {@link EdgeNGramTokenFilter}.
  */
 public final class EdgeNGramTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.EdgeNGramTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter} to
      * {@link EdgeNGramTokenFilter}.
      */
-    public static EdgeNGramTokenFilter map(com.azure.search.documents.implementation.models.EdgeNGramTokenFilter obj) {
+    public static EdgeNGramTokenFilter map(com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -39,14 +39,14 @@ public final class EdgeNGramTokenFilterConverter {
 
     /**
      * Maps from {@link EdgeNGramTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.EdgeNGramTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.EdgeNGramTokenFilter map(EdgeNGramTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter map(EdgeNGramTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.EdgeNGramTokenFilter edgeNGramTokenFilter =
-            new com.azure.search.documents.implementation.models.EdgeNGramTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter edgeNGramTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter();
 
         String name = obj.getName();
         edgeNGramTokenFilter.setName(name);
@@ -55,7 +55,7 @@ public final class EdgeNGramTokenFilterConverter {
         edgeNGramTokenFilter.setMaxGram(maxGram);
 
         if (obj.getSide() != null) {
-            com.azure.search.documents.implementation.models.EdgeNGramTokenFilterSide side =
+            com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterSide side =
                 EdgeNGramTokenFilterSideConverter.map(obj.getSide());
             edgeNGramTokenFilter.setSide(side);
         }

@@ -3,20 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.AzureActiveDirectoryApplicationCredentials;
-import com.azure.search.documents.models.SearchResourceEncryptionKey;
+import com.azure.search.documents.indexes.models.AzureActiveDirectoryApplicationCredentials;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SearchResourceEncryptionKey} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey} and
  * {@link SearchResourceEncryptionKey}.
  */
 public final class SearchResourceEncryptionKeyConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SearchResourceEncryptionKey} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey} to
      * {@link SearchResourceEncryptionKey}.
      */
-    public static SearchResourceEncryptionKey map(com.azure.search.documents.implementation.models.SearchResourceEncryptionKey obj) {
+    public static SearchResourceEncryptionKey map(com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey obj) {
         if (obj == null) {
             return null;
         }
@@ -41,20 +40,20 @@ public final class SearchResourceEncryptionKeyConverter {
 
     /**
      * Maps from {@link SearchResourceEncryptionKey} to
-     * {@link com.azure.search.documents.implementation.models.SearchResourceEncryptionKey}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey}.
      */
-    public static com.azure.search.documents.implementation.models.SearchResourceEncryptionKey map(SearchResourceEncryptionKey obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey map(SearchResourceEncryptionKey obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SearchResourceEncryptionKey searchResourceEncryptionKey =
-            new com.azure.search.documents.implementation.models.SearchResourceEncryptionKey();
+        com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey searchResourceEncryptionKey =
+            new com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey();
 
         String keyVersion = obj.getKeyVersion();
         searchResourceEncryptionKey.setKeyVersion(keyVersion);
 
         if (obj.getAccessCredentials() != null) {
-            com.azure.search.documents.implementation.models.AzureActiveDirectoryApplicationCredentials accessCredentials = AzureActiveDirectoryApplicationCredentialsConverter.map(obj.getAccessCredentials());
+            com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials accessCredentials = AzureActiveDirectoryApplicationCredentialsConverter.map(obj.getAccessCredentials());
             searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
         }
 

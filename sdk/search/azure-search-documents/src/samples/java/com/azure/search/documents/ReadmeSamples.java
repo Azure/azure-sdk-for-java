@@ -10,9 +10,9 @@ import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 

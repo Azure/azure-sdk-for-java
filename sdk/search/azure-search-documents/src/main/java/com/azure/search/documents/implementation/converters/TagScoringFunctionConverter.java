@@ -3,21 +3,20 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.ScoringFunctionInterpolation;
-import com.azure.search.documents.models.TagScoringFunction;
-import com.azure.search.documents.models.TagScoringParameters;
+import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
+import com.azure.search.documents.indexes.models.TagScoringFunction;
+import com.azure.search.documents.indexes.models.TagScoringParameters;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.TagScoringFunction} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.TagScoringFunction} and
  * {@link TagScoringFunction}.
  */
 public final class TagScoringFunctionConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.TagScoringFunction} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.TagScoringFunction} to
      * {@link TagScoringFunction}.
      */
-    public static TagScoringFunction map(com.azure.search.documents.implementation.models.TagScoringFunction obj) {
+    public static TagScoringFunction map(com.azure.search.documents.indexes.implementation.models.TagScoringFunction obj) {
         if (obj == null) {
             return null;
         }
@@ -44,17 +43,17 @@ public final class TagScoringFunctionConverter {
 
     /**
      * Maps from {@link TagScoringFunction} to
-     * {@link com.azure.search.documents.implementation.models.TagScoringFunction}.
+     * {@link com.azure.search.documents.indexes.implementation.models.TagScoringFunction}.
      */
-    public static com.azure.search.documents.implementation.models.TagScoringFunction map(TagScoringFunction obj) {
+    public static com.azure.search.documents.indexes.implementation.models.TagScoringFunction map(TagScoringFunction obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.TagScoringFunction tagScoringFunction =
-            new com.azure.search.documents.implementation.models.TagScoringFunction();
+        com.azure.search.documents.indexes.implementation.models.TagScoringFunction tagScoringFunction =
+            new com.azure.search.documents.indexes.implementation.models.TagScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation interpolation =
+            com.azure.search.documents.indexes.implementation.models.ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
             tagScoringFunction.setInterpolation(interpolation);
         }
@@ -66,7 +65,7 @@ public final class TagScoringFunctionConverter {
         tagScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            com.azure.search.documents.implementation.models.TagScoringParameters parameters =
+            com.azure.search.documents.indexes.implementation.models.TagScoringParameters parameters =
                 TagScoringParametersConverter.map(obj.getParameters());
             tagScoringFunction.setParameters(parameters);
         }

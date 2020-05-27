@@ -3,18 +3,17 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.KeywordTokenizer;
+import com.azure.search.documents.indexes.models.KeywordTokenizer;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.KeywordTokenizer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.KeywordTokenizer} and
  * {@link KeywordTokenizer}.
  */
 public final class KeywordTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.KeywordTokenizer} to {@link KeywordTokenizer}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.KeywordTokenizer} to {@link KeywordTokenizer}.
      */
-    public static KeywordTokenizer map(com.azure.search.documents.implementation.models.KeywordTokenizer obj) {
+    public static KeywordTokenizer map(com.azure.search.documents.indexes.implementation.models.KeywordTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -29,14 +28,14 @@ public final class KeywordTokenizerConverter {
     }
 
     /**
-     * Maps from {@link KeywordTokenizer} to {@link com.azure.search.documents.implementation.models.KeywordTokenizer}.
+     * Maps from {@link KeywordTokenizer} to {@link com.azure.search.documents.indexes.implementation.models.KeywordTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.KeywordTokenizer map(KeywordTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.KeywordTokenizer map(KeywordTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.KeywordTokenizer keywordTokenizer =
-            new com.azure.search.documents.implementation.models.KeywordTokenizer();
+        com.azure.search.documents.indexes.implementation.models.KeywordTokenizer keywordTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.KeywordTokenizer();
 
         String name = obj.getName();
         keywordTokenizer.setName(name);

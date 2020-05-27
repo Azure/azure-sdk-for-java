@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.CommonGramTokenFilter;
+import com.azure.search.documents.indexes.models.CommonGramTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.CommonGramTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter} and
  * {@link CommonGramTokenFilter}.
  */
 public final class CommonGramTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.CommonGramTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter} to
      * {@link CommonGramTokenFilter}.
      */
-    public static CommonGramTokenFilter map(com.azure.search.documents.implementation.models.CommonGramTokenFilter obj) {
+    public static CommonGramTokenFilter map(com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -41,14 +41,14 @@ public final class CommonGramTokenFilterConverter {
 
     /**
      * Maps from {@link CommonGramTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.CommonGramTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.CommonGramTokenFilter map(CommonGramTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter map(CommonGramTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.CommonGramTokenFilter commonGramTokenFilter =
-            new com.azure.search.documents.implementation.models.CommonGramTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter commonGramTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter();
 
         String name = obj.getName();
         commonGramTokenFilter.setName(name);

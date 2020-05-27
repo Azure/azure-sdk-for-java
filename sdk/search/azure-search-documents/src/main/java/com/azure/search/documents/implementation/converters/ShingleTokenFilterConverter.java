@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.ShingleTokenFilter;
+import com.azure.search.documents.indexes.models.ShingleTokenFilter;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ShingleTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter} and
  * {@link ShingleTokenFilter}.
  */
 public final class ShingleTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ShingleTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter} to
      * {@link ShingleTokenFilter}.
      */
-    public static ShingleTokenFilter map(com.azure.search.documents.implementation.models.ShingleTokenFilter obj) {
+    public static ShingleTokenFilter map(com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -46,14 +45,14 @@ public final class ShingleTokenFilterConverter {
 
     /**
      * Maps from {@link ShingleTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.ShingleTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.ShingleTokenFilter map(ShingleTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter map(ShingleTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ShingleTokenFilter shingleTokenFilter =
-            new com.azure.search.documents.implementation.models.ShingleTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter shingleTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter();
 
         String name = obj.getName();
         shingleTokenFilter.setName(name);

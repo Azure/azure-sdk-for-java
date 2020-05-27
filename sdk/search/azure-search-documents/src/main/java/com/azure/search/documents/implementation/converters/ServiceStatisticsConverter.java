@@ -3,21 +3,20 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.ServiceCounters;
-import com.azure.search.documents.models.ServiceLimits;
-import com.azure.search.documents.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.ServiceCounters;
+import com.azure.search.documents.indexes.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ServiceStatistics} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics} and
  * {@link ServiceStatistics}.
  */
 public final class ServiceStatisticsConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ServiceStatistics} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics} to
      * {@link ServiceStatistics}.
      */
-    public static ServiceStatistics map(com.azure.search.documents.implementation.models.ServiceStatistics obj) {
+    public static ServiceStatistics map(com.azure.search.documents.indexes.implementation.models.ServiceStatistics obj) {
         if (obj == null) {
             return null;
         }
@@ -37,23 +36,23 @@ public final class ServiceStatisticsConverter {
 
     /**
      * Maps from {@link ServiceStatistics} to
-     * {@link com.azure.search.documents.implementation.models.ServiceStatistics}.
+     * {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics}.
      */
-    public static com.azure.search.documents.implementation.models.ServiceStatistics map(ServiceStatistics obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ServiceStatistics map(ServiceStatistics obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ServiceStatistics serviceStatistics =
-            new com.azure.search.documents.implementation.models.ServiceStatistics();
+        com.azure.search.documents.indexes.implementation.models.ServiceStatistics serviceStatistics =
+            new com.azure.search.documents.indexes.implementation.models.ServiceStatistics();
 
         if (obj.getCounters() != null) {
-            com.azure.search.documents.implementation.models.ServiceCounters counters =
+            com.azure.search.documents.indexes.implementation.models.ServiceCounters counters =
                 ServiceCountersConverter.map(obj.getCounters());
             serviceStatistics.setCounters(counters);
         }
 
         if (obj.getLimits() != null) {
-            com.azure.search.documents.implementation.models.ServiceLimits limits =
+            com.azure.search.documents.indexes.implementation.models.ServiceLimits limits =
                 ServiceLimitsConverter.map(obj.getLimits());
             serviceStatistics.setLimits(limits);
         }

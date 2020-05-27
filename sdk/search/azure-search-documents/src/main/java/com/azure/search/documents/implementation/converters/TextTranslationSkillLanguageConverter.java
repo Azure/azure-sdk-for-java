@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.TextTranslationSkillLanguage;
+import com.azure.search.documents.indexes.models.TextTranslationSkillLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage} and
  * {@link TextTranslationSkillLanguage}.
  */
 public final class TextTranslationSkillLanguageConverter {
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage} to enum
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage} to enum
      * {@link TextTranslationSkillLanguage}.
      */
-    public static TextTranslationSkillLanguage map(com.azure.search.documents.implementation.models.TextTranslationSkillLanguage obj) {
+    public static TextTranslationSkillLanguage map(com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
@@ -24,13 +23,13 @@ public final class TextTranslationSkillLanguageConverter {
 
     /**
      * Maps from enum {@link TextTranslationSkillLanguage} to enum
-     * {@link com.azure.search.documents.implementation.models.TextTranslationSkillLanguage}.
+     * {@link com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage}.
      */
-    public static com.azure.search.documents.implementation.models.TextTranslationSkillLanguage map(TextTranslationSkillLanguage obj) {
+    public static com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage map(TextTranslationSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
-        return com.azure.search.documents.implementation.models.TextTranslationSkillLanguage.fromString(obj.toString());
+        return com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage.fromString(obj.toString());
     }
 
     private TextTranslationSkillLanguageConverter() {

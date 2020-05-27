@@ -3,21 +3,20 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.MagnitudeScoringFunction;
-import com.azure.search.documents.models.MagnitudeScoringParameters;
-import com.azure.search.documents.models.ScoringFunctionInterpolation;
+import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
+import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
+import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.MagnitudeScoringFunction} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.MagnitudeScoringFunction} and
  * {@link MagnitudeScoringFunction}.
  */
 public final class MagnitudeScoringFunctionConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.MagnitudeScoringFunction} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.MagnitudeScoringFunction} to
      * {@link MagnitudeScoringFunction}.
      */
-    public static MagnitudeScoringFunction map(com.azure.search.documents.implementation.models.MagnitudeScoringFunction obj) {
+    public static MagnitudeScoringFunction map(com.azure.search.documents.indexes.implementation.models.MagnitudeScoringFunction obj) {
         if (obj == null) {
             return null;
         }
@@ -44,17 +43,17 @@ public final class MagnitudeScoringFunctionConverter {
 
     /**
      * Maps from {@link MagnitudeScoringFunction} to
-     * {@link com.azure.search.documents.implementation.models.MagnitudeScoringFunction}.
+     * {@link com.azure.search.documents.indexes.implementation.models.MagnitudeScoringFunction}.
      */
-    public static com.azure.search.documents.implementation.models.MagnitudeScoringFunction map(MagnitudeScoringFunction obj) {
+    public static com.azure.search.documents.indexes.implementation.models.MagnitudeScoringFunction map(MagnitudeScoringFunction obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.MagnitudeScoringFunction magnitudeScoringFunction =
-            new com.azure.search.documents.implementation.models.MagnitudeScoringFunction();
+        com.azure.search.documents.indexes.implementation.models.MagnitudeScoringFunction magnitudeScoringFunction =
+            new com.azure.search.documents.indexes.implementation.models.MagnitudeScoringFunction();
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.implementation.models.ScoringFunctionInterpolation interpolation =
+            com.azure.search.documents.indexes.implementation.models.ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
             magnitudeScoringFunction.setInterpolation(interpolation);
         }
@@ -66,7 +65,7 @@ public final class MagnitudeScoringFunctionConverter {
         magnitudeScoringFunction.setBoost(boost);
 
         if (obj.getParameters() != null) {
-            com.azure.search.documents.implementation.models.MagnitudeScoringParameters parameters =
+            com.azure.search.documents.indexes.implementation.models.MagnitudeScoringParameters parameters =
                 MagnitudeScoringParametersConverter.map(obj.getParameters());
             magnitudeScoringFunction.setParameters(parameters);
         }

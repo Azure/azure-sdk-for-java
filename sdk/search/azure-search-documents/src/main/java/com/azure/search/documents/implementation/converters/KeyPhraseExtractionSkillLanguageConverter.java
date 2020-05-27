@@ -3,18 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.KeyPhraseExtractionSkillLanguage;
+import com.azure.search.documents.indexes.models.KeyPhraseExtractionSkillLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkillLanguage} and
  * {@link KeyPhraseExtractionSkillLanguage}.
  */
 public final class KeyPhraseExtractionSkillLanguageConverter {
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage} to enum
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkillLanguage} to enum
      * {@link KeyPhraseExtractionSkillLanguage}.
      */
-    public static KeyPhraseExtractionSkillLanguage map(com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage obj) {
+    public static KeyPhraseExtractionSkillLanguage map(com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
@@ -23,13 +23,13 @@ public final class KeyPhraseExtractionSkillLanguageConverter {
 
     /**
      * Maps from enum {@link KeyPhraseExtractionSkillLanguage} to enum
-     * {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage}.
+     * {@link com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkillLanguage}.
      */
-    public static com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage map(KeyPhraseExtractionSkillLanguage obj) {
+    public static com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkillLanguage map(KeyPhraseExtractionSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
-        return com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage.fromString(obj.toString());
+        return com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkillLanguage.fromString(obj.toString());
     }
 
     private KeyPhraseExtractionSkillLanguageConverter() {

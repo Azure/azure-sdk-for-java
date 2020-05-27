@@ -4,13 +4,13 @@
 package com.azure.search.documents;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.models.DataChangeDetectionPolicy;
-import com.azure.search.documents.models.DataDeletionDetectionPolicy;
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.SearchIndexerDataContainer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
 /**
  * Utility class that aids in the creation of {@link SearchIndexerDataSource SearchIndexerDataSources}.

@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.FieldMappingFunction;
+import com.azure.search.documents.indexes.models.FieldMappingFunction;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.FieldMappingFunction} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.FieldMappingFunction} and
  * {@link FieldMappingFunction}.
  */
 public final class FieldMappingFunctionConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.FieldMappingFunction} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.FieldMappingFunction} to
      * {@link FieldMappingFunction}.
      */
-    public static FieldMappingFunction map(com.azure.search.documents.implementation.models.FieldMappingFunction obj) {
+    public static FieldMappingFunction map(com.azure.search.documents.indexes.implementation.models.FieldMappingFunction obj) {
         if (obj == null) {
             return null;
         }
@@ -37,14 +37,14 @@ public final class FieldMappingFunctionConverter {
 
     /**
      * Maps from {@link FieldMappingFunction} to
-     * {@link com.azure.search.documents.implementation.models.FieldMappingFunction}.
+     * {@link com.azure.search.documents.indexes.implementation.models.FieldMappingFunction}.
      */
-    public static com.azure.search.documents.implementation.models.FieldMappingFunction map(FieldMappingFunction obj) {
+    public static com.azure.search.documents.indexes.implementation.models.FieldMappingFunction map(FieldMappingFunction obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.FieldMappingFunction fieldMappingFunction =
-            new com.azure.search.documents.implementation.models.FieldMappingFunction();
+        com.azure.search.documents.indexes.implementation.models.FieldMappingFunction fieldMappingFunction =
+            new com.azure.search.documents.indexes.implementation.models.FieldMappingFunction();
 
         String name = obj.getName();
         fieldMappingFunction.setName(name);

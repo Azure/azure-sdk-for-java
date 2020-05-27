@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.ElisionTokenFilter;
+import com.azure.search.documents.indexes.models.ElisionTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ElisionTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter} and
  * {@link ElisionTokenFilter}.
  */
 public final class ElisionTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ElisionTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter} to
      * {@link ElisionTokenFilter}.
      */
-    public static ElisionTokenFilter map(com.azure.search.documents.implementation.models.ElisionTokenFilter obj) {
+    public static ElisionTokenFilter map(com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -35,14 +35,14 @@ public final class ElisionTokenFilterConverter {
 
     /**
      * Maps from {@link ElisionTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.ElisionTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.ElisionTokenFilter map(ElisionTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter map(ElisionTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ElisionTokenFilter elisionTokenFilter =
-            new com.azure.search.documents.implementation.models.ElisionTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter elisionTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter();
 
         String name = obj.getName();
         elisionTokenFilter.setName(name);

@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.WordDelimiterTokenFilter;
+import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.WordDelimiterTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter} and
  * {@link WordDelimiterTokenFilter}.
  */
 public final class WordDelimiterTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.WordDelimiterTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter} to
      * {@link WordDelimiterTokenFilter}.
      */
-    public static WordDelimiterTokenFilter map(com.azure.search.documents.implementation.models.WordDelimiterTokenFilter obj) {
+    public static WordDelimiterTokenFilter map(com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -62,14 +62,14 @@ public final class WordDelimiterTokenFilterConverter {
 
     /**
      * Maps from {@link WordDelimiterTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.WordDelimiterTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.WordDelimiterTokenFilter map(WordDelimiterTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter map(WordDelimiterTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.WordDelimiterTokenFilter wordDelimiterTokenFilter =
-            new com.azure.search.documents.implementation.models.WordDelimiterTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter wordDelimiterTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter();
 
         String name = obj.getName();
         wordDelimiterTokenFilter.setName(name);

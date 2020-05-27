@@ -10,27 +10,27 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
-import com.azure.search.documents.implementation.converters.RequestOptionsConverter;
+import com.azure.search.documents.implementation.converters.RequestOptionsIndexesConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerSkillsetConverter;
 import com.azure.search.documents.implementation.converters.SynonymMapConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
-import com.azure.search.documents.models.AnalyzeRequest;
-import com.azure.search.documents.models.AnalyzedTokenInfo;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
+import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
+import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerSkillset;
-import com.azure.search.documents.models.SearchIndexerStatus;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.SynonymMap;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -156,7 +156,7 @@ public final class SearchServiceAsyncClient {
                 .dataSources()
                 .createOrUpdateWithRestResponseAsync(dataSource.getName(),
                     SearchIndexerDataSourceConverter.map(dataSource), ifMatch, null,
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
@@ -192,7 +192,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.dataSources()
                 .createWithRestResponseAsync(SearchIndexerDataSourceConverter.map(dataSource),
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
@@ -227,7 +227,7 @@ public final class SearchServiceAsyncClient {
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
-                .getWithRestResponseAsync(dataSourceName, RequestOptionsConverter.map(requestOptions), context)
+                .getWithRestResponseAsync(dataSourceName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
@@ -273,7 +273,7 @@ public final class SearchServiceAsyncClient {
     private Mono<PagedResponse<SearchIndexerDataSource>> listDataSourcesWithResponse(String select,
         RequestOptions requestOptions, Context context) {
         return restClient.dataSources()
-            .listWithRestResponseAsync(select, RequestOptionsConverter.map(requestOptions), context)
+            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingPagingDataSource);
     }
@@ -314,7 +314,7 @@ public final class SearchServiceAsyncClient {
                 .deleteWithRestResponseAsync(
                     dataSourceName,
                     etag, null,
-                    RequestOptionsConverter.map(requestOptions),
+                    RequestOptionsIndexesConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
@@ -351,7 +351,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.indexers()
                 .createWithRestResponseAsync(SearchIndexerConverter.map(indexer),
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
@@ -393,7 +393,7 @@ public final class SearchServiceAsyncClient {
             return restClient.indexers()
                 .createOrUpdateWithRestResponseAsync(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch,
                     null,
-                    RequestOptionsConverter.map(requestOptions),
+                    RequestOptionsIndexesConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
@@ -428,7 +428,7 @@ public final class SearchServiceAsyncClient {
         Context context) {
         try {
             return restClient.indexers()
-                .getWithRestResponseAsync(indexerName, RequestOptionsConverter.map(requestOptions), context)
+                .getWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
@@ -471,7 +471,7 @@ public final class SearchServiceAsyncClient {
     private Mono<PagedResponse<SearchIndexer>> listIndexersWithResponse(String select, RequestOptions requestOptions,
         Context context) {
         return restClient.indexers()
-            .listWithRestResponseAsync(select, RequestOptionsConverter.map(requestOptions), context)
+            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingPagingSearchIndexer);
     }
@@ -519,7 +519,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.indexers()
                 .deleteWithRestResponseAsync(indexerName, etag, null,
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -552,7 +552,7 @@ public final class SearchServiceAsyncClient {
     Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexers()
-                .resetWithRestResponseAsync(indexerName, RequestOptionsConverter.map(requestOptions), context)
+                .resetWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -585,7 +585,7 @@ public final class SearchServiceAsyncClient {
     Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexers().runWithRestResponseAsync(indexerName,
-                RequestOptionsConverter.map(requestOptions), context)
+                RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -620,7 +620,8 @@ public final class SearchServiceAsyncClient {
         Context context) {
         try {
             return restClient.indexers()
-                .getStatusWithRestResponseAsync(indexerName, RequestOptionsConverter.map(requestOptions), context)
+                .getStatusWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions),
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingIndexerStatus);
         } catch (RuntimeException ex) {
@@ -656,7 +657,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.indexes()
                 .createWithRestResponseAsync(SearchIndexConverter.map(index),
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -689,7 +690,7 @@ public final class SearchServiceAsyncClient {
     Mono<Response<SearchIndex>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
-                .getWithRestResponseAsync(indexName, RequestOptionsConverter.map(requestOptions), context)
+                .getWithRestResponseAsync(indexName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -724,7 +725,8 @@ public final class SearchServiceAsyncClient {
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
-                .getStatisticsWithRestResponseAsync(indexName, RequestOptionsConverter.map(requestOptions), context)
+                .getStatisticsWithRestResponseAsync(indexName, RequestOptionsIndexesConverter.map(requestOptions),
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingGetIndexStatistics);
         } catch (RuntimeException ex) {
@@ -770,7 +772,7 @@ public final class SearchServiceAsyncClient {
     private Mono<PagedResponse<SearchIndex>> listIndexesWithResponse(String select, RequestOptions requestOptions,
         Context context) {
         return restClient.indexes()
-            .listWithRestResponseAsync(select, RequestOptionsConverter.map(requestOptions), context)
+            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingPagingSearchIndex);
     }
@@ -813,7 +815,7 @@ public final class SearchServiceAsyncClient {
             return restClient.indexes()
                 .createOrUpdateWithRestResponseAsync(index.getName(), SearchIndexConverter.map(index),
                     allowIndexDowntime, ifMatch, null,
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -853,7 +855,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.indexes()
                 .deleteWithRestResponseAsync(indexName, etag, null,
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -904,7 +906,7 @@ public final class SearchServiceAsyncClient {
         AnalyzeRequest analyzeRequest, RequestOptions requestOptions, Context context) {
         return restClient.indexes()
             .analyzeWithRestResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeRequest),
-                RequestOptionsConverter.map(requestOptions), context)
+                RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingTokenInfo);
     }
@@ -939,7 +941,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.skillsets()
                 .createWithRestResponseAsync(SearchIndexerSkillsetConverter.map(skillset),
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSkillset);
         } catch (RuntimeException ex) {
@@ -974,7 +976,7 @@ public final class SearchServiceAsyncClient {
         Context context) {
         try {
             return this.restClient.skillsets()
-                .getWithRestResponseAsync(skillsetName, RequestOptionsConverter.map(requestOptions), context)
+                .getWithRestResponseAsync(skillsetName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSkillset);
         } catch (RuntimeException ex) {
@@ -1021,7 +1023,7 @@ public final class SearchServiceAsyncClient {
         RequestOptions requestOptions,
         Context context) {
         return this.restClient.skillsets()
-            .listWithRestResponseAsync(select, RequestOptionsConverter.map(requestOptions), context)
+            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingPagingSkillset);
     }
@@ -1060,7 +1062,7 @@ public final class SearchServiceAsyncClient {
             return restClient.skillsets()
                 .createOrUpdateWithRestResponseAsync(skillset.getName(), SearchIndexerSkillsetConverter.map(skillset),
                     ifMatch, null,
-                    RequestOptionsConverter.map(requestOptions),
+                    RequestOptionsIndexesConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSkillset);
@@ -1103,7 +1105,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.skillsets()
                 .deleteWithRestResponseAsync(skillsetName, etag, null,
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -1140,7 +1142,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.synonymMaps()
                 .createWithRestResponseAsync(SynonymMapConverter.map(synonymMap),
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -1174,7 +1176,7 @@ public final class SearchServiceAsyncClient {
         Context context) {
         try {
             return restClient.synonymMaps()
-                .getWithRestResponseAsync(synonymMapName, RequestOptionsConverter.map(requestOptions), context)
+                .getWithRestResponseAsync(synonymMapName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -1220,7 +1222,7 @@ public final class SearchServiceAsyncClient {
     private Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select, RequestOptions requestOptions,
         Context context) {
         return restClient.synonymMaps()
-            .listWithRestResponseAsync(select, RequestOptionsConverter.map(requestOptions), context)
+            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingPagingSynonymMap);
     }
@@ -1259,7 +1261,7 @@ public final class SearchServiceAsyncClient {
             return restClient.synonymMaps()
                 .createOrUpdateWithRestResponseAsync(synonymMap.getName(), SynonymMapConverter.map(synonymMap),
                     ifMatch, null,
-                    RequestOptionsConverter.map(requestOptions),
+                    RequestOptionsIndexesConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
@@ -1302,7 +1304,7 @@ public final class SearchServiceAsyncClient {
         try {
             return restClient.synonymMaps()
                 .deleteWithRestResponseAsync(synonymMapName, etag, null,
-                    RequestOptionsConverter.map(requestOptions), context)
+                    RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -1336,7 +1338,7 @@ public final class SearchServiceAsyncClient {
     Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions, Context context) {
         try {
             return restClient.getServiceStatisticsWithRestResponseAsync(
-                RequestOptionsConverter.map(requestOptions), context)
+                RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalServiceStatistics);
         } catch (RuntimeException ex) {

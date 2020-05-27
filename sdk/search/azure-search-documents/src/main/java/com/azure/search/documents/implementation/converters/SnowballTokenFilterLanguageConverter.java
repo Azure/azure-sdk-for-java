@@ -4,23 +4,23 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.SnowballTokenFilterLanguage;
+import com.azure.search.documents.indexes.models.SnowballTokenFilterLanguage;
 
 import static com.azure.search.documents.implementation.util.Constants.ENUM_EXTERNAL_ERROR_MSG;
 import static com.azure.search.documents.implementation.util.Constants.ENUM_INTERNAL_ERROR_MSG;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage} and
  * {@link SnowballTokenFilterLanguage}.
  */
 public final class SnowballTokenFilterLanguageConverter {
     private static final ClientLogger LOGGER = new ClientLogger(SnowballTokenFilterLanguageConverter.class);
 
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage} to enum
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage} to enum
      * {@link SnowballTokenFilterLanguage}.
      */
-    public static SnowballTokenFilterLanguage map(com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage obj) {
+    public static SnowballTokenFilterLanguage map(com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage obj) {
         if (obj == null) {
             return null;
         }
@@ -76,57 +76,57 @@ public final class SnowballTokenFilterLanguageConverter {
 
     /**
      * Maps from enum {@link SnowballTokenFilterLanguage} to enum
-     * {@link com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage}.
      */
-    public static com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage map(SnowballTokenFilterLanguage obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage map(SnowballTokenFilterLanguage obj) {
         if (obj == null) {
             return null;
         }
         switch (obj) {
             case ARMENIAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.ARMENIAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.ARMENIAN;
             case BASQUE:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.BASQUE;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.BASQUE;
             case CATALAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.CATALAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.CATALAN;
             case DANISH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.DANISH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.DANISH;
             case DUTCH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.DUTCH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.DUTCH;
             case ENGLISH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.ENGLISH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.ENGLISH;
             case FINNISH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.FINNISH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.FINNISH;
             case FRENCH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.FRENCH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.FRENCH;
             case GERMAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.GERMAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.GERMAN;
             case GERMAN2:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.GERMAN2;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.GERMAN2;
             case HUNGARIAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.HUNGARIAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.HUNGARIAN;
             case ITALIAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.ITALIAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.ITALIAN;
             case KP:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.KP;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.KP;
             case LOVINS:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.LOVINS;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.LOVINS;
             case NORWEGIAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.NORWEGIAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.NORWEGIAN;
             case PORTER:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.PORTER;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.PORTER;
             case PORTUGUESE:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.PORTUGUESE;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.PORTUGUESE;
             case ROMANIAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.ROMANIAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.ROMANIAN;
             case RUSSIAN:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.RUSSIAN;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.RUSSIAN;
             case SPANISH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.SPANISH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.SPANISH;
             case SWEDISH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.SWEDISH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.SWEDISH;
             case TURKISH:
-                return com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage.TURKISH;
+                return com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage.TURKISH;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ENUM_INTERNAL_ERROR_MSG, obj)));
         }
