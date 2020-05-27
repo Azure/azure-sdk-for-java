@@ -6,6 +6,7 @@ package com.azure.schemaregistry.client;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.schemaregistry.client.rest.AzureSchemaRegistryRestService;
 import com.azure.schemaregistry.client.rest.AzureSchemaRegistryRestServiceClientBuilder;
@@ -14,16 +15,18 @@ import com.azure.schemaregistry.client.rest.models.SchemaId;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  * <p>
- * Utilizes in-memory {@link Map} caching to minimize network I/O. Max size can be configured when instantiating by using {@link CachedSchemaRegistryClientBuilder#maxSchemaMapSize}, otherwise {@code 1000} will be used as the default.
+ * Utilizes in-memory {@link Map} caching to minimize network I/O. Max size can be configured when instantiating by
+ * using {@link CachedSchemaRegistryClientBuilder#maxSchemaMapSize}, otherwise {@code 1000} will be used as the default.
  * <p>
  * Two maps are maintained.
  * <ul>
@@ -48,16 +51,16 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
 
     private final AzureSchemaRegistryRestService restService;
     private final int maxSchemaMapSize;
-    private final HashMap<String, Function<String, Object>> typeParserDictionary;
-    private final HashMap<String, SchemaRegistryObject> guidCache;
-    private final HashMap<String, SchemaRegistryObject> schemaStringCache;
+    private final Map<String, Function<String, Object>> typeParserMap;
+    private final Map<String, SchemaRegistryObject> guidCache;
+    private final Map<String, SchemaRegistryObject> schemaStringCache;
 
     CachedSchemaRegistryClient(
         String registryUrl,
         HttpPipeline pipeline,
         int maxSchemaMapSize,
-        HashMap<String, Function<String, Object>> typeParserDictionary) {
-        if (registryUrl == null || registryUrl.isEmpty()) {
+        Map<String, Function<String, Object>> typeParserMap) {
+        if (CoreUtils.isNullOrEmpty(registryUrl)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Schema Registry URL cannot be null or empty."));
         }
@@ -68,21 +71,21 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
             .buildClient();
 
         this.maxSchemaMapSize = maxSchemaMapSize;
-        this.typeParserDictionary = typeParserDictionary;
-        this.guidCache = new HashMap<>();
-        this.schemaStringCache = new HashMap<>();
+        this.typeParserMap = typeParserMap;
+        this.guidCache = new ConcurrentHashMap<>();
+        this.schemaStringCache = new ConcurrentHashMap<>();
     }
 
-    // testing
+    // testing - todo remove constructor and replace with mock
     CachedSchemaRegistryClient(
         AzureSchemaRegistryRestService restService,
-        HashMap<String, SchemaRegistryObject> guidCache,
-        HashMap<String, SchemaRegistryObject> schemaStringCache,
-        HashMap<String, Function<String, Object>> typeParserDictionary) {
+        Map<String, SchemaRegistryObject> guidCache,
+        Map<String, SchemaRegistryObject> schemaStringCache,
+        Map<String, Function<String, Object>> typeParserMap) {
         this.restService = restService; // mockable
         this.guidCache = guidCache;
         this.schemaStringCache = schemaStringCache;
-        this.typeParserDictionary = typeParserDictionary;
+        this.typeParserMap = typeParserMap;
         this.maxSchemaMapSize = MAX_SCHEMA_MAP_SIZE_DEFAULT;
     }
 
@@ -95,39 +98,37 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     }
 
     /**
-     * @param schemaType tag used by schema registry store to identify schema serialization type, e.g. "avro"
+     * @param schemaType case-insensitive tag used by schema registry store to identify schema type, e.g. "avro"
      * @param parseMethod function to parse string into usable schema object
      * @throws IllegalArgumentException on bad schema type or if parser for schema type has already been registered
      */
-    public synchronized void loadSchemaParser(String schemaType, Function<String, Object> parseMethod) {
-        if (schemaType == null || schemaType.isEmpty()) {
+    public void loadSchemaParser(String schemaType, Function<String, Object> parseMethod) {
+        if (CoreUtils.isNullOrEmpty(schemaType)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Serialization type cannot be null or empty."));
         }
-        if (this.typeParserDictionary.containsKey(schemaType.toLowerCase(Locale.ENGLISH))) {
+        if (this.typeParserMap.containsKey(schemaType.toLowerCase(Locale.ROOT))) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
         }
-        this.typeParserDictionary.put(schemaType.toLowerCase(Locale.ENGLISH), parseMethod);
+        this.typeParserMap.putIfAbsent(schemaType.toLowerCase(Locale.ROOT), parseMethod);
         logger.verbose(
-            "Loaded parser for '{}' serialization format.", schemaType.toLowerCase(Locale.ENGLISH));
+            "Loaded parser for '{}' serialization format.", schemaType.toLowerCase(Locale.ROOT));
     }
 
     @Override
-    public synchronized SchemaRegistryObject register(
-        String schemaGroup, String schemaName, String schemaString, String serializationType)
-        throws SchemaRegistryClientException {
+    public SchemaRegistryObject register(
+        String schemaGroup, String schemaName, String schemaString, String serializationType) {
         if (schemaStringCache.containsKey(schemaString)) {
             logger.verbose(
-                String.format(
-                    "Cache hit schema string. Group: '%s', name: '%s', serialization type: '%s', payload: '%s'",
-                    schemaGroup, schemaName, serializationType, schemaString));
+                    "Cache hit schema string. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
+                    schemaGroup, schemaName, serializationType, schemaString);
             return schemaStringCache.get(schemaString);
         }
 
         logger.verbose(
-            String.format("Registering schema. Group: '%s', name: '%s', serialization type: '%s', payload: '%s'",
-                schemaGroup, schemaName, serializationType, schemaString));
+            "Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
+                schemaGroup, schemaName, serializationType, schemaString);
 
         SchemaId schemaId;
         try {
@@ -142,16 +143,15 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
             getParseFunc(serializationType));
 
         resetIfNeeded();
-        schemaStringCache.put(schemaString, registered);
-        logger.verbose(String.format("Cached schema string. Group: '%s', name: '%s'", schemaGroup, schemaName));
+        schemaStringCache.putIfAbsent(schemaString, registered);
+        logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
         return registered;
     }
 
     @Override
-    public synchronized SchemaRegistryObject getSchemaByGuid(String schemaId)
-        throws SchemaRegistryClientException {
+    public SchemaRegistryObject getSchemaByGuid(String schemaId) {
         if (guidCache.containsKey(schemaId)) {
-            logger.verbose(String.format("Cache hit for schema id '%s'", schemaId));
+            logger.verbose("Cache hit for schema id '{}'", schemaId);
             return guidCache.get(schemaId);
         }
 
@@ -175,17 +175,16 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
             getParseFunc(schemaType));
 
         resetIfNeeded();
-        guidCache.put(schemaId, schemaObject);
-        logger.verbose(String.format("Cached schema object. Path: '%s'", schemaId));
+        guidCache.putIfAbsent(schemaId, schemaObject);
+        logger.verbose("Cached schema object. Path: '{}'", schemaId);
         return schemaObject;
     }
 
     @Override
-    public synchronized String getSchemaId(
-        String schemaGroup, String schemaName, String schemaString, String schemaType)
-        throws SchemaRegistryClientException {
+    public String getSchemaId(
+        String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (schemaStringCache.containsKey(schemaString)) {
-            logger.verbose(String.format("Cache hit schema string. Group: '%s', name: '%s'", schemaGroup, schemaName));
+            logger.verbose("Cache hit schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
             return schemaStringCache.get(schemaString).getSchemaId();
         }
 
@@ -200,36 +199,33 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
         }
 
         resetIfNeeded();
-        schemaStringCache.put(
+        schemaStringCache.putIfAbsent(
             schemaString,
             new SchemaRegistryObject(
                 schemaId.getId(),
                 schemaType,
                 schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING),
                 getParseFunc(schemaType)));
-        logger.verbose(String.format("Cached schema string. Group: '%s', name: '%s'", schemaGroup, schemaName));
+        logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
         return schemaId.getId();
     }
 
     @Override
-    public String deleteSchemaVersion(String schemaGroup, String schemaName, int version)
-        throws SchemaRegistryClientException {
+    public String deleteSchemaVersion(String schemaGroup, String schemaName, int version) {
         // return this.restService.deleteSchemaVersion(schemaName, version);
         // remove from cache
         return null;
     }
 
     @Override
-    public String deleteLatestSchemaVersion(String schemaGroup, String schemaName)
-        throws SchemaRegistryClientException {
+    public String deleteLatestSchemaVersion(String schemaGroup, String schemaName) {
         // return this.restService.deleteSchemaVersion(schemaName, null);
         // remove from cache
         return null;
     }
 
     @Override
-    public List<String> deleteSchema(String schemaGroup, String schemaName)
-        throws SchemaRegistryClientException {
+    public List<String> deleteSchema(String schemaGroup, String schemaName) {
         // return this.restService.deleteSchema();
         // remove from cache
         return null;
@@ -238,17 +234,17 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
     /**
      * Explicit call to clear all caches.
      */
-    public synchronized void reset() {
+    public void reset() {
         guidCache.clear();
         schemaStringCache.clear();
-        typeParserDictionary.clear();
+        typeParserMap.clear();
     }
 
     // TODO: max age for schema maps? or will schemas always be immutable?
     /**
      * Checks if caches should be reinitialized to satisfy initial configuration
      */
-    private synchronized void resetIfNeeded() {
+    private void resetIfNeeded() {
         if (guidCache.size() > this.maxSchemaMapSize) {
             guidCache.clear();
         }
@@ -264,13 +260,13 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
      * @return parse method for deserializing schema string
      */
     private Function<String, Object> getParseFunc(String schemaType) {
-        Function<String, Object> parseFunc = typeParserDictionary.get(schemaType.toLowerCase(Locale.ENGLISH));
+        Function<String, Object> parseFunc = typeParserMap.get(schemaType.toLowerCase(Locale.ROOT));
 
         if (parseFunc == null) {
             throw logger.logExceptionAsError(new SchemaRegistryClientException(
                 String.format("Unexpected serialization type '%s' received.  Currently loaded parsers: %s",
                     schemaType,
-                    typeParserDictionary.keySet().toString())));
+                    typeParserMap.keySet().toString())));
         }
         return parseFunc;
     }
