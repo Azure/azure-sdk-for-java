@@ -2040,10 +2040,4 @@
       <Bug pattern="DM_DEFAULT_ENCODING"/>
   </Match>
 
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/11430 -->
-  <Match>
-    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException"/>
-    <Field name="errorCode"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
 </FindBugsFilter>
