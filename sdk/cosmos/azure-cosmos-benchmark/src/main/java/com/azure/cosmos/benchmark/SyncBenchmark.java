@@ -131,8 +131,8 @@ abstract class SyncBenchmark<T> {
         }
 
         try {
-            cosmosDatabase.getContainer(this.configuration.getCollectionId()).read();
             cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId());
+            cosmosContainer.read();
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                 cosmosDatabase.createContainer(this.configuration.getCollectionId(),

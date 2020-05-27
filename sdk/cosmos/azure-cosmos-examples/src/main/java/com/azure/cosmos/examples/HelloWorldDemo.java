@@ -10,8 +10,8 @@ import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 
 public class HelloWorldDemo {
-    private static String DATABASE_NAME = "contoso-travel";
-    private static String CONTAINER_NAME = "passengers";
+    private static final String DATABASE_NAME = "contoso-travel";
+    private static final String CONTAINER_NAME = "passengers";
 
     public static void main(String[] args) {
         new HelloWorldDemo().runDemo();

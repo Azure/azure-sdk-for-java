@@ -99,13 +99,12 @@ abstract class AsyncBenchmark<T> {
         }
 
         try {
-            cosmosAsyncDatabase.getContainer(
-                this.configuration.getCollectionId()
-            ).read().doOnError(error ->
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+
+            cosmosAsyncContainer.read().doOnError(error ->
                 logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
             ).block();
 
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                 cosmosAsyncDatabase.createContainer(

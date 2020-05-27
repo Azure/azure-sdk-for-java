@@ -23,6 +23,7 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
         String bodyAsString = response.getBodyAsString();
         if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
+            super.setProperties(null);
         } else {
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
             ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);

@@ -256,8 +256,8 @@ public class AsynReadWithMultipleClients<T> {
                     }
 
                     try {
-                        cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block();
                         cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+                        cosmosAsyncContainer.read().block();
                     } catch (CosmosException e) {
                         if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                             cosmosAsyncDatabase.createContainer(
