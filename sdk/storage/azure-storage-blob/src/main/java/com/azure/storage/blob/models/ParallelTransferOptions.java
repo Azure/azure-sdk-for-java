@@ -88,7 +88,7 @@ public final class ParallelTransferOptions {
      * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the maximum value the
      * service accepts for uploading in a single requests and is represented by
      * {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES}.
-     * @param maxConcurrency The maximum number of parallel requests
+     * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time.
      */
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
         Integer maxSingleUploadSize, Integer maxConcurrency) {
@@ -108,6 +108,8 @@ public final class ParallelTransferOptions {
                 BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES);
         }
         this.maxSingleUploadSize = maxSingleUploadSize;
+
+        this.maxConcurrency = maxConcurrency;
     }
 
     /**
@@ -140,5 +142,13 @@ public final class ParallelTransferOptions {
      */
     public Integer getMaxSingleUploadSize() {
         return this.maxSingleUploadSize;
+    }
+
+    /**
+     * Gets the maximum number of parallel requests that will be issued at any given time.
+     * @return The max concurrency value.
+     */
+    public Integer getMaxConcurrency() {
+        return this.maxConcurrency;
     }
 }

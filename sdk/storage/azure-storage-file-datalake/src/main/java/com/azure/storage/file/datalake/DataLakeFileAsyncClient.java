@@ -334,7 +334,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     .doFinally(x -> pool.returnBuffer(buffer))
                     .map(resp -> currentBufferLength + currentOffset) /* End of file after append to pass to flush. */
                     .flux();
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }
@@ -487,7 +487,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
                 return appendWithResponse(progressData, fileOffset + chunk.getOffset(), chunk.getCount(), null,
                     requestConditions.getLeaseId());
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() ->
                 flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();

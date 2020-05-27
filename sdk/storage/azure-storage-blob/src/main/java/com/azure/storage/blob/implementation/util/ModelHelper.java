@@ -6,6 +6,7 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import reactor.util.concurrent.Queues;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,7 +45,9 @@ public class ModelHelper {
                 : other.getNumBuffers(),
             other.getProgressReceiver(),
             other.getMaxSingleUploadSize() == null ? Integer.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES)
-                : other.getMaxSingleUploadSize());
+                : other.getMaxSingleUploadSize(),
+            // Queues.SMALL_BUFFER_SIZE is the default used by reactor
+            other.getMaxConcurrency() == null ? Queues.SMALL_BUFFER_SIZE : other.getMaxConcurrency());
     }
 
     /**

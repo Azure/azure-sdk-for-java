@@ -11,7 +11,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -728,8 +727,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
-     * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
-     * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
+     * @return A response containing a {@link BlobClientBase} which is used to interact with the created snapshot, use
+     * {@link BlobClientBase#getSnapshotId()} to get the identifier for the snapshot.
      */
     public BlobClientBase createSnapshot() {
         return createSnapshotWithResponse(null, null, null, Context.NONE).getValue();
@@ -750,8 +749,8 @@ public class BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
-     * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
+     * @return A response containing a {@link BlobClientBase} which is used to interact with the created snapshot, use
+     * {@link BlobClientBase#getSnapshotId()} to get the identifier for the snapshot.
      */
     public Response<BlobClientBase> createSnapshotWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {

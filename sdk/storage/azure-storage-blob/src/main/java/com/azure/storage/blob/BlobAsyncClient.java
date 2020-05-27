@@ -359,7 +359,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions) {
-        // TODO: Parallelism parameter? Or let Reactor handle it?
         // TODO: Sample/api reference
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
@@ -392,7 +391,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .map(x -> blockId)
                     .doFinally(x -> pool.returnBuffer(buffer))
                     .flux();
-            }) // TODO: parallelism?
+            }, parallelTransferOptions.getMaxConcurrency())
             .collect(Collectors.toList())
             .flatMap(ids ->
                 blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, metadata, tier, requestConditions));
@@ -538,7 +537,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                 return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId());
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new ArrayList<>(blockIds.values()), headers, metadata, tier, finalRequestConditions)))
             .then();

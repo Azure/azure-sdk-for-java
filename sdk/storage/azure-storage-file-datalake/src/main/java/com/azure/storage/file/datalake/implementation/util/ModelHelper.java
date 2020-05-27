@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.implementation.util;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.util.concurrent.Queues;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -57,6 +58,8 @@ public class ModelHelper {
                 : other.getNumBuffers(),
             other.getProgressReceiver(),
             other.getMaxSingleUploadSize() == null ? Integer.valueOf(MAX_APPEND_FILE_BYTES)
-                : other.getMaxSingleUploadSize());
+                : other.getMaxSingleUploadSize(),
+            // Queues.SMALL_BUFFER_SIZE is the default used by reactor
+            other.getMaxConcurrency() == null ? Queues.SMALL_BUFFER_SIZE : other.getMaxConcurrency());
     }
 }
