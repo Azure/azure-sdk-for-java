@@ -589,11 +589,14 @@ public class DataLakeFileClient extends DataLakePathClient {
     public InputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
-        Flux<ByteBuffer> data = dataLakeFileAsyncClient.queryWithResponse(expression, queryOptions)
-            .flatMapMany(FileQueryAsyncResponse::getValue);
+        FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(expression, queryOptions)
+            .block();
 
         // Create input stream from the data.
-        return new FluxInputStream(data);
+        if (response == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+        }
+        return new FluxInputStream(response.getValue());
     }
 
     /**

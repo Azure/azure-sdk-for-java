@@ -177,7 +177,7 @@ class LargeBlobTest extends APISpec {
         given:
         def length = maxBlockSize * 2
         def flux = createLargeBuffer(length)
-        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize);
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize)
 
         when:
         blobAsyncClient.upload(flux, parallelTransferOptions)
@@ -198,7 +198,7 @@ class LargeBlobTest extends APISpec {
         long blocks = 50 * 1000
         long length = maxBlockSize * blocks
         def flux = createLargeBuffer(length, Constants.MB)
-        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize);
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize)
 
         when:
         blobAsyncClient.upload(flux, parallelTransferOptions)
@@ -215,12 +215,12 @@ class LargeBlobTest extends APISpec {
         long blocks = 2
         long length = maxBlockSize * blocks
         def stream = createLargeInputStream(length, Constants.MB)
-        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize);
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize)
 
         when:
         blobClient.uploadWithResponse(
             stream, length, parallelTransferOptions,
-            null, null, null, null, null, Context.NONE);
+            null, null, null, null, null, Context.NONE)
 
         then:
         blocksCount.get() == blocks
@@ -237,12 +237,12 @@ class LargeBlobTest extends APISpec {
         long blocks = 50 * 1000
         long length = maxBlockSize * blocks
         def stream = createLargeInputStream(length, 100 * Constants.MB)
-        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize);
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize)
 
         when:
         blobClient.uploadWithResponse(
             stream, length, parallelTransferOptions,
-            null, null, null, null, null, Context.NONE);
+            null, null, null, null, null, Context.NONE)
 
         then:
         blocksCount.get() == blocks
@@ -255,7 +255,7 @@ class LargeBlobTest extends APISpec {
         given:
         def file = getRandomLargeFile(maxBlockSize)
         def client = cc.getBlobClient(blobName)
-        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize);
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(maxBlockSize)
 
         when:
         client.uploadFromFile(file.toPath().toString(), parallelTransferOptions,

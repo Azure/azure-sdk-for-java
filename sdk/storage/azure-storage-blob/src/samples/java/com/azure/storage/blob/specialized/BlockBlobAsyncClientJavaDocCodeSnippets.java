@@ -7,6 +7,8 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import reactor.core.publisher.Flux;
@@ -89,6 +91,33 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlockBlobSimpleUploadOptions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void upload3() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlockBlobSimpleUploadOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.uploadWithResponse(data, length, new BlockBlobSimpleUploadOptions().setHeaders(headers)
+            .setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
+            .setRequestConditions(requestConditions))
+            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlockBlobSimpleUploadOptions
     }
 
     /**
@@ -211,5 +240,28 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             AccessTier.HOT, requestConditions).subscribe(response ->
                 System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlockBlobCommitBlockListOptions)}
+     */
+    public void commitBlockList3() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlockBlobCommitBlockListOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        client.commitBlockListWithResponse(Collections.singletonList(base64BlockID),
+            new BlockBlobCommitBlockListOptions().setHeaders(headers).setMetadata(metadata).setTags(tags)
+                .setTier(AccessTier.HOT).setRequestConditions(requestConditions))
+            .subscribe(response ->
+            System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlockBlobCommitBlockListOptions
     }
 }

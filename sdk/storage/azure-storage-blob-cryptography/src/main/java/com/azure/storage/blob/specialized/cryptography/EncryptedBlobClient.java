@@ -14,6 +14,8 @@ import com.azure.storage.blob.models.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
@@ -112,9 +114,25 @@ public class EncryptedBlobClient extends BlobClient {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
+        return this.getBlobOutputStream(new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTier(tier).setRequestConditions(requestConditions));
+    }
 
-        return BlobOutputStream.blockBlobOutputStream(encryptedBlobAsyncClient, parallelTransferOptions, headers,
-            metadata, tier, requestConditions);
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param options {@link BlockBlobOutputStreamOptions}
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
+
+        return BlobOutputStream.blockBlobOutputStream(encryptedBlobAsyncClient, options, null);
     }
 
     /**
@@ -170,8 +188,28 @@ public class EncryptedBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
-        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
-            headers, metadata, tier, requestConditions);
+        this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions),
+            timeout);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration}
+     *
+     * @param filePath Path of the file to upload
+     * @param options {@link BlobUploadFromFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    @Override
+    public void uploadFromFile(String filePath, BlobUploadFromFileOptions options, Duration timeout)
+        throws UncheckedIOException {
+        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, options);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
