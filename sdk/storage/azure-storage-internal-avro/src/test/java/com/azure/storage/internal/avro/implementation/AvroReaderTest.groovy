@@ -434,6 +434,5 @@ class AvroReaderTest extends Specification {
             .expectNextMatches({ o -> ((Map) o).equals(['$record': 'end', 'totalBytes': 16384000]) })
             .verifyComplete()
     }
-    /* TODO (gapra) : Once this is in the same branch as QQ and CF, add network tests for both of them. (this could just go in the CF/QQ packages) */
 
 }
