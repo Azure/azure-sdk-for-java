@@ -50,7 +50,12 @@ stages:
         - name: azure-keyvault-secrets-spring-boot-starter
           groupId: com.microsoft.azure
           safeName: azurespringbootstarterkeyvaultsecrets
-
+        - name: azure-spring-boot-metrics-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstartermetrics
+        - name: azure-servicebus-jms-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarterservicebusjms
 
 
 

@@ -13,6 +13,8 @@
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>
     <module>azure-spring-boot-starter-keyvault-secrets</module>
+    <module>azure-spring-boot-starter-metrics</module>
+    <module>azure-spring-boot-starter-servicebus-jms</module>
   </modules>
 
 </project>
