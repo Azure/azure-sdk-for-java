@@ -58,8 +58,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
  */
-@ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
-public final class SearchIndexAsyncClient {
+@ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
+public final class SearchAsyncClient {
     /*
      * Representation of the Multi-Status HTTP response code.
      */
@@ -88,7 +88,7 @@ public final class SearchIndexAsyncClient {
     /**
      * The logger to be used
      */
-    private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(SearchAsyncClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Azure Cognitive Search service
@@ -101,9 +101,9 @@ public final class SearchIndexAsyncClient {
     private final HttpPipeline httpPipeline;
 
     /**
-     * Package private constructor to be used by {@link SearchIndexClientBuilder}
+     * Package private constructor to be used by {@link SearchClientBuilder}
      */
-    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
+    SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
         HttpPipeline httpPipeline) {
 
         this.endpoint = endpoint;

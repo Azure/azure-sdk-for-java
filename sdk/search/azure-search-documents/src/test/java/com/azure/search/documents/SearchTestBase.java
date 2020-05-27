@@ -9,6 +9,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexerDataSources;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
@@ -90,13 +93,13 @@ public abstract class SearchTestBase extends TestBase {
 
     protected String setupIndex(SearchIndex index) {
         index.setName(testResourceNamer.randomName(index.getName(), 64));
-        getSearchServiceClientBuilder().buildClient().createOrUpdateIndex(index);
+        getSearchIndexClientBuilder().buildClient().createOrUpdateIndex(index);
 
         return index.getName();
     }
 
-    protected SearchServiceClientBuilder getSearchServiceClientBuilder(HttpPipelinePolicy... policies) {
-        SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
+    protected SearchIndexClientBuilder getSearchIndexClientBuilder(HttpPipelinePolicy... policies) {
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -117,7 +120,29 @@ public abstract class SearchTestBase extends TestBase {
 
     }
 
-    private static void addPolicies(SearchServiceClientBuilder builder, HttpPipelinePolicy... policies) {
+    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(HttpPipelinePolicy... policies) {
+        SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
+            .endpoint(ENDPOINT);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+            addPolicies(builder, policies);
+            return builder;
+        }
+
+        addPolicies(builder, policies);
+        builder.credential(new AzureKeyCredential(API_KEY))
+            .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+
+    }
+
+    private static void addPolicies(SearchIndexClientBuilder builder, HttpPipelinePolicy... policies) {
         if (policies == null) {
             return;
         }
@@ -127,8 +152,18 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
-        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
+    private static void addPolicies(SearchIndexerClientBuilder builder, HttpPipelinePolicy... policies) {
+        if (policies == null) {
+            return;
+        }
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+    }
+
+    protected SearchClientBuilder getSearchIndexClientBuilder(String indexName) {
+        SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName);
 

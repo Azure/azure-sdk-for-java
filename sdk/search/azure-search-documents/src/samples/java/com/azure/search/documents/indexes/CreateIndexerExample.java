@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
@@ -9,8 +9,8 @@ import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexingParameters;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.models.RequestOptions;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -33,15 +33,15 @@ public class CreateIndexerExample {
     private static final String INDEXER_NAME = "hotels-indexer-test";
 
     public static void main(String[] args) {
-        SearchServiceAsyncClient searchServiceClient = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient indexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
-        createOrUpdateIndexer(searchServiceClient);
+        createOrUpdateIndexer(indexerAsyncClient);
     }
 
-    private static void createOrUpdateIndexer(SearchServiceAsyncClient searchServiceClient) {
+    private static void createOrUpdateIndexer(SearchIndexerAsyncClient searchIndexerAsyncClient) {
         // Create indexer parameters
         IndexingParameters indexingParameters = new IndexingParameters()
             .setBatchSize(50)
@@ -67,7 +67,7 @@ public class CreateIndexerExample {
             .setSchedule(indexingSchedule);
 
         System.out.println(String.format("Creating Indexer: %s", indexer.getName()));
-        Response<SearchIndexer> response = searchServiceClient.createOrUpdateIndexerWithResponse(
+        Response<SearchIndexer> response = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(
             indexer, false, new RequestOptions()
         ).block();
 

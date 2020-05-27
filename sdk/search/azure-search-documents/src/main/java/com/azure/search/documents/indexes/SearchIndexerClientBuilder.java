@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents;
+
+package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -21,6 +22,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.SearchServiceVersion;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +33,7 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * SearchServiceClient SearchServiceClients} and {@link SearchServiceAsyncClient SearchServiceAsyncClients}. Call {@link
+ * SearchIndexerClient SearchServiceClients} and {@link SearchIndexerAsyncClient SearchServiceAsyncClients}. Call {@link
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  * <p>
@@ -41,8 +43,8 @@ import java.util.Objects;
  *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
-public final class SearchServiceClientBuilder {
+@ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
+public class SearchIndexerClientBuilder {
     private static final String API_KEY = "api-key";
 
     /*
@@ -55,7 +57,7 @@ public final class SearchServiceClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
 
-    private final ClientLogger logger = new ClientLogger(SearchServiceClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders().put(ECHO_REQUEST_ID_HEADER, "true");
 
@@ -72,41 +74,41 @@ public final class SearchServiceClientBuilder {
     private RetryPolicy retryPolicy;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link SearchServiceClient
-     * SearchServiceClients} and {@link SearchServiceAsyncClient SearchServiceAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link SearchIndexerClient
+     * SearchServiceClients} and {@link SearchIndexerAsyncClient SearchServiceAsyncClients}.
      */
-    public SearchServiceClientBuilder() {
+    public SearchIndexerClientBuilder() {
         Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
         clientName = properties.getOrDefault(NAME, "UnknownName");
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
     /**
-     * Creates a {@link SearchServiceClient} based on options set in the Builder. Every time {@code buildClient()} is
-     * called a new instance of {@link SearchServiceClient} is created.
+     * Creates a {@link SearchIndexerClient} based on options set in the Builder. Every time {@code buildClient()} is
+     * called a new instance of {@link SearchIndexerClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and {@link #endpoint(String)
-     * endpoint} are used to create the {@link SearchServiceClient client}. All other builder settings are ignored.
+     * endpoint} are used to create the {@link SearchIndexerClient client}. All other builder settings are ignored.
      *
      * @return A SearchServiceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchServiceClient buildClient() {
-        return new SearchServiceClient(buildAsyncClient());
+    public SearchIndexerClient buildClient() {
+        return new SearchIndexerClient(buildAsyncClient());
     }
 
     /**
-     * Creates a {@link SearchServiceAsyncClient} based on options set in the Builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link SearchServiceAsyncClient} is created.
+     * Creates a {@link SearchIndexerAsyncClient} based on options set in the Builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link SearchIndexerAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and {@link #endpoint(String)
-     * endpoint} are used to create the {@link SearchServiceAsyncClient client}. All other builder settings are
+     * endpoint} are used to create the {@link SearchIndexerAsyncClient client}. All other builder settings are
      * ignored.
      *
      * @return A SearchServiceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchServiceAsyncClient buildAsyncClient() {
+    public SearchIndexerAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
@@ -114,7 +116,7 @@ public final class SearchServiceClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new SearchServiceAsyncClient(endpoint, buildVersion, httpPipeline);
+            return new SearchIndexerAsyncClient(endpoint, buildVersion, httpPipeline);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -144,7 +146,7 @@ public final class SearchServiceClientBuilder {
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchServiceAsyncClient(endpoint, buildVersion, buildPipeline);
+        return new SearchIndexerAsyncClient(endpoint, buildVersion, buildPipeline);
     }
 
     /**
@@ -154,7 +156,7 @@ public final class SearchServiceClientBuilder {
      * @return The updated SearchServiceClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SearchServiceClientBuilder endpoint(String endpoint) {
+    public SearchIndexerClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
@@ -172,7 +174,7 @@ public final class SearchServiceClientBuilder {
      * @throws NullPointerException If {@code keyCredential} is {@code null}.
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
-    public SearchServiceClientBuilder credential(AzureKeyCredential keyCredential) {
+    public SearchIndexerClientBuilder credential(AzureKeyCredential keyCredential) {
         if (keyCredential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'keyCredential' cannot be null."));
         }
@@ -192,7 +194,7 @@ public final class SearchServiceClientBuilder {
      * @param logOptions The logging configuration for HTTP requests and responses.
      * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public SearchIndexerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
     }
@@ -207,7 +209,7 @@ public final class SearchServiceClientBuilder {
      * @return The updated SearchServiceClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public SearchServiceClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public SearchIndexerClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
         return this;
     }
@@ -218,7 +220,7 @@ public final class SearchServiceClientBuilder {
      * @param client The HTTP client that will handle sending requests and receiving responses.
      * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder httpClient(HttpClient client) {
+    public SearchIndexerClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -231,12 +233,12 @@ public final class SearchServiceClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} when
-     * building a {@link SearchServiceClient} or {@link SearchServiceAsyncClient}.
+     * building a {@link SearchIndexerClient} or {@link SearchIndexerAsyncClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public SearchIndexerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -254,7 +256,7 @@ public final class SearchServiceClientBuilder {
      * @param configuration The configuration store that will be used.
      * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder configuration(Configuration configuration) {
+    public SearchIndexerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -267,7 +269,7 @@ public final class SearchServiceClientBuilder {
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
      * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public SearchIndexerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -281,7 +283,7 @@ public final class SearchServiceClientBuilder {
      * @param serviceVersion The version of the service to be used when making requests.
      * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
+    public SearchIndexerClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }

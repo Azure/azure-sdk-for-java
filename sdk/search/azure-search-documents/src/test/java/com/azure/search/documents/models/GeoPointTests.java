@@ -4,7 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.Context;
-import com.azure.search.documents.SearchIndexClient;
+import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class GeoPointTests extends SearchTestBase {
     private static final String DATA_JSON_HOTELS = "HotelsDataArray.json";
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     private void uploadDocuments() throws Exception {
         Reader docsData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
@@ -52,7 +52,7 @@ public class GeoPointTests extends SearchTestBase {
 
     @Override
     protected void afterTest() {
-        getSearchServiceClientBuilder().buildClient().deleteIndex(client.getIndexName());
+        getSearchIndexClientBuilder().buildClient().deleteIndex(client.getIndexName());
     }
 
     @Test

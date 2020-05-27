@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
@@ -53,40 +53,48 @@ public class LifecycleSetupExample {
     private static final String SUGGESTER_NAME = "sg";
 
     public static void main(String[] args) {
-        SearchServiceClient client = createServiceClient();
+        SearchIndexClient indexClient = createIndexClient();
+        SearchIndexerClient indexerClient = createIndexerClient();
         // Create a data source for a Cosmos DB database
-        SearchIndexerDataSource dataSource = createCosmosDataSource(client);
+        SearchIndexerDataSource dataSource = createCosmosDataSource(indexerClient);
         System.out.println("Created DataSource " + dataSource.getName());
 
         // Create an index
-        SearchIndex index = createIndex(client);
+        SearchIndex index = createIndex(indexClient);
         System.out.println("Created Index " + index.getName());
 
         // Create a skillset for Cognitive Services
-        SearchIndexerSkillset skillset = createSkillset(client);
+        SearchIndexerSkillset skillset = createSkillset(indexerClient);
         System.out.println("Created Skillset " + skillset.getName());
 
         // Create an indexer that uses the skillset and data source and loads the index
-        SearchIndexer indexer = createIndexer(client, dataSource, skillset, index);
+        SearchIndexer indexer = createIndexer(indexerClient, dataSource, skillset, index);
         System.out.println("Created Indexer " + indexer.getName());
 
         // Update indexer schedule
-        updateIndexerSchedule(client, indexer);
+        updateIndexerSchedule(indexerClient, indexer);
         System.out.println("Updated Indexer Schedule " + indexer.getName());
 
         // Clean up resources.
-        client.deleteIndex(INDEX_NAME);
-        client.deleteIndexer(INDEXER_NAME);
+        indexClient.deleteIndex(INDEX_NAME);
+        indexerClient.deleteIndexer(INDEXER_NAME);
     }
 
-    private static SearchServiceClient createServiceClient() {
-        return new SearchServiceClientBuilder()
+    private static SearchIndexClient createIndexClient() {
+        return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
     }
 
-    private static void updateIndexerSchedule(SearchServiceClient client, SearchIndexer indexer) {
+    private static SearchIndexerClient createIndexerClient() {
+        return new SearchIndexerClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(ADMIN_KEY))
+            .buildClient();
+    }
+
+    private static void updateIndexerSchedule(SearchIndexerClient client, SearchIndexer indexer) {
         IndexingSchedule indexingSchedule = new IndexingSchedule()
             .setInterval(Duration.ofMinutes(10));
         indexer.setSchedule(indexingSchedule);
@@ -94,7 +102,7 @@ public class LifecycleSetupExample {
         client.createOrUpdateIndexer(indexer);
     }
 
-    private static SearchIndexer createIndexer(SearchServiceClient client, SearchIndexerDataSource dataSource,
+    private static SearchIndexer createIndexer(SearchIndexerClient client, SearchIndexerDataSource dataSource,
         SearchIndexerSkillset skillset, SearchIndex index) {
         SearchIndexer indexer = new SearchIndexer()
             .setName(INDEXER_NAME)
@@ -105,7 +113,7 @@ public class LifecycleSetupExample {
         return client.createOrUpdateIndexer(indexer);
     }
 
-    private static SearchIndexerSkillset createSkillset(SearchServiceClient client) {
+    private static SearchIndexerSkillset createSkillset(SearchIndexerClient client) {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -135,7 +143,7 @@ public class LifecycleSetupExample {
         return client.createOrUpdateSkillset(skillset);
     }
 
-    private static SearchIndex createIndex(SearchServiceClient client) {
+    private static SearchIndex createIndex(SearchIndexClient client) {
 
         // Index definition
         SearchIndex index = new SearchIndex()
@@ -186,7 +194,7 @@ public class LifecycleSetupExample {
         return client.createOrUpdateIndex(index);
     }
 
-    private static SearchIndexerDataSource createCosmosDataSource(SearchServiceClient client) {
+    private static SearchIndexerDataSource createCosmosDataSource(SearchIndexerClient client) {
 
         SearchIndexerDataContainer dataContainer = new SearchIndexerDataContainer().setName(COSMOS_COLLECTION_NAME);
         HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =

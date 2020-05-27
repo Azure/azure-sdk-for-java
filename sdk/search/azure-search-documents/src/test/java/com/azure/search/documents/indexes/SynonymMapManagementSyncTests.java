@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.Test;
 
@@ -30,12 +32,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SynonymMapManagementSyncTests extends SearchTestBase {
     private final List<String> synonymMapsToDelete = new ArrayList<>();
 
-    private SearchServiceClient client;
+    private SearchIndexClient client;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient();
+        client = getSearchIndexClientBuilder().buildClient();
     }
 
     @Override

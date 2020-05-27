@@ -27,18 +27,18 @@ import java.util.List;
 /**
  * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
  */
-@ServiceClient(builder = SearchIndexClientBuilder.class)
-public final class SearchIndexClient {
+@ServiceClient(builder = SearchClientBuilder.class)
+public final class SearchClient {
 
-    private final SearchIndexAsyncClient asyncClient;
+    private final SearchAsyncClient asyncClient;
 
     /**
-     * Package private constructor to be used by {@link SearchIndexClientBuilder}
+     * Package private constructor to be used by {@link SearchClientBuilder}
      *
-     * @param searchIndexAsyncClient Async SearchIndex Client
+     * @param searchAsyncClient Async SearchIndex Client
      */
-    SearchIndexClient(SearchIndexAsyncClient searchIndexAsyncClient) {
-        this.asyncClient = searchIndexAsyncClient;
+    SearchClient(SearchAsyncClient searchAsyncClient) {
+        this.asyncClient = searchAsyncClient;
     }
 
     /**

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
@@ -35,7 +35,7 @@ public class DataSourceExample {
     private static final String SQL_CONNECTION_STRING = "<Your SQL connection string>";
 
     public static void main(String[] args) {
-        SearchServiceClient client = new SearchServiceClientBuilder()
+        SearchIndexerClient client = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
@@ -70,7 +70,7 @@ public class DataSourceExample {
         }
     }
 
-    private static void deleteDataSource(SearchServiceClient client, String dataSourceName) {
+    private static void deleteDataSource(SearchIndexerClient client, String dataSourceName) {
         try {
             client.deleteDataSource(dataSourceName);
         } catch (Exception ex) {
@@ -91,7 +91,7 @@ public class DataSourceExample {
     }
 
     private static String createDataSource(
-        SearchServiceClient client,
+        SearchIndexerClient client,
         SearchIndexerDataSourceType type,
         String connectionString,
         SearchIndexerDataContainer container,
@@ -107,7 +107,7 @@ public class DataSourceExample {
         return dataSource.getName();
     }
 
-    private static String createTableStorageDataSource(SearchServiceClient client) {
+    private static String createTableStorageDataSource(SearchIndexerClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.AZURE_TABLE,
@@ -119,7 +119,7 @@ public class DataSourceExample {
         );
     }
 
-    private static String createCosmosDataSource(SearchServiceClient client) {
+    private static String createCosmosDataSource(SearchIndexerClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.COSMOS_DB,
@@ -131,7 +131,7 @@ public class DataSourceExample {
         );
     }
 
-    private static String createBlobDataSource(SearchServiceClient client) {
+    private static String createBlobDataSource(SearchIndexerClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.AZURE_BLOB,
@@ -143,7 +143,7 @@ public class DataSourceExample {
         );
     }
 
-    private static String createSqlDataSource(SearchServiceClient client) {
+    private static String createSqlDataSource(SearchIndexerClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.AZURE_SQL,

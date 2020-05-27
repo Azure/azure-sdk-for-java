@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.ConditionalSkill;
 import com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount;
 import com.azure.search.documents.indexes.models.EntityCategory;
@@ -61,12 +62,12 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     private final List<String> skillsetsToDelete = new ArrayList<>();
 
-    private SearchServiceClient client;
+    private SearchIndexerClient client;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient();
+        client = getSearchIndexerClientBuilder().buildClient();
     }
 
     @Override

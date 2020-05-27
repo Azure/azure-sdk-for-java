@@ -44,7 +44,7 @@ and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-ap
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L40-L43 -->
 ```Java
-SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
+SearchServiceClient searchIndexClient = new SearchServiceClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(adminKey))
     .buildClient();
@@ -54,7 +54,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L47-L50 -->
 ```Java
-SearchServiceAsyncClient searchServiceAsyncClient = new SearchServiceClientBuilder()
+SearchServiceAsyncClient searchIndexAsyncClient = new SearchServiceClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(adminKey))
     .buildAsyncClient();
@@ -69,7 +69,7 @@ Note that you will need an admin key to index documents (query keys only work fo
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L54-L58 -->
 ```Java
-SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+SearchIndexClient searchClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
     .indexName(indexName)
@@ -80,7 +80,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L66 -->
 ```Java
-SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
+SearchIndexAsyncClient searchAsyncClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
     .indexName(indexName)
@@ -106,7 +106,7 @@ There are several types of operations that can be executed against the service:
 
 ### Create an index
 
-Create Index using `searchIndexClient` instantiated in [Create a SearchServiceClient](#create-a-searchserviceclient)
+Create Index using `searchClient` instantiated in [Create a SearchServiceClient](#create-a-searchserviceclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L96-L107 -->
 ```java
@@ -121,11 +121,11 @@ SearchIndex newIndex = new SearchIndex()
                 .setName("Cuisine")
                 .setType(SearchFieldDataType.STRING)));
 // Create index.
-searchServiceClient.createIndex(newIndex);
+searchIndexClient.createIndex(newIndex);
 ```
 ### Upload a Document
 
-Upload hotel document to Search Index using `searchIndexClient` instantiated [Create a SearchIndexClient](#create-a-searchindexclient)
+Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchIndexClient](#create-a-searchindexclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L111-L116 -->
 ```java
@@ -134,17 +134,17 @@ hotels.add(new Hotel().setHotelId("100"));
 hotels.add(new Hotel().setHotelId("200"));
 hotels.add(new Hotel().setHotelId("300"));
 // Upload hotel.
-searchIndexClient.uploadDocuments(hotels);
+searchClient.uploadDocuments(hotels);
 ```
 
 ### Search on hotel name
 
-Search hotel using keyword using `searchIndexClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
+Search hotel using keyword using `searchClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L120-L130 -->
 ```java
 // Perform a text-based search
-for (SearchResult result : searchIndexClient.search("luxury hotel",
+for (SearchResult result : searchClient.search("luxury hotel",
     new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
     // Each result is a dynamic Map
