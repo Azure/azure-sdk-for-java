@@ -10,13 +10,13 @@ import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -75,16 +75,18 @@ class ExtractKeyPhraseAsyncClient {
             final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document);
             textDocumentInput.setLanguage(language);
             return extractKeyPhrasesWithResponse(Collections.singletonList(textDocumentInput), null)
-                    .map(keyPhraseResultCollection -> {
-                        for (ExtractKeyPhraseResult keyPhraseResult : keyPhraseResultCollection.getValue()) {
+                    .map(resultCollectionResponse -> {
+                        IterableStream<String> keyPhrases = IterableStream.of(null);
+                        IterableStream<TextAnalyticsWarning> warnings = IterableStream.of(null);
+                        // for each loop will have only one entry inside
+                        for (ExtractKeyPhraseResult keyPhraseResult : resultCollectionResponse.getValue()) {
                             if (keyPhraseResult.isError()) {
                                 throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
                             }
-                            return new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
-                                keyPhraseResult.getKeyPhrases().getWarnings());
+                            keyPhrases = keyPhraseResult.getKeyPhrases();
+                            warnings = keyPhraseResult.getKeyPhrases().getWarnings();
                         }
-                        // this step should never be executed, if executed, we get an empty collection above.
-                        return new KeyPhrasesCollection(null, null);
+                        return new KeyPhrasesCollection(keyPhrases, warnings);
                     });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

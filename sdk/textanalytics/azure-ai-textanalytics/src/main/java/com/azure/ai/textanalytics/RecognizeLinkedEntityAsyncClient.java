@@ -11,11 +11,11 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -74,16 +74,18 @@ class RecognizeLinkedEntityAsyncClient {
             final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document);
             textDocumentInput.setLanguage(language);
             return recognizeLinkedEntitiesBatch(Collections.singletonList(textDocumentInput), null)
-                .map(entitiesResultCollection -> {
-                    for (RecognizeLinkedEntitiesResult entitiesResult : entitiesResultCollection.getValue()) {
+                .map(resultCollectionResponse -> {
+                    IterableStream<LinkedEntity> linkedEntities = IterableStream.of(null);
+                    IterableStream<TextAnalyticsWarning> warnings = IterableStream.of(null);
+                    // for each loop will have only one entry inside
+                    for (RecognizeLinkedEntitiesResult entitiesResult : resultCollectionResponse.getValue()) {
                         if (entitiesResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                         }
-                        return new LinkedEntityCollection(entitiesResult.getEntities(),
-                            entitiesResult.getEntities().getWarnings());
+                        linkedEntities = entitiesResult.getEntities();
+                        warnings = entitiesResult.getEntities().getWarnings();
                     }
-                    // this step should never be executed, if executed, we get an empty collection above.
-                    return new LinkedEntityCollection(null, null);
+                    return new LinkedEntityCollection(linkedEntities, warnings);
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
