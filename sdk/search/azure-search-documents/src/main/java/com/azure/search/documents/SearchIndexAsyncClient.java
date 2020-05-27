@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
@@ -25,13 +26,11 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
-import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
-import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
@@ -45,7 +44,6 @@ import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -742,8 +740,8 @@ public final class SearchIndexAsyncClient {
     private static synchronized SerializerAdapter initializeSerializerAdapter() {
         JacksonAdapter adapter = new JacksonAdapter();
 
-        ObjectMapper mapper = adapter.serializer();
-        SerializationUtil.configureMapper(mapper);
+        //ObjectMapper mapper = adapter.serializer();
+        //SerializationUtil.configureMapper(mapper);
 
         return adapter;
     }

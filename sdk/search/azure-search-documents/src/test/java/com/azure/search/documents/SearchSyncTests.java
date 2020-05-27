@@ -754,9 +754,10 @@ public class SearchSyncTests extends SearchTestBase {
         SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
 
         // Create a new SynonymMap
-        synonymMapToDelete = searchServiceClient.createSynonymMap(new SynonymMap()
-            .setName(testResourceNamer.randomName("names", 32))
-            .setSynonyms("luxury,fancy")).getName();
+        synonymMapToDelete = testResourceNamer.randomName("synonymmap", 32);
+        SynonymMap synonymMap = searchServiceClient.createSynonymMap(new SynonymMap()
+            .setName(synonymMapToDelete)
+            .setSynonyms("luxury,fancy"));
 
         // Attach index field to SynonymMap
         SearchIndex hotelsIndex = searchServiceClient.getIndex(client.getIndexName());
