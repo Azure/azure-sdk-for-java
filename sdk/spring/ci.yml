@@ -41,9 +41,6 @@ stages:
         - name: azure-spring-boot
           groupId: com.microsoft.azure
           safeName: azurespringboot
-        - name: azure-spring-boot-bom
-          groupId: com.microsoft.azure
-          safeName: azurespringbootbom
         - name: azure-spring-boot-starter
           groupId: com.microsoft.azure
           safeName: azurespringbootstarter
