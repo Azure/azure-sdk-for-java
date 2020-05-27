@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
 
 /**
  * Type representing RedisFirewallRule.
  */
-public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Indexable, Refreshable<RedisFirewallRule>, Updatable<RedisFirewallRule.Update>, HasManager<RedisManager> {
+public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Indexable, Refreshable<RedisFirewallRule>, Updatable<RedisFirewallRule.Update>, HasManager<CacheManager> {
     /**
      * @return the endIP value.
      */
@@ -50,7 +50,7 @@ public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Ind
     /**
      * The entirety of the RedisFirewallRule definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedis, DefinitionStages.WithEndIP, DefinitionStages.WithStartIP, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedi, DefinitionStages.WithEndIP, DefinitionStages.WithStartIP, DefinitionStages.WithCreate {
     }
 
     /**
@@ -60,20 +60,20 @@ public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Ind
         /**
          * The first stage of a RedisFirewallRule definition.
          */
-        interface Blank extends WithRedis {
+        interface Blank extends WithRedi {
         }
 
         /**
-         * The stage of the redisfirewallrule definition allowing to specify Redis.
+         * The stage of the redisfirewallrule definition allowing to specify Redi.
          */
-        interface WithRedis {
+        interface WithRedi {
            /**
             * Specifies resourceGroupName, cacheName.
             * @param resourceGroupName The name of the resource group
             * @param cacheName The name of the Redis cache
             * @return the next definition stage
             */
-            WithEndIP withExistingRedis(String resourceGroupName, String cacheName);
+            WithEndIP withExistingRedi(String resourceGroupName, String cacheName);
         }
 
         /**
