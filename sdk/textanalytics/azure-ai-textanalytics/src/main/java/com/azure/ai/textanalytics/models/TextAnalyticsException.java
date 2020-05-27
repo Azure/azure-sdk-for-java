@@ -9,11 +9,10 @@ import com.azure.core.exception.AzureException;
  * General exception for Text Analytics related failures.
  */
 public class TextAnalyticsException extends AzureException {
-    private static final long serialVersionUID = 21436310107606058L;
     private static final String ERROR_CODE = "ErrorCodeValue";
     private static final String TARGET = "target";
 
-    private final String errorCode;
+    private final TextAnalyticsErrorCode errorCode;
     private final String target;
 
     /**
@@ -22,7 +21,7 @@ public class TextAnalyticsException extends AzureException {
      * @param errorCode The service returned error code value.
      * @param target The target for this exception.
      */
-    public TextAnalyticsException(String message, String errorCode, String target) {
+    public TextAnalyticsException(String message, TextAnalyticsErrorCode errorCode, String target) {
         super(message);
         this.errorCode = errorCode;
         this.target = target;
@@ -55,6 +54,6 @@ public class TextAnalyticsException extends AzureException {
      * @return The {@link TextAnalyticsErrorCode} for this exception.
      */
     public TextAnalyticsErrorCode getErrorCode() {
-        return TextAnalyticsErrorCode.fromString(errorCode);
+        return errorCode;
     }
 }

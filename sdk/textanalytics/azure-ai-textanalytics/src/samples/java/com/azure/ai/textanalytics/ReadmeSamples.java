@@ -89,7 +89,7 @@ public class ReadmeSamples {
         );
 
         try {
-            textAnalyticsClient.detectLanguageBatch(documents, null, Context.NONE);
+            textAnalyticsClient.detectLanguageBatchWithResponse(documents, null, Context.NONE);
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
