@@ -6,11 +6,9 @@ package com.azure.schemaregistry.client;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -28,11 +26,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -50,7 +48,7 @@ public class CachedSchemaRegistryClientBuilder {
         new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final String schemaRegistryUrl;
-    private final HashMap<String, Function<String, Object>> typeParserDictionary;
+    private final ConcurrentHashMap<String, Function<String, Object>> typeParserMap;
     private final List<HttpPipelinePolicy> policies;
     private final String clientName;
     private final String clientVersion;
@@ -89,7 +87,7 @@ public class CachedSchemaRegistryClientBuilder {
         this.policies = new ArrayList<>();
         this.httpLogOptions = new HttpLogOptions();
         this.maxSchemaMapSize = CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_DEFAULT;
-        this.typeParserDictionary = new HashMap<>();
+        this.typeParserMap = new ConcurrentHashMap<>();
         this.httpClient = null;
         this.credential = null;
         this.retryPolicy = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -218,11 +216,11 @@ public class CachedSchemaRegistryClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Serialization type cannot be null or empty."));
         }
-        if (this.typeParserDictionary.containsKey(schemaType.toLowerCase(Locale.ENGLISH))) {
+        if (this.typeParserMap.containsKey(schemaType.toLowerCase(Locale.ROOT))) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
         }
-        this.typeParserDictionary.put(schemaType.toLowerCase(Locale.ENGLISH), parseMethod);
+        this.typeParserMap.put(schemaType.toLowerCase(Locale.ROOT), parseMethod);
         return this;
     }
 
@@ -279,6 +277,6 @@ public class CachedSchemaRegistryClientBuilder {
             schemaRegistryUrl,
             pipeline,
             maxSchemaMapSize,
-            typeParserDictionary);
+            typeParserMap);
     }
 }
