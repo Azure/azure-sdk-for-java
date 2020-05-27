@@ -1555,7 +1555,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                            ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
                                                    }
 
-                                                   HttpHeaders headers = Utils.NewHeadersWithRequestCharge(requestCharge);
+                                                   HttpHeaders headers = Utils.newHeadersWithRequestCharge(requestCharge);
                                                    FeedResponse<T> frp = BridgeInternal.createFeedResponse(finalList, headers);
                                                    return frp;
                                                });

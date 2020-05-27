@@ -108,7 +108,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                 if (collectedItems + t.getResults().size() <= top) {
                     collectedItems += t.getResults().size();
 
-                    HttpHeaders headers = Utils.Clone(t.getResponseHeaders());
+                    HttpHeaders headers = Utils.clone(t.getResponseHeaders());
                     if (top != collectedItems) {
                         // Add Take Continuation Token
                         String sourceContinuationToken = t.getContinuationToken();
@@ -129,7 +129,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     collectedItems += lastPageSize;
 
                     // Null out the continuation token
-                    HttpHeaders headers = Utils.Clone(t.getResponseHeaders());
+                    HttpHeaders headers = Utils.clone(t.getResponseHeaders());
                     headers.put(HttpConstants.Headers.CONTINUATION, null);
 
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),

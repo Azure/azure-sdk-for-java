@@ -48,21 +48,21 @@ public class ExceptionBuilder {
     public GoneException asGoneException() {
         assert status == null;
         GoneException dce = new GoneException();
-        Merge(dce.getResponseHeaders(), headerEntries);
+        ExceptionBuilder.Merge(dce.getResponseHeaders(), headerEntries);
         return dce;
     }
 
     public InvalidPartitionException asInvalidPartitionException() {
         assert status == null;
         InvalidPartitionException dce = new InvalidPartitionException();
-        Merge(dce.getResponseHeaders(), headerEntries);
+        ExceptionBuilder.Merge(dce.getResponseHeaders(), headerEntries);
         return dce;
     }
 
     public PartitionKeyRangeGoneException asPartitionKeyRangeGoneException() {
         assert status == null;
         PartitionKeyRangeGoneException dce = new PartitionKeyRangeGoneException();
-        Merge(dce.getResponseHeaders(), headerEntries);
+        ExceptionBuilder.Merge(dce.getResponseHeaders(), headerEntries);
         return dce;
     }
 
@@ -70,14 +70,14 @@ public class ExceptionBuilder {
     public PartitionKeyRangeIsSplittingException asPartitionKeyRangeIsSplittingException() {
         assert status == null;
         PartitionKeyRangeIsSplittingException dce = new PartitionKeyRangeIsSplittingException();
-        Merge(dce.getResponseHeaders(), headerEntries);
+        ExceptionBuilder.Merge(dce.getResponseHeaders(), headerEntries);
         return dce;
     }
 
     public PartitionIsMigratingException asPartitionIsMigratingException() {
         assert status == null;
         PartitionIsMigratingException dce = new PartitionIsMigratingException();
-        Merge(dce.getResponseHeaders(), headerEntries);
+        ExceptionBuilder.Merge(dce.getResponseHeaders(), headerEntries);
         return dce;
     }
 

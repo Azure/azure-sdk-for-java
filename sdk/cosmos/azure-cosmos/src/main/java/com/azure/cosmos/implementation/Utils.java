@@ -70,14 +70,14 @@ public class Utils {
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
-    public  static HttpHeaders Clone(HttpHeaders inputHeaders) {
+    public  static HttpHeaders clone(HttpHeaders inputHeaders) {
         HttpHeaders httpHeaders = new HttpHeaders();
         inputHeaders.forEach(entry -> httpHeaders.put(entry.getName(), entry.getValue()));
 
         return httpHeaders;
     }
 
-    public static HttpHeaders NewHeadersWithRequestCharge(double requestCharge) {
+    public static HttpHeaders newHeadersWithRequestCharge(double requestCharge) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.put(HttpConstants.Headers.REQUEST_CHARGE,
             String.valueOf(requestCharge));

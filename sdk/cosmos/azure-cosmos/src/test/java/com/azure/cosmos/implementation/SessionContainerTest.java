@@ -48,7 +48,7 @@ public class SessionContainerTest {
                 sessionContainer.setSessionToken(
                         collectionResourceId,
                         collectionFullName,
-                        NewHeadersWithSessionToken(partitionKeyRangeId + ":" + lsn));
+                    SessionContainerTest.newHeadersWithSessionToken(partitionKeyRangeId + ":" + lsn));
             }
         }
 
@@ -167,7 +167,7 @@ public class SessionContainerTest {
         String documentCollectionId = ResourceId.newDocumentCollectionId(getRandomDbId(), getRandomCollectionId()).getDocumentCollectionId().toString();
         String initialSessionToken = "1#100#1=20#2=5#3=30";
         sessionContainer.setSessionToken(documentCollectionId, "dbs/db1/colls1/collName",
-                NewHeadersWithSessionToken(partitionKeyRangeId + ":" + initialSessionToken));
+            SessionContainerTest.newHeadersWithSessionToken(partitionKeyRangeId + ":" + initialSessionToken));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document,
                 "dbs/db1/colls1/collName2/docs/doc1", new HashMap<>());
         assertThat(StringUtils.EMPTY).isEqualTo(sessionContainer.resolveGlobalSessionToken(request));
@@ -180,9 +180,9 @@ public class SessionContainerTest {
         String collectionFullName = "dbs/db1/colls1/collName";
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(OperationType.Read,
                 collectionFullName + "/docs/doc1", ResourceType.Document);
@@ -203,9 +203,9 @@ public class SessionContainerTest {
                 documentCollectionId, ResourceType.Document, new HashMap<>());
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
         String sessionToken = sessionContainer.resolveGlobalSessionToken(request);
 
         Set<String> tokens = Sets.newSet(sessionToken.split(","));
@@ -222,9 +222,9 @@ public class SessionContainerTest {
         String collectionFullName = "dbs/db1/colls1/collName";
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(OperationType.Read,
                 collectionFullName + "/docs/doc1", ResourceType.Document);
@@ -243,9 +243,9 @@ public class SessionContainerTest {
                 documentCollectionId, ResourceType.Document, new HashMap<>());
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
 
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken.getLSN()).isEqualTo(100);
@@ -262,9 +262,9 @@ public class SessionContainerTest {
                 documentCollectionId, ResourceType.Document, new HashMap<>());
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange();
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_2");
         assertThat(sessionToken).isNull();
@@ -281,9 +281,9 @@ public class SessionContainerTest {
                 ResourceType.Document, new HashMap<>());
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange();
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_1");
         assertThat(sessionToken).isNull();
@@ -298,9 +298,9 @@ public class SessionContainerTest {
                 documentCollectionId, ResourceType.Document, new HashMap<>());
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_1:1#101#1=20#2=5#3=30"));
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange();
         GatewayTestUtils.setParent(request.requestContext.resolvedPartitionKeyRange, ImmutableList.of("range_1"));
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_2");
@@ -314,7 +314,7 @@ public class SessionContainerTest {
         String collectionFullName = "dbs/db1/colls1/collName";
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
 
         //  Test getResourceId based
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
@@ -350,7 +350,7 @@ public class SessionContainerTest {
         String collectionFullName = "dbs/db1/colls1/collName";
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
 
         //  Test resourceId based
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
@@ -387,7 +387,7 @@ public class SessionContainerTest {
         String collectionFullName1 = "dbs/db1/colls1/collName1";
 
         sessionContainer.setSessionToken(documentCollectionId1, collectionFullName1,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
 
         //  Test resourceId based
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(OperationType.Read,
@@ -400,7 +400,7 @@ public class SessionContainerTest {
                 documentCollectionId2, ResourceType.Document, new HashMap<>());
 
         sessionContainer.setSessionToken(documentCollectionId2, collectionFullName2,
-            NewHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#1=20#2=5#3=30"));
 
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request1, "range_0");
         assertThat(sessionToken.getLSN()).isEqualTo(100);
@@ -432,7 +432,7 @@ public class SessionContainerTest {
         request.setResourceId(documentCollectionId);
 
         assertThat(request.getIsNameBased()).isFalse();
-        sessionContainer.setSessionToken(request, NewHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
+        sessionContainer.setSessionToken(request, SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
         request = RxDocumentServiceRequest.create(OperationType.Read, documentCollectionId, ResourceType.Document, new HashMap<>());
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken.getLSN()).isEqualTo(100);
@@ -539,7 +539,7 @@ public class SessionContainerTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ReadFeed,
                 collectionFullName + "/docs/doc1", ResourceType.DocumentCollection, new HashMap<>());
         request.setResourceId(documentCollectionId);
-        sessionContainer.setSessionToken(request, NewHeadersWithSessionToken("range_0:1"));
+        sessionContainer.setSessionToken(request, SessionContainerTest.newHeadersWithSessionToken("range_0:1"));
 
         request = RxDocumentServiceRequest.create(OperationType.Read,
                 documentCollectionId, ResourceType.Document, new HashMap<>());
@@ -560,13 +560,13 @@ public class SessionContainerTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
         request.setResourceId(documentCollectionId);
-        sessionContainer.setSessionToken(request, NewHeadersWithSessionToken("range_0:1#105#4=90#5=1"));
+        sessionContainer.setSessionToken(request, SessionContainerTest.newHeadersWithSessionToken("range_0:1#105#4=90#5=1"));
 
 
         request = RxDocumentServiceRequest.create(OperationType.Read,
                 collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
         request.setResourceId(documentCollectionId);
-        sessionContainer.setSessionToken(request, NewHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
+        sessionContainer.setSessionToken(request, SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
 
         request = RxDocumentServiceRequest.create(OperationType.Read,
                 documentCollectionId, ResourceType.Document, new HashMap<>());
@@ -584,13 +584,13 @@ public class SessionContainerTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
         request.setResourceId(documentCollectionId);
-        sessionContainer.setSessionToken(request, NewHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
+        sessionContainer.setSessionToken(request, SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
 
 
         request = RxDocumentServiceRequest.create(OperationType.Read,
                 collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
         request.setResourceId(documentCollectionId);
-        sessionContainer.setSessionToken(request, NewHeadersWithSessionToken("range_0:1#105#4=90#5=1"));
+        sessionContainer.setSessionToken(request, SessionContainerTest.newHeadersWithSessionToken("range_0:1#105#4=90#5=1"));
 
         request = RxDocumentServiceRequest.create(OperationType.Read,
                 documentCollectionId, ResourceType.Document, new HashMap<>());
@@ -606,7 +606,7 @@ public class SessionContainerTest {
         String collectionFullName = "dbs/db1/colls1/collName";
 
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName + "/docs/doc1",
-            NewHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
+            SessionContainerTest.newHeadersWithSessionToken("range_0:1#100#4=90#5=1"));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 documentCollectionId, ResourceType.Document, new HashMap<>());
         String sessionToken = sessionContainer.resolveGlobalSessionToken(request);
@@ -642,7 +642,7 @@ public class SessionContainerTest {
                 sessionContainer.setSessionToken(
                     collectionResourceId,
                     collectionFullName,
-                    NewHeadersWithSessionToken(partitionKeyRangeId + ":" + lsn));
+                    SessionContainerTest.newHeadersWithSessionToken(partitionKeyRangeId + ":" + lsn));
             }
         }
 
@@ -663,7 +663,7 @@ public class SessionContainerTest {
         assertThat(sessionToken).isNull();
     }
 
-    private static HttpHeaders NewHeadersWithSessionToken(String sessionToken) {
+    private static HttpHeaders newHeadersWithSessionToken(String sessionToken) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.put(HttpConstants.Headers.SESSION_TOKEN, sessionToken);
 

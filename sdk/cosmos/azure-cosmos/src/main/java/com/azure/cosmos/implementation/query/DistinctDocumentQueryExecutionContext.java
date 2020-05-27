@@ -91,7 +91,7 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
                     this.lastHash.set(outHash.v);
                 }
             });
-            HttpHeaders headers = Utils.Clone(tFeedResponse.getResponseHeaders());
+            HttpHeaders headers = Utils.clone(tFeedResponse.getResponseHeaders());
             if (tFeedResponse.getContinuationToken() != null) {
 
                 final String sourceContinuationToken = tFeedResponse.getContinuationToken();

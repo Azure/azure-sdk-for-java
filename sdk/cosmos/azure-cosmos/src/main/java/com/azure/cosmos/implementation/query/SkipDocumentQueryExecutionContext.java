@@ -66,7 +66,7 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
             int numberOfDocumentsSkipped = tFeedResponse.getResults().size() - documentsAfterSkip.size();
             this.skipCount -= numberOfDocumentsSkipped;
 
-            HttpHeaders headers = Utils.Clone(tFeedResponse.getResponseHeaders());
+            HttpHeaders headers = Utils.clone(tFeedResponse.getResponseHeaders());
             if (this.skipCount >= 0) {
                 // Add Offset Continuation Token
                 String sourceContinuationToken = tFeedResponse.getContinuationToken();

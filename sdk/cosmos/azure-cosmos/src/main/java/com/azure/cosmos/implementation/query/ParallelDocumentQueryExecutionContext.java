@@ -222,7 +222,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse,
                 double charge) {
             FeedResponse<T> page = documentProducerFeedResponse.pageResult;
-            HttpHeaders headers = Utils.Clone(page.getResponseHeaders());
+            HttpHeaders headers = Utils.clone(page.getResponseHeaders());
 
             double pageCharge = page.getRequestCharge();
             pageCharge += charge;
@@ -240,7 +240,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse,
                 String compositeContinuationToken) {
             FeedResponse<T> page = documentProducerFeedResponse.pageResult;
-            HttpHeaders headers = Utils.Clone(page.getResponseHeaders());
+            HttpHeaders headers = Utils.clone(page.getResponseHeaders());
             headers.put(HttpConstants.Headers.CONTINUATION,
                     compositeContinuationToken);
 
@@ -322,7 +322,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
                 return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                    Utils.NewHeadersWithRequestCharge(tracker.getAndResetCharge())));
+                    Utils.newHeadersWithRequestCharge(tracker.getAndResetCharge())));
             }));
         }
     }

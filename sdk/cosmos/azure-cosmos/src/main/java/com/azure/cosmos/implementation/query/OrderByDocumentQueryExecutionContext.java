@@ -408,7 +408,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         private FeedResponse<OrderByRowResult<T>> addOrderByContinuationToken(
                 FeedResponse<OrderByRowResult<T>> page,
                 String orderByContinuationToken) {
-            HttpHeaders httpHeaders = Utils.Clone(page.getResponseHeaders());
+            HttpHeaders httpHeaders = Utils.clone(page.getResponseHeaders());
             httpHeaders.put(HttpConstants.Headers.CONTINUATION,
                     orderByContinuationToken);
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
@@ -432,7 +432,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         // construct a page from result with request charge
                         FeedResponse<OrderByRowResult<T>> feedResponse = BridgeInternal.createFeedResponse(
                                 orderByRowResults,
-                                Utils.NewHeadersWithRequestCharge(tracker.getAndResetCharge()));
+                                Utils.newHeadersWithRequestCharge(tracker.getAndResetCharge()));
                         if (!queryMetricMap.isEmpty()) {
                             for (Map.Entry<String, QueryMetrics> entry : queryMetricMap.entrySet()) {
                                 BridgeInternal.putQueryMetricsIntoMap(feedResponse,
@@ -496,7 +496,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
                         return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                                Utils.NewHeadersWithRequestCharge(tracker.getAndResetCharge())));
+                                Utils.newHeadersWithRequestCharge(tracker.getAndResetCharge())));
                     }));
         }
     }

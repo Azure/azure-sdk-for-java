@@ -4,15 +4,9 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.RequestChargeTracker;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import reactor.core.publisher.Flux;
@@ -65,9 +59,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
     private DocumentProducerFeedResponse resultPageFrom(RequestChargeTracker tracker, OrderByRowResult<T> row) {
         double requestCharge = tracker.getAndResetCharge();
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.put(HttpConstants.Headers.REQUEST_CHARGE, String.valueOf(requestCharge));
-
+        HttpHeaders httpHeaders = Utils.newHeadersWithRequestCharge(requestCharge);
         FeedResponse<T> fr = BridgeInternal.createFeedResponse(Collections.singletonList((T) row), httpHeaders);
         return new DocumentProducerFeedResponse(fr, row.getSourcePartitionKeyRange());
     }
