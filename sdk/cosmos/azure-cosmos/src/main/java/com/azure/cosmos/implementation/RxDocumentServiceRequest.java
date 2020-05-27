@@ -74,7 +74,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public boolean isReadOnlyScript() {
-        String isReadOnlyScript = this.headers.get(HttpConstants.HttpHeaders.IS_READ_ONLY_SCRIPT);
+        String isReadOnlyScript = this.headers.get(HttpConstants.Headers.IS_READ_ONLY_SCRIPT);
         if(StringUtils.isEmpty(isReadOnlyScript)) {
             return false;
         } else {
@@ -194,9 +194,9 @@ public class RxDocumentServiceRequest implements Cloneable {
             this.resourceAddress = resourceIdOrFullName;
         }
 
-        if (StringUtils.isNotEmpty(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID))) {
+        if (StringUtils.isNotEmpty(this.headers.get(HttpConstants.Headers.PARTITION_KEY_RANGE_ID))) {
             this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity
-                    .fromHeader(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID));
+                    .fromHeader(this.headers.get(HttpConstants.Headers.PARTITION_KEY_RANGE_ID));
         }
     }
 
@@ -868,9 +868,9 @@ public class RxDocumentServiceRequest implements Cloneable {
     public void setPartitionKeyRangeIdentity(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
         this.partitionKeyRangeIdentity = partitionKeyRangeIdentity;
         if (partitionKeyRangeIdentity != null) {
-            this.headers.put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeIdentity.toHeader());
+            this.headers.put(HttpConstants.Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeIdentity.toHeader());
         } else {
-            this.headers.remove(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+            this.headers.remove(HttpConstants.Headers.PARTITION_KEY_RANGE_ID);
         }
     }
 
@@ -904,7 +904,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public boolean isChangeFeedRequest() {
-        return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
+        return this.headers.containsKey(HttpConstants.Headers.A_IM);
     }
 
     public boolean isWritingToMaster() {

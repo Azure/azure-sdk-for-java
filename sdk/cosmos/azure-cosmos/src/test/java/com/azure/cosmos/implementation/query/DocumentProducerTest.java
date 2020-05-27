@@ -720,7 +720,7 @@ public class DocumentProducerTest {
 
         private static CosmosException partitionKeyRangeGoneException() {
             Map<String, String> headers = new HashMap<>();
-            headers.put(HttpConstants.HttpHeaders.SUB_STATUS,
+            headers.put(HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
             return BridgeInternal.createCosmosException(HttpConstants.StatusCodes.GONE, new CosmosError(), headers);
         }

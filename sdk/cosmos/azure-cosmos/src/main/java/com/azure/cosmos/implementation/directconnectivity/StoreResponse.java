@@ -77,7 +77,7 @@ public class StoreResponse {
     }
 
     public String getContinuation() {
-        return this.getHeaderValue(HttpConstants.HttpHeaders.CONTINUATION);
+        return this.getHeaderValue(HttpConstants.Headers.CONTINUATION);
     }
 
     public String getHeaderValue(String attribute) {

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
@@ -10,9 +11,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,7 +20,7 @@ public class FeedResponseBuilder<T extends Resource> {
     private final boolean isChangeFeed;
     private final Class<T> klass;
 
-    private Map<String, String> headers = new HashMap<>();
+    private HttpHeaders headers = new HttpHeaders();
     private boolean noMoreChangesInChangeFeed = false;
     private List<T> results;
 
@@ -33,9 +32,9 @@ public class FeedResponseBuilder<T extends Resource> {
     public FeedResponseBuilder<T> withContinuationToken(String continuationToken) {
 
         if (isChangeFeed) {
-            headers.put(HttpConstants.HttpHeaders.E_TAG, continuationToken);
+            headers.put(HttpConstants.Headers.E_TAG, continuationToken);
         } else {
-            headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
+            headers.put(HttpConstants.Headers.CONTINUATION, continuationToken);
         }
         return this;
     }

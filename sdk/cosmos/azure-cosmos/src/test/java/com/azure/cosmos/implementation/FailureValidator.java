@@ -79,7 +79,7 @@ public interface FailureValidator {
                     CosmosException cosmosException = (CosmosException) t;
                     long exceptionQuorumAckedLSN = -1;
                     if (cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN) != null) {
-                        exceptionQuorumAckedLSN = Long.parseLong(cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+                        exceptionQuorumAckedLSN = Long.parseLong(cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
 
                     }
                     assertThat(exceptionQuorumAckedLSN).isNotEqualTo(-1);

@@ -120,12 +120,12 @@ public interface StoreResponseValidator {
         }
 
         public Builder withRequestCharge(double value) {
-            withHeader(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(value));
+            withHeader(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(value));
             return this;
         }
 
         public Builder withRequestChargeGreaterThanOrEqualTo(double value) {
-            withHeaderValueCondition(HttpConstants.HttpHeaders.REQUEST_CHARGE, new Condition<>(s -> {
+            withHeaderValueCondition(HttpConstants.Headers.REQUEST_CHARGE, new Condition<>(s -> {
                 try {
                     double parsed = Double.parseDouble(s);
                     return parsed >= value;
@@ -137,7 +137,7 @@ public interface StoreResponseValidator {
         }
 
         public Builder withRequestChargeLessThanOrEqualTo(double value) {
-            withHeaderValueCondition(HttpConstants.HttpHeaders.REQUEST_CHARGE, new Condition<>(s -> {
+            withHeaderValueCondition(HttpConstants.Headers.REQUEST_CHARGE, new Condition<>(s -> {
                 try {
                     double parsed = Double.parseDouble(s);
                     return parsed <= value;

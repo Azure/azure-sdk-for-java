@@ -37,7 +37,7 @@ public class ThroughputResponse extends CosmosResponse<ThroughputProperties> {
     public int getMinThroughput(){
         return Integer.parseInt(offerResourceResponse
                                     .getResponseHeaders()
-                                    .get(HttpConstants.HttpHeaders.OFFER_MIN_THROUGHPUT));
+                                    .getValue(HttpConstants.Headers.OFFER_MIN_THROUGHPUT));
     }
 
     /**
@@ -48,7 +48,7 @@ public class ThroughputResponse extends CosmosResponse<ThroughputProperties> {
     public boolean isReplacePending(){
         return Boolean.parseBoolean(offerResourceResponse
                                         .getResponseHeaders()
-                                        .get(HttpConstants.HttpHeaders.OFFER_REPLACE_PENDING));
+                                        .getValue(HttpConstants.Headers.OFFER_REPLACE_PENDING));
     }
 
 }

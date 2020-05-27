@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
@@ -868,16 +869,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Map<String, String> headers = new HashMap<>();
 
         if (this.useMultipleWriteLocations) {
-            headers.put(HttpConstants.HttpHeaders.ALLOW_TENTATIVE_WRITES, Boolean.TRUE.toString());
+            headers.put(HttpConstants.Headers.ALLOW_TENTATIVE_WRITES, Boolean.TRUE.toString());
         }
 
         if (consistencyLevel != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            headers.put(HttpConstants.Headers.CONSISTENCY_LEVEL, consistencyLevel.toString());
         }
 
         //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
         if (resourceType.equals(ResourceType.Document) && operationType.isWriteOperation() && !this.contentResponseOnWriteEnabled) {
-            headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
+            headers.put(HttpConstants.Headers.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
         }
 
         if (options == null) {
@@ -890,44 +891,44 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options.getIfMatchETag() != null) {
-                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getIfMatchETag());
+                headers.put(HttpConstants.Headers.IF_MATCH, options.getIfMatchETag());
         }
 
         if(options.getIfNoneMatchETag() != null) {
-            headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getIfNoneMatchETag());
+            headers.put(HttpConstants.Headers.IF_NONE_MATCH, options.getIfNoneMatchETag());
         }
 
         if (options.getConsistencyLevel() != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
+            headers.put(HttpConstants.Headers.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 
         if (options.getIndexingDirective() != null) {
-            headers.put(HttpConstants.HttpHeaders.INDEXING_DIRECTIVE, options.getIndexingDirective().toString());
+            headers.put(HttpConstants.Headers.INDEXING_DIRECTIVE, options.getIndexingDirective().toString());
         }
 
         if (options.getPostTriggerInclude() != null && options.getPostTriggerInclude().size() > 0) {
             String postTriggerInclude = StringUtils.join(options.getPostTriggerInclude(), ",");
-            headers.put(HttpConstants.HttpHeaders.POST_TRIGGER_INCLUDE, postTriggerInclude);
+            headers.put(HttpConstants.Headers.POST_TRIGGER_INCLUDE, postTriggerInclude);
         }
 
         if (options.getPreTriggerInclude() != null && options.getPreTriggerInclude().size() > 0) {
             String preTriggerInclude = StringUtils.join(options.getPreTriggerInclude(), ",");
-            headers.put(HttpConstants.HttpHeaders.PRE_TRIGGER_INCLUDE, preTriggerInclude);
+            headers.put(HttpConstants.Headers.PRE_TRIGGER_INCLUDE, preTriggerInclude);
         }
 
         if (!Strings.isNullOrEmpty(options.getSessionToken())) {
-            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.getSessionToken());
+            headers.put(HttpConstants.Headers.SESSION_TOKEN, options.getSessionToken());
         }
 
         if (options.getResourceTokenExpirySeconds() != null) {
-            headers.put(HttpConstants.HttpHeaders.RESOURCE_TOKEN_EXPIRY,
+            headers.put(HttpConstants.Headers.RESOURCE_TOKEN_EXPIRY,
                     String.valueOf(options.getResourceTokenExpirySeconds()));
         }
 
         if (options.getOfferThroughput() != null && options.getOfferThroughput() >= 0) {
-            headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, options.getOfferThroughput().toString());
+            headers.put(HttpConstants.Headers.OFFER_THROUGHPUT, options.getOfferThroughput().toString());
         } else if (options.getOfferType() != null) {
-            headers.put(HttpConstants.HttpHeaders.OFFER_TYPE, options.getOfferType());
+            headers.put(HttpConstants.Headers.OFFER_TYPE, options.getOfferType());
         }
 
         if (options.getOfferThroughput() == null) {
@@ -950,20 +951,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 }
 
                 if (offer.hasOfferThroughput()) {
-                    headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
+                    headers.put(HttpConstants.Headers.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
                 } else if (offer.getOfferAutoScaleSettings() != null) {
-                    headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
+                    headers.put(HttpConstants.Headers.OFFER_AUTOPILOT_SETTINGS,
                                 ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
                 }
             }
         }
 
         if (options.isPopulateQuotaInfo()) {
-            headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
+            headers.put(HttpConstants.Headers.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
 
         if (options.isScriptLoggingEnabled()) {
-            headers.put(HttpConstants.HttpHeaders.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
+            headers.put(HttpConstants.Headers.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
         }
 
         return headers;
@@ -1036,7 +1037,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
-        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
+        request.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
     private static PartitionKeyInternal extractPartitionKeyValueFromDocument(
@@ -1103,7 +1104,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
-        request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+        request.getHeaders().put(HttpConstants.Headers.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
             String resourceName = request.getResourceAddress();
@@ -1116,16 +1117,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             } catch (UnsupportedEncodingException e) {
                 throw new IllegalStateException("Failed to encode authtoken.", e);
             }
-            request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
+            request.getHeaders().put(HttpConstants.Headers.AUTHORIZATION, authorization);
         }
 
         if ((RequestVerb.POST.equals(httpMethod) || RequestVerb.PUT.equals(httpMethod))
-                && !request.getHeaders().containsKey(HttpConstants.HttpHeaders.CONTENT_TYPE)) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
+                && !request.getHeaders().containsKey(HttpConstants.Headers.CONTENT_TYPE)) {
+            request.getHeaders().put(HttpConstants.Headers.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         }
 
-        if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.ACCEPT)) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
+        if (!request.getHeaders().containsKey(HttpConstants.Headers.ACCEPT)) {
+            request.getHeaders().put(HttpConstants.Headers.ACCEPT, RuntimeConstants.MediaTypes.JSON);
         }
     }
 
@@ -1187,7 +1188,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // hence using assertion here instead of exception, being in the private
         // method
         assert (headers != null);
-        headers.put(HttpConstants.HttpHeaders.IS_UPSERT, "true");
+        headers.put(HttpConstants.Headers.IS_UPSERT, "true");
         if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
             documentClientRetryPolicy.updateEndTime();
             request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
@@ -1546,7 +1547,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                // aggregate RUs.
                                                .map(feedList -> {
                                                    List<T> finalList = new ArrayList<T>();
-                                                   HashMap<String, String> headers = new HashMap<>();
                                                    double requestCharge = 0;
                                                    for (FeedResponse<Document> page : feedList) {
                                                        requestCharge += page.getRequestCharge();
@@ -1554,10 +1554,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                        finalList.addAll(page.getResults().stream().map(document ->
                                                            ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
                                                    }
-                                                   headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
-                                                                                                             .toString(requestCharge));
-                                                   FeedResponse<T> frp = BridgeInternal
-                                                                                    .createFeedResponse(finalList, headers);
+
+                                                   HttpHeaders headers = Utils.NewHeadersWithRequestCharge(requestCharge);
+                                                   FeedResponse<T> frp = BridgeInternal.createFeedResponse(finalList, headers);
                                                    return frp;
                                                });
                                 });
@@ -2037,7 +2036,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(storedProcedureLink, null);
 
             Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.StoredProcedure, OperationType.ExecuteJavaScript);
-            requestHeaders.put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
+            requestHeaders.put(HttpConstants.Headers.ACCEPT, RuntimeConstants.MediaTypes.JSON);
 
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ExecuteJavaScript,
                     ResourceType.StoredProcedure, path,
@@ -2993,9 +2992,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
-                requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
+                requestHeaders.put(HttpConstants.Headers.CONTINUATION, continuationToken);
             }
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
+            requestHeaders.put(HttpConstants.Headers.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(OperationType.ReadFeed,
                     resourceType, resourceLink, requestHeaders, finalFeedOptions);
             return request;

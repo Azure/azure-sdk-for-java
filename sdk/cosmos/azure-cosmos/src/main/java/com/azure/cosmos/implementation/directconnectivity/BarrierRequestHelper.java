@@ -69,14 +69,14 @@ public class BarrierRequestHelper {
                     ResourceType.DocumentCollection, null);
         }
 
-        barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+        barrierLsnRequest.getHeaders().put(HttpConstants.Headers.X_DATE, Utils.nowAsRFC1123());
 
         if (targetLsn != null && targetLsn > 0) {
-            barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.TARGET_LSN, targetLsn.toString());
+            barrierLsnRequest.getHeaders().put(HttpConstants.Headers.TARGET_LSN, targetLsn.toString());
         }
 
         if (targetGlobalCommittedLsn != null && targetGlobalCommittedLsn > 0) {
-            barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.TARGET_GLOBAL_COMMITTED_LSN, targetGlobalCommittedLsn.toString());
+            barrierLsnRequest.getHeaders().put(HttpConstants.Headers.TARGET_GLOBAL_COMMITTED_LSN, targetGlobalCommittedLsn.toString());
         }
 
         switch (originalRequestTokenType) {
@@ -95,7 +95,7 @@ public class BarrierRequestHelper {
 
 
             case ResourceToken:
-                authorizationToken = request.getHeaders().get(HttpConstants.HttpHeaders.AUTHORIZATION);
+                authorizationToken = request.getHeaders().get(HttpConstants.Headers.AUTHORIZATION);
                 break;
 
             default:
@@ -105,14 +105,14 @@ public class BarrierRequestHelper {
                 throw Exceptions.propagate(new InternalServerErrorException(RMResources.InternalServerError));
         }
 
-        barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
+        barrierLsnRequest.getHeaders().put(HttpConstants.Headers.AUTHORIZATION, authorizationToken);
         barrierLsnRequest.requestContext = request.requestContext.clone();
 
         if (request.getPartitionKeyRangeIdentity() != null) {
             barrierLsnRequest.routeTo(request.getPartitionKeyRangeIdentity());
         }
-        if (request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) != null) {
-            barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY));
+        if (request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY) != null) {
+            barrierLsnRequest.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY));
             barrierLsnRequest.setPartitionKeyInternal(request.getPartitionKeyInternal());
         }
         if (request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID) != null) {

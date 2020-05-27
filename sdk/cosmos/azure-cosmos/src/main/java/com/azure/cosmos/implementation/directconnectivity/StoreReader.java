@@ -92,7 +92,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        String originalSessionToken = entity.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN);
 
         if (entity.requestContext.cosmosDiagnostics == null) {
             entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
@@ -370,7 +370,7 @@ public class StoreReader {
                                 requestSessionToken.v = entity.requestContext.sessionToken;
                             }
                         } else {
-                            entity.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                            entity.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
                         }
 
                         Flux<ReadReplicaResult> y = earlyResultIfNotEnoughReplicas(resolveApiResults, entity, replicaCountToRead);
@@ -445,7 +445,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        String originalSessionToken = entity.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN);
         if (entity.requestContext.cosmosDiagnostics == null) {
             entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
         }
@@ -512,7 +512,7 @@ public class StoreReader {
                             // Remove whatever session token can be there in headers.
                             // We don't need it. If it is global - backend will not undersand it.
                             // But there's no point in producing partition local sesison token.
-                            entity.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                            entity.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
                         }
 
 
@@ -589,7 +589,7 @@ public class StoreReader {
 
         //QueryRequestPerformanceActivity activity = null;
         // TODO: ifNoneMatch and maxPageSize are not used in the .Net code. check with Ji
-        String ifNoneMatch = request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH);
+        String ifNoneMatch = request.getHeaders().get(HttpConstants.Headers.IF_NONE_MATCH);
         String continuation = null;
         String maxPageSize = null;
 
@@ -598,8 +598,8 @@ public class StoreReader {
 
         if (request.getOperationType() == OperationType.ReadFeed ||
                 request.getOperationType() == OperationType.Query) {
-            continuation = request.getHeaders().get(HttpConstants.HttpHeaders.CONTINUATION);
-            maxPageSize = request.getHeaders().get(HttpConstants.HttpHeaders.PAGE_SIZE);
+            continuation = request.getHeaders().get(HttpConstants.Headers.CONTINUATION);
+            maxPageSize = request.getHeaders().get(HttpConstants.Headers.PAGE_SIZE);
 
             if (continuation != null && continuation.contains(";")) {
                 String[] parts = StringUtils.split(continuation, ';');
@@ -607,7 +607,7 @@ public class StoreReader {
                     throw new BadRequestException(String.format(
                             RMResources.InvalidHeaderValue,
                             continuation,
-                            HttpConstants.HttpHeaders.CONTINUATION));
+                            HttpConstants.Headers.CONTINUATION));
                 }
 
                 continuation = parts[0];
@@ -684,7 +684,7 @@ public class StoreReader {
             }
 
             double requestCharge = 0;
-            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE)) != null) {
+            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.Headers.REQUEST_CHARGE)) != null) {
                 requestCharge = Double.parseDouble(headerValue);
             }
 
@@ -713,7 +713,7 @@ public class StoreReader {
             ISessionToken sessionToken = null;
             // SESSION token response header is introduced from getVersion HttpConstants.Versions.v2018_06_18 onwards.
             // Previously it was only a request header
-            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN)) != null) {
+            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.Headers.SESSION_TOKEN)) != null) {
                 sessionToken = SessionTokenHelper.parse(headerValue);
             }
 
@@ -742,40 +742,40 @@ public class StoreReader {
                 int currentWriteQuorum = -1;
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
-                String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
+                String headerValue = cosmosException.getResponseHeaders().getValue(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     quorumAckedLSN = Long.parseLong(headerValue);
                 }
 
-                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.CURRENT_REPLICA_SET_SIZE);
+                headerValue = cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.CURRENT_REPLICA_SET_SIZE);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     currentReplicaSetSize = Integer.parseInt(headerValue);
                 }
 
-                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.CURRENT_WRITE_QUORUM);
+                headerValue = cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.CURRENT_WRITE_QUORUM);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     currentReplicaSetSize = Integer.parseInt(headerValue);
                 }
 
                 double requestCharge = 0;
-                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                headerValue = cosmosException.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     requestCharge = Double.parseDouble(headerValue);
                 }
 
-                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+                headerValue = cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     numberOfReadRegions = Integer.parseInt(headerValue);
                 }
 
-                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
+                headerValue = cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     globalCommittedLSN = Integer.parseInt(headerValue);
                 }
 
                 long lsn = -1;
                 if (useLocalLSNBasedHeaders) {
-                    headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.LOCAL_LSN);
+                    headerValue = cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.LOCAL_LSN);
                     if (!Strings.isNullOrEmpty(headerValue)) {
                         lsn = Long.parseLong(headerValue);
                     }
@@ -787,7 +787,7 @@ public class StoreReader {
 
                 // SESSION token response header is introduced from getVersion HttpConstants.Versions.v2018_06_18 onwards.
                 // Previously it was only a request header
-                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                headerValue = cosmosException.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     sessionToken = SessionTokenHelper.parse(headerValue);
                 }
@@ -861,7 +861,7 @@ public class StoreReader {
             throw ex;
         }
 
-        String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE);
+        String value = ex.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE);
         if (Strings.isNullOrWhiteSpace(value)) {
             return;
         }

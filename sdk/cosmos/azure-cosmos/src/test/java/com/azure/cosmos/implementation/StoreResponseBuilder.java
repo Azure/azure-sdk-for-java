@@ -43,7 +43,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withRequestCharge(double requestCharge) {
-        headerEntries.add(new AbstractMap.SimpleEntry<>(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(requestCharge)));
         return this;
     }
 
@@ -78,7 +78,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withSessionToken(String sessionToken) {
-        headerEntries.add(new AbstractMap.SimpleEntry<>(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(HttpConstants.Headers.SESSION_TOKEN, sessionToken));
         return this;
     }
 

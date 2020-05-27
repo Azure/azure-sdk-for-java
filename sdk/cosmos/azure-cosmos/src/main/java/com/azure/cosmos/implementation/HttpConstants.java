@@ -26,7 +26,7 @@ public class HttpConstants {
         public static final String PARTITION_KEY_RANGE_IDS = "$partitionKeyRangeIds";
     }
 
-    public static class HttpHeaders {
+    public static class Headers {
         public static final String AUTHORIZATION = "authorization";
         public static final String E_TAG = "etag";
         public static final String METHOD_OVERRIDE = "X-HTTP-Method";

@@ -88,7 +88,7 @@ public class ResourceTokenAuthorizationHelper {
             String resourceAddress,
             Map<String, String> headers) {
         PartitionKeyInternal partitionKey = PartitionKeyInternal.Empty;
-        String partitionKeyString = headers.get(HttpConstants.HttpHeaders.PARTITION_KEY);
+        String partitionKeyString = headers.get(HttpConstants.Headers.PARTITION_KEY);
         if (partitionKeyString != null) {
             partitionKey = PartitionKeyInternal.fromJsonString(partitionKeyString);
         }

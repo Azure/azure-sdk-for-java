@@ -146,10 +146,10 @@ public class HttpTransportClientTest {
         assertThat(httpClientMockWrapper.getCapturedInvocation()).asList().hasSize(1);
         HttpRequest httpRequest = httpClientMockWrapper.getCapturedInvocation().get(0);
 
-        assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.USER_AGENT)).endsWith("i am suffix");
-        assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.CACHE_CONTROL)).isEqualTo("no-cache");
-        assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.ACCEPT)).isEqualTo("application/json");
-        assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
+        assertThat(httpRequest.headers().value(HttpConstants.Headers.USER_AGENT)).endsWith("i am suffix");
+        assertThat(httpRequest.headers().value(HttpConstants.Headers.CACHE_CONTROL)).isEqualTo("no-cache");
+        assertThat(httpRequest.headers().value(HttpConstants.Headers.ACCEPT)).isEqualTo("application/json");
+        assertThat(httpRequest.headers().value(HttpConstants.Headers.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
 
     }
 
@@ -202,7 +202,7 @@ public class HttpTransportClientTest {
                                 .withContent("").withStatus(404)
                                 .withHeaderLSN(lsn)
                                 .withHeaderPartitionKeyRangeId(partitionKeyRangeId)
-                                .withHeaders(HttpConstants.HttpHeaders.CONTENT_TYPE, "text/html"),
+                                .withHeaders(HttpConstants.Headers.CONTENT_TYPE, "text/html"),
 
                         FailureValidator.builder()
                                 .instanceOf(GoneException.class)

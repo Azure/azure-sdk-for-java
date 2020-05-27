@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.cosmos.BridgeInternal;
@@ -16,7 +17,6 @@ import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentMap;
 public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private final List<T> results;
-    private final Map<String, String> header;
+    private final HttpHeaders header;
     private final HashMap<String, Long> usageHeaders;
     private final HashMap<String, Long> quotaHeaders;
     private final boolean useEtagAsContinuation;
@@ -38,28 +38,28 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private final CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
 
-    FeedResponse(List<T> results, Map<String, String> headers) {
+    FeedResponse(List<T> results, HttpHeaders headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
     }
 
-    FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+    FeedResponse(List<T> results,HttpHeaders headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this(results, headers, false, false, queryMetricsMap);
     }
 
-    FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
-        this(results, header, true, nochanges, new ConcurrentHashMap<>());
+    FeedResponse(List<T> results, HttpHeaders headers, boolean nochanges) {
+        this(results, headers, true, nochanges, new ConcurrentHashMap<>());
     }
 
     // TODO: need to more sure the query metrics can round trip just from the headers.
     // We can then remove it as a parameter.
     private FeedResponse(
         List<T> results,
-        Map<String, String> header,
+        HttpHeaders headers,
         boolean useEtagAsContinuation,
         boolean nochanges,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
-        this.header = header;
+        this.header = headers;
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -229,7 +229,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public String getMaxResourceQuota() {
         return getValueOrNull(header,
-            HttpConstants.HttpHeaders.MAX_RESOURCE_QUOTA);
+            HttpConstants.Headers.MAX_RESOURCE_QUOTA);
     }
 
     /**
@@ -240,7 +240,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public String getCurrentResourceQuotaUsage() {
         return getValueOrNull(header,
-            HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
+            HttpConstants.Headers.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
     /**
@@ -250,7 +250,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public double getRequestCharge() {
         String value = getValueOrNull(header,
-            HttpConstants.HttpHeaders.REQUEST_CHARGE);
+            HttpConstants.Headers.REQUEST_CHARGE);
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
@@ -263,7 +263,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      * @return the activity id.
      */
     public String getActivityId() {
-        return getValueOrNull(header, HttpConstants.HttpHeaders.ACTIVITY_ID);
+        return getValueOrNull(header, HttpConstants.Headers.ACTIVITY_ID);
     }
 
     @Override
@@ -278,8 +278,8 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public String getContinuationToken() {
         String headerName = useEtagAsContinuation
-                                ? HttpConstants.HttpHeaders.E_TAG
-                                : HttpConstants.HttpHeaders.CONTINUATION;
+                                ? HttpConstants.Headers.E_TAG
+                                : HttpConstants.Headers.CONTINUATION;
         return getValueOrNull(header, headerName);
     }
 
@@ -289,7 +289,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      * @return the session token.
      */
     public String getSessionToken() {
-        return getValueOrNull(header, HttpConstants.HttpHeaders.SESSION_TOKEN);
+        return getValueOrNull(header, HttpConstants.Headers.SESSION_TOKEN);
     }
 
     /**
@@ -297,13 +297,13 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      *
      * @return the response headers.
      */
-    public Map<String, String> getResponseHeaders() {
+    public HttpHeaders getResponseHeaders() {
         return header;
     }
 
     private String getQueryMetricsString() {
         return getValueOrNull(getResponseHeaders(),
-            HttpConstants.HttpHeaders.QUERY_METRICS);
+            HttpConstants.Headers.QUERY_METRICS);
     }
 
     /**
@@ -396,9 +396,9 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         }
     }
 
-    private static String getValueOrNull(Map<String, String> map, String key) {
+    private static String getValueOrNull(HttpHeaders map, String key) {
         if (map != null) {
-            return map.get(key);
+            return map.getValue(key);
         }
         return null;
     }

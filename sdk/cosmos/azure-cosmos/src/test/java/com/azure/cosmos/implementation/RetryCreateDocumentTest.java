@@ -55,7 +55,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             int currentAttempt = count.getAndIncrement();
             if (currentAttempt == 0) {
                 Map<String, String> header = ImmutableMap.of(
-                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
 
                 return Mono.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
@@ -86,7 +86,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             } else {
                 Map<String, String> header = ImmutableMap.of(
-                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(2));
 
                 return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
@@ -122,7 +122,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             int currentAttempt = count.getAndIncrement();
             if (currentAttempt == 0) {
                 Map<String, String> header = ImmutableMap.of(
-                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(2));
 
                 return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));

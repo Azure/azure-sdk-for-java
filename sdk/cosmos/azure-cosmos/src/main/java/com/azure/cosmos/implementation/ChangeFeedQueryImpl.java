@@ -78,25 +78,25 @@ class ChangeFeedQueryImpl<T extends Resource> {
             options);
 
         if (options.getMaxItemCount() != null) {
-            headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, String.valueOf(options.getMaxItemCount()));
+            headers.put(HttpConstants.Headers.PAGE_SIZE, String.valueOf(options.getMaxItemCount()));
         }
 
         // On REST level, change feed is using IF_NONE_MATCH/ETag instead of continuation.
         if(continuationToken != null) {
-            headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, continuationToken);
+            headers.put(HttpConstants.Headers.IF_NONE_MATCH, continuationToken);
         }
 
-        headers.put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+        headers.put(HttpConstants.Headers.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
 
         if (options.getPartitionKey() != null) {
             PartitionKeyInternal partitionKey = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
-            headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKey.toJson());
+            headers.put(HttpConstants.Headers.PARTITION_KEY, partitionKey.toJson());
             req.setPartitionKeyInternal(partitionKey);
         }
 
         if(options.getStartDateTime() != null){
             String dateTimeInHttpFormat = Utils.zonedDateTimeAsUTCRFC1123(options.getStartDateTime());
-            headers.put(HttpConstants.HttpHeaders.IF_MODIFIED_SINCE, dateTimeInHttpFormat);
+            headers.put(HttpConstants.Headers.IF_MODIFIED_SINCE, dateTimeInHttpFormat);
         }
 
         if (options.getPartitionKeyRangeId() != null) {

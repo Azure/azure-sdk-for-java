@@ -75,7 +75,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
+import static com.azure.cosmos.implementation.HttpConstants.Headers;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -114,16 +114,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     400,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(1L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(1L)
                     ),
                     noContent)
             },
@@ -140,16 +140,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     401,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(2L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(2L)
                     ),
                     noContent)
             },
@@ -166,16 +166,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     403,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(3L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(3L)
                     ),
                     noContent)
             },
@@ -192,16 +192,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     404,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(4L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(4L)
                     ),
                     noContent)
             },
@@ -218,16 +218,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     405,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(5L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(5L)
                     ),
                     noContent)
             },
@@ -244,16 +244,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     408,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(6L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(6L)
                     ),
                     noContent)
             },
@@ -270,16 +270,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     409,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(7L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(7L)
                     ),
                     noContent)
             },
@@ -296,17 +296,17 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     410,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.NAME_CACHE_IS_STALE),
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(8L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.SUB_STATUS, Integer.toString(SubStatusCodes.NAME_CACHE_IS_STALE),
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(8L)
                     ),
                     noContent)
             },
@@ -323,17 +323,17 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     410,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.PARTITION_KEY_RANGE_GONE),
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(9L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.SUB_STATUS, Integer.toString(SubStatusCodes.PARTITION_KEY_RANGE_GONE),
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(9L)
                     ),
                     noContent)
             },
@@ -350,17 +350,17 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     410,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_SPLIT),
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(10L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_SPLIT),
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(10L)
                     ),
                     noContent)
             },
@@ -377,17 +377,17 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     410,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_PARTITION_MIGRATION),
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(11L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.SUB_STATUS, Integer.toString(SubStatusCodes.COMPLETING_PARTITION_MIGRATION),
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(11L)
                     ),
                     noContent)
             },
@@ -404,17 +404,17 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     410,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.SUB_STATUS, String.valueOf(SubStatusCodes.UNKNOWN),
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(12L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.SUB_STATUS, String.valueOf(SubStatusCodes.UNKNOWN),
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(12L)
                     ),
                     noContent)
             },
@@ -431,16 +431,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     412,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(13L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(13L)
                     ),
                     noContent)
             },
@@ -457,16 +457,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     413,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(14L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(14L)
                     ),
                     noContent)
             },
@@ -483,16 +483,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     423,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(15L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(15L)
                     ),
                     noContent)
             },
@@ -509,16 +509,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     429,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(16L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(16L)
                     ),
                     noContent)
             },
@@ -535,16 +535,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     449,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(17L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(17L)
                     ),
                     noContent)
             },
@@ -561,16 +561,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     500,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(18L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(18L)
                     ),
                     noContent)
             },
@@ -587,16 +587,16 @@ public final class RntbdTransportClientTest {
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId
                     )),
                 new RntbdResponse(
                     RntbdUUID.EMPTY,
                     503,
                     ImmutableMap.of(
-                        HttpHeaders.LSN, Integer.toString(lsn),
-                        HttpHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
-                        HttpHeaders.TRANSPORT_REQUEST_ID, Long.toString(19L)
+                        Headers.LSN, Integer.toString(lsn),
+                        Headers.PARTITION_KEY_RANGE_ID, partitionKeyRangeId,
+                        Headers.TRANSPORT_REQUEST_ID, Long.toString(19L)
                     ),
                     noContent)
             },
@@ -627,7 +627,7 @@ public final class RntbdTransportClientTest {
 
             final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 
-            builder.put(HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+            builder.put(Headers.X_DATE, Utils.nowAsRFC1123());
 
             final String token = authorizationTokenProvider.generateKeyAuthorizationSignature(RequestVerb.GET,
                 Paths.DATABASE_ACCOUNT_PATH_SEGMENT,
@@ -635,7 +635,7 @@ public final class RntbdTransportClientTest {
                 builder.build()
             );
 
-            builder.put(HttpHeaders.AUTHORIZATION, token);
+            builder.put(Headers.AUTHORIZATION, token);
 
             final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 ResourceType.DatabaseAccount,

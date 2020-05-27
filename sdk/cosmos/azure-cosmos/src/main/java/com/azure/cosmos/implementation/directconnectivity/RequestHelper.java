@@ -16,7 +16,7 @@ public class RequestHelper {
                                                             RxDocumentServiceRequest request) {
         ConsistencyLevel consistencyLevelToUse = serviceConfigReader.getDefaultConsistencyLevel();
 
-        String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.Headers.CONSISTENCY_LEVEL);
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
             ConsistencyLevel requestConsistencyLevel = BridgeInternal.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue);
@@ -25,7 +25,7 @@ public class RequestHelper {
                         String.format(
                                 RMResources.InvalidHeaderValue,
                                 requestConsistencyLevelHeaderValue,
-                                HttpConstants.HttpHeaders.CONSISTENCY_LEVEL));
+                                HttpConstants.Headers.CONSISTENCY_LEVEL));
             }
 
             consistencyLevelToUse = requestConsistencyLevel;

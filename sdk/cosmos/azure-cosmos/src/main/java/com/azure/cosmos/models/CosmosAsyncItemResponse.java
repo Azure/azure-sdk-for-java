@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
+import  com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
@@ -158,7 +159,7 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return the response headers.
      */
-    public Map<String, String> getResponseHeaders() {
+    public HttpHeaders getResponseHeaders() {
         return resourceResponse.getResponseHeaders();
     }
 

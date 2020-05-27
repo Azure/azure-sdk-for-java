@@ -5,7 +5,6 @@ package com.azure.cosmos.rx.examples;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Conflict;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Database;
@@ -121,7 +120,7 @@ public class ConflictAPITest extends DocumentClientTest {
         while (it.hasNext()) {
             FeedResponse<Conflict> page = it.next();
             System.out.println("items: " + page.getResults());
-            String pageSizeAsString = page.getResponseHeaders().get(HttpConstants.HttpHeaders.ITEM_COUNT);
+            String pageSizeAsString = page.getResponseHeaders().getValue(HttpConstants.Headers.ITEM_COUNT);
             assertThat("header getItem count must be present", pageSizeAsString, notNullValue());
             int pageSize = Integer.valueOf(pageSizeAsString);
             assertThat("Result size must match header getItem count", page.getResults(), hasSize(pageSize));

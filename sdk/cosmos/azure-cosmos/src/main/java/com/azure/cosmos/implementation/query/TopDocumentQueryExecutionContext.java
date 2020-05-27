@@ -3,16 +3,16 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import reactor.core.publisher.Flux;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -108,16 +108,16 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                 if (collectedItems + t.getResults().size() <= top) {
                     collectedItems += t.getResults().size();
 
-                    Map<String, String> headers = new HashMap<>(t.getResponseHeaders());
+                    HttpHeaders headers = Utils.Clone(t.getResponseHeaders());
                     if (top != collectedItems) {
                         // Add Take Continuation Token
                         String sourceContinuationToken = t.getContinuationToken();
                         TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
                                 sourceContinuationToken);
-                        headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
+                        headers.put(HttpConstants.Headers.CONTINUATION, takeContinuationToken.toJson());
                     } else {
                         // Null out the continuation token
-                        headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
+                        headers.put(HttpConstants.Headers.CONTINUATION, null);
                     }
 
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(), headers,
@@ -129,8 +129,8 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     collectedItems += lastPageSize;
 
                     // Null out the continuation token
-                    Map<String, String> headers = new HashMap<>(t.getResponseHeaders());
-                    headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
+                    HttpHeaders headers = Utils.Clone(t.getResponseHeaders());
+                    headers.put(HttpConstants.Headers.CONTINUATION, null);
 
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),
                             headers, BridgeInternal.queryMetricsFromFeedResponse(t));

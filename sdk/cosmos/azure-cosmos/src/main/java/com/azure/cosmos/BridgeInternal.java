@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
@@ -87,7 +88,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
+    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, HttpHeaders headers, boolean noChanges) {
         return ModelBridgeInternal.toFeedResponsePage(results, headers, noChanges);
     }
 
@@ -109,13 +110,14 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponse(List<T> results,
-            Map<String, String> headers) {
+                                                         HttpHeaders headers) {
         return ModelBridgeInternal.createFeedResponse(results, headers);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-            Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+                                                         HttpHeaders headers,
+                                                         ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap);
     }
 

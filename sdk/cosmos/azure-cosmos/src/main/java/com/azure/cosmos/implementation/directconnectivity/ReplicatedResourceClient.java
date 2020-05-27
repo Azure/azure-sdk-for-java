@@ -94,9 +94,9 @@ public class ReplicatedResourceClient {
         BiFunction<Quadruple<Boolean, Boolean, Duration, Integer>, RxDocumentServiceRequest, Mono<StoreResponse>> mainFuncDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout,
                 RxDocumentServiceRequest documentServiceRequest) -> {
-            documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.CLIENT_RETRY_ATTEMPT_COUNT,
+            documentServiceRequest.getHeaders().put(HttpConstants.Headers.CLIENT_RETRY_ATTEMPT_COUNT,
                     forceRefreshAndTimeout.getValue3().toString());
-            documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
+            documentServiceRequest.getHeaders().put(HttpConstants.Headers.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
             return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
                         forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());

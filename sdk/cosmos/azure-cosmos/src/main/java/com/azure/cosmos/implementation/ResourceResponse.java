@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -216,7 +217,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the activity id.
      */
     public String getActivityId() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.ACTIVITY_ID);
     }
 
     /**
@@ -225,7 +226,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the session token.
      */
     public String getSessionToken() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
     }
 
     /**
@@ -244,7 +245,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the max resource quota.
      */
     public String getMaxResourceQuota() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.MAX_RESOURCE_QUOTA);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.MAX_RESOURCE_QUOTA);
     }
 
     /**
@@ -253,7 +254,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the current resource quota usage.
      */
     public String getCurrentResourceQuotaUsage() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
     public byte[] getBodyAsByteArray() {
@@ -279,7 +280,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the request charge.
      */
     public double getRequestCharge() {
-        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        String value = this.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
@@ -291,7 +292,7 @@ public final class ResourceResponse<T extends Resource> {
      *
      * @return the response headers.
      */
-    public Map<String, String> getResponseHeaders() {
+    public HttpHeaders getResponseHeaders() {
         return this.response.getResponseHeaders();
     }
 
@@ -301,7 +302,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the progress of an index transformation.
      */
     public long getIndexTransformationProgress() {
-        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.INDEX_TRANSFORMATION_PROGRESS);
+        String value = this.getResponseHeaders().getValue(HttpConstants.Headers.INDEX_TRANSFORMATION_PROGRESS);
         if (StringUtils.isEmpty(value)) {
             return -1;
         }
@@ -314,7 +315,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the progress of lazy indexing.
      */
     public long getLazyIndexingProgress() {
-        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.LAZY_INDEXING_PROGRESS);
+        String value = this.getResponseHeaders().getValue(HttpConstants.Headers.LAZY_INDEXING_PROGRESS);
         if (StringUtils.isEmpty(value)) {
             return -1;
         }
@@ -365,7 +366,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return ETag
      */
     public String getETag() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.E_TAG);
     }
 
     long getCurrentQuotaHeader(String headerName) {

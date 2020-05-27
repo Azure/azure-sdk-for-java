@@ -55,19 +55,19 @@ class RxGatewayStoreModel implements RxStoreModel {
             GlobalEndpointManager globalEndpointManager,
             HttpClient httpClient) {
         this.defaultHeaders = new HashMap<>();
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
+        this.defaultHeaders.put(HttpConstants.Headers.CACHE_CONTROL,
                 "no-cache");
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
+        this.defaultHeaders.put(HttpConstants.Headers.VERSION,
                 HttpConstants.Versions.CURRENT_VERSION);
 
         if (userAgentContainer == null) {
             userAgentContainer = new UserAgentContainer();
         }
 
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
+        this.defaultHeaders.put(HttpConstants.Headers.USER_AGENT, userAgentContainer.getUserAgent());
 
         if (defaultConsistencyLevel != null) {
-            this.defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
+            this.defaultHeaders.put(HttpConstants.Headers.CONSISTENCY_LEVEL,
                     defaultConsistencyLevel.toString());
         }
 
@@ -109,18 +109,18 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
         if(request.getOperationType() != OperationType.QueryPlan) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.IS_QUERY, "true");
+            request.getHeaders().put(HttpConstants.Headers.IS_QUERY, "true");
         }
 
         switch (this.queryCompatibilityMode) {
             case SqlQuery:
-                request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE,
+                request.getHeaders().put(HttpConstants.Headers.CONTENT_TYPE,
                         RuntimeConstants.MediaTypes.SQL);
                 break;
             case Default:
             case Query:
             default:
-                request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE,
+                request.getHeaders().put(HttpConstants.Headers.CONTENT_TYPE,
                         RuntimeConstants.MediaTypes.QUERY_JSON);
                 break;
         }
@@ -402,11 +402,11 @@ class RxGatewayStoreModel implements RxStoreModel {
         );
     }
 
-    private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
+    private void captureSessionToken(RxDocumentServiceRequest request, com.azure.core.http.HttpHeaders responseHeaders) {
         if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
             String resourceId;
             if (request.getIsNameBased()) {
-                resourceId = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
+                resourceId = responseHeaders.getValue(HttpConstants.Headers.OWNER_ID);
             } else {
                 resourceId = request.getResourceId();
             }
@@ -420,14 +420,14 @@ class RxGatewayStoreModel implements RxStoreModel {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN))) {
             if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
-                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
             }
             return; //User is explicitly controlling the session.
         }
 
-        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        String requestConsistencyLevel = headers.get(HttpConstants.Headers.CONSISTENCY_LEVEL);
 
         boolean sessionConsistency =
                 this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||
@@ -442,7 +442,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
 
         if (!Strings.isNullOrEmpty(sessionToken)) {
-            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+            headers.put(HttpConstants.Headers.SESSION_TOKEN, sessionToken);
         }
     }
 }

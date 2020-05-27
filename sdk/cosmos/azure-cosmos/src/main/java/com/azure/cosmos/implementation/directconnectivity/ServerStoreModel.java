@@ -23,26 +23,26 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.Headers.CONSISTENCY_LEVEL);
 
         request.requestContext.originalRequestConsistencyLevel = null;
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
             ConsistencyLevel requestConsistencyLevel;
-            
+
                 if ((requestConsistencyLevel = BridgeInternal.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue)) == null) {
                 return Mono.error(new BadRequestException(
                     String.format(
                         RMResources.InvalidHeaderValue,
                         requestConsistencyLevelHeaderValue,
-                        HttpConstants.HttpHeaders.CONSISTENCY_LEVEL)));
+                        HttpConstants.Headers.CONSISTENCY_LEVEL)));
             }
 
             request.requestContext.originalRequestConsistencyLevel = requestConsistencyLevel;
         }
 
         if (ReplicatedResourceClient.isMasterResource(request.getResourceType())) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
+            request.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
         }
 
         return this.storeClient.processMessageAsync(request);

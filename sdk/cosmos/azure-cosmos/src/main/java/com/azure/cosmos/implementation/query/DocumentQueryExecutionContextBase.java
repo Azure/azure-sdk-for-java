@@ -146,33 +146,33 @@ implements IDocumentQueryExecutionContext<T> {
                 // irrespective of the chosen replica.
                 // For server resources, which don't span partitions, specify the session token
                 // for correct replica to be chosen for servicing the query result.
-                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.getSessionToken());
+                requestHeaders.put(HttpConstants.Headers.SESSION_TOKEN, feedOptions.getSessionToken());
             }
         }
 
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.getRequestContinuation());
-        requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
+        requestHeaders.put(HttpConstants.Headers.CONTINUATION, feedOptions.getRequestContinuation());
+        requestHeaders.put(HttpConstants.Headers.IS_QUERY, Strings.toString(true));
 
         // Flow the pageSize only when we are not doing client eval
         if (feedOptions.getMaxItemCount() != null && feedOptions.getMaxItemCount() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.getMaxItemCount()));
+            requestHeaders.put(HttpConstants.Headers.PAGE_SIZE, Strings.toString(feedOptions.getMaxItemCount()));
         }
 
         if (feedOptions.getMaxDegreeOfParallelism() != 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
+            requestHeaders.put(HttpConstants.Headers.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
         }
 
         if (this.feedOptions.setResponseContinuationTokenLimitInKb() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
+            requestHeaders.put(HttpConstants.Headers.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
                     Strings.toString(feedOptions.setResponseContinuationTokenLimitInKb()));
         }
 
         if (desiredConsistencyLevel != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
+            requestHeaders.put(HttpConstants.Headers.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
         }
 
         if(feedOptions.isPopulateQueryMetrics()){
-            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isPopulateQueryMetrics()));
+            requestHeaders.put(HttpConstants.Headers.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isPopulateQueryMetrics()));
         }
 
         return requestHeaders;
@@ -186,7 +186,7 @@ implements IDocumentQueryExecutionContext<T> {
         if (this.resourceTypeEnum.isPartitioned()) {
             if (partitionKey != null) {
                 request.setPartitionKeyInternal(partitionKey);
-                request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKey.toJson());
+                request.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, partitionKey.toJson());
             }
         }
     }
@@ -202,7 +202,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (this.resourceTypeEnum.isPartitioned()) {
-            boolean hasPartitionKey = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) != null;
+            boolean hasPartitionKey = request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY) != null;
             if(!hasPartitionKey){
                 request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
             }
@@ -227,7 +227,7 @@ implements IDocumentQueryExecutionContext<T> {
                     // AuthorizationTokenType.PrimaryMasterKey,
                     requestHeaders);
 
-            executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
+            executeQueryRequest.getHeaders().put(HttpConstants.Headers.CONTENT_TYPE, MediaTypes.JSON);
             executeQueryRequest.setContentBytes(Utils.getUTF8Bytes(querySpec.getQueryText()));
             break;
 
@@ -239,7 +239,7 @@ implements IDocumentQueryExecutionContext<T> {
                     // AuthorizationTokenType.PrimaryMasterKey,
                     requestHeaders);
 
-            executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
+            executeQueryRequest.getHeaders().put(HttpConstants.Headers.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;
         }

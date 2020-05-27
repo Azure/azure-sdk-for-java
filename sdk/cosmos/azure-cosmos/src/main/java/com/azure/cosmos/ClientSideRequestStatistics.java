@@ -143,9 +143,9 @@ class ClientSideRequestStatistics {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
                 this.gatewayStatistics.sessionToken = storeResponse
-                                                          .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                                                          .getHeaderValue(HttpConstants.Headers.SESSION_TOKEN);
                 this.gatewayStatistics.requestCharge = storeResponse
-                                                           .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                                                           .getHeaderValue(HttpConstants.Headers.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();

@@ -94,7 +94,7 @@ public class SessionTest extends TestSuiteBase {
 
     private List<String> getSessionTokensInRequests() {
         return spyClient.getCapturedRequests().stream()
-                .map(r -> r.headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).collect(Collectors.toList());
+                .map(r -> r.headers().value(HttpConstants.Headers.SESSION_TOKEN)).collect(Collectors.toList());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
@@ -148,7 +148,7 @@ public class SessionTest extends TestSuiteBase {
 
         // DIRECT mode may make more than one call (multiple replicas)
         assertThat(documentReadHttpRequests.size() >= 1).isTrue();
-        assertThat(documentReadHttpRequests.get(0).headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNotEmpty();
+        assertThat(documentReadHttpRequests.get(0).headers().value(HttpConstants.Headers.SESSION_TOKEN)).isNotEmpty();
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
@@ -172,7 +172,7 @@ public class SessionTest extends TestSuiteBase {
                 .collect(Collectors.toList());
 
         assertThat(collectionReadHttpRequests).hasSize(1);
-        assertThat(collectionReadHttpRequests.get(0).headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+        assertThat(collectionReadHttpRequests.get(0).headers().value(HttpConstants.Headers.SESSION_TOKEN)).isNull();
     }
 
     private String getCollectionLink(boolean isNameBased) {

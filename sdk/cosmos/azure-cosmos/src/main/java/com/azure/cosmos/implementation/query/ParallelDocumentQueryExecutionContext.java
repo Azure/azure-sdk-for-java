@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedOptions;
@@ -221,11 +222,13 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse,
                 double charge) {
             FeedResponse<T> page = documentProducerFeedResponse.pageResult;
-            Map<String, String> headers = new HashMap<>(page.getResponseHeaders());
+            HttpHeaders headers = Utils.Clone(page.getResponseHeaders());
+
             double pageCharge = page.getRequestCharge();
             pageCharge += charge;
-            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
+            headers.put(HttpConstants.Headers.REQUEST_CHARGE,
                     String.valueOf(pageCharge));
+
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                     headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page));
@@ -237,20 +240,15 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse,
                 String compositeContinuationToken) {
             FeedResponse<T> page = documentProducerFeedResponse.pageResult;
-            Map<String, String> headers = new HashMap<>(page.getResponseHeaders());
-            headers.put(HttpConstants.HttpHeaders.CONTINUATION,
+            HttpHeaders headers = Utils.Clone(page.getResponseHeaders());
+            headers.put(HttpConstants.Headers.CONTINUATION,
                     compositeContinuationToken);
+
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                     headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page));
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
-        }
-
-        private static Map<String, String> headerResponse(
-                double requestCharge) {
-            return Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE,
-                    String.valueOf(requestCharge));
         }
 
         @Override
@@ -324,7 +322,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
                 return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                        headerResponse(tracker.getAndResetCharge())));
+                    Utils.NewHeadersWithRequestCharge(tracker.getAndResetCharge())));
             }));
         }
     }

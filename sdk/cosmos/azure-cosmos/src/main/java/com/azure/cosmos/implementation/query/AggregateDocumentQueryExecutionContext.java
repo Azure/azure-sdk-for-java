@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.query.aggregation.Aggregator;
 import com.azure.cosmos.implementation.query.aggregation.AverageAggregator;
@@ -22,7 +23,6 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,12 +73,12 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
                     double requestCharge = 0;
                     List<Document> aggregateResults = new ArrayList<Document>();
-                    HashMap<String, String> headers = new HashMap<String, String>();
+                    HttpHeaders headers = new HttpHeaders();
 
                     for(FeedResponse<T> page : superList) {
 
                         if (page.getResults().size() == 0) {
-                            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
+                            headers.put(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(requestCharge));
                             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                             return (FeedResponse<T>) frp;
                         }
@@ -103,7 +103,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                         aggregateResults.add(aggregateDocument);
                     }
 
-                    headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
+                    headers.put(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(requestCharge));
                     FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                     if(!queryMetricsMap.isEmpty()) {
                         for(Map.Entry<String, QueryMetrics> entry: queryMetricsMap.entrySet()) {

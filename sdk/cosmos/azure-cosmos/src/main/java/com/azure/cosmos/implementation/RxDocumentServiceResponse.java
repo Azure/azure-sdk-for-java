@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.Address;
@@ -17,32 +18,28 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
  */
 public class RxDocumentServiceResponse {
     private final int statusCode;
-    private final Map<String, String> headersMap;
+    private final HttpHeaders headersMap;
     private final StoreResponse storeResponse;
 
     public RxDocumentServiceResponse(StoreResponse response) {
         String[] headerNames = response.getResponseHeaderNames();
         String[] headerValues = response.getResponseHeaderValues();
 
-        this.headersMap = new HashMap<>(headerNames.length);
+        // Extracts headers.
+        this.headersMap = new HttpHeaders();
+        for (int i = 0; i < headerNames.length; i++) {
+            headersMap.put(headerNames[i], headerValues[i]);
+        }
 
         // Gets status code.
         this.statusCode = response.getStatus();
-
-        // Extracts headers.
-        for (int i = 0; i < headerNames.length; i++) {
-            this.headersMap.put(headerNames[i], headerValues[i]);
-        }
-
         this.storeResponse = response;
     }
 
@@ -80,7 +77,7 @@ public class RxDocumentServiceResponse {
         return this.statusCode;
     }
 
-    public Map<String, String> getResponseHeaders() {
+    public HttpHeaders getResponseHeaders() {
         return this.headersMap;
     }
 
@@ -175,7 +172,7 @@ public class RxDocumentServiceResponse {
 
     private String getOwnerFullName() {
         if (this.headersMap != null) {
-            return this.headersMap.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
+            return this.headersMap.getValue(HttpConstants.Headers.OWNER_FULL_NAME);
         }
         return null;
     }

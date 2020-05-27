@@ -100,7 +100,10 @@ public class CosmosExceptionTest {
         ImmutableMap<String, String> respHeaders = ImmutableMap.of("key", "getValue");
         CosmosException dce = BridgeInternal.createCosmosException((String) null, (Exception) null, respHeaders, 0, (String) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
-        assertThat(dce.getResponseHeaders()).contains(respHeaders.entrySet().iterator().next());
+
+        Map<String, String> responseMap = dce.getResponseHeaders().toMap();
+        assertThat(responseMap).isNotNull();
+        assertThat(responseMap).contains(respHeaders.entrySet().iterator().next());
     }
 
     @Test(groups = { "unit" }, dataProvider = "subTypes")

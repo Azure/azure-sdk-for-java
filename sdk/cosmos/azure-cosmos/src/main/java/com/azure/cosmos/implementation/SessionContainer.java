@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -162,12 +162,12 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     @Override
-    public void setSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
+    public void setSessionToken(RxDocumentServiceRequest request, HttpHeaders responseHeaders) {
         if (this.disableSessionCapturing) {
             return;
         }
 
-        String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        String token = responseHeaders.getValue(HttpConstants.Headers.SESSION_TOKEN);
 
         if (!Strings.isNullOrEmpty(token)) {
             ValueHolder<ResourceId> resourceId = ValueHolder.initialize(null);
@@ -180,14 +180,14 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     @Override
-    public void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
+    public void setSessionToken(String collectionRid, String collectionFullName, HttpHeaders responseHeaders) {
         if (this.disableSessionCapturing) {
             return;
         }
 
         ResourceId resourceId = ResourceId.parse(collectionRid);
         String collectionName = PathsHelper.getCollectionPath(collectionFullName);
-        String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        String token = responseHeaders.getValue(HttpConstants.Headers.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(token)) {
             this.setSessionToken(resourceId, collectionName, token);
         }
@@ -290,11 +290,11 @@ public final class SessionContainer implements ISessionContainer {
 
     private static boolean shouldUpdateSessionToken(
             RxDocumentServiceRequest request,
-            Map<String, String> responseHeaders,
+            HttpHeaders responseHeaders,
             ValueHolder<ResourceId> resourceId,
             ValueHolder<String> collectionName) {
         resourceId.v = null;
-        String ownerFullName = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
+        String ownerFullName = responseHeaders.getValue(HttpConstants.Headers.OWNER_FULL_NAME);
         if (Strings.isNullOrEmpty(ownerFullName)) ownerFullName = request.getResourceAddress();
 
         collectionName.v = PathsHelper.getCollectionPath(ownerFullName);
@@ -303,7 +303,7 @@ public final class SessionContainer implements ISessionContainer {
         if (!request.getIsNameBased()) {
             resourceIdString = request.getResourceId();
         } else {
-            resourceIdString = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
+            resourceIdString = responseHeaders.getValue(HttpConstants.Headers.OWNER_ID);
             if (Strings.isNullOrEmpty(resourceIdString)) resourceIdString = request.getResourceId();
         }
 

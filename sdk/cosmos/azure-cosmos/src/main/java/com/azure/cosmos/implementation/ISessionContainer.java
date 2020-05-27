@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
+
 import java.util.Map;
 
 public interface ISessionContainer {
@@ -54,7 +56,7 @@ public interface ISessionContainer {
      * @param request {@link RxDocumentServiceRequest}
      * @param responseHeaders responseHeaders
      */
-    void setSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders);
+    void setSessionToken(RxDocumentServiceRequest request, HttpHeaders responseHeaders);
 
     /**
      * Adds responseHeaders[HttpConstants.HttpHeaders.SessionToken] session token to the (collectionFullName, collectionRid)'s partitionKeyRangeId  token map.
@@ -62,5 +64,5 @@ public interface ISessionContainer {
      * @param collectionFullName collectionFullName
      * @param responseHeaders responseHeaders
      */
-    void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders);
+    void setSessionToken(String collectionRid, String collectionFullName, HttpHeaders responseHeaders);
 }

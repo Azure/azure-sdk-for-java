@@ -78,7 +78,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
                 path,
                 new HashMap<>());
 
-        request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+        request.getHeaders().put(HttpConstants.Headers.X_DATE, Utils.nowAsRFC1123());
 
         String resourceName = request.getResourceAddress();
         String authorizationToken = tokenProvider.getUserAuthorizationToken(
@@ -94,7 +94,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
         } catch (UnsupportedEncodingException e) {
             return Mono.error(new IllegalStateException("Failed to encode authtoken.", e));
         }
-        request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
+        request.getHeaders().put(HttpConstants.Headers.AUTHORIZATION, authorizationToken);
 
         if (retryPolicyInstance != null){
             retryPolicyInstance.onBeforeSendRequest(request);

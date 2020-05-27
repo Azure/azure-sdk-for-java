@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 
@@ -99,7 +100,7 @@ public class CosmosItemResponse<T> {
      *
      * @return the response headers.
      */
-    public Map<String, String> getResponseHeaders() {
+    public HttpHeaders getResponseHeaders() {
         return responseWrapper.getResponseHeaders();
     }
 

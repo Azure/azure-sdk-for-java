@@ -32,10 +32,10 @@ class QueryPlanRetriever {
                                                                                SqlQuerySpec sqlQuerySpec,
                                                                                String resourceLink) {
         final Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
-        requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY_PLAN_REQUEST, TRUE);
-        requestHeaders.put(HttpConstants.HttpHeaders.SUPPORTED_QUERY_FEATURES, SUPPORTED_QUERY_FEATURES);
-        requestHeaders.put(HttpConstants.HttpHeaders.QUERY_VERSION, HttpConstants.Versions.QUERY_VERSION);
+        requestHeaders.put(HttpConstants.Headers.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
+        requestHeaders.put(HttpConstants.Headers.IS_QUERY_PLAN_REQUEST, TRUE);
+        requestHeaders.put(HttpConstants.Headers.SUPPORTED_QUERY_FEATURES, SUPPORTED_QUERY_FEATURES);
+        requestHeaders.put(HttpConstants.Headers.QUERY_VERSION, HttpConstants.Versions.QUERY_VERSION);
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.QueryPlan,
                                                                                  ResourceType.Document,

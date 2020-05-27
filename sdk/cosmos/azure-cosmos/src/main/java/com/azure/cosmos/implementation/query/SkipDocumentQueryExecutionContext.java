@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
@@ -11,9 +12,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Flux;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -67,13 +66,13 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
             int numberOfDocumentsSkipped = tFeedResponse.getResults().size() - documentsAfterSkip.size();
             this.skipCount -= numberOfDocumentsSkipped;
 
-            Map<String, String> headers = new HashMap<>(tFeedResponse.getResponseHeaders());
+            HttpHeaders headers = Utils.Clone(tFeedResponse.getResponseHeaders());
             if (this.skipCount >= 0) {
                 // Add Offset Continuation Token
                 String sourceContinuationToken = tFeedResponse.getContinuationToken();
                 OffsetContinuationToken offsetContinuationToken = new OffsetContinuationToken(this.skipCount,
                     sourceContinuationToken);
-                headers.put(HttpConstants.HttpHeaders.CONTINUATION, offsetContinuationToken.toJson());
+                headers.put(HttpConstants.Headers.CONTINUATION, offsetContinuationToken.toJson());
             }
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(documentsAfterSkip, headers,

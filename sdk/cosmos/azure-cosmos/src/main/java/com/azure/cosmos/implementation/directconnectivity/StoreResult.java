@@ -115,7 +115,7 @@ public class StoreResult {
 
     private static void setRequestCharge(StoreResponse response, CosmosException cosmosException, double totalRequestCharge) {
         if (cosmosException != null) {
-            cosmosException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
+            cosmosException.getResponseHeaders().put(HttpConstants.Headers.REQUEST_CHARGE,
                     Double.toString(totalRequestCharge));
         }
         // Set total charge as final charge for the response.
@@ -123,7 +123,7 @@ public class StoreResult {
             for (int i = 0; i < response.getResponseHeaderNames().length; ++i) {
                 if (Strings.areEqualIgnoreCase(
                         response.getResponseHeaderNames()[i],
-                        HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
+                        HttpConstants.Headers.REQUEST_CHARGE)) {
                     response.getResponseHeaderValues()[i] = Double.toString(totalRequestCharge);
                     break;
                 }

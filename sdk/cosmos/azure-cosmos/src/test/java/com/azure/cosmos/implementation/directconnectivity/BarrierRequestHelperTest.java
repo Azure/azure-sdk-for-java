@@ -195,7 +195,7 @@ public class BarrierRequestHelperTest {
     }
 
     private String getPartitionKey(RxDocumentServiceRequest req) {
-        return getHeaderValue(req, HttpConstants.HttpHeaders.PARTITION_KEY);
+        return getHeaderValue(req, HttpConstants.Headers.PARTITION_KEY);
     }
 
     private String getCollectionRid(RxDocumentServiceRequest req) {
@@ -207,11 +207,11 @@ public class BarrierRequestHelperTest {
     }
 
     private Long getTargetLsn(RxDocumentServiceRequest req) {
-        return Long.parseLong(getHeaderValue(req, HttpConstants.HttpHeaders.TARGET_LSN));
+        return Long.parseLong(getHeaderValue(req, HttpConstants.Headers.TARGET_LSN));
     }
 
     private Long getTargetGlobalLsn(RxDocumentServiceRequest req) {
-        return Long.parseLong(getHeaderValue(req, HttpConstants.HttpHeaders.TARGET_GLOBAL_COMMITTED_LSN));
+        return Long.parseLong(getHeaderValue(req, HttpConstants.Headers.TARGET_GLOBAL_COMMITTED_LSN));
     }
 }
 

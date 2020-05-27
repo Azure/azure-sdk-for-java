@@ -50,7 +50,7 @@ public class HttpUtils {
         }
         HashMap<String, String> map = new HashMap<>(headers.size());
         for (Entry<String, String> entry : headers.toMap().entrySet()) {
-            if (entry.getKey().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
+            if (entry.getKey().equals(HttpConstants.Headers.OWNER_FULL_NAME)) {
                 map.put(entry.getKey(), HttpUtils.urlDecode(entry.getValue()));
             } else {
                 map.put(entry.getKey(), entry.getValue());
@@ -66,9 +66,9 @@ public class HttpUtils {
 
         // Since Date header is overridden by some proxies/http client libraries, we support
         // an additional date header 'x-ms-date' and prefer that to the regular 'date' header.
-        String date = headerValues.get(HttpConstants.HttpHeaders.X_DATE);
+        String date = headerValues.get(HttpConstants.Headers.X_DATE);
         if (Strings.isNullOrEmpty(date)) {
-            date = headerValues.get(HttpConstants.HttpHeaders.HTTP_DATE);
+            date = headerValues.get(HttpConstants.Headers.HTTP_DATE);
         }
 
         return date != null ? date : StringUtils.EMPTY;
@@ -77,7 +77,7 @@ public class HttpUtils {
     public static List<Entry<String, String>> unescape(Set<Entry<String, String>> headers) {
         List<Entry<String, String>> result = new ArrayList<>(headers.size());
         for (Entry<String, String> entry : headers) {
-            if (entry.getKey().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
+            if (entry.getKey().equals(HttpConstants.Headers.OWNER_FULL_NAME)) {
                 String unescapedUrl = HttpUtils.urlDecode(entry.getValue());
                 entry = new AbstractMap.SimpleEntry<>(entry.getKey(), unescapedUrl);
             }

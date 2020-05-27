@@ -136,14 +136,14 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 .append(resourceIdOrFullName)
                 .append('\n');
 
-        if (headers.containsKey(HttpConstants.HttpHeaders.X_DATE)) {
-            body.append(headers.get(HttpConstants.HttpHeaders.X_DATE).toLowerCase(Locale.ROOT));
+        if (headers.containsKey(HttpConstants.Headers.X_DATE)) {
+            body.append(headers.get(HttpConstants.Headers.X_DATE).toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');
 
-        if (headers.containsKey(HttpConstants.HttpHeaders.HTTP_DATE)) {
-            body.append(headers.get(HttpConstants.HttpHeaders.HTTP_DATE).toLowerCase(Locale.ROOT));
+        if (headers.containsKey(HttpConstants.Headers.HTTP_DATE)) {
+            body.append(headers.get(HttpConstants.Headers.HTTP_DATE).toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');
@@ -273,12 +273,12 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
     private String generateMessagePayload(RequestVerb verb, String resourceId, String resourceType,
             Map<String, String> headers) {
-        String xDate = headers.get(HttpConstants.HttpHeaders.X_DATE);
-        String date = headers.get(HttpConstants.HttpHeaders.HTTP_DATE);
+        String xDate = headers.get(HttpConstants.Headers.X_DATE);
+        String date = headers.get(HttpConstants.Headers.HTTP_DATE);
         // At-least one of date header should present
         // https://docs.microsoft.com/en-us/rest/api/documentdb/access-control-on-documentdb-resources
         if (StringUtils.isEmpty(xDate) && (StringUtils.isEmpty(date) || StringUtils.isWhitespace(date))) {
-            headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+            headers.put(HttpConstants.Headers.X_DATE, Utils.nowAsRFC1123());
             xDate = Utils.nowAsRFC1123();
         }
 

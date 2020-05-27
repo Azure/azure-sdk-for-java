@@ -78,7 +78,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
-        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().getValue(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThan(quorumAckedLSN).build();
         Mono<ResourceResponse<Document>> readObservable = this.readClient.readDocument(document.getSelfLink(), options);
@@ -93,7 +93,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
-        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().getValue(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThanEqualsTo(quorumAckedLSN).exceptionQuorumAckedLSNInNotNull().build();
@@ -581,7 +581,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         try {
             ResourceResponse<Document> documentResponse =
                     writeClient.createDocument(BridgeInternal.getAltLink(createdCollection), getDocumentDefinition(), null, false).block();
-            String token = documentResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            String token = documentResponse.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
 
             // artificially bump to higher LSN
             String higherLsnToken = this.getDifferentLSNToken(token, 2000);

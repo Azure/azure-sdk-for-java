@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.Configs;
@@ -74,7 +73,7 @@ public class ConsistencyReaderTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         if (requestConsistency != null) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, requestConsistency.toString());
+            request.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, requestConsistency.toString());
         }
 
         ValueHolder<ConsistencyLevel> consistencyLevel = ValueHolder.initialize(null);
@@ -182,7 +181,7 @@ public class ConsistencyReaderTest {
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.EVENTUAL.toString());
+        request.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.EVENTUAL.toString());
 
         TimeoutHelper timeout = Mockito.mock(TimeoutHelper.class);
         boolean forceRefresh = false;
@@ -291,7 +290,7 @@ public class ConsistencyReaderTest {
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
+        request.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         request.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         assertThat(VectorSessionToken.tryCreate("-1#" + fasterReplicaLSN , sessionToken)).isTrue();
@@ -352,7 +351,7 @@ public class ConsistencyReaderTest {
         String partitionKeyRangeId = "1";
 
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + slowReplicaLSN);
+        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + slowReplicaLSN);
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(slowReplicaLSN));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(slowReplicaLSN));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -406,7 +405,7 @@ public class ConsistencyReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
+        dsr.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         assertThat(VectorSessionToken.tryCreate("-1#" + fasterReplicaLSN , sessionToken)).isTrue();
@@ -432,7 +431,7 @@ public class ConsistencyReaderTest {
         String partitionKeyRangeId = "73";
 
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -458,7 +457,7 @@ public class ConsistencyReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
+        dsr.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         assertThat(VectorSessionToken.tryCreate("-1#" + lsn , sessionToken)).isTrue();
@@ -498,7 +497,7 @@ public class ConsistencyReaderTest {
         long globalCommittedLsn = 651174;
         String partitionKeyRangeId = "73";
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(651175));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(651175));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -524,7 +523,7 @@ public class ConsistencyReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
+        dsr.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         assertThat(VectorSessionToken.tryCreate("-1#" + (lsn + 1) , sessionToken)).isTrue();
@@ -562,7 +561,7 @@ public class ConsistencyReaderTest {
         String partitionKeyRangeId = "73";
 
         RequestRateTooLargeException requestTooLargeException = new RequestRateTooLargeException();
-        requestTooLargeException.getResponseHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        requestTooLargeException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
         requestTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(651175));
         requestTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(651175));
         requestTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -588,7 +587,7 @@ public class ConsistencyReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
+        dsr.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
         Utils.ValueHolder<ISessionToken> sessionToken = Utils.ValueHolder.initialize(null);
         assertThat(VectorSessionToken.tryCreate("-1#" + lsn , sessionToken)).isTrue();

@@ -161,10 +161,10 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                 this.retries);
                         ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
                                 new ImmutablePair<>(DEFAULT_PARTITION_KEY_RANGE_ID, this.fetchSchedulingMetrics.getElapsedTime());
-                        if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
+                        if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().getValue(HttpConstants.Headers.QUERY_METRICS))) {
                             QueryMetrics qm =
                                     BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
-                                                    .get(HttpConstants.HttpHeaders.QUERY_METRICS),
+                                                    .getValue(HttpConstants.Headers.QUERY_METRICS),
                                             new ClientSideMetrics(this.retries,
                                                     tFeedResponse.getRequestCharge(),
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),

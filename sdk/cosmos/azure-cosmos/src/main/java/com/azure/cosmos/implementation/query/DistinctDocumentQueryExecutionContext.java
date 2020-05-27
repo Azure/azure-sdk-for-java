@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
@@ -13,9 +14,7 @@ import com.azure.cosmos.implementation.Resource;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -92,14 +91,14 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
                     this.lastHash.set(outHash.v);
                 }
             });
-            Map<String, String> headers = new HashMap<>(tFeedResponse.getResponseHeaders());
+            HttpHeaders headers = Utils.Clone(tFeedResponse.getResponseHeaders());
             if (tFeedResponse.getContinuationToken() != null) {
 
                 final String sourceContinuationToken = tFeedResponse.getContinuationToken();
                 final DistinctContinuationToken distinctContinuationToken =
                     new DistinctContinuationToken(this.lastHash.get(),
                         sourceContinuationToken);
-                headers.put(HttpConstants.HttpHeaders.CONTINUATION,
+                headers.put(HttpConstants.Headers.CONTINUATION,
                             ModelBridgeInternal.toJsonFromJsonSerializable(distinctContinuationToken));
             }
 

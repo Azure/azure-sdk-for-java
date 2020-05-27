@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -330,12 +331,12 @@ public final class ModelBridgeInternal {
         DatabaseAccount account = response.getResource(DatabaseAccount.class);
 
         // read the headers and set to the account
-        Map<String, String> responseHeader = response.getResponseHeaders();
+        HttpHeaders responseHeader = response.getResponseHeaders();
 
         account.setMaxMediaStorageUsageInMB(
-            Long.parseLong(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.parseLong(responseHeader.getValue(HttpConstants.Headers.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
         account.setMediaStorageUsageInMB(
-            Long.parseLong(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.parseLong(responseHeader.getValue(HttpConstants.Headers.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
 
         return account;
     }
@@ -370,7 +371,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
+    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, HttpHeaders headers, boolean noChanges) {
         return new FeedResponse<>(results, headers, noChanges);
     }
 
@@ -393,13 +394,14 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponse(List<T> results,
-                                                         Map<String, String> headers) {
+                                                         HttpHeaders headers) {
         return new FeedResponse<>(results, headers);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-                                                                         Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+                                                                         HttpHeaders headers,
+                                                                         ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         return new FeedResponse<>(results, headers, queryMetricsMap);
     }
 

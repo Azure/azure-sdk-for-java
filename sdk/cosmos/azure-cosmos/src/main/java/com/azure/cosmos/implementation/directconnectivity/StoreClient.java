@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
@@ -28,8 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -132,24 +131,24 @@ public class StoreClient implements IStoreClient {
             throw new InternalServerErrorException(RMResources.InvalidBackendResponse);
         }
 
-        Map<String, String> headers = new HashMap<>(storeResponse.getResponseHeaderNames().length);
+        HttpHeaders httpHeaders = new HttpHeaders();
         for (int idx = 0; idx < storeResponse.getResponseHeaderNames().length; idx++) {
             String name = storeResponse.getResponseHeaderNames()[idx];
             String value = storeResponse.getResponseHeaderValues()[idx];
 
-            headers.put(name, value);
+            httpHeaders.put(name, value);
         }
 
-        this.updateResponseHeader(request, headers);
-        this.captureSessionToken(request, headers);
+        this.updateResponseHeader(request, httpHeaders);
+        this.captureSessionToken(request, httpHeaders);
         BridgeInternal.recordRetryContext(request.requestContext.cosmosDiagnostics, request);
         storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
         return new RxDocumentServiceResponse(storeResponse);
     }
 
-    private long getLSN(Map<String, String> headers) {
+    private long getLSN(HttpHeaders headers) {
         long defaultValue = -1;
-        String value = headers.get(WFConstants.BackendHeaders.LSN);
+        String value = headers.getValue(WFConstants.BackendHeaders.LSN);
 
         if (!Strings.isNullOrEmpty(value)) {
             return NumberUtils.toLong(value, defaultValue);
@@ -159,8 +158,8 @@ public class StoreClient implements IStoreClient {
         return defaultValue;
     }
 
-    private void updateResponseHeader(RxDocumentServiceRequest request, Map<String, String> headers) {
-        String requestConsistencyLevel = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+    private void updateResponseHeader(RxDocumentServiceRequest request, HttpHeaders headers) {
+        String requestConsistencyLevel = request.getHeaders().get(HttpConstants.Headers.CONSISTENCY_LEVEL);
 
         boolean sessionConsistency =
                 this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION ||
@@ -172,10 +171,10 @@ public class StoreClient implements IStoreClient {
             return;
         }
 
-        String partitionKeyRangeId = headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
+        String partitionKeyRangeId = headers.getValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
 
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
-            String inputSession = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            String inputSession = request.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN);
             if (!Strings.isNullOrEmpty(inputSession)
                     && inputSession.indexOf(ISessionToken.PARTITION_KEY_RANGE_SESSION_SEPARATOR) >= 1) {
                 partitionKeyRangeId = inputSession.substring(0,
@@ -186,25 +185,25 @@ public class StoreClient implements IStoreClient {
         }
 
         ISessionToken sessionToken = null;
-        String sessionTokenResponseHeader = headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        String sessionTokenResponseHeader = headers.getValue(HttpConstants.Headers.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(sessionTokenResponseHeader)) {
             sessionToken = SessionTokenHelper.parse(sessionTokenResponseHeader);
         }
 
         if (sessionToken != null) {
-            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN,
+            headers.put(HttpConstants.Headers.SESSION_TOKEN,
                         SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, sessionToken.convertToString()));
         }
 
         headers.remove(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
     }
 
-    private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> headers) {
+    private void captureSessionToken(RxDocumentServiceRequest request, HttpHeaders headers) {
         if (request.getResourceType() == ResourceType.DocumentCollection
             && request.getOperationType() == OperationType.Delete) {
             String resourceId;
             if (request.getIsNameBased()) {
-                resourceId = headers.get(HttpConstants.HttpHeaders.OWNER_ID);
+                resourceId = headers.getValue(HttpConstants.Headers.OWNER_ID);
             } else {
                 resourceId = request.getResourceId();
             }

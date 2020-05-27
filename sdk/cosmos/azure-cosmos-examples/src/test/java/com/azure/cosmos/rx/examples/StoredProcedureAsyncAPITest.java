@@ -5,8 +5,6 @@ package com.azure.cosmos.rx.examples;
 
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.DataType;
@@ -16,7 +14,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -115,7 +112,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
                     try {
                         assertThat(URLDecoder.decode(storedProcedureResponse.getScriptLog(), "UTF-8"), is(logResult));
                         assertThat(URLDecoder.decode(storedProcedureResponse.getResponseHeaders()
-                                                             .get(HttpConstants.HttpHeaders.SCRIPT_LOG_RESULTS), "UTF-8"), is(logResult));
+                                                             .getValue(HttpConstants.Headers.SCRIPT_LOG_RESULTS), "UTF-8"), is(logResult));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }

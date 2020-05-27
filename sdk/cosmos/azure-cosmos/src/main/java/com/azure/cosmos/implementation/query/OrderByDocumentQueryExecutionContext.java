@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
@@ -404,20 +405,14 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             this.previousPage = null;
         }
 
-        private static Map<String, String> headerResponse(
-                double requestCharge) {
-            return Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE,
-                    String.valueOf(requestCharge));
-        }
-
         private FeedResponse<OrderByRowResult<T>> addOrderByContinuationToken(
                 FeedResponse<OrderByRowResult<T>> page,
                 String orderByContinuationToken) {
-            Map<String, String> headers = new HashMap<>(page.getResponseHeaders());
-            headers.put(HttpConstants.HttpHeaders.CONTINUATION,
+            HttpHeaders httpHeaders = Utils.Clone(page.getResponseHeaders());
+            httpHeaders.put(HttpConstants.Headers.CONTINUATION,
                     orderByContinuationToken);
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
-                    headers,
+                    httpHeaders,
                     BridgeInternal.queryMetricsFromFeedResponse(page));
         }
 
@@ -437,7 +432,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         // construct a page from result with request charge
                         FeedResponse<OrderByRowResult<T>> feedResponse = BridgeInternal.createFeedResponse(
                                 orderByRowResults,
-                                headerResponse(tracker.getAndResetCharge()));
+                                Utils.NewHeadersWithRequestCharge(tracker.getAndResetCharge()));
                         if (!queryMetricMap.isEmpty()) {
                             for (Map.Entry<String, QueryMetrics> entry : queryMetricMap.entrySet()) {
                                 BridgeInternal.putQueryMetricsIntoMap(feedResponse,
@@ -501,7 +496,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
                         return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                                headerResponse(tracker.getAndResetCharge())));
+                                Utils.NewHeadersWithRequestCharge(tracker.getAndResetCharge())));
                     }));
         }
     }

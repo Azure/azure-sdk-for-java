@@ -222,7 +222,7 @@ public class AddressResolver implements IAddressResolver {
             PartitionKeyRange range;
             PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
 
-            if (partitionKeyInternal != null || request.getHeaders().containsKey(HttpConstants.HttpHeaders.PARTITION_KEY)) {
+            if (partitionKeyInternal != null || request.getHeaders().containsKey(HttpConstants.Headers.PARTITION_KEY)) {
                 range = this.tryResolveServerPartitionByPartitionKey(
                     request,
                     partitionKeyInternal,
@@ -632,7 +632,7 @@ public class AddressResolver implements IAddressResolver {
         if (partitionKey == null) {
             // this is just a safe guard to ensure if partitionKeyInternal is not set in DSR
             // but its encoded value is set in headers, we try deserializing partitionKeyInternal from header
-            String partitionKeyString = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY);
+            String partitionKeyString = request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY);
 
             if (partitionKeyString != null) {
                 try {

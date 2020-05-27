@@ -5,8 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 public final class CustomHeaders {
 
-    public static final class HttpHeaders {
-        // Specify whether to exclude system properties while storing the document
-        public static final String EXCLUDE_SYSTEM_PROPERTIES = "x-ms-exclude-system-properties";
-    }
+    // Specify whether to exclude system properties while storing the document
+    public static final String EXCLUDE_SYSTEM_PROPERTIES = "x-ms-exclude-system-properties";
 }

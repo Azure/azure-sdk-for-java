@@ -72,13 +72,13 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (partitionKeyRange,
                                                                                                      continuationToken, pageSize) -> {
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
-                headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
-                headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                headers.put(HttpConstants.Headers.CONTINUATION, continuationToken);
+                headers.put(HttpConstants.Headers.PAGE_SIZE, Strings.toString(pageSize));
 
                 PartitionKeyInternal partitionKeyInternal = null;
                 if (feedOptions.getPartitionKey() != null && feedOptions.getPartitionKey() != PartitionKey.NONE) {
                     partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
-                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
+                    headers.put(HttpConstants.Headers.PARTITION_KEY,
                         partitionKeyInternal.toJson());
 
                 }
@@ -166,8 +166,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 partitionKeyRange,
                 continuationToken, pageSize) -> {
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
-                headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
-                headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                headers.put(HttpConstants.Headers.CONTINUATION, continuationToken);
+                headers.put(HttpConstants.Headers.PAGE_SIZE, Strings.toString(pageSize));
 
                 return this.createDocumentServiceRequest(headers,
                     querySpec,

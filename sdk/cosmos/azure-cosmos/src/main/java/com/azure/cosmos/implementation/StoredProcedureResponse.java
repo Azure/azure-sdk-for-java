@@ -3,11 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
+import  com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosDiagnostics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 /**
  * Represents the response returned from a stored procedure in the Azure Cosmos DB database service.
@@ -32,7 +31,7 @@ public final class StoredProcedureResponse {
      * @return the activity id.
      */
     public String getActivityId() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.ACTIVITY_ID);
     }
 
     /**
@@ -41,7 +40,7 @@ public final class StoredProcedureResponse {
      * @return the session token.
      */
     public String getSessionToken() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
     }
 
     /**
@@ -60,7 +59,7 @@ public final class StoredProcedureResponse {
      * @return the max resource quota.
      */
     public String getMaxResourceQuota() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.MAX_RESOURCE_QUOTA);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.MAX_RESOURCE_QUOTA);
     }
 
     /**
@@ -69,7 +68,7 @@ public final class StoredProcedureResponse {
      * @return the current resource quota usage.
      */
     public String getCurrentResourceQuotaUsage() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
     /**
@@ -78,7 +77,7 @@ public final class StoredProcedureResponse {
      * @return the request charge.
      */
     public double getRequestCharge() {
-        String value = this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        String value = this.response.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
         try {
             return Double.valueOf(value);
         } catch (NumberFormatException e) {
@@ -92,7 +91,8 @@ public final class StoredProcedureResponse {
      *
      * @return the response headers.
      */
-    public Map<String, String> getResponseHeaders() {
+    public HttpHeaders getResponseHeaders() {
+
         return this.response.getResponseHeaders();
     }
 
@@ -120,7 +120,7 @@ public final class StoredProcedureResponse {
      * @return the output string from the stored procedure console.log() statements.
      */
     public String getScriptLog() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.SCRIPT_LOG_RESULTS);
+        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.SCRIPT_LOG_RESULTS);
     }
 
     /**

@@ -83,15 +83,15 @@ public class HttpTransportClient extends TransportClient {
         this.defaultHeaders = new HashMap<>();
 
         // Set requested API version header for version enforcement.
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL, HttpConstants.HeaderValues.NO_CACHE);
+        this.defaultHeaders.put(HttpConstants.Headers.VERSION, HttpConstants.Versions.CURRENT_VERSION);
+        this.defaultHeaders.put(HttpConstants.Headers.CACHE_CONTROL, HttpConstants.HeaderValues.NO_CACHE);
 
         if (userAgent == null) {
             userAgent = new UserAgentContainer();
         }
 
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgent.getUserAgent());
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
+        this.defaultHeaders.put(HttpConstants.Headers.USER_AGENT, userAgent.getUserAgent());
+        this.defaultHeaders.put(HttpConstants.Headers.ACCEPT, RuntimeConstants.MediaTypes.JSON);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class HttpTransportClient extends TransportClient {
 
             if (resourceOperation.operationType == OperationType.Recreate) {
                 Map<String, String> errorResponseHeaders = new HashMap<>();
-                errorResponseHeaders.put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
+                errorResponseHeaders.put(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE, "1");
 
                 logger.error("Received Recreate request on Http client");
                 throw new InternalServerErrorException(RMResources.InternalServerError, null, errorResponseHeaders, null);
@@ -189,8 +189,8 @@ public class HttpTransportClient extends TransportClient {
                                     exception,
                                     null,
                                     physicalAddress.toString());
-                            serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
-                            serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH, "1");
+                            serviceUnavailableException.getResponseHeaders().put(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE, "1");
+                            serviceUnavailableException.getResponseHeaders().put(HttpConstants.Headers.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH, "1");
                             return Mono.error(serviceUnavailableException);
                         }})
                     .doOnSuccess(httpClientResponse -> {
@@ -253,11 +253,11 @@ public class HttpTransportClient extends TransportClient {
             case Replace:
             case Update:
             case Upsert:
-                return request.getHeaders().get(HttpConstants.HttpHeaders.IF_MATCH);
+                return request.getHeaders().get(HttpConstants.Headers.IF_MATCH);
 
             case Read:
             case ReadFeed:
-                return request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH);
+                return request.getHeaders().get(HttpConstants.Headers.IF_NONE_MATCH);
 
             default:
                 return null;
@@ -335,7 +335,7 @@ public class HttpTransportClient extends TransportClient {
                 assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteBufFlux());
-                HttpTransportClient.addHeader(httpRequestMessage.headers(), HttpConstants.HttpHeaders.CONTENT_TYPE, request);
+                HttpTransportClient.addHeader(httpRequestMessage.headers(), HttpConstants.Headers.CONTENT_TYPE, request);
                 break;
 
             case Upsert:
@@ -371,38 +371,38 @@ public class HttpTransportClient extends TransportClient {
             HttpTransportClient.addHeader(httpRequestHeaders, entry.getKey(), entry.getValue());
         }
 
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.VERSION, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.USER_AGENT, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PAGE_SIZE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PRE_TRIGGER_INCLUDE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PRE_TRIGGER_EXCLUDE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.POST_TRIGGER_INCLUDE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.POST_TRIGGER_EXCLUDE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.AUTHORIZATION, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.INDEXING_DIRECTIVE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.MIGRATE_COLLECTION_DIRECTIVE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.SESSION_TOKEN, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PREFER, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.RESOURCE_TOKEN_EXPIRY, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CAN_CHARGE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CAN_THROTTLE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ENABLE_LOW_PRECISION_ORDER_BY, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ENABLE_LOGGING, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_READ_ONLY_SCRIPT, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CONTENT_SERIALIZATION_FORMAT, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CONTINUATION, request.getContinuation());
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.VERSION, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.USER_AGENT, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PAGE_SIZE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PRE_TRIGGER_INCLUDE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PRE_TRIGGER_EXCLUDE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.POST_TRIGGER_INCLUDE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.POST_TRIGGER_EXCLUDE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.AUTHORIZATION, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.INDEXING_DIRECTIVE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.MIGRATE_COLLECTION_DIRECTIVE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONSISTENCY_LEVEL, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.SESSION_TOKEN, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PREFER, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.RESOURCE_TOKEN_EXPIRY, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.ENABLE_SCAN_IN_QUERY, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.EMIT_VERBOSE_TRACES_IN_QUERY, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CAN_CHARGE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CAN_THROTTLE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.ENABLE_LOW_PRECISION_ORDER_BY, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.ENABLE_LOGGING, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.IS_READ_ONLY_SCRIPT, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONTENT_SERIALIZATION_FORMAT, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONTINUATION, request.getContinuation());
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.ACTIVITY_ID, activityId);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PARTITION_KEY, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PARTITION_KEY_RANGE_ID, request);
 
         String dateHeader = HttpUtils.getDateHeader(documentServiceRequestHeaders);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.X_DATE, dateHeader);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.X_DATE, dateHeader);
         HttpTransportClient.addHeader(httpRequestHeaders, "Match", this.getMatch(request, resourceOperation));
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IF_MODIFIED_SINCE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.A_IM, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.IF_MODIFIED_SINCE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.A_IM, request);
         if (!request.getIsNameBased()) {
             HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.RESOURCE_ID, request.getResourceId());
         }
@@ -425,54 +425,54 @@ public class HttpTransportClient extends TransportClient {
             HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SECONDARY_READONLY_KEY, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.SECONDARY_READONLY_KEY));
         }
 
-        if (documentServiceRequestHeaders.get(HttpConstants.HttpHeaders.CAN_OFFER_REPLACE_COMPLETE) != null) {
-            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CAN_OFFER_REPLACE_COMPLETE, documentServiceRequestHeaders.get(HttpConstants.HttpHeaders.CAN_OFFER_REPLACE_COMPLETE));
+        if (documentServiceRequestHeaders.get(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE) != null) {
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE, documentServiceRequestHeaders.get(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE));
         }
 
         //Query
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_QUERY, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.QUERY, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.IS_QUERY, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.QUERY, request);
 
         // Upsert
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_UPSERT, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.IS_UPSERT, request);
 
         // SupportSpatialLegacyCoordinates
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.SUPPORT_SPATIAL_LEGACY_COORDINATES, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.SUPPORT_SPATIAL_LEGACY_COORDINATES, request);
 
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.PARTITION_COUNT, request);
 
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.COLLECTION_RID, request);
 
         // Filter by schema
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.FILTER_BY_SCHEMA_RESOURCE_ID, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.FILTER_BY_SCHEMA_RESOURCE_ID, request);
 
         // UsePolygonsSmallerThanAHemisphere
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.USE_POLYGONS_SMALLER_THAN_AHEMISPHERE, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.GATEWAY_SIGNATURE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.USE_POLYGONS_SMALLER_THAN_AHEMISPHERE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.GATEWAY_SIGNATURE, request);
 
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.FORCE_QUERY_SCAN, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.POPULATE_QUOTA_INFO, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.POPULATE_QUERY_METRICS, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.FORCE_QUERY_SCAN, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB, request);
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.REMOTE_STORAGE_TYPE, request);
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SHARE_THROUGHPUT, request);
 
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.POPULATE_PARTITION_STATISTICS, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.POPULATE_COLLECTION_THROUGHPUT_INFO, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.POPULATE_PARTITION_STATISTICS, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.POPULATE_COLLECTION_THROUGHPUT_INFO, request);
 
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CLIENT_RETRY_ATTEMPT_COUNT, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CLIENT_RETRY_ATTEMPT_COUNT, request);
 
         // target lsn for head requests.
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.TARGET_LSN, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.TARGET_GLOBAL_COMMITTED_LSN, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.TARGET_LSN, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.TARGET_GLOBAL_COMMITTED_LSN, request);
 
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.FEDERATION_ID_FOR_AUTH, request);
 
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.FANOUT_OPERATION_STATE, request);
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.ALLOW_TENTATIVE_WRITES, request);
 
-        HttpTransportClient.addHeader(httpRequestHeaders, CustomHeaders.HttpHeaders.EXCLUDE_SYSTEM_PROPERTIES, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, CustomHeaders.EXCLUDE_SYSTEM_PROPERTIES, request);
 
         return httpRequestMessage;
     }
@@ -675,9 +675,9 @@ public class HttpTransportClient extends TransportClient {
                                     RMResources.InvalidBackendResponse),
                             null,
                             physicalAddress);
-            exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
+            exception.getResponseHeaders().put(HttpConstants.Headers.ACTIVITY_ID,
                     activityId);
-            exception.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
+            exception.getResponseHeaders().put(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE, "1");
 
             return Mono.error(exception);
         }
@@ -753,16 +753,16 @@ public class HttpTransportClient extends TransportClient {
                             // the presence of Content-Type header in the response
                             // and map it to HTTP Gone (410), which is the more
                             // appropriate response for this case.
-                            if (response.body() != null && response.headers() != null && response.headers().value(HttpConstants.HttpHeaders.CONTENT_TYPE) != null &&
-                                    !Strings.isNullOrEmpty(response.headers().value(HttpConstants.HttpHeaders.CONTENT_TYPE)) &&
-                                    Strings.containsIgnoreCase(response.headers().value(HttpConstants.HttpHeaders.CONTENT_TYPE), RuntimeConstants.MediaTypes.TEXT_HTML)) {
+                            if (response.body() != null && response.headers() != null && response.headers().value(HttpConstants.Headers.CONTENT_TYPE) != null &&
+                                    !Strings.isNullOrEmpty(response.headers().value(HttpConstants.Headers.CONTENT_TYPE)) &&
+                                    Strings.containsIgnoreCase(response.headers().value(HttpConstants.Headers.CONTENT_TYPE), RuntimeConstants.MediaTypes.TEXT_HTML)) {
                                 // Have the request URL in the exception message for debugging purposes.
                                 exception = new GoneException(
                                         String.format(
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         request.uri().toString());
-                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
+                                exception.getResponseHeaders().put(HttpConstants.Headers.ACTIVITY_ID,
                                         activityId);
 
                                 break;
@@ -856,7 +856,7 @@ public class HttpTransportClient extends TransportClient {
                                         response.headers(),
                                         request.uri());
 
-                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
+                                exception.getResponseHeaders().put(HttpConstants.Headers.ACTIVITY_ID,
                                         activityId);
                                 break;
                             }
@@ -886,7 +886,7 @@ public class HttpTransportClient extends TransportClient {
                                             RMResources.ExceptionMessage,
                                             String.format(
                                                     RMResources.RequestEntityTooLarge,
-                                                    HttpConstants.HttpHeaders.PAGE_SIZE)),
+                                                    HttpConstants.Headers.PAGE_SIZE)),
                                     response.headers(),
                                     request.uri().toString());
                             break;
@@ -937,7 +937,7 @@ public class HttpTransportClient extends TransportClient {
                                             request.uri());
 
                             List<String> values = null;
-                            headerValues = response.headers().values(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
+                            headerValues = response.headers().values(HttpConstants.Headers.RETRY_AFTER_IN_MILLISECONDS);
                             if (headerValues != null) {
                                 values
                                     = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
@@ -945,7 +945,7 @@ public class HttpTransportClient extends TransportClient {
                             if (values == null || values.isEmpty()) {
                                 logger.warn("RequestRateTooLargeException being thrown without RetryAfter.");
                             } else {
-                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, values.get(0));
+                                exception.getResponseHeaders().put(HttpConstants.Headers.RETRY_AFTER_IN_MILLISECONDS, values.get(0));
                             }
 
                             break;
