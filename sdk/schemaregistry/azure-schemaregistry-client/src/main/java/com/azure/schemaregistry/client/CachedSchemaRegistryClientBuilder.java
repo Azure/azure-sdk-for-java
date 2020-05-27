@@ -54,7 +54,6 @@ public class CachedSchemaRegistryClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private final String clientName;
     private final String clientVersion;
-    private final HttpHeaders headers;
 
     private HttpClient httpClient;
     private int maxSchemaMapSize;
@@ -98,8 +97,6 @@ public class CachedSchemaRegistryClientBuilder {
         Map<String, String> properties = CoreUtils.getProperties(CLIENT_PROPERTIES);
         clientName = properties.getOrDefault(NAME, "UnknownName");
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-
-        this.headers = new HttpHeaders();
     }
 
     /**
@@ -241,6 +238,13 @@ public class CachedSchemaRegistryClientBuilder {
      * @throws IllegalArgumentException if credential is not set.
      */
     public CachedSchemaRegistryClient buildClient() {
+        // Authentications
+        if (credential == null) {
+            // Throw exception that credential and tokenCredential cannot be null
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+
         HttpPipeline pipeline = this.httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
@@ -250,7 +254,6 @@ public class CachedSchemaRegistryClientBuilder {
             policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
                 Configuration.getGlobalConfiguration().clone()));
             policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(this.headers));
 
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -258,15 +261,8 @@ public class CachedSchemaRegistryClientBuilder {
             policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
 
             policies.add(new AddDatePolicy());
-            // Authentications
-            if (credential != null) {
-                // User token based policy
-                policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
-            } else {
-                // Throw exception that credential and tokenCredential cannot be null
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing credential information while building a client."));
-            }
+
+            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
 
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
