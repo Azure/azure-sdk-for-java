@@ -49,6 +49,11 @@
       <artifactId>azure-core</artifactId>
       <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
