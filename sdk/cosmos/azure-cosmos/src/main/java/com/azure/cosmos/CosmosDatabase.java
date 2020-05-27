@@ -181,11 +181,11 @@ public class CosmosDatabase {
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
-     * @param throughput the throughput.
+     * @param throughputProperties the throughput properties.
      * @return the cosmos sync container response.
      */
-    public CosmosContainerResponse createContainer(String id, String partitionKeyPath, int throughput) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath, throughput));
+    public CosmosContainerResponse createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
+        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath, throughputProperties));
     }
 
     /**

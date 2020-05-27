@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 import java.io.Closeable;
 
 /**
- * Provides a client-side logical representation of the Azure Cosmos database service.
+ * Provides a client-side logical representation of the Azure Cosmos DB service.
  * SyncClient is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
@@ -33,7 +33,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Create a Database if it does not already exist on the service.
+     * Create a Cosmos database if it does not already exist on the service.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
@@ -100,38 +100,37 @@ public final class CosmosClient implements Closeable {
      * Creates a database.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
-     * @param throughput the throughput.
+     * @param throughputProperties the throughput properties.
      * @param options {@link CosmosDatabaseRequestOptions} the request options.
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 int throughput,
+                                                 ThroughputProperties throughputProperties,
                                                  CosmosDatabaseRequestOptions options) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput, options));
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties, options));
     }
 
     /**
      * Creates a database.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
-     * @param throughput the throughput.
+     * @param throughputProperties the throughput properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 int throughput) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput));
+                                                 ThroughputProperties throughputProperties) {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties));
     }
-
 
     /**
      * Creates a database.
      *
      * @param id the id of the database.
-     * @param throughput the throughput.
+     * @param throughputProperties the throughput properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
-    public CosmosDatabaseResponse createDatabase(String id, int throughput) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughput));
+    public CosmosDatabaseResponse createDatabase(String id, ThroughputProperties throughputProperties) {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughputProperties));
     }
 
     CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) {

@@ -31,9 +31,8 @@ import java.util.List;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
- * Provides a client-side logical representation of the Azure Cosmos database service.
- * This asynchronous client is used to configure and execute requests
- * against the service.
+ * Provides a client-side logical representation of the Azure Cosmos DB service.
+ * This asynchronous client is used to configure and execute requests against the service.
  */
 @ServiceClient(
     builder = CosmosClientBuilder.class,
@@ -123,7 +122,7 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Gets the consistency level.
      *
-     * @return the (@link ConsistencyLevel).
+     * @return the {@link ConsistencyLevel}.
      */
     ConsistencyLevel getDesiredConsistencyLevel() {
         return desiredConsistencyLevel;
@@ -244,7 +243,7 @@ public final class CosmosAsyncClient implements Closeable {
                 final CosmosException cosmosException = (CosmosException) unwrappedException;
                 if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-                    ModelBridgeInternal.setOfferProperties(options, throughputProperties);
+                    ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
                     return createDatabase(new CosmosDatabaseProperties(id),
                         options);
                 }
@@ -317,17 +316,17 @@ public final class CosmosAsyncClient implements Closeable {
      * In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}.
-     * @param throughput the throughput for the database.
+     * @param throughputProperties the throughput properties for the database.
      * @param options {@link CosmosDatabaseRequestOptions}.
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
-                                                            int throughput,
+                                                            ThroughputProperties throughputProperties,
                                                             CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
@@ -345,12 +344,12 @@ public final class CosmosAsyncClient implements Closeable {
      * In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}.
-     * @param throughput the throughput for the database.
+     * @param throughputProperties the throughput properties for the database.
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, int throughput) {
+    public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, ThroughputProperties throughputProperties) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         return createDatabase(databaseSettings, options);
     }
 
@@ -366,9 +365,9 @@ public final class CosmosAsyncClient implements Closeable {
      * @param throughput the throughput for the database.
      * @return a {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
+    Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 
@@ -381,7 +380,7 @@ public final class CosmosAsyncClient implements Closeable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, ThroughputProperties throughputProperties) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        ModelBridgeInternal.setOfferProperties(options, throughputProperties);
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 

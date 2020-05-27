@@ -379,7 +379,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                                            .block()
                                            .getDatabase();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
+        CosmosAsyncContainer container = database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(1000),
                                                                   new CosmosContainerRequestOptions())
                                              .block()
                                              .getContainer();

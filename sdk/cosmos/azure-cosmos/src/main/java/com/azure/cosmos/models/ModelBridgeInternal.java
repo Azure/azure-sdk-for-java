@@ -257,38 +257,38 @@ public final class ModelBridgeInternal {
         return cosmosContainerRequestOptions.toRequestOptions();
     }
 
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainerRequestOptions setOfferThroughput(CosmosContainerRequestOptions cosmosContainerRequestOptions,
-                                                                   Integer offerThroughput) {
-        return cosmosContainerRequestOptions.setOfferThroughput(offerThroughput);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainerRequestOptions setThroughputProperties(CosmosContainerRequestOptions cosmosContainerRequestOptions,
-                                                                   ThroughputProperties throughputProperties) {
-        return cosmosContainerRequestOptions.setThroughputProperties(throughputProperties);
-    }
+//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+//    public static CosmosContainerRequestOptions setOfferThroughput(CosmosContainerRequestOptions cosmosContainerRequestOptions,
+//                                                                   Integer offerThroughput) {
+//        return cosmosContainerRequestOptions.setOfferThroughput(offerThroughput);
+//    }
+//
+//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+//    public static CosmosContainerRequestOptions setThroughputProperties(CosmosContainerRequestOptions cosmosContainerRequestOptions,
+//                                                                   ThroughputProperties throughputProperties) {
+//        return cosmosContainerRequestOptions.setThroughputProperties(throughputProperties);
+//    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RequestOptions toRequestOptions(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions) {
         return cosmosDatabaseRequestOptions.toRequestOptions();
     }
 
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
-                                                                   Integer offerThroughput) {
-        return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
-    }
+//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+//    public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
+//                                                                   Integer offerThroughput) {
+//        return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
+//    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabaseRequestOptions setOfferProperties(
+    public static CosmosDatabaseRequestOptions setThroughputProperties(
         CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
         ThroughputProperties throughputProperties) {
         return cosmosDatabaseRequestOptions.setThroughputProperties(throughputProperties);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainerRequestOptions setOfferProperties(
+    public static CosmosContainerRequestOptions setThroughputProperties(
         CosmosContainerRequestOptions containerRequestOptions,
         ThroughputProperties throughputProperties) {
         return containerRequestOptions.setThroughputProperties(throughputProperties);

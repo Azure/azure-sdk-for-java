@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents the consistency levels supported for Cosmos DB client operations in the Azure Cosmos DB database service.
+ * Represents the consistency levels supported for Azure Cosmos DB client operations in the Azure Cosmos DB service.
  * <p>
  * The requested ConsistencyLevel must match or be weaker than that provisioned for the database account. Consistency
  * levels by order of strength are STRONG, BOUNDED_STALENESS, SESSION and EVENTUAL.
