@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NetworkConfigurationDiagnosticResult model. */
 @Fluent
 public final class NetworkConfigurationDiagnosticResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticResult.class);
+
     /*
      * Network configuration diagnostic profile.
      */
@@ -61,5 +65,19 @@ public final class NetworkConfigurationDiagnosticResult {
         NetworkSecurityGroupResult networkSecurityGroupResult) {
         this.networkSecurityGroupResult = networkSecurityGroupResult;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (profile() != null) {
+            profile().validate();
+        }
+        if (networkSecurityGroupResult() != null) {
+            networkSecurityGroupResult().validate();
+        }
     }
 }

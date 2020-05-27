@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class RetryUtils {
             policy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
-                CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+                CosmosException clientException = Utils.as(e, CosmosException.class);
                 if(clientException != null) {
                     policy.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
                 }
@@ -75,7 +75,7 @@ public class RetryUtils {
             retryPolicy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
-                CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+                CosmosException clientException = Utils.as(e, CosmosException.class);
                 if(clientException != null) {
                     retryPolicy.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
                 }

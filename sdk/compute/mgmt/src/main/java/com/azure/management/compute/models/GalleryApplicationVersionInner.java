@@ -7,15 +7,19 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.GalleryApplicationVersionPropertiesProvisioningState;
 import com.azure.management.compute.GalleryApplicationVersionPublishingProfile;
 import com.azure.management.compute.ReplicationStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryApplicationVersion model. */
 @JsonFlatten
 @Fluent
 public class GalleryApplicationVersionInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionInner.class);
+
     /*
      * The publishing profile of a gallery Image Version.
      */
@@ -71,5 +75,19 @@ public class GalleryApplicationVersionInner extends Resource {
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publishingProfile() != null) {
+            publishingProfile().validate();
+        }
+        if (replicationStatus() != null) {
+            replicationStatus().validate();
+        }
     }
 }

@@ -5,6 +5,8 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 /** The DeletedVaultProperties model. */
 @Immutable
 public final class DeletedVaultProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedVaultProperties.class);
+
     /*
      * The resource id of the original vault.
      */
@@ -85,5 +89,13 @@ public final class DeletedVaultProperties {
      */
     public Map<String, String> tags() {
         return this.tags;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

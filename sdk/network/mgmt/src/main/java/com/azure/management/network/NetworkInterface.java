@@ -16,7 +16,7 @@ import com.azure.management.resources.fluentcore.model.Updatable;
 import java.util.Map;
 
 /** Network interface. */
-@Fluent()
+@Fluent
 public interface NetworkInterface
     extends NetworkInterfaceBase,
         GroupableResource<NetworkManager, NetworkInterfaceInner>,
@@ -24,10 +24,10 @@ public interface NetworkInterface
         Updatable<NetworkInterface.Update>,
         UpdatableWithTags<NetworkInterface> {
     /** @return the IP configurations of this network interface, indexed by their names. */
-    Map<String, NicIPConfiguration> ipConfigurations();
+    Map<String, NicIpConfiguration> ipConfigurations();
 
     /** @return the primary IP configuration of this network interface */
-    NicIPConfiguration primaryIPConfiguration();
+    NicIpConfiguration primaryIPConfiguration();
 
     /** The entirety of the network interface definition. */
     interface Definition
@@ -166,7 +166,7 @@ public interface NetworkInterface
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the definition
              */
-            WithCreate withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
+            WithCreate withNewPrimaryPublicIPAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it with the
@@ -196,7 +196,7 @@ public interface NetworkInterface
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            WithCreate withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress);
+            WithCreate withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress);
         }
 
         /** The stage of the network interface definition allowing to associate a network security group. */
@@ -227,7 +227,7 @@ public interface NetworkInterface
              * @param name name for the IP configuration
              * @return the first stage of a secondary IP configuration definition
              */
-            NicIPConfiguration.DefinitionStages.Blank<WithCreate> defineSecondaryIPConfiguration(String name);
+            NicIpConfiguration.DefinitionStages.Blank<WithCreate> defineSecondaryIPConfiguration(String name);
         }
 
         /** The stage of the network interface definition allowing to enable accelerated networking. */
@@ -337,7 +337,7 @@ public interface NetworkInterface
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface update
              */
-            Update withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
+            Update withNewPrimaryPublicIPAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it with the
@@ -376,7 +376,7 @@ public interface NetworkInterface
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the network interface update
              */
-            Update withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress);
+            Update withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress);
         }
 
         /** The stage of the network interface update allowing to associate network security group. */
@@ -462,7 +462,7 @@ public interface NetworkInterface
              * @param name name for the IP configuration
              * @return the first stage of the update
              */
-            NicIPConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIPConfiguration(
+            NicIpConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIPConfiguration(
                 String name);
 
             /**
@@ -471,7 +471,7 @@ public interface NetworkInterface
              * @param name name of the IP configuration
              * @return the first stage of the update
              */
-            NicIPConfiguration.Update updateIPConfiguration(String name);
+            NicIpConfiguration.Update updateIPConfiguration(String name);
 
             /**
              * Removes the specified IP configuration.

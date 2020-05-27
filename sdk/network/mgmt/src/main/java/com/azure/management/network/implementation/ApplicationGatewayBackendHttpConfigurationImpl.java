@@ -73,12 +73,12 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public String hostHeader() {
-        return this.inner().hostName();
+        return this.inner().hostname();
     }
 
     @Override
     public boolean isHostHeaderFromBackend() {
-        return Utils.toPrimitiveBoolean(this.inner().pickHostNameFromBackendAddress());
+        return Utils.toPrimitiveBoolean(this.inner().pickHostnameFromBackendAddress());
     }
 
     @Override
@@ -177,17 +177,17 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeaderFromBackend() {
-        this.inner().withPickHostNameFromBackendAddress(true).withHostName(null);
+        this.inner().withPickHostnameFromBackendAddress(true).withHostname(null);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeader(String hostHeader) {
-        this.inner().withHostName(hostHeader).withPickHostNameFromBackendAddress(false);
+        this.inner().withHostname(hostHeader).withPickHostnameFromBackendAddress(false);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withoutHostHeader() {
-        this.inner().withHostName(null).withPickHostNameFromBackendAddress(false);
+        this.inner().withHostname(null).withPickHostnameFromBackendAddress(false);
         return this;
     }
 
@@ -271,7 +271,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
         // If matching cert reference not found, create a new one
         if (certName == null) {
-            certName = this.parent().manager().getSdkContext().randomResourceName("cert", 20);
+            certName = this.parent().manager().sdkContext().randomResourceName("cert", 20);
             this.parent().defineAuthenticationCertificate(certName).fromBase64(base64Data).attach();
         }
 

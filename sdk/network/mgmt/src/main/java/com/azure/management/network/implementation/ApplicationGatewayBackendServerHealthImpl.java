@@ -6,7 +6,7 @@ import com.azure.management.network.ApplicationGatewayBackendHealthStatus;
 import com.azure.management.network.ApplicationGatewayBackendHttpConfigurationHealth;
 import com.azure.management.network.ApplicationGatewayBackendServerHealth;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.NicIPConfiguration;
+import com.azure.management.network.NicIpConfiguration;
 import com.azure.management.network.models.ApplicationGatewayBackendHealthServerInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 
@@ -39,7 +39,7 @@ public class ApplicationGatewayBackendServerHealthImpl implements ApplicationGat
     }
 
     @Override
-    public NicIPConfiguration getNetworkInterfaceIPConfiguration() {
+    public NicIpConfiguration getNetworkInterfaceIPConfiguration() {
         if (this.inner().ipConfiguration() == null) {
             return null;
         }

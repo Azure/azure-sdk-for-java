@@ -16,13 +16,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GlobalAdministrators. */
 public final class GlobalAdministratorsInner {
+    private final ClientLogger logger = new ClientLogger(GlobalAdministratorsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final GlobalAdministratorsService service;
 
@@ -51,7 +54,7 @@ public final class GlobalAdministratorsInner {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/providers/Microsoft.Authorization/elevateAccess")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> elevateAccess(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
     }
@@ -59,12 +62,16 @@ public final class GlobalAdministratorsInner {
     /**
      * Elevates access for a Global Administrator.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> elevateAccessWithResponseAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
         final String apiVersion = "2015-07-01";
         return FluxUtil
             .withContext(context -> service.elevateAccess(this.client.getHost(), apiVersion, context))
@@ -74,7 +81,26 @@ public final class GlobalAdministratorsInner {
     /**
      * Elevates access for a Global Administrator.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> elevateAccessWithResponseAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        final String apiVersion = "2015-07-01";
+        return service.elevateAccess(this.client.getHost(), apiVersion, context);
+    }
+
+    /**
+     * Elevates access for a Global Administrator.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -86,7 +112,7 @@ public final class GlobalAdministratorsInner {
     /**
      * Elevates access for a Global Administrator.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

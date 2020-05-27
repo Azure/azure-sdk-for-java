@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The StorageAccountMicrosoftEndpoints model. */
 @Immutable
 public final class StorageAccountMicrosoftEndpoints {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountMicrosoftEndpoints.class);
+
     /*
      * Gets the blob endpoint.
      */
@@ -98,5 +102,13 @@ public final class StorageAccountMicrosoftEndpoints {
      */
     public String dfs() {
         return this.dfs;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.NextHopType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NextHopResult model. */
 @Fluent
 public final class NextHopResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NextHopResultInner.class);
+
     /*
      * Next hop type.
      */
@@ -93,5 +97,13 @@ public final class NextHopResultInner {
     public NextHopResultInner withRouteTableId(String routeTableId) {
         this.routeTableId = routeTableId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

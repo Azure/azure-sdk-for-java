@@ -7,6 +7,9 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchIndexClient;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -71,24 +74,24 @@ public class GeoPointTests extends SearchTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("geopoints")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("Id")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new Field()
+                new SearchField()
                     .setName("Name")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new Field()
+                new SearchField()
                     .setName("Location")
-                    .setType(DataType.EDM_GEOGRAPHY_POINT)
+                    .setType(SearchFieldDataType.GEOGRAPHY_POINT)
                     .setFilterable(true)
                     .setSortable(true)
             ));

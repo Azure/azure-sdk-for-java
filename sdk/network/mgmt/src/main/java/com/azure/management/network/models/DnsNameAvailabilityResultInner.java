@@ -5,11 +5,15 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DnsNameAvailabilityResult model. */
 @Fluent
 public final class DnsNameAvailabilityResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsNameAvailabilityResultInner.class);
+
     /*
      * Domain availability (True/False).
      */
@@ -34,5 +38,13 @@ public final class DnsNameAvailabilityResultInner {
     public DnsNameAvailabilityResultInner withAvailable(Boolean available) {
         this.available = available;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

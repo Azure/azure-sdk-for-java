@@ -5,12 +5,16 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.FeatureProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FeatureResult model. */
 @Fluent
 public final class FeatureResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureResultInner.class);
+
     /*
      * The name of the feature.
      */
@@ -113,5 +117,16 @@ public final class FeatureResultInner {
     public FeatureResultInner withType(String type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

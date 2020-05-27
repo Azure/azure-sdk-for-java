@@ -5,11 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OAuth2Permission model. */
 @Fluent
 public final class OAuth2Permission {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2Permission.class);
+
     /*
      * Permission help text that appears in the admin consent and app
      * assignment experiences.
@@ -242,5 +246,13 @@ public final class OAuth2Permission {
     public OAuth2Permission withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

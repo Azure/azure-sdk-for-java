@@ -7,13 +7,17 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.GeoBackupPolicyState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GeoBackupPolicy model. */
 @JsonFlatten
 @Fluent
 public class GeoBackupPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoBackupPolicyInner.class);
+
     /*
      * Kind of geo backup policy.  This is metadata used for the Azure portal
      * experience.
@@ -84,5 +88,18 @@ public class GeoBackupPolicyInner extends ProxyResource {
      */
     public String storageType() {
         return this.storageType;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (state() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property state in model GeoBackupPolicyInner"));
+        }
     }
 }

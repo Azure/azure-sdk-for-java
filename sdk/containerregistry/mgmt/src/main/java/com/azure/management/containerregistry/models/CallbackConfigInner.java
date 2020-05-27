@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The CallbackConfig model. */
 @Fluent
 public final class CallbackConfigInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CallbackConfigInner.class);
+
     /*
      * The service URI for the webhook to post notifications.
      */
@@ -61,5 +65,18 @@ public final class CallbackConfigInner {
     public CallbackConfigInner withCustomHeaders(Map<String, String> customHeaders) {
         this.customHeaders = customHeaders;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (serviceUri() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property serviceUri in model CallbackConfigInner"));
+        }
     }
 }

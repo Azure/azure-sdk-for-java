@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -20,7 +21,7 @@ import reactor.core.publisher.Mono;
 import java.io.Closeable;
 
 /**
- * Provides a client-side logical representation of the Azure Cosmos database service.
+ * Provides a client-side logical representation of the Azure Cosmos DB service.
  * SyncClient is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
@@ -32,28 +33,35 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Create a Database if it does not already exist on the service
+     * Create a Cosmos database if it does not already exist on the service.
      *
-     * @param databaseProperties {@link CosmosDatabaseProperties} the database properties
+     * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) throws
-        CosmosClientException {
+    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
     }
 
     /**
-     * Create a Database if it does not already exist on the service
+     * Create a Database if it does not already exist on the service.
      *
-     * @param id the id of the database
+     * @param id the id of the database.
+     * @param throughputProperties the throughputProperties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabaseIfNotExists(String id) throws CosmosClientException {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id));
+    public CosmosDatabaseResponse createDatabaseIfNotExists(String id, ThroughputProperties throughputProperties) {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id, throughputProperties));
     }
 
+    /**
+     * Create a Database if it does not already exist on the service.
+     *
+     * @param id the id of the database.
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     */
+    public CosmosDatabaseResponse createDatabaseIfNotExists(String id) {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id));
+    }
 
     /**
      * Creates a database.
@@ -61,10 +69,9 @@ public final class CosmosClient implements Closeable {
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param options the request options.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
+                                                 CosmosDatabaseRequestOptions options) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, options));
     }
 
@@ -73,21 +80,18 @@ public final class CosmosClient implements Closeable {
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) throws
-        CosmosClientException {
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties));
     }
 
     /**
      * Creates a database.
      *
-     * @param id the id of the database
+     * @param id the id of the database.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabase(String id) throws CosmosClientException {
+    public CosmosDatabaseResponse createDatabase(String id) {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id));
 
     }
@@ -96,53 +100,48 @@ public final class CosmosClient implements Closeable {
      * Creates a database.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
-     * @param throughput the throughput
-     * @param options {@link CosmosDatabaseRequestOptions} the request options
+     * @param throughputProperties the throughput properties.
+     * @param options {@link CosmosDatabaseRequestOptions} the request options.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 int throughput,
-                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput, options));
+                                                 ThroughputProperties throughputProperties,
+                                                 CosmosDatabaseRequestOptions options) {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties, options));
     }
 
     /**
      * Creates a database.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
-     * @param throughput the throughput
+     * @param throughputProperties the throughput properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 int throughput) throws CosmosClientException {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput));
+                                                 ThroughputProperties throughputProperties) {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties));
     }
-
 
     /**
      * Creates a database.
      *
-     * @param id the id of the database
-     * @param throughput the throughput
+     * @param id the id of the database.
+     * @param throughputProperties the throughput properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse createDatabase(String id, int throughput) throws CosmosClientException {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughput));
+    public CosmosDatabaseResponse createDatabase(String id, ThroughputProperties throughputProperties) {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughputProperties));
     }
 
-    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) throws
-        CosmosClientException {
+    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) {
         try {
             return databaseMono
                        .map(this::convertResponse)
                        .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
             } else {
                 throw Exceptions.propagate(ex);
             }
@@ -169,9 +168,9 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Query a database
+     * Query a database.
      *
-     * @param query the query
+     * @param query the query.
      * @param options {@link FeedOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
@@ -180,10 +179,10 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Query a database
+     * Query a database.
      *
-     * @param querySpec {@link SqlQuerySpec} the query spec
-     * @param options the query
+     * @param querySpec {@link SqlQuerySpec} the query spec.
+     * @param options the query.
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
     public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec,
@@ -192,10 +191,10 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Gets the database client
+     * Gets the database client.
      *
-     * @param id the id of the database
-     * @return {@link CosmosDatabase} the cosmos sync database
+     * @param id the id of the database.
+     * @return {@link CosmosDatabase} the cosmos sync database.
      */
     public CosmosDatabase getDatabase(String id) {
         return new CosmosDatabase(id, this, asyncClientWrapper.getDatabase(id));
@@ -210,7 +209,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Close this {@link CosmosClient} instance
+     * Close this {@link CosmosClient} instance.
      */
     public void close() {
         asyncClientWrapper.close();

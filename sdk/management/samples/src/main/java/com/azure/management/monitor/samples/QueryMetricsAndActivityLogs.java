@@ -119,7 +119,7 @@ public final class QueryMetricsAndActivityLogs {
                             }
                             System.out.println("\t\tData: ");
                             for (MetricValue data : timeElement.data()) {
-                                System.out.println("\t\t\t" + data.timeStamp()
+                                System.out.println("\t\t\t" + data.timestamp()
                                         + " : (Min) " + data.minimum()
                                         + " : (Max) " + data.maximum()
                                         + " : (Avg) " + data.average()
@@ -177,7 +177,7 @@ public final class QueryMetricsAndActivityLogs {
     public static void main(String[] args) {
         try {
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

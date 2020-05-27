@@ -3,13 +3,13 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.models.HasPublicIPAddress;
+import com.azure.management.network.models.HasPublicIpAddress;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.Settable;
 
 /** A client-side representation of a public frontend of an Internet-facing load balancer. */
 @Fluent()
-public interface LoadBalancerPublicFrontend extends LoadBalancerFrontend, HasPublicIPAddress {
+public interface LoadBalancerPublicFrontend extends LoadBalancerFrontend, HasPublicIpAddress {
 
     /** Grouping of public frontend definition stages. */
     interface DefinitionStages {
@@ -27,7 +27,7 @@ public interface LoadBalancerPublicFrontend extends LoadBalancerFrontend, HasPub
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPublicIPAddress<ParentT>
-            extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
+            extends HasPublicIpAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -56,7 +56,7 @@ public interface LoadBalancerPublicFrontend extends LoadBalancerFrontend, HasPub
     /** Grouping of public frontend update stages. */
     interface UpdateStages {
         /** The stage of a public frontend update allowing to specify an existing public IP address. */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddress<Update> {
+        interface WithPublicIPAddress extends HasPublicIpAddress.UpdateStages.WithPublicIPAddress<Update> {
         }
     }
 
@@ -80,7 +80,7 @@ public interface LoadBalancerPublicFrontend extends LoadBalancerFrontend, HasPub
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPublicIPAddress<ParentT>
-            extends HasPublicIPAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
+            extends HasPublicIpAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**

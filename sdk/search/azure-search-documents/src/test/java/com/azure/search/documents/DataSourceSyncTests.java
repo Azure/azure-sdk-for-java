@@ -7,16 +7,15 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.models.DataContainer;
-import com.azure.search.documents.models.DataDeletionDetectionPolicy;
-import com.azure.search.documents.models.DataSource;
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy;
-import com.azure.search.documents.models.SqlIntegratedChangeTrackingPolicy;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -61,15 +60,15 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void canCreateAndListDataSources() {
-        DataSource dataSource1 = createTestBlobDataSource(null);
-        DataSource dataSource2 = createTestSqlDataSourceObject();
+        SearchIndexerDataSource dataSource1 = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource2 = createTestSqlDataSourceObject();
 
         client.createOrUpdateDataSource(dataSource1);
         dataSourcesToDelete.add(dataSource1.getName());
         client.createOrUpdateDataSource(dataSource2);
         dataSourcesToDelete.add(dataSource2.getName());
 
-        Iterator<DataSource> results = client.listDataSources().iterator();
+        Iterator<SearchIndexerDataSource> results = client.listDataSources().iterator();
 
         assertEquals(dataSource1.getName(), results.next().getName());
         assertEquals(dataSource2.getName(), results.next().getName());
@@ -78,15 +77,15 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void canCreateAndListDataSourcesWithResponse() {
-        DataSource dataSource1 = createTestBlobDataSource(null);
-        DataSource dataSource2 = createTestSqlDataSourceObject();
+        SearchIndexerDataSource dataSource1 = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource2 = createTestSqlDataSourceObject();
 
         client.createOrUpdateDataSourceWithResponse(dataSource1, false, new RequestOptions(), Context.NONE);
         dataSourcesToDelete.add(dataSource1.getName());
         client.createOrUpdateDataSourceWithResponse(dataSource2, false, new RequestOptions(), Context.NONE);
         dataSourcesToDelete.add(dataSource2.getName());
 
-        Iterator<DataSource> results = client.listDataSources("name", new RequestOptions(), Context.NONE).iterator();
+        Iterator<SearchIndexerDataSource> results = client.listDataSources("name", new RequestOptions(), Context.NONE).iterator();
 
         assertEquals(dataSource1.getName(), results.next().getName());
         assertEquals(dataSource2.getName(), results.next().getName());
@@ -95,7 +94,7 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void canCreateAndDeleteDatasource() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
         client.deleteDataSource(dataSource.getName());
 
         assertThrows(HttpResponseException.class, () -> client.getDataSource(dataSource.getName()));
@@ -103,7 +102,7 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void deleteDataSourceIsIdempotent() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
         Response<Void> result = client.deleteDataSourceWithResponse(dataSource, false, generateRequestOptions(),
@@ -123,8 +122,8 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSource.setType(SearchIndexerDataSourceType.fromString("thistypedoesnotexist"));
 
         assertHttpResponseException(
             () -> client.createOrUpdateDataSource(dataSource),
@@ -135,22 +134,22 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void canUpdateDataSource() {
-        DataSource initial = createTestSqlDataSourceObject();
+        SearchIndexerDataSource initial = createTestSqlDataSourceObject();
 
         // Create the data source
         client.createOrUpdateDataSource(initial);
         dataSourcesToDelete.add(initial.getName());
 
-        DataSource updatedExpected = createTestSqlDataSourceObject()
+        SearchIndexerDataSource updatedExpected = createTestSqlDataSourceObject()
             .setName(initial.getName())
-            .setContainer(new DataContainer().setName("somethingdifferent"))
+            .setContainer(new SearchIndexerDataContainer().setName("somethingdifferent"))
             .setDescription("somethingdifferent")
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy()
                 .setHighWaterMarkColumnName("rowversion"))
             .setDataDeletionDetectionPolicy(new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("isDeleted"));
 
-        DataSource updatedActual = client.createOrUpdateDataSource(updatedExpected);
+        SearchIndexerDataSource updatedActual = client.createOrUpdateDataSource(updatedExpected);
 
         updatedExpected.getCredentials().setConnectionString(null); // Create doesn't return connection strings.
         TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag");
@@ -158,10 +157,10 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(dataSource.getName());
 
-        DataSource response = client.createOrUpdateDataSourceWithResponse(dataSource, true, null, Context.NONE)
+        SearchIndexerDataSource response = client.createOrUpdateDataSourceWithResponse(dataSource, true, null, Context.NONE)
             .getValue();
 
         assertFalse(CoreUtils.isNullOrEmpty(response.getETag()));
@@ -169,10 +168,10 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(dataSource.getName());
 
-        DataSource response = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
+        SearchIndexerDataSource response = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
             .getValue();
 
         client.deleteDataSourceWithResponse(response, true, null, Context.NONE);
@@ -180,25 +179,25 @@ public class DataSourceSyncTests extends SearchTestBase {
         try {
             client.deleteDataSourceWithResponse(response, true, null, Context.NONE);
             fail("Second call to delete with specified ETag should have failed due to non existent data source.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
     }
 
     @Test
     public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
 
-        DataSource stale = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
+        SearchIndexerDataSource stale = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
             .getValue();
 
-        DataSource current = client.createOrUpdateDataSourceWithResponse(stale, false, null, Context.NONE)
+        SearchIndexerDataSource current = client.createOrUpdateDataSourceWithResponse(stale, false, null, Context.NONE)
             .getValue();
 
         try {
             client.deleteDataSourceWithResponse(stale, true, null, Context.NONE);
             fail("Delete specifying a stale ETag should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -207,14 +206,14 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void updateDataSourceIfExistsSucceedsOnExistingResource() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(dataSource.getName());
 
-        DataSource original = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
+        SearchIndexerDataSource original = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
 
-        DataSource updated = client.createOrUpdateDataSourceWithResponse(original.setDescription("an update"), false,
+        SearchIndexerDataSource updated = client.createOrUpdateDataSourceWithResponse(original.setDescription("an update"), false,
             null, Context.NONE)
             .getValue();
         String updatedETag = updated.getETag();
@@ -225,14 +224,14 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(dataSource.getName());
 
-        DataSource original = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
+        SearchIndexerDataSource original = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
 
-        DataSource updated = client.createOrUpdateDataSourceWithResponse(original.setDescription("an update"), false,
+        SearchIndexerDataSource updated = client.createOrUpdateDataSourceWithResponse(original.setDescription("an update"), false,
             null, Context.NONE)
             .getValue();
         String updatedETag = updated.getETag();
@@ -240,7 +239,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         try {
             client.createOrUpdateDataSourceWithResponse(original, true, null, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -251,14 +250,14 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
-        DataSource dataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource dataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(dataSource.getName());
 
-        DataSource original = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
+        SearchIndexerDataSource original = client.createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
 
-        DataSource updated = client.createOrUpdateDataSourceWithResponse(original.setDescription("an update"), false,
+        SearchIndexerDataSource updated = client.createOrUpdateDataSourceWithResponse(original.setDescription("an update"), false,
             null, Context.NONE)
             .getValue();
         String updatedETag = updated.getETag();
@@ -283,8 +282,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         // AzureSql
         createAndValidateDataSource(createTestSqlDataSourceObject(null, null));
         createAndValidateDataSource(createTestSqlDataSourceObject(deletionDetectionPolicy, null));
-        createAndValidateDataSource(createTestSqlDataSourceObject(null, new
-            SqlIntegratedChangeTrackingPolicy()));
+        createAndValidateDataSource(createTestSqlDataSourceObject(null, new SqlIntegratedChangeTrackingPolicy()));
         createAndValidateDataSource(createTestSqlDataSourceObject(deletionDetectionPolicy,
             changeDetectionPolicy));
 
@@ -303,8 +301,8 @@ public class DataSourceSyncTests extends SearchTestBase {
         createAndValidateDataSource(createTestBlobDataSource(deletionDetectionPolicy));
     }
 
-    private void createAndValidateDataSource(DataSource expectedDataSource) {
-        DataSource actualDataSource = client.createOrUpdateDataSource(expectedDataSource);
+    private void createAndValidateDataSource(SearchIndexerDataSource expectedDataSource) {
+        SearchIndexerDataSource actualDataSource = client.createOrUpdateDataSource(expectedDataSource);
 
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
         TestHelpers.assertObjectEquals(expectedDataSource, actualDataSource, false, "etag", "@odata.etag");
@@ -321,14 +319,14 @@ public class DataSourceSyncTests extends SearchTestBase {
         createGetAndValidateDataSource(createTestCosmosDataSource(null, false));
     }
 
-    private void createGetAndValidateDataSource(DataSource expectedDataSource) {
+    private void createGetAndValidateDataSource(SearchIndexerDataSource expectedDataSource) {
         client.createOrUpdateDataSource(expectedDataSource);
         String dataSourceName = expectedDataSource.getName();
 
         // Get doesn't return connection strings.
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
 
-        DataSource actualDataSource = client.getDataSource(dataSourceName);
+        SearchIndexerDataSource actualDataSource = client.getDataSource(dataSourceName);
         TestHelpers.assertObjectEquals(expectedDataSource, actualDataSource, false, "etag", "@odata.etag");
 
         actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions(), Context.NONE)
@@ -349,22 +347,22 @@ public class DataSourceSyncTests extends SearchTestBase {
 
     @Test
     public void canCreateDataSource() {
-        DataSource expectedDataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
-        DataSource actualDataSource = client.createDataSource(expectedDataSource);
+        SearchIndexerDataSource actualDataSource = client.createDataSource(expectedDataSource);
         assertNotNull(actualDataSource);
         assertEquals(expectedDataSource.getName(), actualDataSource.getName());
 
-        Iterator<DataSource> dataSources = client.listDataSources().iterator();
+        Iterator<SearchIndexerDataSource> dataSources = client.listDataSources().iterator();
         assertEquals(expectedDataSource.getName(), dataSources.next().getName());
         assertFalse(dataSources.hasNext());
     }
 
     @Test
     public void canCreateDataSourceWithResponse() {
-        DataSource expectedDataSource = createTestBlobDataSource(null);
+        SearchIndexerDataSource expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
-        Response<DataSource> response = client
+        Response<SearchIndexerDataSource> response = client
             .createDataSourceWithResponse(expectedDataSource, new RequestOptions(), null);
         assertNotNull(response);
         assertNotNull(response.getValue());
@@ -379,7 +377,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         // Hence, we only validate that the properties on the local items can change.
 
         // Create an initial dataSource
-        DataSource initial = createTestBlobDataSource(null);
+        SearchIndexerDataSource initial = createTestBlobDataSource(null);
         assertEquals(initial.getCredentials().getConnectionString(), FAKE_STORAGE_CONNECTION_STRING);
 
         // tweak the connection string and verify it was changed
@@ -390,20 +388,20 @@ public class DataSourceSyncTests extends SearchTestBase {
         assertEquals(initial.getCredentials().getConnectionString(), newConnString);
     }
 
-    DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        return DataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_TEST_NAME, 32),
+    SearchIndexerDataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
+        return SearchIndexerDataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_TEST_NAME, 32),
             FAKE_STORAGE_CONNECTION_STRING, "fakecontainer", "/fakefolder/", FAKE_DESCRIPTION, deletionDetectionPolicy);
     }
 
-    DataSource createTestTableStorageDataSource() {
-        return DataSources.createFromAzureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING,
+    SearchIndexerDataSource createTestTableStorageDataSource() {
+        return SearchIndexerDataSources.createFromAzureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING,
             "faketable", "fake query", FAKE_DESCRIPTION, null);
     }
 
-    DataSource createTestCosmosDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy,
+    SearchIndexerDataSource createTestCosmosDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
 
-        return DataSources.createFromCosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
+        return SearchIndexerDataSources.createFromCosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
             "SELECT ... FROM x where x._ts > @HighWaterMark", useChangeDetection, FAKE_DESCRIPTION,
             deletionDetectionPolicy);
     }

@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CorsSettings model. */
 @Fluent
 public final class CorsSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsSettings.class);
+
     /*
      * Gets or sets the list of origins that should be allowed to make
      * cross-origin
@@ -69,5 +73,13 @@ public final class CorsSettings {
     public CorsSettings withSupportCredentials(Boolean supportCredentials) {
         this.supportCredentials = supportCredentials;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

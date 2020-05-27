@@ -8,7 +8,7 @@ import com.azure.management.network.ApplicationGatewayBackend;
 import com.azure.management.network.ApplicationGatewayBackendAddress;
 import com.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.azure.management.network.ApplicationGatewayFrontend;
-import com.azure.management.network.ApplicationGatewayIPConfiguration;
+import com.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.azure.management.network.ApplicationGatewayListener;
 import com.azure.management.network.ApplicationGatewayProbe;
 import com.azure.management.network.ApplicationGatewayProtocol;
@@ -22,18 +22,19 @@ import com.azure.management.network.ApplicationGatewayTier;
 import com.azure.management.network.ApplicationGatewayUrlPathMap;
 import com.azure.management.network.ApplicationGateways;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddress;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import org.junit.jupiter.api.Assertions;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 /** Test of application gateway management. */
 public class TestApplicationGateway {
@@ -394,7 +395,7 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
-            ensurePIPs(resources.manager().publicIPAddresses());
+            ensurePIPs(resources.manager().publicIpAddresses());
 
             final Network vnet =
                 resources
@@ -693,7 +694,7 @@ public class TestApplicationGateway {
                     .next();
             Assertions.assertNotNull(authCert1);
 
-            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(groupName, pipNames[0]);
+            PublicIpAddress pip = resource.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
             ApplicationGatewayListener listener443 = resource.requestRoutingRules().get("rule443").listener();
             Assertions.assertNotNull(listener443);
             ApplicationGatewayListener listenerRedirect = resource.requestRoutingRules().get("ruleRedirect").listener();
@@ -712,7 +713,7 @@ public class TestApplicationGateway {
                 .withoutSslCertificate("cert1")
                 .withoutAuthenticationCertificate(authCert1.name())
                 .updateListener(listener443.name())
-                .withHostName("foobar")
+                .withHostname("foobar")
                 .parent()
                 .updateListener(listenerRedirect.name())
                 .withHttp()
@@ -741,7 +742,7 @@ public class TestApplicationGateway {
                 .withoutPathIncluded()
                 .parent()
                 .withoutRedirectConfiguration("redirect2")
-                .withExistingPublicIPAddress(pip) // Associate with a public IP as well
+                .withExistingPublicIpAddress(pip) // Associate with a public IP as well
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -777,7 +778,7 @@ public class TestApplicationGateway {
                         .values()
                         .iterator()
                         .next()
-                        .publicIPAddressId()
+                        .publicIpAddressId()
                         .equalsIgnoreCase(pip.id()));
             Assertions.assertEquals(1, resource.privateFrontends().size());
             ApplicationGatewayFrontend frontend = resource.privateFrontends().values().iterator().next();
@@ -823,7 +824,7 @@ public class TestApplicationGateway {
             rule = resource.requestRoutingRules().get("rule443");
             Assertions.assertNotNull(rule);
             Assertions.assertNotNull(rule.listener());
-            Assertions.assertTrue("foobar".equalsIgnoreCase(rule.listener().hostName()));
+            Assertions.assertTrue("foobar".equalsIgnoreCase(rule.listener().hostname()));
             Assertions.assertNull(rule.redirectConfiguration());
 
             // Verify SSL certificates
@@ -856,7 +857,7 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
-            ensurePIPs(resources.manager().publicIPAddresses());
+            ensurePIPs(resources.manager().publicIpAddresses());
             Thread.UncaughtExceptionHandler threadException =
                 new Thread.UncaughtExceptionHandler() {
                     public void uncaughtException(Thread th, Throwable ex) {
@@ -864,8 +865,8 @@ public class TestApplicationGateway {
                     }
                 };
 
-            final PublicIPAddress pip =
-                resources.manager().publicIPAddresses().getByResourceGroup(groupName, pipNames[0]);
+            final PublicIpAddress pip =
+                resources.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
 
             // Prepare for execution in a separate thread to shorten the test
             Thread creationThread =
@@ -915,7 +916,7 @@ public class TestApplicationGateway {
                                         new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
                                     .withSslCertificatePassword("Abc123")
                                     .withServerNameIndication()
-                                    .withHostName("www.fabricam.com")
+                                    .withHostname("www.fabricam.com")
                                     .attach()
 
                                     // Additional/explicit backends
@@ -923,7 +924,7 @@ public class TestApplicationGateway {
                                     .withIPAddress("11.1.1.1")
                                     .withIPAddress("11.1.1.2")
                                     .attach()
-                                    .withExistingPublicIPAddress(pip)
+                                    .withExistingPublicIpAddress(pip)
                                     .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                                     .withInstanceCount(2)
 
@@ -1004,7 +1005,7 @@ public class TestApplicationGateway {
             ApplicationGatewayListener listener = appGateway.listeners().get("listener1");
             Assertions.assertNotNull(listener);
             Assertions.assertEquals(9000, listener.frontendPortNumber());
-            Assertions.assertTrue("www.fabricam.com".equalsIgnoreCase(listener.hostName()));
+            Assertions.assertTrue("www.fabricam.com".equalsIgnoreCase(listener.hostname()));
             Assertions.assertTrue(listener.requiresServerNameIndication());
             Assertions.assertNotNull(listener.frontend());
             Assertions.assertFalse(listener.frontend().isPrivate());
@@ -1028,7 +1029,7 @@ public class TestApplicationGateway {
 
             rule80 = appGateway.requestRoutingRules().get("rule80");
             Assertions.assertNotNull(rule80);
-            Assertions.assertTrue(pip.id().equalsIgnoreCase(rule80.publicIPAddressId()));
+            Assertions.assertTrue(pip.id().equalsIgnoreCase(rule80.publicIpAddressId()));
             Assertions.assertEquals(80, rule80.frontendPort());
             Assertions.assertEquals(8080, rule80.backendPort());
             Assertions.assertTrue(rule80.cookieBasedAffinity());
@@ -1040,7 +1041,7 @@ public class TestApplicationGateway {
 
             rule = appGateway.requestRoutingRules().get("rule443");
             Assertions.assertNotNull(rule);
-            Assertions.assertTrue(pip.id().equalsIgnoreCase(rule.publicIPAddressId()));
+            Assertions.assertTrue(pip.id().equalsIgnoreCase(rule.publicIpAddressId()));
             Assertions.assertEquals(443, rule.frontendPort());
             Assertions.assertEquals(ApplicationGatewayProtocol.HTTPS, rule.frontendProtocol());
             Assertions.assertNotNull(rule.sslCertificate());
@@ -1117,7 +1118,7 @@ public class TestApplicationGateway {
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
                 .withInstanceCount(1)
                 .updateListener("listener1")
-                .withHostName("www.contoso.com")
+                .withHostname("www.contoso.com")
                 .parent()
                 .updateRequestRoutingRule("rule443")
                 .fromListener("listener1")
@@ -1154,7 +1155,7 @@ public class TestApplicationGateway {
 
             // Verify listeners
             ApplicationGatewayListener listener = resource.listeners().get("listener1");
-            Assertions.assertTrue("www.contoso.com".equalsIgnoreCase(listener.hostName()));
+            Assertions.assertTrue("www.contoso.com".equalsIgnoreCase(listener.hostname()));
 
             // Verify request routing rules
             Assertions.assertTrue(resource.requestRoutingRules().size() == rulesCount - 1);
@@ -1372,8 +1373,8 @@ public class TestApplicationGateway {
     }
 
     // Create VNet for the app gateway
-    private Map<String, PublicIPAddress> ensurePIPs(PublicIPAddresses pips) throws Exception {
-        List<Creatable<PublicIPAddress>> creatablePips = new ArrayList<>();
+    private Map<String, PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
+        List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
         for (int i = 0; i < pipNames.length; i++) {
             creatablePips.add(pips.define(pipNames[i]).withRegion(REGION).withNewResourceGroup(groupName));
         }
@@ -1404,16 +1405,16 @@ public class TestApplicationGateway {
             .append("\n\tInternal? ")
             .append(resource.isPrivate())
             .append("\n\tDefault private IP address: ")
-            .append(resource.privateIPAddress())
+            .append(resource.privateIpAddress())
             .append("\n\tPrivate IP address allocation method: ")
-            .append(resource.privateIPAllocationMethod())
+            .append(resource.privateIpAllocationMethod())
             .append("\n\tDisabled SSL protocols: ")
             .append(resource.disabledSslProtocols().toString());
 
         // Show IP configs
-        Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
+        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
-        for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
+        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
             info
                 .append("\n\t\tName: ")
                 .append(ipConfig.name())
@@ -1431,16 +1432,16 @@ public class TestApplicationGateway {
 
             if (frontend.isPublic()) {
                 // Show public frontend info
-                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIPAddressId());
+                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIpAddressId());
             }
 
             if (frontend.isPrivate()) {
                 // Show private frontend info
                 info
                     .append("\n\t\t\tPrivate IP address: ")
-                    .append(frontend.privateIPAddress())
+                    .append(frontend.privateIpAddress())
                     .append("\n\t\t\tPrivate IP allocation method: ")
-                    .append(frontend.privateIPAllocationMethod())
+                    .append(frontend.privateIpAllocationMethod())
                     .append("\n\t\t\tSubnet name: ")
                     .append(frontend.subnetName())
                     .append("\n\t\t\tVirtual network ID: ")
@@ -1517,7 +1518,7 @@ public class TestApplicationGateway {
                 .append("\n\t\tName: ")
                 .append(listener.name())
                 .append("\n\t\t\tHost name: ")
-                .append(listener.hostName())
+                .append(listener.hostname())
                 .append("\n\t\t\tServer name indication required? ")
                 .append(listener.requiresServerNameIndication())
                 .append("\n\t\t\tAssociated frontend name: ")
@@ -1594,9 +1595,9 @@ public class TestApplicationGateway {
                 .append("\n\t\tType: ")
                 .append(rule.ruleType())
                 .append("\n\t\tPublic IP address ID: ")
-                .append(rule.publicIPAddressId())
+                .append(rule.publicIpAddressId())
                 .append("\n\t\tHost name: ")
-                .append(rule.hostName())
+                .append(rule.hostname())
                 .append("\n\t\tServer name indication required? ")
                 .append(rule.requiresServerNameIndication())
                 .append("\n\t\tFrontend port: ")

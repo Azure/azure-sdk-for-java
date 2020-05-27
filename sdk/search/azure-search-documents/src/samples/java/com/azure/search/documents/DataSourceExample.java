@@ -6,12 +6,12 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.DataChangeDetectionPolicy;
-import com.azure.search.documents.models.DataContainer;
-import com.azure.search.documents.models.DataSource;
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,10 +54,11 @@ public class DataSourceExample {
         /*
          * Get all existing data sources; list should include the ones we just created.
          * */
-        PagedIterable<DataSource> dataSources = client.listDataSources();
-        for (DataSource dataSource : dataSources) {
+        PagedIterable<SearchIndexerDataSource> dataSources = client.listDataSources();
+        for (SearchIndexerDataSource dataSource : dataSources) {
             if (names.contains(dataSource.getName())) {
-                System.out.println(String.format("Found data source %s of type %s", dataSource.getName(), dataSource.getType().toString()));
+                System.out.println(String.format("Found data source %s of type %s", dataSource.getName(),
+                    dataSource.getType().toString()));
             }
         }
 
@@ -77,11 +78,10 @@ public class DataSourceExample {
         }
     }
 
-    private static DataSource createSampleDatasource(DataSourceType type,
-                                                     String connectionString,
-                                                     DataContainer container,
-                                                     DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        return new DataSource()
+    private static SearchIndexerDataSource createSampleDatasource(SearchIndexerDataSourceType type,
+        String connectionString, SearchIndexerDataContainer container,
+        DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+        return new SearchIndexerDataSource()
             .setName(generateDataSourceName())
             .setType(type)
             .setCredentials(new DataSourceCredentials()
@@ -92,12 +92,13 @@ public class DataSourceExample {
 
     private static String createDataSource(
         SearchServiceClient client,
-        DataSourceType type,
+        SearchIndexerDataSourceType type,
         String connectionString,
-        DataContainer container,
+        SearchIndexerDataContainer container,
         DataChangeDetectionPolicy dataChangeDetectionPolicy) {
 
-        DataSource dataSource = createSampleDatasource(type, connectionString, container, dataChangeDetectionPolicy);
+        SearchIndexerDataSource dataSource = createSampleDatasource(type, connectionString, container,
+            dataChangeDetectionPolicy);
         try {
             client.createOrUpdateDataSource(dataSource);
         } catch (Exception ex) {
@@ -109,9 +110,9 @@ public class DataSourceExample {
     private static String createTableStorageDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURE_TABLE,
+            SearchIndexerDataSourceType.AZURE_TABLE,
             TABLE_STORAGE_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testtable") // Replace your table name here
                 .setQuery("PartitionKey eq 'test'"), // Add your query here or remove this if you don't need one
             null
@@ -121,9 +122,9 @@ public class DataSourceExample {
     private static String createCosmosDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.COSMOS,
+            SearchIndexerDataSourceType.COSMOS_DB,
             COSMOS_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testcollection") // Replace your collection name here
                 .setQuery(null), // Add your query here or remove this if you don't need one
             new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts")
@@ -133,9 +134,9 @@ public class DataSourceExample {
     private static String createBlobDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURE_BLOB,
+            SearchIndexerDataSourceType.AZURE_BLOB,
             BLOB_STORAGE_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testcontainer") // Replace your container name here
                 .setQuery("testfolder"), // Add your folder here or remove this if you want to index all folders within the container
             null
@@ -145,9 +146,9 @@ public class DataSourceExample {
     private static String createSqlDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURE_SQL,
+            SearchIndexerDataSourceType.AZURE_SQL,
             SQL_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testtable"),  // Replace your table or view name here
             null); // Or new SqlIntegratedChangeTrackingPolicy() if your database has change tracking enabled
     }

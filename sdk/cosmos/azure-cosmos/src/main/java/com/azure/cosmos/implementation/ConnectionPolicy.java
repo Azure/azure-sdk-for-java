@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
+ * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
  */
 public final class ConnectionPolicy {
 

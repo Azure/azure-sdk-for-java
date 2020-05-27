@@ -62,7 +62,7 @@ public final class ManageExpressRoute {
                     .withPrimaryPeerAddressPrefix("123.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("123.0.0.4/30")
                     .withVlanId(200)
-                    .withPeerASN(100)
+                    .withPeerAsn(100)
                     .create();
             System.out.println("Created express route circuit peering");
 
@@ -131,7 +131,7 @@ public final class ManageExpressRoute {
         try {
             //=============================================================
             // Authenticate
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

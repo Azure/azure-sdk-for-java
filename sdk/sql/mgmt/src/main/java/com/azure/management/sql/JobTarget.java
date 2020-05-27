@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JobTarget model. */
 @Fluent
 public final class JobTarget {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobTarget.class);
+
     /*
      * Whether the target is included or excluded from the group.
      */
@@ -194,5 +198,17 @@ public final class JobTarget {
     public JobTarget withRefreshCredential(String refreshCredential) {
         this.refreshCredential = refreshCredential;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (type() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property type in model JobTarget"));
+        }
     }
 }

@@ -15,7 +15,6 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
-import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -73,16 +72,6 @@ public final class FormRecognizerAsyncClient {
     FormRecognizerAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
-    }
-
-    /**
-     * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
-     * uses the same request policy pipeline as the {@code FormRecognizerAsyncClient}.
-     *
-     * @return A new {@link FormTrainingAsyncClient} object.
-     */
-    public FormTrainingAsyncClient getFormTrainingAsyncClient() {
-        return new FormTrainingAsyncClient(this.service, this.serviceVersion);
     }
 
     /**

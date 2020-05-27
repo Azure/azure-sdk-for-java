@@ -3,7 +3,7 @@
 package com.azure.management;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.network.ApplicationGateway;
@@ -15,7 +15,7 @@ import com.azure.management.network.ApplicationGatewayOperationalState;
 import com.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.NicIPConfiguration;
+import com.azure.management.network.NicIpConfiguration;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -67,10 +67,10 @@ public class ApplicationGatewayTests extends TestBase {
 
     @Test
     public void testAppGatewayBackendHealthCheck() throws Exception {
-        String testId = azure.applicationGateways().manager().getSdkContext().randomResourceName("", 15);
+        String testId = azure.applicationGateways().manager().sdkContext().randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
-        String password = azure.applicationGateways().manager().getSdkContext().randomResourceName("Abc.123", 12);
+        String password = azure.applicationGateways().manager().sdkContext().randomResourceName("Abc.123", 12);
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
 
@@ -174,7 +174,7 @@ public class ApplicationGatewayTests extends TestBase {
                     Assertions.assertNotNull(backendConfigHealth.backendHttpConfiguration());
                     for (ApplicationGatewayBackendServerHealth serverHealth
                         : backendConfigHealth.serverHealths().values()) {
-                        NicIPConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
+                        NicIpConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
                         if (ipConfig != null) {
                             info
                                 .append("\n\t\t\t\tServer NIC ID: ")
@@ -223,7 +223,7 @@ public class ApplicationGatewayTests extends TestBase {
             Assertions.assertEquals(1, httpConfigHealth2.serverHealths().size());
             ApplicationGatewayBackendServerHealth serverHealth =
                 httpConfigHealth2.serverHealths().values().iterator().next();
-            NicIPConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
+            NicIpConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
             Assertions.assertEquals(nic.primaryIPConfiguration().name(), ipConfig2.name());
         } catch (Exception e) {
             throw e;
@@ -278,7 +278,7 @@ public class ApplicationGatewayTests extends TestBase {
 
     @Test
     public void testApplicationGatewaysInParallel() throws Exception {
-        String rgName = azure.applicationGateways().manager().getSdkContext().randomResourceName("rg", 13);
+        String rgName = azure.applicationGateways().manager().sdkContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> resourceGroup = azure.resourceGroups().define(rgName).withRegion(region);
         List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
@@ -287,7 +287,7 @@ public class ApplicationGatewayTests extends TestBase {
             .add(
                 azure
                     .applicationGateways()
-                    .define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
+                    .define(azure.applicationGateways().manager().sdkContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
@@ -302,7 +302,7 @@ public class ApplicationGatewayTests extends TestBase {
             .add(
                 azure
                     .applicationGateways()
-                    .define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
+                    .define(azure.applicationGateways().manager().sdkContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
@@ -340,7 +340,7 @@ public class ApplicationGatewayTests extends TestBase {
             try {
                 ApplicationGateway ag = azure.applicationGateways().getById(id);
                 Assertions.assertNull(ag);
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
                 Assertions.assertEquals(404, e.getResponse().getStatusCode());
             }
         }

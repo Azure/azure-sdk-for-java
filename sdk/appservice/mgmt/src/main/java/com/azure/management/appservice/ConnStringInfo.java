@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnStringInfo model. */
 @Fluent
 public final class ConnStringInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnStringInfo.class);
+
     /*
      * Name of connection string.
      */
@@ -86,5 +90,13 @@ public final class ConnStringInfo {
     public ConnStringInfo withType(ConnectionStringType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

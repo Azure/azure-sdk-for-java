@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CustomDomain model. */
 @Fluent
 public final class CustomDomain {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomain.class);
+
     /*
      * Gets or sets the custom domain name assigned to the storage account.
      * Name is the CNAME source.
@@ -66,5 +70,18 @@ public final class CustomDomain {
     public CustomDomain withUseSubDomainName(Boolean useSubDomainName) {
         this.useSubDomainName = useSubDomainName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model CustomDomain"));
+        }
     }
 }

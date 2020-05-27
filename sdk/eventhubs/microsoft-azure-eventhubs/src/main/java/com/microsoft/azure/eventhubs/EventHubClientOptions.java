@@ -10,10 +10,14 @@ import java.time.Duration;
  * All options default to not specified (null)
  */
 public class EventHubClientOptions {
+    public static final Duration SILENT_OFF = Duration.ofSeconds(0);
+    public static final Duration SILENT_MINIMUM = Duration.ofSeconds(30);
+
     private Duration operationTimeout = null;
     private TransportType transportType = null;
     private RetryPolicy retryPolicy = null;
     private ProxyConfiguration proxyConfiguration = null;
+    private Duration maximumSilentTime = SILENT_OFF;
 
     /**
      * Create with all defaults
@@ -92,6 +96,30 @@ public class EventHubClientOptions {
      * @return Gets the proxy configuration.
      */
     public ProxyConfiguration getProxyConfiguration() {
-        return proxyConfiguration;
+        return this.proxyConfiguration;
+    }
+
+    /**
+     * Sets the maximum silent time, in seconds.
+     * Use only on recommendation from the product group.
+     * 
+     * @param maximumSilentTime The time, or SILENT_OFF. Time must be at least SILENT_MINIMUM.
+     * @return The updated options object.
+     */
+    public EventHubClientOptions setMaximumSilentTime(Duration maximumSilentTime) {
+        if (maximumSilentTime.compareTo(EventHubClientOptions.SILENT_MINIMUM) < 0) {
+            throw new IllegalArgumentException("Maximum silent time must be at least " + EventHubClientOptions.SILENT_MINIMUM.toMillis() + " milliseconds");
+        }
+        this.maximumSilentTime = maximumSilentTime;
+        return this;
+    }
+
+    /**
+     * Gets the maximum silent time in seconds.
+     * 
+     * @return The maximum silent time, or SILENT_OFF.
+     */
+    public Duration getMaximumSilentTime() {
+        return this.maximumSilentTime;
     }
 }
