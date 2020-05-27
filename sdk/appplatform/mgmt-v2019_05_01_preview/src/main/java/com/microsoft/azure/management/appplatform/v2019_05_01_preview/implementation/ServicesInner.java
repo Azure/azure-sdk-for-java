@@ -75,11 +75,11 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Body ServiceResourceInner resource, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Body ServiceResourceInner resource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Body ServiceResourceInner resource, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Body ServiceResourceInner resource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}", method = "DELETE", hasBody = true)
@@ -91,11 +91,11 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Body ServiceResourceInner resource, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Body ServiceResourceInner resource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Body ServiceResourceInner resource, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Body ServiceResourceInner resource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services listTestKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/listTestKeys")
@@ -115,7 +115,7 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/locations/{location}/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Body NameAvailabilityParameters availabilityParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Body NameAvailabilityParameters availabilityParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/Spring")
@@ -223,72 +223,6 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServiceResourceInner object if successful.
-     */
-    public ServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().last().body();
-    }
-
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, final ServiceCallback<ServiceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
-    }
-
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ServiceResourceInner>, ServiceResourceInner>() {
-            @Override
-            public ServiceResourceInner call(ServiceResponse<ServiceResourceInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<ServiceResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serviceName == null) {
-            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
-        }
-        final ServiceResourceInner resource = null;
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ServiceResourceInner>() { }.getType());
-    }
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param resource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -350,86 +284,12 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
         Validator.validate(resource);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, this.client.apiVersion(), resource, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ServiceResourceInner>() { }.getType());
-    }
-
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServiceResourceInner object if successful.
-     */
-    public ServiceResourceInner beginCreateOrUpdate(String resourceGroupName, String serviceName) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
-    }
-
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServiceResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, final ServiceCallback<ServiceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
-    }
-
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceInner object
-     */
-    public Observable<ServiceResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String serviceName) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ServiceResourceInner>, ServiceResourceInner>() {
-            @Override
-            public ServiceResourceInner call(ServiceResponse<ServiceResourceInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create a new Service or update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceInner object
-     */
-    public Observable<ServiceResponse<ServiceResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serviceName == null) {
-            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
-        }
-        final ServiceResourceInner resource = null;
-        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceResourceInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServiceResourceInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServiceResourceInner> clientResponse = beginCreateOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
     }
 
     /**
@@ -498,8 +358,11 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
         Validator.validate(resource);
-        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, this.client.apiVersion(), resource, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ServiceResourceInner>> call(Response<ResponseBody> response) {
@@ -674,72 +537,6 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServiceResourceInner object if successful.
-     */
-    public ServiceResourceInner update(String resourceGroupName, String serviceName) {
-        return updateWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().last().body();
-    }
-
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServiceResourceInner> updateAsync(String resourceGroupName, String serviceName, final ServiceCallback<ServiceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
-    }
-
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResourceInner> updateAsync(String resourceGroupName, String serviceName) {
-        return updateWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ServiceResourceInner>, ServiceResourceInner>() {
-            @Override
-            public ServiceResourceInner call(ServiceResponse<ServiceResourceInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<ServiceResourceInner>> updateWithServiceResponseAsync(String resourceGroupName, String serviceName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serviceName == null) {
-            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
-        }
-        final ServiceResourceInner resource = null;
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ServiceResourceInner>() { }.getType());
-    }
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param resource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -801,86 +598,12 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
         Validator.validate(resource);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, serviceName, this.client.apiVersion(), resource, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ServiceResourceInner>() { }.getType());
-    }
-
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServiceResourceInner object if successful.
-     */
-    public ServiceResourceInner beginUpdate(String resourceGroupName, String serviceName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().body();
-    }
-
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServiceResourceInner> beginUpdateAsync(String resourceGroupName, String serviceName, final ServiceCallback<ServiceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
-    }
-
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceInner object
-     */
-    public Observable<ServiceResourceInner> beginUpdateAsync(String resourceGroupName, String serviceName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ServiceResourceInner>, ServiceResourceInner>() {
-            @Override
-            public ServiceResourceInner call(ServiceResponse<ServiceResourceInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Operation to update an exiting Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceInner object
-     */
-    public Observable<ServiceResponse<ServiceResourceInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serviceName == null) {
-            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
-        }
-        final ServiceResourceInner resource = null;
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceResourceInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServiceResourceInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServiceResourceInner> clientResponse = beginUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
     }
 
     /**
@@ -949,8 +672,11 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
+        if (resource == null) {
+            throw new IllegalArgumentException("Parameter resource is required and cannot be null.");
+        }
         Validator.validate(resource);
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, resource, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, this.client.apiVersion(), resource, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ServiceResourceInner>> call(Response<ResponseBody> response) {
@@ -1357,17 +1083,17 @@ public class ServicesInner implements InnerSupportsGet<ServiceResourceInner>, In
      * @return the observable to the NameAvailabilityInner object
      */
     public Observable<ServiceResponse<NameAvailabilityInner>> checkNameAvailabilityWithServiceResponseAsync(String location, NameAvailabilityParameters availabilityParameters) {
-        if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
-        }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (availabilityParameters == null) {
             throw new IllegalArgumentException("Parameter availabilityParameters is required and cannot be null.");
         }
         Validator.validate(availabilityParameters);
-        return service.checkNameAvailability(location, this.client.subscriptionId(), availabilityParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.checkNameAvailability(this.client.subscriptionId(), location, this.client.apiVersion(), availabilityParameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NameAvailabilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NameAvailabilityInner>> call(Response<ResponseBody> response) {
