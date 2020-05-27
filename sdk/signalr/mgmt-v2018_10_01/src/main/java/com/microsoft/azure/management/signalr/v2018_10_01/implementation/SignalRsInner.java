@@ -14,8 +14,8 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.signalr.v2018_10_01.ErrorResponseException;
 import com.microsoft.azure.management.signalr.v2018_10_01.KeyType;
 import com.microsoft.azure.management.signalr.v2018_10_01.NameAvailabilityParameters;
 import com.microsoft.azure.management.signalr.v2018_10_01.RegenerateKeyParameters;
@@ -44,8 +44,6 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.LongRunningFinalState;
-import com.microsoft.azure.LongRunningOperationOptions;
 import com.microsoft.azure.LongRunningFinalState;
 import com.microsoft.azure.LongRunningOperationOptions;
 
@@ -150,7 +148,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      *
      * @param location the region
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NameAvailabilityInner object if successful.
      */
@@ -224,7 +222,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param location the region
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NameAvailabilityInner object if successful.
      */
@@ -295,10 +293,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<NameAvailabilityInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NameAvailabilityInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NameAvailabilityInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NameAvailabilityInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NameAvailabilityInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -306,7 +304,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * Handles requests to list all resources in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SignalRResourceInner&gt; object if successful.
      */
@@ -402,10 +400,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<PageImpl<SignalRResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SignalRResourceInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SignalRResourceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -414,7 +412,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SignalRResourceInner&gt; object if successful.
      */
@@ -517,10 +515,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<PageImpl<SignalRResourceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SignalRResourceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SignalRResourceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -530,7 +528,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRKeysInner object if successful.
      */
@@ -603,10 +601,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<SignalRKeysInner> listKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SignalRKeysInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SignalRKeysInner> listKeysDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SignalRKeysInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SignalRKeysInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -616,7 +614,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRKeysInner object if successful.
      */
@@ -688,7 +686,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceName The name of the SignalR resource.
      * @param keyType The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRKeysInner object if successful.
      */
@@ -765,7 +763,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRKeysInner object if successful.
      */
@@ -848,7 +846,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceName The name of the SignalR resource.
      * @param keyType The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRKeysInner object if successful.
      */
@@ -929,10 +927,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<SignalRKeysInner> beginRegenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SignalRKeysInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SignalRKeysInner> beginRegenerateKeyDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SignalRKeysInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<SignalRKeysInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -942,7 +940,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1015,10 +1013,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<SignalRResourceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SignalRResourceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SignalRResourceInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1028,7 +1026,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1098,7 +1096,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceName The name of the SignalR resource.
      * @param parameters Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1171,7 +1169,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1252,7 +1250,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceName The name of the SignalR resource.
      * @param parameters Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1329,11 +1327,12 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<SignalRResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SignalRResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SignalRResourceInner>() { }.getType())
                 .register(201, new TypeToken<SignalRResourceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1343,7 +1342,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String resourceName) {
@@ -1411,7 +1410,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String resourceName) {
@@ -1483,11 +1482,11 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1497,7 +1496,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1567,7 +1566,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceName The name of the SignalR resource.
      * @param parameters Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1640,7 +1639,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1721,7 +1720,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceName The name of the SignalR resource.
      * @param parameters Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SignalRResourceInner object if successful.
      */
@@ -1798,11 +1797,11 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<SignalRResourceInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SignalRResourceInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SignalRResourceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1812,7 +1811,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restart(String resourceGroupName, String resourceName) {
@@ -1880,7 +1879,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the SignalR resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginRestart(String resourceGroupName, String resourceName) {
@@ -1952,11 +1951,11 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1965,7 +1964,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SignalRResourceInner&gt; object if successful.
      */
@@ -2064,10 +2063,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<PageImpl<SignalRResourceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SignalRResourceInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SignalRResourceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2076,7 +2075,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SignalRResourceInner&gt; object if successful.
      */
@@ -2175,10 +2174,10 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             });
     }
 
-    private ServiceResponse<PageImpl<SignalRResourceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SignalRResourceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SignalRResourceInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SignalRResourceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
