@@ -15,7 +15,7 @@ public class SchemaRegistryObject {
     private final String schemaId;
     private final String schemaType;
     private final Function<String, Object> parseMethod;
-    private final byte[] schemaByteArray;
+    private final byte[] schemaBytes;
 
     private Object deserialized;
 
@@ -34,7 +34,7 @@ public class SchemaRegistryObject {
         Function<String, Object> parseMethod) {
         this.schemaId = schemaId;
         this.schemaType = schemaType;
-        this.schemaByteArray = schemaByteArray.clone();
+        this.schemaBytes = schemaByteArray.clone();
         this.deserialized = null;
         this.parseMethod = parseMethod;
     }
@@ -67,12 +67,12 @@ public class SchemaRegistryObject {
         }
 
         if (this.deserialized == null) {
-            logger.verbose(
-                String.format("Deserializing schema, id: %s, schema string %s",
-                    this.schemaId,
-                    new String(this.schemaByteArray, CachedSchemaRegistryClient.SCHEMA_REGISTRY_SERVICE_ENCODING)));
-            this.deserialized = parseMethod.apply(
-                new String(this.schemaByteArray, CachedSchemaRegistryClient.SCHEMA_REGISTRY_SERVICE_ENCODING));
+            String schemaString = new String(
+                this.schemaBytes, CachedSchemaRegistryClient.SCHEMA_REGISTRY_SERVICE_ENCODING);
+
+            logger.verbose("Deserializing schema, id: '{}', schema string '{}'", this.schemaId, schemaString);
+
+            this.deserialized = parseMethod.apply(schemaString);
         }
         return deserialized;
     }

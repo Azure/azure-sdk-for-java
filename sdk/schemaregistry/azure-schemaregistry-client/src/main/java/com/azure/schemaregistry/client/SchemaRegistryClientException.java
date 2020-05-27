@@ -3,10 +3,12 @@
 
 package com.azure.schemaregistry.client;
 
+import com.azure.core.exception.AzureException;
+
 /**
  * Runtime exception to be returned from SchemaRegistryClient implementations.
  */
-public class SchemaRegistryClientException extends RuntimeException {
+public class SchemaRegistryClientException extends AzureException {
     /**
      * @param s error message returned from schema registry client
      */

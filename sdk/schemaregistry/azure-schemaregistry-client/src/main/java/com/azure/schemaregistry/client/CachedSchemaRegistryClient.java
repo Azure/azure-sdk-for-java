@@ -8,10 +8,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.schemaregistry.client.rest.AzureSchemaRegistryRestService;
-import com.azure.schemaregistry.client.rest.AzureSchemaRegistryRestServiceClientBuilder;
-import com.azure.schemaregistry.client.rest.models.GetSchemaByIdResponse;
-import com.azure.schemaregistry.client.rest.models.SchemaId;
+import com.azure.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
+import com.azure.schemaregistry.client.implementation.AzureSchemaRegistryRestServiceClientBuilder;
+import com.azure.schemaregistry.client.implementation.models.GetSchemaByIdResponse;
+import com.azure.schemaregistry.client.implementation.models.SchemaId;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +41,7 @@ import java.util.function.Function;
 @ServiceClient(
     builder = CachedSchemaRegistryClientBuilder.class,
     serviceInterfaces = AzureSchemaRegistryRestService.class)
-public class CachedSchemaRegistryClient implements SchemaRegistryClient {
+public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClient.class);
 
     public static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
@@ -212,9 +212,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
 
     @Override
     public String deleteSchemaVersion(String schemaGroup, String schemaName, int version) {
-        // return this.restService.deleteSchemaVersion(schemaName, version);
-        // remove from cache
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -245,6 +243,7 @@ public class CachedSchemaRegistryClient implements SchemaRegistryClient {
      * Checks if caches should be reinitialized to satisfy initial configuration
      */
     private void resetIfNeeded() {
+        // todo add verbose log
         if (guidCache.size() > this.maxSchemaMapSize) {
             guidCache.clear();
         }

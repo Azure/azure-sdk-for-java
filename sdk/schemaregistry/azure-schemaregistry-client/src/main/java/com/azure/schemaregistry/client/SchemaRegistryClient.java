@@ -24,7 +24,8 @@ public interface SchemaRegistryClient {
      * usable schema object.
      *
      * @param serializationType tag used by schema registry store to identify schema serialization type, e.g. "avro"
-     * @param parseMethod function to parse string into usable schema object
+     * @param parseMethod *idempotent* function to parse string into usable schema object. May be called more than once
+     * per schema
      */
     void loadSchemaParser(String serializationType, Function<String, Object> parseMethod);
 

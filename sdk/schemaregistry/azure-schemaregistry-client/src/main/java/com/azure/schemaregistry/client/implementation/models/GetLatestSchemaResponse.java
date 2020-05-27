@@ -1,25 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.schemaregistry.client.rest.models;
+package com.azure.schemaregistry.client.implementation.models;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the getSchemaById operation. */
-public final class GetSchemaByIdResponse extends ResponseBase<GetSchemaByIdHeaders, String> {
+/** Contains all response data for the getLatestSchema operation. */
+public final class GetLatestSchemaResponse extends ResponseBase<GetLatestSchemaHeaders, String> {
     /**
-     * Creates an instance of GetSchemaByIdResponse.
+     * Creates an instance of GetLatestSchemaResponse.
      *
-     * @param request the request which resulted in this GetSchemaByIdResponse.
+     * @param request the request which resulted in this GetLatestSchemaResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GetSchemaByIdResponse(
-            HttpRequest request, int statusCode, HttpHeaders rawHeaders, String value, GetSchemaByIdHeaders headers) {
+    public GetLatestSchemaResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, String value, GetLatestSchemaHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

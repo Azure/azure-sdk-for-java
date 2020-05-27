@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.schemaregistry.client.rest;
+package com.azure.schemaregistry.client.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -28,16 +28,16 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.schemaregistry.client.rest.models.CreateGroupResponse;
-import com.azure.schemaregistry.client.rest.models.CreateSchemaResponse;
-import com.azure.schemaregistry.client.rest.models.GetIdBySchemaContentResponse;
-import com.azure.schemaregistry.client.rest.models.GetLatestSchemaResponse;
-import com.azure.schemaregistry.client.rest.models.GetSchemaByIdResponse;
-import com.azure.schemaregistry.client.rest.models.GetSchemaVersionResponse;
-import com.azure.schemaregistry.client.rest.models.GetSchemaVersionsResponse;
-import com.azure.schemaregistry.client.rest.models.GetSchemasByGroupResponse;
-import com.azure.schemaregistry.client.rest.models.SchemaGroup;
-import com.azure.schemaregistry.client.rest.models.SchemaId;
+import com.azure.schemaregistry.client.implementation.models.CreateGroupResponse;
+import com.azure.schemaregistry.client.implementation.models.CreateSchemaResponse;
+import com.azure.schemaregistry.client.implementation.models.GetIdBySchemaContentResponse;
+import com.azure.schemaregistry.client.implementation.models.GetLatestSchemaResponse;
+import com.azure.schemaregistry.client.implementation.models.GetSchemaByIdResponse;
+import com.azure.schemaregistry.client.implementation.models.GetSchemaVersionResponse;
+import com.azure.schemaregistry.client.implementation.models.GetSchemaVersionsResponse;
+import com.azure.schemaregistry.client.implementation.models.GetSchemasByGroupResponse;
+import com.azure.schemaregistry.client.implementation.models.SchemaGroup;
+import com.azure.schemaregistry.client.implementation.models.SchemaId;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
