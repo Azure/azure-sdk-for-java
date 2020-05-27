@@ -60,6 +60,6 @@ public class ModelHelper {
             other.getMaxSingleUploadSize() == null ? Integer.valueOf(MAX_APPEND_FILE_BYTES)
                 : other.getMaxSingleUploadSize(),
             // Queues.SMALL_BUFFER_SIZE is the default used by reactor
-            other.getMaxConcurrency() == null ? Queues.SMALL_BUFFER_SIZE : other.getMaxConcurrency());
+            other.getMaxConcurrency() == null ? Integer.valueOf(Queues.SMALL_BUFFER_SIZE) : other.getMaxConcurrency());
     }
 }
