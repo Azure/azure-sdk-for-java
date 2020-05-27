@@ -4,9 +4,11 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.models.FeedOptions;
@@ -15,7 +17,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.implementation.RequestVerb;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
@@ -226,8 +228,12 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                 .createDocument(BridgeInternal.getAltLink(createdCollection), docDefinition, null, false).block();
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(connectionMode);
+            ConnectionPolicy connectionPolicy;
+            if (connectionMode.equals(ConnectionMode.DIRECT)) {
+                connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            } else {
+                connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+            }
 
             //Unauthorized error with invalid token resolver, valid  master key and valid permission feed, making it sure tokenResolver has higher priority than all.
             List<Permission> permissionFeed = new ArrayList<>();
@@ -415,8 +421,12 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
 
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(connectionMode);
+            ConnectionPolicy connectionPolicy;
+            if (connectionMode.equals(ConnectionMode.DIRECT)) {
+                connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            } else {
+                connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+            }
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
@@ -443,8 +453,12 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(connectionMode);
+            ConnectionPolicy connectionPolicy;
+            if (connectionMode.equals(ConnectionMode.DIRECT)) {
+                connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            } else {
+                connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+            }
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
@@ -489,8 +503,12 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
     }
 
     private AsyncDocumentClient buildClient(ConnectionMode connectionMode, PermissionMode permissionMode) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(connectionMode);
+        ConnectionPolicy connectionPolicy;
+        if (connectionMode.equals(ConnectionMode.DIRECT)) {
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        } else {
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+        }
         return new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withConnectionPolicy(connectionPolicy)

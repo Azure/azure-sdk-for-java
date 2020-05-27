@@ -5,20 +5,20 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.Indexer;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.ServiceCounters;
-import com.azure.search.documents.models.ServiceLimits;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
-import com.azure.search.documents.models.SynonymMap;
-import com.azure.search.documents.models.WebApiSkill;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.ServiceCounters;
+import com.azure.search.documents.indexes.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.WebApiSkill;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +76,7 @@ public class RefineSearchCapabilitiesExample {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "Bing entity search API key");
 
-        Skill webApiSkill = new WebApiSkill()
+        SearchIndexerSkill webApiSkill = new WebApiSkill()
             .setUri("https://api.cognitive.microsoft.com/bing/v7.0/entities/")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
             .setHttpHeaders(headers)
@@ -85,7 +85,7 @@ public class RefineSearchCapabilitiesExample {
             .setName("webapi-skill")
             .setDescription("A WebApi skill that can be used as a custom skillset");
 
-        Skillset skillset = new Skillset()
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
             .setName(skillsetName)
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
@@ -93,7 +93,7 @@ public class RefineSearchCapabilitiesExample {
         client.createOrUpdateSkillset(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
 
-        Indexer indexer = client.getIndexer(INDEXER_NAME).setSkillsetName(skillsetName);
+        SearchIndexer indexer = client.getIndexer(INDEXER_NAME).setSkillsetName(skillsetName);
         client.createOrUpdateIndexer(indexer);
         System.out.printf("Updated Indexer %s with  Skillset %s%n", INDEXER_NAME, skillsetName);
     }
@@ -129,8 +129,8 @@ public class RefineSearchCapabilitiesExample {
 
         client.createOrUpdateSynonymMap(synonymMap);
 
-        Index index = client.getIndex(INDEX_NAME);
-        List<Field> fields = index.getFields();
+        SearchIndex index = client.getIndex(INDEX_NAME);
+        List<SearchField> fields = index.getFields();
         fields.get(1).setSynonymMaps(Collections.singletonList(synonymMapName));
         index.setFields(fields);
 

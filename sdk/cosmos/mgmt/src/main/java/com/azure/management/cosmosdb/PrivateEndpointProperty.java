@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateEndpointProperty model. */
 @Fluent
 public final class PrivateEndpointProperty {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointProperty.class);
+
     /*
      * Resource id of the private endpoint.
      */
@@ -34,5 +38,13 @@ public final class PrivateEndpointProperty {
     public PrivateEndpointProperty withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

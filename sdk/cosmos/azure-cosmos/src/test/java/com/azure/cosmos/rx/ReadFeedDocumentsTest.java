@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -40,7 +40,8 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
-        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPagesIsGreaterThanOrEqualTo(1)
@@ -59,7 +60,8 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
-        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator =
             new FeedResponseListValidator.Builder<CosmosItemProperties>()
                                                         .totalSize(createdDocuments.size())

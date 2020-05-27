@@ -17,13 +17,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.monitor.ErrorResponseException;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricAlertsStatus. */
 public final class MetricAlertsStatusInner {
+    private final ClientLogger logger = new ClientLogger(MetricAlertsStatusInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final MetricAlertsStatusService service;
 
@@ -53,7 +56,7 @@ public final class MetricAlertsStatusInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}/status")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<MetricAlertStatusCollectionInner>> list(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -67,7 +70,7 @@ public final class MetricAlertsStatusInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}/status/{statusName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<MetricAlertStatusCollectionInner>> listByName(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -84,13 +87,30 @@ public final class MetricAlertsStatusInner {
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of alert rule resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<MetricAlertStatusCollectionInner>> listWithResponseAsync(
         String resourceGroupName, String ruleName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
         final String apiVersion = "2018-03-01";
         return FluxUtil
             .withContext(
@@ -111,8 +131,50 @@ public final class MetricAlertsStatusInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of alert rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<MetricAlertStatusCollectionInner>> listWithResponseAsync(
+        String resourceGroupName, String ruleName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-03-01";
+        return service
+            .list(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                ruleName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Retrieve an alert rule status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of alert rule resources.
      */
@@ -135,7 +197,7 @@ public final class MetricAlertsStatusInner {
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of alert rule resources.
      */
@@ -151,13 +213,33 @@ public final class MetricAlertsStatusInner {
      * @param ruleName The name of the rule.
      * @param statusName The name of the status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of alert rule resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<MetricAlertStatusCollectionInner>> listByNameWithResponseAsync(
         String resourceGroupName, String ruleName, String statusName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
+        if (statusName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter statusName is required and cannot be null."));
+        }
         final String apiVersion = "2018-03-01";
         return FluxUtil
             .withContext(
@@ -180,8 +262,55 @@ public final class MetricAlertsStatusInner {
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
      * @param statusName The name of the status.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of alert rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<MetricAlertStatusCollectionInner>> listByNameWithResponseAsync(
+        String resourceGroupName, String ruleName, String statusName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
+        if (statusName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter statusName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-03-01";
+        return service
+            .listByName(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                ruleName,
+                statusName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Retrieve an alert rule status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param statusName The name of the status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of alert rule resources.
      */
@@ -206,7 +335,7 @@ public final class MetricAlertsStatusInner {
      * @param ruleName The name of the rule.
      * @param statusName The name of the status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of alert rule resources.
      */

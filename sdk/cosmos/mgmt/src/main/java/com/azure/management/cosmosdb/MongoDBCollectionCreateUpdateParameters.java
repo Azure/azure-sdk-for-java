@@ -6,13 +6,17 @@ package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The MongoDBCollectionCreateUpdateParameters model. */
 @JsonFlatten
 @Fluent
-public class MongoDBCollectionCreateUpdateParameters extends ARMResourceProperties {
+public class MongoDBCollectionCreateUpdateParameters extends ArmResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBCollectionCreateUpdateParameters.class);
+
     /*
      * The standard JSON format of a MongoDB collection
      */
@@ -66,5 +70,29 @@ public class MongoDBCollectionCreateUpdateParameters extends ARMResourceProperti
     public MongoDBCollectionCreateUpdateParameters withOptions(Map<String, String> options) {
         this.options = options;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (resource() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model MongoDBCollectionCreateUpdateParameters"));
+        } else {
+            resource().validate();
+        }
+        if (options() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property options in model MongoDBCollectionCreateUpdateParameters"));
+        }
     }
 }

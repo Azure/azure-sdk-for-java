@@ -5,12 +5,19 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The GroupCreateParameters model. */
 @Fluent
 public final class GroupCreateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupCreateParameters.class);
+
     /*
      * Group display name
      */
@@ -40,8 +47,7 @@ public final class GroupCreateParameters {
     /*
      * Request parameters for creating a new group.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /** Creates an instance of GroupCreateParameters class. */
     public GroupCreateParameters() {
@@ -138,6 +144,7 @@ public final class GroupCreateParameters {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -151,5 +158,33 @@ public final class GroupCreateParameters {
     public GroupCreateParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (displayName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property displayName in model GroupCreateParameters"));
+        }
+        if (mailNickname() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property mailNickname in model GroupCreateParameters"));
+        }
     }
 }

@@ -49,11 +49,6 @@ class P2SVpnGatewayImpl extends GroupableResourceCoreImpl<P2SVpnGateway, P2SVpnG
 
 
     @Override
-    public List<String> customDnsServers() {
-        return this.inner().customDnsServers();
-    }
-
-    @Override
     public String etag() {
         return this.inner().etag();
     }
@@ -86,12 +81,6 @@ class P2SVpnGatewayImpl extends GroupableResourceCoreImpl<P2SVpnGateway, P2SVpnG
     @Override
     public SubResource vpnServerConfiguration() {
         return this.inner().vpnServerConfiguration();
-    }
-
-    @Override
-    public P2SVpnGatewayImpl withCustomDnsServers(List<String> customDnsServers) {
-        this.inner().withCustomDnsServers(customDnsServers);
-        return this;
     }
 
     @Override

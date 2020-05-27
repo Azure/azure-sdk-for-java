@@ -8,19 +8,21 @@ import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.azure.search.documents.SearchTestBase.HOTELS_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class AutocompleteSyncTests extends SearchIndexClientTestBase {
+public class AutocompleteSyncTests extends SearchTestBase {
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
     private SearchIndexClient client;
@@ -29,9 +31,13 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(createHotelIndex()).buildClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
+    }
+
+    @Override
+    protected void afterTest() {
+        getSearchServiceClientBuilder().buildClient().deleteIndex(client.getIndexName());
     }
 
     @Test
@@ -43,7 +49,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
 
         assertHttpResponseException(
             () -> results.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
     }
 
@@ -58,7 +64,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
     @Test
     public void canAutocompleteOneTermWithContext() {
         List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
-        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
+        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite",
+            "looking for very popular");
 
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
@@ -133,7 +140,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very po", "");
         assertHttpResponseException(
             () -> results.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions"
         );
     }

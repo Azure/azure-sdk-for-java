@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SyncGroupSchemaTable model. */
 @Fluent
 public final class SyncGroupSchemaTable {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupSchemaTable.class);
+
     /*
      * List of columns in sync group schema.
      */
@@ -61,5 +65,16 @@ public final class SyncGroupSchemaTable {
     public SyncGroupSchemaTable withQuotedName(String quotedName) {
         this.quotedName = quotedName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (columns() != null) {
+            columns().forEach(e -> e.validate());
+        }
     }
 }

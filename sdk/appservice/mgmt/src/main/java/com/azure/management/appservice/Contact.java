@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Contact model. */
 @Fluent
 public final class Contact {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Contact.class);
+
     /*
      * Mailing address.
      */
@@ -242,5 +246,34 @@ public final class Contact {
     public Contact withPhone(String phone) {
         this.phone = phone;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (addressMailing() != null) {
+            addressMailing().validate();
+        }
+        if (email() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property email in model Contact"));
+        }
+        if (nameFirst() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property nameFirst in model Contact"));
+        }
+        if (nameLast() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property nameLast in model Contact"));
+        }
+        if (phone() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property phone in model Contact"));
+        }
     }
 }

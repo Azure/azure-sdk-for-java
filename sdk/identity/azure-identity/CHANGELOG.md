@@ -1,5 +1,7 @@
 # Release History
 
+## 1.1.0-beta.5 (Unreleased)
+
 ## 1.1.0-beta.4 (2020-05-06)
 - Added `IntelliJCredential` support in `DefaultAzureCredential`.
 - Added `VsCodeCredential` support in `DefaultAzureCredential`.

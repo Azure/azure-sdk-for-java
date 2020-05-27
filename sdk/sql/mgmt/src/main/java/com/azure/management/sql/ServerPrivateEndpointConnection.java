@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServerPrivateEndpointConnection model. */
 @Immutable
 public final class ServerPrivateEndpointConnection {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPrivateEndpointConnection.class);
+
     /*
      * Resource ID.
      */
@@ -38,5 +42,16 @@ public final class ServerPrivateEndpointConnection {
      */
     public PrivateEndpointConnectionProperties properties() {
         return this.properties;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

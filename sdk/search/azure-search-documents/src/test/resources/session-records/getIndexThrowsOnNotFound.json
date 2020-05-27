@@ -1,29 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azsjavagetindexthrowsonnotfounda9382908809e4e1a37.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "87dbcc96-515a-44a5-bb35-86f642180917"
+      "x-ms-client-request-id" : "5b8a34de-c2b3-4cde-b451-46726f8407d3"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "87dbcc96-515a-44a5-bb35-86f642180917",
+      "request-id" : "5b8a34de-c2b3-4cde-b451-46726f8407d3",
       "StatusCode" : "404",
-      "Date" : "Tue, 21 Apr 2020 18:57:14 GMT",
+      "Date" : "Mon, 11 May 2020 20:46:34 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "87dbcc96-515a-44a5-bb35-86f642180917",
-      "elapsed-time" : "28",
+      "client-request-id" : "5b8a34de-c2b3-4cde-b451-46726f8407d3",
+      "elapsed-time" : "22",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "158",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'azsjavagetindexthrowsonnotfounda9382908809e4e1a37'.\"}}",
+      "Content-Length" : "124",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavagetindexthrowsonnotfounda9382908809e4e1a37" ]
+  "variables" : [ ]
 }

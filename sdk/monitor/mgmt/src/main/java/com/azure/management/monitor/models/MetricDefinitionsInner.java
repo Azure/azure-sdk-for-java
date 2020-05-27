@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.monitor.ErrorResponseException;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricDefinitions. */
 public final class MetricDefinitionsInner {
+    private final ClientLogger logger = new ClientLogger(MetricDefinitionsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final MetricDefinitionsService service;
 
@@ -55,7 +58,7 @@ public final class MetricDefinitionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{resourceUri}/providers/microsoft.insights/metricDefinitions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<MetricDefinitionCollectionInner>> list(
             @HostParam("$host") String host,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
@@ -70,12 +73,19 @@ public final class MetricDefinitionsInner {
      * @param resourceUri The identifier of the resource.
      * @param metricnamespace Metric namespace to query metric definitions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricDefinitionInner>> listSinglePageAsync(String resourceUri, String metricnamespace) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
         final String apiVersion = "2018-01-01";
         return FluxUtil
             .withContext(
@@ -92,8 +102,38 @@ public final class MetricDefinitionsInner {
      *
      * @param resourceUri The identifier of the resource.
      * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<MetricDefinitionInner>> listSinglePageAsync(
+        String resourceUri, String metricnamespace, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        final String apiVersion = "2018-01-01";
+        return service
+            .list(this.client.getHost(), resourceUri, apiVersion, metricnamespace, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists the metric definitions for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of metric definitions.
      */
@@ -106,8 +146,24 @@ public final class MetricDefinitionsInner {
      * Lists the metric definitions for the resource.
      *
      * @param resourceUri The identifier of the resource.
+     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricDefinitionInner> listAsync(String resourceUri, String metricnamespace, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, metricnamespace, context));
+    }
+
+    /**
+     * Lists the metric definitions for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of metric definitions.
      */
@@ -124,7 +180,7 @@ public final class MetricDefinitionsInner {
      * @param resourceUri The identifier of the resource.
      * @param metricnamespace Metric namespace to query metric definitions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of metric definitions.
      */
@@ -138,7 +194,7 @@ public final class MetricDefinitionsInner {
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of metric definitions.
      */

@@ -9,7 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;

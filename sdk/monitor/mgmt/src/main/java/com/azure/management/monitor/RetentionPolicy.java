@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RetentionPolicy model. */
 @Fluent
 public final class RetentionPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicy.class);
+
     /*
      * a value indicating whether the retention policy is enabled.
      */
@@ -63,5 +67,13 @@ public final class RetentionPolicy {
     public RetentionPolicy withDays(int days) {
         this.days = days;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -77,8 +77,8 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         try {
             container.getScripts().createStoredProcedure(storedProcedureDef);
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 
@@ -166,7 +166,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         container.getScripts().createStoredProcedure(storedProcedureDef);
 
         FeedOptions feedOptions = new FeedOptions();
-        
+
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
                 container.getScripts().readAllStoredProcedures(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();

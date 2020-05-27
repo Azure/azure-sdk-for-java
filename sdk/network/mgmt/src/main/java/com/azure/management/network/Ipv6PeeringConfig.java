@@ -54,7 +54,7 @@ public interface Ipv6PeeringConfig extends HasInner<Ipv6ExpressRouteCircuitPeeri
              * @param customerASN customer ASN
              * @return the next satge of the definition
              */
-            WithRoutingRegistryName<ParentT> withCustomerASN(int customerASN);
+            WithRoutingRegistryName<ParentT> withCustomerAsn(int customerASN);
         }
 
         /**
@@ -198,7 +198,7 @@ public interface Ipv6PeeringConfig extends HasInner<Ipv6ExpressRouteCircuitPeeri
              * @param customerASN customer ASN
              * @return the next stage of the update
              */
-            Update withCustomerASN(int customerASN);
+            Update withCustomerAsn(int customerASN);
         }
 
         /**
@@ -311,7 +311,7 @@ public interface Ipv6PeeringConfig extends HasInner<Ipv6ExpressRouteCircuitPeeri
              * @param customerASN customer ASN
              * @return the next satge of the definition
              */
-            WithRoutingRegistryName<ParentT> withCustomerASN(int customerASN);
+            WithRoutingRegistryName<ParentT> withCustomerAsn(int customerASN);
         }
 
         /**

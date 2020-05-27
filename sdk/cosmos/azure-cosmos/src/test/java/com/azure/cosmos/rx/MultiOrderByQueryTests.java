@@ -9,7 +9,7 @@ import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -190,9 +190,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryDocumentsWithMultiOrder() throws CosmosClientException, InterruptedException {
+    public void queryDocumentsWithMultiOrder() throws InterruptedException {
         FeedOptions feedOptions = new FeedOptions();
-        
+
 
         boolean[] booleanValues = new boolean[] {true, false};
         CosmosContainerProperties containerSettings = documentCollection.read().block().getProperties();
@@ -247,7 +247,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                                 "ORDER BY " + orderByItemStringBuilder.toString();
 
                         List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
-                        
+
                         CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
 
                         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator

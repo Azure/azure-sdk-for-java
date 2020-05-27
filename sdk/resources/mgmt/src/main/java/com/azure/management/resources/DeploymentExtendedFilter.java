@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentExtendedFilter model. */
 @Fluent
 public final class DeploymentExtendedFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentExtendedFilter.class);
+
     /*
      * The provisioning state.
      */
@@ -34,5 +38,13 @@ public final class DeploymentExtendedFilter {
     public DeploymentExtendedFilter withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -7,12 +7,16 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FirewallRule model. */
 @JsonFlatten
 @Fluent
 public class FirewallRuleInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
+
     /*
      * Kind of server that contains this firewall rule.
      */
@@ -24,12 +28,6 @@ public class FirewallRuleInner extends ProxyResource {
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
-
-    /*
-     * Type of resource this is.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /*
      * The start IP address of the firewall rule. Must be IPv4 format. Use
@@ -62,15 +60,6 @@ public class FirewallRuleInner extends ProxyResource {
      */
     public String location() {
         return this.location;
-    }
-
-    /**
-     * Get the type property: Type of resource this is.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
     }
 
     /**
@@ -115,5 +104,13 @@ public class FirewallRuleInner extends ProxyResource {
     public FirewallRuleInner withEndIpAddress(String endIpAddress) {
         this.endIpAddress = endIpAddress;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

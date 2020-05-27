@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentProperties model. */
 @Fluent
 public class DeploymentProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentProperties.class);
+
     /*
      * The template content. You use this element when you want to pass the
      * template syntax directly in the request rather than link to an existing
@@ -228,5 +232,30 @@ public class DeploymentProperties {
     public DeploymentProperties withOnErrorDeployment(OnErrorDeployment onErrorDeployment) {
         this.onErrorDeployment = onErrorDeployment;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (templateLink() != null) {
+            templateLink().validate();
+        }
+        if (parametersLink() != null) {
+            parametersLink().validate();
+        }
+        if (mode() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property mode in model DeploymentProperties"));
+        }
+        if (debugSetting() != null) {
+            debugSetting().validate();
+        }
+        if (onErrorDeployment() != null) {
+            onErrorDeployment().validate();
+        }
     }
 }

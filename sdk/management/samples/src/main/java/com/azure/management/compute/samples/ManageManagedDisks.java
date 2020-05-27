@@ -24,7 +24,7 @@ import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.SSHShell;
@@ -359,7 +359,7 @@ public final class ManageManagedDisks {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();
@@ -500,7 +500,7 @@ public final class ManageManagedDisks {
         final String natPool60XXto23 = "natPool60XXto23";
         final String publicIpName = "pip-" + loadBalancerName1;
 
-        PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIpName)
+        PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIpName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withLeafDomainLabel(publicIpName)
@@ -539,7 +539,7 @@ public final class ManageManagedDisks {
                     .attach()
                 // Explicitly define a frontend
                 .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
+                    .withExistingPublicIpAddress(publicIPAddress)
                     .attach()
                 // Add two probes one per rule
                 .defineHttpProbe(httpProbe)

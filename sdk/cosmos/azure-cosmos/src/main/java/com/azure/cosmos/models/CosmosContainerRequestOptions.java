@@ -6,34 +6,15 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**
- * Encapsulates options that can be specified for a request issued to cosmos container.
+ * Encapsulates options that can be specified for a request issued to Cosmos container.
  */
 public final class CosmosContainerRequestOptions {
-    private Integer offerThroughput;
     private boolean populateQuotaInfo;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
-    private AccessCondition accessCondition;
-
-    /**
-     * Gets the throughput in the form of Request Units per second when creating a cosmos container.
-     *
-     * @return the throughput value.
-     */
-    Integer getOfferThroughput() {
-        return offerThroughput;
-    }
-
-    /**
-     * Sets the throughput in the form of Request Units per second when creating a cosmos container.
-     *
-     * @param offerThroughput the throughput value.
-     * @return the current request options
-     */
-    CosmosContainerRequestOptions setOfferThroughput(Integer offerThroughput) {
-        this.offerThroughput = offerThroughput;
-        return this;
-    }
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
+    private ThroughputProperties throughputProperties;
 
     /**
      * Gets the PopulateQuotaInfo setting for cosmos container read requests in the Azure Cosmos DB database service.
@@ -64,7 +45,7 @@ public final class CosmosContainerRequestOptions {
      *
      * @return the consistency level.
      */
-    public ConsistencyLevel getConsistencyLevel() {
+    ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -74,7 +55,7 @@ public final class CosmosContainerRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }
@@ -100,32 +81,58 @@ public final class CosmosContainerRequestOptions {
     }
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return the ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosContainerRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
+        return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
+     * @return the current request options
+     */
+    public CosmosContainerRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
+        return this;
+    }
+
+    CosmosContainerRequestOptions setThroughputProperties(ThroughputProperties throughputProperties) {
+        this.throughputProperties = throughputProperties;
         return this;
     }
 
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(accessCondition);
-        options.setOfferThroughput(offerThroughput);
+        options.setIfMatchETag(getIfMatchETag());
+        options.setIfNoneMatchETag(getIfNoneMatchETag());
         options.setPopulateQuotaInfo(populateQuotaInfo);
         options.setSessionToken(sessionToken);
         options.setConsistencyLevel(consistencyLevel);
+        options.setThroughputProperties(this.throughputProperties);
         return options;
     }
 }

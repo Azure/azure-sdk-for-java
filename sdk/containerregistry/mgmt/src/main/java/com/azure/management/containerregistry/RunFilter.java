@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The RunFilter model. */
 @Fluent
 public final class RunFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunFilter.class);
+
     /*
      * The unique identifier for the run.
      */
@@ -221,5 +225,13 @@ public final class RunFilter {
     public RunFilter withTaskName(String taskName) {
         this.taskName = taskName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

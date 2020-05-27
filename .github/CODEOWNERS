@@ -28,6 +28,7 @@
 
 # end to end tests
 /sdk/e2e/                                           @jianghaolu @g2vinay
+/common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
 /sdk/management/                                    @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft

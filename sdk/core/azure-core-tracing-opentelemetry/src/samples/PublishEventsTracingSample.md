@@ -20,15 +20,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
 ```xml
+<!-- SDK dependencies   -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
     <version>5.0.2</version>
 </dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
-```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
@@ -39,78 +36,77 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 
 #### Sample demonstrates tracing when publishing multiple events to an eventhub instance using [azure-messaging-eventhubs][azure_messaging_eventhubs] client library.
 ```java
-import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubProducerClient;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.logging.Logger;
+import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.logging.Logger.getLogger;
 
 public class Sample {
-    private static final Logger LOGGER = getLogger("Sample");
-    private static  final Tracer TRACER;
-    private static final TracerSdkProvider TRACER_SDK_PROVIDER;
+    private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
+    private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
-
-    static {
-        TRACER_SDK_PROVIDER = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_PROVIDER.get("Sample");
-    }
 
     public static void main(String[] args) {
         doClientWork();
-        TRACER_SDK_PROVIDER.shutdown();
     }
 
-    private static TracerSdkProvider configureOpenTelemetryAndLoggingExporter() {
-        LoggingExporter exporter = new LoggingExporter();
-        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerFactory();
+    private static Tracer configureOpenTelemetryAndLoggingExporter() {
+        LoggingSpanExporter exporter = new LoggingSpanExporter();
+        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerProvider();
         tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
-
-        return tracerSdkProvider;
+        return tracerSdkProvider.get("Sample");
     }
 
     private static void doClientWork() {
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString("CONNECTION_STRING")
-            .buildAsyncProducerClient();
-        
+                .connectionString(CONNECTION_STRING)
+                .buildAsyncProducerClient();
+
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (final Scope scope = TRACER.withSpan(span)) {
             String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
-            
+
             final byte[] body = "EventData Sample 1".getBytes(UTF_8);
             final byte[] body2 = "EventData Sample 2".getBytes(UTF_8);
 
             // We will publish three events based on simple sentences.
             Flux<EventData> data = Flux.just(
-                new EventData(body).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()),
-                new EventData(body2).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()));
+                    new EventData(body).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()),
+                    new EventData(body2).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()));
 
             // Create a batch to send the events.
             final CreateBatchOptions options = new CreateBatchOptions()
-                .setPartitionId(firstPartition)
-                .setMaximumSizeInBytes(256);
+                    .setPartitionId(firstPartition)
+                    .setMaximumSizeInBytes(256);
 
             final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-                producer.createBatch(options).block(OPERATION_TIMEOUT));
-            
+                    producer.createBatch(options).block(OPERATION_TIMEOUT));
+
             data.flatMap(event -> {
                 final EventDataBatch batch = currentBatch.get();
                 if (batch.tryAdd(event)) {
                     return Mono.empty();
                 }
 
-                // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+                // The batch is full, so we create a new batch and send the batch. Mono.when completes when both
+                // operations
                 // have completed.
                 return Mono.when(
                         producer.send(batch),

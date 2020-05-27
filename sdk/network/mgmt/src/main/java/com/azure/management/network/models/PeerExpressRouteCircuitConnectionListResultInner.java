@@ -5,12 +5,17 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PeerExpressRouteCircuitConnectionListResult model. */
 @Fluent
 public final class PeerExpressRouteCircuitConnectionListResultInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PeerExpressRouteCircuitConnectionListResultInner.class);
+
     /*
      * The global reach peer circuit connection associated with Private Peering
      * in an ExpressRoute Circuit.
@@ -65,5 +70,16 @@ public final class PeerExpressRouteCircuitConnectionListResultInner {
     public PeerExpressRouteCircuitConnectionListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

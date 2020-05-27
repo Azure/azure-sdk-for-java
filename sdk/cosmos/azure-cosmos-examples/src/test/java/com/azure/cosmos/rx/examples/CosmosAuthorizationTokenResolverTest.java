@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.rx.examples;
 
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
@@ -63,7 +64,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_TokenResolverTest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -139,8 +140,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
     public void readDocumentThroughTokenResolver() throws Exception {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
@@ -178,8 +178,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
     public void deleteDocumentThroughTokenResolver() throws Exception {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
@@ -221,8 +220,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
 
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)

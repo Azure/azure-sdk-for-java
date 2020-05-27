@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DebugSetting model. */
 @Fluent
 public final class DebugSetting {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSetting.class);
+
     /*
      * Specifies the type of information to log for debugging. The permitted
      * values are none, requestContent, responseContent, or both requestContent
@@ -48,5 +52,13 @@ public final class DebugSetting {
     public DebugSetting withDetailLevel(String detailLevel) {
         this.detailLevel = detailLevel;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

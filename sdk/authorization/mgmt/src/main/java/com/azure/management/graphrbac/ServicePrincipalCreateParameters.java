@@ -5,11 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServicePrincipalCreateParameters model. */
 @Fluent
 public final class ServicePrincipalCreateParameters extends ServicePrincipalBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalCreateParameters.class);
+
     /*
      * The application ID.
      */
@@ -34,5 +38,21 @@ public final class ServicePrincipalCreateParameters extends ServicePrincipalBase
     public ServicePrincipalCreateParameters withAppId(String appId) {
         this.appId = appId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (appId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property appId in model ServicePrincipalCreateParameters"));
+        }
     }
 }

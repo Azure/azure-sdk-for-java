@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ContainerInfo;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.SiteRuntimeState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -16,6 +18,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebSiteInstanceStatusInner.class);
+
     /*
      * The state property.
      */
@@ -144,5 +148,18 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     public WebSiteInstanceStatusInner withContainers(Map<String, ContainerInfo> containers) {
         this.containers = containers;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (containers() != null) {
+            containers().values().forEach(e -> e.validate());
+        }
     }
 }

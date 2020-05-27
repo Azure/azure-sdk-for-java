@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -35,8 +34,7 @@ import java.util.List;
  * To instantiate you can use the {@link Builder}
  * <pre>
  * {@code
- * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
- * connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+ * ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
  * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
  *         .withServiceEndpoint(serviceEndpoint)
  *         .withMasterKeyOrResourceToken(masterKey)
@@ -54,8 +52,7 @@ public interface AsyncDocumentClient {
      *
      * <pre>
      * {@code
-     * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-     * connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+     * ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
      * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
      *         .withServiceEndpoint(serviceEndpoint)
      *         .withMasterKeyOrResourceToken(masterKey)
@@ -74,7 +71,7 @@ public interface AsyncDocumentClient {
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-        CosmosKeyCredential cosmosKeyCredential;
+        AzureKeyCredential credential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
@@ -151,11 +148,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
-            if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey())) {
+        public Builder withCredential(AzureKeyCredential credential) {
+            if (credential != null && StringUtils.isEmpty(credential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
             }
-            this.cosmosKeyCredential = cosmosKeyCredential;
+            this.credential = credential;
             return this;
         }
 
@@ -186,10 +183,10 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosKeyCredential == null,
+                        && this.credential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed and cosmos key credential");
-            ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
+                        "resource token, permissionFeed and azure key credential");
+            ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
@@ -199,7 +196,7 @@ public interface AsyncDocumentClient {
                 desiredConsistencyLevel,
                 configs,
                 cosmosAuthorizationTokenResolver,
-                cosmosKeyCredential,
+                credential,
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled);
@@ -263,8 +260,8 @@ public interface AsyncDocumentClient {
             this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         }
 
-        public CosmosKeyCredential getCosmosKeyCredential() {
-            return cosmosKeyCredential;
+        public AzureKeyCredential getCredential() {
+            return credential;
         }
     }
 
@@ -402,7 +399,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection, RequestOptions options);
 
     /**
-     * Deletes a document collection by the collection link.
+     * Deletes a document collection
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted database.
@@ -415,7 +412,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink, RequestOptions options);
 
     /**
-     * Reads a document collection by the collection link.
+     * Reads a document collection
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read collection.
@@ -528,7 +525,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
 
     /**
-     * Deletes a document by the document link.
+     * Deletes a document
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted document.
@@ -541,7 +538,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
 
     /**
-     * Reads a document by the document link.
+     * Reads a document
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read document.
@@ -664,7 +661,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure, RequestOptions options);
 
     /**
-     * Deletes a stored procedure by the stored procedure link.
+     * Deletes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored procedure.
@@ -677,7 +674,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink, RequestOptions options);
 
     /**
-     * READ a stored procedure by the stored procedure link.
+     * READ a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored procedure.
@@ -732,7 +729,7 @@ public interface AsyncDocumentClient {
                                                                     FeedOptions options);
 
     /**
-     * Executes a stored procedure by the stored procedure link.
+     * Executes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
@@ -742,10 +739,10 @@ public interface AsyncDocumentClient {
      * @param procedureParams     the array of procedure parameter values.
      * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, Object[] procedureParams);
+    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, List<Object> procedureParams);
 
     /**
-     * Executes a stored procedure by the stored procedure link.
+     * Executes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
@@ -757,7 +754,7 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
     Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
-                                                               Object[] procedureParams);
+                                                               List<Object> procedureParams);
 
     /**
      * Creates a trigger.
@@ -814,7 +811,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options);
 
     /**
-     * Reads a trigger by the trigger link.
+     * Reads a trigger
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.

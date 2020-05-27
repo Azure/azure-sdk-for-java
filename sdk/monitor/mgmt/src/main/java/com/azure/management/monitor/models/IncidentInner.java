@@ -5,12 +5,16 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Incident model. */
 @Immutable
 public final class IncidentInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentInner.class);
+
     /*
      * Incident name.
      */
@@ -86,5 +90,13 @@ public final class IncidentInner {
      */
     public OffsetDateTime resolvedTime() {
         return this.resolvedTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

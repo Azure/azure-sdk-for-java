@@ -5,10 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,16 +54,16 @@ public class SynonymMapsCreateExample {
     }
 
     private static void assignSynonymMapToIndex(String synonymMapName) {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("hotels")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("HotelId")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true),
-                new Field()
+                new SearchField()
                     .setName("HotelName")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setSynonymMaps(Collections.singletonList(synonymMapName))
             ));
     }

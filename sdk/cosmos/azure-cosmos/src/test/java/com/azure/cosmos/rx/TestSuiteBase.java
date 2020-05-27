@@ -2,35 +2,45 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CompositePathSortOrder;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientTest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.TestNGLogListener;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.TestNGLogListener;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.implementation.guava25.base.CaseFormat;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.DataType;
@@ -39,24 +49,16 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.PathParser;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.cosmos.implementation.guava25.base.CaseFormat;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +75,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -108,7 +109,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     private static final ImmutableList<Protocol> protocols;
 
-    protected static final CosmosKeyCredential cosmosKeyCredential;
+    protected static final AzureKeyCredential credential;
 
     protected int subscriberValidationTimeout = TIMEOUT;
 
@@ -157,7 +158,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         objectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
 
-        cosmosKeyCredential = new CosmosKeyCredential(TestConfigurations.MASTER_KEY);
+        credential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
     }
 
     protected TestSuiteBase() {
@@ -335,7 +336,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
-        return database.createContainer(cosmosContainerProperties, throughput, options).block().getContainer();
+        return database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block().getContainer();
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
@@ -468,19 +469,19 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
-    public Flux<CosmosAsyncItemResponse<CosmosItemProperties>> bulkInsert(CosmosAsyncContainer cosmosContainer,
-                                                    List<CosmosItemProperties> documentDefinitionList,
+    public <T> Flux<CosmosAsyncItemResponse<T>> bulkInsert(CosmosAsyncContainer cosmosContainer,
+                                                    List<T> documentDefinitionList,
                                                     int concurrencyLevel) {
-        List<Mono<CosmosAsyncItemResponse<CosmosItemProperties>>> result =
+        List<Mono<CosmosAsyncItemResponse<T>>> result =
             new ArrayList<>(documentDefinitionList.size());
-        for (CosmosItemProperties docDef : documentDefinitionList) {
+        for (T docDef : documentDefinitionList) {
             result.add(cosmosContainer.createItem(docDef));
         }
 
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
-    public List<CosmosItemProperties> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                                         List<CosmosItemProperties> documentDefinitionList) {
+    public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
+                                                         List<T> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
             .map(itemResponse -> itemResponse.getItem())
@@ -536,16 +537,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         partitionKeyDef.setPaths(partitionKeyPath);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
-        indexes.add(numberIndex);
+        IncludedPath includedPath = new IncludedPath("/*");
+        List<Index> indexes = new ArrayList<>();
+        indexes.add(Index.range(DataType.STRING, -1));
+        indexes.add(Index.range(DataType.NUMBER, -1));
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
@@ -596,7 +591,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             try {
                 cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey)).block();
             } catch (Exception e) {
-                CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+                CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
                     throw e;
                 }
@@ -636,7 +631,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         try {
             return client.createDatabase(databaseSettings).getDatabase();
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             e.printStackTrace();
         }
         return null;
@@ -764,7 +759,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @SuppressWarnings("rawtypes")
-    public <T extends Resource, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
+    public <T, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
         throws InterruptedException {
         validateFailure(mono.flux(), validator, subscriberValidationTimeout);
     }
@@ -808,12 +803,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
-    public <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
+    public <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
                                                           FeedResponseListValidator<T> validator) {
         validateQuerySuccess(flowable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
+    public static <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
                                                                  FeedResponseListValidator<T> validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
@@ -825,11 +820,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values());
     }
 
-    public <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> flowable, FailureValidator validator) {
+    public <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable, FailureValidator validator) {
         validateQueryFailure(flowable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
+    public static <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
                                                                  FailureValidator validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
@@ -1058,27 +1053,25 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
-        connectionPolicy.setThrottlingRetryOptions(options);
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .keyCredential(cosmosKeyCredential)
-                                        .connectionPolicy(connectionPolicy)
+                                        .credential(credential)
+                                        .gatewayMode(gatewayConnectionConfig)
+                                        .throttlingRetryOptions(options)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
                                                                        List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        connectionPolicy.setUsingMultipleWriteRegions(multiMasterEnabled);
-        connectionPolicy.setPreferredRegions(preferredRegions);
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .keyCredential(cosmosKeyCredential)
-                                        .connectionPolicy(connectionPolicy)
+                                        .credential(credential)
+                                        .gatewayMode(gatewayConnectionConfig)
+                                        .multipleWriteRegionsEnabled(multiMasterEnabled)
+                                        .preferredRegions(preferredRegions)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(consistencyLevel);
     }
@@ -1092,25 +1085,21 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       boolean multiMasterEnabled,
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
-
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+                                                               .credential(credential)
+                                                               .directMode(DirectConnectionConfig.getDefaultConfig())
+                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                                                               .consistencyLevel(consistencyLevel);
         if (preferredRegions != null) {
-            connectionPolicy.setPreferredRegions(preferredRegions);
+            builder.preferredRegions(preferredRegions);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            connectionPolicy.setUsingMultipleWriteRegions(true);
+            builder.multipleWriteRegionsEnabled(true);
         }
 
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
-
-        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                                               .keyCredential(cosmosKeyCredential)
-                                                               .connectionPolicy(connectionPolicy)
-                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                                               .consistencyLevel(consistencyLevel);
 
         return injectConfigs(builder, configs);
     }

@@ -6,12 +6,16 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineExtensionUpdate model. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineExtensionUpdate extends UpdateResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionUpdate.class);
+
     /*
      * How the extension handler should be forced to update even if the
      * extension configuration has not changed.
@@ -206,5 +210,15 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
     public VirtualMachineExtensionUpdate withProtectedSettings(Object protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

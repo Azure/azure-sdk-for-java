@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerCpuStatistics model. */
 @Fluent
 public final class ContainerCpuStatistics {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerCpuStatistics.class);
+
     /*
      * The cpuUsage property.
      */
@@ -112,5 +116,19 @@ public final class ContainerCpuStatistics {
     public ContainerCpuStatistics withThrottlingData(ContainerThrottlingData throttlingData) {
         this.throttlingData = throttlingData;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (cpuUsage() != null) {
+            cpuUsage().validate();
+        }
+        if (throttlingData() != null) {
+            throttlingData().validate();
+        }
     }
 }

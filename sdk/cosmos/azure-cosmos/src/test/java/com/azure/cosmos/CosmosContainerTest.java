@@ -14,6 +14,7 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -115,8 +116,8 @@ public class CosmosContainerTest extends TestSuiteBase {
         try {
             createdDatabase.createContainer(containerProperties);
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 
@@ -169,7 +170,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         int throughput = 1000;
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(collectionName,
-            partitionKeyPath, throughput);
+            partitionKeyPath, ThroughputProperties.createManualThroughput(throughput));
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 

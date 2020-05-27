@@ -6,7 +6,7 @@ package com.azure.management.compute.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.compute.AvailabilitySet;
@@ -15,7 +15,7 @@ import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -104,7 +104,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
 
                 // Define a PIP for each VM
                 String pipName = azure.sdkContext().randomResourceName("pip", 14);
-                Creatable<PublicIPAddress> pipDefinition = azure.publicIPAddresses().define(pipName)
+                Creatable<PublicIpAddress> pipDefinition = azure.publicIpAddresses().define(pipName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(pipDefinition);
@@ -199,8 +199,8 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             // Show any errors
             for (Throwable error: errors) {
                 System.out.println("ERROR: Creation of virtual machines has been stopped due to a failure to create a resource.\n");
-                if (error instanceof CloudException) {
-                    CloudException ce = (CloudException) error;
+                if (error instanceof ManagementException) {
+                    ManagementException ce = (ManagementException) error;
                     System.out.println("Cloud Exception: " + ce.getMessage());
                 } else {
                     error.printStackTrace();
@@ -251,7 +251,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             final int actualNetworkCount = Utils.getSize(azure.networks().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining virtual networks (should be %d): %d", actualVMCount, actualNetworkCount));
 
-            final int actualPipCount = Utils.getSize(azure.publicIPAddresses().listByResourceGroup(resourceGroupName));
+            final int actualPipCount = Utils.getSize(azure.publicIpAddresses().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining public IP addresses (should be %d): %d", actualVMCount, actualPipCount));
 
             final int actualAvailabilitySetCount = Utils.getSize(azure.availabilitySets().listByResourceGroup(resourceGroupName));
@@ -284,7 +284,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             //=============================================================
             // Authenticate
             //
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

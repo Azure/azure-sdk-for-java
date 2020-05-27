@@ -5,12 +5,12 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OcrSkill;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
-import com.azure.search.documents.models.WebApiSkill;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OcrSkill;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.WebApiSkill;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +58,7 @@ public class CreateSkillsetExample {
                 .setTargetName("myLayoutText")
         );
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
                 .setShouldDetectOrientation(true)
                 .setDefaultLanguageCode(null)
@@ -69,14 +69,14 @@ public class CreateSkillsetExample {
                 .setOutputs(outputs)
         );
 
-        Skillset skillset = new Skillset()
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
             .setName(OCR_SKILLSET_NAME)
             .setDescription("Extracts text (plain and structured) from image.")
             .setSkills(skills);
 
         System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
 
-        Skillset createdSkillset = searchServiceClient.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = searchServiceClient.createSkillset(skillset);
 
         System.out.println("Created OCR skillset");
         System.out.println(String.format("Name: %s", createdSkillset.getName()));
@@ -101,7 +101,7 @@ public class CreateSkillsetExample {
                 .setTargetName("myTextItems")
         );
 
-        Skill webApiSkill = new WebApiSkill()
+        SearchIndexerSkill webApiSkill = new WebApiSkill()
             .setUri("https://example.com")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
             .setHttpHeaders(headers)
@@ -110,14 +110,14 @@ public class CreateSkillsetExample {
             .setName("webapi-skill")
             .setDescription("A WebApiSkill that can be used to call a custom web api function");
 
-        Skillset skillset = new Skillset()
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
             .setName(CUSTOME_SKILLSET_NAME)
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
 
         System.out.println(String.format("Creating custom skillset '%s'", skillset.getName()));
 
-        Skillset createdSkillset = searchServiceClient.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = searchServiceClient.createSkillset(skillset);
 
         System.out.println("Created custom skillset");
         System.out.println(String.format("Name: %s", createdSkillset.getName()));

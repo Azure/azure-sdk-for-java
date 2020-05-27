@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FailoverPolicy model. */
 @Fluent
 public final class FailoverPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverPolicy.class);
+
     /*
      * The unique identifier of the region in which the database account
      * replicates to. Example: &lt;accountName&gt;-&lt;locationName&gt;.
@@ -84,5 +88,13 @@ public final class FailoverPolicy {
     public FailoverPolicy withFailoverPriority(Integer failoverPriority) {
         this.failoverPriority = failoverPriority;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

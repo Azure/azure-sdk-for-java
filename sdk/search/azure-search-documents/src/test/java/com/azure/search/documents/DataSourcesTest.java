@@ -3,11 +3,11 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.DataContainer;
-import com.azure.search.documents.models.DataSource;
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -18,13 +18,13 @@ public class DataSourcesTest {
     @Test
     public void canCreateSqlDataSource() {
         // check utility method with minimal overloads
-        DataSource expected = new DataSource()
+        SearchIndexerDataSource expected = new SearchIndexerDataSource()
             .setName("sql")
-            .setType(DataSourceType.AZURE_SQL)
+            .setType(SearchIndexerDataSourceType.AZURE_SQL)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
-            .setContainer(new DataContainer().setName("table"));
-        DataSource actual = DataSources.createFromAzureSql(
+            .setContainer(new SearchIndexerDataContainer().setName("table"));
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromAzureSql(
             "sql", "connectionString", "table");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
@@ -33,14 +33,14 @@ public class DataSourcesTest {
     @Test
     public void canCreateStorageBlobDataSource() {
         // check utility method with minimal overloads
-        DataSource expected = new DataSource()
+        SearchIndexerDataSource expected = new SearchIndexerDataSource()
             .setName("storageBlob")
-            .setType(DataSourceType.AZURE_BLOB)
+            .setType(SearchIndexerDataSourceType.AZURE_BLOB)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
-            .setContainer(new DataContainer()
+            .setContainer(new SearchIndexerDataContainer()
                 .setName("container"));
-        DataSource actual = DataSources.createFromAzureBlobStorage(
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromAzureBlobStorage(
             "storageBlob", "connectionString", "container");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
@@ -49,14 +49,14 @@ public class DataSourcesTest {
     @Test
     public void canCreateStorageTableDataSource() {
         // check utility method with minimal overloads
-        DataSource expected = new DataSource()
+        SearchIndexerDataSource expected = new SearchIndexerDataSource()
             .setName("storageTable")
-            .setType(DataSourceType.AZURE_TABLE)
+            .setType(SearchIndexerDataSourceType.AZURE_TABLE)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
-            .setContainer(new DataContainer()
+            .setContainer(new SearchIndexerDataContainer()
             .setName("table"));
-        DataSource actual = DataSources.createFromAzureTableStorage(
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromAzureTableStorage(
             "storageTable", "connectionString", "table");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
@@ -65,15 +65,15 @@ public class DataSourcesTest {
     @Test
     public void canCreateCosmosDataSource() {
         // check utility method overloads
-        DataSource expected = new DataSource()
+        SearchIndexerDataSource expected = new SearchIndexerDataSource()
             .setName("cosmos")
-            .setType(DataSourceType.COSMOS)
+            .setType(SearchIndexerDataSourceType.COSMOS_DB)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
-            .setContainer(new DataContainer()
+            .setContainer(new SearchIndexerDataContainer()
                 .setName("collection"));
 
-        DataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
@@ -81,16 +81,17 @@ public class DataSourcesTest {
     @Test
     public void canCreateCosmosDataSourceWithMinimalOverload() {
         // check utility method with minimal overloads
-        DataSource expected = new DataSource()
+        SearchIndexerDataSource expected = new SearchIndexerDataSource()
             .setName("cosmos")
-            .setType(DataSourceType.COSMOS)
+            .setType(SearchIndexerDataSourceType.COSMOS_DB)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
-            .setContainer(new DataContainer()
+            .setContainer(new SearchIndexerDataContainer()
                 .setName("collection"))
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts"));
 
-        DataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection");
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromCosmos("cosmos",
+            "connectionString", "collection");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }

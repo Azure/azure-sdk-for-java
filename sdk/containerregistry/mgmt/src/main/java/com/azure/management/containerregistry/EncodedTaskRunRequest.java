@@ -5,6 +5,8 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonTypeName("EncodedTaskRunRequest")
 @Fluent
 public final class EncodedTaskRunRequest extends RunRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncodedTaskRunRequest.class);
+
     /*
      * Base64 encoded value of the template/definition file content.
      */
@@ -232,5 +236,37 @@ public final class EncodedTaskRunRequest extends RunRequest {
     public EncodedTaskRunRequest withCredentials(Credentials credentials) {
         this.credentials = credentials;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (encodedTaskContent() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property encodedTaskContent in model EncodedTaskRunRequest"));
+        }
+        if (values() != null) {
+            values().forEach(e -> e.validate());
+        }
+        if (platform() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property platform in model EncodedTaskRunRequest"));
+        } else {
+            platform().validate();
+        }
+        if (agentConfiguration() != null) {
+            agentConfiguration().validate();
+        }
+        if (credentials() != null) {
+            credentials().validate();
+        }
     }
 }

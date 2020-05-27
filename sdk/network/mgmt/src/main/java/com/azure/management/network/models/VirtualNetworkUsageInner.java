@@ -5,12 +5,16 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.VirtualNetworkUsageName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualNetworkUsage model. */
 @Immutable
 public final class VirtualNetworkUsageInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageInner.class);
+
     /*
      * Indicates number of IPs used from the Subnet.
      */
@@ -84,5 +88,16 @@ public final class VirtualNetworkUsageInner {
      */
     public String unit() {
         return this.unit;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NetworkSecurityRulesEvaluationResult model. */
 @Fluent
 public final class NetworkSecurityRulesEvaluationResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityRulesEvaluationResult.class);
+
     /*
      * Name of the network security rule.
      */
@@ -164,5 +168,13 @@ public final class NetworkSecurityRulesEvaluationResult {
     public NetworkSecurityRulesEvaluationResult withDestinationPortMatched(Boolean destinationPortMatched) {
         this.destinationPortMatched = destinationPortMatched;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

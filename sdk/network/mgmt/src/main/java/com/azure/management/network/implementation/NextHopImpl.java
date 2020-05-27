@@ -26,14 +26,14 @@ public class NextHopImpl extends ExecutableImpl<NextHop> implements NextHop, Nex
     }
 
     @Override
-    public NextHopImpl withSourceIPAddress(String sourceIPAddress) {
-        this.parameters.withSourceIPAddress(sourceIPAddress);
+    public NextHopImpl withSourceIpAddress(String sourceIpAddress) {
+        this.parameters.withSourceIpAddress(sourceIpAddress);
         return this;
     }
 
     @Override
-    public NextHopImpl withDestinationIPAddress(String destinationIPAddress) {
-        this.parameters.withDestinationIPAddress(destinationIPAddress);
+    public NextHopImpl withDestinationIpAddress(String destinationIpAddress) {
+        this.parameters.withDestinationIpAddress(destinationIpAddress);
         return this;
     }
 
@@ -54,18 +54,18 @@ public class NextHopImpl extends ExecutableImpl<NextHop> implements NextHop, Nex
     }
 
     @Override
-    public String sourceIPAddress() {
-        return parameters.sourceIPAddress();
+    public String sourceIpAddress() {
+        return parameters.sourceIpAddress();
     }
 
     @Override
-    public String destinationIPAddress() {
-        return parameters.destinationIPAddress();
+    public String destinationIpAddress() {
+        return parameters.destinationIpAddress();
     }
 
     @Override
     public String targetNetworkInterfaceId() {
-        return parameters.destinationIPAddress();
+        return parameters.destinationIpAddress();
     }
 
     @Override

@@ -10,10 +10,9 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -25,6 +24,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
@@ -46,29 +45,16 @@ import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFET
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
  */
+@Tag(TestUtils.INTEGRATION)
 public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID_HEADER = "SENT_PARTITION_ID";
-
-    private final String[] expectedPartitionIds = new String[]{"0", "1", "2"};
-
     private static final String MESSAGE_TRACKING_ID = UUID.randomUUID().toString();
 
     private EventHubClientBuilder builder;
-    private EventHubProducerClient producer;
     private List<String> partitionIds;
 
     public EventHubConsumerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubConsumerAsyncClientIntegrationTest.class));
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     @Override
@@ -77,14 +63,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             .shareConnection()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(DEFAULT_PREFETCH_COUNT);
-
-        producer = builder.buildProducerClient();
-        partitionIds = producer.getPartitionIds().stream().collect(Collectors.toList());
-    }
-
-    @Override
-    protected void afterTest() {
-        dispose(producer);
+        partitionIds = EXPECTED_PARTITION_IDS;
     }
 
     /**
@@ -93,21 +72,26 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Test
     public void parallelCreationOfReceivers() {
         // Arrange
-        final int numberOfEvents = 10;
-
+        final Map<String, IntegrationTestEventData> testData = getTestData();
         final CountDownLatch countDownLatch = new CountDownLatch(partitionIds.size());
         final EventHubConsumerAsyncClient[] consumers = new EventHubConsumerAsyncClient[partitionIds.size()];
-        final EventHubProducerClient[] producers = new EventHubProducerClient[partitionIds.size()];
         final Disposable.Composite subscriptions = Disposables.composite();
+
+        // Act
         try {
             for (int i = 0; i < partitionIds.size(); i++) {
                 final String partitionId = partitionIds.get(i);
+                final IntegrationTestEventData matchingTestData = testData.get(partitionId);
+
+                Assertions.assertNotNull(matchingTestData,
+                    "Did not find matching integration test data for partition: " + partitionId);
+
+                final Instant lastEnqueuedTime = matchingTestData.getPartitionProperties().getLastEnqueuedTime();
                 final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
                 consumers[i] = consumer;
-
                 final Disposable subscription = consumer.receiveFromPartition(partitionId,
-                    EventPosition.fromEnqueuedTime(Instant.now()))
-                    .take(numberOfEvents)
+                    EventPosition.fromEnqueuedTime(lastEnqueuedTime))
+                    .take(matchingTestData.getEvents().size())
                     .subscribe(
                         event -> logger.info("Event[{}] received. partition: {}",
                             event.getData().getSequenceNumber(), partitionId),
@@ -118,18 +102,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                         });
 
                 subscriptions.add(subscription);
-
-                producers[i] = builder.buildProducerClient();
-            }
-
-            // Act
-            for (int i = 0; i < partitionIds.size(); i++) {
-                final String partitionId = partitionIds.get(i);
-                final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
-                final EventHubProducerClient producer = producers[i];
-                final List<EventData> events = TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID);
-
-                producer.send(events, sendOptions);
             }
 
             // Assert
@@ -143,7 +115,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
             subscriptions.dispose();
             dispose(consumers);
-            dispose(producers);
         }
     }
 
@@ -154,11 +125,12 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Test
     public void lastEnqueuedInformationIsNotUpdated() {
         // Arrange
-        final String firstPartition = "0";
-        final PartitionProperties properties = producer.getPartitionProperties(firstPartition);
+        final String firstPartition = "4";
+        final EventHubConsumerAsyncClient consumer = builder.prefetchCount(1).buildAsyncConsumerClient();
+        final PartitionProperties properties = consumer.getPartitionProperties(firstPartition).block(TIMEOUT);
+        Assertions.assertNotNull(properties);
 
         final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber());
-        final EventHubConsumerAsyncClient consumer = builder.prefetchCount(1).buildAsyncConsumerClient();
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
@@ -173,10 +145,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         try {
             StepVerifier.create(consumer.receiveFromPartition(firstPartition, position, options)
                 .take(expectedNumber))
-                .assertNext(event -> {
-                    Assertions.assertNull(event.getLastEnqueuedEventProperties(), "'lastEnqueuedEventProperties' "
-                        + "should be null.");
-                })
+                .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties(),
+                    "'lastEnqueuedEventProperties' should be null."))
                 .expectNextCount(expectedNumber - 1)
                 .verifyComplete();
         } finally {
@@ -187,18 +157,17 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
-     * Verify that each time we receive an event, the data,
-     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()},
+     * Verify that each time we receive an event, the data, {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()},
      * null as we are consuming events.
      */
     @Test
     public void lastEnqueuedInformationIsUpdated() {
         // Arrange
-        final String secondPartitionId = "1";
+        final String partitionId = "3";
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
         final Disposable producerEvents = getEvents(isActive)
-            .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
+            .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(partitionId)))
             .subscribe(
                 sent -> {
                 },
@@ -212,7 +181,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             final AtomicReference<LastEnqueuedEventProperties> lastViewed = new AtomicReference<>(
                 new LastEnqueuedEventProperties(null, null, null, null));
 
-            StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, EventPosition.latest(), options).take(10))
+            StepVerifier.create(consumer.receiveFromPartition(partitionId, EventPosition.latest(), options).take(10))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true))
                 .expectNextCount(5)
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
@@ -336,7 +305,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .assertNext(properties -> {
                     Assertions.assertNotNull(properties);
                     Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
-                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -355,7 +324,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         try {
             StepVerifier.create(consumer.getPartitionIds())
-                .expectNextCount(expectedPartitionIds.length)
+                .expectNextCount(NUMBER_OF_PARTITIONS)
                 .verifyComplete();
         } finally {
             dispose(consumer);
@@ -373,7 +342,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Act & Assert
         try {
-            for (String partitionId : expectedPartitionIds) {
+            for (String partitionId : EXPECTED_PARTITION_IDS) {
                 StepVerifier.create(consumer.getPartitionProperties(partitionId))
                     .assertNext(properties -> {
                         Assertions.assertEquals(consumer.getEventHubName(), properties.getEventHubName());
@@ -387,8 +356,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
-     * Verify that each time we receive an event, the data, and
-     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()}
+     * Verify that each time we receive an event, the data, and {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()}
      * as we are consuming events.
      */
     @Test
@@ -590,7 +558,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
-     * Verify that when we specify backpressure, events are no longer fetched after we've reached the subscribed amount.
+     * Verify that when we specify backpressure, events are no longer fetched after we've reached the subscribed
+     * amount.
      */
     @Test
     void canReceiveWithBackpressure() {

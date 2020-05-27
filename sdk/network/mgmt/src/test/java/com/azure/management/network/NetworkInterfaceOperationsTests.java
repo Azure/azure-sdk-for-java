@@ -68,7 +68,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                         .defineSecondaryIPConfiguration("nicip2")
                         .withExistingNetwork(network)
                         .withSubnet("subnet1")
-                        .withPrivateIPAddressDynamic()
+                        .withPrivateIpAddressDynamic()
                         .attach(),
 
                     // 2 - NIC that starts with two IP configs and ends with two
@@ -83,7 +83,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                         .defineSecondaryIPConfiguration("nicip2")
                         .withExistingNetwork(network)
                         .withSubnet("subnet1")
-                        .withPrivateIPAddressDynamic()
+                        .withPrivateIpAddressDynamic()
                         .attach());
 
         // Create the NICs in parallel
@@ -94,7 +94,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             nics[i] = createdNics.get(nicDefinitions.get(i).key());
         }
 
-        NicIPConfiguration primaryIPConfig, secondaryIPConfig;
+        NicIpConfiguration primaryIPConfig, secondaryIPConfig;
         NetworkInterface nic;
 
         // Verify NIC0
@@ -146,7 +146,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                         .defineSecondaryIPConfiguration("nicip2")
                         .withExistingNetwork(network)
                         .withSubnet("subnet1")
-                        .withPrivateIPAddressDynamic()
+                        .withPrivateIpAddressDynamic()
                         .attach()
                         .applyAsync(),
 
@@ -166,7 +166,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                         .defineSecondaryIPConfiguration("nicip3")
                         .withExistingNetwork(network)
                         .withSubnet("subnet1")
-                        .withPrivateIPAddressDynamic()
+                        .withPrivateIpAddressDynamic()
                         .attach()
                         .applyAsync());
 

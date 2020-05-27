@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -11,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -29,12 +29,12 @@ public class SharedTransportClient extends TransportClient {
     private static final AtomicInteger counter = new AtomicInteger(0);
     private static SharedTransportClient sharedTransportClient;
 
-    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
+    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
-                sharedTransportClient = new SharedTransportClient(protocol, configs, requestTimeout, userAgent);
+                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -46,11 +46,11 @@ public class SharedTransportClient extends TransportClient {
 
     private final TransportClient transportClient;
 
-    private SharedTransportClient(Protocol protocol, Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
+    private SharedTransportClient(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
         if (protocol == Protocol.TCP) {
-            this.transportClient = new RntbdTransportClient(configs, requestTimeout, userAgent);
+            this.transportClient = new RntbdTransportClient(configs, connectionPolicy, userAgent);
         } else if (protocol == Protocol.HTTPS){
-            this.transportClient = new HttpTransportClient(configs, requestTimeout, userAgent);
+            this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
         } else {
             throw new IllegalArgumentException(String.format("protocol: %s", protocol));
         }

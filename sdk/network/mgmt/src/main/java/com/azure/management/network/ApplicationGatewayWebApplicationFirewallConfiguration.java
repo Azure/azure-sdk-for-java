@@ -5,12 +5,17 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationGatewayWebApplicationFirewallConfiguration model. */
 @Fluent
 public final class ApplicationGatewayWebApplicationFirewallConfiguration {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayWebApplicationFirewallConfiguration.class);
+
     /*
      * Whether the web application firewall is enabled or not.
      */
@@ -274,5 +279,40 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
         List<ApplicationGatewayFirewallExclusion> exclusions) {
         this.exclusions = exclusions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (firewallMode() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property firewallMode in model"
+                            + " ApplicationGatewayWebApplicationFirewallConfiguration"));
+        }
+        if (ruleSetType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ruleSetType in model"
+                            + " ApplicationGatewayWebApplicationFirewallConfiguration"));
+        }
+        if (ruleSetVersion() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ruleSetVersion in model"
+                            + " ApplicationGatewayWebApplicationFirewallConfiguration"));
+        }
+        if (disabledRuleGroups() != null) {
+            disabledRuleGroups().forEach(e -> e.validate());
+        }
+        if (exclusions() != null) {
+            exclusions().forEach(e -> e.validate());
+        }
     }
 }

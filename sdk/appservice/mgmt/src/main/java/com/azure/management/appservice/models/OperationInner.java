@@ -5,8 +5,10 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ErrorEntity;
 import com.azure.management.appservice.OperationStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.UUID;
 /** The Operation model. */
 @Fluent
 public final class OperationInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
+
     /*
      * Operation ID.
      */
@@ -221,5 +225,16 @@ public final class OperationInner {
     public OperationInner withGeoMasterOperationId(UUID geoMasterOperationId) {
         this.geoMasterOperationId = geoMasterOperationId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (errors() != null) {
+            errors().forEach(e -> e.validate());
+        }
     }
 }

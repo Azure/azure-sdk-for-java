@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
@@ -75,10 +76,10 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
     }
 
     private void createContainerWithoutPk() throws URISyntaxException, IOException {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         HttpClientConfig httpClientConfig = new HttpClientConfig(new Configs())
                 .withMaxIdleConnectionTimeout(connectionPolicy.getIdleConnectionTimeout())
-                .withPoolSize(connectionPolicy.getMaxPoolSize())
+                .withPoolSize(connectionPolicy.getMaxConnectionPoolSize())
                 .withHttpProxy(connectionPolicy.getProxy())
                 .withRequestTimeout(connectionPolicy.getRequestTimeout());
 
@@ -93,7 +94,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         headers.put(HttpConstants.HttpHeaders.VERSION, "2018-09-17");
-        BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new CosmosKeyCredential(TestConfigurations.MASTER_KEY));
+        BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new AzureKeyCredential(TestConfigurations.MASTER_KEY));
         String authorization = base.generateKeyAuthorizationSignature(RequestVerb.POST, resourceId, Paths.COLLECTIONS_PATH_SEGMENT, headers);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, URLEncoder.encode(authorization, "UTF-8"));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
@@ -202,7 +203,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryFlux.byPage(), queryValidator);
 
-        queryFlux = createdContainer.readAllItems(feedOptions, CosmosItemProperties.class);
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", feedOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -237,7 +238,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // 3 previous items + 1 created from the sproc
         expectedIds.add(documentCreatedBySprocId);
-        queryFlux = createdContainer.readAllItems(feedOptions, CosmosItemProperties.class);
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", feedOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(4)
                 .numberOfPages(1)
@@ -275,7 +276,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         this.validateItemSuccess(deleteMono, deleteResponseValidator);
 
-        queryFlux = createdContainer.readAllItems(feedOptions, CosmosItemProperties.class);
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", feedOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(0)
                 .numberOfPages(1)

@@ -5,12 +5,16 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SecurityRuleListResult model. */
 @Fluent
 public final class SecurityRuleListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleListResultInner.class);
+
     /*
      * The security rules in a network security group.
      */
@@ -61,5 +65,16 @@ public final class SecurityRuleListResultInner {
     public SecurityRuleListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

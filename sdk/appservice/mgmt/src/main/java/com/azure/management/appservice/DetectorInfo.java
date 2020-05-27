@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DetectorInfo model. */
 @Immutable
 public final class DetectorInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DetectorInfo.class);
+
     /*
      * Short description of the detector and its purpose
      */
@@ -68,5 +72,13 @@ public final class DetectorInfo {
      */
     public String supportTopicId() {
         return this.supportTopicId;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

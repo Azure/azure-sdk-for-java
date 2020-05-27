@@ -5,12 +5,16 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.ErrorResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceGroupExportResult model. */
 @Fluent
 public final class ResourceGroupExportResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupExportResultInner.class);
+
     /*
      * The template content.
      */
@@ -61,5 +65,16 @@ public final class ResourceGroupExportResultInner {
     public ResourceGroupExportResultInner withError(ErrorResponse error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
     }
 }

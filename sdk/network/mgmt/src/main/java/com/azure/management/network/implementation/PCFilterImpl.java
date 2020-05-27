@@ -27,13 +27,13 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     }
 
     @Override
-    public String localIPAddress() {
-        return this.inner().localIPAddress();
+    public String localIpAddress() {
+        return this.inner().localIpAddress();
     }
 
     @Override
-    public String remoteIPAddress() {
-        return this.inner().remoteIPAddress();
+    public String remoteIpAddress() {
+        return this.inner().remoteIpAddress();
     }
 
     @Override
@@ -53,48 +53,48 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     }
 
     @Override
-    public PCFilterImpl withLocalIPAddress(String ipAddress) {
-        this.inner().withLocalIPAddress(ipAddress);
+    public PCFilterImpl withLocalIpAddress(String ipAddress) {
+        this.inner().withLocalIpAddress(ipAddress);
         return this;
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIPAddressesRange(
-        String startIPAddress, String endIPAddress) {
-        this.inner().withLocalIPAddress(startIPAddress + RANGE_DELIMITER + endIPAddress);
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIpAddressesRange(
+        String startIpAddress, String endIpAddress) {
+        this.inner().withLocalIpAddress(startIpAddress + RANGE_DELIMITER + endIpAddress);
         return this;
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIPAddresses(List<String> ipAddresses) {
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIpAddresses(List<String> ipAddresses) {
         StringBuilder ipAddressesString = new StringBuilder();
         for (String ipAddress : ipAddresses) {
             ipAddressesString.append(ipAddress).append(DELIMITER);
         }
-        this.inner().withLocalIPAddress(ipAddressesString.substring(0, ipAddressesString.length() - 1));
+        this.inner().withLocalIpAddress(ipAddressesString.substring(0, ipAddressesString.length() - 1));
         return this;
     }
 
     @Override
-    public PCFilterImpl withRemoteIPAddress(String ipAddress) {
-        this.inner().withRemoteIPAddress(ipAddress);
+    public PCFilterImpl withRemoteIpAddress(String ipAddress) {
+        this.inner().withRemoteIpAddress(ipAddress);
         return this;
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIPAddressesRange(
-        String startIPAddress, String endIPAddress) {
-        this.inner().withRemoteIPAddress(startIPAddress + RANGE_DELIMITER + endIPAddress);
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIpAddressesRange(
+        String startIpAddress, String endIpAddress) {
+        this.inner().withRemoteIpAddress(startIpAddress + RANGE_DELIMITER + endIpAddress);
         return this;
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIPAddresses(List<String> ipAddresses) {
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIpAddresses(List<String> ipAddresses) {
         StringBuilder ipAddressesString = new StringBuilder();
         for (String ipAddress : ipAddresses) {
             ipAddressesString.append(ipAddress).append(DELIMITER);
         }
-        this.inner().withRemoteIPAddress(ipAddressesString.substring(0, ipAddressesString.length() - 1));
+        this.inner().withRemoteIpAddress(ipAddressesString.substring(0, ipAddressesString.length() - 1));
         return this;
     }
 

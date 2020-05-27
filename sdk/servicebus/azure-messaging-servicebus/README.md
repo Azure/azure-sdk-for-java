@@ -103,7 +103,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -232,6 +232,14 @@ receiver.receive(10).forEach(context -> {
     receiver.complete(message);
 });
 ```
+There are four ways of settling messages:
+  - Complete - causes the message to be deleted from the queue or topic.
+  - Abandon - releases the receiver's lock on the message allowing for the message to be received by other receivers.
+  - Defer - defers the message from being received by normal means. In order to receive deferred messages, the sequence 
+number of the message needs to be retained.
+  - Dead-letter - moves the message to the [dead-letter queue](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues). This will prevent the message from being received again. 
+In order to receive messages from the dead-letter queue, a receiver scoped to the dead-letter queue is needed.
+
 
 ### Send and receive from session enabled queues or topics
 
@@ -242,7 +250,7 @@ Unlike non-session-enabled queues or subscriptions, only a single receiver can r
 receiver fetches a session, Service Bus locks the session for that receiver, and it has exclusive access to messages in
 that session.
 
-#### Send message to a session
+#### Send a message to a session
 
 Create a `ServiceBusSenderClient` for a session enabled queue or topic subscription. Setting `.setSessionId(String)` on
 a `ServiceBusMessage` will publish the message to that session. If the session does not exist, it is created.

@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RollbackStatusInfo model. */
 @Immutable
 public final class RollbackStatusInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RollbackStatusInfo.class);
+
     /*
      * The number of instances which have been successfully rolled back.
      */
@@ -54,5 +58,16 @@ public final class RollbackStatusInfo {
      */
     public ApiError rollbackError() {
         return this.rollbackError;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (rollbackError() != null) {
+            rollbackError().validate();
+        }
     }
 }

@@ -25,7 +25,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
 
         System.out.println("In createResource \n\n\n");
 
@@ -34,13 +34,13 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                 .manager()
                 .resourceManager()
                 .resourceGroups()
-                .define(virtualMachines.manager().getSdkContext().randomResourceName("rg" + vmName, 20))
+                .define(virtualMachines.manager().sdkContext().randomResourceName("rg" + vmName, 20))
                 .withRegion(Region.US_EAST);
 
         Creatable<StorageAccount> storageCreatable =
             this
                 .storageAccounts
-                .define(virtualMachines.manager().getSdkContext().randomResourceName("stg", 20))
+                .define(virtualMachines.manager().sdkContext().randomResourceName("stg", 20))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgCreatable);
 
@@ -55,13 +55,13 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(
-                        virtualMachines.manager().getSdkContext().randomResourceName("pip", 20))
+                        virtualMachines.manager().sdkContext().randomResourceName("pip", 20))
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername("testuser")
                     .withAdminPassword("12NewPA$$w0rd!")
                     .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                     .withNewStorageAccount(storageCreatable)
-                    .withNewAvailabilitySet(virtualMachines.manager().getSdkContext().randomResourceName("avset", 10))
+                    .withNewAvailabilitySet(virtualMachines.manager().sdkContext().randomResourceName("avset", 10))
                     .createAsync()
                     .map(
                         resource -> {

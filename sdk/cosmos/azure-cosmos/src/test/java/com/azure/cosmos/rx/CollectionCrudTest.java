@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -27,6 +28,7 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.models.ThroughputProperties;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -229,7 +231,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncContainerResponse> readObservable = database
                 .getContainer("I don't exist").read();
 
-        FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateFailure(readObservable, validator);
     }
 
@@ -327,13 +332,13 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             CosmosAsyncItemResponse<CosmosItemProperties> readDocumentResponse =
                 collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
+            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
 
             //  DELETE the existing collection
             deleteCollection(client2, dbId, collectionId);
@@ -352,8 +357,8 @@ public class CollectionCrudTest extends TestSuiteBase {
                                                  new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getDuration());
 
             CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
@@ -366,6 +371,30 @@ public class CollectionCrudTest extends TestSuiteBase {
             safeClose(client2);
         }
     }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void replaceProvisionedThroughput(){
+        final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.createDatabase(databaseName)
+                                           .block()
+                                           .getDatabase();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
+        CosmosAsyncContainer container = database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(1000),
+                                                                  new CosmosContainerRequestOptions())
+                                             .block()
+                                             .getContainer();
+        Integer throughput = container.readThroughput().block()
+            .getProperties().getManualThroughput();
+
+        assertThat(throughput).isEqualTo(1000);
+
+        throughput = container.replaceThroughput(ThroughputProperties.createManualThroughput(2000))
+            .block()
+            .getProperties()
+            .getManualThroughput();
+        assertThat(throughput).isEqualTo(2000);
+    }
+
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {

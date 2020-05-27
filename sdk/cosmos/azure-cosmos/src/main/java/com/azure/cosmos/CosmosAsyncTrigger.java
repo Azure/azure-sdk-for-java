@@ -43,7 +43,7 @@ public class CosmosAsyncTrigger {
     }
 
     /**
-     * Reads a cosmos trigger by the trigger link.
+     * Reads a cosmos trigger
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.
@@ -73,7 +73,8 @@ public class CosmosAsyncTrigger {
     public Mono<CosmosAsyncTriggerResponse> replace(CosmosTriggerProperties triggerSettings) {
         return container.getDatabase()
                    .getDocClientWrapper()
-                   .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(triggerSettings)), null)
+                   .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
+                       ModelBridgeInternal.getResource(triggerSettings))), null)
                    .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }

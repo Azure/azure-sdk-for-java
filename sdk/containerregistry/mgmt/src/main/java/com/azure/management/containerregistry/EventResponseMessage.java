@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The EventResponseMessage model. */
 @Fluent
 public final class EventResponseMessage {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventResponseMessage.class);
+
     /*
      * The content of the event response message.
      */
@@ -139,5 +143,13 @@ public final class EventResponseMessage {
     public EventResponseMessage withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

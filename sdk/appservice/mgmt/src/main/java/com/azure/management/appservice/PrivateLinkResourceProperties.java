@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PrivateLinkResourceProperties model. */
 @Immutable
 public final class PrivateLinkResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
+
     /*
      * GroupId of a private link resource
      */
@@ -54,5 +58,13 @@ public final class PrivateLinkResourceProperties {
      */
     public List<String> requiredZoneNames() {
         return this.requiredZoneNames;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

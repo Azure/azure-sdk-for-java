@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Contains a set of input documents to be analyzed by the service.
+ * The MultiLanguageBatchInput model.
  */
 @Fluent
 public final class MultiLanguageBatchInput {
@@ -22,7 +22,7 @@ public final class MultiLanguageBatchInput {
     /**
      * Get the documents property: The set of documents to process as part of
      * this batch.
-     *
+     * 
      * @return the documents value.
      */
     public List<MultiLanguageInput> getDocuments() {
@@ -32,7 +32,7 @@ public final class MultiLanguageBatchInput {
     /**
      * Set the documents property: The set of documents to process as part of
      * this batch.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the MultiLanguageBatchInput object itself.
      */

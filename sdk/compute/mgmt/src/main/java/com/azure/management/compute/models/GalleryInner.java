@@ -7,14 +7,18 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.GalleryIdentifier;
 import com.azure.management.compute.GalleryPropertiesProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Gallery model. */
 @JsonFlatten
 @Fluent
 public class GalleryInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryInner.class);
+
     /*
      * The description of this Shared Image Gallery resource. This property is
      * updatable.
@@ -81,5 +85,16 @@ public class GalleryInner extends Resource {
      */
     public GalleryPropertiesProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identifier() != null) {
+            identifier().validate();
+        }
     }
 }
