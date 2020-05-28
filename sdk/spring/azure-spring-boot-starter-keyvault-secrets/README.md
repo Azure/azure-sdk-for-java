@@ -99,6 +99,33 @@ azure.keyvault.allow.telemetry=false
 When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.    
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
 
+## Multiple Key Vault support
+
+If you want to use multiple key vaults you need to define names for each of the
+key vaults you want to use and in which order the key vaults should be consulted.
+If a property exists in multiple key vaults the order determine which value you
+will get back.
+
+The example below shows a setup for 2 key vaults, named `keyvault1` and
+`keyvault2`. The order specifies that `keyvault1` will be consulted first.
+
+```
+azure.keyvault.order=keyvault1,keyvault2
+azure.keyvault.keyvault1.uri=put-a-azure-keyvault-uri-here
+azure.keyvault.keyvault1.client-id=put-a-azure-client-id-here
+azure.keyvault.keyvault1.client-key=put-a-azure-client-key-here
+azure.keyvault.keyvault1.tenant-id=put-a-azure-tenant-id-here
+azure.keyvault.keyvault2.uri=put-a-azure-keyvault-uri-here
+azure.keyvault.keyvault2.client-id=put-a-azure-client-id-here
+azure.keyvault.keyvault2.client-key=put-a-azure-client-key-here
+azure.keyvault.keyvault2.tenant-id=put-a-azure-tenant-id-here
+```
+
+Note if you decide to use multiple key vault support and you already have an
+existing configuration, please make sure you migrate that configuration to the
+multiple key vault variant. Mixing multiple key vaults with an existing single
+key vault configuration is a non supported scenario.
+
 ## Troubleshooting
 ## Next steps
 ## Contributing
