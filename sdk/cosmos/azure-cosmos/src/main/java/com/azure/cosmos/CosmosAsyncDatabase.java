@@ -200,7 +200,7 @@ public class CosmosAsyncDatabase {
         return getDocClientWrapper()
                    .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
                        ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, this)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /**

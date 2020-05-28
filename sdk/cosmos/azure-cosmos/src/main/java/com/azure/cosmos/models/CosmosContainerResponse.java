@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 @SuppressWarnings("enforcefinalfields")
 public class CosmosContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 
-    CosmosContainerResponse(ResourceResponse<DocumentCollection> response, CosmosAsyncDatabase database) {
+    CosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
         super(response);
         String bodyAsString = response.getBodyAsString();
         if (StringUtils.isEmpty(bodyAsString)) {

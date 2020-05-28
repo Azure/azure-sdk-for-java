@@ -9,7 +9,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -78,8 +78,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 return ModelBridgeInternal.getResource(((CosmosStoredProcedureResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncTriggerResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncTriggerResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncUserDefinedFunctionResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosUserDefinedFunctionResponse) {
+                return ModelBridgeInternal.getResource(((CosmosUserDefinedFunctionResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosUserResponse) {
                 return ModelBridgeInternal.getResource(((CosmosUserResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncPermissionResponse) {
@@ -279,10 +279,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withUserDefinedFunctionBody(String functionBody) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosUserDefinedFunctionResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncUserDefinedFunctionResponse resourceResponse) {
+                public void validate(CosmosUserDefinedFunctionResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getBody()).isEqualTo(functionBody);
                 }
             });
