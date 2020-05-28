@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
@@ -62,7 +62,7 @@ public interface ChangeFeedContextClient {
      * @param options         the {@link CosmosContainerRequestOptions} for this request; it can be set as null.
      * @return an {@link Mono} containing the single cosmos container response with the read container or an error.
      */
-    Mono<CosmosAsyncContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options);
+    Mono<CosmosContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options);
 
     /**
      * Creates a cosmos item.

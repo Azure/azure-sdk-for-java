@@ -6,7 +6,7 @@ import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
@@ -137,7 +137,7 @@ public class SampleChangeFeedProcessor {
     public static CosmosAsyncContainer createNewCollection(CosmosAsyncClient client, String databaseName, String collectionName) {
         CosmosAsyncDatabase databaseLink = client.getDatabase(databaseName);
         CosmosAsyncContainer collectionLink = databaseLink.getContainer(collectionName);
-        CosmosAsyncContainerResponse containerResponse = null;
+        CosmosContainerResponse containerResponse = null;
 
         try {
             containerResponse = collectionLink.read().block();
@@ -167,13 +167,13 @@ public class SampleChangeFeedProcessor {
             throw new RuntimeException(String.format("Failed to create collection %s in database %s.", collectionName, databaseName));
         }
 
-        return containerResponse.getContainer();
+        return databaseLink.getContainer(containerSettings.getId());
     }
 
     public static CosmosAsyncContainer createNewLeaseCollection(CosmosAsyncClient client, String databaseName, String leaseCollectionName) {
         CosmosAsyncDatabase databaseLink = client.getDatabase(databaseName);
         CosmosAsyncContainer leaseCollectionLink = databaseLink.getContainer(leaseCollectionName);
-        CosmosAsyncContainerResponse leaseContainerResponse = null;
+        CosmosContainerResponse leaseContainerResponse = null;
 
         try {
             leaseContainerResponse = leaseCollectionLink.read().block();
@@ -208,7 +208,7 @@ public class SampleChangeFeedProcessor {
             throw new RuntimeException(String.format("Failed to create collection %s in database %s.", leaseCollectionName, databaseName));
         }
 
-        return leaseContainerResponse.getContainer();
+        return databaseLink.getContainer(containerSettings.getId());
     }
 
     public static void createNewDocuments(CosmosAsyncContainer containerClient, int count, Duration delay) {

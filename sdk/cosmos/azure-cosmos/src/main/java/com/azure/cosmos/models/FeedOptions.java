@@ -20,7 +20,7 @@ public final class FeedOptions {
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
-    private boolean populateQueryMetrics;
+    private boolean queryMetricsEnabled;
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
 
@@ -46,7 +46,7 @@ public final class FeedOptions {
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
-        this.populateQueryMetrics = options.populateQueryMetrics;
+        this.queryMetricsEnabled = options.queryMetricsEnabled;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
     }
 
@@ -288,18 +288,18 @@ public final class FeedOptions {
      *
      * @return whether to enable populate query metrics
      */
-    public boolean isPopulateQueryMetrics() {
-        return populateQueryMetrics;
+    public boolean isQueryMetricsEnabled() {
+        return queryMetricsEnabled;
     }
 
     /**
      * Sets the option to enable/disable getting metrics relating to query execution on document query requests
      *
-     * @param populateQueryMetrics whether to enable or disable query metrics
+     * @param queryMetricsEnabled whether to enable or disable query metrics
      * @return the FeedOptionsBase.
      */
-    public FeedOptions setPopulateQueryMetrics(boolean populateQueryMetrics) {
-        this.populateQueryMetrics = populateQueryMetrics;
+    public FeedOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
+        this.queryMetricsEnabled = queryMetricsEnabled;
         return this;
     }
 

@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
@@ -55,22 +55,22 @@ public class CosmosAsyncUser {
      *
      * @return a {@link Mono} containing the single resource response with the read user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> read() {
+    public Mono<CosmosUserResponse> read() {
         return this.database.getDocClientWrapper()
                    .readUser(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
     }
 
     /**
-     * REPLACE a cosmos user
+     * Replace a cosmos user
      *
      * @param userSettings the user properties to use
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> replace(CosmosUserProperties userSettings) {
+    public Mono<CosmosUserResponse> replace(CosmosUserProperties userSettings) {
         return this.database.getDocClientWrapper()
                    .replaceUser(ModelBridgeInternal.getV2User(userSettings), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
     }
 
     /**
@@ -78,10 +78,10 @@ public class CosmosAsyncUser {
      *
      * @return a {@link Mono} containing the single resource response with the deleted user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> delete() {
+    public Mono<CosmosUserResponse> delete() {
         return this.database.getDocClientWrapper()
                    .deleteUser(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
     }
 
     /**
@@ -140,11 +140,25 @@ public class CosmosAsyncUser {
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
+     * error.
+     */
+    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions() {
+        return readAllPermissions(new FeedOptions());
+    }
+
+    /**
+     * Reads all permissions.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
+     *
      * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an 
      * error.
      */
-    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
+    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
@@ -226,7 +240,7 @@ public class CosmosAsyncUser {
      *
      * @return the (@link CosmosAsyncDatabase)
      */
-    public CosmosAsyncDatabase getDatabase() {
+    CosmosAsyncDatabase getDatabase() {
         return database;
     }
 }

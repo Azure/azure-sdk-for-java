@@ -39,7 +39,7 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
 
-    // Async document client wrapper
+    // Async Cosmos client wrapper
     private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
@@ -194,7 +194,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link Mono} containing the cosmos database response with the created or existing database or
      * an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
+    Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
         return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.getId()));
     }
 
@@ -228,6 +228,9 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Create a Database if it does not already exist on the service.
+     * <p>
+     * The throughputProperties will only be used if the specified database
+     * does not exist and therefor a new database will be created with throughputProperties.
      * <p>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
@@ -394,7 +397,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @param options {@link FeedOptions}
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+    CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)

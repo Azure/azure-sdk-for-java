@@ -54,7 +54,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         FeedOptions options = new FeedOptions();
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
                                                                                                 CosmosItemProperties.class);

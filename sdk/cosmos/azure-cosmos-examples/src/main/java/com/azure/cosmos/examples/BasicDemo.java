@@ -5,6 +5,7 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
@@ -98,12 +99,13 @@ public class BasicDemo {
     }
 
     private void createDbAndContainerBlocking() {
+
         client.createDatabaseIfNotExists(DATABASE_NAME)
-            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
+            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + DATABASE_NAME))
             .flatMap(dbResponse -> dbResponse.getDatabase()
-                                       .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
-                                                                                                 "/country")))
-            .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
+                .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
+                    "/country")))
+            .doOnSuccess(cosmosContainerResponse -> log("Container: " + CONTAINER_NAME))
             .doOnError(throwable -> log(throwable.getMessage()))
             .publishOn(Schedulers.elastic())
             .block();
@@ -129,7 +131,7 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.setPopulateQueryMetrics(true);
+        options.setQueryMetricsEnabled(true);
         String continuation = null;
         do {
             CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);

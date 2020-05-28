@@ -51,7 +51,7 @@ public class TopQueryTests extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;

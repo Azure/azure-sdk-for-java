@@ -87,10 +87,11 @@ public class ThroughputTests extends TestSuiteBase{
                                            .getDatabase();
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
-                                                                  new CosmosContainerRequestOptions())
-                                             .block()
-                                             .getContainer();
+        database.createContainer(
+            containerProperties,
+            throughputProperties,
+            new CosmosContainerRequestOptions()).block();
+        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
 
         // Read
         ThroughputResponse readThroughputResponse = container.readThroughput().block();
@@ -117,10 +118,11 @@ public class ThroughputTests extends TestSuiteBase{
         String collectionId = UUID.randomUUID().toString();
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionId, "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
-                                                                  new CosmosContainerRequestOptions())
-                                             .block()
-                                             .getContainer();
+        database.createContainer(
+            containerProperties,
+            throughputProperties,
+            new CosmosContainerRequestOptions()).block();
+        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
 
         // Read
         ThroughputResponse readThroughputResponse = container.readThroughput().block();

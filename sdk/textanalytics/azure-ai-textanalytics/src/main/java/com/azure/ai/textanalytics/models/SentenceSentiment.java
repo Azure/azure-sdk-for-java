@@ -23,9 +23,9 @@ public final class SentenceSentiment {
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      */
-    public SentenceSentiment(String text, String sentiment, SentimentConfidenceScores confidenceScores) {
+    public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores) {
         this.text = text;
-        this.sentiment = TextSentiment.fromString(sentiment);
+        this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
     }
 

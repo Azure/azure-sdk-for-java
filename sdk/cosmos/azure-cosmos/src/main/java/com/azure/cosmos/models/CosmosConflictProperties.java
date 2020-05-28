@@ -46,8 +46,8 @@ public final class CosmosConflictProperties {
      *
      * @return the resource type.
      */
-    public String getResourceType() {
-        return this.conflict.getResouceType();
+    String getResourceType() {
+        return this.conflict.getResourceType();
     }
 
     Resource getResource() {

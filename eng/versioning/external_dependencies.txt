@@ -15,11 +15,14 @@ com.microsoft.azure:azure-arm-client-runtime;1.7.3
 com.microsoft.azure:azure-client-authentication;1.7.3
 com.microsoft.azure:azure-client-runtime;1.7.3
 com.microsoft.azure:azure-core;0.9.8
+com.microsoft.azure:azure-cosmos;3.7.1
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.azure:spotbugs-maven-plugin;1.2.1
+com.microsoft.azure:spring-data-cosmosdb;2.2.3.FIX1
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
+com.microsoft.spring.data.gremlin:spring-data-gremlin;2.2.3
 com.squareup.okhttp3:okhttp;4.2.2
 commons-codec:commons-codec;1.13
 io.micrometer:micrometer-core;1.2.0
