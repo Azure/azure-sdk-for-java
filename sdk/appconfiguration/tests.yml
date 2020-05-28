@@ -5,11 +5,11 @@ jobs:
     parameters:
       Matrix:
         Windows - Java 11 (AzureCloud):
-        OSVmImage: 'windows-2019'
-        JavaVersion: '1.11'
-        DisplayName: 'Windows - Java 11'
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        AZURE_TEST_HTTP_CLIENTS: okhttp
+          OSVmImage: 'windows-2019'
+          JavaVersion: '1.11'
+          DisplayName: 'Windows - Java 11'
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          AZURE_TEST_HTTP_CLIENTS: okhttp
       ServiceDirectory: appconfiguration
       Artifacts:
         - name: azure-data-appconfiguration
