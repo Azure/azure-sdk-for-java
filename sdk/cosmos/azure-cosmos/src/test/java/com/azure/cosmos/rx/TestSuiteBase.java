@@ -35,7 +35,7 @@ import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -187,7 +187,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         @Override
-        public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition) {
+        public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition) {
             return client.createDatabase(databaseDefinition);
         }
 
@@ -559,7 +559,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteCollectionIfExists(CosmosAsyncClient client, String databaseId, String collectionId) {
-        CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
+        CosmosAsyncDatabase database = client.getDatabase(databaseId);
+        database.read().block();
         List<CosmosContainerProperties> res = database.queryContainers(String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null)
             .collectList()
             .block();
@@ -611,7 +612,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteUserIfExists(CosmosAsyncClient client, String databaseId, String userId) {
-        CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
+        CosmosAsyncDatabase database = client.getDatabase(databaseId);
+        client.getDatabase(databaseId).read().block();
         List<CosmosUserProperties> res = database
             .queryUsers(String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
             .collectList().block();
@@ -626,18 +628,21 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     static private CosmosAsyncDatabase safeCreateDatabase(CosmosAsyncClient client, CosmosDatabaseProperties databaseSettings) {
         safeDeleteDatabase(client.getDatabase(databaseSettings.getId()));
-        return client.createDatabase(databaseSettings).block().getDatabase();
+        client.createDatabase(databaseSettings).block();
+        return client.getDatabase(databaseSettings.getId());
     }
 
     static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-        return client.createDatabase(databaseSettings).block().getDatabase();
+        client.createDatabase(databaseSettings).block();
+        return client.getDatabase(databaseSettings.getId());
     }
 
     static protected CosmosDatabase createSyncDatabase(CosmosClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         try {
-            return client.createDatabase(databaseSettings).getDatabase();
+            client.createDatabase(databaseSettings);
+            return client.getDatabase(databaseSettings.getId());
         } catch (CosmosException e) {
             e.printStackTrace();
         }
@@ -649,10 +654,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .collectList()
             .block();
         if (res.size() != 0) {
-            return client.getDatabase(databaseId).read().block().getDatabase();
+            CosmosAsyncDatabase database = client.getDatabase(databaseId);
+            database.read().block();
+            return database;
         } else {
             CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-            return client.createDatabase(databaseSettings).block().getDatabase();
+            client.createDatabase(databaseSettings).block();
+            return client.getDatabase(databaseSettings.getId());
         }
     }
 

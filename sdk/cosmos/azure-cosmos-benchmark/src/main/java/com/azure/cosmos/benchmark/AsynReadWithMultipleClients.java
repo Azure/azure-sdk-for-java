@@ -243,10 +243,12 @@ public class AsynReadWithMultipleClients<T> {
                     CosmosAsyncContainer cosmosAsyncContainer = null;
                     boolean databaseCreated = false;
                     try {
-                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
+                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId());
+                        cosmosAsyncDatabase.read().block();
                     } catch (CosmosException e) {
                         if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                            cosmosAsyncDatabase = asyncClient.createDatabase(this.configuration.getDatabaseId()).block().getDatabase();
+                            asyncClient.createDatabase(this.configuration.getDatabaseId()).block();
+                            cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId());
                             logger.info("Database {} is created for this test on host {}", this.configuration.getDatabaseId(), endpoint);
                             databaseCreated = true;
                             databaseListToClear.add(cosmosAsyncDatabase);

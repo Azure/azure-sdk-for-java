@@ -420,7 +420,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                this.databaseResourceId = databaseResourceResponse.getDatabase().getId();
+                this.databaseResourceId = databaseResourceResponse.getProperties().getId();
                 return this.databaseResourceId;
             })
             .flatMap( id -> this.feedContextClient

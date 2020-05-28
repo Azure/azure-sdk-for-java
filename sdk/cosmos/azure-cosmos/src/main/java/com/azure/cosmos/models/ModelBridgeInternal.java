@@ -7,8 +7,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
@@ -81,9 +79,9 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncDatabaseResponse createCosmosAsyncDatabaseResponse(ResourceResponse<Database> response,
-                                                                                 CosmosAsyncClient client) {
-        return new CosmosAsyncDatabaseResponse(response, client);
+    public static CosmosDatabaseResponse createCosmosDatabaseResponse(ResourceResponse<Database> response,
+                                                                      CosmosAsyncClient client) {
+        return new CosmosDatabaseResponse(response, client);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -142,11 +140,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
         return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabaseResponse createCosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
-        return new CosmosDatabaseResponse(response, client);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

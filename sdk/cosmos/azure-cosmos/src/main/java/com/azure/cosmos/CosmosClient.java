@@ -4,12 +4,10 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -136,11 +134,9 @@ public final class CosmosClient implements Closeable {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughputProperties));
     }
 
-    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) {
+    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosDatabaseResponse> databaseMono) {
         try {
-            return databaseMono
-                       .map(this::convertResponse)
-                       .block();
+            return databaseMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -201,10 +197,6 @@ public final class CosmosClient implements Closeable {
      */
     public CosmosDatabase getDatabase(String id) {
         return new CosmosDatabase(id, this, asyncClientWrapper.getDatabase(id));
-    }
-
-    CosmosDatabaseResponse convertResponse(CosmosAsyncDatabaseResponse response) {
-        return ModelBridgeInternal.createCosmosDatabaseResponse(response, this);
     }
 
     CosmosAsyncClient asyncClient() {

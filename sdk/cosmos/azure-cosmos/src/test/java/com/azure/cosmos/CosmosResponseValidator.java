@@ -5,7 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
@@ -70,8 +70,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         private Resource getResource(T resourceResponse) {
-            if (resourceResponse instanceof CosmosAsyncDatabaseResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncDatabaseResponse)resourceResponse).getProperties());
+            if (resourceResponse instanceof CosmosDatabaseResponse) {
+                return ModelBridgeInternal.getResource(((CosmosDatabaseResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosContainerResponse) {
                 return ModelBridgeInternal.getResource(((CosmosContainerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosStoredProcedureResponse) {
