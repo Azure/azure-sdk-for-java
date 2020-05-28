@@ -36,12 +36,10 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readStoredProcedures() throws Exception {
-
-        FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
-                                                                                           .readAllStoredProcedures(options);
+                                                                                           .readAllStoredProcedures();
 
         int expectedPageSize = (createdStoredProcedures.size() + maxItemCount - 1) / maxItemCount;
 

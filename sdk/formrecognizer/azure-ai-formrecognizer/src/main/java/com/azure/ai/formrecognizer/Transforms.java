@@ -26,7 +26,6 @@ import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ final class Transforms {
      * @param analyzeResult The service returned result for analyze custom forms.
      * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
      *
-     * @return The IterableStream of {@code RecognizedForm}.
+     * @return The List of {@code RecognizedForm}.
      */
     static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeTextDetails) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
@@ -84,8 +83,7 @@ final class Transforms {
                     extractedFieldMap,
                     documentResultItem.getDocType(),
                     pageRange,
-                    new IterableStream<>(formPages.subList(pageRange.getStartPageNumber() - 1,
-                        pageRange.getEndPageNumber()))));
+                    formPages.subList(pageRange.getStartPageNumber() - 1, pageRange.getEndPageNumber())));
             }
         } else {
             extractedFormList = new ArrayList<>();
@@ -103,7 +101,7 @@ final class Transforms {
                     extractedFieldMap,
                     formType.toString(),
                     new PageRange(pageNumber, pageNumber),
-                    new IterableStream<>(Collections.singletonList(formPages.get(index)))));
+                    Collections.singletonList(formPages.get(index))));
             }));
         }
         return extractedFormList;
@@ -115,14 +113,13 @@ final class Transforms {
      * @param analyzeResult The service returned result for analyze receipts.
      * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
      *
-     * @return The IterableStream of {@code RecognizedReceipt}.
+     * @return The List of {@code RecognizedReceipt}.
      */
-    static IterableStream<RecognizedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeTextDetails) {
-        return new IterableStream<>(
-            toRecognizedForm(analyzeResult, includeTextDetails).stream()
-                .map(recognizedForm ->
-                    new RecognizedReceipt("en-US", recognizedForm))
-                .collect(Collectors.toList()));
+    static List<RecognizedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeTextDetails) {
+        return toRecognizedForm(analyzeResult, includeTextDetails)
+            .stream()
+            .map(recognizedForm -> new RecognizedReceipt("en-US", recognizedForm))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -131,7 +128,7 @@ final class Transforms {
      * @param analyzeResult The service returned result for analyze layouts.
      * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
      *
-     * @return The IterableStream of {@code FormPage}.
+     * @return The List of {@code FormPage}.
      */
     static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult, boolean includeTextDetails) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
@@ -173,7 +170,8 @@ final class Transforms {
         return pageResultItem.getTables().stream()
             .map(dataTable ->
                 new FormTable(dataTable.getRows(), dataTable.getColumns(),
-                    new IterableStream<>(dataTable.getCells().stream()
+                    dataTable.getCells()
+                        .stream()
                         .map(dataTableCell -> new FormTableCell(
                             dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
                             dataTableCell.getRowSpan(), dataTableCell.getColumnSpan(),
@@ -182,7 +180,7 @@ final class Transforms {
                             dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
                             dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
                             pageNumber, setReferenceElements(dataTableCell.getElements(), readResults, pageNumber)))
-                        .collect(Collectors.toList()))))
+                        .collect(Collectors.toList())))
             .collect(Collectors.toList());
     }
 
@@ -221,7 +219,7 @@ final class Transforms {
                 if (fieldValue != null) {
                     Integer pageNumber = fieldValue.getPage();
                     FieldText labelText = new FieldText(key, null, pageNumber, null);
-                    IterableStream<FormContent> formContentList = null;
+                    List<FormContent> formContentList = null;
                     if (includeTextDetails) {
                         formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
                     }
@@ -361,8 +359,8 @@ final class Transforms {
             readResultItem.getAngle(),
             DimensionUnit.fromString(readResultItem.getUnit().toString()),
             readResultItem.getWidth(),
-            new IterableStream<FormLine>(perPageLineList),
-            new IterableStream<FormTable>(perPageTableList)
+            perPageLineList,
+            perPageTableList
         );
     }
 
@@ -383,8 +381,8 @@ final class Transforms {
         Map<String, FormField<?>> formFieldMap = new TreeMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
-            IterableStream<FormContent> formKeyContentList = null;
-            IterableStream<FormContent> formValueContentList = null;
+            List<FormContent> formKeyContentList = null;
+            List<FormContent> formValueContentList = null;
             if (includeTextDetails) {
                 formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults, pageNumber);
                 formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults,
@@ -409,10 +407,10 @@ final class Transforms {
      *
      * @return The list if referenced elements.
      */
-    private static IterableStream<FormContent> setReferenceElements(List<String> elements,
+    private static List<FormContent> setReferenceElements(List<String> elements,
         List<ReadResult> readResults, Integer pageNumber) {
         if (CoreUtils.isNullOrEmpty(elements)) {
-            return IterableStream.of(null);
+            return new ArrayList<FormContent>();
         }
         List<FormContent> formContentList = new ArrayList<>();
         elements.forEach(elementString -> {
@@ -441,7 +439,7 @@ final class Transforms {
                 formContentList.add(lineElement);
             }
         });
-        return new IterableStream<>(formContentList);
+        return formContentList;
     }
 
     /**
@@ -452,14 +450,14 @@ final class Transforms {
      *
      * @return The list of {@code FormWord words}.
      */
-    private static IterableStream<FormWord> toWords(List<TextWord> words, Integer pageNumber) {
-        return new IterableStream<>(words.stream()
+    private static List<FormWord> toWords(List<TextWord> words, Integer pageNumber) {
+        return words.stream()
             .map(textWord -> new FormWord(
                 textWord.getText(),
                 toBoundingBox(textWord.getBoundingBox()),
                 pageNumber,
                 setDefaultConfidenceValue(textWord.getConfidence()))
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList());
     }
 
     /**

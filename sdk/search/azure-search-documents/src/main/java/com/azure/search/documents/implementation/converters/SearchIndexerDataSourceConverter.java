@@ -35,8 +35,9 @@ public final class SearchIndexerDataSourceConverter {
                 DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
             searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
-
-        searchIndexerDataSourceConnection.setConnectionString(obj.getCredentials().getConnectionString());
+        if (obj.getCredentials() != null) {
+            searchIndexerDataSourceConnection.setConnectionString(obj.getCredentials().getConnectionString());
+        }
 
         String name = obj.getName();
         searchIndexerDataSourceConnection.setName(name);

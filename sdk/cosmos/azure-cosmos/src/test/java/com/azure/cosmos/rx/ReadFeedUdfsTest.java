@@ -37,12 +37,10 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readUserDefinedFunctions() throws Exception {
-
-        FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
         CosmosPagedFlux<CosmosUserDefinedFunctionProperties> feedObservable = createdCollection.getScripts()
-                                                                                               .readAllUserDefinedFunctions(options);
+                                                                                               .readAllUserDefinedFunctions();
 
         int expectedPageSize = (createdUserDefinedFunctions.size() + maxItemCount - 1)
                 / maxItemCount;

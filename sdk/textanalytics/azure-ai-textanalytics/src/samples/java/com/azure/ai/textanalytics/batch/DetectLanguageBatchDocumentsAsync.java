@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -43,18 +44,22 @@ public class DetectLanguageBatchDocumentsAsync {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Detecting language for each document in a batch of documents
-        client.detectLanguageBatch(documents, requestOptions).byPage().subscribe(
-            pagedResponse -> {
-                System.out.printf("Results of Azure Text Analytics \"Language Detection\" Model, version: %s%n", pagedResponse.getModelVersion());
+        client.detectLanguageBatchWithResponse(documents, requestOptions).subscribe(
+            detectedLanguageResultResponse -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", detectedLanguageResultResponse.getStatusCode());
+                DetectLanguageResultCollection detectedLanguageResultCollection = detectedLanguageResultResponse.getValue();
+
+                System.out.printf("Results of Azure Text Analytics \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());
 
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics();
                 System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Detected language for each document in a batch of documents\
                 AtomicInteger counter = new AtomicInteger();
-                for (DetectLanguageResult detectLanguageResult : pagedResponse.getElements()) {
+                for (DetectLanguageResult detectLanguageResult : detectedLanguageResultCollection) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (detectLanguageResult.isError()) {
                         // Erroneous document

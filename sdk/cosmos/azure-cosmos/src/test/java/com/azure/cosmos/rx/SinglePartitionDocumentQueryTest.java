@@ -60,7 +60,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 5;
 
-        options.setPopulateQueryMetrics(queryMetricsEnabled);
+        options.setQueryMetricsEnabled(queryMetricsEnabled);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 99 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") ).collect(Collectors.toList());

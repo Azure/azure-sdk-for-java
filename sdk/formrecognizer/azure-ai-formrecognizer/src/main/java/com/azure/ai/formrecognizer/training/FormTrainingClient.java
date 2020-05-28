@@ -48,10 +48,10 @@ public final class FormTrainingClient {
     }
 
     /**
-     * Creates a new {@link FormRecognizerClient} object. The new {@code FormTrainingClient}
-     * uses the same request policy pipeline as the {@code FormTrainingClient}.
+     * Creates a new {@link FormRecognizerClient} object. The new {@link FormTrainingClient}
+     * uses the same request policy pipeline as the {@link FormTrainingClient}.
      *
-     * @return A new {@code FormRecognizerClient} object.
+     * @return A new {@link FormRecognizerClient} object.
      */
     public FormRecognizerClient getFormRecognizerClient() {
         return new FormRecognizerClientBuilder().endpoint(client.getEndpoint()).pipeline(client.getHttpPipeline())
@@ -75,7 +75,7 @@ public final class FormTrainingClient {
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a {@link CustomFormModel}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -101,8 +101,8 @@ public final class FormTrainingClient {
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} that polls the extract receipt operation until it
-     * has completed, has failed, or has been cancelled.
+     * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link CustomFormModel}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,

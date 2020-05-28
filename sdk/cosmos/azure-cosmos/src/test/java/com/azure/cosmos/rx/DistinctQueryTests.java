@@ -80,7 +80,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.name from c";
         FeedOptions options = new FeedOptions();
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable =
             createdCollection.queryItems(query,
@@ -249,7 +249,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     public void queryDocumentsForDistinctIntValues(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.intprop from c";
         FeedOptions options = new FeedOptions();
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
                                                                                              CosmosItemProperties.class);

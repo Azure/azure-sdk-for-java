@@ -13,8 +13,8 @@ import java.util.Objects;
  */
 public class AzureProfile {
 
-    private String tenantId;
-    private String subscriptionId;
+    private final String tenantId;
+    private final String subscriptionId;
     private final AzureEnvironment environment;
 
     /**
@@ -27,16 +27,13 @@ public class AzureProfile {
      * </ul>
      *
      * @param environment the Azure environment
-     * @param loadEnvironmentVariables the boolean flag indicates whether the environment variables are set
      */
-    public AzureProfile(AzureEnvironment environment, boolean loadEnvironmentVariables) {
+    public AzureProfile(AzureEnvironment environment) {
         Objects.requireNonNull(environment);
         this.environment = environment;
-        if (loadEnvironmentVariables) {
-            Configuration configuration = Configuration.getGlobalConfiguration();
-            this.tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-            this.subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-        }
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        this.tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        this.subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
     }
 
     /**
@@ -52,28 +49,6 @@ public class AzureProfile {
         this.tenantId = tenantId;
         this.subscriptionId = subscriptionId;
         this.environment = environment;
-    }
-
-    /**
-     * Sets tenant ID to use related services within GraphRbac, AppService, KeyVault.
-     *
-     * @param tenantId the tenant ID required for Graph Rbac
-     * @return the Azure profile
-     */
-    public AzureProfile withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    /**
-     * Sets subscription ID for resource management.
-     *
-     * @param subscriptionId the subscription ID
-     * @return the Azure profile
-     */
-    public AzureProfile withSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
     }
 
     /**

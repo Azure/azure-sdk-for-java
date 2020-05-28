@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -15,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
@@ -44,12 +44,12 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             + "forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
-        PollerFlux<OperationResult, IterableStream<RecognizedForm>> labeledCustomFormPoller =
+        PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
             client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), "{labeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null);
-        PollerFlux<OperationResult, IterableStream<RecognizedForm>> unlabeledCustomFormPoller =
+        PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
             client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF);
 
-        Mono<IterableStream<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
+        Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()
             .flatMap(trainingOperationResponse -> {
                 if (trainingOperationResponse.getStatus().isComplete()) {
@@ -61,7 +61,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 }
             });
 
-        Mono<IterableStream<RecognizedForm>> unlabeledDataResult = unlabeledCustomFormPoller
+        Mono<List<RecognizedForm>> unlabeledDataResult = unlabeledCustomFormPoller
             .last()
             .flatMap(trainingOperationResponse -> {
                 if (trainingOperationResponse.getStatus().isComplete()) {
@@ -133,23 +133,5 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void printFieldData(IterableStream<RecognizedForm> recognizedForms) {
-        recognizedForms.forEach(labeledForm -> labeledForm.getFields().forEach((label, formField) -> {
-            // With your labeled custom model, you will not get back label data but will get back value data
-            // This is because your custom model didn't have to use any machine learning to deduce the label,
-            // the label was directly provided to it.
-            final StringBuilder boundingBoxStr = new StringBuilder();
-            if (formField.getValueText().getBoundingBox() != null) {
-                formField.getValueText().getBoundingBox().getPoints().forEach(point ->
-                    boundingBoxStr.append(String.format("[%2f, %.2f]", point.getX(), point.getY())));
-            }
-            // The unlabeled custom model will also include data about your labels
-            System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
-                    + "of %.2f.%n",
-                label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
-                formField.getConfidence());
-        }));
     }
 }

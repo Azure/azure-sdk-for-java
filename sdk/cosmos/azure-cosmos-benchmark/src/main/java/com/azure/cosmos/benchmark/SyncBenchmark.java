@@ -119,11 +119,13 @@ abstract class SyncBenchmark<T> {
         }
         cosmosClient = cosmosClientBuilder.buildClient();
         try {
-            cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId()).read().getDatabase();
+            cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+            cosmosDatabase.read();
             logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).getDatabase();
+                cosmosClient.createDatabase(cfg.getDatabaseId());
+                cosmosDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
                 databaseCreated = true;
             } else {
                 throw e;
@@ -131,13 +133,14 @@ abstract class SyncBenchmark<T> {
         }
 
         try {
-            cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId()).read().getContainer();
+            cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId());
+            cosmosContainer.read();
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(),
+                cosmosDatabase.createContainer(this.configuration.getCollectionId(),
                     Configuration.DEFAULT_PARTITION_KEY_PATH,
-                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput()))
-                    .getContainer();
+                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput()));
+                cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId());
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
