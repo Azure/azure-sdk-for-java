@@ -2,6 +2,7 @@
 Azure Tables Azure Table storage is a service that stores structured NoSQL data in the cloud, providing a key/attribute store with a schemaless design.
 Tables storage gives developers flexibility and scalability with all the best parts of Azure cloud.
 
+## Examples
 Use the client library for Tables to:
 - manages tables
 - edit and access table contents 
@@ -21,7 +22,17 @@ Use the client library for Tables to:
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-table</artifactId>
-  <version>1.0.0-beta</version>
+  <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+## Key concepts
+
+## Troubleshooting
+
+## Next steps
+
+## Contribution and Feedback
+
+## License
