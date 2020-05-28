@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.models.RequestOptions;
 
 import java.util.List;
 
@@ -26,16 +26,16 @@ public class ListIndexersExample {
         .get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     public static void main(String[] args) {
-        SearchServiceAsyncClient searchServiceClient = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient indexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
-        listIndexers(searchServiceClient);
+        listIndexers(indexerAsyncClient);
     }
 
-    private static void listIndexers(SearchServiceAsyncClient searchServiceClient) {
-        PagedResponse<SearchIndexer> response = searchServiceClient.listIndexers("*",
+    private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient) {
+        PagedResponse<SearchIndexer> response = indexerAsyncClient.listIndexers("*",
             new RequestOptions()).byPage().blockFirst();
 
         if (response != null) {

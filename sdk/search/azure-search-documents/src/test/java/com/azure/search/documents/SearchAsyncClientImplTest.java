@@ -28,8 +28,8 @@ import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SearchIndexAsyncClientImplTest extends SearchTestBase {
-    private SearchIndexAsyncClient asyncClient;
+public class SearchAsyncClientImplTest extends SearchTestBase {
+    private SearchAsyncClient asyncClient;
 
     @Override
     protected void beforeTest() {
@@ -41,7 +41,7 @@ public class SearchIndexAsyncClientImplTest extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
-        getSearchServiceClientBuilder().buildClient().deleteIndex(asyncClient.getIndexName());
+        getSearchIndexClientBuilder().buildClient().deleteIndex(asyncClient.getIndexName());
     }
 
     @Test

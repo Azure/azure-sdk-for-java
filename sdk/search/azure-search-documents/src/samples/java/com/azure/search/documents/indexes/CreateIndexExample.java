@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
@@ -23,7 +23,7 @@ public class CreateIndexExample {
     public static void main(String[] args) {
         AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential(ADMIN_KEY);
 
-        SearchServiceClient client = new SearchServiceClientBuilder()
+        SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(searchApiKeyCredential)
             .buildClient();

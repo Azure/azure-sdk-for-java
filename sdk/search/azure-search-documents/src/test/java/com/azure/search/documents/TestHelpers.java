@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -214,31 +215,39 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
 
-    public static <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
+    public static <T> void uploadDocuments(SearchClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc);
         waitForIndexing();
     }
 
-    public static <T> void uploadDocuments(SearchIndexAsyncClient client, List<T> uploadDoc) {
+    public static <T> void uploadDocuments(SearchAsyncClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc).block();
         waitForIndexing();
     }
 
-    public static <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
+    public static <T> void uploadDocument(SearchClient client, T uploadDoc) {
         client.uploadDocuments(Collections.singletonList(uploadDoc));
         waitForIndexing();
     }
 
-    public static <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
+    public static <T> void uploadDocument(SearchAsyncClient client, T uploadDoc) {
         client.uploadDocuments(Collections.singletonList(uploadDoc)).block();
         waitForIndexing();
     }
 
-    public static List<Map<String, Object>> uploadDocumentsJson(SearchIndexClient client, String dataJson) {
+    public static List<Map<String, Object>> uploadDocumentsJson(SearchClient client, String dataJson) {
         List<Map<String, Object>> documents = readJsonFileToList(dataJson);
         uploadDocuments(client, documents);
 
         return documents;
+    }
+
+    public static HttpPipeline getHttpPipeline(SearchClient searchClient) {
+        return searchClient.getHttpPipeline();
+    }
+
+    public static HttpPipeline getHttpPipeline(SearchAsyncClient searchAsyncClient) {
+        return searchAsyncClient.getHttpPipeline();
     }
 
     private static List<Map<String, Object>> readJsonFileToList(String filename) {

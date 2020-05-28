@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
@@ -29,17 +29,17 @@ public class CreateSkillsetExample {
     private static final String CUSTOME_SKILLSET_NAME = "custom-skillset";
 
     public static void main(String[] args) {
-        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
 
-        createOcrSkillset(searchServiceClient);
-        createCustomSkillset(searchServiceClient);
-        cleanupSkillset(searchServiceClient);
+        createOcrSkillset(searchIndexerClient);
+        createCustomSkillset(searchIndexerClient);
+        cleanupSkillset(searchIndexerClient);
     }
 
-    private static void createOcrSkillset(SearchServiceClient searchServiceClient) {
+    private static void createOcrSkillset(SearchIndexerClient searchIndexerClient) {
         // Sample OCR definition
         // https://docs.microsoft.com/en-us/azure/search/cognitive-search-skill-ocr#sample-definition
 
@@ -76,7 +76,7 @@ public class CreateSkillsetExample {
 
         System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
 
-        SearchIndexerSkillset createdSkillset = searchServiceClient.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = searchIndexerClient.createSkillset(skillset);
 
         System.out.println("Created OCR skillset");
         System.out.println(String.format("Name: %s", createdSkillset.getName()));
@@ -85,7 +85,7 @@ public class CreateSkillsetExample {
         System.out.println("\n");
     }
 
-    private static void createCustomSkillset(SearchServiceClient searchServiceClient) {
+    private static void createCustomSkillset(SearchIndexerClient searchIndexerClient) {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "foobar");
 
@@ -117,15 +117,15 @@ public class CreateSkillsetExample {
 
         System.out.println(String.format("Creating custom skillset '%s'", skillset.getName()));
 
-        SearchIndexerSkillset createdSkillset = searchServiceClient.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = searchIndexerClient.createSkillset(skillset);
 
         System.out.println("Created custom skillset");
         System.out.println(String.format("Name: %s", createdSkillset.getName()));
         System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
     }
 
-    private static void cleanupSkillset(SearchServiceClient searchServiceClient) {
-        searchServiceClient.deleteSkillset(OCR_SKILLSET_NAME);
-        searchServiceClient.deleteSkillset(CUSTOME_SKILLSET_NAME);
+    private static void cleanupSkillset(SearchIndexerClient searchIndexerClient) {
+        searchIndexerClient.deleteSkillset(OCR_SKILLSET_NAME);
+        searchIndexerClient.deleteSkillset(CUSTOME_SKILLSET_NAME);
     }
 }

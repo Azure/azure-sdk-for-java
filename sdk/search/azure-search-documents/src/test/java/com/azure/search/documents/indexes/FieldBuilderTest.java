@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
+import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.ComplexField;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;

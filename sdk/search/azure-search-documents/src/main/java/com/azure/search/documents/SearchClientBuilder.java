@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchIndexClient
- * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link #buildClient()
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchClient
+ * SearchClients} and {@link SearchAsyncClient SearchAsyncClients}. Call {@link #buildClient()
  * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
  * client.
  * <p>
@@ -43,8 +43,8 @@ import java.util.Objects;
  *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public final class SearchIndexClientBuilder {
+@ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
+public final class SearchClientBuilder {
     private static final String API_KEY = "api-key";
 
     /*
@@ -57,7 +57,7 @@ public final class SearchIndexClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
 
-    private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(SearchClientBuilder.class);
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders().put(ECHO_REQUEST_ID_HEADER, "true");
 
@@ -76,42 +76,42 @@ public final class SearchIndexClientBuilder {
 
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link SearchIndexClient SearchIndexClients}
-     * and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link SearchClient SearchClients}
+     * and {@link SearchAsyncClient SearchAsyncClients}.
      */
-    public SearchIndexClientBuilder() {
+    public SearchClientBuilder() {
         Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
         clientName = properties.getOrDefault(NAME, "UnknownName");
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
     /**
-     * Creates a {@link SearchIndexClient} based on options set in the Builder. Every time {@code buildClient()} is
-     * called a new instance of {@link SearchIndexClient} is created.
+     * Creates a {@link SearchClient} based on options set in the Builder. Every time {@code buildClient()} is
+     * called a new instance of {@link SearchClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
-     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchIndexClient client}.
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchClient client}.
      * All other builder settings are ignored.
      *
-     * @return A SearchIndexClient with the options set from the builder.
+     * @return A SearchClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
      */
-    public SearchIndexClient buildClient() {
-        return new SearchIndexClient(buildAsyncClient());
+    public SearchClient buildClient() {
+        return new SearchClient(buildAsyncClient());
     }
 
     /**
-     * Creates a {@link SearchIndexAsyncClient} based on options set in the Builder. Every time
-     * {@code buildAsyncClient()} is called a new instance of {@link SearchIndexAsyncClient} is created.
+     * Creates a {@link SearchAsyncClient} based on options set in the Builder. Every time
+     * {@code buildAsyncClient()} is called a new instance of {@link SearchAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
-     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchIndexAsyncClient client}.
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchAsyncClient client}.
      * All other builder settings are ignored.
      *
-     * @return A SearchIndexClient with the options set from the builder.
+     * @return A SearchClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
      */
-    public SearchIndexAsyncClient buildAsyncClient() {
+    public SearchAsyncClient buildAsyncClient() {
         Objects.requireNonNull(indexName, "'indexName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
@@ -120,7 +120,7 @@ public final class SearchIndexClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new SearchIndexAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
+            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -152,17 +152,17 @@ public final class SearchIndexClientBuilder {
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchIndexAsyncClient(endpoint, indexName, buildVersion, buildPipeline);
+        return new SearchAsyncClient(endpoint, indexName, buildVersion, buildPipeline);
     }
 
     /**
      * Sets the service endpoint for the Azure Search instance.
      *
      * @param endpoint The URL of the Azure Search instance.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SearchIndexClientBuilder endpoint(String endpoint) {
+    public SearchClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
@@ -176,11 +176,11 @@ public final class SearchIndexClientBuilder {
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      * @throws NullPointerException If {@code keyCredential} is {@code null}.
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
-    public SearchIndexClientBuilder credential(AzureKeyCredential keyCredential) {
+    public SearchClientBuilder credential(AzureKeyCredential keyCredential) {
         if (keyCredential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'keyCredential' cannot be null."));
         }
@@ -196,10 +196,10 @@ public final class SearchIndexClientBuilder {
      * Sets the name of the index.
      *
      * @param indexName Name of the index.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      * @throws IllegalArgumentException If {@code indexName} is {@code null} or empty.
      */
-    public SearchIndexClientBuilder indexName(String indexName) {
+    public SearchClientBuilder indexName(String indexName) {
         if (CoreUtils.isNullOrEmpty(indexName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'indexName' cannot be null or empty."));
         }
@@ -213,9 +213,9 @@ public final class SearchIndexClientBuilder {
      * If logging configurations aren't provided HTTP requests and responses won't be logged.
      *
      * @param logOptions The logging configuration for HTTP requests and responses.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      */
-    public SearchIndexClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public SearchClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
     }
@@ -227,10 +227,10 @@ public final class SearchIndexClientBuilder {
      * policy list. All policies will be added after the retry policy.
      *
      * @param policy The pipeline policies to added to the policy list.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public SearchClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
         return this;
     }
@@ -239,9 +239,9 @@ public final class SearchIndexClientBuilder {
      * Sets the HTTP client to use for sending requests and receiving responses.
      *
      * @param client The HTTP client that will handle sending requests and receiving responses.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      */
-    public SearchIndexClientBuilder httpClient(HttpClient client) {
+    public SearchClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -254,12 +254,12 @@ public final class SearchIndexClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
-     * {@link #indexName(String) index} when building a {@link SearchIndexClient} or {@link SearchIndexAsyncClient}.
+     * {@link #indexName(String) index} when building a {@link SearchClient} or {@link SearchAsyncClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      */
-    public SearchIndexClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public SearchClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -275,9 +275,9 @@ public final class SearchIndexClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store that will be used.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      */
-    public SearchIndexClientBuilder configuration(Configuration configuration) {
+    public SearchClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -288,9 +288,9 @@ public final class SearchIndexClientBuilder {
      * A default retry policy will be supplied if one isn't provided.
      *
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      */
-    public SearchIndexClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public SearchClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -302,9 +302,9 @@ public final class SearchIndexClientBuilder {
      * this default is used updating to a newer client library may result in a newer version of the service being used.
      *
      * @param serviceVersion The version of the service to be used when making requests.
-     * @return The updated SearchIndexClientBuilder object.
+     * @return The updated SearchClientBuilder object.
      */
-    public SearchIndexClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
+    public SearchClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }

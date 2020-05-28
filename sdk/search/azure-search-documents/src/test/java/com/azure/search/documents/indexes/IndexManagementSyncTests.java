@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
@@ -46,12 +47,12 @@ public class IndexManagementSyncTests extends SearchTestBase {
     private final List<String> indexesToDelete = new ArrayList<>();
     private final List<String> synonymMapsToDelete = new ArrayList<>();
 
-    private SearchServiceClient client;
+    private SearchIndexClient client;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient();
+        client = getSearchIndexClientBuilder().buildClient();
     }
 
     @Override

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.search.documents.SearchServiceVersion;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,62 +26,62 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SearchServiceClientBuilderTests {
+public class SearchIndexerClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
     private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06_Preview;
 
     @Test
     public void buildSyncClientTest() {
-        SearchServiceClient client = new SearchServiceClientBuilder()
+        SearchIndexerClient client = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
             .buildClient();
 
         assertNotNull(client);
-        assertEquals(SearchServiceClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertEquals(SearchIndexerClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        SearchServiceClient client = new SearchServiceClientBuilder()
+        SearchIndexerClient client = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
 
         assertNotNull(client);
-        assertEquals(SearchServiceClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertEquals(SearchIndexerClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientTest() {
-        SearchServiceAsyncClient client = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
             .buildAsyncClient();
 
         assertNotNull(client);
-        assertEquals(SearchServiceAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertEquals(SearchIndexerAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        SearchServiceAsyncClient client = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
 
         assertNotNull(client);
-        assertEquals(SearchServiceAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertEquals(SearchIndexerAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
     public void whenApiVersionSpecifiedThenSpecifiedValueExists() {
         SearchServiceVersion expectedApiVersion = SearchServiceVersion.V2019_05_06_Preview;
 
-        SearchServiceClient client = new SearchServiceClientBuilder()
+        SearchIndexerClient client = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(expectedApiVersion)
@@ -88,7 +89,7 @@ public class SearchServiceClientBuilderTests {
 
         assertEquals(expectedApiVersion.getVersion(), client.getServiceVersion().getVersion());
 
-        SearchServiceAsyncClient asyncClient = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient asyncClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(expectedApiVersion)
@@ -98,7 +99,7 @@ public class SearchServiceClientBuilderTests {
 
     @Test
     public void whenBuildClientAndVerifyPropertiesThenSuccess() {
-        SearchServiceClient client = new SearchServiceClientBuilder()
+        SearchIndexerClient client = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
@@ -106,7 +107,7 @@ public class SearchServiceClientBuilderTests {
         assertEquals(searchEndpoint, client.getEndpoint());
         assertEquals(apiVersion, client.getServiceVersion());
 
-        SearchServiceAsyncClient asyncClient = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient asyncClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
@@ -118,23 +119,23 @@ public class SearchServiceClientBuilderTests {
 
     @Test
     public void emptyEndpointThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchServiceClientBuilder().endpoint(""));
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder().endpoint(""));
     }
 
     @Test
     public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new SearchServiceClientBuilder().credential(null));
+        assertThrows(NullPointerException.class, () -> new SearchIndexerClientBuilder().credential(null));
     }
 
     @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchServiceClientBuilder()
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("")));
     }
 
     @Test
     void nullApiVersionSetsLatest() {
-        SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
+        SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(null);
@@ -145,37 +146,37 @@ public class SearchServiceClientBuilderTests {
 
     @Test
     public void verifyEmptyApiVersionSetsLatest() {
-        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
 
-        assertEquals(SearchServiceVersion.getLatest(), searchServiceClient.getServiceVersion());
+        assertEquals(SearchServiceVersion.getLatest(), searchIndexerClient.getServiceVersion());
     }
 
     @Test
     public void verifyEmptyApiVersionSetsLatestAsync() {
-        SearchServiceAsyncClient searchServiceAsyncClient = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
 
-        assertEquals(SearchServiceVersion.getLatest(), searchServiceAsyncClient.getServiceVersion());
+        assertEquals(SearchServiceVersion.getLatest(), searchIndexerAsyncClient.getServiceVersion());
     }
 
     @Test
     public void serviceClientFreshDateOnRetry() throws MalformedURLException {
         byte[] randomData = new byte[256];
         new SecureRandom().nextBytes(randomData);
-        SearchServiceAsyncClient searchServiceAsyncClient = new SearchServiceClientBuilder()
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .httpClient(new FreshDateTestClient())
             .buildAsyncClient();
 
 
-        StepVerifier.create(searchServiceAsyncClient.getHttpPipeline().send(
-            request(searchServiceAsyncClient.getEndpoint())))
+        StepVerifier.create(searchIndexerAsyncClient.getHttpPipeline().send(
+            request(searchIndexerAsyncClient.getEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }

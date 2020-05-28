@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.ServiceCounters;
 import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.models.RequestOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,14 +20,14 @@ public class SearchServiceSyncTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsCorrectDefinition() {
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
         validateServiceStatistics(serviceClient.getServiceStatistics());
     }
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
             Context.NONE).getValue();
@@ -35,7 +36,7 @@ public class SearchServiceSyncTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsRequestId() {
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
         RequestOptions requestOptions = new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
         Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,

@@ -1,21 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents;
+package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
+import com.azure.search.documents.models.RequestOptions;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -41,12 +43,12 @@ public class DataSourceSyncTests extends SearchTestBase {
         "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase";
 
     private final List<String> dataSourcesToDelete = new ArrayList<>();
-    private SearchServiceClient client;
+    private SearchIndexerClient client;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient();
+        client = getSearchIndexerClientBuilder().buildClient();
     }
 
     @Override
