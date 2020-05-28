@@ -8,7 +8,7 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
@@ -76,8 +76,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 return ModelBridgeInternal.getResource(((CosmosContainerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosStoredProcedureResponse) {
                 return ModelBridgeInternal.getResource(((CosmosStoredProcedureResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncTriggerResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncTriggerResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosTriggerResponse) {
+                return ModelBridgeInternal.getResource(((CosmosTriggerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncUserDefinedFunctionResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosUserResponse) {
@@ -256,10 +256,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withTriggerBody(String functionBody) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncTriggerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosTriggerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncTriggerResponse resourceResponse) {
+                public void validate(CosmosTriggerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getBody()).isEqualTo(functionBody);
                 }
             });
@@ -267,10 +267,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withTriggerInternals(TriggerType type, TriggerOperation op) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncTriggerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosTriggerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncTriggerResponse resourceResponse) {
+                public void validate(CosmosTriggerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getTriggerType()).isEqualTo(type);
                     assertThat(resourceResponse.getProperties().getTriggerOperation()).isEqualTo(op);
                 }

@@ -4,12 +4,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.FeedOptions;
@@ -328,11 +327,9 @@ public class CosmosScripts {
      * @param responseMono the response mono
      * @return the cosmos sync trigger response
      */
-    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosAsyncTriggerResponse> responseMono) {
+    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosTriggerResponse> responseMono) {
         try {
-            return responseMono
-                       .map(this::convertResponse)
-                       .block();
+            return responseMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -340,21 +337,6 @@ public class CosmosScripts {
             } else {
                 throw Exceptions.propagate(ex);
             }
-        }
-    }
-
-    /**
-     * Convert response cosmos sync trigger response.
-     *
-     * @param response the response
-     * @return the cosmos sync trigger response
-     */
-    CosmosTriggerResponse convertResponse(CosmosAsyncTriggerResponse response) {
-        if (response.getTrigger() != null) {
-            return ModelBridgeInternal.createCosmosTriggerResponse(response,
-                                             getTrigger(response.getTrigger().getId()));
-        } else {
-            return ModelBridgeInternal.createCosmosTriggerResponse(response, null);
         }
     }
 

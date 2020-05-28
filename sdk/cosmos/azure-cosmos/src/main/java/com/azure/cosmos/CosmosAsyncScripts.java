@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
@@ -304,12 +304,12 @@ public class CosmosAsyncScripts {
      * @param properties the cosmos trigger properties
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
-    public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
+    public Mono<CosmosTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
         Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getResource(properties)));
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, this.container))
+                   .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
                    .single();
     }
 
