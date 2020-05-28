@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -31,7 +32,7 @@ class QueryPlanRetriever {
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(IDocumentQueryClient queryClient,
                                                                                SqlQuerySpec sqlQuerySpec,
                                                                                String resourceLink) {
-        final Map<String, String> requestHeaders = new HashMap<>();
+        final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.put(HttpConstants.Headers.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         requestHeaders.put(HttpConstants.Headers.IS_QUERY_PLAN_REQUEST, TRUE);
         requestHeaders.put(HttpConstants.Headers.SUPPORTED_QUERY_FEATURES, SUPPORTED_QUERY_FEATURES);

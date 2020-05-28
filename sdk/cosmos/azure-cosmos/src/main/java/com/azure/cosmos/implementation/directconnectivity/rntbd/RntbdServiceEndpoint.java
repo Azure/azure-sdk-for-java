@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -263,10 +264,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
             final String reason = cause.getMessage();
 
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.put(Headers.ACTIVITY_ID, activityId.toString());
+
             final GoneException goneException = new GoneException(
                 Strings.lenientFormat("failed to establish connection to %s: %s", this.remoteAddress, reason),
                 cause instanceof Exception ? (Exception)cause : new IOException(reason, cause),
-                ImmutableMap.of(Headers.ACTIVITY_ID, activityId.toString()),
+                httpHeaders,
                 requestArgs.replicaPath()
             );
 

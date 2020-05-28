@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -76,7 +77,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
                 OperationType.Read,
                 ResourceType.DocumentCollection,
                 path,
-                new HashMap<>());
+                new HttpHeaders());
 
         request.getHeaders().put(HttpConstants.Headers.X_DATE, Utils.nowAsRFC1123());
 

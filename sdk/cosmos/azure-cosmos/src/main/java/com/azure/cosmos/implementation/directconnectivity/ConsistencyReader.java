@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
@@ -323,11 +324,11 @@ public class ConsistencyReader {
             }
 
             // else
-            HashMap<String, String> responseHeaders = new HashMap<>();
+            HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
             ISessionToken requestSessionToken = entity.requestContext.sessionToken;
             logger.warn("Fail the session read {}, request session token {}", entity.getResourceAddress(), requestSessionToken == null ? "<empty>" : requestSessionToken.convertToString());
-            return Mono.error(new NotFoundException(RMResources.ReadSessionNotAvailable, responseHeaders, null));
+            return Mono.error(new NotFoundException(RMResources.ReadSessionNotAvailable, responseHeaders, (String) null));
         });
     }
 

@@ -3,13 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 
 import java.net.URI;
-import java.util.Map;
 
 /**
  * The type Retry with exception.
@@ -51,20 +49,20 @@ public class RetryWithException extends CosmosException {
     public RetryWithException(String message, HttpHeaders headers, URI requestUri) {
         super(message,
             null,
-            HttpUtils.asCoreHttpHeaders(headers),
+            headers,
             HttpConstants.StatusCodes.RETRY_WITH,
             requestUri != null ? requestUri.toString() : null);
     }
 
     RetryWithException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.RETRY_WITH, requestUriString);
+        super(message, null, headers, HttpConstants.StatusCodes.RETRY_WITH, requestUriString);
     }
 
     RetryWithException(String message,
                        Exception innerException,
                        HttpHeaders headers,
                        URI requestUri) {
-        super(message, innerException, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.RETRY_WITH,
+        super(message, innerException, headers, HttpConstants.StatusCodes.RETRY_WITH,
             requestUri != null ? requestUri.toString() : null);
     }
 }

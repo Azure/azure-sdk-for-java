@@ -14,6 +14,8 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,7 +48,7 @@ public class CosmosException extends AzureException {
 
     long lsn;
     String partitionKeyRangeId;
-    Map<String, String> requestHeaders;
+    HttpHeaders requestHeaders;
     Uri requestUri;
     String resourceAddress;
 
@@ -284,12 +286,13 @@ public class CosmosException extends AzureException {
         return null;
     }
 
-    private List<Map.Entry<String, String>> filterSensitiveData(Map<String, String> requestHeaders) {
+    private List<Map.Entry<String, String>> filterSensitiveData(HttpHeaders requestHeaders) {
         if (requestHeaders == null) {
             return null;
         }
-        return requestHeaders.entrySet().stream().filter(entry -> !HttpConstants.Headers.AUTHORIZATION.equalsIgnoreCase(entry.getKey()))
-                             .collect(Collectors.toList());
+
+        // TBD: kirankk
+        return null;
     }
 
     void setResourceAddress(String resourceAddress) {

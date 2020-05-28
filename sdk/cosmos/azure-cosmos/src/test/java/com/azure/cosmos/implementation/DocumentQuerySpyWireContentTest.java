@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -111,19 +113,19 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     }
 
     private void validateRequestHasContinuationTokenLimit(HttpRequest request, Integer expectedValue) {
-        Map<String, String> headers = request.headers().asCoreHttpHeaders();
-        if (headers.get(HttpConstants.Headers.IS_QUERY) != null) {
+        HttpHeaders headers = request.headers();
+        if (headers.getValue(HttpConstants.Headers.IS_QUERY) != null) {
             if (expectedValue != null && expectedValue > 0) {
                 assertThat(headers
-                               .containsKey(HttpConstants.Headers.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
-                    .isTrue();
+                               .getValue(HttpConstants.Headers.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
+                    .isNotNull();
                 assertThat(headers
                                .get("x-ms-documentdb-responsecontinuationtokenlimitinkb"))
                     .isEqualTo(Integer.toString(expectedValue));
             } else {
                 assertThat(headers
-                               .containsKey(HttpConstants.Headers.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
-                    .isFalse();
+                               .getValue(HttpConstants.Headers.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
+                    .isNotNull();
             }
         }
     }

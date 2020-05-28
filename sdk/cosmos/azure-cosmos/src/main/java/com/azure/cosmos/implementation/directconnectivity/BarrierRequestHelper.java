@@ -95,7 +95,7 @@ public class BarrierRequestHelper {
 
 
             case ResourceToken:
-                authorizationToken = request.getHeaders().get(HttpConstants.Headers.AUTHORIZATION);
+                authorizationToken = request.getHeaders().getValue(HttpConstants.Headers.AUTHORIZATION);
                 break;
 
             default:
@@ -112,11 +112,11 @@ public class BarrierRequestHelper {
             barrierLsnRequest.routeTo(request.getPartitionKeyRangeIdentity());
         }
         if (request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY) != null) {
-            barrierLsnRequest.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY));
+            barrierLsnRequest.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, request.getHeaders().getValue(HttpConstants.Headers.PARTITION_KEY));
             barrierLsnRequest.setPartitionKeyInternal(request.getPartitionKeyInternal());
         }
         if (request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID) != null) {
-            barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID));
+            barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().getValue(WFConstants.BackendHeaders.COLLECTION_RID));
         }
 
         return Mono.just(barrierLsnRequest);

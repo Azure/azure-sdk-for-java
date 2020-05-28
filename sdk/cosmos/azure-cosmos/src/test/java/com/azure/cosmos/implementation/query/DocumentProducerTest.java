@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosException;
@@ -722,7 +723,7 @@ public class DocumentProducerTest {
             Map<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
-            return BridgeInternal.createCosmosException(HttpConstants.StatusCodes.GONE, new CosmosError(), headers);
+            return BridgeInternal.createCosmosException(HttpConstants.StatusCodes.GONE, new CosmosError(), new HttpHeaders(headers));
         }
 
         protected void capture(String partitionId, CapturedInvocation captureInvocation) {

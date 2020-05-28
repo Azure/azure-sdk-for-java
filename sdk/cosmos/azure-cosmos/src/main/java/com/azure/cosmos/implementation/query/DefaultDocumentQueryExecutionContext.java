@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -180,7 +181,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     public RxDocumentServiceRequest createRequestAsync(String continuationToken, Integer maxPageSize) {
 
         // TODO this should be async
-        Map<String, String> requestHeaders = this.createCommonHeadersAsync(
+        HttpHeaders requestHeaders = this.createCommonHeadersAsync(
                 this.getFeedOptions(continuationToken, maxPageSize));
 
         // TODO: add support for simple continuation for single partition query

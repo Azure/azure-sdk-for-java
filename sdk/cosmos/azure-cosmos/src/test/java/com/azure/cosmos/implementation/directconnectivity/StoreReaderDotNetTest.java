@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.GoneException;
@@ -476,7 +477,7 @@ public class StoreReaderDotNetTest {
         // validate that the LSN matches
         assertThat(response.getLSN()).isEqualTo(50);
 
-        String activityId = response.getHeaderValue(WFConstants.BackendHeaders.ACTIVITY_ID);
+        String activityId = response.getHeaders().getValue(WFConstants.BackendHeaders.ACTIVITY_ID);
 
         // validate that the ActivityId Matches
         assertThat(activityId).isEqualTo("ACTIVITYID1_1");
@@ -605,7 +606,7 @@ public class StoreReaderDotNetTest {
         // validate that the LSN matches
         assertThat(response.getLSN()).isEqualTo(50);
 
-        String activityId = response.getHeaderValue(WFConstants.BackendHeaders.ACTIVITY_ID);
+        String activityId = response.getHeaders().getValue(WFConstants.BackendHeaders.ACTIVITY_ID);
         // validate that the ActivityId Matches
         assertThat(activityId).isEqualTo("ACTIVITYID1_1");
 
@@ -616,7 +617,7 @@ public class StoreReaderDotNetTest {
         StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
 
         IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
+        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), new HttpHeaders(),
                 Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
         // setup max replica set size on the config reader
@@ -690,7 +691,7 @@ public class StoreReaderDotNetTest {
         GatewayServiceConfigurationReader serviceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
 
         IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
+        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), new HttpHeaders(),
                 Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
         for (int i = 0; i < addressInformations.length; i++) {
@@ -784,7 +785,7 @@ public class StoreReaderDotNetTest {
             StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
 
             IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
+            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), new HttpHeaders(),
                     Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
             // setup max replica set size on the config reader
@@ -799,7 +800,7 @@ public class StoreReaderDotNetTest {
             StoreResponse result = reader.readStrongAsync(entity, 2, ReadMode.Strong).block();
             assertThat(result.getLSN()).isEqualTo(100);
 
-            String globalCommitedLSN = result.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
+            String globalCommitedLSN = result.getHeaders().getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
 
             long nGlobalCommitedLSN = Long.parseLong(globalCommitedLSN);
             assertThat(nGlobalCommitedLSN).isEqualTo(90);
@@ -817,7 +818,7 @@ public class StoreReaderDotNetTest {
             StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
 
             IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
+            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), new HttpHeaders(),
                     Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
             // setup max replica set size on the config reader
@@ -860,7 +861,7 @@ public class StoreReaderDotNetTest {
                             sessionContainer);
 
             IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
+            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), new HttpHeaders(),
                     Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
             // setup max replica set size on the config reader
             ReplicationPolicy replicationPolicy = new ReplicationPolicy();
@@ -878,7 +879,7 @@ public class StoreReaderDotNetTest {
             assertThat(result.getLSN()).isEqualTo(100);
 
             String globalCommitedLSN;
-            globalCommitedLSN = result.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
+            globalCommitedLSN = result.getHeaders().getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
             long nGlobalCommitedLSN = Long.parseLong(globalCommitedLSN);
             assertThat(nGlobalCommitedLSN).isEqualTo(90);
         }

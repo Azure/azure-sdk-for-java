@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.buffer.ByteBufAllocator;
@@ -51,7 +51,7 @@ public class HttpClientMockWrapper {
             }
 
             for(int i = 0; i < pairs.length/ 2; i++) {
-                this.httpHeaders.set(pairs[2*i], pairs[2*i +1]);
+                this.httpHeaders.put(pairs[2*i], pairs[2*i +1]);
             }
 
             return this;
@@ -63,17 +63,17 @@ public class HttpClientMockWrapper {
         }
 
         public HttpClientBehaviourBuilder withHeaderLSN(long lsn) {
-            this.httpHeaders.set(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
+            this.httpHeaders.put(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
             return this;
         }
 
         public HttpClientBehaviourBuilder withHeaderPartitionKeyRangeId(String partitionKeyRangeId) {
-            this.httpHeaders.set(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+            this.httpHeaders.put(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
             return this;
         }
 
         public HttpClientBehaviourBuilder withHeaderSubStatusCode(int subStatusCode) {
-            this.httpHeaders.set(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(subStatusCode));
+            this.httpHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(subStatusCode));
             return this;
         }
 

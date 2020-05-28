@@ -32,7 +32,7 @@ public class SessionTokenHelper {
     }
 
     public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, ISessionContainer sessionContainer) {
-        String originalSessionToken = request.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN);
+        String originalSessionToken = request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
         String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
 
 
@@ -152,7 +152,7 @@ public class SessionTokenHelper {
     }
 
     public static void validateAndRemoveSessionToken(RxDocumentServiceRequest request) {
-        String sessionToken = request.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN);
+        String sessionToken = request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(sessionToken)) {
             getLocalSessionToken(request, sessionToken, StringUtils.EMPTY);
             request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);

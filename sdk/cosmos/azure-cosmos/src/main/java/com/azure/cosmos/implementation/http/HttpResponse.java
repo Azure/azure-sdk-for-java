@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.http;
 
+import com.azure.core.http.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

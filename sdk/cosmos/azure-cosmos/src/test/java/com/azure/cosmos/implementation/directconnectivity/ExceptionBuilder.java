@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.implementation.http.HttpHeader;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

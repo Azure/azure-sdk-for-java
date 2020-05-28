@@ -295,7 +295,7 @@ public interface FailureValidator {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosException.class);
                     CosmosException ex = (CosmosException) t;
-                    assertThat(BridgeInternal.getRequestHeaders(ex)).containsEntry(key, value);
+                    assertThat(BridgeInternal.getRequestHeaders(ex).getValue(key) == value).isTrue();
                 }
             });
             return this;

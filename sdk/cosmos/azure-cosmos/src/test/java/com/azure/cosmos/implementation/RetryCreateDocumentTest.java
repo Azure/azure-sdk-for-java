@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import org.mockito.Mockito;
@@ -54,9 +55,9 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
             int currentAttempt = count.getAndIncrement();
             if (currentAttempt == 0) {
-                Map<String, String> header = ImmutableMap.of(
+                HttpHeaders header = new HttpHeaders(ImmutableMap.of(
                         HttpConstants.Headers.SUB_STATUS,
-                        Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
+                        Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH)));
 
                 return Mono.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
             } else {
@@ -85,9 +86,9 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             if (currentAttempt == 0) {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             } else {
-                Map<String, String> header = ImmutableMap.of(
+                HttpHeaders header = new HttpHeaders(ImmutableMap.of(
                         HttpConstants.Headers.SUB_STATUS,
-                        Integer.toString(2));
+                        Integer.toString(2)));
 
                 return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
             }
@@ -121,9 +122,9 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             }
             int currentAttempt = count.getAndIncrement();
             if (currentAttempt == 0) {
-                Map<String, String> header = ImmutableMap.of(
+                HttpHeaders header = new HttpHeaders(ImmutableMap.of(
                         HttpConstants.Headers.SUB_STATUS,
-                        Integer.toString(2));
+                        Integer.toString(2)));
 
                 return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
             } else {

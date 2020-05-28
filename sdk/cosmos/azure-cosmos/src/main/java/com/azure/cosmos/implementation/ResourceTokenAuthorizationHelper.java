@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -86,9 +87,9 @@ public class ResourceTokenAuthorizationHelper {
             Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
             RequestVerb requestVerb,
             String resourceAddress,
-            Map<String, String> headers) {
+            HttpHeaders headers) {
         PartitionKeyInternal partitionKey = PartitionKeyInternal.Empty;
-        String partitionKeyString = headers.get(HttpConstants.Headers.PARTITION_KEY);
+        String partitionKeyString = headers.getValue(HttpConstants.Headers.PARTITION_KEY);
         if (partitionKeyString != null) {
             partitionKey = PartitionKeyInternal.fromJsonString(partitionKeyString);
         }

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConflictException;
@@ -43,7 +44,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
@@ -234,15 +234,15 @@ public class HttpTransportClient extends TransportClient {
     }
 
     private static void addHeader(HttpHeaders requestHeaders, String headerName, RxDocumentServiceRequest request) {
-        String headerValue = request.getHeaders().get(headerName);
+        String headerValue = request.getHeaders().getValue(headerName);
         if (!Strings.isNullOrEmpty(headerValue)) {
-            requestHeaders.set(headerName, headerValue);
+            requestHeaders.put(headerName, headerValue);
         }
     }
 
     private static void addHeader(HttpHeaders requestHeaders, String headerName, String headerValue) {
         if (!Strings.isNullOrEmpty(headerValue)) {
-            requestHeaders.set(headerName, headerValue);
+            requestHeaders.put(headerName, headerValue);
         }
     }
 
@@ -253,11 +253,11 @@ public class HttpTransportClient extends TransportClient {
             case Replace:
             case Update:
             case Upsert:
-                return request.getHeaders().get(HttpConstants.Headers.IF_MATCH);
+                return request.getHeaders().getValue(HttpConstants.Headers.IF_MATCH);
 
             case Read:
             case ReadFeed:
-                return request.getHeaders().get(HttpConstants.Headers.IF_NONE_MATCH);
+                return request.getHeaders().getValue(HttpConstants.Headers.IF_NONE_MATCH);
 
             default:
                 return null;
@@ -363,7 +363,7 @@ public class HttpTransportClient extends TransportClient {
                 throw new IllegalStateException();
         }
 
-        Map<String, String> documentServiceRequestHeaders = request.getHeaders();
+        HttpHeaders documentServiceRequestHeaders = request.getHeaders();
         HttpHeaders httpRequestHeaders = httpRequestMessage.headers();
 
         // add default headers
@@ -409,24 +409,24 @@ public class HttpTransportClient extends TransportClient {
 
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.ENTITY_ID, request.entityId);
 
-        String fanoutRequestHeader = request.getHeaders().get(WFConstants.BackendHeaders.IS_FANOUT_REQUEST);
+        String fanoutRequestHeader = request.getHeaders().getValue(WFConstants.BackendHeaders.IS_FANOUT_REQUEST);
         HttpTransportClient.addHeader(httpRequestMessage.headers(), WFConstants.BackendHeaders.IS_FANOUT_REQUEST, fanoutRequestHeader);
 
         if (request.getResourceType() == ResourceType.DocumentCollection) {
-            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.COLLECTION_PARTITION_INDEX, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.COLLECTION_PARTITION_INDEX));
-            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.COLLECTION_SERVICE_INDEX, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.COLLECTION_SERVICE_INDEX));
+            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.COLLECTION_PARTITION_INDEX, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.COLLECTION_PARTITION_INDEX));
+            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.COLLECTION_SERVICE_INDEX, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.COLLECTION_SERVICE_INDEX));
         }
 
         if (documentServiceRequestHeaders.get(WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE) != null) {
-            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE));
-            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.PRIMARY_MASTER_KEY, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.PRIMARY_MASTER_KEY));
-            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SECONDARY_MASTER_KEY, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.SECONDARY_MASTER_KEY));
-            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.PRIMARY_READONLY_KEY, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.PRIMARY_READONLY_KEY));
-            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SECONDARY_READONLY_KEY, documentServiceRequestHeaders.get(WFConstants.BackendHeaders.SECONDARY_READONLY_KEY));
+            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE));
+            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.PRIMARY_MASTER_KEY, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.PRIMARY_MASTER_KEY));
+            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SECONDARY_MASTER_KEY, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.SECONDARY_MASTER_KEY));
+            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.PRIMARY_READONLY_KEY, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.PRIMARY_READONLY_KEY));
+            HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SECONDARY_READONLY_KEY, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.SECONDARY_READONLY_KEY));
         }
 
         if (documentServiceRequestHeaders.get(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE) != null) {
-            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE, documentServiceRequestHeaders.get(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE));
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE, documentServiceRequestHeaders.getValue(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE));
         }
 
         //Query
@@ -703,7 +703,7 @@ public class HttpTransportClient extends TransportClient {
                     long responseLSN = -1;
 
                     List<String> lsnValues = null;
-                    String[] headerValues = response.headers().values(WFConstants.BackendHeaders.LSN);
+                    String[] headerValues = response.headers().getValues(WFConstants.BackendHeaders.LSN);
                     if (headerValues != null) {
                         lsnValues = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                     }
@@ -715,7 +715,7 @@ public class HttpTransportClient extends TransportClient {
 
                     String responsePartitionKeyRangeId = null;
                     List<String> partitionKeyRangeIdValues = null;
-                    headerValues = response.headers().values(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
+                    headerValues = response.headers().getValues(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
                     if (headerValues != null) {
                         partitionKeyRangeIdValues
                             = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
@@ -753,9 +753,9 @@ public class HttpTransportClient extends TransportClient {
                             // the presence of Content-Type header in the response
                             // and map it to HTTP Gone (410), which is the more
                             // appropriate response for this case.
-                            if (response.body() != null && response.headers() != null && response.headers().value(HttpConstants.Headers.CONTENT_TYPE) != null &&
-                                    !Strings.isNullOrEmpty(response.headers().value(HttpConstants.Headers.CONTENT_TYPE)) &&
-                                    Strings.containsIgnoreCase(response.headers().value(HttpConstants.Headers.CONTENT_TYPE), RuntimeConstants.MediaTypes.TEXT_HTML)) {
+                            if (response.body() != null && response.headers() != null && response.headers().getValue(HttpConstants.Headers.CONTENT_TYPE) != null &&
+                                    !Strings.isNullOrEmpty(response.headers().getValue(HttpConstants.Headers.CONTENT_TYPE)) &&
+                                    Strings.containsIgnoreCase(response.headers().getValue(HttpConstants.Headers.CONTENT_TYPE), RuntimeConstants.MediaTypes.TEXT_HTML)) {
                                 // Have the request URL in the exception message for debugging purposes.
                                 exception = new GoneException(
                                         String.format(
@@ -802,7 +802,7 @@ public class HttpTransportClient extends TransportClient {
                             ErrorUtils.logGoneException(request.uri(), activityId);
 
                             Integer nSubStatus = 0;
-                            String valueSubStatus = response.headers().value(WFConstants.BackendHeaders.SUB_STATUS);
+                            String valueSubStatus = response.headers().getValue(WFConstants.BackendHeaders.SUB_STATUS);
                             if (!Strings.isNullOrEmpty(valueSubStatus)) {
                                 if ((nSubStatus = Integers.tryParse(valueSubStatus)) == null) {
                                     exception = new InternalServerErrorException(
@@ -937,7 +937,7 @@ public class HttpTransportClient extends TransportClient {
                                             request.uri());
 
                             List<String> values = null;
-                            headerValues = response.headers().values(HttpConstants.Headers.RETRY_AFTER_IN_MILLISECONDS);
+                            headerValues = response.headers().getValues(HttpConstants.Headers.RETRY_AFTER_IN_MILLISECONDS);
                             if (headerValues != null) {
                                 values
                                     = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
@@ -974,7 +974,7 @@ public class HttpTransportClient extends TransportClient {
                     BridgeInternal.setLSN(exception, responseLSN);
                     BridgeInternal.setPartitionKeyRangeId(exception, responsePartitionKeyRangeId);
                     BridgeInternal.setResourceAddress(exception, resourceAddress);
-                    BridgeInternal.setRequestHeaders(exception, HttpUtils.asCoreHttpHeaders(request.headers()));
+                    BridgeInternal.setRequestHeaders(exception, request.headers());
 
                     return Mono.error(exception);
                 }

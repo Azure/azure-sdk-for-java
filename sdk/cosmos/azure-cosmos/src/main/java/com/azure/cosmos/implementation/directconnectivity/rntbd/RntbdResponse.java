@@ -338,7 +338,7 @@ public final class RntbdResponse implements ReferenceCounted {
             this.content.getBytes(0, content);
         }
 
-        return new StoreResponse(this.getStatus().code(), this.headers.asList(context, this.getActivityId()), content);
+        return new StoreResponse(this.getStatus().code(), this.headers.asCoreHttpHeaders(context, this.getActivityId()), content);
     }
 
     // endregion

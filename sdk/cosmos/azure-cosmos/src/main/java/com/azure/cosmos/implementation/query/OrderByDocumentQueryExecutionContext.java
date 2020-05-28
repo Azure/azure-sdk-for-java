@@ -363,7 +363,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             int initialPageSize,
             FeedOptions feedOptions,
             SqlQuerySpec querySpecForInit,
-            Map<String, String> commonRequestHeaders,
+            HttpHeaders commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc) {

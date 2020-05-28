@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
@@ -165,24 +165,24 @@ class RxGatewayStoreModel implements RxStoreModel {
         }
     }
 
-    private HttpHeaders getHttpRequestHeaders(Map<String, String> headers) {
-        HttpHeaders httpHeaders = new HttpHeaders(this.defaultHeaders.size());
+    private HttpHeaders getHttpRequestHeaders(HttpHeaders reqeustheaders) {
+        HttpHeaders httpHeaders = new HttpHeaders();
         // Add default headers.
         for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
-            if (!headers.containsKey(entry.getKey())) {
+            if (reqeustheaders.getValue(entry.getKey()) == null) {
                 // populate default header only if there is no overwrite by the request header
-                httpHeaders.set(entry.getKey(), entry.getValue());
+                httpHeaders.put(entry.getKey(), entry.getValue());
             }
         }
 
         // Add override headers.
-        if (headers != null) {
-            for (Entry<String, String> entry : headers.entrySet()) {
+        if (reqeustheaders != null) {
+            for (HttpHeader entry : reqeustheaders) {
                 if (entry.getValue() == null) {
                     // netty doesn't allow setting null value in header
-                    httpHeaders.set(entry.getKey(), "");
+                    httpHeaders.put(entry.getName(), "");
                 } else {
-                    httpHeaders.set(entry.getKey(), entry.getValue());
+                    httpHeaders.put(entry.getName(), entry.getValue());
                 }
             }
         }
@@ -273,10 +273,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                                validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
                                // transforms to Observable<StoreResponse>
-                               com.azure.core.http.HttpHeaders httpHeaders = httpResponseHeaders.asCoreHttpHeaders();
-                               HttpUtils.OwnerFullName(httpHeaders);
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                                   httpHeaders,
+                                   httpResponseHeaders,
                                    content);
                                DirectBridgeInternal.setRequestTimeline(rsp, reactorNettyRequestRecord.takeTimelineSnapshot());
                                if (request.requestContext.cosmosDiagnostics != null) {
@@ -316,7 +314,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private void validateOrThrow(RxDocumentServiceRequest request,
                                  HttpResponseStatus status,
-                                 HttpHeaders headers,
+                                 com.azure.core.http.HttpHeaders headers,
                                  byte[] bodyAsBytes) {
 
         int statusCode = status.code();
@@ -333,7 +331,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers.asCoreHttpHeaders());
+            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers);
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
@@ -419,17 +417,17 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private void applySessionToken(RxDocumentServiceRequest request) {
-        Map<String, String> headers = request.getHeaders();
+        HttpHeaders headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN))) {
+        if (!Strings.isNullOrEmpty(request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN))) {
             if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
                 request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
             }
             return; //User is explicitly controlling the session.
         }
 
-        String requestConsistencyLevel = headers.get(HttpConstants.Headers.CONSISTENCY_LEVEL);
+        String requestConsistencyLevel = headers.getValue(HttpConstants.Headers.CONSISTENCY_LEVEL);
 
         boolean sessionConsistency =
                 this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||

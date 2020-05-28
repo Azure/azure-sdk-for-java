@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
@@ -65,7 +66,7 @@ implements IDocumentQueryExecutionContext<T> {
     @Override
     abstract public Flux<FeedResponse<T>> executeAsync();
 
-    public RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
+    public RxDocumentServiceRequest createDocumentServiceRequest(HttpHeaders requestHeaders,
                                                                  SqlQuerySpec querySpec,
                                                                  PartitionKeyInternal partitionKey) {
 
@@ -78,7 +79,7 @@ implements IDocumentQueryExecutionContext<T> {
         return request;
     }
 
-    protected RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
+    protected RxDocumentServiceRequest createDocumentServiceRequest(HttpHeaders requestHeaders,
                                                                     SqlQuerySpec querySpec,
                                                                     PartitionKeyInternal partitionKeyInternal,
                                                                     PartitionKeyRange targetRange,
@@ -123,8 +124,8 @@ implements IDocumentQueryExecutionContext<T> {
         return this.client.executeQueryAsync(request);
     }
 
-    public Map<String, String> createCommonHeadersAsync(FeedOptions feedOptions) {
-        Map<String, String> requestHeaders = new HashMap<>();
+    public HttpHeaders createCommonHeadersAsync(FeedOptions feedOptions) {
+        HttpHeaders requestHeaders = new HttpHeaders();
 
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
         ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
@@ -209,7 +210,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
     }
 
-    private RxDocumentServiceRequest createQueryDocumentServiceRequest(Map<String, String> requestHeaders,
+    private RxDocumentServiceRequest createQueryDocumentServiceRequest(HttpHeaders requestHeaders,
             SqlQuerySpec querySpec) {
         RxDocumentServiceRequest executeQueryRequest;
 
@@ -247,7 +248,7 @@ implements IDocumentQueryExecutionContext<T> {
         return executeQueryRequest;
     }
 
-    private RxDocumentServiceRequest createReadFeedDocumentServiceRequest(Map<String, String> requestHeaders) {
+    private RxDocumentServiceRequest createReadFeedDocumentServiceRequest(HttpHeaders requestHeaders) {
         if (this.resourceTypeEnum == ResourceType.Database || this.resourceTypeEnum == ResourceType.Offer) {
             return RxDocumentServiceRequest.create(OperationType.ReadFeed, null, this.resourceTypeEnum,
                     // TODO: we may want to add a constructor to RxDocumentRequest supporting authorization type similar to .net

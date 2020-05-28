@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -54,7 +55,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryPolicy = new TestRetryPolicy();
         CosmosException exception = new CosmosException(410, exceptionText);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
-            .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
+            .thenReturn(Mono.just(new StoreResponse(200, new HttpHeaders(), getUTF8BytesOrNull(responseText))));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
@@ -92,7 +93,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<CosmosException> exceptionMono = Mono.error(exception);
         Mockito.when(parameterizedCallbackMethod.apply(Matchers.any(Quadruple.class))).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
-            .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
+            .thenReturn(Mono.just(new StoreResponse(200, new HttpHeaders(), getUTF8BytesOrNull(responseText))));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(parameterizedCallbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, Duration.ofSeconds(5), serviceRequest);
         StoreResponse response = validateSuccess(monoResponse);
 

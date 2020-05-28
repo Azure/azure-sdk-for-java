@@ -722,8 +722,8 @@ public class StoreReaderTest {
                         .mapToLong(sr ->
                                    {
                                        String value = (ReadMode.Strong == readMode)?
-                                               sr.getHeaderValue(WFConstants.BackendHeaders.LSN) :
-                                               sr.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN);
+                                               sr.getHeaders().getValue(WFConstants.BackendHeaders.LSN) :
+                                               sr.getHeaders().getValue(WFConstants.BackendHeaders.LOCAL_LSN);
                                        return Long.parseLong(value);
                                    })
                         .min().orElse(-1);

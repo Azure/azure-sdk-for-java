@@ -171,12 +171,12 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
-                                                                     Map<String, String> requestHeaders) {
+                                                                     HttpHeaders requestHeaders) {
         cosmosException.requestHeaders = requestHeaders;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> Map<String, String> getRequestHeaders(
+    public static <E extends CosmosException> HttpHeaders getRequestHeaders(
         CosmosException cosmosException) {
         return cosmosException.requestHeaders;
     }

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -33,7 +34,7 @@ public class BarrierRequestHelperTest {
                 Document randomResource = new Document();
                 randomResource.setId(UUID.randomUUID().toString());
                 RxDocumentServiceRequest request =
-                        RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (Map<String, String>) null);
+                        RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (HttpHeaders) null);
 
                 BarrierRequestHelper.createAsync(request, authTokenProvider, 10l, 10l).block();
                 request =
@@ -61,7 +62,7 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (HttpHeaders) null);
 
         RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
 
@@ -83,7 +84,7 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (HttpHeaders) null);
 
         RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
 
@@ -105,7 +106,7 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (HttpHeaders) null);
 
         RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
 
@@ -129,7 +130,7 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, "7mVFAA==", resourceType, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(operationType, "7mVFAA==", resourceType, (HttpHeaders) null);
 
         RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
 
@@ -191,7 +192,7 @@ public class BarrierRequestHelperTest {
     }
 
     private String getHeaderValue(RxDocumentServiceRequest req, String name) {
-        return req.getHeaders().get(name);
+        return req.getHeaders().getValue(name);
     }
 
     private String getPartitionKey(RxDocumentServiceRequest req) {

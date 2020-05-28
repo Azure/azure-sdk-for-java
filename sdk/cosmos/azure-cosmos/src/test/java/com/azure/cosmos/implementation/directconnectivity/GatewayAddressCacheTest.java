@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
@@ -104,7 +105,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
                     collectionLink + "/docs/",
-                    getDocumentDefinition(), new HashMap<>());
+                    getDocumentDefinition(), new HttpHeaders());
             if (i == 1) {
                 req.forceCollectionRoutingMapRefresh = true; //testing address api with x-ms-collectionroutingmap-refresh true
             }
@@ -137,7 +138,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
                     "/dbs",
-                    new Database(), new HashMap<>());
+                    new Database(), new HttpHeaders());
             if (i == 1) {
                 req.forceCollectionRoutingMapRefresh = true; //testing address api with x-ms-collectionroutingmap-refresh true
             }
@@ -181,7 +182,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
                         collectionLink,
-                       new Database(), new HashMap<>());
+                       new Database(), new HttpHeaders());
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -240,7 +241,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
                         collectionLink,
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
         boolean forceRefreshPartitionAddresses = false;
@@ -295,7 +296,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
                         collectionLink,
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
@@ -353,7 +354,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
                         collectionLink,
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = origCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
@@ -447,7 +448,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
                         "/dbs",
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
         boolean forceRefreshPartitionAddresses = false;
@@ -493,7 +494,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
                         "/dbs",
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
         boolean forceRefreshPartitionAddresses = false;
@@ -538,7 +539,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
                         "/dbs",
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
 
@@ -631,7 +632,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
                         "/dbs",
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
 
@@ -722,7 +723,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
                         "/dbs",
-                        new Database(), new HashMap<>());
+                        new Database(), new HttpHeaders());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
 

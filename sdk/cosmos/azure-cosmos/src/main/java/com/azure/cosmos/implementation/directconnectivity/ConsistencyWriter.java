@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
@@ -95,7 +96,7 @@ public class ConsistencyWriter {
             return Mono.error(new RequestTimeoutException());
         }
 
-        String sessionToken = entity.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN);
+        String sessionToken = entity.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
 
         return this.writePrivateAsync(entity, timeout, forceRefresh).doOnEach(
             arg -> {
@@ -216,7 +217,7 @@ public class ConsistencyWriter {
         if (this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) {
             int numberOfReadRegions = -1;
             String headerValue = null;
-            if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS)) != null) {
+            if ((headerValue = response.getHeaders().getValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS)) != null) {
                 numberOfReadRegions = Integer.parseInt(headerValue);
             }
 
@@ -348,11 +349,12 @@ public class ConsistencyWriter {
 
         String headerValue;
 
-        if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.LSN)) != null) {
+        HttpHeaders responseHeaders = response.getHeaders();
+        if ((headerValue = responseHeaders.getValue(WFConstants.BackendHeaders.LSN)) != null) {
             lsn.v = Long.parseLong(headerValue);
         }
 
-        if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
+        if ((headerValue = responseHeaders.getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
             globalCommittedLsn.v = Long.parseLong(headerValue);
         }
     }

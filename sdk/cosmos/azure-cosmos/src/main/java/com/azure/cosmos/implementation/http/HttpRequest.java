@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.core.http.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -157,7 +158,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest withHeader(String name, String value) {
-        headers.set(name, value);
+        headers.put(name, value);
         return this;
     }
 
@@ -189,7 +190,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest withBody(byte[] content) {
-        headers.set("Content-Length", String.valueOf(content.length));
+        headers.put("Content-Length", String.valueOf(content.length));
         // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
         return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
     }

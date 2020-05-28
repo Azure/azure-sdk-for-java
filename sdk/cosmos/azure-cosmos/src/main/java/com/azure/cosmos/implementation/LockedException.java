@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-
-import java.util.Map;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -64,7 +61,7 @@ public class LockedException extends CosmosException {
                     String requestUriString) {
         super(String.format("%s: %s", RMResources.Locked, message),
             innerException,
-            HttpUtils.asCoreHttpHeaders(headers),
+            headers,
             HttpConstants.StatusCodes.LOCKED,
             requestUriString);
     }

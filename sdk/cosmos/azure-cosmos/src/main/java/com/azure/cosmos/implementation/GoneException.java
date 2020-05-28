@@ -3,14 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The type Gone exception.
@@ -66,7 +63,7 @@ public class GoneException extends CosmosException {
     }
 
     GoneException(Exception innerException) {
-        this(RMResources.Gone, innerException, new com.azure.core.http.HttpHeaders(), null);
+        this(RMResources.Gone, innerException, new HttpHeaders(), (String) null);
     }
 
     /**
@@ -77,13 +74,13 @@ public class GoneException extends CosmosException {
      * @param requestUrl the request url
      */
     public GoneException(String message, HttpHeaders headers, URI requestUrl) {
-        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.GONE, requestUrl != null
+        super(message, null, headers, HttpConstants.StatusCodes.GONE, requestUrl != null
                                                                                            ? requestUrl.toString()
                                                                                            : null);
     }
 
     GoneException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.GONE, requestUriString);
+        super(message, null, headers, HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
     /**
@@ -100,7 +97,7 @@ public class GoneException extends CosmosException {
                          URI requestUrl) {
         super(message,
             innerException,
-            HttpUtils.asCoreHttpHeaders(headers),
+            headers,
             HttpConstants.StatusCodes.GONE,
             requestUrl != null
                 ? requestUrl.toString()

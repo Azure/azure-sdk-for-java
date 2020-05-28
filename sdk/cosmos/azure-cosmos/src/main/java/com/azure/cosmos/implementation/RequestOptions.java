@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
 public class RequestOptions {
-    private Map<String, String> customOptions;
+    private HttpHeaders customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private IndexingDirective indexingDirective;
@@ -308,7 +309,7 @@ public class RequestOptions {
      */
     public void setHeader(String name, String value) {
         if (this.customOptions == null) {
-            this.customOptions = new HashMap<>();
+            this.customOptions = new HttpHeaders();
         }
         this.customOptions.put(name, value);
     }
@@ -318,7 +319,7 @@ public class RequestOptions {
      *
      * @return Map of custom request options
      */
-    public Map<String, String> getHeaders() {
+    public HttpHeaders getHeaders() {
         return this.customOptions;
     }
     /**

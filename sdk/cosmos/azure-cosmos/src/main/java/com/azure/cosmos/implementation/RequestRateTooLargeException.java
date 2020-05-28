@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;
@@ -62,19 +61,19 @@ public class RequestRateTooLargeException extends CosmosException {
      * @param requestUri the request uri
      */
     public RequestRateTooLargeException(String message, HttpHeaders headers, URI requestUri) {
-        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+        super(message, null, headers, HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
             requestUri != null ? requestUri.toString() : null);
     }
 
     RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
+        super(message, null, headers, HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
     }
 
     RequestRateTooLargeException(String message,
                                  Exception innerException,
                                  HttpHeaders headers,
                                  URI requestUri) {
-        super(message, innerException, HttpUtils.asCoreHttpHeaders(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+        super(message, innerException, headers, HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
             requestUri != null ? requestUri.toString() : null);
     }
 }

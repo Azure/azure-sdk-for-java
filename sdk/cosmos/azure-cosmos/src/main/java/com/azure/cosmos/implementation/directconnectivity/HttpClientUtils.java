@@ -39,7 +39,7 @@ public class HttpClientUtils {
 
             // TODO: we should set resource address in the Document Client Exception
             return BridgeInternal.createCosmosException(httpResponse.statusCode(), cosmosError,
-                    httpResponse.headers().asCoreHttpHeaders());
+                    httpResponse.headers());
         });
     }
 }

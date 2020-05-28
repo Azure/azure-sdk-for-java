@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -127,18 +126,8 @@ public class StoreClient implements IStoreClient {
     private RxDocumentServiceResponse completeResponse(
         StoreResponse storeResponse,
         RxDocumentServiceRequest request) throws InternalServerErrorException {
-        if (storeResponse.getResponseHeaderNames().length != storeResponse.getResponseHeaderValues().length) {
-            throw new InternalServerErrorException(RMResources.InvalidBackendResponse);
-        }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        for (int idx = 0; idx < storeResponse.getResponseHeaderNames().length; idx++) {
-            String name = storeResponse.getResponseHeaderNames()[idx];
-            String value = storeResponse.getResponseHeaderValues()[idx];
-
-            httpHeaders.put(name, value);
-        }
-
+        HttpHeaders httpHeaders = storeResponse.getHeaders();
         this.updateResponseHeader(request, httpHeaders);
         this.captureSessionToken(request, httpHeaders);
         BridgeInternal.recordRetryContext(request.requestContext.cosmosDiagnostics, request);
@@ -159,7 +148,7 @@ public class StoreClient implements IStoreClient {
     }
 
     private void updateResponseHeader(RxDocumentServiceRequest request, HttpHeaders headers) {
-        String requestConsistencyLevel = request.getHeaders().get(HttpConstants.Headers.CONSISTENCY_LEVEL);
+        String requestConsistencyLevel = request.getHeaders().getValue(HttpConstants.Headers.CONSISTENCY_LEVEL);
 
         boolean sessionConsistency =
                 this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION ||
@@ -174,7 +163,7 @@ public class StoreClient implements IStoreClient {
         String partitionKeyRangeId = headers.getValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
 
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
-            String inputSession = request.getHeaders().get(HttpConstants.Headers.SESSION_TOKEN);
+            String inputSession = request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
             if (!Strings.isNullOrEmpty(inputSession)
                     && inputSession.indexOf(ISessionToken.PARTITION_KEY_RANGE_SESSION_SEPARATOR) >= 1) {
                 partitionKeyRangeId = inputSession.substring(0,

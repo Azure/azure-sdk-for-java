@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -66,12 +67,12 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap, int initialPageSize,
             SqlQuerySpec querySpecForInit) {
         this.pageSize = initialPageSize;
-        Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
+        HttpHeaders commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
         for (Map.Entry<PartitionKeyRange, String> entry : partitionKeyRangeToContinuationTokenMap.entrySet()) {
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (partitionKeyRange,
                                                                                                      continuationToken, pageSize) -> {
-                Map<String, String> headers = new HashMap<>(commonRequestHeaders);
+                HttpHeaders headers = new HttpHeaders(commonRequestHeaders);
                 headers.put(HttpConstants.Headers.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.Headers.PAGE_SIZE, Strings.toString(pageSize));
 
@@ -135,7 +136,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
     abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
             String initialContinuationToken, int initialPageSize, FeedOptions feedOptions, SqlQuerySpec querySpecForInit,
-            Map<String, String> commonRequestHeaders,
+            HttpHeaders commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc);
@@ -157,7 +158,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         FeedOptions feedOptions,
         UUID activityId,
         String collectionRid) {
-        Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
+        HttpHeaders commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
         for (Map.Entry<PartitionKeyRange, SqlQuerySpec> entry : rangeQueryMap.entrySet()) {
             final PartitionKeyRange targetRange = entry.getKey();
@@ -165,7 +166,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (
                 partitionKeyRange,
                 continuationToken, pageSize) -> {
-                Map<String, String> headers = new HashMap<>(commonRequestHeaders);
+                HttpHeaders headers = new HttpHeaders(commonRequestHeaders);
                 headers.put(HttpConstants.Headers.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.Headers.PAGE_SIZE, Strings.toString(pageSize));
 

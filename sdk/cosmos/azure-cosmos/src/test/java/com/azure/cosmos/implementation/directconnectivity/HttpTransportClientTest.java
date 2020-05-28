@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -31,7 +32,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.channel.ConnectTimeoutException;
@@ -146,10 +146,10 @@ public class HttpTransportClientTest {
         assertThat(httpClientMockWrapper.getCapturedInvocation()).asList().hasSize(1);
         HttpRequest httpRequest = httpClientMockWrapper.getCapturedInvocation().get(0);
 
-        assertThat(httpRequest.headers().value(HttpConstants.Headers.USER_AGENT)).endsWith("i am suffix");
-        assertThat(httpRequest.headers().value(HttpConstants.Headers.CACHE_CONTROL)).isEqualTo("no-cache");
-        assertThat(httpRequest.headers().value(HttpConstants.Headers.ACCEPT)).isEqualTo("application/json");
-        assertThat(httpRequest.headers().value(HttpConstants.Headers.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
+        assertThat(httpRequest.headers().getValue(HttpConstants.Headers.USER_AGENT)).endsWith("i am suffix");
+        assertThat(httpRequest.headers().getValue(HttpConstants.Headers.CACHE_CONTROL)).isEqualTo("no-cache");
+        assertThat(httpRequest.headers().getValue(HttpConstants.Headers.ACCEPT)).isEqualTo("application/json");
+        assertThat(httpRequest.headers().getValue(HttpConstants.Headers.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
 
     }
 
@@ -593,7 +593,7 @@ public class HttpTransportClientTest {
                 operationType,
                 resourceType,
                 resourceFullName,
-                new HashMap<>());
+                new HttpHeaders());
 
         req.setContentBytes(content);
         return req;

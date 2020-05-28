@@ -2,13 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
+
 import java.util.Map;
 
 public interface IAuthorizationTokenProvider {
     String getUserAuthorizationToken(String resourceAddress,
                                      ResourceType resourceType,
                                      RequestVerb verb,
-                                     Map<String, String> headers,
+                                     HttpHeaders headers,
                                      AuthorizationTokenType primarymasterkey,
                                      Map<String, Object> properties);
 }

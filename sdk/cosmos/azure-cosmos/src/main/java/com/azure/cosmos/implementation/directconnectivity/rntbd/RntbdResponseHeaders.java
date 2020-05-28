@@ -194,21 +194,6 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         return this.payloadPresent.isPresent() && this.payloadPresent.getValue(Byte.class) != 0x00;
     }
 
-    List<Map.Entry<String, String>> asList(final RntbdContext context, final UUID activityId) {
-
-        final ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builderWithExpectedSize(this.computeCount() + 2);
-        builder.add(new Entry(Headers.SERVER_VERSION, context.serverVersion()));
-        builder.add(new Entry(Headers.ACTIVITY_ID, activityId.toString()));
-
-        this.collectEntries((token, toEntry) -> {
-            if (token.isPresent()) {
-                builder.add(toEntry.apply(token));
-            }
-        });
-
-        return builder.build();
-    }
-
     public HttpHeaders asCoreHttpHeaders(final RntbdContext context, final UUID activityId) {
 
         HttpHeaders httpHeaders = new HttpHeaders();

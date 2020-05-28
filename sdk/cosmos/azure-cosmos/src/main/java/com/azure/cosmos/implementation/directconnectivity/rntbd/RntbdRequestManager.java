@@ -668,7 +668,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         for (RntbdRequestRecord record : this.pendingRequests.values()) {
 
-            final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
+            final HttpHeaders requestHeaders = record.args().serviceRequest().getHeaders();
             final String requestUri = record.args().physicalAddress().toString();
 
             final GoneException error = new GoneException(message, cause, (com.azure.core.http.HttpHeaders) null, requestUri);

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -85,7 +86,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     public String generateKeyAuthorizationSignature(RequestVerb verb,
                                                     String resourceIdOrFullName,
                                                     ResourceType resourceType,
-                                                    Map<String, String> headers) {
+                                                    HttpHeaders headers) {
         return this.generateKeyAuthorizationSignature(verb, resourceIdOrFullName,
                 BaseAuthorizationTokenProvider.getResourceSegment(resourceType), headers);
     }
@@ -102,7 +103,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     public String generateKeyAuthorizationSignature(RequestVerb verb,
             String resourceIdOrFullName,
             String resourceSegment,
-            Map<String, String> headers) {
+            HttpHeaders headers) {
         if (verb == null) {
             throw new IllegalArgumentException("verb");
         }
@@ -136,14 +137,16 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 .append(resourceIdOrFullName)
                 .append('\n');
 
-        if (headers.containsKey(HttpConstants.Headers.X_DATE)) {
-            body.append(headers.get(HttpConstants.Headers.X_DATE).toLowerCase(Locale.ROOT));
+        String xDateHeaderValue = headers.getValue(HttpConstants.Headers.X_DATE);
+        if (headers.getValue(HttpConstants.Headers.X_DATE) != null) {
+            body.append(xDateHeaderValue.toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');
 
-        if (headers.containsKey(HttpConstants.Headers.HTTP_DATE)) {
-            body.append(headers.get(HttpConstants.Headers.HTTP_DATE).toLowerCase(Locale.ROOT));
+        String httpDateHeaderValue = headers.getValue(HttpConstants.Headers.HTTP_DATE);
+        if (httpDateHeaderValue != null) {
+            body.append(httpDateHeaderValue.toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');

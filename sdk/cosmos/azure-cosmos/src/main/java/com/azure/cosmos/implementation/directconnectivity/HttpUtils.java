@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.Constants.UrlEncodingInfo;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,56 +39,22 @@ public class HttpUtils {
         }
     }
 
-    public static com.azure.core.http.HttpHeaders asCoreHttpHeaders(HttpHeaders headers) {
-        if (headers == null) {
-            return new com.azure.core.http.HttpHeaders();
-        }
-
-        com.azure.core.http.HttpHeaders coreHttpHeaders = new com.azure.core.http.HttpHeaders();
-        for (Entry<String, String> entry : headers.asCoreHttpHeaders().entrySet()) {
-            if (entry.getKey().equals(HttpConstants.Headers.OWNER_FULL_NAME)) {
-                coreHttpHeaders.put(entry.getKey(), HttpUtils.urlDecode(entry.getValue()));
-            } else {
-                coreHttpHeaders.put(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return coreHttpHeaders;
-    }
-
-    public static Map<String, String> asMap(HttpHeaders headers) {
-        if (headers == null) {
-            return new HashMap<>();
-        }
-
-        HashMap<String, String> map = new HashMap<>(headers.size());
-        for (Entry<String, String> entry : headers.toMap().entrySet()) {
-            if (entry.getKey().equals(HttpConstants.Headers.OWNER_FULL_NAME)) {
-                map.put(entry.getKey(), HttpUtils.urlDecode(entry.getValue()));
-            } else {
-                map.put(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return map;
-    }
-
-    public static String getDateHeader(Map<String, String> headerValues) {
+    public static String getDateHeader(HttpHeaders headerValues) {
         if (headerValues == null) {
             return StringUtils.EMPTY;
         }
 
         // Since Date header is overridden by some proxies/http client libraries, we support
         // an additional date header 'x-ms-date' and prefer that to the regular 'date' header.
-        String date = headerValues.get(HttpConstants.Headers.X_DATE);
+        String date = headerValues.getValue(HttpConstants.Headers.X_DATE);
         if (Strings.isNullOrEmpty(date)) {
-            date = headerValues.get(HttpConstants.Headers.HTTP_DATE);
+            date = headerValues.getValue(HttpConstants.Headers.HTTP_DATE);
         }
 
         return date != null ? date : StringUtils.EMPTY;
     }
 
-    public static void OwnerFullName(com.azure.core.http.HttpHeaders httpHeaders) {
+    public static void OwnerFullName(HttpHeaders httpHeaders) {
         String ownerValue = httpHeaders.getValue(HttpConstants.Headers.OWNER_FULL_NAME);
         if (StringUtils.isNotEmpty(ownerValue)) {
             String unescapedUrl = HttpUtils.urlDecode(ownerValue);

@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -20,23 +21,22 @@ public class HttpUtilsTest {
 
     @Test(groups = { "unit" })
     public void verifyConversionOfHttpResponseHeadersToMap() {
-        HttpHeaders headersMap = new HttpHeaders(1);
-        headersMap.set(HttpConstants.Headers.OWNER_FULL_NAME, OWNER_FULL_NAME_VALUE);
+        HttpHeaders headersMap = new HttpHeaders();
+        headersMap.put(HttpConstants.Headers.OWNER_FULL_NAME, OWNER_FULL_NAME_VALUE);
 
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         Mockito.when(httpResponse.headers()).thenReturn(headersMap);
         HttpHeaders httpResponseHeaders = httpResponse.headers();
-        Set<Entry<String, String>> resultHeadersSet = HttpUtils.asCoreHttpHeaders(httpResponseHeaders).entrySet();
 
-        assertThat(resultHeadersSet.size()).isEqualTo(1);
-        Entry<String, String> entry = resultHeadersSet.iterator().next();
-        assertThat(entry.getKey()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
+        assertThat(httpResponseHeaders.getSize()).isEqualTo(1);
+        HttpHeader entry = httpResponseHeaders.iterator().next();
+        assertThat(entry.getName()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
 
-        List<Entry<String, String>> resultHeadersList = HttpUtils.OwnerFullName(httpResponseHeaders.asCoreHttpHeaders().entrySet());
-        assertThat(resultHeadersList.size()).isEqualTo(1);
-        entry = resultHeadersSet.iterator().next();
-        assertThat(entry.getKey()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
+        HttpUtils.OwnerFullName(httpResponseHeaders);
+        assertThat(httpResponseHeaders.getSize()).isEqualTo(1);
+        entry = httpResponseHeaders.iterator().next();
+        assertThat(entry.getName()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
     }
 }

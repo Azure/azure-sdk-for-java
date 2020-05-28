@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
@@ -30,7 +31,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -255,7 +255,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         addressQuery.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
 
-        HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
+        HttpHeaders headers = new HttpHeaders(defaultRequestHeaders);
         if (forceRefresh) {
             headers.put(HttpConstants.Headers.FORCE_REFRESH, "true");
         }
@@ -295,13 +295,8 @@ public class GatewayAddressCache implements IAddressCache {
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
-        HttpHeaders httpHeaders = new HttpHeaders(headers.size());
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            httpHeaders.set(entry.getKey(), entry.getValue());
-        }
-
         ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), headers);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
@@ -454,7 +449,7 @@ public class GatewayAddressCache implements IAddressCache {
         );
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
-        HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
+        HttpHeaders headers = new HttpHeaders(defaultRequestHeaders);
 
         if (forceRefresh) {
             headers.put(HttpConstants.Headers.FORCE_REFRESH, "true");
@@ -482,13 +477,8 @@ public class GatewayAddressCache implements IAddressCache {
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
-        HttpHeaders defaultHttpHeaders = new HttpHeaders(headers.size());
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            defaultHttpHeaders.set(entry.getKey(), entry.getValue());
-        }
-
         HttpRequest httpRequest;
-        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
+        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), headers);
         ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
@@ -539,7 +529,7 @@ public class GatewayAddressCache implements IAddressCache {
                 collection.getResourceId(),
                 ResourceType.DocumentCollection,
                 //       AuthorizationTokenType.PrimaryMasterKey
-                Collections.emptyMap());
+                new HttpHeaders());
         for (int i = 0; i < partitionKeyRangeIdentities.size(); i += batchSize) {
 
             int endIndex = i + batchSize;

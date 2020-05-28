@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.HttpHeaders;
+
 import java.util.Map;
 
 /**
@@ -13,7 +15,7 @@ public interface AuthorizationTokenProvider {
     String generateKeyAuthorizationSignature(RequestVerb verb,
                                              String resourceIdOrFullName,
                                              ResourceType resourceType,
-                                             Map<String, String> headers);
+                                             HttpHeaders headers);
 
     String getAuthorizationTokenUsingResourceTokens(Map<String, String> resourceTokens,
                                                     String path,
