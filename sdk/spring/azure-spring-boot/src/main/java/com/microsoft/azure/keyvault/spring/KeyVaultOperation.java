@@ -22,6 +22,11 @@ import java.util.stream.Stream;
  */
 public class KeyVaultOperation {
 
+    /**
+     * Stores the case sensitive flag.
+     */
+    private final boolean caseSensitive;
+
     private final SecretClient keyVaultClient;
     private final String vaultUri;
     private volatile List<String> secretNames;
@@ -33,8 +38,10 @@ public class KeyVaultOperation {
         final SecretClient keyVaultClient,
         String vaultUri,
         final long secretKeysRefreshIntervalInMs,
-        final List<String> secretNames
+        final List<String> secretNames,
+        boolean caseSensitive
     ) {
+        this.caseSensitive = caseSensitive;
         this.keyVaultClient = keyVaultClient;
         // TODO(pan): need to validate why last '/' need to be truncated.
         this.vaultUri = StringUtils.trimTrailingCharacter(vaultUri.trim(), '/');
@@ -51,12 +58,20 @@ public class KeyVaultOperation {
 
     public String[] getPropertyNames() {
         refreshSecretKeysIfNeeded();
-        return Optional.ofNullable(secretNames)
+        if (!caseSensitive) {
+            return Optional.ofNullable(secretNames)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
                 .flatMap(p -> Stream.of(p, p.replaceAll("-", ".")))
                 .distinct()
                 .toArray(String[]::new);
+        } else {
+            return Optional.ofNullable(secretNames)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .distinct()
+                .toArray(String[]::new);
+        }
     }
 
 
@@ -77,15 +92,19 @@ public class KeyVaultOperation {
      * @return the value of secret with given name or null.
      */
     private String toKeyVaultSecretName(@NonNull String property) {
-        if (property.matches("[a-z0-9A-Z-]+")) {
-            return property.toLowerCase(Locale.US);
-        } else if (property.matches("[A-Z0-9_]+")) {
-            return property.toLowerCase(Locale.US).replaceAll("_", "-");
+        if (!caseSensitive) {
+            if (property.matches("[a-z0-9A-Z-]+")) {
+                return property.toLowerCase(Locale.US);
+            } else if (property.matches("[A-Z0-9_]+")) {
+                return property.toLowerCase(Locale.US).replaceAll("_", "-");
+            } else {
+                return property.toLowerCase(Locale.US)
+                        .replaceAll("-", "")     // my-project -> myproject
+                        .replaceAll("_", "")     // my_project -> myproject
+                        .replaceAll("\\.", "-"); // acme.myproject -> acme-myproject
+            }
         } else {
-            return property.toLowerCase(Locale.US)
-                    .replaceAll("-", "")     // my-project -> myproject
-                    .replaceAll("_", "")     // my_project -> myproject
-                    .replaceAll("\\.", "-"); // acme.myproject -> acme-myproject
+            return property;
         }
     }
 

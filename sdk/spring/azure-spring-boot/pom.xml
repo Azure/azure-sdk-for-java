@@ -120,7 +120,7 @@
       <version>2.2.3.FIX1</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
       <optional>true</optional>
     </dependency>
-    
+
     <!-- Micrometer metrics -->
     <dependency>
       <groupId>io.micrometer</groupId>
@@ -244,12 +244,6 @@
       <artifactId>JUnitParams</artifactId>
       <version>1.1.1</version> <!-- {x-version-update;pl.pragmatists:JUnitParams;external_dependency} -->
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.4</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 

@@ -92,7 +92,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @param environment the environment.
      * @return true if enabled, false otherwise.
      */
-    private boolean hasMultipleKeyVaultsEnabled(ConfigurableEnvironment environment){
+    private boolean hasMultipleKeyVaultsEnabled(ConfigurableEnvironment environment) {
         boolean result = false;
         if (environment.getProperty(AZURE_KEYVAULT_PREFIX + AZURE_KEYVAULT_ORDER) != null) {
             result = true;
