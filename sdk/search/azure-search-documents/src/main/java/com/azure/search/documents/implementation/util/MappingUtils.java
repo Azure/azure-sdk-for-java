@@ -79,8 +79,8 @@ public class MappingUtils {
             searchIndices, null, null);
     }
 
-    public static PagedResponse<String> mappingPagingSearchIndexNames(
-        Response<ListIndexesResult> searchIndexResponse) {
+    public static PagedResponse<String> mappingPagingSearchIndexNames(Response<ListIndexesResult> 
+        searchIndexResponse) {
         List<String> searchIndexNames = searchIndexResponse.getValue().getIndexes().stream()
             .map(SearchIndexConverter::map).map(SearchIndex::getName).collect(toList());
         return new PagedResponseBase<HttpHeaders, String>(
