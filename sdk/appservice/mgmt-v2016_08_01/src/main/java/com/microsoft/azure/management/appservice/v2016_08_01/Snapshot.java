@@ -11,12 +11,12 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.SnapshotInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 
 /**
  * Type representing Snapshot.
  */
-public interface Snapshot extends HasInner<SnapshotInner>, HasManager<AppServiceManager> {
+public interface Snapshot extends HasInner<SnapshotInner>, HasManager<WebManager> {
     /**
      * @return the id value.
      */

@@ -14,14 +14,14 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2016_08_01.ConnStringValueTypePair;
 
 class ConnectionStringDictionaryImpl extends WrapperImpl<ConnectionStringDictionaryInner> implements ConnectionStringDictionary {
-    private final AppServiceManager manager;
-    ConnectionStringDictionaryImpl(ConnectionStringDictionaryInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    ConnectionStringDictionaryImpl(ConnectionStringDictionaryInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

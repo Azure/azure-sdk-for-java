@@ -11,10 +11,10 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
-        <version>1.2.0</version>
-        <relativePath>../../parents/azure-arm-parent</relativePath>
+        <version>1.1.0</version>
+        <relativePath>../../../pom.management.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-appservice</artifactId>
+    <artifactId>azure-mgmt-web</artifactId>
     <version>1.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Web Management</name>
@@ -71,6 +71,8 @@
             <artifactId>azure-arm-client-runtime</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
+            <!--Below version for test jar needs to be removed, this will be done as part of v1-runtime 1.6.7-->
+            <version>1.6.5</version>
         </dependency>
     </dependencies>
     <build>

@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.SlotConfigNamesResourceInner;
 import java.util.List;
 
 /**
  * Type representing SlotConfigNamesResource.
  */
-public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourceInner>, HasManager<AppServiceManager> {
+public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourceInner>, HasManager<WebManager> {
     /**
      * @return the appSettingNames value.
      */

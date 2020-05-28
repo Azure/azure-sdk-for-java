@@ -16,12 +16,12 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2016_08_01.ContinuousWebJobStatus;
 
 class ContinuousWebJobImpl extends IndexableRefreshableWrapperImpl<ContinuousWebJob, ContinuousWebJobInner> implements ContinuousWebJob {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String webJobName;
 
-    ContinuousWebJobImpl(ContinuousWebJobInner inner,  AppServiceManager manager) {
+    ContinuousWebJobImpl(ContinuousWebJobInner inner,  WebManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -31,7 +31,7 @@ class ContinuousWebJobImpl extends IndexableRefreshableWrapperImpl<ContinuousWeb
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
