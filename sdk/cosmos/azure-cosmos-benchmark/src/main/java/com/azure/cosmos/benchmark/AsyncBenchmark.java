@@ -91,7 +91,7 @@ abstract class AsyncBenchmark<T> {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                 cosmosClient.createDatabase(cfg.getDatabaseId()).block();
                 cosmosAsyncDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
-                    logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
+                logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
                 databaseCreated = true;
             } else {
                 throw e;
