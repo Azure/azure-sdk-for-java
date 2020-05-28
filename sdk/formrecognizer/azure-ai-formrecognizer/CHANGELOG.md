@@ -1,6 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- Rename model `PageRange` to `FormPageRange`
+- Rename property `startPageNumber` to `firstPageNumber` and `endPageNumber` to `lastPageNumber` in model `PageRange`
 - Rename `getCustomModelInfos` to `listCustomModels`
 - Rename property `lastUpdatedOn` to `completedOn` and `createdOn` to `requestedOn` in `CustomFormModel` and
 `CustomFormModelInfo` model

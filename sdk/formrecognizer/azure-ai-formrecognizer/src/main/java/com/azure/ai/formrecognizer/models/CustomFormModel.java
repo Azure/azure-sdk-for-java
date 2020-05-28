@@ -41,7 +41,8 @@ public final class CustomFormModel {
     private final OffsetDateTime completedOn;
 
     /*
-     * List of sub models.
+     * List of sub model that are part of this model, each of which can recognize and extract fields
+     * from a different type of form.
      */
     private final IterableStream<CustomFormSubmodel> submodels;
 
@@ -57,7 +58,8 @@ public final class CustomFormModel {
      * @param modelStatus Status of the model.
      * @param requestedOn Date and time (UTC) when the training model was requested.
      * @param completedOn Date and time (UTC) when the model training was completed.
-     * @param submodels List of sub models.
+     * @param submodels List of sub model that are part of this model, each of which can recognize and extract fields
+     * from a different type of form.
      * @param modelError List of errors returned during the training operation.
      * @param trainingDocuments List of the documents used to train the model.
      */
@@ -120,7 +122,8 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the recognized sub models returned during the training operation.
+     * Get the list of sub model that are part of this model, each of which can recognize
+     * and extract fields from a different type of form.
      *
      * @return the sub models value.
      */

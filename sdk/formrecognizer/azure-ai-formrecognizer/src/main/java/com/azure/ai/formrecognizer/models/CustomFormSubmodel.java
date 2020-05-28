@@ -23,7 +23,7 @@ public final class CustomFormSubmodel {
      */
     private final Map<String, CustomFormModelField> fieldMap;
 
-    /**
+    /*
      * The form type.
      */
     private final String formType;
