@@ -112,7 +112,6 @@ public class ReadmeSamples {
             System.out.printf("----Recognizing receipt for page %s%n----", i);
             RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
             System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
             System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());

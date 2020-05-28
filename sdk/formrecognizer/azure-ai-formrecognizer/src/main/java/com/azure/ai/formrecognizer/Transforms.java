@@ -180,7 +180,7 @@ final class Transforms {
                             dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
                             dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
                             pageNumber, setReferenceElements(dataTableCell.getElements(), readResults, pageNumber)))
-                        .collect(Collectors.toList())))
+                        .collect(Collectors.toList()), pageNumber))
             .collect(Collectors.toList());
     }
 
@@ -231,7 +231,7 @@ final class Transforms {
                 } else {
                     FieldText labelText = new FieldText(key, null, null, null);
                     extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
-                        key, null, null, null));
+                        key, null, null));
                 }
             });
         }
@@ -257,36 +257,36 @@ final class Transforms {
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValuePhoneNumber(), valueText, pageNumber);
+                    key, fieldValue.getValuePhoneNumber(), valueText);
                 break;
             case STRING:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueString(), valueText, pageNumber);
+                    key, fieldValue.getValueString(), valueText);
                 break;
             case TIME:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueTime(), valueText, pageNumber);
+                    key, fieldValue.getValueTime(), valueText);
                 break;
             case DATE:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueDate(), valueText, pageNumber);
+                    key, fieldValue.getValueDate(), valueText);
                 break;
             case INTEGER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueInteger(), valueText, pageNumber);
+                    key, fieldValue.getValueInteger(), valueText);
                 break;
             case NUMBER:
                 value = new FormField<Number>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueNumber(), valueText, pageNumber);
+                    key, fieldValue.getValueNumber(), valueText);
                 break;
             case ARRAY:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), null, key,
-                    toFormFieldArray(fieldValue.getValueArray(), readResults), null, pageNumber);
+                    toFormFieldArray(fieldValue.getValueArray(), readResults), null);
                 break;
             case OBJECT:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText,
-                    pageNumber);
+                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText
+                );
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
@@ -360,8 +360,8 @@ final class Transforms {
             DimensionUnit.fromString(readResultItem.getUnit().toString()),
             readResultItem.getWidth(),
             perPageLineList,
-            perPageTableList
-        );
+            perPageTableList,
+            readResultItem.getPage());
     }
 
     /**
@@ -395,7 +395,7 @@ final class Transforms {
 
             String fieldName = "field-" + index;
             FormField<String> formField = new FormField<>(setDefaultConfidenceValue(keyValuePair.getConfidence()),
-                labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText, pageNumber);
+                labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText);
             formFieldMap.put(fieldName, formField);
         }));
         return formFieldMap;

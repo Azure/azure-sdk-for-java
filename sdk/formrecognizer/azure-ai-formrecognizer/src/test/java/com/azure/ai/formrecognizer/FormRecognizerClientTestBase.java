@@ -104,11 +104,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateFormTableData(List<DataTable> expectedFormTables,
-        List<FormTable> actualFormTable, List<ReadResult> readResults, boolean includeTextDetails) {
+        List<FormTable> actualFormTable, List<ReadResult> readResults, boolean includeTextDetails, int pageNumber) {
         assertEquals(expectedFormTables.size(), actualFormTable.size());
         for (int i = 0; i < actualFormTable.size(); i++) {
             DataTable expectedTable = expectedFormTables.get(i);
             FormTable actualTable = actualFormTable.get(i);
+            assertEquals(pageNumber, actualTable.getPageNumber());
             assertEquals(expectedTable.getColumns(), actualTable.getColumnCount());
             validateCellData(expectedTable.getCells(), actualTable.getCells(), readResults, includeTextDetails);
             assertEquals(expectedTable.getRows(), actualTable.getRowCount());
@@ -341,7 +342,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             actualRecognizedReceipt.getReceiptItems(), readResults, includeTextDetails);
     }
 
-    void validateLayoutDataResults(List<FormPage> actualFormPageList, boolean includeTextDetails) {
+    void validateContentResultData(List<FormPage> actualFormPageList, boolean includeTextDetails) {
         AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         final List<PageResult> pageResults = analyzeResult.getPageResults();
         final List<ReadResult> readResults = analyzeResult.getReadResults();
@@ -352,12 +353,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(readResult.getWidth(), actualFormPage.getWidth());
             assertEquals(readResult.getHeight(), actualFormPage.getHeight());
             assertEquals(readResult.getUnit().toString(), actualFormPage.getUnit().toString());
+            assertEquals(readResult.getPage(), actualFormPage.getPageNumber());
             if (includeTextDetails) {
                 validateFormLineData(readResult.getLines(), actualFormPage.getLines());
             }
             if (pageResults != null) {
                 validateFormTableData(pageResults.get(i).getTables(), actualFormPage.getTables(), readResults,
-                    includeTextDetails);
+                    includeTextDetails, pageResults.get(i).getPage());
             }
         }
     }
@@ -380,7 +382,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         List<DocumentResult> documentResults = rawResponse.getDocumentResults();
 
         for (int i = 0; i < actualFormList.size(); i++) {
-            validateLayoutDataResults(actualFormList.get(i).getPages(), includeTextDetails);
+            validateContentResultData(actualFormList.get(i).getPages(), includeTextDetails);
             if (isLabeled) {
                 validateLabeledData(actualFormList.get(i), includeTextDetails, readResults, documentResults.get(i));
             } else {
@@ -492,7 +494,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             final FormField<?> actualFormField = actualForm.getFields().get(label);
             assertEquals(label, actualFormField.getName());
             if (expectedFieldValue != null) {
-                assertEquals(expectedFieldValue.getPage(), actualFormField.getPageNumber());
                 if (expectedFieldValue.getConfidence() != null) {
                     assertEquals(expectedFieldValue.getConfidence(), actualFormField.getConfidence());
                 } else {

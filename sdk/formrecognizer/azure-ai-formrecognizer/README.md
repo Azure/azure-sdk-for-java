@@ -195,11 +195,11 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 
 ### Recognize receipts
 Recognize data from a USA sales receipts using a prebuilt model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L105-L124 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L105-L123 -->
 ```java
 String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
-SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = 
+SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
     formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
 List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
@@ -207,7 +207,6 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
     System.out.printf("----Recognizing receipt for page %s%n----", i);
     RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
     USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-    System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
     System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
     System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
     System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
@@ -223,7 +222,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L128-L148 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L127-L147 -->
 ```java
 String trainingFilesUrl = "{training_set_SAS_URL}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -250,7 +249,7 @@ customFormModel.getSubModels().forEach(customFormSubModel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L152-L181 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L151-L180 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -292,7 +291,7 @@ to provide an invalid file source URL an `ErrorResponseException` would be raise
 In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L188-L192 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L187-L191 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
