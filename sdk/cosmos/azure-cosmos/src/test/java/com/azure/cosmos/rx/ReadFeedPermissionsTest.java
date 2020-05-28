@@ -50,7 +50,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator.Builder<CosmosPermissionProperties>()
                 .totalSize(createdPermissions.size())
                 .numberOfPages(expectedPageSize)
-                .exactlyContainsInAnyOrder(createdPermissions.stream().map(
+                .containsExactlyIds(createdPermissions.stream().map(
                     CosmosPermissionProperties::getId).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())

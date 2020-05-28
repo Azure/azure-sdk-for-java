@@ -43,7 +43,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())
-                .exactlyContainsInAnyOrder(
+                .containsExactlyIds(
                         createdTriggers.stream().map(CosmosTriggerProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
