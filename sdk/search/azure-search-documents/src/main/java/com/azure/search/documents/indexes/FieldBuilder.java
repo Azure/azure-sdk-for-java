@@ -4,10 +4,10 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.models.GeoPoint;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -113,7 +113,7 @@ public final class FieldBuilder {
 
 
     private static boolean isArrayOrList(Type type) {
-        return type.getClass().isArray() || isList(type);
+        return isList(type) || ((Class) type).isArray();
     }
 
     private static boolean isList(Type type) {
@@ -140,12 +140,12 @@ public final class FieldBuilder {
     }
 
     private static Type getComponentOrElementType(Type arrayOrListType, ClientLogger logger) {
-        if (arrayOrListType.getClass().isArray()) {
-            return arrayOrListType.getClass().getComponentType();
-        }
         if (isList(arrayOrListType)) {
             ParameterizedType pt = (ParameterizedType) arrayOrListType;
             return pt.getActualTypeArguments()[0];
+        }
+        if (((Class) arrayOrListType).isArray()) {
+            return ((Class) arrayOrListType).getComponentType();
         }
         throw logger.logExceptionAsError(new RuntimeException(String.format(
             "Collection type %s is not supported.", arrayOrListType.getTypeName())));
@@ -156,13 +156,7 @@ public final class FieldBuilder {
         SearchField searchField = new SearchField();
         searchField.setName(classField.getName());
         SearchFieldDataType dataType = covertToSearchFieldDataType(classField.getGenericType(), false, logger);
-        searchField.setType(dataType)
-            .setKey(false)
-            .setSearchable(false)
-            .setFacetable(false)
-            .setHidden(false)
-            .setFilterable(false)
-            .setSortable(false);
+        searchField.setType(dataType);
         return searchField;
     }
 
