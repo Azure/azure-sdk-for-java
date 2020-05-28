@@ -44,7 +44,7 @@ public class StorageTargetsInner {
     /** The Retrofit service to perform REST calls. */
     private StorageTargetsService service;
     /** The service client containing this operation class. */
-    private StorageCacheMgmtClientImpl client;
+    private StorageCacheManagementClientImpl client;
 
     /**
      * Initializes an instance of StorageTargetsInner.
@@ -52,7 +52,7 @@ public class StorageTargetsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public StorageTargetsInner(Retrofit retrofit, StorageCacheMgmtClientImpl client) {
+    public StorageTargetsInner(Retrofit retrofit, StorageCacheManagementClientImpl client) {
         this.service = retrofit.create(StorageTargetsService.class);
         this.client = client;
     }
