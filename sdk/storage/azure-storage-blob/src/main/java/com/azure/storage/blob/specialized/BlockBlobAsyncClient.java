@@ -658,7 +658,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             blobExpiryOptions = BlobExpiryOptions.ABSOLUTE;
             expiresOn = new DateTimeRfc1123(options.getExpiresOn()).toString();
         } else if (options != null && options.getTimeToExpire() != null) {
-            if (options.getExpiryRelativeTo() == BlobExpirationOffset.CreationTime) {
+            if (options.getExpiryRelativeTo() == BlobExpirationOffset.CREATION_TIME) {
                 blobExpiryOptions = BlobExpiryOptions.RELATIVE_TO_CREATION;
             } else {
                 blobExpiryOptions = BlobExpiryOptions.RELATIVE_TO_NOW;

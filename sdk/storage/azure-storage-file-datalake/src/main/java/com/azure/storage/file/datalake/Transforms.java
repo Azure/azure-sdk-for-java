@@ -478,10 +478,10 @@ class Transforms {
 
     static BlobExpirationOffset toBlobExpirationOffset(FileExpirationOffset fileExpirationOffset) {
         switch (fileExpirationOffset) {
-            case Now:
-                return BlobExpirationOffset.Now;
-            case CreationTime:
-                return BlobExpirationOffset.CreationTime;
+            case NOW:
+                return BlobExpirationOffset.NOW;
+            case CREATION_TIME:
+                return BlobExpirationOffset.CREATION_TIME;
             default:
                 throw new IllegalArgumentException("Unknown fileExpirationOffset");
         }

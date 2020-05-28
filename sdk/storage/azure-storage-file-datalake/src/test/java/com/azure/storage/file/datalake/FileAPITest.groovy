@@ -2724,12 +2724,12 @@ class FileAPITest extends APISpec {
         (expiryTimeProperty != null) == hasExpiry
 
         where:
-        options                                                                                | hasExpiry
-        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
-        new FileScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
+        new FileScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 
     @Unroll
@@ -2747,12 +2747,12 @@ class FileAPITest extends APISpec {
         (expiryTimeProperty != null) == hasExpiry
 
         where:
-        options                                                                                | hasExpiry
-        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
-        new FileScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
+        new FileScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 
     @Unroll
@@ -2773,12 +2773,12 @@ class FileAPITest extends APISpec {
             .verifyComplete()
 
         where:
-        options                                                                                | hasExpiry
-        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
-        new FileScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
+        new FileScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 
     @Unroll
@@ -2802,11 +2802,11 @@ class FileAPITest extends APISpec {
             .verifyComplete()
 
         where:
-        options                                                                                | hasExpiry
-        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CreationTime) | true
-        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.Now)          | true
-        new FileScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
+        new FileScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 }

@@ -1801,12 +1801,12 @@ class BlockBlobAPITest extends APISpec {
         expiryTimeProperty == expiryTimeListProperty
 
         where:
-        options                                                                                | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
-        new BlobScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
+        new BlobScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 
     @Unroll
@@ -1832,12 +1832,12 @@ class BlockBlobAPITest extends APISpec {
         expiryTimeProperty == expiryTimeListProperty
 
         where:
-        options                                                                                | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
-        new BlobScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
+        new BlobScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 
     @Unroll
@@ -1866,12 +1866,12 @@ class BlockBlobAPITest extends APISpec {
             .verifyComplete()
 
         where:
-        options                                                                                | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
-        new BlobScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
+        new BlobScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 
     @Unroll
@@ -1902,11 +1902,11 @@ class BlockBlobAPITest extends APISpec {
             .verifyComplete()
 
         where:
-        options                                                                                | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | true
-        new BlobScheduleDeletionOptions()                                                      | false
-        null                                                                                   | false
+        options                                                                                 | hasExpiry
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
+        new BlobScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
     }
 }

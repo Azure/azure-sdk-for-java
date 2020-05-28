@@ -10,9 +10,9 @@ public enum BlobExpirationOffset {
     /**
      * Blob's expiration time should be set relative to the blob creation time.
      */
-    CreationTime,
+    CREATION_TIME,
     /**
      * Blob's expiration time should be set relative to the current time.
      */
-    Now
+    NOW
 }

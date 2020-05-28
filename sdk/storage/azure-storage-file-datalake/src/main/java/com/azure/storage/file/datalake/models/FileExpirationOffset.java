@@ -10,9 +10,9 @@ public enum FileExpirationOffset {
     /**
      * Files's expiration time should be set relative to the file creation time.
      */
-    CreationTime,
+    CREATION_TIME,
     /**
      * Files's expiration time should be set relative to the current time.
      */
-    Now
+    NOW
 }
