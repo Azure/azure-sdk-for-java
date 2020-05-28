@@ -174,6 +174,19 @@ public class StorageCacheManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The AscOperationsInner object to access its operations.
+     */
+    private AscOperationsInner ascOperations;
+
+    /**
+     * Gets the AscOperationsInner object to access its operations.
+     * @return the AscOperationsInner object.
+     */
+    public AscOperationsInner ascOperations() {
+        return this.ascOperations;
+    }
+
+    /**
      * The CachesInner object to access its operations.
      */
     private CachesInner caches;
@@ -237,6 +250,7 @@ public class StorageCacheManagementClientImpl extends AzureServiceClient {
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.skus = new SkusInner(restClient().retrofit(), this);
         this.usageModels = new UsageModelsInner(restClient().retrofit(), this);
+        this.ascOperations = new AscOperationsInner(restClient().retrofit(), this);
         this.caches = new CachesInner(restClient().retrofit(), this);
         this.storageTargets = new StorageTargetsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
