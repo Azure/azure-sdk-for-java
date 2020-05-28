@@ -173,7 +173,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeEntities(String, String)}
      */
     @Test
-    public void recognizeEntitiesNullInputWithCountryHint() {
+    public void recognizeEntitiesNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntities(null, "en"));
         assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
@@ -206,7 +206,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchNullInputWithCountryHint() {
+    public void recognizeEntitiesBatchNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntitiesBatch(null, "en", null));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -217,7 +217,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchEmptyInputListWithCountryHint() {
+    public void recognizeEntitiesBatchEmptyInputListWithLanguageHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeEntitiesBatch(Collections.emptyList(), "en", null));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
@@ -228,7 +228,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchNullInputWithCountryHintAndRequestOptions() {
+    public void recognizeEntitiesBatchNullInputWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntitiesBatch(null, "en",
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
@@ -240,7 +240,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void recognizeEntitiesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeEntitiesBatch(Collections.emptyList(), "en",
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
@@ -289,7 +289,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeLinkedEntities(String, String)}
      */
     @Test
-    public void recognizeLinkedEntitiesNullInputWithCountryHint() {
+    public void recognizeLinkedEntitiesNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntities(null, "en"));
         assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
@@ -322,7 +322,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchNullInputWithCountryHint() {
+    public void recognizeLinkedEntitiesBatchNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntitiesBatch(null, "en", null));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -333,7 +333,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchEmptyInputListWithCountryHint() {
+    public void recognizeLinkedEntitiesBatchEmptyInputListWithLanguageHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en", null));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
@@ -344,7 +344,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchNullInputWithCountryHintAndRequestOptions() {
+    public void recognizeLinkedEntitiesBatchNullInputWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntitiesBatch(null, "en",
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
@@ -356,7 +356,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void recognizeLinkedEntitiesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en",
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
@@ -406,7 +406,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#extractKeyPhrases(String, String)}
      */
     @Test
-    public void extractKeyPhrasesNullInputWithCountryHint() {
+    public void extractKeyPhrasesNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrases(null, "en"));
         assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
@@ -439,7 +439,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchNullInputWithCountryHint() {
+    public void extractKeyPhrasesBatchNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrasesBatch(null, "en", null));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -450,7 +450,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchEmptyInputListWithCountryHint() {
+    public void extractKeyPhrasesBatchEmptyInputListWithLanguageHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.extractKeyPhrasesBatch(Collections.emptyList(), "en", null));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
@@ -461,7 +461,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchNullInputWithCountryHintAndRequestOptions() {
+    public void extractKeyPhrasesBatchNullInputWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrasesBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -472,7 +472,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void extractKeyPhrasesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.extractKeyPhrasesBatch(Collections.emptyList(), "en",
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
@@ -511,7 +511,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentiment(String)}
      */
     @Test
-    public void analyseSentimentNullInput() {
+    public void analyzeSentimentNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentiment(null));
         assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
@@ -522,7 +522,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentiment(String, String)}
      */
     @Test
-    public void analyseSentimentNullInputWithCountryHint() {
+    public void analyzeSentimentNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentiment(null, "en"));
         assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
@@ -533,7 +533,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchNullInput() {
+    public void analyzeSentimentBatchNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatch(null, null, null));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -544,7 +544,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchEmptyInputList() {
+    public void analyzeSentimentBatchEmptyInputList() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatch(Collections.emptyList(), null, null));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
@@ -555,7 +555,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchNullInputWithCountryHint() {
+    public void analyzeSentimentBatchNullInputWithLanguageHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatch(null, "en", null));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -566,7 +566,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchEmptyInputListWithCountryHint() {
+    public void analyzeSentimentBatchEmptyInputListWithLanguageHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatch(Collections.emptyList(), "en", null));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
@@ -577,7 +577,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchNullInputWithCountryHintAndRequestOptions() {
+    public void analyzeSentimentBatchNullInputWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatch(null, "en",
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
@@ -589,7 +589,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void analyzeSentimentBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatch(Collections.emptyList(), "en",
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
@@ -601,7 +601,7 @@ public class DocumentInputTest {
      * {@link TextAnalyticsClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
-    public void analyseSentimentBatchNullInputWithMaxOverload() {
+    public void analyzeSentimentBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatchWithResponse(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -612,7 +612,7 @@ public class DocumentInputTest {
      * given for {@link TextAnalyticsClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
-    public void analyseSentimentEmptyInputListWithMaxOverload() {
+    public void analyzeSentimentEmptyInputListWithMaxOverload() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatchWithResponse(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
