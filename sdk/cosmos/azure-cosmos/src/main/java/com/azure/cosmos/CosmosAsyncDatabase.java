@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -63,7 +63,7 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single cosmos database respone with
      * the read database or an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> read() {
+    public Mono<CosmosDatabaseResponse> read() {
         return read(new CosmosDatabaseRequestOptions());
     }
 
@@ -78,12 +78,12 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single cosmos database response with
      * the read database or an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> read(CosmosDatabaseRequestOptions options) {
+    public Mono<CosmosDatabaseResponse> read(CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
         return getDocClientWrapper().readDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
+                   .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
     /**
@@ -95,7 +95,7 @@ public class CosmosAsyncDatabase {
      *
      * @return an {@link Mono} containing the single cosmos database response.
      */
-    public Mono<CosmosAsyncDatabaseResponse> delete() {
+    public Mono<CosmosDatabaseResponse> delete() {
         return delete(new CosmosDatabaseRequestOptions());
     }
 
@@ -109,12 +109,12 @@ public class CosmosAsyncDatabase {
      * @param options the request options.
      * @return an {@link Mono} containing the single cosmos database response.
      */
-    public Mono<CosmosAsyncDatabaseResponse> delete(CosmosDatabaseRequestOptions options) {
+    public Mono<CosmosDatabaseResponse> delete(CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
         return getDocClientWrapper().deleteDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
+                   .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
     /* CosmosAsyncContainer operations */
@@ -200,7 +200,7 @@ public class CosmosAsyncDatabase {
         return getDocClientWrapper()
                    .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
                        ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, this)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /**

@@ -195,7 +195,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeEntities(String, String)}
      */
     @Test
-    public void recognizeEntitiesNullInputWithCountryHint() {
+    public void recognizeEntitiesNullInputWithLanguageHint() {
         StepVerifier.create(client.recognizeEntities(null, "en"))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -234,7 +234,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchNullInputWithCountryHint() {
+    public void recognizeEntitiesBatchNullInputWithLanguageHint() {
         StepVerifier.create(client.recognizeEntitiesBatch(null, "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -247,7 +247,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchEmptyInputListWithCountryHint() {
+    public void recognizeEntitiesBatchEmptyInputListWithLanguageHint() {
         StepVerifier.create(client.recognizeEntitiesBatch(Collections.emptyList(), "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -260,7 +260,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchNullInputWithCountryHintAndRequestOptions() {
+    public void recognizeEntitiesBatchNullInputWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.recognizeEntitiesBatch(null, "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -274,7 +274,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeEntitiesBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void recognizeEntitiesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.recognizeEntitiesBatch(Collections.emptyList(), "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -331,7 +331,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeLinkedEntities(String, String)}
      */
     @Test
-    public void recognizeLinkedEntitiesNullInputWithCountryHint() {
+    public void recognizeLinkedEntitiesNullInputWithLanguageHint() {
         StepVerifier.create(client.recognizeLinkedEntities(null, "en"))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -370,7 +370,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchNullInputWithCountryHint() {
+    public void recognizeLinkedEntitiesBatchNullInputWithLanguageHint() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(null, "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -383,7 +383,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchEmptyInputListWithCountryHint() {
+    public void recognizeLinkedEntitiesBatchEmptyInputListWithLanguageHint() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -396,7 +396,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchNullInputWithCountryHintAndRequestOptions() {
+    public void recognizeLinkedEntitiesBatchNullInputWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(null, "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -410,7 +410,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void recognizeLinkedEntitiesBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void recognizeLinkedEntitiesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -467,7 +467,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#extractKeyPhrases(String, String)}
      */
     @Test
-    public void extractKeyPhrasesNullInputWithCountryHint() {
+    public void extractKeyPhrasesNullInputWithLanguageHint() {
         StepVerifier.create(client.extractKeyPhrases(null, "en"))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -506,7 +506,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchNullInputWithCountryHint() {
+    public void extractKeyPhrasesBatchNullInputWithLanguageHint() {
         StepVerifier.create(client.extractKeyPhrasesBatch(null, "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -519,7 +519,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchEmptyInputListWithCountryHint() {
+    public void extractKeyPhrasesBatchEmptyInputListWithLanguageHint() {
         StepVerifier.create(client.extractKeyPhrasesBatch(Collections.emptyList(), "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -532,7 +532,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchNullInputWithCountryHintAndRequestOptions() {
+    public void extractKeyPhrasesBatchNullInputWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.extractKeyPhrasesBatch(null, "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -546,7 +546,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void extractKeyPhrasesBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void extractKeyPhrasesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.extractKeyPhrasesBatch(Collections.emptyList(), "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -590,7 +590,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentiment(String)}
      */
     @Test
-    public void analyseSentimentNullInput() {
+    public void analyzeSentimentNullInput() {
         StepVerifier.create(client.analyzeSentiment(null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -603,7 +603,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentiment(String, String)}
      */
     @Test
-    public void analyseSentimentNullInputWithCountryHint() {
+    public void analyzeSentimentNullInputWithLanguageHint() {
         StepVerifier.create(client.analyzeSentiment(null, "en"))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -616,7 +616,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchNullInput() {
+    public void analyzeSentimentBatchNullInput() {
         StepVerifier.create(client.analyzeSentimentBatch(null, null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -629,7 +629,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchEmptyInputList() {
+    public void analyzeSentimentBatchEmptyInputList() {
         StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -642,7 +642,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchNullInputWithCountryHint() {
+    public void analyzeSentimentBatchNullInputWithLanguageHint() {
         StepVerifier.create(client.analyzeSentimentBatch(null, "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -655,7 +655,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchEmptyInputListWithCountryHint() {
+    public void analyzeSentimentBatchEmptyInputListWithLanguageHint() {
         StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -668,7 +668,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchNullInputWithCountryHintAndRequestOptions() {
+    public void analyzeSentimentBatchNullInputWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.analyzeSentimentBatch(null, "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -682,7 +682,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchEmptyInputListWithCountryHintAndRequestOptions() {
+    public void analyzeSentimentBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), "en",
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -696,7 +696,7 @@ public class DocumentInputAsyncTest {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentBatchNullInputWithMaxOverload() {
+    public void analyzeSentimentBatchNullInputWithMaxOverload() {
         StepVerifier.create(client.analyzeSentimentBatchWithResponse(null,
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
@@ -710,7 +710,7 @@ public class DocumentInputAsyncTest {
      * given for {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
-    public void analyseSentimentEmptyInputListWithMaxOverload() {
+    public void analyzeSentimentEmptyInputListWithMaxOverload() {
         StepVerifier.create(client.analyzeSentimentBatchWithResponse(Collections.emptyList(),
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {

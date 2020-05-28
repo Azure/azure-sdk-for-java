@@ -114,7 +114,6 @@ public final class SearchClientBuilder {
     public SearchAsyncClient buildAsyncClient() {
         Objects.requireNonNull(indexName, "'indexName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
@@ -123,6 +122,7 @@ public final class SearchClientBuilder {
             return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
         }
 
+        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -130,21 +130,21 @@ public final class SearchClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
         httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
         httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         httpPipelinePolicies.add(new AddDatePolicy());
-        if (keyCredential != null) {
-            this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
-        }
+
+        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
+
         httpPipelinePolicies.addAll(this.policies);
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
-        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
         httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPipeline buildPipeline = new HttpPipelineBuilder()
@@ -181,13 +181,7 @@ public final class SearchClientBuilder {
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
     public SearchClientBuilder credential(AzureKeyCredential keyCredential) {
-        if (keyCredential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'keyCredential' cannot be null."));
-        }
-        if (CoreUtils.isNullOrEmpty(keyCredential.getKey())) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'keyCredential' cannot have a null or empty API key."));
-        }
+        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         this.keyCredential = keyCredential;
         return this;
     }

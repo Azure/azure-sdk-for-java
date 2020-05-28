@@ -4,7 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosPermissionResponse;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
@@ -95,7 +95,7 @@ public class CosmosAsyncUser {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the created permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> createPermission(
+    public Mono<CosmosPermissionResponse> createPermission(
         CosmosPermissionProperties permissionSettings,
         CosmosPermissionRequestOptions options) {
         if (options == null) {
@@ -104,7 +104,7 @@ public class CosmosAsyncUser {
         Permission permission = ModelBridgeInternal.getV2Permissions(permissionSettings);
         return database.getDocClientWrapper()
                    .createPermission(getLink(), permission, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, this))
+                   .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
                    .single();
     }
 
@@ -119,7 +119,7 @@ public class CosmosAsyncUser {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the upserted permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> upsertPermission(
+    public Mono<CosmosPermissionResponse> upsertPermission(
         CosmosPermissionProperties permissionSettings,
         CosmosPermissionRequestOptions options) {
         Permission permission = ModelBridgeInternal.getV2Permissions(permissionSettings);
@@ -128,7 +128,7 @@ public class CosmosAsyncUser {
         }
         return database.getDocClientWrapper()
                    .upsertPermission(getLink(), permission, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, this))
+                   .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
                    .single();
     }
 
@@ -155,7 +155,7 @@ public class CosmosAsyncUser {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
      * error.
      */
     CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {

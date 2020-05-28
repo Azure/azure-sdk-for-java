@@ -2,29 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncPermission;
-import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
- * The type Cosmos async permission response.
+ * The type Cosmos permission response.
  */
-public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
-    private final CosmosAsyncPermission permissionClient;
+public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
 
-    CosmosAsyncPermissionResponse(ResourceResponse<Permission> response, CosmosAsyncUser cosmosUser) {
+    CosmosPermissionResponse(ResourceResponse<Permission> response) {
         super(response);
         String bodyAsString = response.getBodyAsString();
         if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
-            permissionClient = null;
         } else {
             CosmosPermissionProperties props = new CosmosPermissionProperties(bodyAsString);
             super.setProperties(props);
-            permissionClient = BridgeInternal.createCosmosAsyncPermission(props.getId(), cosmosUser);
         }
     }
 
@@ -35,14 +29,5 @@ public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissi
      */
     public CosmosPermissionProperties getProperties() {
         return super.getProperties();
-    }
-
-    /**
-     * Gets the CosmosAsyncPermission
-     *
-     * @return the cosmos permission
-     */
-    public CosmosAsyncPermission getPermission() {
-        return permissionClient;
     }
 }

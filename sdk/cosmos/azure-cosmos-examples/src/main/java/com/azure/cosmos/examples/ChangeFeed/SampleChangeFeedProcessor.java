@@ -127,7 +127,8 @@ public class SampleChangeFeedProcessor {
     }
 
     public static CosmosAsyncDatabase createNewDatabase(CosmosAsyncClient client, String databaseName) {
-        return client.createDatabaseIfNotExists(databaseName).block().getDatabase();
+        client.createDatabaseIfNotExists(databaseName).block();
+        return client.getDatabase(databaseName);
     }
 
     public static void deleteDatabase(CosmosAsyncDatabase cosmosDatabase) {

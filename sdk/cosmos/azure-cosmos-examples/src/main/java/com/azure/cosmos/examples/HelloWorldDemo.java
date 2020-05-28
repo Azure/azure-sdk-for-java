@@ -29,7 +29,7 @@ public class HelloWorldDemo {
         // This will create (or read) a database and its container.
         CosmosAsyncContainer container = client.createDatabaseIfNotExists(DATABASE_NAME)
             // TIP: Our APIs are Reactor Core based, so try to chain your calls
-            .flatMap(response -> response.getDatabase()
+            .flatMap(response -> client.getDatabase(DATABASE_NAME)
                 .createContainerIfNotExists(CONTAINER_NAME, "/id"))
             .flatMap(response -> Mono.just(client.getDatabase(DATABASE_NAME).getContainer(CONTAINER_NAME)))
             .block();
