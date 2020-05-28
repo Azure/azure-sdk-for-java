@@ -43,7 +43,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Create a Database if it does not already exist on the service.
+     * Create a Cosmos database if it does not already exist on the service.
      * <p>
      * The throughputProperties will only be used if the specified database
      * does not exist and therefor a new database will be created with throughputProperties.
@@ -57,7 +57,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Create a Database if it does not already exist on the service.
+     * Create a Cosmos database if it does not already exist on the service.
      *
      * @param id the id of the database.
      * @return the {@link CosmosDatabaseResponse} with the created database.
@@ -79,7 +79,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Creates a database.
+     * Creates a Cosmos database.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
@@ -89,7 +89,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Creates a database.
+     * Creates a Cosmos database.
      *
      * @param id the id of the database.
      * @return the {@link CosmosDatabaseResponse} with the created database.
@@ -100,7 +100,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Creates a database.
+     * Creates a Cosmos database.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param throughputProperties the throughput properties.
@@ -114,7 +114,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Creates a database.
+     * Creates a Cosmos database.
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param throughputProperties the throughput properties.
@@ -126,7 +126,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Creates a database.
+     * Creates a Cosmos database.
      *
      * @param id the id of the database.
      * @param throughputProperties the throughput properties.
@@ -152,17 +152,17 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Reads all databases.
+     * Reads all Cosmos databases.
      *
      * @param options {@link FeedOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
-    public CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+    CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
         return getCosmosPagedIterable(asyncClientWrapper.readAllDatabases(options));
     }
 
     /**
-     * Reads all databases.
+     * Reads all Cosmos databases.
      *
      * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
@@ -171,7 +171,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Query a database.
+     * Query a Cosmos database.
      *
      * @param query the query.
      * @param options {@link FeedOptions}the feed options.
@@ -182,7 +182,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Query a database.
+     * Query a Cosmos database.
      *
      * @param querySpec {@link SqlQuerySpec} the query spec.
      * @param options the query.
@@ -194,7 +194,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Gets the database client.
+     * Gets the Cosmos database client.
      *
      * @param id the id of the database.
      * @return {@link CosmosDatabase} the cosmos sync database.
