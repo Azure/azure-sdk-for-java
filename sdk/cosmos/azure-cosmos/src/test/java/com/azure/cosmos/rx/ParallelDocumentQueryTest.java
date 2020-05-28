@@ -81,7 +81,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
 
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -104,7 +104,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
 
-        options.setPopulateQueryMetrics(true);
+        options.setQueryMetricsEnabled(true);
         options.setMaxDegreeOfParallelism(0);
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);

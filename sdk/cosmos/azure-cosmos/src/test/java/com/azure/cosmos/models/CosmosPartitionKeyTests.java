@@ -226,14 +226,16 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                         "    });" +
                         "}'" +
                 "}");
-        CosmosAsyncStoredProcedure createdSproc = createdContainer.getScripts().createStoredProcedure(sproc).block().getStoredProcedure();
+        CosmosStoredProcedureResponse createdSproc = createdContainer.getScripts().createStoredProcedure(sproc).block();
+        CosmosAsyncStoredProcedure storedProcedure =
+            createdContainer.getScripts().getStoredProcedure(createdSproc.getProperties().getId());
 
         // Partiton Key value same as what is specified in the stored procedure body
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
         CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions = new CosmosStoredProcedureRequestOptions();
         cosmosStoredProcedureRequestOptions.setPartitionKey(PartitionKey.NONE);
-        int result = Integer.parseInt(createdSproc.execute(null, cosmosStoredProcedureRequestOptions).block().getResponseAsString());
+        int result = Integer.parseInt(storedProcedure.execute(null, cosmosStoredProcedureRequestOptions).block().getResponseAsString());
         assertThat(result).isEqualTo(1);
 
         // 3 previous items + 1 created from the sproc

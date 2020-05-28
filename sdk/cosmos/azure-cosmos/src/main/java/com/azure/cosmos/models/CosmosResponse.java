@@ -32,7 +32,7 @@ public class CosmosResponse<T> {
         this.properties = properties;
     }
 
-    // Only used in CosmosAsyncStoredProcedureResponse compatibility with StoredProcedureResponse
+    // Only used in CosmosStoredProcedureResponse compatibility with StoredProcedureResponse
     CosmosResponse(StoredProcedureResponse response) {
         this.resourceResponseWrapper = null;
     }

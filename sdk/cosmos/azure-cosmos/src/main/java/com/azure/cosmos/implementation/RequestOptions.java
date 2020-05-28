@@ -31,7 +31,7 @@ public class RequestOptions {
     private PartitionKey partitionkey;
     private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
-    private boolean populateQuotaInfo;
+    private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
 
@@ -280,25 +280,25 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
+     * Gets the quotaInfoEnabled setting for document collection read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting document collection quota related stats for document
      * collection read requests.
      *
-     * @return true if PopulateQuotaInfo is enabled
+     * @return true if quotaInfoEnabled is enabled
      */
-    public boolean isPopulateQuotaInfo() {
-        return populateQuotaInfo;
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
     }
 
     /**
-     * Sets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
+     * Sets the quotaInfoEnabled setting for document collection read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting document collection quota related stats for document
      * collection read requests.
      *
-     * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      */
-    public void setPopulateQuotaInfo(boolean populateQuotaInfo) {
-        this.populateQuotaInfo = populateQuotaInfo;
+    public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
     }
 
     /**

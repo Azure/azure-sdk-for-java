@@ -4,14 +4,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -34,7 +33,7 @@ public class CosmosDatabase {
     private final String id;
 
     /**
-     * Instantiates a new Cosmos sync database.
+     * Instantiates a new Cosmos database context client.
      *
      * @param id the id.
      * @param client the client.
@@ -47,7 +46,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Get the id of the CosmosAsyncDatabase
+     * Get the id of the Cosmos database.
      *
      * @return the id of the database.
      */
@@ -56,7 +55,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Reads a database.
+     * Reads the current Cosmos database.
      *
      * @return the {@link CosmosDatabaseResponse}.
      */
@@ -65,7 +64,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Reads a database.
+     * Reads the current Cosmos database while specifying additional request options.
      *
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
      * @return the {@link CosmosDatabaseResponse}
@@ -75,7 +74,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Delete a database.
+     * Deletes the current Cosmos database.
      *
      * @return the {@link CosmosDatabaseResponse}.
      */
@@ -84,7 +83,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Delete a database.
+     * Delete the current Cosmos database while specifying additional request options.
      *
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
      * @return the {@link CosmosDatabaseResponse}.
@@ -93,10 +92,10 @@ public class CosmosDatabase {
         return client.mapDatabaseResponseAndBlock(databaseWrapper.delete(options));
     }
 
-    /* CosmosAsyncContainer operations */
+    /* Cosmos container operations */
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container.
      *
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
@@ -106,20 +105,20 @@ public class CosmosDatabase {
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container with custom throughput setting.
      *
      * @param containerProperties the {@link CosmosContainerProperties}.
-     * @param throughput the throughput.
+     * @param throughputProperties the throughput properties.
      * @return the {@link CosmosContainerResponse} with the created container.
      */
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
-        int throughput) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, throughput));
+        ThroughputProperties throughputProperties) {
+        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, throughputProperties));
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container while passing additional request options.
      *
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param options the {@link CosmosContainerProperties}.
@@ -132,14 +131,14 @@ public class CosmosDatabase {
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container.
      *
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param throughput the throughput.
      * @param options the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
      */
-    public CosmosContainerResponse createContainer(
+    CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
         int throughput,
         CosmosContainerRequestOptions options) {
@@ -149,7 +148,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container.
      *
      * @param containerProperties the container properties.
      * @param throughputProperties the throughput properties.
@@ -166,18 +165,18 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container cosmos sync container response.
+     * Create a Cosmos container.
      *
-     * @param id the id.
+     * @param id the container id.
      * @param partitionKeyPath the partition key path.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainer(String id, String partitionKeyPath) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath));
     }
 
     /**
-     * Create container cosmos sync container response.
+     * Create a Cosmos container.
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
@@ -189,7 +188,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if one matching the id in the properties object does not exist.
      *
      * @param containerProperties the container properties.
      * @return the cosmos sync container response.
@@ -199,13 +198,13 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if one does not exist.
      *
      * @param containerProperties the container properties.
      * @param throughput the throughput.
      * @return the cosmos sync container response.
      */
-    public CosmosContainerResponse createContainerIfNotExists(
+    CosmosContainerResponse createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
         int throughput) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties,
@@ -213,7 +212,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Creates a Cosmos container if one matching the id in the properties object does not exist.
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -230,7 +229,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Creates a Cosmos container if one matching the id does not exist.
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
@@ -243,7 +242,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Creates a Cosmos container if one matching the id does not exist.
      * <p>
      * The throughput settings will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -253,7 +252,7 @@ public class CosmosDatabase {
      * @param throughput the throughput.
      * @return the cosmos sync container response.
      */
-    public CosmosContainerResponse createContainerIfNotExists(
+    CosmosContainerResponse createContainerIfNotExists(
         String id, String partitionKeyPath,
         int throughput) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id,
@@ -262,7 +261,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Creates a Cosmos container if one matching the id does not exist.
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -302,17 +301,17 @@ public class CosmosDatabase {
     }
 
     /**
-     * Read all containers iterator.
+     * Read all containers in the current database.
      *
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+    CosmosPagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllContainers(options));
     }
 
     /**
-     * Read all containers iterator.
+     * Read all containers in the current database.
      *
      @return the {@link CosmosPagedIterable}.
      */
@@ -321,7 +320,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Query containers iterator.
+     * Query containers in the current database.
      *
      * @param query the query.
      * @return the {@link CosmosPagedIterable}.
@@ -342,7 +341,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Query containers iterator.
+     * Query containers in the current database.
      *
      * @param querySpec the query spec.
      * @return the {@link CosmosPagedIterable}.
@@ -352,7 +351,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Query containers iterator.
+     * Query containers in the current database.
      *
      * @param querySpec the query spec.
      * @param options the options.
@@ -365,7 +364,9 @@ public class CosmosDatabase {
     }
 
     /**
-     * Gets a CosmosContainer object without making a service call.
+     * Gets a Cosmos container instance without making a service call.
+     * <p>
+     * To get the actual object a read operation must be performed first.
      *
      * @param id id of the container.
      * @return Cosmos Container.
@@ -375,7 +376,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Convert response cosmos sync container response.
+     * Convert an async container response to a sync one.
      *
      * @param response the response.
      * @return the cosmos sync container response.
@@ -387,7 +388,10 @@ public class CosmosDatabase {
     /* Users */
 
     /**
-     * Create user cosmos sync user response.
+     * Create Cosmos user instance without making a service call.
+     * <p>
+     * To get the actual object a read operation must be performed first.
+     *
      *
      * @param userProperties the settings.
      * @return the cosmos sync user response.
@@ -397,7 +401,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Upsert user cosmos sync user response.
+     * Upserts a Cosmos user.
      *
      * @param userProperties the settings.
      * @return the cosmos sync user response.
@@ -407,7 +411,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Read all users {@link CosmosPagedIterable}.
+     * Read all Cosmos users for the current database.
      *
      * @return the {@link CosmosPagedIterable}.
      */
@@ -416,17 +420,17 @@ public class CosmosDatabase {
     }
 
     /**
-     * Read all users {@link CosmosPagedIterable}.
+     * Read all Cosmos users for the current database.
      *
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
+    CosmosPagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllUsers(options));
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
      * @param query the query.
      * @return the {@link CosmosPagedIterable}.
@@ -436,7 +440,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
      * @param query the query.
      * @param options the options.
@@ -447,7 +451,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
      * @param querySpec the query spec.
      * @return the {@link CosmosPagedIterable}.
@@ -457,7 +461,7 @@ public class CosmosDatabase {
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
      * @param querySpec the query spec.
      * @param options the options.
@@ -468,7 +472,9 @@ public class CosmosDatabase {
     }
 
     /**
-     * Gets user.
+     * Gets a Cosmos user instance without making a service call.
+     * <p>
+     * To get the actual object a read operation must be performed first.
      *
      * @param id the id.
      * @return the user.
@@ -477,9 +483,9 @@ public class CosmosDatabase {
         return new CosmosUser(databaseWrapper.getUser(id), this, id);
     }
 
-    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosAsyncUserResponse> containerMono) {
+    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosUserResponse> containerMono) {
         try {
-            return containerMono.map(this::convertUserResponse).block();
+            return containerMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -488,10 +494,6 @@ public class CosmosDatabase {
                 throw Exceptions.propagate(ex);
             }
         }
-    }
-
-    private CosmosUserResponse convertUserResponse(CosmosAsyncUserResponse response) {
-        return ModelBridgeInternal.createCosmosUserResponse(response, this);
     }
 
     /**

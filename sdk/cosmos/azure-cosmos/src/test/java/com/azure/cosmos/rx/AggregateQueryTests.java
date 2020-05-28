@@ -73,7 +73,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
 
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {

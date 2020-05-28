@@ -10,5 +10,3 @@ jobs:
           safeName: azureaitextanalytics
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_TEXT_ANALYTICS_API_KEY: $(java-textanalytics-test-api-key)
-        AZURE_TEXT_ANALYTICS_ENDPOINT: $(java-textanalytics-test-ppe-endpoint-string)

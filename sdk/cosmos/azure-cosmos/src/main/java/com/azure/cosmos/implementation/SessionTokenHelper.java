@@ -65,7 +65,7 @@ public class SessionTokenHelper {
             String globalSessionToken,
             String partitionKeyRangeId) {
 
-        if (partitionKeyRangeId == null || partitionKeyRangeId.isEmpty()) {
+        if (partitionKeyRangeId == null) {
             // AddressCache/address resolution didn't produce partition key range id.
             // In this case it is a bug.
             throw new IllegalStateException("Partition key range Id is absent in the context.");

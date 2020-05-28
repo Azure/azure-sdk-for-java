@@ -7,10 +7,10 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
-import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -74,14 +74,14 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 return ModelBridgeInternal.getResource(((CosmosAsyncDatabaseResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncContainerResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncContainerResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncStoredProcedureResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncStoredProcedureResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosStoredProcedureResponse) {
+                return ModelBridgeInternal.getResource(((CosmosStoredProcedureResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncTriggerResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncTriggerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncUserDefinedFunctionResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncUserResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncUserResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosUserResponse) {
+                return ModelBridgeInternal.getResource(((CosmosUserResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncPermissionResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncPermissionResponse) resourceResponse).getProperties());
             }
@@ -218,10 +218,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withStoredProcedureBody(String storedProcedureBody) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncStoredProcedureResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosStoredProcedureResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncStoredProcedureResponse resourceResponse) {
+                public void validate(CosmosStoredProcedureResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getBody()).isEqualTo(storedProcedureBody);
                 }
             });

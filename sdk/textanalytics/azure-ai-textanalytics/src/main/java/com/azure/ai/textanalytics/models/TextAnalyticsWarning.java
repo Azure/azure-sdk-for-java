@@ -26,8 +26,8 @@ public final class TextAnalyticsWarning {
      * @param warningCode The warning code value
      * @param message The warning message.
      */
-    public TextAnalyticsWarning(String warningCode, String message) {
-        this.warningCode = WarningCode.fromString(warningCode);
+    public TextAnalyticsWarning(WarningCode warningCode, String message) {
+        this.warningCode = warningCode;
         this.message = message;
     }
 

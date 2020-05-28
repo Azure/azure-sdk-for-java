@@ -470,11 +470,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncStoredProcedure createCosmosAsyncStoredProcedure(String id, CosmosAsyncContainer cosmosContainer) {
-        return new CosmosAsyncStoredProcedure(id, cosmosContainer);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosAsyncTrigger createCosmosAsyncTrigger(String id, CosmosAsyncContainer container) {
         return new CosmosAsyncTrigger(id, container);
     }

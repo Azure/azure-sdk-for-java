@@ -74,7 +74,7 @@ public class CosmosContainer {
     }
 
     /**
-     * Deletes the current cosmos sync container response while specifying additional options such as If-Match.
+     * Deletes the current Cosmos container while specifying additional options such as If-Match.
      *
      * @param options the options.
      * @return the cosmos sync container response.
@@ -84,7 +84,7 @@ public class CosmosContainer {
     }
 
     /**
-     * Deletes the current cosmos sync container response.
+     * Deletes the current cosmos container.
      *
      * @return the cosmos sync container response.
      */
@@ -133,7 +133,7 @@ public class CosmosContainer {
         return database.throughputResponseToBlock(this.asyncContainer.readThroughput());
     }
 
-    /* CosmosItem operations */
+    /* Cosmos item operations */
 
     /**
      * Creates a new item synchronously and returns its respective Cosmos item response.
@@ -197,10 +197,8 @@ public class CosmosContainer {
      * @param options the options.
      * @return the Cosmos sync item response.
      */
-    @SuppressWarnings("unchecked")
-    // Note: @kushagraThapar and @moderakh to ensure this casting is valid
-    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) {
-        return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
+    public <T> CosmosItemResponse<T> upsertItem(T item, CosmosItemRequestOptions options) {
+        return this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
     /**
@@ -340,9 +338,9 @@ public class CosmosContainer {
     }
 
     /**
-     * Gets the cosmos scripts using the current container as context.
+     * Gets the Cosmos scripts using the current container as context.
      *
-     * @return the cosmos sync scripts.
+     * @return the Cosmos sync scripts.
      */
     public CosmosScripts getScripts() {
         if (this.scripts == null) {
@@ -356,8 +354,8 @@ public class CosmosContainer {
     /**
      * Convert a {@link CosmosAsyncItemResponse} to a Cosmos sync item response.
      *
-     * @param response the cosmos item response.
-     * @return the cosmos sync item response.
+     * @param response the Cosmos item response.
+     * @return the Cosmos sync item response.
      */
     private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse<T> response) {
         return ModelBridgeInternal.<T>createCosmosItemResponse(response);

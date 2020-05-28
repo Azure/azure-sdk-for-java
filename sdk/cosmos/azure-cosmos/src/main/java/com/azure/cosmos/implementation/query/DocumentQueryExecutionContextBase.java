@@ -172,8 +172,8 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.Headers.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
         }
 
-        if(feedOptions.isPopulateQueryMetrics()){
-            requestHeaders.put(HttpConstants.Headers.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isPopulateQueryMetrics()));
+        if(feedOptions.isQueryMetricsEnabled()){
+            requestHeaders.put(HttpConstants.Headers.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isQueryMetricsEnabled()));
         }
 
         return requestHeaders;

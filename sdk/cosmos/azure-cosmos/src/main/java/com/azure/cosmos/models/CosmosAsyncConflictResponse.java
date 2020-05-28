@@ -49,6 +49,6 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
      * @return the conflict properties
      */
     public CosmosConflictProperties getProperties() {
-        return this.getProperties();
+        return super.getProperties();
     }
 }
