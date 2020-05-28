@@ -52,7 +52,8 @@ public final class FormPage {
 
     /**
      * Constructs a FormPage object.
-     *  @param height The height of the image/PDF in pixels/inches, respectively.
+     *
+     * @param height The height of the image/PDF in pixels/inches, respectively.
      * @param textAngle The general orientation of the text in clockwise direction.
      * @param unit The unit used by the width, height and boundingBox properties.
      * @param width The width of the image/PDF in pixels/inches, respectively.

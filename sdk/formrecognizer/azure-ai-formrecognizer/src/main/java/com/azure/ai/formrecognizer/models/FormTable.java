@@ -35,7 +35,8 @@ public final class FormTable {
 
     /**
      * Constructs a FormTable object.
-     *  @param rowCount Number of rows.
+     *
+     * @param rowCount Number of rows.
      * @param columnCount Number of columns.
      * @param cells ist of cells contained in the table.
      * @param pageNumber the 1-based page number in the input document.

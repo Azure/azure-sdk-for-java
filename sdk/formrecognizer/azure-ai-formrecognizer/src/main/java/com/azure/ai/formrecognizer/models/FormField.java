@@ -40,7 +40,8 @@ public final class FormField<T> {
 
     /**
      * Constructs a FormField object.
-     *  @param confidence The confidence of the recognized field.
+     *
+     * @param confidence The confidence of the recognized field.
      * @param labelText The label text value for the field.
      * @param name The name the field.
      * @param fieldValue The value of the field.
