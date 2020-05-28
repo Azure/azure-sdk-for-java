@@ -99,10 +99,9 @@ public class DeploymentsTests extends ResourceManagerTestBase {
             .acceptCreate();
 
         Deployment acceptedDeployment = acceptedCreatable.getAcceptedResult();
+
         // this can be done later
         Deployment finalDeployment = acceptedCreatable.getFinalResult();
-
-        int i = 1;
     }
 
     @Test
