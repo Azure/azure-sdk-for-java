@@ -24,7 +24,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -567,8 +566,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.createChannel())
-            .flatMap(transactionManager -> transactionManager.transactionSelect())
+            .flatMap(connection -> connection.getTransactionManager())
+            .flatMap(transactionManager -> transactionManager.createTransaction())
             .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 
@@ -585,8 +584,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.createChannel())
-            .flatMap(channel -> channel.transactionCommit(transactionContext))
+            .flatMap(connection -> connection.getTransactionManager())
+            .flatMap(channel -> channel.commitTransaction(transactionContext))
             .then();
     }
 
@@ -603,8 +602,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.createChannel())
-            .flatMap(channel -> channel.transactionRollback(transactionContext))
+            .flatMap(connection -> connection.getTransactionManager())
+            .flatMap(channel -> channel.rollbackTransaction(transactionContext))
             .then();
     }
 }

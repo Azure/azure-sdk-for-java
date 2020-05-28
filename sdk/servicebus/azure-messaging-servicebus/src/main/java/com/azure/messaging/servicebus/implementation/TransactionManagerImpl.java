@@ -12,16 +12,16 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
- * Implements {@link TransactionChannel} which provide utility for transaction API.
+ * Implements {@link TransactionManager} which provide utility for transaction API.
  */
-public class TransactionChannelImpl implements TransactionChannel {
+public class TransactionManagerImpl implements TransactionManager {
 
     private final Mono<AmqpSession> session;
     private final String fullyQualifiedNamespace;
     private final String linkName;
-    private final ClientLogger logger =  new ClientLogger(TransactionChannelImpl.class);
+    private final ClientLogger logger =  new ClientLogger(TransactionManagerImpl.class);
 
-    TransactionChannelImpl(Mono<AmqpSession> session, String fullyQualifiedNamespace, String linkName) {
+    TransactionManagerImpl(Mono<AmqpSession> session, String fullyQualifiedNamespace, String linkName) {
         this.session = Objects.requireNonNull(session, "'session' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -30,19 +30,19 @@ public class TransactionChannelImpl implements TransactionChannel {
     }
 
     @Override
-    public Mono<ByteBuffer> transactionSelect() {
+    public Mono<ByteBuffer> createTransaction() {
         return  session.flatMap(session ->
             session.createTransaction()).map(transaction -> transaction.getTransactionId());
     }
 
     @Override
-    public Mono<Void> transactionCommit(ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         return session.flatMap(session ->
             session.commitTransaction(new AmqpTransaction(transactionContext.getTransactionId()))).then();
     }
 
     @Override
-    public Mono<Void> transactionRollback(ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         return session.flatMap(session ->
             session.rollbackTransaction(new AmqpTransaction(transactionContext.getTransactionId()))).then();
     }

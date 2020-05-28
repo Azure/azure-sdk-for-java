@@ -8,28 +8,28 @@ import java.nio.ByteBuffer;
 /**
  * Provides API to manage transaction on Service Bus namespace.
  */
-public interface TransactionChannel {
+public interface TransactionManager {
     /**
      * Creates the transaction in Service Bus namespace..
      *
      * @return {@link ByteBuffer} which represent transaction in service Bus.
      */
-    Mono<ByteBuffer> transactionSelect();
+    Mono<ByteBuffer> createTransaction();
 
     /**
-     * Completes the given transaction.
+     * Commits the given transaction.
      *
      * @param transactionContext to commit.
      * @return {@link Mono<Void>} which user can subscribe.
      */
-    Mono<Void> transactionCommit(ServiceBusTransactionContext transactionContext);
+    Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext);
 
     /**
-     * Completes the given transaction.
+     * Rollbacks the given transaction.
      *
      * @param transactionContext to rollback.
      * @return {@link Mono<Void>} which user can subscribe.
      */
-    Mono<Void> transactionRollback(ServiceBusTransactionContext transactionContext);
+    Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext);
 
 }

@@ -76,9 +76,9 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
         String transferEntityPath, MessagingEntityType entityType, String sessionId);
 
     /**
-     * Gets the transaction manager for a Service Bus resource and performs transaction related operations using it.
+     * Gets the transaction manager for a Service Bus resource to perform transaction related operations using it.
      *
-     * @return A Mono that completes with that resources's management node.
+     * @return existing {@link TransactionManager}.
      */
-    Mono<TransactionChannel> createChannel();
+    Mono<TransactionManager> getTransactionManager();
 }

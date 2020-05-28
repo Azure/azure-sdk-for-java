@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -24,14 +23,12 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import com.azure.messaging.servicebus.implementation.TransactionChannel;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -1251,9 +1248,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.createChannel())
+            .flatMap(connection -> connection.getTransactionManager())
 
-            .flatMap(transactionChannel -> transactionChannel.transactionSelect())
+            .flatMap(transactionManager -> transactionManager.createTransaction())
             .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 
@@ -1270,8 +1267,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.createChannel())
-            .flatMap(transactionChannel -> transactionChannel.transactionCommit(transactionContext))
+            .flatMap(connection -> connection.getTransactionManager())
+            .flatMap(transactionManager -> transactionManager.commitTransaction(transactionContext))
             .then();
     }
 
@@ -1288,8 +1285,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.createChannel())
-            .flatMap(transactionChannel -> transactionChannel.transactionRollback(transactionContext))
+            .flatMap(connection -> connection.getTransactionManager())
+            .flatMap(transactionManager -> transactionManager.rollbackTransaction(transactionContext))
             .then();
     }
 }

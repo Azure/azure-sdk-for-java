@@ -70,6 +70,7 @@ class ReactorCoordinator implements AmqpLink {
     private final AtomicBoolean hasConnected = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
+
     private final Object pendingSendLock = new Object();
     private final ConcurrentHashMap<String, WorkItem> pendingSendsMap = new ConcurrentHashMap<>();
     private final PriorityQueue<ReactorCoordinator.WeightedDeliveryTag> pendingSendsQueue =
@@ -158,7 +159,15 @@ class ReactorCoordinator implements AmqpLink {
         return message;
     }
 
-    //@Override
+    /**
+     * Completes the transaction. All the work in this transaction will either rollback or committed as one unit of
+     * work.
+     *
+     * @param transaction that needs to be completed.
+     * @param isCommit true for commit and false to rollback this transaction.
+     *
+     * @return a completable {@link Mono} which represent {@link DeliveryState}.
+     */
     public Mono<DeliveryState> completeTransaction(AmqpTransaction transaction, boolean isCommit) {
         if (hasConnected.get()) {
             return Mono.create(sink -> send(getCompleteTransactionMessage(transaction,
@@ -171,7 +180,11 @@ class ReactorCoordinator implements AmqpLink {
         }
     }
 
-    //@Override
+    /**
+     * Creates the transaction in message broker.
+     *
+     * @return a completable {@link Mono} which represent {@link DeliveryState}.
+     */
     public Mono<DeliveryState> createTransaction() {
         if (hasConnected.get()) {
             return Mono.create(sink -> send(getCreateTransactionMessage(), sink));
@@ -225,6 +238,7 @@ class ReactorCoordinator implements AmqpLink {
             logger.warning("Not connected. Not processing send work.");
             return;
         }
+
         while (hasConnected.get() && sender.getCredit() > 0) {
             final ReactorCoordinator.WeightedDeliveryTag weightedDelivery;
             final WorkItem workItem;
@@ -239,6 +253,7 @@ class ReactorCoordinator implements AmqpLink {
                     deliveryTag = null;
                 }
             }
+
             if (workItem == null) {
                 if (deliveryTag != null) {
                     logger.verbose(
