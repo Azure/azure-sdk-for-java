@@ -56,7 +56,6 @@ import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
  */
 public abstract class SearchTestBase extends TestBase {
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
-
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
@@ -101,7 +100,7 @@ public abstract class SearchTestBase extends TestBase {
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(HttpPipelinePolicy... policies) {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT);
-
+        builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             addPolicies(builder, policies);
@@ -109,8 +108,8 @@ public abstract class SearchTestBase extends TestBase {
         }
 
         addPolicies(builder, policies);
-        builder.credential(new AzureKeyCredential(API_KEY))
-            .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+
+        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -123,7 +122,7 @@ public abstract class SearchTestBase extends TestBase {
     protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(HttpPipelinePolicy... policies) {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT);
-
+        builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             addPolicies(builder, policies);
@@ -131,8 +130,8 @@ public abstract class SearchTestBase extends TestBase {
         }
 
         addPolicies(builder, policies);
-        builder.credential(new AzureKeyCredential(API_KEY))
-            .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+
+        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -167,12 +166,12 @@ public abstract class SearchTestBase extends TestBase {
             .endpoint(ENDPOINT)
             .indexName(indexName);
 
+        builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
 
-        builder.credential(new AzureKeyCredential(API_KEY))
-            .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
