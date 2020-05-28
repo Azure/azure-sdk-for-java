@@ -5,7 +5,6 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
@@ -102,7 +101,7 @@ public class BasicDemo {
 
         client.createDatabaseIfNotExists(DATABASE_NAME)
             .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + DATABASE_NAME))
-            .flatMap(dbResponse -> dbResponse.getDatabase()
+            .flatMap(dbResponse -> client.getDatabase(DATABASE_NAME)
                 .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
                     "/country")))
             .doOnSuccess(cosmosContainerResponse -> log("Container: " + CONTAINER_NAME))
