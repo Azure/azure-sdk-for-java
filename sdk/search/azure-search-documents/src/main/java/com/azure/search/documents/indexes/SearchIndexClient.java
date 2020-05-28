@@ -144,21 +144,40 @@ public final class SearchIndexClient {
      * @return the list of indexes.
      */
     public PagedIterable<SearchIndex> listIndexes() {
-        return listIndexes(null, null, Context.NONE);
+        return listIndexes(null, Context.NONE);
     }
 
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the index definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
-    public PagedIterable<SearchIndex> listIndexes(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions, context));
+    public PagedIterable<SearchIndex> listIndexes(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexes(requestOptions, context));
+    }
+
+    /**
+     * Lists all index names for an Azure Cognitive Search service.
+     *
+     * @return the list of index names.
+     */
+    public PagedIterable<String> listIndexNames() {
+        return listIndexNames(null, Context.NONE);
+    }
+
+    /**
+     * Lists all indexes names for an Azure Cognitive Search service.
+     *
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the list of index names.
+     */
+    public PagedIterable<String> listIndexNames(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexNames(requestOptions, context));
     }
 
     /**
@@ -298,21 +317,40 @@ public final class SearchIndexClient {
      * @return the list of synonym maps.
      */
     public PagedIterable<SynonymMap> listSynonymMaps() {
-        return listSynonymMaps(null, null, Context.NONE);
+        return listSynonymMaps(null, Context.NONE);
     }
 
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the index definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the list of synonym map names.
+     */
+    public PagedIterable<SynonymMap> listSynonymMaps(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSynonymMaps(requestOptions, context));
+    }
+
+    /**
+     * Lists all synonym maps names for an Azure Cognitive Search service.
+     *
      * @return the list of synonym maps.
      */
-    public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions, context));
+    public PagedIterable<String> listSynonymMapNames() {
+        return listSynonymMapNames(null, Context.NONE);
+    }
+
+    /**
+     * Lists all synonym maps names for an Azure Cognitive Search service.
+     *
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the list of synonym map names.
+     */
+    public PagedIterable<String> listSynonymMapNames(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSynonymMapNames(requestOptions, context));
     }
 
     /**

@@ -132,22 +132,41 @@ public class SearchIndexerClient {
      * @return a list of DataSources
      */
     public PagedIterable<SearchIndexerDataSource> listDataSources() {
-        return listDataSources(null, null, Context.NONE);
+        return listDataSources(null, Context.NONE);
     }
 
     /**
      * List all DataSources from an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return a response containing the list of DataSources.
      */
-    public PagedIterable<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions,
+    public PagedIterable<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions,
         Context context) {
-        return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
+        return new PagedIterable<>(asyncClient.listDataSources(requestOptions, context));
+    }
+
+    /**
+     * List all DataSources names from an Azure Cognitive Search service.
+     *.
+     * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return a response containing the list of DataSource names.
+     */
+    public PagedIterable<String> listDataSourceNames(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listDataSourceNames(requestOptions, context));
+    }
+
+    /**
+     * List all DataSource names from an Azure Cognitive Search service.
+     *
+     * @return a list of DataSources names
+     */
+    public PagedIterable<String> listDataSourceNames() {
+        return listDataSourceNames(null, Context.NONE);
     }
 
     /**
@@ -232,20 +251,38 @@ public class SearchIndexerClient {
      * @return all Indexers from the Search service.
      */
     public PagedIterable<SearchIndexer> listIndexers() {
-        return listIndexers(null, null, Context.NONE);
+        return listIndexers(null, Context.NONE);
     }
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of the indexers to retrieve. Specified as a comma-separated list
-     * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexers from the Search service.
      */
-    public PagedIterable<SearchIndexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions, context));
+    public PagedIterable<SearchIndexer> listIndexers(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexers(requestOptions, context));
+    }
+
+    /**
+     * Lists all indexers names for an Azure Cognitive Search service.
+     *
+     * @return all Indexer names from the Search service .
+     */
+    public PagedIterable<String> listIndexerNames() {
+        return listIndexerNames(null, Context.NONE);
+    }
+
+    /**
+     * Lists all indexers names for an Azure Cognitive Search service.
+     *
+     * @param requestOptions Additional parameters for the operation.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return all Indexer names from the Search service.
+     */
+    public PagedIterable<String> listIndexerNames(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexerNames(requestOptions, context));
     }
 
     /**
@@ -422,22 +459,41 @@ public class SearchIndexerClient {
      * @return the list of skillsets.
      */
     public PagedIterable<SearchIndexerSkillset> listSkillsets() {
-        return listSkillsets(null, null, Context.NONE);
+        return listSkillsets( null, Context.NONE);
     }
 
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the skillset definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of skillsets.
      */
-    public PagedIterable<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions,
+    public PagedIterable<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions,
         Context context) {
-        return new PagedIterable<>(asyncClient.listSkillsets(select, requestOptions, context));
+        return new PagedIterable<>(asyncClient.listSkillsets(requestOptions, context));
+    }
+
+    /**
+     * Lists all skillset names for an Azure Cognitive Search service.
+     *
+     * @return the list of skillset names.
+     */
+    public PagedIterable<String> listSkillsetNames() {
+        return listSkillsetNames( null, Context.NONE);
+    }
+
+    /**
+     * Lists all skillset names for an Azure Cognitive Search service.
+     *
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the list of skillset names.
+     */
+    public PagedIterable<String> listSkillsetNames(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSkillsetNames(requestOptions, context));
     }
 
     /**
