@@ -43,4 +43,8 @@ public class Constants {
      */
     public static final String AZURE_KEYVAULT_ORDER = "order";
 
+    /**
+     * Defines the constant for the property that enables/disables case sensitive keys.
+     */
+    public static final String AZURE_KEYVAULT_CASE_SENSITIVE_KEYS = "azure.keyvault.case-sensitive-keys";
 }

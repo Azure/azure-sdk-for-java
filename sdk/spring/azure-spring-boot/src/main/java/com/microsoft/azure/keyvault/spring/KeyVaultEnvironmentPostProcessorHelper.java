@@ -23,6 +23,7 @@ import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_VAULT_URI;
 import static com.microsoft.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
 import static com.microsoft.azure.utils.Constants.SPRINGBOOT_KEY_VAULT_APPLICATION_ID;
 import com.microsoft.azure.telemetry.TelemetrySender;
+import com.microsoft.azure.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -91,10 +92,13 @@ class KeyVaultEnvironmentPostProcessorHelper {
                 .buildClient();
         try {
             final MutablePropertySources sources = this.environment.getPropertySources();
+            final boolean caseSensitive = Boolean.parseBoolean(
+                    this.environment.getProperty(Constants.AZURE_KEYVAULT_CASE_SENSITIVE_KEYS, "false"));
             final KeyVaultOperation kvOperation = new KeyVaultOperation(secretClient,
                     vaultUri,
                     refreshInterval,
-                    secretKeys);
+                    secretKeys,
+                    caseSensitive);
 
             if (normalizedName.equals("")) {
                 if (sources.contains(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {

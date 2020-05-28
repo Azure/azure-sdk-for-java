@@ -42,35 +42,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>enforce-environment-variable-is-set</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireEnvironmentVariable>
-                  <variableName>AZURE_TENANT</variableName>
-                  <message>Set the AZURE_TENANT environment variable to your Azure Tenant ID</message>
-                </requireEnvironmentVariable>
-                <requireEnvironmentVariable>
-                  <variableName>AZURE_SUBSCRIPTION</variableName>
-                  <message>Set the AZURE_SUBSCRIPTION environment variable to your Azure Subscription ID</message>
-                </requireEnvironmentVariable>
-                <requireEnvironmentVariable>
-                  <variableName>AZURE_CLIENT_ID</variableName>
-                  <message>Set the AZURE_CLIENT_ID environment variable to your Application (Client) ID</message>
-                </requireEnvironmentVariable>
-                <requireEnvironmentVariable>
-                  <variableName>AZURE_CLIENT_SECRET</variableName>
-                  <message>Set the AZURE_CLIENT_SECRET environment variable to your Application (Client) Secret</message>
-                </requireEnvironmentVariable>
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
         <configuration>
           <rules>
             <bannedDependencies>
