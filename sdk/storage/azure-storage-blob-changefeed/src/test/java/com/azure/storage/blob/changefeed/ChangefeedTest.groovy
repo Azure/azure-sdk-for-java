@@ -14,6 +14,7 @@ import org.mockito.ArgumentMatcher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -25,7 +26,7 @@ import java.util.function.Supplier
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
-class ChangefeedTest extends HelperSpec {
+class ChangefeedTest extends Specification {
 
     BlobContainerAsyncClient mockContainer
     SegmentFactory mockSegmentFactory
@@ -42,7 +43,7 @@ class ChangefeedTest extends HelperSpec {
         when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockMetadataClient)
         when(mockMetadataClient.download())
-            .thenReturn(readFile("changefeed_manifest.json"))
+            .thenReturn(MockedChangefeedResources.readFile("changefeed_manifest.json", getClass()))
         when(mockContainer.listBlobsByHierarchy(anyString()))
             .thenReturn(new PagedFlux<>(yearSupplier))
         Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
@@ -57,7 +58,7 @@ class ChangefeedTest extends HelperSpec {
 
         mockSegment = mock(Segment.class)
 
-        when(mockSegmentFactory.getSegment(any(BlobContainerAsyncClient.class), anyString(), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockSegmentFactory.getSegment(anyString(), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
             .thenReturn(mockSegment)
         when(mockSegment.getEvents())
             .thenReturn(Flux.empty())
@@ -69,8 +70,8 @@ class ChangefeedTest extends HelperSpec {
             .thenReturn(Mono.just(false))
 
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory()
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, null)
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(null, null)
 
         def sv = StepVerifier.create(changefeed.getEvents())
 
@@ -90,8 +91,8 @@ class ChangefeedTest extends HelperSpec {
             .thenReturn(Flux.just(ByteBuffer.wrap("not json metadata".getBytes())))
 
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory()
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, null)
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(null, null)
 
         def sv = StepVerifier.create(changefeed.getEvents())
 
@@ -105,8 +106,8 @@ class ChangefeedTest extends HelperSpec {
     @Unroll
     def "changefeed last consumable populated"() {
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, endTime) /* End time definitely later than endTime*/
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(null, endTime) /* End time definitely later than endTime*/
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -152,8 +153,8 @@ class ChangefeedTest extends HelperSpec {
     /* No options. */
     def "changefeed min"() {
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, null)
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(null, null)
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -173,8 +174,8 @@ class ChangefeedTest extends HelperSpec {
     @Unroll
     def "changefeed startTime"() {
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, startTime, null)
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(startTime, null)
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -207,8 +208,8 @@ class ChangefeedTest extends HelperSpec {
     @Unroll
     def "changefeed endTime"() {
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, endTime)
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(null, endTime)
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -254,8 +255,8 @@ class ChangefeedTest extends HelperSpec {
     @Unroll
     def "changefeed cursor startTime"() {
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, cursorStart.get(cursorNum).serialize())
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(cursorStart.get(cursorNum).serialize())
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -301,8 +302,8 @@ class ChangefeedTest extends HelperSpec {
     @Unroll
     def "changefeed cursor endTime"() {
         when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, cursorEnd.get(cursorNum).serialize())
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = changefeedFactory.getChangefeed(cursorEnd.get(cursorNum).serialize())
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -345,40 +346,40 @@ class ChangefeedTest extends HelperSpec {
 
     boolean verifyEvents(OffsetDateTime endTime, List<Integer> eventNum, ChangefeedCursor userCursor) {
         if (0 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2017/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (1 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2017/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (2 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2017/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (3 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2017/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
 
         if (4 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2018/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (5 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2018/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (6 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2018/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (7 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2018/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
 
         if (8 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2019/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (9 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2019/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (10 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2019/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (11 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2019/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
 
         if (12 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2020/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (13 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2020/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (14 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2020/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (15 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
+            assert verify(mockSegmentFactory).getSegment("idx/segments/2020/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         return true;
     }
 

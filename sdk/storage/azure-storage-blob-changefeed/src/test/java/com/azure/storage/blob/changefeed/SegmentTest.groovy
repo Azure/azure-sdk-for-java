@@ -7,6 +7,7 @@ import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.fasterxml.jackson.core.JsonParseException
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
+import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -14,7 +15,7 @@ import java.nio.ByteBuffer
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
-class SegmentTest extends HelperSpec {
+class SegmentTest extends Specification {
 
     BlobContainerAsyncClient mockContainer
     BlobAsyncClient mockBlob
@@ -40,13 +41,13 @@ class SegmentTest extends HelperSpec {
             .thenReturn(mockBlob)
 
         when(mockBlob.download())
-            .thenReturn(readFile("segment_manifest.json"))
+            .thenReturn(MockedChangefeedResources.readFile("segment_manifest.json", getClass()))
 
-        when(mockShardFactory.getShard(any(BlobContainerAsyncClient.class), eq('log/00/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockShardFactory.getShard(eq('log/00/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
             .thenReturn(mockShard0)
-        when(mockShardFactory.getShard(any(BlobContainerAsyncClient.class), eq('log/01/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockShardFactory.getShard(eq('log/01/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
             .thenReturn(mockShard1)
-        when(mockShardFactory.getShard(any(BlobContainerAsyncClient.class), eq('log/02/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockShardFactory.getShard(eq('log/02/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
             .thenReturn(mockShard2)
 
         when(mockShard0.getEvents())
@@ -59,16 +60,16 @@ class SegmentTest extends HelperSpec {
 
     List<BlobChangefeedEventWrapper> getMockEventWrappers(String shardPath) {
         List<BlobChangefeedEventWrapper> mockEventWrappers = new LinkedList<>()
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(0), cfCursor.toShardCursor(shardPath)))
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(1), cfCursor.toShardCursor(shardPath)))
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(2), cfCursor.toShardCursor(shardPath)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(0), cfCursor.toShardCursor(shardPath)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(1), cfCursor.toShardCursor(shardPath)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(2), cfCursor.toShardCursor(shardPath)))
         return mockEventWrappers
     }
 
     def "getEvents min"() {
         when:
-        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory)
-        Segment segment = segmentFactory.getSegment(mockContainer, segmentPath, cfCursor, null)
+        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
+        Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, null)
 
         def sv = StepVerifier.create(segment.getEvents().index())
 
@@ -86,20 +87,21 @@ class SegmentTest extends HelperSpec {
 
         verify(mockContainer).getBlobAsyncClient(segmentPath) || true
         verify(mockBlob).download() || true
-        verify(mockShardFactory).getShard(mockContainer, 'log/00/2020/03/25/0200/', cfCursor.toShardCursor('log/00/2020/03/25/0200/'), null) || true
-        verify(mockShardFactory).getShard(mockContainer, 'log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), null) || true
-        verify(mockShardFactory).getShard(mockContainer, 'log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), null) || true
+        verify(mockShardFactory).getShard('log/00/2020/03/25/0200/', cfCursor.toShardCursor('log/00/2020/03/25/0200/'), null) || true
+        verify(mockShardFactory).getShard('log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), null) || true
+        verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), null) || true
         verify(mockShard0).getEvents() || true
         verify(mockShard1).getEvents() || true
         verify(mockShard2).getEvents() || true
     }
 
+    /* All we want to test here is that we only call chunk.getEvents if it is equal to or after the shard of interest. */
     @Unroll
     def "getEvents cursor"() {
         when:
         ChangefeedCursor userCursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, "somechunk", 56, 2)
-        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory)
-        Segment segment = segmentFactory.getSegment(mockContainer, segmentPath, cfCursor, userCursor)
+        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
+        Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, userCursor)
 
         def sv = StepVerifier.create(segment.getEvents().index())
 
@@ -127,15 +129,15 @@ class SegmentTest extends HelperSpec {
         verify(mockBlob).download() || true
 
         if (shardPath == 'log/00/2020/03/25/0200/') {
-            verify(mockShardFactory).getShard(mockContainer, 'log/00/2020/03/25/0200/', cfCursor.toShardCursor('log/00/2020/03/25/0200/'), userCursor) || true
+            verify(mockShardFactory).getShard('log/00/2020/03/25/0200/', cfCursor.toShardCursor('log/00/2020/03/25/0200/'), userCursor) || true
             verify(mockShard0).getEvents() || true
         }
         if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/') {
-            verify(mockShardFactory).getShard(mockContainer, 'log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), userCursor) || true
+            verify(mockShardFactory).getShard('log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), userCursor) || true
             verify(mockShard1).getEvents() || true
         }
         if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/' || shardPath == 'log/02/2020/03/25/0200/') {
-            verify(mockShardFactory).getShard(mockContainer, 'log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), userCursor) || true
+            verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), userCursor) || true
             verify(mockShard2).getEvents() || true
         }
 
@@ -152,8 +154,8 @@ class SegmentTest extends HelperSpec {
             .thenReturn(Flux.just(ByteBuffer.wrap("not json metadata".getBytes())))
 
         when:
-        SegmentFactory segmentFactory = new SegmentFactory()
-        Segment segment = segmentFactory.getSegment(mockContainer, segmentPath, null, null)
+        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
+        Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, null)
 
         def sv = StepVerifier.create(segment.getEvents())
 
@@ -166,7 +168,7 @@ class SegmentTest extends HelperSpec {
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String shardPath) {
         boolean verify = true
-        verify &= wrapper.getEvent().equals(mockEvents.get(index % 3 as int))
+        verify &= wrapper.getEvent().equals(MockedChangefeedResources.getMockBlobChangefeedEvent(index%3 as int))
         verify &= wrapper.getCursor().getShardPath() == shardPath
         return verify
     }

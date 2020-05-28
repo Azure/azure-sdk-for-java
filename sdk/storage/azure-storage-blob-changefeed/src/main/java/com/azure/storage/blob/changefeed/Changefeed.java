@@ -131,7 +131,7 @@ class Changefeed {
      */
     private Flux<BlobChangefeedEventWrapper> getEventsForSegment(String segment) {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
-        return segmentFactory.getSegment(client, segment, cfCursor.toSegmentCursor(segmentTime), userCursor)
+        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), userCursor)
             .getEvents();
     }
 

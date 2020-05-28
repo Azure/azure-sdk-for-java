@@ -54,12 +54,12 @@ class Shard  {
                 /* If a user cursor was provided and it points to this chunk path, the chunk should get events based
                    off the blockOffset and objectBlockIndex.
                    This just makes sure only the targeted chunkPath uses the blockOffset and objectBlockIndex to
-                   read events. Any subsequent chunk will read all of its events. */
+                   read events. Any subsequent chunk will read all of its events (i.e. blockOffset = 0). */
                 if (userCursor != null && userCursor.getChunkPath().equals(chunkPath)) {
                     blockOffset = userCursor.getBlockOffset();
                     objectBlockIndex = userCursor.getObjectBlockIndex();
                 }
-                return chunkFactory.getChunk(client, chunkPath, segmentCursor.toChunkCursor(chunkPath),
+                return chunkFactory.getChunk(chunkPath, segmentCursor.toChunkCursor(chunkPath),
                     blockOffset, objectBlockIndex)
                     .getEvents();
             });

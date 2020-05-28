@@ -18,44 +18,38 @@ class ChangefeedFactory {
     private final ClientLogger logger = new ClientLogger(ChangefeedFactory.class);
 
     private final SegmentFactory segmentFactory;
-
-    /**
-     * Creates a default instance of the ChangefeedFactory.
-     */
-    ChangefeedFactory() {
-        this.segmentFactory = new SegmentFactory();
-    }
+    private final BlobContainerAsyncClient client;
 
     /**
      * Creates a SegmentFactory with the designated factories.
      */
-    ChangefeedFactory(SegmentFactory segmentFactory) {
+    ChangefeedFactory(SegmentFactory segmentFactory, BlobContainerAsyncClient client) {
+        StorageImplUtils.assertNotNull("segmentFactory", segmentFactory);
+        StorageImplUtils.assertNotNull("client", client);
         this.segmentFactory = segmentFactory;
+        this.client = client;
     }
 
     /**
      * Gets a new instance of a Changefeed.
      */
-    Changefeed getChangefeed(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime) {
-        StorageImplUtils.assertNotNull("client", client);
-
+    Changefeed getChangefeed(OffsetDateTime startTime, OffsetDateTime endTime) {
         OffsetDateTime start = startTime == null ? OffsetDateTime.MIN : startTime;
         OffsetDateTime end = endTime == null ? OffsetDateTime.MAX : endTime;
 
-        return new Changefeed(client, start, end, null, segmentFactory);
+        return new Changefeed(this.client, start, end, null, segmentFactory);
     }
 
     /**
      * Gets a new instance of a Changefeed.
      */
-    Changefeed getChangefeed(BlobContainerAsyncClient client, String cursor) {
-        StorageImplUtils.assertNotNull("client", client);
+    Changefeed getChangefeed(String cursor) {
         StorageImplUtils.assertNotNull("cursor", cursor);
 
         ChangefeedCursor userCursor = ChangefeedCursor.deserialize(cursor, logger);
         OffsetDateTime start = OffsetDateTime.parse(userCursor.getSegmentTime());
         OffsetDateTime end = OffsetDateTime.parse(userCursor.getEndTime());
 
-        return new Changefeed(client, start, end, userCursor, segmentFactory);
+        return new Changefeed(this.client, start, end, userCursor, segmentFactory);
     }
 }

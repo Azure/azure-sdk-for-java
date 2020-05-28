@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 
 import java.time.OffsetDateTime;
 
@@ -22,6 +23,7 @@ public class BlobChangefeedAsyncClient {
     static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
     private final BlobContainerAsyncClient client;
+    private final BlobChangefeedPagedFluxFactory pagedFluxFactory;
 
     /**
      * Package-private constructor for use by {@link BlobChangefeedClientBuilder}.
@@ -37,6 +39,13 @@ public class BlobChangefeedAsyncClient {
             .pipeline(pipeline)
             .serviceVersion(version)
             .buildAsyncClient();
+        AvroReaderFactory avroReaderFactory = new AvroReaderFactory();
+        BlobLazyDownloaderFactory blobLazyDownloaderFactory = new BlobLazyDownloaderFactory();
+        ChunkFactory chunkFactory = new ChunkFactory(avroReaderFactory, blobLazyDownloaderFactory, client);
+        ShardFactory shardFactory = new ShardFactory(chunkFactory, client);
+        SegmentFactory segmentFactory = new SegmentFactory(shardFactory, client);
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(segmentFactory, client);
+        this.pagedFluxFactory = new BlobChangefeedPagedFluxFactory(changefeedFactory);
     }
 
     /**
@@ -71,12 +80,12 @@ public class BlobChangefeedAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedAsyncClient.getEvents#OffsetDateTime-OffsetDateTime}
      *
-     * @param startTime Filters the results to return events after the start time.
-     * @param endTime Filters the results to return events before the end time.
+     * @param startTime Filters the results to return events approximately after the start time.
+     * @param endTime Filters the results to return events approximately before the end time.
      * @return A reactive response emitting the changefeed events.
      */
     public BlobChangefeedPagedFlux getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
-        return new BlobChangefeedPagedFluxFactory().getBlobChangefeedPagedFlux(client, startTime, endTime);
+        return this.pagedFluxFactory.getBlobChangefeedPagedFlux(startTime, endTime);
     }
 
     /**
@@ -96,7 +105,7 @@ public class BlobChangefeedAsyncClient {
      * @return A reactive response emitting the changefeed events.
      */
     public BlobChangefeedPagedFlux getEvents(String cursor) {
-        return new BlobChangefeedPagedFluxFactory().getBlobChangefeedPagedFlux(client, cursor);
+        return this.pagedFluxFactory.getBlobChangefeedPagedFlux(cursor);
     }
 
 }

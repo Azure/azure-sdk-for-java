@@ -5,6 +5,7 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Factory class for {@link Shard}.
@@ -12,26 +13,27 @@ import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 class SegmentFactory {
 
     private final ShardFactory shardFactory;
-
-    /**
-     * Creates a default instance of the SegmentFactory.
-     */
-    SegmentFactory() {
-        this.shardFactory = new ShardFactory();
-    }
+    private final BlobContainerAsyncClient client;
 
     /**
      * Creates a SegmentFactory with the designated factories.
      */
-    SegmentFactory(ShardFactory shardFactory) {
+    SegmentFactory(ShardFactory shardFactory, BlobContainerAsyncClient client) {
+        StorageImplUtils.assertNotNull("shardFactory", shardFactory);
+        StorageImplUtils.assertNotNull("client", client);
         this.shardFactory = shardFactory;
+        this.client = client;
     }
 
     /**
      * Gets a new instance of a Segment.
      */
-    Segment getSegment(BlobContainerAsyncClient client, String segmentPath, ChangefeedCursor cfCursor,
+    Segment getSegment(String segmentPath, ChangefeedCursor cfCursor,
         ChangefeedCursor userCursor) {
-        return new Segment(client, segmentPath, cfCursor, userCursor, shardFactory);
+        /* Validate parameters. */
+        StorageImplUtils.assertNotNull("segmentPath", segmentPath);
+        StorageImplUtils.assertNotNull("cfCursor", cfCursor);
+
+        return new Segment(this.client, segmentPath, cfCursor, userCursor, shardFactory);
     }
 }

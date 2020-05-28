@@ -12,12 +12,13 @@ import com.azure.storage.internal.avro.implementation.AvroReader
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
+import spock.lang.Specification
 import spock.lang.Unroll
 
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
-class ChunkTest extends HelperSpec {
+class ChunkTest extends Specification {
 
     BlobContainerAsyncClient mockContainer
     BlobAsyncClient mockBlob
@@ -27,18 +28,15 @@ class ChunkTest extends HelperSpec {
     BlobLazyDownloader mockBlobLazyDownloader
 
     String chunkPath = "chunkPath"
-    String shardPath = "shardPath"
     ChangefeedCursor chunkCursor
 
+    List<BlobChangefeedEvent> mockEvents
     List<Map<String, Object>> mockRecords
     List<AvroObject> mockAvroObjects
 
     def setup() {
-        mockRecords = new LinkedList<>()
-        mockAvroObjects = new LinkedList<>()
-        getEvents()
-        getAvroObjects()
-        chunkCursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, "chunkPath", 0, 0)
+        setupEvents()
+        chunkCursor = new ChangefeedCursor("endTime", "segmentTime", "shardPath", chunkPath, 0, 0)
 
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockBlob = mock(BlobAsyncClient.class)
@@ -58,28 +56,6 @@ class ChunkTest extends HelperSpec {
             .thenReturn(Flux.fromIterable(mockAvroObjects))
     }
 
-    /* These are the records emitted in the AvroParser. */
-    /* This tests that the BlobChangefeedEvent objects are populated correctly from a record. */
-    def getEvents() {
-        for (int i = 0; i < 10; i++) {
-            mockRecords.add(getMockChangefeedEventRecord(mockEvents.get(i)))
-        }
-    }
-
-    /* These are the wrapped records -> AvroObjects emitted by the AvroReader. */
-    def getAvroObjects() {
-        mockAvroObjects.add(new AvroObject(1234, 0, mockRecords.get(0)))
-        mockAvroObjects.add(new AvroObject(1234, 1, mockRecords.get(1)))
-        mockAvroObjects.add(new AvroObject(1234, 2, mockRecords.get(2)))
-        mockAvroObjects.add(new AvroObject(1234, 3, mockRecords.get(3)))
-        mockAvroObjects.add(new AvroObject(5678, 0, mockRecords.get(4)))
-        mockAvroObjects.add(new AvroObject(5678, 1, mockRecords.get(5)))
-        mockAvroObjects.add(new AvroObject(5678, 2, mockRecords.get(6)))
-        mockAvroObjects.add(new AvroObject(5678, 3, mockRecords.get(7)))
-        mockAvroObjects.add(new AvroObject(9101, 0, mockRecords.get(8)))
-        mockAvroObjects.add(new AvroObject(9101, 1, mockRecords.get(9)))
-    }
-
     /* Tests no user cursor. */
     def "getEvents min"() {
         setup:
@@ -87,8 +63,8 @@ class ChunkTest extends HelperSpec {
             .thenReturn(mockAvroReader)
 
         when:
-        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
-        Chunk chunk = factory.getChunk(mockContainer, chunkPath, chunkCursor, 0, 0)
+        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory, mockContainer)
+        Chunk chunk = factory.getChunk(chunkPath, chunkCursor, 0, 0)
         def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
@@ -121,8 +97,8 @@ class ChunkTest extends HelperSpec {
             .thenReturn(mockBlobLazyDownloader)
 
         when:
-        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
-        Chunk chunk = factory.getChunk(mockContainer, chunkPath, chunkCursor, blockOffset, objectBlockIndex)
+        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory, mockContainer)
+        Chunk chunk = factory.getChunk(chunkPath, chunkCursor, blockOffset, objectBlockIndex)
         def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
@@ -161,11 +137,40 @@ class ChunkTest extends HelperSpec {
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, long blockOffset, long blockIndex) {
         boolean verify = true
+        verify &= wrapper.getCursor().getEndTime() == chunkCursor.getEndTime()
+        verify &= wrapper.getCursor().getSegmentTime() == chunkCursor.getSegmentTime()
+        verify &= wrapper.getCursor().getShardPath() == chunkCursor.getShardPath()
+        verify &= wrapper.getCursor().getChunkPath() == chunkCursor.getChunkPath()
+
         verify &= wrapper.getCursor().getBlockOffset() == blockOffset
         verify &= wrapper.getCursor().getObjectBlockIndex() == blockIndex
         /* Make sure the event in the wrapper is what was expected. */
         verify &= wrapper.getEvent().equals(mockEvents.get(index as int))
         return verify
+    }
+
+    def setupEvents() {
+        mockEvents = new LinkedList<>()
+        mockRecords = new LinkedList<>()
+        mockAvroObjects = new LinkedList<>()
+        for (int i = 0; i < 10; i++) {
+            BlobChangefeedEvent event = MockedChangefeedResources.getMockBlobChangefeedEvent(i)
+            mockEvents.add(event)
+            /* These are the records emitted in the AvroParser. */
+            /* This tests that the BlobChangefeedEvent objects are populated correctly from a record. */
+            mockRecords.add(getMockChangefeedEventRecord(mockEvents.get(i)))
+        }
+        /* These are the wrapped records -> AvroObjects emitted by the AvroReader. */
+        mockAvroObjects.add(new AvroObject(1234, 0, mockRecords.get(0)))
+        mockAvroObjects.add(new AvroObject(1234, 1, mockRecords.get(1)))
+        mockAvroObjects.add(new AvroObject(1234, 2, mockRecords.get(2)))
+        mockAvroObjects.add(new AvroObject(1234, 3, mockRecords.get(3)))
+        mockAvroObjects.add(new AvroObject(5678, 0, mockRecords.get(4)))
+        mockAvroObjects.add(new AvroObject(5678, 1, mockRecords.get(5)))
+        mockAvroObjects.add(new AvroObject(5678, 2, mockRecords.get(6)))
+        mockAvroObjects.add(new AvroObject(5678, 3, mockRecords.get(7)))
+        mockAvroObjects.add(new AvroObject(9101, 0, mockRecords.get(8)))
+        mockAvroObjects.add(new AvroObject(9101, 1, mockRecords.get(9)))
     }
 
     Map<String, Object> getMockChangefeedEventRecord(BlobChangefeedEvent event) {

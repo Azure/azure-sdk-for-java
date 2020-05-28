@@ -25,27 +25,24 @@ class ChunkFactory {
 
     private final AvroReaderFactory avroReaderFactory;
     private final BlobLazyDownloaderFactory blobLazyDownloaderFactory;
-
-    /**
-     * Creates a default instance of the ChunkFactory.
-     */
-    ChunkFactory() {
-        this.avroReaderFactory = new AvroReaderFactory();
-        this.blobLazyDownloaderFactory = new BlobLazyDownloaderFactory();
-    }
+    private final BlobContainerAsyncClient client;
 
     /**
      * Creates a ChunkFactory with the designated factories.
      */
-    ChunkFactory(AvroReaderFactory avroReaderFactory, BlobLazyDownloaderFactory blobLazyDownloaderFactory) {
+    ChunkFactory(AvroReaderFactory avroReaderFactory, BlobLazyDownloaderFactory blobLazyDownloaderFactory,
+                 BlobContainerAsyncClient client) {
+        StorageImplUtils.assertNotNull("avroReaderFactory", avroReaderFactory);
+        StorageImplUtils.assertNotNull("blobLazyDownloaderFactory", blobLazyDownloaderFactory);
+        StorageImplUtils.assertNotNull("client", client);
         this.avroReaderFactory = avroReaderFactory;
         this.blobLazyDownloaderFactory = blobLazyDownloaderFactory;
+        this.client = client;
     }
 
     /**
      * Gets a new instance of a Chunk.
      *
-     * @param client The changefeed container client.
      * @param chunkPath The path to the chunk blob.
      * @param shardCursor The parent shard cursor.
      * @param blockOffset The offset of the block to start reading from. If 0, this indicates we should read the whole
@@ -53,17 +50,15 @@ class ChunkFactory {
      * @param objectBlockIndex The index of the last object in the block that was returned to the user.
      * @return {@link Chunk}
      */
-    Chunk getChunk(BlobContainerAsyncClient client, String chunkPath, ChangefeedCursor shardCursor,
-        long blockOffset, long objectBlockIndex) {
+    Chunk getChunk(String chunkPath, ChangefeedCursor shardCursor, long blockOffset, long objectBlockIndex) {
         /* Validate parameters. */
-        StorageImplUtils.assertNotNull("client", client);
         StorageImplUtils.assertNotNull("chunkPath", chunkPath);
         StorageImplUtils.assertNotNull("shardCursor", shardCursor);
         StorageImplUtils.assertInBounds("blockOffset", blockOffset, 0, Long.MAX_VALUE);
         StorageImplUtils.assertInBounds("objectBlockIndex", objectBlockIndex, 0, Long.MAX_VALUE);
 
         /* Get the chunkClient. */
-        BlobAsyncClient chunkClient = client.getBlobAsyncClient(chunkPath);
+        BlobAsyncClient chunkClient = this.client.getBlobAsyncClient(chunkPath);
 
         /* Determine which AvroReader should be used. */
         AvroReader avroReader;

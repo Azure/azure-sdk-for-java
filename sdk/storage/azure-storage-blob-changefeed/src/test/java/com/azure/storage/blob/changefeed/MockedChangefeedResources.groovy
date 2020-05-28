@@ -6,7 +6,6 @@ import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType
 import com.azure.storage.blob.models.BlobType
 import reactor.core.publisher.Flux
-import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
@@ -14,33 +13,24 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
-class HelperSpec extends Specification {
+class MockedChangefeedResources {
 
-    List<BlobChangefeedEvent> mockEvents
-
-    def setup() {
-        mockEvents = new LinkedList<>()
-        for (int i = 0; i < 10; i++) {
-            BlobChangefeedEvent event = getMockBlobChangefeedEvent(i)
-            mockEvents.add(event)
-        }
-    }
-
-    Flux<ByteBuffer> readFile(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader()
+    static Flux<ByteBuffer> readFile(String fileName, Class aClass) {
+        ClassLoader classLoader = aClass.getClassLoader()
         File file = new File(classLoader.getResource(fileName).getFile())
         Path path = Paths.get(file.getAbsolutePath())
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
         return FluxUtil.readFile(fileChannel)
     }
 
-    BlobChangefeedEvent getMockBlobChangefeedEvent(int index) {
+    static BlobChangefeedEvent getMockBlobChangefeedEvent(int index) {
         return new BlobChangefeedEvent(
             "topic",
             "subject",
             BlobChangefeedEventType.BLOB_CREATED,
-            OffsetDateTime.now(),
+            OffsetDateTime.of(2020, 04, 05, 06, 30, 00, 00, ZoneOffset.UTC),
             "id" + index, /* Just to verify later. */
             getMockBlobChangefeedEventData(),
             0,
@@ -48,7 +38,7 @@ class HelperSpec extends Specification {
         )
     }
 
-    BlobChangefeedEventData getMockBlobChangefeedEventData() {
+    static BlobChangefeedEventData getMockBlobChangefeedEventData() {
         return new BlobChangefeedEventData(
             "PutBlob",
             "clientRequestId",

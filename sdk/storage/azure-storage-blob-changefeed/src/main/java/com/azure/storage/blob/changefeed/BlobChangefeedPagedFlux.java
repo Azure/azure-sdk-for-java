@@ -7,6 +7,7 @@ import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,6 +30,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      * @param changefeed {@link Changefeed}
      */
     BlobChangefeedPagedFlux(Changefeed changefeed) {
+        StorageImplUtils.assertNotNull("changefeed", changefeed);
         this.changefeed = changefeed;
     }
 
@@ -82,6 +84,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 /* Zip them together into a tuple to construct a BlobChangefeedPagedResponse. */
                 return Mono.zip(e, c);
             })
+            /* Construct the BlobChangefeedPagedResponse. */
             .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
     }
 

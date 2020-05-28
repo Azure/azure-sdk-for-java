@@ -97,7 +97,7 @@ class Segment {
             }
 
             if (validShard) {
-                shards.add(shardFactory.getShard(client, shardPath, cfCursor.toShardCursor(shardPath), userCursor));
+                shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), userCursor));
             }
         }
         return Flux.fromIterable(shards);

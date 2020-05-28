@@ -62,8 +62,8 @@ public class BlobChangefeedClient {
      *
      * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime}
      *
-     * @param startTime Filters the results to return events after the start time.
-     * @param endTime Filters the results to return events before the end time.
+     * @param startTime Filters the results to return events approximately after the start time.
+     * @param endTime Filters the results to return events approximately before the end time.
      * @return The changefeed events.
      */
     public BlobChangefeedPagedIterable getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
