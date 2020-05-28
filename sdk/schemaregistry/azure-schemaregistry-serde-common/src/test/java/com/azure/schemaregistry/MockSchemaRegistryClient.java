@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.schemaregistry;
+package com.azure.data.schemaregistry;
 
-import com.azure.schemaregistry.client.SchemaRegistryClient;
-import com.azure.schemaregistry.client.SchemaRegistryClientException;
-import com.azure.schemaregistry.client.SchemaRegistryObject;
+import com.azure.data.schemaregistry.client.SchemaRegistryClient;
+import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
+import com.azure.data.schemaregistry.client.SchemaRegistryObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

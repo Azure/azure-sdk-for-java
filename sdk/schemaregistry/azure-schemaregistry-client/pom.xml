@@ -15,7 +15,7 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-schemaregistry-client</artifactId>
+  <artifactId>azure-data-schemaregistry-client</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-client;current} -->
 

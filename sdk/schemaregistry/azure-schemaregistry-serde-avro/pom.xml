@@ -17,11 +17,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-schemaregistry-serde-avro</artifactId>
+  <artifactId>azure-data-schemaregistry-serde-avro</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-avro;current} -->
 
   <name>Microsoft Azure Schema Registry - Avro-specific package for client library</name>
-  <description>Avro-specific package for Azure Schema Registry client library</description>
+  <description>Avro-specih,fic package for Azure Schema Registry client library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -44,7 +44,7 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-schemaregistry-serde-common</artifactId>
+      <artifactId>azure-data-schemaregistry-serde-common</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-common;dependency} -->
       <scope>compile</scope>
     </dependency>
