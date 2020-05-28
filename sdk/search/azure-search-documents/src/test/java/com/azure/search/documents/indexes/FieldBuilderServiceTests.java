@@ -46,6 +46,6 @@ public class FieldBuilderServiceTests extends SearchTestBase {
         index.setFields(FieldBuilder.build(Hotel.class));
         client.createIndex(index);
         indexesToDelete.add(index.getName());
-        assertObjectEquals(index, client.getIndex(index.getName()),true);
+        assertObjectEquals(index, client.getIndex(index.getName()), true);
     }
 }
