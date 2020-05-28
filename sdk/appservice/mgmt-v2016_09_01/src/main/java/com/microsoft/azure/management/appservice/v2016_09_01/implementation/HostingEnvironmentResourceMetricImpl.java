@@ -18,15 +18,15 @@ import com.microsoft.azure.management.appservice.v2016_09_01.ResourceMetricName;
 import com.microsoft.azure.management.appservice.v2016_09_01.ResourceMetricProperty;
 
 class HostingEnvironmentResourceMetricImpl extends WrapperImpl<ResourceMetricInner> implements HostingEnvironmentResourceMetric {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    HostingEnvironmentResourceMetricImpl(ResourceMetricInner inner,  AppServiceManager manager) {
+    HostingEnvironmentResourceMetricImpl(ResourceMetricInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

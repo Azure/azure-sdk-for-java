@@ -25,15 +25,15 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2016_09_01.UsageState;
 
 class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements HostingEnvironmentSite {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    HostingEnvironmentSiteImpl(SiteInner inner,  AppServiceManager manager) {
+    HostingEnvironmentSiteImpl(SiteInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
