@@ -48,7 +48,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(createdUserDefinedFunctions.size())
                 .exactlyContainsInAnyOrder(
-                        createdUserDefinedFunctions.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                        createdUserDefinedFunctions.stream().map(CosmosUserDefinedFunctionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -75,9 +75,11 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     }
 
     public CosmosUserDefinedFunctionProperties createUserDefinedFunctions(CosmosAsyncContainer cosmosContainer) {
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return cosmosContainer.getScripts().createUserDefinedFunction(udf).block()
                 .getProperties();
     }

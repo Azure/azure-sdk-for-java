@@ -34,9 +34,10 @@ public class TriggerCrudTest extends TestSuiteBase {
     public void createTrigger() throws Exception {
 
         // create a trigger
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
 
@@ -55,9 +56,10 @@ public class TriggerCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readTrigger() throws Exception {
         // create a trigger
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
         CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getTrigger();
@@ -79,9 +81,10 @@ public class TriggerCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteTrigger() throws Exception {
         // create a trigger
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
         CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getTrigger();

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public final class CosmosUserProperties {
 
     private User user;
+
     /**
      * Initialize a user object.
      */
@@ -80,7 +81,7 @@ public final class CosmosUserProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.user.getResourceId();
     }
 

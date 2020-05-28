@@ -29,7 +29,7 @@ public class ThroughputProperties {
     }
 
     /**
-     * Create auto scale throughput properties.
+     * Create auto-scale throughput properties.
      *
      * @param autoScaleMaxThroughput the max auto scale throughput
      * @param autoUpgradethroughputIncrementPercentage the auto upgrade max throughput increment percentage
@@ -63,7 +63,7 @@ public class ThroughputProperties {
     }
 
     /**
-     * Gets offer autoscale properties.
+     * Gets offer auto-scale properties.
      *
      * @return the offer autoscale properties
      */
@@ -72,9 +72,9 @@ public class ThroughputProperties {
     }
 
     /**
-     * Gets max autoscale throughput.
+     * Gets max auto-scale throughput.
      *
-     * @return the max autoscale throughput
+     * @return the max auto-scale throughput
      */
     public int getAutoscaleMaxThroughput() {
         return this.offer.getAutoscaleMaxThroughput();
@@ -122,7 +122,7 @@ public class ThroughputProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.offer.getResourceId();
     }
 

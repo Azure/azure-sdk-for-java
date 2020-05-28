@@ -36,9 +36,10 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createStoredProcedure() throws Exception {
 
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
 
         Mono<CosmosStoredProcedureResponse> createObservable = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions());
 
@@ -54,9 +55,11 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readStoredProcedure() throws Exception {
 
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         CosmosStoredProcedureResponse storedProcedureResponse = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block();
         CosmosAsyncStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureResponse.getProperties().getId());
 
@@ -75,9 +78,10 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteStoredProcedure() throws Exception {
 
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
 
         CosmosStoredProcedureResponse storedProcedureResponse = this.container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block();
         CosmosAsyncStoredProcedure storedProcedure =

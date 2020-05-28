@@ -31,7 +31,10 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createUserDefinedFunction() throws Exception {
         // create udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         udf.setId(UUID.randomUUID().toString());
         udf.setBody("function() {var x = 10;}");
 
@@ -49,9 +52,10 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readUserDefinedFunction() throws Exception {
         // create a udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().getUserDefinedFunction();
 
         // read udf
@@ -70,9 +74,10 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteUserDefinedFunction() throws Exception {
         // create a udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().getUserDefinedFunction();
 
         // delete udf

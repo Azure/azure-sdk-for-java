@@ -32,9 +32,10 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     public void replaceUserDefinedFunction() throws Exception {
 
         // create a udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
 
         CosmosUserDefinedFunctionProperties readBackUdf = null;
 

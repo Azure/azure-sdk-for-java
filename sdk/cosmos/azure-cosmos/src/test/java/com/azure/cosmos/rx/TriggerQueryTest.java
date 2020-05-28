@@ -58,7 +58,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(doc -> doc.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(CosmosTriggerProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -93,7 +93,8 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
-        createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}", cosmosTriggerSettings.getResourceId()));
+        createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}",
+            cosmosTriggerSettings.getId()));
 
         List<CosmosTriggerProperties> expectedDocs = createdTriggers;
 
@@ -103,7 +104,7 @@ public class TriggerQueryTest extends TestSuiteBase {
                 .Builder<CosmosTriggerProperties>()
                 .exactlyContainsInAnyOrder(expectedDocs
                         .stream()
-                        .map(doc -> doc.getResourceId())
+                        .map(CosmosTriggerProperties::getId)
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
@@ -152,11 +153,13 @@ public class TriggerQueryTest extends TestSuiteBase {
     }
 
     private static CosmosTriggerProperties getTriggerDef() {
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
+
         return trigger;
     }
 }

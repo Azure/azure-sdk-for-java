@@ -60,7 +60,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(CosmosUserDefinedFunctionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -104,7 +104,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
                 .Builder<CosmosUserDefinedFunctionProperties>()
                 .exactlyContainsInAnyOrder(expectedDocs
                         .stream()
-                        .map(d -> d.getResourceId())
+                        .map(CosmosUserDefinedFunctionProperties::getId)
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
@@ -152,9 +152,11 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     }
 
     private static CosmosUserDefinedFunctionProperties getUserDefinedFunctionDef() {
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return udf;
     }
 }
