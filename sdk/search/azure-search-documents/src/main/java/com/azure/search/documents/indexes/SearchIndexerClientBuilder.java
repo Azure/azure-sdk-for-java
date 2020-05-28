@@ -119,6 +119,7 @@ public class SearchIndexerClientBuilder {
             return new SearchIndexerAsyncClient(endpoint, buildVersion, httpPipeline);
         }
 
+        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -130,9 +131,9 @@ public class SearchIndexerClientBuilder {
         httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         httpPipelinePolicies.add(new AddDatePolicy());
-        if (keyCredential != null) {
-            this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
-        }
+
+        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
+
         httpPipelinePolicies.addAll(this.policies);
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
@@ -175,13 +176,7 @@ public class SearchIndexerClientBuilder {
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
     public SearchIndexerClientBuilder credential(AzureKeyCredential keyCredential) {
-        if (keyCredential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'keyCredential' cannot be null."));
-        }
-        if (CoreUtils.isNullOrEmpty(keyCredential.getKey())) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'keyCredential' cannot have a null or empty API key."));
-        }
+        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         this.keyCredential = keyCredential;
         return this;
     }
