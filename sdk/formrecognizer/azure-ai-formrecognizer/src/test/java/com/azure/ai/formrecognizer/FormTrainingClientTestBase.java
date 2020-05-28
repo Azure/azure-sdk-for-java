@@ -47,8 +47,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         CopyAuthorization actualResult) {
         assertNotNull(actualResult.getModelId());
         assertNotNull(actualResult.getAccessToken());
-        assertNotNull(actualResult.getExpirationDateTimeTicks());
-        assertEquals(expectedResourceRegion, actualResult.getResourceRegion());
+        assertNotNull(actualResult.getExpiresOn());
+        assertEquals(expectedResourceRegion, actualResult.getRegion());
         assertEquals(expectedResourceId, actualResult.getResourceId());
     }
 
@@ -214,6 +214,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void beginCopyInvalidRegionRunner(BiConsumer<String, String> testRunner) {
         testRunner.accept(RESOURCE_ID, "RESOURCE_REGION");
+    }
+
+    void beginCopyIncorrectRegionRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(RESOURCE_ID, "westus2");
     }
 
     /**

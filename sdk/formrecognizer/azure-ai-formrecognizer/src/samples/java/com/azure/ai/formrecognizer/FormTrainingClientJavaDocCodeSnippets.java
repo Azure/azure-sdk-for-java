@@ -7,14 +7,10 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.TrainingFileFilter;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.SyncPoller;
 
 import java.time.Duration;
 
@@ -23,6 +19,7 @@ import java.time.Duration;
  */
 public class FormTrainingClientJavaDocCodeSnippets {
     private FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().buildClient();
+    private FormTrainingClient targetFormTrainingClient = new FormTrainingClientBuilder().buildClient();
 
     /**
      * Code snippet for {@link FormTrainingClient} initialization
@@ -191,19 +188,22 @@ public class FormTrainingClientJavaDocCodeSnippets {
      */
     public void beginCopy() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization
+        // The resource to copy model to
         String resourceId = "target-resource-Id";
         String resourceRegion = "target-resource-region";
+        // The Id of the model to be copied
         String copyModelId = "copy-model-Id";
-        SyncPoller<OperationResult,
-            CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(copyModelId,
-            formTrainingClient.getCopyAuthorization(resourceId, resourceRegion));
-        CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
-        System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
-                + " last updated on: %s.%n",
+
+        CopyAuthorization copyAuthorization = targetFormTrainingClient.getCopyAuthorization(resourceId,
+            resourceRegion);
+        formTrainingClient.beginCopyModel(copyModelId, copyAuthorization).waitForCompletion();
+        CustomFormModel modelCopy = targetFormTrainingClient.getCustomModel(copyAuthorization.getModelId());
+        System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
+                + " transfer completed on: %s.%n",
             modelCopy.getModelId(),
-            modelCopy.getStatus(),
-            modelCopy.getCreatedOn(),
-            modelCopy.getLastUpdatedOn());
+            modelCopy.getModelStatus(),
+            modelCopy.getRequestedOn(),
+            modelCopy.getCompletedOn());
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization
     }
 
@@ -212,20 +212,22 @@ public class FormTrainingClientJavaDocCodeSnippets {
      */
     public void beginCopyOverload() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration
+        // The resource to copy model to
         String resourceId = "target-resource-Id";
         String resourceRegion = "target-resource-region";
+        // The Id of the model to be copied
         String copyModelId = "copy-model-Id";
 
-        SyncPoller<OperationResult,
-            CustomFormModelInfo> copyPoller = formTrainingClient.beginCopyModel(copyModelId,
-            formTrainingClient.getCopyAuthorization(resourceId, resourceRegion), Duration.ofSeconds(5));
-        CustomFormModelInfo modelCopy = copyPoller.getFinalResult();
-        System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
-                + " last updated on: %s.%n",
+        CopyAuthorization copyAuthorization = targetFormTrainingClient.getCopyAuthorization(resourceId,
+            resourceRegion);
+        formTrainingClient.beginCopyModel(copyModelId, copyAuthorization, Duration.ofSeconds(5)).waitForCompletion();
+        CustomFormModel modelCopy = targetFormTrainingClient.getCustomModel(copyAuthorization.getModelId());
+        System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
+                + " transfer completed on: %s.%n",
             modelCopy.getModelId(),
-            modelCopy.getStatus(),
-            modelCopy.getCreatedOn(),
-            modelCopy.getLastUpdatedOn());
+            modelCopy.getModelStatus(),
+            modelCopy.getRequestedOn(),
+            modelCopy.getCompletedOn());
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration
     }
 
@@ -241,9 +243,9 @@ public class FormTrainingClientJavaDocCodeSnippets {
                 + "target resource Id; %s, target resource region: %s%n",
             copyAuthorization.getModelId(),
             copyAuthorization.getAccessToken(),
-            copyAuthorization.getExpirationDateTimeTicks(),
+            copyAuthorization.getExpiresOn(),
             copyAuthorization.getResourceId(),
-            copyAuthorization.getResourceRegion()
+            copyAuthorization.getRegion()
         );
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorization#string-string
     }
@@ -259,14 +261,14 @@ public class FormTrainingClientJavaDocCodeSnippets {
             formTrainingClient.getCopyAuthorizationWithResponse(resourceId, resourceRegion, Context.NONE);
         System.out.printf("Copy Authorization operation returned with status: %s",
             copyAuthorizationResponse.getStatusCode());
-        final CopyAuthorization copyAuthorization = copyAuthorizationResponse.getValue();
+        CopyAuthorization copyAuthorization = copyAuthorizationResponse.getValue();
         System.out.printf("Copy model id: %s, access token: %s, expiration time: %s, "
                 + "target resource Id; %s, target resource region: %s%n",
             copyAuthorization.getModelId(),
             copyAuthorization.getAccessToken(),
-            copyAuthorization.getExpirationDateTimeTicks(),
+            copyAuthorization.getExpiresOn(),
             copyAuthorization.getResourceId(),
-            copyAuthorization.getResourceRegion()
+            copyAuthorization.getRegion()
         );
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorizationWithResponse#string-string-Context
     }

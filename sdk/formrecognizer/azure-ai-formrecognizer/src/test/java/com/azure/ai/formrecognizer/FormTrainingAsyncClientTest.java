@@ -12,6 +12,7 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -284,8 +285,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target.block());
                 final CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
                 assertEquals(target.block().getModelId(), copyModel.getModelId());
-                assertNotNull(actualModel.getCreatedOn());
-                assertNotNull(actualModel.getLastUpdatedOn());
+                assertNotNull(actualModel.getRequestedOn());
+                assertNotNull(actualModel.getCompletedOn());
                 assertEquals(CustomFormModelStatus.fromString("succeeded"), copyModel.getStatus());
             });
         });
@@ -302,16 +303,38 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
-            final CustomFormModel actualModel = syncPoller.getFinalResult();
+            CustomFormModel actualModel = syncPoller.getFinalResult();
 
             beginCopyInvalidRegionRunner((resourceId, resourceRegion) -> {
-                final Mono<CopyAuthorization> target =
+                Mono<CopyAuthorization> target =
                     client.getCopyAuthorization(resourceId, resourceRegion);
-                final PollerFlux<OperationResult,
+                PollerFlux<OperationResult,
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target.block());
 
                 Exception thrown = assertThrows(ErrorResponseException.class,
                     () -> copyPoller.getSyncPoller().getFinalResult());
+                assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
+            });
+        });
+    }
+
+    /**
+     * Verifies HttpResponseException is thrown for invalid region input to copy operation.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    void beginCopyIncorrectRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel actualModel = syncPoller.getFinalResult();
+
+            beginCopyIncorrectRegionRunner((resourceId, resourceRegion) -> {
+                Mono<CopyAuthorization> target = client.getCopyAuthorization(resourceId, resourceRegion);
+                Exception thrown = assertThrows(HttpResponseException.class,
+                    () -> client.beginCopyModel(actualModel.getModelId(), target.block()).getSyncPoller().getFinalResult());
                 assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
             });
         });

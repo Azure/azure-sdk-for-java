@@ -4,39 +4,49 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+
+import java.io.IOException;
 
 /**
  * The CopyAuthorization model.
  */
-@Immutable
+@Fluent
 public final class CopyAuthorization {
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+
+    CopyAuthorization() {
+        super();
+    }
 
     /*
      * Model identifier.
      */
-    private final String modelId;
+    private String modelId;
 
     /*
      * Token claim used to authorize the request.
      */
-    private final String accessToken;
+    private String accessToken;
 
     /*
      * Resource Identifier.
      */
-    private final String resourceId;
+    private String resourceId;
 
     /*
      * Region of the resource.
      */
-    private final String resourceRegion;
+    private String region;
 
     /*
      * The time when the access token expires. The date is represented as the
      * number of seconds from 1970-01-01T0:0:0Z UTC until the expiration time.
      */
-    private final long expirationDateTimeTicks;
+    private long expiresOn;
 
     /**
      * Create a CopyAuthorization object
@@ -44,17 +54,16 @@ public final class CopyAuthorization {
      * @param modelId The model identifier
      * @param accessToken The token used to authorize the request
      * @param resourceId The resource identifier
-     * @param resourceRegion The region of the resource
-     * @param expirationDateTimeTicks The expiry time of the token
+     * @param region The region of the resource
+     * @param expiresOn The expiry time of the token
      */
     public CopyAuthorization(final String modelId, final String accessToken, final String resourceId,
-        final String resourceRegion,
-        final long expirationDateTimeTicks) {
+        final String region, final long expiresOn) {
         this.modelId = modelId;
         this.accessToken = accessToken;
         this.resourceId = resourceId;
-        this.resourceRegion = resourceRegion;
-        this.expirationDateTimeTicks = expirationDateTimeTicks;
+        this.region = region;
+        this.expiresOn = expiresOn;
     }
 
     /**
@@ -81,8 +90,8 @@ public final class CopyAuthorization {
      *
      * @return the expirationDateTimeTicks value.
      */
-    public long getExpirationDateTimeTicks() {
-        return this.expirationDateTimeTicks;
+    public long getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
@@ -100,7 +109,89 @@ public final class CopyAuthorization {
      *
      * @return the resourceRegion value.
      */
-    public String getResourceRegion() {
-        return resourceRegion;
+    public String getRegion() {
+        return region;
+    }
+
+    /**
+     * Converts the CopyAuthorization object to its equivalent json string representation.
+     *
+     * @return the json string representation of the CopyAuthorization object.
+     * @throws IOException exception from serialization
+     */
+    public String toJson() throws IOException {
+        return SERIALIZER.serialize(this, SerializerEncoding.JSON);
+    }
+
+    /**
+     * Converts the json string representation to its equivalent CopyAuthorization object.
+     *
+     * @param copyAuthorization the json string representation of the object.
+     *
+     * @return the CopyAuthorization object equivalent of the json string.
+     * @throws IOException exception from deserialization
+     */
+    public static CopyAuthorization fromJson(String copyAuthorization) throws IOException {
+        return SERIALIZER.deserialize(copyAuthorization, CopyAuthorization.class, SerializerEncoding.JSON);
+    }
+
+    /**
+     * Set the Model identifier.
+     *
+     * @param modelId the modelId value to set.
+     *
+     * @return the CopyAuthorization object itself.
+     */
+    public CopyAuthorization setModelId(final String modelId) {
+        this.modelId = modelId;
+        return this;
+    }
+
+    /**
+     * Set the token claim used to authorize the request.
+     *
+     * @param accessToken the token value to set.
+     *
+     * @return the CopyAuthorization object itself.
+     */
+    public CopyAuthorization setAccessToken(final String accessToken) {
+        this.accessToken = accessToken;
+        return this;
+    }
+
+    /**
+     * Set the resource Identifier.
+     *
+     * @param resourceId the resourceId value to set.
+     *
+     * @return the CopyAuthorization object itself.
+     */
+    public CopyAuthorization setResourceId(final String resourceId) {
+        this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Set the region of the resource.
+     *
+     * @param region the region value to set.
+     *
+     * @return the CopyAuthorization object itself.
+     */
+    public CopyAuthorization setRegion(final String region) {
+        this.region = region;
+        return this;
+    }
+
+    /**
+     * Set the time when the access token expires.
+     *
+     * @param expiresOn the expiresOn value to set.
+     *
+     * @return the CopyAuthorization object itself.
+     */
+    public CopyAuthorization setExpiresOn(final long expiresOn) {
+        this.expiresOn = expiresOn;
+        return this;
     }
 }

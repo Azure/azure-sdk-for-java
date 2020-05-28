@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.Model;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
@@ -18,6 +19,7 @@ import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
@@ -41,15 +43,12 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
-import static com.azure.ai.formrecognizer.implementation.models.OperationStatus.FAILED;
-import static com.azure.ai.formrecognizer.implementation.models.OperationStatus.NOT_STARTED;
-import static com.azure.ai.formrecognizer.implementation.models.OperationStatus.RUNNING;
-import static com.azure.ai.formrecognizer.implementation.models.OperationStatus.SUCCEEDED;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModel;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModelInfo;
@@ -405,7 +404,7 @@ public final class FormTrainingAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string}
      *
-     * @return The {@link CopyAuthorization}
+     * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorization> getCopyAuthorization(String resourceId, String resourceRegion) {
@@ -424,7 +423,8 @@ public final class FormTrainingAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string}
      *
-     * @return A {@link Response} containing the {@link CopyAuthorization}
+     * @return A {@link Response} containing the {@link CopyAuthorization} that could be used to authorize copying
+     * model between resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId,
@@ -438,6 +438,8 @@ public final class FormTrainingAsyncClient {
 
     Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
         Context context) {
+        Objects.requireNonNull(resourceId, "'resourceId' cannot be null");
+        Objects.requireNonNull(resourceRegion, "'resourceRegion' cannot be null");
         return service.generateModelCopyAuthorizationWithResponseAsync(context)
             .map(response -> {
                 CopyAuthorizationResult copyAuthorizationResult = response.getValue();
@@ -489,7 +491,9 @@ public final class FormTrainingAsyncClient {
                     .map(modelSimpleResponse -> {
                         CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
                         return new CustomFormModelInfo(copyModelId,
-                            CustomFormModelStatus.fromString(copyOperationResult.getStatus().toString()),
+                            copyOperationResult.getStatus() == OperationStatus.SUCCEEDED
+                                ? CustomFormModelStatus.READY
+                                : CustomFormModelStatus.fromString(copyOperationResult.getStatus().toString()),
                             copyOperationResult.getCreatedDateTime(),
                             copyOperationResult.getLastUpdatedDateTime());
                     });
@@ -506,11 +510,12 @@ public final class FormTrainingAsyncClient {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId)
-                    .flatMap(modelSimpleResponse ->
-                        processCopyModelResponse(modelSimpleResponse, operationResultPollResponse));
+                        .flatMap(modelSimpleResponse ->
+                            processCopyModelResponse(modelSimpleResponse, operationResultPollResponse));
             } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+                throw logger.logExceptionAsError(e);
+                // Not Throwing?
+                // return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
             }
         };
     }
@@ -523,11 +528,11 @@ public final class FormTrainingAsyncClient {
                 Objects.requireNonNull(target, "'target' cannot be null.");
                 CopyRequest copyRequest = new CopyRequest()
                     .setTargetResourceId(target.getResourceId())
-                    .setTargetResourceRegion(target.getResourceRegion())
+                    .setTargetResourceRegion(target.getRegion())
                     .setCopyAuthorization(new CopyAuthorizationResult()
                         .setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())
-                        .setExpirationDateTimeTicks(target.getExpirationDateTimeTicks()));
+                        .setExpirationDateTimeTicks(target.getExpiresOn()));
                 return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
@@ -537,7 +542,7 @@ public final class FormTrainingAsyncClient {
         };
     }
 
-    private static Mono<PollResponse<OperationResult>> processCopyModelResponse(
+    private Mono<PollResponse<OperationResult>> processCopyModelResponse(
         SimpleResponse<CopyOperationResult> copyModel,
         PollResponse<OperationResult> copyModelOperationResponse) {
         LongRunningOperationStatus status;
@@ -551,10 +556,10 @@ public final class FormTrainingAsyncClient {
                 break;
             case FAILED:
                 status = LongRunningOperationStatus.FAILED;
+                throwIfCopyOperationStatusInvalid(copyModel.getValue());
                 break;
             default:
-                status = LongRunningOperationStatus.fromString(
-                    copyModel.getValue().getStatus().toString(), true);
+                status = LongRunningOperationStatus.fromString(copyModel.getValue().getStatus().toString(), true);
                 break;
         }
         return Mono.just(new PollResponse<>(status, copyModelOperationResponse.getValue()));
@@ -627,4 +632,21 @@ public final class FormTrainingAsyncClient {
         }
         return Mono.just(new PollResponse<>(status, trainingModelOperationResponse.getValue()));
     }
+
+    /**
+     * Helper method that throws a {@link HttpResponseException} if {@link CopyOperationResult#getStatus()} is
+     * {@link OperationStatus#FAILED}.
+     *
+     * @param copyResult The copy operation response returned from the service.
+     */
+    private void throwIfCopyOperationStatusInvalid(CopyOperationResult copyResult) {
+        if (copyResult.getStatus().equals(OperationStatus.FAILED)) {
+            List<ErrorInformation> errorInformationList = copyResult.getCopyResult().getErrors();
+            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
+                throw logger.logExceptionAsError(new HttpResponseException("Copy operation returned with a failed "
+                    + "status", null, errorInformationList));
+            }
+        }
+    }
+
 }

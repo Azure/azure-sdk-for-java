@@ -50,6 +50,7 @@ public class CopyModelAsync {
                             customFormModelInfo.getCreatedOn(),
                             customFormModelInfo.getLastUpdatedOn());
 
+                        // Get the copied model from the target resource
                         targetClient.getCustomModel(copyAuthorization.getModelId()).subscribe(customFormModel ->
                             System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
                                     + " last updated on: %s.%n",

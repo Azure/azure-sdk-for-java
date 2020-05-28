@@ -244,17 +244,17 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void getCopyAuthorization() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string
-        final String resourceId = "target-resource-Id";
-        final String resourceRegion = "target-resource-region";
+        String resourceId = "target-resource-Id";
+        String resourceRegion = "target-resource-region";
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
             .subscribe(copyAuthorization ->
                 System.out.printf("Copy Authorization for model id: %s, access token: %s, expiration time: %s, "
                         + "target resource Id; %s, target resource region: %s%n",
                     copyAuthorization.getModelId(),
                     copyAuthorization.getAccessToken(),
-                    copyAuthorization.getExpirationDateTimeTicks(),
+                    copyAuthorization.getExpiresOn(),
                     copyAuthorization.getResourceId(),
-                    copyAuthorization.getResourceRegion()
+                    copyAuthorization.getRegion()
                 ));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string
     }
@@ -264,8 +264,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void getCopyAuthorizationWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string
-        final String resourceId = "target-resource-Id";
-        final String resourceRegion = "target-resource-region";
+        String resourceId = "target-resource-Id";
+        String resourceRegion = "target-resource-region";
         formTrainingAsyncClient.getCopyAuthorizationWithResponse(resourceId, resourceRegion)
             .subscribe(copyAuthorization ->
                 System.out.printf("Copy Authorization response status: %s, for model id: %s, access token: %s, "
@@ -273,9 +273,9 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                 copyAuthorization.getStatusCode(),
                 copyAuthorization.getValue().getModelId(),
                 copyAuthorization.getValue().getAccessToken(),
-                copyAuthorization.getValue().getExpirationDateTimeTicks(),
+                copyAuthorization.getValue().getExpiresOn(),
                 copyAuthorization.getValue().getResourceId(),
-                copyAuthorization.getValue().getResourceRegion()
+                copyAuthorization.getValue().getRegion()
             ));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string
     }
