@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.keyvault.spring;
 
-import com.microsoft.azure.utils.Constants;
+import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import org.springframework.core.env.EnumerablePropertySource;
 
 /**
@@ -13,8 +13,13 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
 
     private final KeyVaultOperation operations;
 
+    public KeyVaultPropertySource(String keyVaultName, KeyVaultOperation operation) {
+        super(keyVaultName, operation);
+        this.operations = operation;
+    }
+
     public KeyVaultPropertySource(KeyVaultOperation operation) {
-        super(Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME, operation);
+        super(AZURE_KEYVAULT_PROPERTYSOURCE_NAME, operation);
         this.operations = operation;
     }
 
