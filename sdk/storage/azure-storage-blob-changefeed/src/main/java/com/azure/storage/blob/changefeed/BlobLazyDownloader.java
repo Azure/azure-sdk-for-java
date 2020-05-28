@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.nio.ByteBuffer;
 import java.util.function.Function;
@@ -54,8 +53,7 @@ class BlobLazyDownloader {
         Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range
             -> client.downloadWithResponse(range, null, new BlobRequestConditions(), false);
 
-        return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc,
-            Schedulers.immediate())
+        return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc)
             .flatMapMany(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
@@ -70,20 +68,21 @@ class BlobLazyDownloader {
                     .concatMap(chunkNum -> { /* TODO (gapra) : This was the biggest difference - downloadToFile does
                                                                 it in parallel, but we want this to be strictly
                                                                  sequential. */
-                        // The first chunk was retrieved during setup.
-                        if (chunkNum == 0) {
-                            return initialResponse.getValue();
-                        }
-
-                        // Calculate whether we need a full chunk or something smaller because we are at the end.
-                        long modifier = chunkNum.longValue() * options.getBlockSizeLong();
-                        long chunkSizeActual = Math.min(options.getBlockSizeLong(),
-                            newCount - modifier);
-                        BlobRange chunkRange = new BlobRange(range.getOffset() + modifier, chunkSizeActual);
-
-                        // Make the download call.
-                        return client.downloadWithResponse(chunkRange, null, finalConditions, false)
-                            .flatMapMany(BlobDownloadAsyncResponse::getValue);
+//                        // The first chunk was retrieved during setup.
+//                        if (chunkNum == 0) {
+//                            return initialResponse.getValue();
+//                        }
+//
+//                        // Calculate whether we need a full chunk or something smaller because we are at the end.
+//                        long modifier = chunkNum.longValue() * options.getBlockSizeLong();
+//                        long chunkSizeActual = Math.min(options.getBlockSizeLong(),
+//                            newCount - modifier);
+//                        BlobRange chunkRange = new BlobRange(range.getOffset() + modifier, chunkSizeActual);
+//
+//                        // Make the download call.
+//                        return client.downloadWithResponse(chunkRange, null, finalConditions, false)
+//                            .flatMapMany(BlobDownloadAsyncResponse::getValue);
+                        return ChunkedDownloadUtils.downloadChunk(client, chunkNum, initialResponse, range, options, finalConditions, newCount);
                     });
             });
     }

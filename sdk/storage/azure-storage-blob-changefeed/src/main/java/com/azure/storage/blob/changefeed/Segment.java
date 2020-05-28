@@ -38,6 +38,8 @@ class Segment {
     private final ClientLogger logger = new ClientLogger(Segment.class);
 
     private static final String CHUNK_FILE_PATHS = "chunkFilePaths";
+    private static final String STATUS = "status";
+    private static final String FINALIZED = "Finalized";
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String segmentPath; /* Segment manifest location. */
@@ -83,6 +85,14 @@ class Segment {
     }
 
     private Flux<Shard> getShards(JsonNode node) {
+
+        /* Determine if the segment is finalized.
+           If the segment is not finalized, do not return events for this segment. */
+        JsonNode status = node.get(STATUS);
+        if (!status.asText().equals(FINALIZED)) {
+            return Flux.empty();
+        }
+
         List<Shard> shards = new ArrayList<>();
         boolean validShard = false;
 

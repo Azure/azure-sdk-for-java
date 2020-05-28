@@ -9,10 +9,13 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.specialized.BlobAsyncClientBase;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple3;
 
+import java.nio.ByteBuffer;
 import java.util.function.Function;
 
 import static java.lang.StrictMath.toIntExact;
@@ -30,14 +33,14 @@ public class ChunkedDownloadUtils {
      */
     public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
         BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
-        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> chunkedDownload, Scheduler scheduler) {
+        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> chunkedDownload) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = range.getCount() != null
             && range.getCount() < parallelTransferOptions.getBlockSizeLong()
             ? range.getCount() : parallelTransferOptions.getBlockSizeLong();
 
         return chunkedDownload.apply(new BlobRange(range.getOffset(), initialChunkSize))
-            .subscribeOn(scheduler)
+            .subscribeOn(Schedulers.elastic())
             .flatMap(response -> {
                 /*
                 Either the etag was set and it matches because the download succeeded, so this is a no-op, or there
@@ -72,7 +75,7 @@ public class ChunkedDownloadUtils {
                     .getHeaders().getValue("Content-Range")) == 0) {
 
                     return chunkedDownload.apply(new BlobRange(0, 0L))
-                        .subscribeOn(scheduler)
+                        .subscribeOn(Schedulers.elastic())
                         .flatMap(response -> {
                             /*
                             Ensure the blob is still 0 length by checking our download was the full length.
@@ -88,6 +91,25 @@ public class ChunkedDownloadUtils {
 
                 return Mono.error(blobStorageException);
             });
+    }
+
+    public static Flux<ByteBuffer> downloadChunk(BlobAsyncClientBase client, Integer chunkNum,
+        BlobDownloadAsyncResponse initialResponse, BlobRange range, ParallelTransferOptions options,
+        BlobRequestConditions finalConditions, long newCount) {
+        // The first chunk was retrieved during setup.
+        if (chunkNum == 0) {
+            return initialResponse.getValue();
+        }
+
+        // Calculate whether we need a full chunk or something smaller because we are at the end.
+        long modifier = chunkNum.longValue() * options.getBlockSizeLong();
+        long chunkSizeActual = Math.min(options.getBlockSizeLong(),
+            newCount - modifier);
+        BlobRange chunkRange = new BlobRange(range.getOffset() + modifier, chunkSizeActual);
+
+        // Make the download call.
+        return client.downloadWithResponse(chunkRange, null, finalConditions, false)
+            .flatMapMany(BlobDownloadAsyncResponse::getValue);
     }
 
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {

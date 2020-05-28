@@ -4,7 +4,6 @@ import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
-import com.fasterxml.jackson.core.JsonParseException
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Specification
@@ -160,10 +159,34 @@ class SegmentTest extends Specification {
         def sv = StepVerifier.create(segment.getEvents())
 
         then:
-        sv.verifyError(JsonParseException.class)
+        sv.verifyError(UncheckedIOException.class)
 
         verify(mockContainer).getBlobAsyncClient(segmentPath) || true
         verify(mockBlob).download() || true
+    }
+
+    /* Should return no events. */
+    def "segment not finalized"() {
+        setup:
+        when(mockBlob.download())
+            .thenReturn(MockedChangefeedResources.readFile("segment_manifest_unfinalized.json", getClass()))
+
+        when:
+        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
+        Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, null)
+
+        def sv = StepVerifier.create(segment.getEvents())
+
+        then:
+        sv.verifyComplete() /* Completes with no events. */
+
+        verify(mockContainer).getBlobAsyncClient(segmentPath) || true
+        verify(mockBlob).download() || true
+
+        verify(mockShardFactory, never()).getShard(anyString(), any(ChangefeedCursor.class),  any(ChangefeedCursor.class)) || true
+        verify(mockShard0, never()).getEvents() || true
+        verify(mockShard1, never()).getEvents() || true
+        verify(mockShard2, never()).getEvents() || true
     }
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String shardPath) {
