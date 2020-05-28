@@ -108,6 +108,18 @@ public final class PathUpdateHeaders {
     private String properties;
 
     /*
+     * When performing setAccessControlRecursive on a directory, the number of
+     * paths that are processed with each invocation is limited.  If the number
+     * of paths to be processed exceeds this limit, a continuation token is
+     * returned in this response header.  When a continuation token is returned
+     * in the response, it must be specified in a subsequent invocation of the
+     * setAccessControlRecursive operation to continue the
+     * setAccessControlRecursive operation on the directory.
+     */
+    @JsonProperty(value = "x-ms-continuation")
+    private String xMsContinuation;
+
+    /*
      * A server-generated UUID recorded in the analytics logs for
      * troubleshooting and correlation.
      */
@@ -447,6 +459,40 @@ public final class PathUpdateHeaders {
      */
     public PathUpdateHeaders setProperties(String properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the xMsContinuation property: When performing
+     * setAccessControlRecursive on a directory, the number of paths that are
+     * processed with each invocation is limited.  If the number of paths to be
+     * processed exceeds this limit, a continuation token is returned in this
+     * response header.  When a continuation token is returned in the response,
+     * it must be specified in a subsequent invocation of the
+     * setAccessControlRecursive operation to continue the
+     * setAccessControlRecursive operation on the directory.
+     *
+     * @return the xMsContinuation value.
+     */
+    public String getXMsContinuation() {
+        return this.xMsContinuation;
+    }
+
+    /**
+     * Set the xMsContinuation property: When performing
+     * setAccessControlRecursive on a directory, the number of paths that are
+     * processed with each invocation is limited.  If the number of paths to be
+     * processed exceeds this limit, a continuation token is returned in this
+     * response header.  When a continuation token is returned in the response,
+     * it must be specified in a subsequent invocation of the
+     * setAccessControlRecursive operation to continue the
+     * setAccessControlRecursive operation on the directory.
+     *
+     * @param xMsContinuation the xMsContinuation value to set.
+     * @return the PathUpdateHeaders object itself.
+     */
+    public PathUpdateHeaders setXMsContinuation(String xMsContinuation) {
+        this.xMsContinuation = xMsContinuation;
         return this;
     }
 

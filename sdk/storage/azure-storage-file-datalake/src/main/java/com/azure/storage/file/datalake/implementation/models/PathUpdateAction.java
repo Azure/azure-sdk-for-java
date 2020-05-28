@@ -29,7 +29,12 @@ public enum PathUpdateAction {
     /**
      * Enum value setAccessControl.
      */
-    SET_ACCESS_CONTROL("setAccessControl");
+    SET_ACCESS_CONTROL("setAccessControl"),
+
+    /**
+     * Enum value setAccessControlRecursive.
+     */
+    SET_ACCESS_CONTROL_RECURSIVE("setAccessControlRecursive");
 
     /**
      * The actual serialized value for a PathUpdateAction instance.

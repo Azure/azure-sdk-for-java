@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2018-11-09/DataLakeStorage.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2019-12-12/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -55,6 +55,15 @@ directive:
         $.parameters.splice(0, 0, { "$ref": fileSystemPath });
         $.parameters.splice(1, 0, { "$ref": pathPath });
     }
+```
+
+### Tweak PATCH /{filesystem}/{path}
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}"]["patch"]
+  transform: >
+      delete $.responses["200"]["schema"];
 ```
 
 ### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=append
@@ -137,6 +146,15 @@ directive:
     $.ContentMD5["x-ms-client-name"] = "contentMd5";
     $.ContentType["x-ms-parameter-grouping"].name = "path-http-headers";
     $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
+```
+
+### Make PathSetAccessControlRecursiveMode optional
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.PathSetAccessControlRecursiveMode["x-ms-parameter-location"] = "method";
 ```
 
 ### Make eTag in Path JsonProperty to etag
