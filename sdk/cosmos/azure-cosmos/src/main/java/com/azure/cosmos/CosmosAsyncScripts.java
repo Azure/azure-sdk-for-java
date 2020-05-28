@@ -5,7 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
-import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
@@ -46,7 +46,7 @@ public class CosmosAsyncScripts {
      * @param properties the cosmos stored procedure properties.
      * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedure(CosmosStoredProcedureProperties properties) {
+    public Mono<CosmosStoredProcedureResponse> createStoredProcedure(CosmosStoredProcedureProperties properties) {
         return this.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions());
     }
 
@@ -62,7 +62,7 @@ public class CosmosAsyncScripts {
      * @param options the stored procedure request options.
      * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedure(
+    public Mono<CosmosStoredProcedureResponse> createStoredProcedure(
         CosmosStoredProcedureProperties properties,
         CosmosStoredProcedureRequestOptions options) {
         if (options == null) {
@@ -73,7 +73,7 @@ public class CosmosAsyncScripts {
         sProc.setBody(properties.getBody());
         return database.getDocClientWrapper()
                    .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, this.container))
+                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
                    .single();
     }
 
