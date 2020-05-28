@@ -79,6 +79,9 @@ public class CryptographyAsyncClient {
         if (!jsonWebKey.isValid()) {
             throw new IllegalArgumentException("Json Web Key is not valid");
         }
+        if (jsonWebKey.getId() == null) {
+            throw new IllegalArgumentException("Json Web Key's id property is not configured");
+        }
         if (jsonWebKey.getKeyOps() == null) {
             throw new IllegalArgumentException("Json Web Key's key operations property is not configured");
         }
