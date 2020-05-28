@@ -3,7 +3,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -94,10 +94,10 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
-        Mono<CosmosAsyncContainerResponse> createObservable = database
+        Mono<CosmosContainerResponse> createObservable = database
             .createContainer(collectionDefinition);
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .withId(collectionDefinition.getId()).build();
 
         validateSuccess(createObservable, validator);
@@ -114,14 +114,14 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         // sanity check
         assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
-        Mono<CosmosAsyncContainerResponse> readObservable = collection.read();
+        Mono<CosmosContainerResponse> readObservable = collection.read();
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator =
-            new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator =
+            new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .withId(collection.getId()).build();
         validateSuccess(readObservable, validator);
 
@@ -137,13 +137,13 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         // sanity check
         assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
-        Mono<CosmosAsyncContainerResponse> deleteObservable = collection.delete();
+        Mono<CosmosContainerResponse> deleteObservable = collection.delete();
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .nullResource().build();
         validateSuccess(deleteObservable, validator);
 
@@ -155,8 +155,8 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
     public void replaceCollectionWithSecondaryKey(String collectionName) throws InterruptedException  {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
 
         // sanity check
         assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
@@ -171,10 +171,10 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingMode);
-        Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
+        Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .indexingMode(IndexingMode.LAZY).build();
         validateSuccess(readObservable, validator);
 

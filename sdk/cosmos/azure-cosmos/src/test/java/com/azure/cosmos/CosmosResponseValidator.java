@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
@@ -72,8 +72,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         private Resource getResource(T resourceResponse) {
             if (resourceResponse instanceof CosmosAsyncDatabaseResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncDatabaseResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncContainerResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncContainerResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosContainerResponse) {
+                return ModelBridgeInternal.getResource(((CosmosContainerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosStoredProcedureResponse) {
                 return ModelBridgeInternal.getResource(((CosmosStoredProcedureResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncTriggerResponse) {
@@ -100,10 +100,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> indexingMode(IndexingMode mode) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
                     assertThat(resourceResponse.getProperties().getIndexingPolicy()).isNotNull();
                     assertThat(resourceResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(mode);
@@ -113,10 +113,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withDefaultTimeToLive(Integer timeToLive) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
                     assertThat(resourceResponse.getProperties().getDefaultTimeToLiveInSeconds()).isNotNull();
                     assertThat(resourceResponse.getProperties().getDefaultTimeToLiveInSeconds()).isEqualTo(timeToLive);
@@ -137,10 +137,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withCompositeIndexes(List<List<CompositePath>> compositeIndexesWritten) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     Iterator<List<CompositePath>> compositeIndexesReadIterator = resourceResponse.getProperties()
                             .getIndexingPolicy().getCompositeIndexes().iterator();
                     Iterator<List<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
@@ -175,10 +175,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withSpatialIndexes(Collection<SpatialSpec> spatialIndexes) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     Iterator<SpatialSpec> spatialIndexesReadIterator = resourceResponse.getProperties()
                             .getIndexingPolicy().getSpatialIndexes().iterator();
                     Iterator<SpatialSpec> spatialIndexesWrittenIterator = spatialIndexes.iterator();

@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -131,7 +131,7 @@ public class CosmosAsyncDatabase {
      * the created container or an error.
      * @throws IllegalArgumentException containerProperties cannot be null.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties) {
+    public Mono<CosmosContainerResponse> createContainer(CosmosContainerProperties containerProperties) {
         return createContainer(containerProperties, new CosmosContainerRequestOptions());
     }
 
@@ -148,7 +148,7 @@ public class CosmosAsyncDatabase {
      * the created container or an error.
      * @throws IllegalArgumentException thown if containerProerties are null.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(
+    public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties) {
         if (containerProperties == null) {
@@ -167,7 +167,7 @@ public class CosmosAsyncDatabase {
      * @param options the request options.
      * @return the mono.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(
+    public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties,
         CosmosContainerRequestOptions options){
@@ -188,7 +188,7 @@ public class CosmosAsyncDatabase {
      * created container or an error.
      * @throws IllegalArgumentException containerProperties can not be null.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(
+    public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
         if (containerProperties == null) {
@@ -200,7 +200,7 @@ public class CosmosAsyncDatabase {
         return getDocClientWrapper()
                    .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
                        ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, this)).single();
     }
 
     /**
@@ -217,7 +217,7 @@ public class CosmosAsyncDatabase {
      * created container or an error.
      * @throws IllegalArgumentException containerProperties cannot be null.
      */
-    Mono<CosmosAsyncContainerResponse> createContainer(
+    Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
         int throughput,
         CosmosContainerRequestOptions options) {
@@ -240,7 +240,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath) {
+    public Mono<CosmosContainerResponse> createContainer(String id, String partitionKeyPath) {
         return createContainer(new CosmosContainerProperties(id, partitionKeyPath));
     }
 
@@ -257,7 +257,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
+    public Mono<CosmosContainerResponse> createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         return createContainer(new CosmosContainerProperties(id, partitionKeyPath), options);
@@ -275,7 +275,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created or existing container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties) {
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         return createContainerIfNotExistsInternal(containerProperties, container, null);
@@ -297,7 +297,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created or existing container or an error.
      */
-    Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    Mono<CosmosContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
         int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -322,7 +322,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created or existing container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -343,7 +343,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
         CosmosAsyncContainer container = getContainer(id);
         return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath),
                                                   container,
@@ -366,7 +366,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    Mono<CosmosContainerResponse> createContainerIfNotExists(
         String id, String partitionKeyPath,
         int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -392,7 +392,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(
         String id, String partitionKeyPath,
         ThroughputProperties throughputProperties) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -402,7 +402,7 @@ public class CosmosAsyncDatabase {
             options);
     }
 
-    private Mono<CosmosAsyncContainerResponse> createContainerIfNotExistsInternal(
+    private Mono<CosmosContainerResponse> createContainerIfNotExistsInternal(
         CosmosContainerProperties containerProperties, CosmosAsyncContainer container,
         CosmosContainerRequestOptions options) {
         return container.read(options).onErrorResume(exception -> {
