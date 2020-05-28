@@ -114,8 +114,6 @@ public final class SearchClientBuilder {
     public SearchAsyncClient buildAsyncClient() {
         Objects.requireNonNull(indexName, "'indexName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
-
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
@@ -124,6 +122,7 @@ public final class SearchClientBuilder {
             return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
         }
 
+        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;

@@ -119,6 +119,7 @@ public final class SearchIndexClientBuilder {
             return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline);
         }
 
+        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
