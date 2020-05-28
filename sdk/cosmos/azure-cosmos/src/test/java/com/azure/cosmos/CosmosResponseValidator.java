@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosPermissionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
@@ -82,8 +82,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 return ModelBridgeInternal.getResource(((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosUserResponse) {
                 return ModelBridgeInternal.getResource(((CosmosUserResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncPermissionResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncPermissionResponse) resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosPermissionResponse) {
+                return ModelBridgeInternal.getResource(((CosmosPermissionResponse) resourceResponse).getProperties());
             }
             return null;
         }
@@ -290,10 +290,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withPermissionMode(PermissionMode mode) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncPermissionResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncPermissionResponse resourceResponse) {
+                public void validate(CosmosPermissionResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getPermissionMode()).isEqualTo(mode);
                 }
             });
@@ -302,10 +302,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withPermissionResourceLink(String resourceLink) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncPermissionResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncPermissionResponse resourceResponse) {
+                public void validate(CosmosPermissionResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getResourceLink()).isEqualTo(resourceLink);
                 }
             });
