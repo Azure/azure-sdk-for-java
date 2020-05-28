@@ -77,12 +77,12 @@ public class ReadmeSamples {
 
     public void recognizeContent() {
         String analyzeFilePath = "{file_source_url}";
-        SyncPoller<OperationResult, List<FormPage>> recognizeLayoutPoller =
+        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
             formRecognizerClient.beginRecognizeContentFromUrl(analyzeFilePath);
 
-        List<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+        List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
-        layoutPageResults.forEach(formPage -> {
+        contentPageResults.forEach(formPage -> {
             // Table information
             System.out.println("----Recognizing content ----");
             System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),

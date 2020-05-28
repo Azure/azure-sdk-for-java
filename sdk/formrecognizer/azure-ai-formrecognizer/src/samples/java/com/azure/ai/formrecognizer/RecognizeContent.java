@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -41,10 +42,10 @@ public class RecognizeContent {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, List<FormPage>> recognizeLayoutPoller =
+        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
             client.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
 
-        List<FormPage> contentPageResults = recognizeLayoutPoller.getFinalResult();
+        List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
         for (int i = 0; i < contentPageResults.size(); i++) {
             final FormPage formPage = contentPageResults.get(i);
@@ -53,8 +54,10 @@ public class RecognizeContent {
             System.out.printf("Has width: %s and height: %s, measured with unit: %s%n", formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
-            formPage.getTables().forEach(formTable -> {
-                System.out.printf("Table has %s rows and %s columns.%n", formTable.getRowCount(),
+            final List<FormTable> tables = formPage.getTables();
+            for (int i1 = 0; i1 < tables.size(); i1++) {
+                final FormTable formTable = tables.get(i1);
+                System.out.printf("Table %s has %s rows and %s columns.%n", i1, formTable.getRowCount(),
                     formTable.getColumnCount());
                 formTable.getCells().forEach(formTableCell -> {
                     final StringBuilder boundingBoxStr = new StringBuilder();
@@ -66,7 +69,7 @@ public class RecognizeContent {
                         boundingBoxStr);
                 });
                 System.out.println();
-            });
+            }
         }
     }
 }

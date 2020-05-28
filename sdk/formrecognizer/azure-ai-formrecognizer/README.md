@@ -169,12 +169,12 @@ Recognize text and table structures, along with their bounding box coordinates, 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L79-L99 -->
 ```java
 String analyzeFilePath = "{file_source_url}";
-SyncPoller<OperationResult, List<FormPage>> recognizeLayoutPoller =
+SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
     formRecognizerClient.beginRecognizeContentFromUrl(analyzeFilePath);
 
-List<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
-layoutPageResults.forEach(formPage -> {
+contentPageResults.forEach(formPage -> {
     // Table information
     System.out.println("----Recognizing content ----");
     System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),

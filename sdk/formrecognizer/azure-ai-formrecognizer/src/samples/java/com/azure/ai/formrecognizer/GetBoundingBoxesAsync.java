@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -65,17 +67,22 @@ public class GetBoundingBoxesAsync {
                 });
 
                 // Page Information
-                recognizedForm.getPages().forEach(formPage -> {
-                    System.out.printf("-------Recognizing Page %s of Form -------%n", 1);
+                final List<FormPage> pages = recognizedForm.getPages();
+                for (int i1 = 0; i1 < pages.size(); i1++) {
+                    final FormPage formPage = pages.get(i1);
+                    System.out.printf("-------Recognizing Page %s of Form -------%n", i1);
                     System.out.printf("Has width %s , angle %s, height %s %n", formPage.getWidth(),
                         formPage.getTextAngle(), formPage.getHeight());
                     // Table information
                     System.out.println("Recognized Tables: ");
-                    formPage.getTables().forEach(formTable -> {
+                    final List<FormTable> tables = formPage.getTables();
+                    for (int i2 = 0; i2 < tables.size(); i2++) {
+                        final FormTable formTable = tables.get(i2);
+                        System.out.printf("Table %s%n", i2);
                         formTable.getCells().forEach(formTableCell -> {
                             System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
-                            // text_content only exists if you set include_text_content to True in your
-                            // function call to recognize_custom_forms
+                            // textContent only exists if you set includeTextContent to True in your
+                            // call to beginRecognizeCustomFormsFromUrl
                             // It is also a list of FormWords and FormLines, but in this example, we only deal with
                             // FormWords
                             formTableCell.getElements().forEach(formContent -> {
@@ -95,8 +102,8 @@ public class GetBoundingBoxesAsync {
                             });
                         });
                         System.out.println();
-                    });
-                });
+                    }
+                }
             }
         });
 

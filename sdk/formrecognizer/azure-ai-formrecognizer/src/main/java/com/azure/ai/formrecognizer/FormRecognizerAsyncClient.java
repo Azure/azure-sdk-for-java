@@ -74,15 +74,6 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FormRecognizerServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Recognizes and extracts form data from documents using optical character recognition (OCR) and a custom trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -95,7 +86,7 @@ public final class FormRecognizerAsyncClient {
      * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -119,7 +110,7 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns a List of {@code RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -152,7 +143,7 @@ public final class FormRecognizerAsyncClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -181,7 +172,7 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -208,7 +199,7 @@ public final class FormRecognizerAsyncClient {
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
@@ -229,7 +220,7 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>>
@@ -260,7 +251,7 @@ public final class FormRecognizerAsyncClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
@@ -287,7 +278,7 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
@@ -313,7 +304,7 @@ public final class FormRecognizerAsyncClient {
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>>
@@ -336,7 +327,7 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>>
@@ -367,7 +358,7 @@ public final class FormRecognizerAsyncClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
@@ -395,7 +386,7 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@code RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
