@@ -61,7 +61,7 @@ public interface StoreResponseValidator {
                 @Override
                 public void validate(StoreResponse resp) {
                     assertThat(resp.getHeaders().getValue(headerKey)).isNotNull();
-                    assertThat(condition.matches(resp.getHeaders().getValue(headerKey))).isTrue();
+                    condition.matches(resp.getHeaders().getValue(headerKey));
                 }
             });
             return this;
