@@ -102,7 +102,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosTriggerProperties>()
-                .exactlyContainsInAnyOrder(expectedDocs
+                .containsExactlyIds(expectedDocs
                         .stream()
                         .map(CosmosTriggerProperties::getId)
                         .collect(Collectors.toList()))
