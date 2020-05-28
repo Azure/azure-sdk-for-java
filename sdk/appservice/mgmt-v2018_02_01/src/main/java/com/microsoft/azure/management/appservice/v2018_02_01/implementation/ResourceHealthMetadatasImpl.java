@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.appservice.v2018_02_01.ResourceHealthMetadata;
 
 class ResourceHealthMetadatasImpl extends WrapperImpl<ResourceHealthMetadatasInner> implements ResourceHealthMetadatas {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    ResourceHealthMetadatasImpl(AppServiceManager manager) {
+    ResourceHealthMetadatasImpl(CertificateRegistrationManager manager) {
         super(manager.inner().resourceHealthMetadatas());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

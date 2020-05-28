@@ -13,11 +13,11 @@ import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperI
 import rx.Observable;
 
 class DeletedSiteImpl extends IndexableRefreshableWrapperImpl<DeletedSite, DeletedSiteInner> implements DeletedSite {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String location;
     private String deletedSiteId;
 
-    DeletedSiteImpl(DeletedSiteInner inner,  AppServiceManager manager) {
+    DeletedSiteImpl(DeletedSiteInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -26,7 +26,7 @@ class DeletedSiteImpl extends IndexableRefreshableWrapperImpl<DeletedSite, Delet
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

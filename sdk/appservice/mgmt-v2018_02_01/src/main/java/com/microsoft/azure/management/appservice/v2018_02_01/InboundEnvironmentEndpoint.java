@@ -11,13 +11,13 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.InboundEnvironmentEndpointInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 
 /**
  * Type representing InboundEnvironmentEndpoint.
  */
-public interface InboundEnvironmentEndpoint extends HasInner<InboundEnvironmentEndpointInner>, HasManager<AppServiceManager> {
+public interface InboundEnvironmentEndpoint extends HasInner<InboundEnvironmentEndpointInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the description value.
      */

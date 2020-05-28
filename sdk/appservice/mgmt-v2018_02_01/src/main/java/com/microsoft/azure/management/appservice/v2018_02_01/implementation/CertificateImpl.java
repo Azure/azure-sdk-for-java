@@ -18,9 +18,9 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentP
 import com.microsoft.azure.management.appservice.v2018_02_01.KeyVaultSecretStatus;
 import rx.functions.Func1;
 
-class CertificateImpl extends GroupableResourceCoreImpl<Certificate, CertificateInner, CertificateImpl, AppServiceManager> implements Certificate, Certificate.Definition, Certificate.Update {
+class CertificateImpl extends GroupableResourceCoreImpl<Certificate, CertificateInner, CertificateImpl, CertificateRegistrationManager> implements Certificate, Certificate.Definition, Certificate.Update {
     private CertificatePatchResource updateParameter;
-    CertificateImpl(String name, CertificateInner inner, AppServiceManager manager) {
+    CertificateImpl(String name, CertificateInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new CertificatePatchResource();
     }

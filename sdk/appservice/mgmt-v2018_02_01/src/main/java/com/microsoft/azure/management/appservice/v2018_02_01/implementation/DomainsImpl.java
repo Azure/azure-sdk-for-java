@@ -28,8 +28,8 @@ import com.microsoft.azure.management.appservice.v2018_02_01.NameIdentifier;
 import com.microsoft.azure.management.appservice.v2018_02_01.DomainRecommendationSearchParameters;
 import com.microsoft.azure.management.appservice.v2018_02_01.DomainOwnershipIdentifier;
 
-class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainInner, DomainsInner, AppServiceManager>  implements Domains {
-    protected DomainsImpl(AppServiceManager manager) {
+class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainInner, DomainsInner, CertificateRegistrationManager>  implements Domains {
+    protected DomainsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().domains(), manager);
     }
 
@@ -213,10 +213,14 @@ class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainI
     public Observable<DomainOwnershipIdentifier> getOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name) {
         DomainsInner client = this.inner();
         return client.getOwnershipIdentifierAsync(resourceGroupName, domainName, name)
-        .map(new Func1<DomainOwnershipIdentifierInner, DomainOwnershipIdentifier>() {
+        .flatMap(new Func1<DomainOwnershipIdentifierInner, Observable<DomainOwnershipIdentifier>>() {
             @Override
-            public DomainOwnershipIdentifier call(DomainOwnershipIdentifierInner inner) {
-                return wrapDomainOwnershipIdentifierModel(inner);
+            public Observable<DomainOwnershipIdentifier> call(DomainOwnershipIdentifierInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DomainOwnershipIdentifier)wrapDomainOwnershipIdentifierModel(inner));
+                }
             }
        });
     }

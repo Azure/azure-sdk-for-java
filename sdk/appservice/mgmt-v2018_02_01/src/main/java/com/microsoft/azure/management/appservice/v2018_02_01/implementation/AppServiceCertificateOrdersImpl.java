@@ -26,14 +26,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteSealRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.AppServiceCertificateResource;
 
 class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateOrdersInner> implements AppServiceCertificateOrders {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    AppServiceCertificateOrdersImpl(AppServiceManager manager) {
+    AppServiceCertificateOrdersImpl(CertificateRegistrationManager manager) {
         super(manager.inner().appServiceCertificateOrders());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -78,10 +78,14 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
 
     @Override
     public Observable<AppServiceCertificateOrder> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return this.getAppServiceCertificateOrderInnerUsingAppServiceCertificateOrdersInnerAsync(resourceGroupName, name).map(new Func1<AppServiceCertificateOrderInner, AppServiceCertificateOrder> () {
+        return this.getAppServiceCertificateOrderInnerUsingAppServiceCertificateOrdersInnerAsync(resourceGroupName, name).flatMap(new Func1<AppServiceCertificateOrderInner, Observable<AppServiceCertificateOrder>> () {
             @Override
-            public AppServiceCertificateOrder call(AppServiceCertificateOrderInner inner) {
-                return wrapAppServiceCertificateOrderModel(inner);
+            public Observable<AppServiceCertificateOrder> call(AppServiceCertificateOrderInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return  Observable.just((AppServiceCertificateOrder)wrapAppServiceCertificateOrderModel(inner));
+                }
             }
         });
     }
@@ -215,10 +219,14 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
     public Observable<AppServiceCertificateResource> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
         AppServiceCertificateOrdersInner client = this.inner();
         return client.getCertificateAsync(resourceGroupName, certificateOrderName, name)
-        .map(new Func1<AppServiceCertificateResourceInner, AppServiceCertificateResource>() {
+        .flatMap(new Func1<AppServiceCertificateResourceInner, Observable<AppServiceCertificateResource>>() {
             @Override
-            public AppServiceCertificateResource call(AppServiceCertificateResourceInner inner) {
-                return wrapAppServiceCertificateResourceModel(inner);
+            public Observable<AppServiceCertificateResource> call(AppServiceCertificateResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((AppServiceCertificateResource)wrapAppServiceCertificateResourceModel(inner));
+                }
             }
        });
     }

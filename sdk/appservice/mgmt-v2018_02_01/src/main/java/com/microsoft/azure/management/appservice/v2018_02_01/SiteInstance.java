@@ -11,12 +11,12 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteInstanceInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing SiteInstance.
  */
-public interface SiteInstance extends HasInner<SiteInstanceInner>, HasManager<AppServiceManager> {
+public interface SiteInstance extends HasInner<SiteInstanceInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
