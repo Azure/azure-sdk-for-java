@@ -200,13 +200,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         httpHeaders.put(Headers.SERVER_VERSION, context.serverVersion());
         httpHeaders.put(Headers.ACTIVITY_ID, activityId.toString());
 
-        this.collectEntries((token, toEntry) -> {
-            if (token.isPresent()) {
-                Map.Entry<String, String> local = toEntry.apply(token);
-                httpHeaders.put(local.getKey(), local.getValue());
-            }
-        });
-
+        this.collectEntries(httpHeaders);
         return httpHeaders;
     }
 
@@ -283,179 +277,118 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         }
     }
 
-    private void collectEntries(final BiConsumer<RntbdToken, Function<RntbdToken, Map.Entry<String, String>>> collector) {
+    private void collectEntries(final HttpHeaders responseHeaders) {
 
-        collector.accept(this.LSN, token ->
-            toLongEntry(BackendHeaders.LSN, token)
-        );
+        AddLongHeaderIfPresent(this.LSN, BackendHeaders.LSN, responseHeaders);
+        AddLongHeaderIfPresent(this.collectionLazyIndexProgress, Headers.COLLECTION_LAZY_INDEXING_PROGRESS, responseHeaders);
+        AddLongHeaderIfPresent(this.collectionPartitionIndex, BackendHeaders.COLLECTION_PARTITION_INDEX, responseHeaders);
 
-        collector.accept(this.collectionLazyIndexProgress, token ->
-            toIntegerEntry(Headers.COLLECTION_LAZY_INDEXING_PROGRESS, token)
-        );
+        AddStringHeaderIfPresent(this.collectionSecurityIdentifier, BackendHeaders.COLLECTION_SECURITY_IDENTIFIER, responseHeaders);
 
-        collector.accept(this.collectionPartitionIndex, token ->
-            toIntegerEntry(BackendHeaders.COLLECTION_PARTITION_INDEX, token)
-        );
+        AddLongHeaderIfPresent(this.collectionServiceIndex, BackendHeaders.COLLECTION_SERVICE_INDEX, responseHeaders);
 
-        collector.accept(this.collectionSecurityIdentifier, token ->
-            toStringEntry(BackendHeaders.COLLECTION_SECURITY_IDENTIFIER, token)
-        );
+        AddLongHeaderIfPresent(this.collectionUpdateProgress, Headers.COLLECTION_INDEX_TRANSFORMATION_PROGRESS, responseHeaders);
 
-        collector.accept(this.collectionServiceIndex, token ->
-            toIntegerEntry(BackendHeaders.COLLECTION_SERVICE_INDEX, token)
-        );
+        AddStringHeaderIfPresent(this.continuationToken, Headers.CONTINUATION, responseHeaders);
 
-        collector.accept(this.collectionUpdateProgress, token ->
-            toIntegerEntry(Headers.COLLECTION_INDEX_TRANSFORMATION_PROGRESS, token)
-        );
+        AddLongHeaderIfPresent(this.currentReplicaSetSize, BackendHeaders.CURRENT_REPLICA_SET_SIZE, responseHeaders);
+        AddLongHeaderIfPresent(this.currentWriteQuorum, BackendHeaders.CURRENT_WRITE_QUORUM, responseHeaders);
 
-        collector.accept(this.continuationToken, token ->
-            toStringEntry(Headers.CONTINUATION, token)
-        );
+        AddStringHeaderIfPresent(this.databaseAccountId, BackendHeaders.DATABASE_ACCOUNT_ID, responseHeaders);
+        AddBooleanHeaderIfPresent(this.disableRntbdChannel, Headers.DISABLE_RNTBD_CHANNEL, responseHeaders);
 
-        collector.accept(this.currentReplicaSetSize, token ->
-            toIntegerEntry(BackendHeaders.CURRENT_REPLICA_SET_SIZE, token)
-        );
+        AddStringHeaderIfPresent(this.eTag, Headers.E_TAG, responseHeaders);
 
-        collector.accept(this.currentWriteQuorum, token ->
-            toIntegerEntry(BackendHeaders.CURRENT_WRITE_QUORUM, token)
-        );
+        AddLongHeaderIfPresent(this.globalCommittedLSN, BackendHeaders.GLOBAL_COMMITTED_LSN, responseHeaders);
 
-        collector.accept(this.databaseAccountId, token ->
-            toStringEntry(BackendHeaders.DATABASE_ACCOUNT_ID, token)
-        );
+        AddBooleanHeaderIfPresent(this.hasTentativeWrites, BackendHeaders.HAS_TENTATIVE_WRITES, responseHeaders);
 
-        collector.accept(this.disableRntbdChannel, token ->
-            toBooleanEntry(Headers.DISABLE_RNTBD_CHANNEL, token)
-        );
+        if(this.indexingDirective.isPresent()) {
+            responseHeaders.put(Headers.INDEXING_DIRECTIVE, RntbdIndexingDirective.fromId(this.indexingDirective.getValue(Byte.class)).name());
+        }
 
-        collector.accept(this.eTag, token ->
-            toStringEntry(Headers.E_TAG, token)
-        );
+        AddByteHeaderIfPresent(this.isRUPerMinuteUsed, BackendHeaders.IS_RU_PER_MINUTE_USED, responseHeaders);
 
-        collector.accept(this.globalCommittedLSN, token ->
-            toLongEntry(BackendHeaders.GLOBAL_COMMITTED_LSN, token)
-        );
+        AddLongHeaderIfPresent(this.itemCount, Headers.ITEM_COUNT, responseHeaders);
+        AddLongHeaderIfPresent(this.itemLSN, BackendHeaders.ITEM_LSN, responseHeaders);
+        AddLongHeaderIfPresent(this.itemLocalLSN, BackendHeaders.ITEM_LOCAL_LSN, responseHeaders);
 
-        collector.accept(this.hasTentativeWrites, token ->
-            toBooleanEntry(BackendHeaders.HAS_TENTATIVE_WRITES, token)
-        );
+        AddStringHeaderIfPresent(this.lastStateChangeDateTime, Headers.LAST_STATE_CHANGE_UTC, responseHeaders);
 
-        collector.accept(this.indexingDirective, token ->
-            new Entry(Headers.INDEXING_DIRECTIVE, RntbdIndexingDirective.fromId(token.getValue(Byte.class)).name())
-        );
+        AddLongHeaderIfPresent(this.localLSN, BackendHeaders.LOCAL_LSN, responseHeaders);
 
-        collector.accept(this.isRUPerMinuteUsed, token ->
-            toByteEntry(BackendHeaders.IS_RU_PER_MINUTE_USED, token)
-        );
+        AddStringHeaderIfPresent(this.logResults, Headers.LOG_RESULTS, responseHeaders);
 
-        collector.accept(this.itemCount, token ->
-            toIntegerEntry(Headers.ITEM_COUNT, token)
-        );
+        AddLongHeaderIfPresent(this.numberOfReadRegions, BackendHeaders.NUMBER_OF_READ_REGIONS, responseHeaders);
 
-        collector.accept(this.itemLSN, token ->
-            toLongEntry(BackendHeaders.ITEM_LSN, token)
-        );
+        AddBooleanHeaderIfPresent(this.offerReplacePending, BackendHeaders.OFFER_REPLACE_PENDING, responseHeaders);
 
-        collector.accept(this.itemLocalLSN, token ->
-            toLongEntry(BackendHeaders.ITEM_LOCAL_LSN, token)
-        );
+        AddStringHeaderIfPresent(this.ownerFullName, Headers.OWNER_FULL_NAME, responseHeaders);
+        AddStringHeaderIfPresent(this.ownerId, Headers.OWNER_ID, responseHeaders);
+        AddStringHeaderIfPresent(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, responseHeaders);
+        AddStringHeaderIfPresent(this.queryMetrics, BackendHeaders.QUERY_METRICS, responseHeaders);
 
-        collector.accept(this.lastStateChangeDateTime, token ->
-            toStringEntry(Headers.LAST_STATE_CHANGE_UTC, token)
-        );
+        AddLongHeaderIfPresent(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, responseHeaders);
+        AddLongHeaderIfPresent(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, responseHeaders);
 
-        collector.accept(this.localLSN, token ->
-            toLongEntry(BackendHeaders.LOCAL_LSN, token)
-        );
+        AddCurrencyEntryTokenHeaderIfPresent(this.requestCharge, Headers.REQUEST_CHARGE, responseHeaders);
 
-        collector.accept(this.logResults, token ->
-            toStringEntry(Headers.LOG_RESULTS, token)
-        );
+        AddByteHeaderIfPresent(this.requestValidationFailure, BackendHeaders.REQUEST_VALIDATION_FAILURE, responseHeaders);
 
-        collector.accept(this.numberOfReadRegions, token ->
-            toIntegerEntry(BackendHeaders.NUMBER_OF_READ_REGIONS, token)
-        );
+        AddStringHeaderIfPresent(this.restoreState, BackendHeaders.RESTORE_STATE, responseHeaders);
 
-        collector.accept(this.offerReplacePending, token ->
-            toBooleanEntry(BackendHeaders.OFFER_REPLACE_PENDING, token)
-        );
+        AddLongHeaderIfPresent(this.retryAfterMilliseconds, Headers.RETRY_AFTER_IN_MILLISECONDS, responseHeaders);
 
-        collector.accept(this.ownerFullName, token ->
-            toStringEntry(Headers.OWNER_FULL_NAME, token)
-        );
+        AddStringHeaderIfPresent(this.schemaVersion, Headers.SCHEMA_VERSION, responseHeaders);
+        AddStringHeaderIfPresent(this.serverDateTimeUtc, Headers.X_DATE, responseHeaders);
 
-        collector.accept(this.ownerId, token ->
-            toStringEntry(Headers.OWNER_ID, token)
-        );
+        AddSessionTokenHeaderIfPresent(this.sessionToken, Headers.SESSION_TOKEN, responseHeaders);
 
-        collector.accept(this.partitionKeyRangeId, token ->
-            toStringEntry(BackendHeaders.PARTITION_KEY_RANGE_ID, token)
-        );
+        AddBooleanHeaderIfPresent(this.shareThroughput, BackendHeaders.SHARE_THROUGHPUT, responseHeaders);
 
-        collector.accept(this.queryMetrics, token ->
-            toStringEntry(BackendHeaders.QUERY_METRICS, token)
-        );
+        AddStringHeaderIfPresent(this.storageMaxResoureQuota, Headers.MAX_RESOURCE_QUOTA, responseHeaders);
+        AddStringHeaderIfPresent(this.storageResourceQuotaUsage, Headers.CURRENT_RESOURCE_QUOTA_USAGE, responseHeaders);
 
-        collector.accept(this.quorumAckedLSN, token ->
-            toLongEntry(BackendHeaders.QUORUM_ACKED_LSN, token)
-        );
+        AddLongHeaderIfPresent(this.subStatus, Headers.SUB_STATUS, responseHeaders);
+        AddLongHeaderIfPresent(this.transportRequestID, Headers.TRANSPORT_REQUEST_ID, responseHeaders);
+        AddLongHeaderIfPresent(this.xpRole, BackendHeaders.XP_ROLE, responseHeaders);
+    }
 
-        collector.accept(this.quorumAckedLocalLSN, token ->
-            toLongEntry(BackendHeaders.QUORUM_ACKED_LOCAL_LSN, token)
-        );
+    private void AddLongHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        if (token.isPresent()) {
+            responseHeaders.put(headerName, Long.toString(this.LSN.getValue(Long.class)));
+        }
+    }
 
-        collector.accept(this.requestCharge, token ->
-            toCurrencyEntry(Headers.REQUEST_CHARGE, token)
-        );
+    private void AddStringHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        if (token.isPresent()) {
+            responseHeaders.put(headerName, token.getValue(String.class));
+        }
+    }
 
-        collector.accept(this.requestValidationFailure, token ->
-            toByteEntry(BackendHeaders.REQUEST_VALIDATION_FAILURE, token)
-        );
+    private void AddBooleanHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        if (token.isPresent()) {
+            responseHeaders.put(headerName, String.valueOf(token.getValue(Byte.class) != 0));
+        }
+    }
 
-        collector.accept(this.restoreState, token ->
-            toStringEntry(BackendHeaders.RESTORE_STATE, token)
-        );
+    private void AddByteHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        if (token.isPresent()) {
+            responseHeaders.put(headerName, Byte.toString(token.getValue(Byte.class)));
+        }
+    }
 
-        collector.accept(this.retryAfterMilliseconds, token ->
-            toIntegerEntry(Headers.RETRY_AFTER_IN_MILLISECONDS, token)
-        );
+    private void AddSessionTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        if (token.isPresent()) {
+            responseHeaders.put(headerName, this.partitionKeyRangeId.getValue(String.class) + ":" + this.sessionToken.getValue(String.class));
+        }
+    }
 
-        collector.accept(this.schemaVersion, token ->
-            toStringEntry(Headers.SCHEMA_VERSION, token)
-        );
-
-        collector.accept(this.serverDateTimeUtc, token ->
-            toStringEntry(Headers.X_DATE, token)
-        );
-
-        collector.accept(this.sessionToken, token ->
-            this.toSessionTokenEntry(Headers.SESSION_TOKEN, token)
-        );
-
-        collector.accept(this.shareThroughput, token ->
-            toBooleanEntry(BackendHeaders.SHARE_THROUGHPUT, token)
-        );
-
-        collector.accept(this.storageMaxResoureQuota, token ->
-            toStringEntry(Headers.MAX_RESOURCE_QUOTA, token)
-        );
-
-        collector.accept(this.storageResourceQuotaUsage, token ->
-            toStringEntry(Headers.CURRENT_RESOURCE_QUOTA_USAGE, token)
-        );
-
-        collector.accept(this.subStatus, token ->
-            toIntegerEntry(BackendHeaders.SUB_STATUS, token)
-        );
-
-        collector.accept(this.transportRequestID, token ->
-            toIntegerEntry(Headers.TRANSPORT_REQUEST_ID, token)
-        );
-
-        collector.accept(this.xpRole, token ->
-            toIntegerEntry(BackendHeaders.XP_ROLE, token)
-        );
+    private void AddCurrencyEntryTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        if (token.isPresent()) {
+            final BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
+            responseHeaders.put(headerName, value.toString());
+        }
     }
 
     private void mapValue(final RntbdToken token, final String name, final Function<String, Object> parse, final Map<String, String> headers) {
@@ -467,33 +400,9 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         }
     }
 
-    private static Map.Entry<String, String> toBooleanEntry(final String name, final RntbdToken token) {
-        return new Entry(name, String.valueOf(token.getValue(Byte.class) != 0));
-    }
-
-    private static Map.Entry<String, String> toByteEntry(final String name, final RntbdToken token) {
-        return new Entry(name, Byte.toString(token.getValue(Byte.class)));
-    }
-
     private static Map.Entry<String, String> toCurrencyEntry(final String name, final RntbdToken token) {
         final BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
         return new Entry(name, value.toString());
-    }
-
-    private static Map.Entry<String, String> toIntegerEntry(final String name, final RntbdToken token) {
-        return new Entry(name, Long.toString(token.getValue(Long.class)));
-    }
-
-    private static Map.Entry<String, String> toLongEntry(final String name, final RntbdToken token) {
-        return new Entry(name, Long.toString(token.getValue(Long.class)));
-    }
-
-    private Map.Entry<String, String> toSessionTokenEntry(final String name, final RntbdToken token) {
-        return new Entry(name, this.partitionKeyRangeId.getValue(String.class) + ":" + this.sessionToken.getValue(String.class));
-    }
-
-    private static Map.Entry<String, String> toStringEntry(final String name, final RntbdToken token) {
-        return new Entry(name, token.getValue(String.class));
     }
 
     private static final class Entry extends AbstractMap.SimpleImmutableEntry<String, String> implements Serializable {
