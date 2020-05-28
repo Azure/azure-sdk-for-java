@@ -83,7 +83,7 @@ public class CosmosAsyncDatabase {
             options = new CosmosDatabaseRequestOptions();
         }
         return getDocClientWrapper().readDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response, getClient())).single();
+                   .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
     /**
@@ -114,7 +114,7 @@ public class CosmosAsyncDatabase {
             options = new CosmosDatabaseRequestOptions();
         }
         return getDocClientWrapper().deleteDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response, getClient())).single();
+                   .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
     /* CosmosAsyncContainer operations */

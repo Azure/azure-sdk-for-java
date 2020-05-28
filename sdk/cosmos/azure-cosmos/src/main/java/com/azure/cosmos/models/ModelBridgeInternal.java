@@ -79,9 +79,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabaseResponse createCosmosDatabaseResponse(ResourceResponse<Database> response,
-                                                                      CosmosAsyncClient client) {
-        return new CosmosDatabaseResponse(response, client);
+    public static CosmosDatabaseResponse createCosmosDatabaseResponse(ResourceResponse<Database> response) {
+        return new CosmosDatabaseResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

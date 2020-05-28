@@ -275,8 +275,7 @@ public final class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
-                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse,
-                       this))
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
                    .single();
     }
 
@@ -333,8 +332,7 @@ public final class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
-                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse,
-                       this))
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
                    .single();
     }
 

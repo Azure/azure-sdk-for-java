@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
  */
 public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
 
-    CosmosDatabaseResponse(ResourceResponse<Database> response, CosmosAsyncClient client) {
+    CosmosDatabaseResponse(ResourceResponse<Database> response) {
         super(response);
         String bodyAsString = response.getBodyAsString();
         if (StringUtils.isEmpty(bodyAsString)) {
