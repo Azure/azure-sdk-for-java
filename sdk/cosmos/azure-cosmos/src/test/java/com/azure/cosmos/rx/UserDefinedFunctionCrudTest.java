@@ -73,6 +73,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.setId(UUID.randomUUID().toString());
         udf.setBody("function() {var x = 10;}");
+        createdCollection.getScripts().createUserDefinedFunction(udf).block();
         CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().getUserDefinedFunction(udf.getId());
 
             // delete udf
