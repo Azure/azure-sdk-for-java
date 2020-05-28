@@ -5,7 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
-import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.CosmosStoredProcedure;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
@@ -39,9 +40,9 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         storedProcedureDef.setId(UUID.randomUUID().toString());
         storedProcedureDef.setBody("function() {var x = 10;}");
 
-        Mono<CosmosAsyncStoredProcedureResponse> createObservable = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions());
+        Mono<CosmosStoredProcedureResponse> createObservable = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions());
 
-        CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
+        CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
             .withId(storedProcedureDef.getId())
             .withStoredProcedureBody("function() {var x = 10;}")
             .notNullEtag()
@@ -56,12 +57,13 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
         storedProcedureDef.setId(UUID.randomUUID().toString());
         storedProcedureDef.setBody("function() {var x = 10;}");
-        CosmosAsyncStoredProcedure storedProcedure = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().getStoredProcedure();
+        CosmosStoredProcedureResponse storedProcedureResponse = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block();
+        CosmosAsyncStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureResponse.getProperties().getId());
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        Mono<CosmosAsyncStoredProcedureResponse> readObservable = storedProcedure.read(null);
+        Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
 
-        CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
+        CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
             .withId(storedProcedureDef.getId())
             .withStoredProcedureBody("function() {var x = 10;}")
             .notNullEtag()
@@ -77,10 +79,12 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         storedProcedureDef.setId(UUID.randomUUID().toString());
         storedProcedureDef.setBody("function() {var x = 10;}");
 
-        CosmosAsyncStoredProcedure storedProcedure = this.container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().getStoredProcedure();
-        Mono<CosmosAsyncStoredProcedureResponse> deleteObservable = storedProcedure.delete(new CosmosStoredProcedureRequestOptions());
+        CosmosStoredProcedureResponse storedProcedureResponse = this.container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block();
+        CosmosAsyncStoredProcedure storedProcedure =
+            this.container.getScripts().getStoredProcedure(storedProcedureResponse.getProperties().getId());
+        Mono<CosmosStoredProcedureResponse> deleteObservable = storedProcedure.delete(new CosmosStoredProcedureRequestOptions());
 
-        CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
+        CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
             .nullResource()
             .build();
 
@@ -88,7 +92,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 
-        Mono<CosmosAsyncStoredProcedureResponse> readObservable = storedProcedure.read(null);
+        Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }

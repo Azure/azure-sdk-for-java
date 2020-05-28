@@ -7,6 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -561,9 +563,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
                 DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, queryResourceLink, false, activityId);
-        return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
+        return executionContext.flatMap(iDocumentQueryExecutionContext -> {
+            QueryInfo queryInfo = null;
+            if (iDocumentQueryExecutionContext instanceof PipelinedDocumentQueryExecutionContext) {
+                queryInfo = ((PipelinedDocumentQueryExecutionContext<T>) iDocumentQueryExecutionContext).getQueryInfo();
+            }
+            if (queryInfo != null && queryInfo.hasSelectValue()) {
+                QueryInfo finalQueryInfo = queryInfo;
+                return iDocumentQueryExecutionContext.executeAsync()
+                           .map(tFeedResponse -> {
+                               ModelBridgeInternal
+                                   .addQueryInfoToFeedResponse(tFeedResponse, finalQueryInfo);
+                               return tFeedResponse;
+                           });
+            }
+            return iDocumentQueryExecutionContext.executeAsync();
+        });
     }
-
 
     @Override
     public Flux<FeedResponse<Database>> queryDatabases(String query, FeedOptions options) {
@@ -942,7 +958,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        if (options.isPopulateQuotaInfo()) {
+        if (options.isQuotaInfoEnabled()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
 

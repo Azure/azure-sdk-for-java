@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -104,7 +105,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
         int throughput = 400;
         try {
-            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput, requestOptions);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, ThroughputProperties.createManualThroughput(throughput), requestOptions);
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
@@ -117,7 +118,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         int throughput = 1000;
         try {
-            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, ThroughputProperties.createManualThroughput(throughput));
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
             if (ex instanceof CosmosException) {
@@ -133,7 +134,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         int throughput = 1000;
         try {
-            CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId(), throughput);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId(), ThroughputProperties.createManualThroughput(throughput));
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
             if (ex instanceof CosmosException) {

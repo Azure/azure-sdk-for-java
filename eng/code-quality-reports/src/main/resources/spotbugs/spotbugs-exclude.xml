@@ -711,26 +711,6 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-
-  <!-- Azure search has generated code mixed with hand-written in these packages -->
-  <Match>
-    <And>
-      <Package name="~com\.azure\.search\.documents\.models"/>
-      <Not>
-        <Or>
-          <!-- Hand-written classes should be specified here to be checked  -->
-          <Class name="com.azure.search.documents.models.CoordinateSystem"/>
-          <Class name="com.azure.search.documents.models.GeoPoint"/>
-          <Class name="com.azure.search.documents.models.IndexBatch"/>
-          <Class name="com.azure.search.documents.models.ValueFacetResult"/>
-          <Class name="com.azure.search.documents.models.RangeFacetResult"/>
-          <Class name="com.azure.search.documents.models.IndexBatchException"/>
-          <Class name="com.azure.search.documents.models.ScoringParameter"/>
-        </Or>
-      </Not>
-    </And>
-  </Match>
-
   <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>

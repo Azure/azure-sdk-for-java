@@ -3,12 +3,11 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
@@ -70,10 +69,19 @@ public class CosmosScripts {
     /**
      * Read all stored procedures {@link CosmosPagedIterable}.
      *
+     * @return the {@link CosmosPagedIterable}
+     */
+    public CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures() {
+        return getCosmosPagedIterable(asyncScripts.readAllStoredProcedures(new FeedOptions()));
+    }
+
+    /**
+     * Read all stored procedures {@link CosmosPagedIterable}.
+     *
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    public CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
+    CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllStoredProcedures(options));
     }
 
@@ -132,10 +140,19 @@ public class CosmosScripts {
     /**
      * Read all user defined functions {@link CosmosPagedIterable}.
      *
+     * @return the {@link CosmosPagedIterable}
+     */
+    public CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions() {
+        return getCosmosPagedIterable(asyncScripts.readAllUserDefinedFunctions(new FeedOptions()));
+    }
+
+    /**
+     * Read all user defined functions {@link CosmosPagedIterable}.
+     *
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    public CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(
+    CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(
         FeedOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllUserDefinedFunctions(options));
     }
@@ -193,10 +210,19 @@ public class CosmosScripts {
     /**
      * Read all triggers {@link CosmosPagedIterable}.
      *
+     * @return the {@link CosmosPagedIterable}
+     */
+    public CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers() {
+        return getCosmosPagedIterable(asyncScripts.readAllTriggers(new FeedOptions()));
+    }
+
+    /**
+     * Read all triggers {@link CosmosPagedIterable}.
+     *
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    public CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
+    CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllTriggers(options));
     }
 
@@ -243,11 +269,9 @@ public class CosmosScripts {
      * @return the cosmos sync stored procedure response
      */
     CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(
-        Mono<CosmosAsyncStoredProcedureResponse> storedProcedureResponseMono) {
+        Mono<CosmosStoredProcedureResponse> storedProcedureResponseMono) {
         try {
-            return storedProcedureResponseMono
-                       .map(this::convertResponse)
-                       .block();
+            return storedProcedureResponseMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -255,20 +279,6 @@ public class CosmosScripts {
             } else {
                 throw ex;
             }
-        }
-    }
-
-    /**
-     * Convert response cosmos sync stored procedure response.
-     *
-     * @param response the response
-     * @return the cosmos sync stored procedure response
-     */
-    CosmosStoredProcedureResponse convertResponse(CosmosAsyncStoredProcedureResponse response) {
-        if (response.getStoredProcedure() != null) {
-            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().id()));
-        } else {
-            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, null);
         }
     }
 

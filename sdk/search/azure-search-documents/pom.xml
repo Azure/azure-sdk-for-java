@@ -109,6 +109,7 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
+                --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
                 --add-opens com.azure.search.documents/com.azure.search.documents.models=ALL-UNNAMED
                 --add-opens com.azure.search.documents/com.azure.search.documents.implementation=ALL-UNNAMED
                 --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=ALL-UNNAMED

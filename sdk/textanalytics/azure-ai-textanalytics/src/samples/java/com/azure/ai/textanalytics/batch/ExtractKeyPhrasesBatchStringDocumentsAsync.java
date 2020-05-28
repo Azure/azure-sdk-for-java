@@ -5,6 +5,9 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -34,18 +37,32 @@ public class ExtractKeyPhrasesBatchStringDocumentsAsync {
             "The pitot tube is used to measure airspeed."
         );
 
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+
         // Extracting key phrases for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.extractKeyPhrasesBatch(documents, "en").subscribe(
-            extractKeyPhraseResult -> {
-                System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
-                if (extractKeyPhraseResult.isError()) {
-                    // Erroneous document
-                    System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
-                } else {
-                    // Valid document
-                    System.out.println("Extracted phrases:");
-                    extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+        client.extractKeyPhrasesBatch(documents, "en", requestOptions).subscribe(
+            keyPhrasesBatchResultCollection -> {
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());
+
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = keyPhrasesBatchResultCollection.getStatistics();
+                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                // Extracted key phrases for each document in a batch of documents
+                for (ExtractKeyPhraseResult extractKeyPhraseResult : keyPhrasesBatchResultCollection) {
+                    System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
+                    if (extractKeyPhraseResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        System.out.println("Extracted phrases:");
+                        extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+                    }
                 }
             },
             error -> System.err.println("There was an error extracting key phrases of the documents." + error),

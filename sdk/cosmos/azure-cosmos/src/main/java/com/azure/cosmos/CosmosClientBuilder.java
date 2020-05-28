@@ -14,17 +14,64 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Helper class to buildAsyncClient {@link CosmosAsyncClient} instances
- * as logical representation of the Azure Cosmos database service.
- *
+ * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
+ * instances as logical representation of the Azure Cosmos database service.
+ * <p>
+ * When building client, endpoint() and key() are mandatory APIs, without these the initialization will fail.
+ * <p>
+ * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
+ * By default, account consistency level is used if none is provided.
+ * <p>
+ * By default, direct connection mode is used if none specified. 
  * <pre>
+ *     Building Cosmos Async Client minimal APIs (without any customized configurations)
  * {@code
  * CosmosAsyncClient client = new CosmosClientBuilder()
  *         .endpoint(serviceEndpoint)
  *         .key(key)
- *         .directMode()
- *         .consistencyLevel(ConsistencyLevel.SESSION)
  *         .buildAsyncClient();
+ * }
+ * </pre>
+ *
+ * <pre>
+ *     Building Cosmos Async Client with customizations
+ * {@code
+ * CosmosAsyncClient client = new CosmosClientBuilder()
+ *         .endpoint(serviceEndpoint)
+ *         .key(key)
+ *         .directMode(directConnectionConfig, gatewayConnectionConfig)
+ *         .consistencyLevel(ConsistencyLevel.SESSION)
+ *         .connectionSharingAcrossClientsEnabled(true)
+ *         .contentResponseOnWriteEnabled(true)
+ *         .userAgentSuffix("my-application1-client")
+ *         .preferredRegions(Collections.singletonList("West US", "East US"))
+ *         .buildAsyncClient();
+ * }
+ * </pre>
+ *
+ * <pre>
+ *     Building Cosmos Sync Client minimal APIs (without any customized configurations)
+ * {@code
+ * CosmosClient client = new CosmosClientBuilder()
+ *         .endpoint(serviceEndpoint)
+ *         .key(key)
+ *         .buildClient();
+ * }
+ * </pre>
+ *
+ * <pre>
+ *     Building Cosmos Sync Client with customizations
+ * {@code
+ * CosmosClient client = new CosmosClientBuilder()
+ *         .endpoint(serviceEndpoint)
+ *         .key(key)
+ *         .directMode(directConnectionConfig, gatewayConnectionConfig)
+ *         .consistencyLevel(ConsistencyLevel.SESSION)
+ *         .connectionSharingAcrossClientsEnabled(true)
+ *         .contentResponseOnWriteEnabled(true)
+ *         .userAgentSuffix("my-application1-client")
+ *         .preferredRegions(Collections.singletonList("West US", "East US"))
+ *         .buildClient();
  * }
  * </pre>
  */
@@ -94,7 +141,6 @@ public class CosmosClientBuilder {
      * CosmosAsyncClient client1 = new CosmosClientBuilder()
      *         .endpoint(serviceEndpoint1)
      *         .key(key1)
-     *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
      *         .connectionSharingAcrossClientsEnabled(true)
      *         .buildAsyncClient();
@@ -102,7 +148,6 @@ public class CosmosClientBuilder {
      * CosmosAsyncClient client2 = new CosmosClientBuilder()
      *         .endpoint(serviceEndpoint2)
      *         .key(key2)
-     *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
      *         .connectionSharingAcrossClientsEnabled(true)
      *         .buildAsyncClient();
@@ -247,6 +292,8 @@ public class CosmosClientBuilder {
     /**
      * Gets the {@link ConsistencyLevel} to be used
      *
+     * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
+     *
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel() {
@@ -255,6 +302,8 @@ public class CosmosClientBuilder {
 
     /**
      * Sets the {@link ConsistencyLevel} to be used
+     *
+     * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
      *
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
      * @return current Builder
@@ -352,6 +401,8 @@ public class CosmosClientBuilder {
     /**
      * Sets the default DIRECT connection configuration to be used.
      *
+     * By default, the builder is initialized with directMode()
+     *
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder directMode() {
@@ -361,6 +412,8 @@ public class CosmosClientBuilder {
 
     /**
      * Sets the DIRECT connection configuration to be used.
+     *
+     * By default, the builder is initialized with directMode()
      *
      * @param directConnectionConfig direct connection configuration
      * @return current CosmosClientBuilder
@@ -464,8 +517,8 @@ public class CosmosClientBuilder {
      * to true has no effect until EnableMultipleWriteRegions in DatabaseAccount
      * is also set to true.
      * <p>
-     * DEFAULT value is false indicating that writes are only directed to
-     * first region in PreferredRegions property.
+     * DEFAULT value is true indicating that writes are directed to
+     * available writable regions of geo-replicated database account.
      *
      * @param multipleWriteRegionsEnabled flag to enable writes on any regions for geo-replicated
      * database accounts.
@@ -585,7 +638,7 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Builds a cosmos configuration object with the provided properties
+     * Builds a cosmos async client with the provided properties
      *
      * @return CosmosAsyncClient
      */
@@ -597,7 +650,7 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Builds a cosmos sync client object with the provided properties
+     * Builds a cosmos sync client with the provided properties
      *
      * @return CosmosClient
      */
@@ -610,9 +663,7 @@ public class CosmosClientBuilder {
 
     //  Connection policy has to be built before it can be used by this builder
     private void buildConnectionPolicy() {
-        if (this.directConnectionConfig == null && this.gatewayConnectionConfig == null) {
-            throw new IllegalArgumentException("cannot build connection policy without direct or gateway connection config");
-        } else if (this.directConnectionConfig != null) {
+        if (this.directConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(directConnectionConfig);
             //  Check if the user passed additional gateway connection configuration
             if (this.gatewayConnectionConfig != null) {
@@ -620,7 +671,7 @@ public class CosmosClientBuilder {
                 this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
                 this.connectionPolicy.setIdleConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
             }
-        } else {
+        } else if (gatewayConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
         this.connectionPolicy.setPreferredRegions(this.preferredRegions);
@@ -640,8 +691,6 @@ public class CosmosClientBuilder {
                 + "azure key credential");
         ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
             "cannot buildAsyncClient client without key credential");
-        ifThrowIllegalArgException(directConnectionConfig == null && gatewayConnectionConfig == null,
-            "cannot buildAsyncClient client without connection config");
     }
 
     Configs configs() {

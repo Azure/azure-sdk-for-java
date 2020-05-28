@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final static String defaultPartition = "0";
     private final CosmosDiagnostics cosmosDiagnostics;
+    private QueryInfo queryInfo;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -400,4 +402,13 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         }
         return null;
     }
+
+    void setQueryInfo(QueryInfo queryInfo) {
+        this.queryInfo = queryInfo;
+    }
+
+    QueryInfo getQueryInfo() {
+        return this.queryInfo;
+    }
+
 }

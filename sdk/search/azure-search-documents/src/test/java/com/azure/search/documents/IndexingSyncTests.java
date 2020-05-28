@@ -4,14 +4,15 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
 import com.azure.search.documents.test.environment.models.Hotel;
@@ -53,19 +54,19 @@ public class IndexingSyncTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
 
     private final List<String> indexesToDelete = new ArrayList<>();
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
@@ -296,8 +297,8 @@ public class IndexingSyncTests extends SearchTestBase {
                 .setKey(Boolean.TRUE)
             ));
 
-        SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
-        searchServiceClient.createOrUpdateIndex(indexWithReservedName);
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        searchIndexClient.createOrUpdateIndex(indexWithReservedName);
         indexesToDelete.add(indexWithReservedName.getName());
 
         client = getSearchIndexClientBuilder(indexName).buildClient();

@@ -37,11 +37,9 @@ public class ReadFeedUsersTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readUsers() throws Exception {
-
-        FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
-        CosmosPagedFlux<CosmosUserProperties> feedObservable = createdDatabase.readAllUsers(options);
+        CosmosPagedFlux<CosmosUserProperties> feedObservable = createdDatabase.readAllUsers();
 
         int expectedPageSize = (createdUsers.size() + maxItemCount - 1) / maxItemCount;
 
