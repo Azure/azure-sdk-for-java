@@ -4,7 +4,7 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -280,10 +280,10 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
         // create the getDatabase
-        Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
+        Mono<CosmosDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
-        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
+        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
             .withId(databaseDefinition.getId()).build();
         validateSuccess(createObservable, validator);
         //  sanity check
@@ -298,10 +298,10 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         // read database
-        Mono<CosmosAsyncDatabaseResponse> readObservable = client.getDatabase(databaseId).read();
+        Mono<CosmosDatabaseResponse> readObservable = client.getDatabase(databaseId).read();
 
         // validate
-        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
+        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
             .withId(databaseId).build();
         validateSuccess(readObservable, validator);
         //  sanity check
@@ -319,12 +319,13 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
 
-        CosmosAsyncDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().getDatabase();
+        client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseDefinition.getId());
         // delete the getDatabase
-        Mono<CosmosAsyncDatabaseResponse> deleteObservable = database.delete();
+        Mono<CosmosDatabaseResponse> deleteObservable = database.delete();
 
         // validate
-        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
+        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
             .nullResource().build();
         validateSuccess(deleteObservable, validator);
         //  sanity check
@@ -342,7 +343,8 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
 
         // create the database, and this should throw Illegal Argument Exception for secondary key
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().getDatabase();
+        client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
+        client.getDatabase(databaseDefinition.getId());
     }
 
     @BeforeMethod(groups = { "simple" }, timeOut = TIMEOUT)

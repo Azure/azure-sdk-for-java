@@ -90,7 +90,7 @@ public class CosmosAsyncContainer {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().readCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /**
@@ -109,7 +109,7 @@ public class CosmosAsyncContainer {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().deleteCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /**
@@ -163,7 +163,7 @@ public class CosmosAsyncContainer {
         }
         return database.getDocClientWrapper()
                    .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /* CosmosAsyncItem operations */

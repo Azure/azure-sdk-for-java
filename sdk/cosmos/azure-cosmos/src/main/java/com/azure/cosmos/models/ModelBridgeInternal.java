@@ -3,12 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncUser;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -67,21 +61,18 @@ public final class ModelBridgeInternal {
     private ModelBridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncConflictResponse createCosmosAsyncConflictResponse(ResourceResponse<Conflict> response,
-                                                                                CosmosAsyncContainer container) {
-        return new CosmosAsyncConflictResponse(response, container);
+    public static CosmosConflictResponse createCosmosConflictResponse(ResourceResponse<Conflict> response) {
+        return new CosmosConflictResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainerResponse createCosmosContainerResponse(ResourceResponse<DocumentCollection> response,
-                                                                        CosmosAsyncDatabase database) {
-        return new CosmosContainerResponse(response, database);
+    public static CosmosContainerResponse createCosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
+        return new CosmosContainerResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncDatabaseResponse createCosmosAsyncDatabaseResponse(ResourceResponse<Database> response,
-                                                                                 CosmosAsyncClient client) {
-        return new CosmosAsyncDatabaseResponse(response, client);
+    public static CosmosDatabaseResponse createCosmosDatabaseResponse(ResourceResponse<Database> response) {
+        return new CosmosDatabaseResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -95,9 +86,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
-                                                                                    CosmosAsyncUser cosmosUser) {
-        return new CosmosAsyncPermissionResponse(response, cosmosUser);
+    public static CosmosPermissionResponse createCosmosPermissionResponse(ResourceResponse<Permission> response) {
+        return new CosmosPermissionResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -126,9 +116,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUserDefinedFunctionResponse createCosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
-                                                                                                      CosmosAsyncContainer container) {
-        return new CosmosAsyncUserDefinedFunctionResponse(response, container);
+    public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response) {
+        return new CosmosUserDefinedFunctionResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -139,17 +128,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
         return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabaseResponse createCosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
-        return new CosmosDatabaseResponse(response, client);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(CosmosAsyncUserDefinedFunctionResponse resourceResponse,
-                                                    CosmosUserDefinedFunction userDefinedFunction) {
-        return new CosmosUserDefinedFunctionResponse(resourceResponse, userDefinedFunction);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

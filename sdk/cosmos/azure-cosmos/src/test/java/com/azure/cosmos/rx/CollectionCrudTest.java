@@ -375,9 +375,9 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void replaceProvisionedThroughput(){
         final String databaseName = CosmosDatabaseForTest.generateId();
-        CosmosAsyncDatabase database = client.createDatabase(databaseName)
-                                           .block()
-                                           .getDatabase();
+        client.createDatabase(databaseName).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
+
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
         database.createContainer(
             containerProperties,

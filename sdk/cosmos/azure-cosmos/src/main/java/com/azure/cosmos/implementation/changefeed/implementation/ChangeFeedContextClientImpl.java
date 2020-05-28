@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -101,7 +101,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Mono<CosmosAsyncDatabaseResponse> readDatabase(CosmosAsyncDatabase database, CosmosDatabaseRequestOptions options) {
+    public Mono<CosmosDatabaseResponse> readDatabase(CosmosAsyncDatabase database, CosmosDatabaseRequestOptions options) {
         return database.read()
             .publishOn(this.rxScheduler);
     }

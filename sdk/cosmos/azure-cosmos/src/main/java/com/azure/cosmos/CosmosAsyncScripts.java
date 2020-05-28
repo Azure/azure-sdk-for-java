@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosTriggerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosTriggerProperties;
@@ -186,7 +186,7 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created user defined function or an
      * error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> createUserDefinedFunction(
+    public Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunction(
         CosmosUserDefinedFunctionProperties properties) {
         UserDefinedFunction udf = new UserDefinedFunction();
         udf.setId(properties.getId());
@@ -194,7 +194,7 @@ public class CosmosAsyncScripts {
 
         return database.getDocClientWrapper()
                    .createUserDefinedFunction(container.getLink(), udf, null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, this.container)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response)).single();
     }
 
     /**

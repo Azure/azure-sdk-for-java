@@ -333,6 +333,13 @@ class FunctionAppImpl
     }
 
     @Override
+    public FunctionAppImpl withNewStorageAccount(Creatable<StorageAccount> storageAccount) {
+        storageAccountCreatable = storageAccount;
+        this.addDependency(storageAccountCreatable);
+        return this;
+    }
+
+    @Override
     public FunctionAppImpl withExistingStorageAccount(StorageAccount storageAccount) {
         this.storageAccountToSet = storageAccount;
         return this;
