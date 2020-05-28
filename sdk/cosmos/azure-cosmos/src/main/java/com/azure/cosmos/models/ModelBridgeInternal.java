@@ -121,7 +121,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserResponse createCosmosAsyncUserResponse(ResourceResponse<User> response) {
+    public static CosmosUserResponse createCosmosUserResponse(ResourceResponse<User> response) {
         return new CosmosUserResponse(response);
     }
 
