@@ -29,6 +29,16 @@ public class RetryWithException extends CosmosException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
+    RetryWithException(String message, URI requestUri) {
+        this(message, null, null, requestUri);
+    }
+
+    RetryWithException(String message,
+                       Exception innerException,
+                       URI requestUri) {
+        this(message, innerException, null, requestUri);
+    }
+
     /**
      * Instantiates a new Retry with exception.
      *
@@ -41,6 +51,18 @@ public class RetryWithException extends CosmosException {
             null,
             headers,
             HttpConstants.StatusCodes.RETRY_WITH,
+            requestUri != null ? requestUri.toString() : null);
+    }
+
+    RetryWithException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, headers, HttpConstants.StatusCodes.RETRY_WITH, requestUriString);
+    }
+
+    RetryWithException(String message,
+                       Exception innerException,
+                       HttpHeaders headers,
+                       URI requestUri) {
+        super(message, innerException, headers, HttpConstants.StatusCodes.RETRY_WITH,
             requestUri != null ? requestUri.toString() : null);
     }
 }

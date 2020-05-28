@@ -52,6 +52,10 @@ public class UnauthorizedException extends CosmosException {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
+    UnauthorizedException(Exception innerException) {
+        this(RMResources.Unauthorized, innerException, null, null);
+    }
+
     UnauthorizedException(String message,
                           Exception innerException,
                           HttpHeaders headers,

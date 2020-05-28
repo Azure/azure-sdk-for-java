@@ -43,6 +43,16 @@ public class RequestRateTooLargeException extends CosmosException {
         this(message, null, null, requestUri);
     }
 
+    RequestRateTooLargeException(String message,
+                                 Exception innerException,
+                                 URI requestUri) {
+        this(message, innerException, null, requestUri);
+    }
+
+    RequestRateTooLargeException(Exception innerException) {
+        this(RMResources.TooManyRequests, innerException, null, null);
+    }
+
     /**
      * Instantiates a new Request rate too large exception.
      *
@@ -53,6 +63,10 @@ public class RequestRateTooLargeException extends CosmosException {
     public RequestRateTooLargeException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, headers, HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
             requestUri != null ? requestUri.toString() : null);
+    }
+
+    RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, headers, HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
     }
 
     RequestRateTooLargeException(String message,

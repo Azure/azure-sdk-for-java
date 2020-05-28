@@ -44,6 +44,11 @@ public class PartitionIsMigratingException extends CosmosException {
         setSubStatus();
     }
 
+    PartitionIsMigratingException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
+        setSubStatus();
+    }
+
     /**
      * Instantiates a new Partition is migrating exception.
      *
@@ -53,6 +58,10 @@ public class PartitionIsMigratingException extends CosmosException {
      */
     public PartitionIsMigratingException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
+    }
+
+    PartitionIsMigratingException(Exception innerException) {
+        this(RMResources.Gone, innerException, null, null);
     }
 
     PartitionIsMigratingException(String message,

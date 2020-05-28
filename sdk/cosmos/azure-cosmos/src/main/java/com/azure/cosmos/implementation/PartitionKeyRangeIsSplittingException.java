@@ -42,6 +42,11 @@ public class PartitionKeyRangeIsSplittingException extends CosmosException {
         setSubStatus();
     }
 
+    PartitionKeyRangeIsSplittingException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
+        setSubStatus();
+    }
+
     /**
      * Instantiates a new Partition key range is splitting exception.
      *
@@ -51,6 +56,10 @@ public class PartitionKeyRangeIsSplittingException extends CosmosException {
      */
     public PartitionKeyRangeIsSplittingException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
+    }
+
+    PartitionKeyRangeIsSplittingException(Exception innerException) {
+        this(RMResources.Gone, innerException, null, null);
     }
 
     PartitionKeyRangeIsSplittingException(String message,

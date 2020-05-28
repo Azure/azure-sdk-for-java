@@ -36,6 +36,10 @@ public class LockedException extends CosmosException {
         super(HttpConstants.StatusCodes.LOCKED, msg);
     }
 
+    LockedException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.LOCKED, resourceAddress);
+    }
+
     /**
      * Instantiates a new Locked exception.
      *
@@ -45,6 +49,10 @@ public class LockedException extends CosmosException {
      */
     public LockedException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
+    }
+
+    LockedException(Exception innerException) {
+        this(RMResources.Locked, innerException, null, null);
     }
 
     LockedException(String message,

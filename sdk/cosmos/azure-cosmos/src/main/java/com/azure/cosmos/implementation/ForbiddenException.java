@@ -49,6 +49,10 @@ public class ForbiddenException extends CosmosException {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
+    ForbiddenException(Exception innerException) {
+        this(RMResources.Forbidden, innerException, null, null);
+    }
+
     ForbiddenException(String message,
                        Exception innerException,
                        HttpHeaders headers,

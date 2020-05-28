@@ -38,6 +38,10 @@ public class PreconditionFailedException extends CosmosException {
         super(HttpConstants.StatusCodes.PRECONDITION_FAILED, msg);
     }
 
+    PreconditionFailedException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.PRECONDITION_FAILED, resourceAddress);
+    }
+
     /**
      * Constructor
      * @param message the message
@@ -46,6 +50,10 @@ public class PreconditionFailedException extends CosmosException {
      */
     public PreconditionFailedException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
+    }
+
+    PreconditionFailedException(Exception innerException) {
+        this(RMResources.PreconditionFailed, innerException, null, null);
     }
 
     PreconditionFailedException(String message,

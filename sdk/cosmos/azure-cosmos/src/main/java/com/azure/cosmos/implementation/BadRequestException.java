@@ -71,6 +71,10 @@ public class BadRequestException extends CosmosException {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
+    BadRequestException(Exception innerException) {
+        this(RMResources.BadRequest, innerException, null, null);
+    }
+
     BadRequestException(String message,
                         Exception innerException,
                         HttpHeaders headers,

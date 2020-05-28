@@ -47,6 +47,17 @@ public class RequestTimeoutException extends CosmosException {
         this(message, null, null, requestUri);
     }
 
+    RequestTimeoutException(String message,
+                            Exception innerException,
+                            URI requestUri,
+                            String localIpAddress) {
+        this(message(localIpAddress, message), innerException, null, requestUri);
+    }
+
+    RequestTimeoutException(Exception innerException) {
+        this(RMResources.Gone, innerException, (HttpHeaders) null, null);
+    }
+
     /**
      * Instantiates a new Request timeout exception.
      *
@@ -62,6 +73,10 @@ public class RequestTimeoutException extends CosmosException {
             requestUrl != null
                 ? requestUrl.toString()
                 : null);
+    }
+
+    RequestTimeoutException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, headers, HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUriString);
     }
 
     RequestTimeoutException(String message,

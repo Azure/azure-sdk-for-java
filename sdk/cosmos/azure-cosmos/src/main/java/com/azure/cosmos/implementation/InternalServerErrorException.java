@@ -8,7 +8,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 
 import java.net.URI;
-import java.util.Map;
 
 /**
  * This exception is thrown when DocumentServiceRequest contains x-ms-documentdb-partitionkeyrangeid
@@ -49,6 +48,15 @@ public class InternalServerErrorException extends CosmosException {
         this(message, (Exception) null, (HttpHeaders) null, (String) null);
     }
 
+
+    InternalServerErrorException(String message, Exception innerException) {
+        this(message, innerException, (HttpHeaders) null, (String) null);
+    }
+
+    InternalServerErrorException(Exception innerException) {
+        this(RMResources.InternalServerError, innerException, (HttpHeaders) null, (String) null);
+    }
+
     /**
      * Instantiates a new Internal server error exception.
      *
@@ -58,6 +66,16 @@ public class InternalServerErrorException extends CosmosException {
      */
     public InternalServerErrorException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+            requestUri != null ? requestUri.toString() : null);
+    }
+
+    InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+            requestUriString);
+    }
+
+    InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, URI requestUri) {
+        super(message, innerException, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUri != null ? requestUri.toString() : null);
     }
 

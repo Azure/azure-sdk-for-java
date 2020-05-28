@@ -38,6 +38,10 @@ public class RequestEntityTooLargeException extends CosmosException {
         super(HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE, msg);
     }
 
+    RequestEntityTooLargeException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE, resourceAddress);
+    }
+
     /**
      * Instantiates a new Request entity too large exception.
      *
@@ -47,6 +51,10 @@ public class RequestEntityTooLargeException extends CosmosException {
      */
     public RequestEntityTooLargeException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
+    }
+
+    RequestEntityTooLargeException(Exception innerException) {
+        this(RMResources.RequestEntityTooLarge, innerException, null, null);
     }
 
     RequestEntityTooLargeException(String message,

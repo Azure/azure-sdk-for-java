@@ -39,6 +39,18 @@ public class MethodNotAllowedException extends CosmosException {
         this(message, null, null, null);
     }
 
+    MethodNotAllowedException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, null, headers, requestUriString);
+    }
+
+    MethodNotAllowedException(String message, HttpHeaders headers, URI requestUri) {
+        this(message, headers, requestUri != null ? requestUri.toString() : null);
+    }
+
+    MethodNotAllowedException(Exception innerException) {
+        this(RMResources.MethodNotAllowed, innerException, null, null);
+    }
+
     /**
      * Instantiates a new Method not allowed exception.
      *

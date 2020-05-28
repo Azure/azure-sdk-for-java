@@ -37,6 +37,10 @@ public class ConflictException extends CosmosException {
         super(HttpConstants.StatusCodes.CONFLICT, msg);
     }
 
+    ConflictException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.CONFLICT, resourceAddress);
+    }
+
     /**
      * Instantiates a new Conflict exception.
      *
@@ -46,6 +50,10 @@ public class ConflictException extends CosmosException {
      */
     public ConflictException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
+    }
+
+    ConflictException(Exception innerException) {
+        this(RMResources.EntityAlreadyExists, innerException, null, null);
     }
 
     ConflictException(String message,

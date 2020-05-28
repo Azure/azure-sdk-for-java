@@ -71,6 +71,10 @@ public class InvalidPartitionException extends CosmosException {
         this(message, null, headers, requestUri);
     }
 
+    InvalidPartitionException(Exception innerException) {
+        this(RMResources.Gone, innerException, null, null);
+    }
+
     InvalidPartitionException(String message,
                               Exception innerException,
                               HttpHeaders headers,

@@ -51,6 +51,15 @@ public class PartitionKeyRangeGoneException extends CosmosException {
         this(message, null, null, null);
     }
 
+    PartitionKeyRangeGoneException(String message, Exception innerException) {
+        this(message, innerException, null, null);
+    }
+
+    PartitionKeyRangeGoneException(Exception innerException) {
+        this(RMResources.Gone, innerException, null, null);
+    }
+
+
     /**
      * Instantiates a new Partition key range gone exception.
      *

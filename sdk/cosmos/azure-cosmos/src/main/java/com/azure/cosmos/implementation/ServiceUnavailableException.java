@@ -54,6 +54,10 @@ public class ServiceUnavailableException extends CosmosException {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
+    ServiceUnavailableException(Exception innerException) {
+        this(RMResources.ServiceUnavailable, innerException, null, null);
+    }
+
     /**
      * Instantiates a new Service unavailable exception.
      *
