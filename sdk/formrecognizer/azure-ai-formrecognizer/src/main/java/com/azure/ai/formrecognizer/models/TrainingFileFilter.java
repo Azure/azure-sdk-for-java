@@ -6,11 +6,11 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The TrainModelOptions model.
+ * The TrainingFileFilter model.
  */
 @Fluent
-public final class TrainModelOptions {
-    
+public final class TrainingFileFilter {
+
     /*
      * A case-sensitive prefix string to filter documents in the source path
      * for training.
@@ -37,9 +37,9 @@ public final class TrainModelOptions {
      * Set the case-sensitive prefix string to filter documents in the source path for training.
      *
      * @param prefix the prefix value to set.
-     * @return the TrainModelOptions object itself.
+     * @return the TrainingFileFilter object itself.
      */
-    public TrainModelOptions setPrefix(String prefix) {
+    public TrainingFileFilter setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -59,9 +59,9 @@ public final class TrainModelOptions {
      * searching for content to be preprocessed.
      *
      * @param includeSubFolders the includeSubFolders value to set.
-     * @return the TrainModelOptions object itself.
+     * @return the TrainingFileFilter object itself.
      */
-    public TrainModelOptions setIncludeSubFolders(boolean includeSubFolders) {
+    public TrainingFileFilter setIncludeSubFolders(boolean includeSubFolders) {
         this.includeSubFolders = includeSubFolders;
         return this;
     }

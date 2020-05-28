@@ -29,13 +29,13 @@ from form documents. It includes the following main functionalities:
 [//]: # ({x-version-update-end})
 
 ### Create a Form Recognizer resource
-Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's 
+Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Form Recognizer access only,
 create a Form Recognizer resource.
 
-You can create either resource using the 
+You can create either resource using the
 
-**Option 1:** [Azure Portal][create_new_resource] 
+**Option 1:** [Azure Portal][create_new_resource]
 
 **Option 2:** [Azure CLI][azure_cli]
 
@@ -58,8 +58,8 @@ az cognitiveservices account create \
     --yes
 ```
 ### Authenticate the client
-In order to interact with the Form Recognizer service, you will need to create an instance of the `FormRecognizerClient` 
-class. You will need an **endpoint** and an **key** to instantiate a client object, 
+In order to interact with the Form Recognizer service, you will need to create an instance of the `FormRecognizerClient`
+class. You will need an **endpoint** and an **key** to instantiate a client object,
 they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
 Form Recognizer resource. See the full details regarding [authentication][authentication] of Cognitive Services.
 
@@ -67,12 +67,12 @@ Form Recognizer resource. See the full details regarding [authentication][authen
 The `credential` parameter may be provided as a [`AzureKeyCredential`][azure_key_credential] from [azure-core][azure_core].
 
 ##### Create FormRecognizerClient with AzureKeyCredential
-To use AzureKeyCredential authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. This can be found in the [Azure Portal][azure_portal] 
+To use AzureKeyCredential authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. This can be found in the [Azure Portal][azure_portal]
    under the "Quickstart" section or by running the following Azure CLI command:
 
 ```bash
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
-``` 
+```
 Use the API key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
 ```java
@@ -97,22 +97,22 @@ credential.update("{new_key}");
 ## Key concepts
 ### FormRecognizerClient
 The [FormRecognizerClient][form_recognizer_sync_client] and [FormRecognizerAsyncClient][form_recognizer_async_client]
-provide both synchronous and asynchronous operations 
- - Recognizing form fields and content using custom models trained to recognize your custom forms. 
+provide both synchronous and asynchronous operations
+ - Recognizing form fields and content using custom models trained to recognize your custom forms.
  These values are returned in a collection of `RecognizedForm` objects.
- - Recognizing form content, including tables, lines and words, without the need to train a model. 
+ - Recognizing form content, including tables, lines and words, without the need to train a model.
  Form content is returned in a collection of `FormPage` objects.
- - Recognizing common fields from US receipts, using a pre-trained receipt model on the Form Recognizer service. 
+ - Recognizing common fields from US receipts, using a pre-trained receipt model on the Form Recognizer service.
  These fields and meta-data are returned in a collection of `USReceipt` objects.
- 
+
 ### FormTrainingClient
-The [FormTrainingClient][form_training_sync_client] and 
-[FormTrainingAsyncClient][form_training_async_client] provide both synchronous and asynchronous operations 
+The [FormTrainingClient][form_training_sync_client] and
+[FormTrainingAsyncClient][form_training_async_client] provide both synchronous and asynchronous operations
 - Training custom models to recognize all fields and values found in your custom forms.
  A `CustomFormModel` is returned indicating the form types the model will recognize, and the fields it will extract for
   each form type. See the [service's documents][fr_train_without_labels] for a more detailed explanation.
-- Training custom models to recognize specific fields and values you specify by labeling your custom forms. 
-A `CustomFormModel` is returned indicating the fields the model will extract, as well as the estimated accuracy for 
+- Training custom models to recognize specific fields and values you specify by labeling your custom forms.
+A `CustomFormModel` is returned indicating the fields the model will extract, as well as the estimated accuracy for
 each field. See the [service's documents][fr_train_with_labels] for a more detailed explanation.
 - Managing models created in your account.
 
@@ -124,7 +124,7 @@ followed by polling the service at intervals to determine whether the operation 
 succeeded, to get the result.
 
 Methods that train models or recognize values from forms are modeled as long-running operations. The client exposes
-a `begin<method-name>` method that returns a `SyncPoller` or `PollerFlux` instance. 
+a `begin<method-name>` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
 `begin<method-name>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#Examples).
@@ -216,7 +216,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
     System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
     System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
 }
-``` 
+```
 
 ### Train a model
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
@@ -233,15 +233,15 @@ CustomFormModel customFormModel = trainingPoller.getFinalResult();
 // Model Info
 System.out.printf("Model Id: %s%n", customFormModel.getModelId());
 System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-System.out.printf("Model created on: %s%n", customFormModel.getCreatedOn());
-System.out.printf("Model last updated: %s%n%n", customFormModel.getLastUpdatedOn());
+System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
+System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
 
 System.out.println("Recognized Fields:");
 // looping through the sub-models, which contains the fields they were trained on
 // Since the given training documents are unlabeled, we still group them but they do not have a label.
-customFormModel.getSubModels().forEach(customFormSubModel -> {
+customFormModel.getSubmodels().forEach(customFormSubmodel -> {
     // Since the training data is unlabeled, we are unable to return the accuracy of this model
-    customFormSubModel.getFieldMap().forEach((field, customFormModelField) ->
+    customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
         System.out.printf("Field: %s Field Label: %s%n",
             field, customFormModelField.getLabel()));
 });
@@ -258,7 +258,7 @@ System.out.printf("The account has %s custom models, and we can have at most %s 
     accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
 // Next, we get a paged list of all of our custom models
-PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.getModelInfos();
+PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.listCustomModels();
 System.out.println("We have following models in the account:");
 customModels.forEach(customFormModelInfo -> {
     System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
@@ -266,13 +266,13 @@ customModels.forEach(customFormModelInfo -> {
     modelId.set(customFormModelInfo.getModelId());
     CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
     System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-    System.out.printf("Created on: %s%n", customModel.getCreatedOn());
-    System.out.printf("Updated on: %s%n", customModel.getLastUpdatedOn());
-    customModel.getSubModels().forEach(customFormSubModel -> {
-        System.out.printf("Custom Model Form type: %s%n", customFormSubModel.getFormType());
-        System.out.printf("Custom Model Accuracy: %d%n", customFormSubModel.getAccuracy());
-        if (customFormSubModel.getFieldMap() != null) {
-            customFormSubModel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+    System.out.printf("Created on: %s%n", customModel.getRequestedOn());
+    System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+    customModel.getSubmodels().forEach(customFormSubmodel -> {
+        System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
+        System.out.printf("Custom Model Accuracy: %d%n", customFormSubmodel.getAccuracy());
+        if (customFormSubmodel.getFieldMap() != null) {
+            customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                 System.out.printf("Field Text: %s%n", fieldText);
                 System.out.printf("Field Accuracy: %d%n", customFormModelField.getAccuracy());
             });
@@ -286,9 +286,9 @@ For more detailed examples, refer to [samples][sample_readme].
 
 ## Troubleshooting
 ### General
-Form Recognizer clients raises `ErrorResponseException` [exceptions][error_response_exception]. For example, if you try 
+Form Recognizer clients raises `ErrorResponseException` [exceptions][error_response_exception]. For example, if you try
 to provide an invalid file source URL an `ErrorResponseException` would be raised with an error indicating the failure cause.
-In the following code snippet, the error is handled 
+In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L187-L191 -->
@@ -301,12 +301,12 @@ try {
 ```
 
 ### Enable client logging
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite 
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help 
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default HTTP Client
-All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
 [HTTP clients wiki][http_clients_wiki].
 
@@ -347,7 +347,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
-[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java 
+[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
