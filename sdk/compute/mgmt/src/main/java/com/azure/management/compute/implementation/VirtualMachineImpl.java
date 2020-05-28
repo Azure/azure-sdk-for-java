@@ -64,7 +64,7 @@ import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -154,12 +154,23 @@ class VirtualMachineImpl
     // Utility to setup MSI for the virtual machine
     private VirtualMachineMsiHandler virtualMachineMsiHandler;
     // Reference to the PublicIp creatable that is implicitly created
-    private PublicIPAddress.DefinitionStages.WithCreate implicitPipCreatable;
+    private PublicIpAddress.DefinitionStages.WithCreate implicitPipCreatable;
     // Name of the new proximity placement group
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
     private ProximityPlacementGroupType newProximityPlacementGroupType;
     private final ClientLogger logger = new ClientLogger(VirtualMachineImpl.class);
+    private final ObjectMapper mapper;
+    private static final JacksonAnnotationIntrospector ANNOTATION_INTROSPECTOR = new JacksonAnnotationIntrospector() {
+        @Override
+        public JsonProperty.Access findPropertyAccess(Annotated annotated) {
+            JsonProperty.Access access = super.findPropertyAccess(annotated);
+            if (access == JsonProperty.Access.WRITE_ONLY) {
+                return JsonProperty.Access.AUTO;
+            }
+            return access;
+        }
+    };
 
     VirtualMachineImpl(
         String name,
@@ -173,7 +184,7 @@ class VirtualMachineImpl
         this.networkManager = networkManager;
         this.vmName = name;
         this.isMarketplaceLinuxImage = false;
-        this.namer = this.manager().getSdkContext().getResourceNamerFactory().createResourceNamer(this.vmName);
+        this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =
@@ -185,6 +196,8 @@ class VirtualMachineImpl
         this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(rbacManager, this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;
+        this.mapper = new ObjectMapper();
+        this.mapper.setAnnotationIntrospector(ANNOTATION_INTROSPECTOR);
     }
 
     // Verbs
@@ -324,17 +337,6 @@ class VirtualMachineImpl
             .map(
                 captureResultInner -> {
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
-                            @Override
-                            public JsonProperty.Access findPropertyAccess(Annotated annotated) {
-                                JsonProperty.Access access = super.findPropertyAccess(annotated);
-                                if (access == JsonProperty.Access.WRITE_ONLY) {
-                                    return JsonProperty.Access.AUTO;
-                                }
-                                return access;
-                            }
-                        });
                         return mapper.writeValueAsString(captureResultInner);
                     } catch (JsonProcessingException ex) {
                         throw logger.logExceptionAsError(Exceptions.propagate(ex));
@@ -459,7 +461,7 @@ class VirtualMachineImpl
 
     // Fluent methods for defining public IP association for the new primary network interface
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIpAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withNewPrimaryPublicIPAddress(creatable);
         this.creatablePrimaryNetworkInterfaceKey = this.addDependency(nicCreatable);
@@ -468,13 +470,13 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
-        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup =
+        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
             this
                 .networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(this.namer.randomName("pip", 15))
                 .withRegion(this.regionName());
-        PublicIPAddress.DefinitionStages.WithCreate definitionAfterGroup;
+        PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.creatableGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
@@ -489,7 +491,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress) {
+    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress) {
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withExistingPrimaryPublicIPAddress(publicIPAddress);
         this.creatablePrimaryNetworkInterfaceKey = this.addDependency(nicCreatable);
@@ -1435,13 +1437,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIPAddress getPrimaryPublicIPAddress() {
-        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIPAddress();
+    public PublicIpAddress getPrimaryPublicIPAddress() {
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIpAddress();
     }
 
     @Override
     public String getPrimaryPublicIPAddressId() {
-        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIPAddressId();
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIpAddressId();
     }
 
     @Override

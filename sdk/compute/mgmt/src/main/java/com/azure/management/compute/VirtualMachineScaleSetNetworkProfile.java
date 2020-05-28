@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetNetworkProfile model. */
 @Fluent
 public final class VirtualMachineScaleSetNetworkProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkProfile.class);
+
     /*
      * A reference to a load balancer probe used to determine the health of an
      * instance in the virtual machine scale set. The reference will be in the
@@ -69,5 +73,19 @@ public final class VirtualMachineScaleSetNetworkProfile {
         List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (healthProbe() != null) {
+            healthProbe().validate();
+        }
+        if (networkInterfaceConfigurations() != null) {
+            networkInterfaceConfigurations().forEach(e -> e.validate());
+        }
     }
 }

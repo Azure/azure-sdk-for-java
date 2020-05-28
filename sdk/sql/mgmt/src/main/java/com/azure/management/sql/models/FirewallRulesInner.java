@@ -25,13 +25,16 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FirewallRules. */
 public final class FirewallRulesInner {
+    private final ClientLogger logger = new ClientLogger(FirewallRulesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final FirewallRulesService service;
 
@@ -61,7 +64,7 @@ public final class FirewallRulesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FirewallRuleInner>> createOrUpdate(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -77,7 +80,7 @@ public final class FirewallRulesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -92,7 +95,7 @@ public final class FirewallRulesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FirewallRuleInner>> get(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -107,7 +110,7 @@ public final class FirewallRulesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/firewallRules")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FirewallRuleListResultInner>> listByServer(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -126,13 +129,39 @@ public final class FirewallRulesInner {
      * @param firewallRuleName The name of the firewall rule.
      * @param parameters Represents a server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FirewallRuleInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -158,8 +187,68 @@ public final class FirewallRulesInner {
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @param parameters Represents a server firewall rule.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a server firewall rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FirewallRuleInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String firewallRuleName,
+        FirewallRuleInner parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .createOrUpdate(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                firewallRuleName,
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
+     * @param parameters Represents a server firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
@@ -186,7 +275,7 @@ public final class FirewallRulesInner {
      * @param firewallRuleName The name of the firewall rule.
      * @param parameters Represents a server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
@@ -204,13 +293,34 @@ public final class FirewallRulesInner {
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String serverName, String firewallRuleName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -234,8 +344,57 @@ public final class FirewallRulesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String firewallRuleName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .delete(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                firewallRuleName,
+                context);
+    }
+
+    /**
+     * Deletes a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -253,7 +412,7 @@ public final class FirewallRulesInner {
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -269,13 +428,34 @@ public final class FirewallRulesInner {
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FirewallRuleInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String firewallRuleName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -299,8 +479,57 @@ public final class FirewallRulesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a firewall rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FirewallRuleInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String firewallRuleName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (firewallRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .get(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                firewallRuleName,
+                context);
+    }
+
+    /**
+     * Gets a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a firewall rule.
      */
@@ -325,7 +554,7 @@ public final class FirewallRulesInner {
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a firewall rule.
      */
@@ -341,13 +570,30 @@ public final class FirewallRulesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response to a List Firewall Rules request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FirewallRuleInner>> listByServerSinglePageAsync(
         String resourceGroupName, String serverName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -373,8 +619,55 @@ public final class FirewallRulesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a List Firewall Rules request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FirewallRuleInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .listByServer(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Returns a list of firewall rules.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response to a List Firewall Rules request.
      */
@@ -389,8 +682,26 @@ public final class FirewallRulesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a List Firewall Rules request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FirewallRuleInner> listByServerAsync(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context));
+    }
+
+    /**
+     * Returns a list of firewall rules.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response to a List Firewall Rules request.
      */

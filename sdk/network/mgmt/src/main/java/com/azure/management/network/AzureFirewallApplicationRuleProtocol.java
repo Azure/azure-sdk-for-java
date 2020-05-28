@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AzureFirewallApplicationRuleProtocol model. */
 @Fluent
 public final class AzureFirewallApplicationRuleProtocol {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleProtocol.class);
+
     /*
      * Protocol type.
      */
@@ -62,5 +66,13 @@ public final class AzureFirewallApplicationRuleProtocol {
     public AzureFirewallApplicationRuleProtocol withPort(Integer port) {
         this.port = port;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -3,6 +3,10 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.guava25.collect.Streams;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
@@ -24,10 +28,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -115,6 +122,86 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     @Override
     public boolean isStarted() {
         return this.partitionManager != null && this.partitionManager.isRunning();
+    }
+
+    /**
+     * Returns the current owner (host) and an approximation of the difference between the last processed item (defined
+     *   by the state of the feed container) and the latest change in the container for each partition (lease
+     *   document).
+     * <p>
+     * An empty map will be returned if the processor was not started or no lease documents matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a map representing the current owner and lease token, the current LSN and latest LSN, and the estimated
+     *         lag, asynchronously.
+     */
+    @Override
+    public Mono<Map<String, Integer>> getEstimatedLag() {
+        Map<String, Integer> earlyResult = new ConcurrentHashMap<>();
+
+        if (this.leaseStoreManager == null || this.feedContextClient == null) {
+            return Mono.just(earlyResult);
+        }
+
+        return this.leaseStoreManager.getAllLeases()
+            .flatMap(lease -> {
+                ChangeFeedOptions options = new ChangeFeedOptions()
+                    .setMaxItemCount(1)
+                    .setPartitionKeyRangeId(lease.getLeaseToken())
+                    .setStartFromBeginning(true)
+                    .setRequestContinuation(lease.getContinuationToken());
+
+                return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                    .take(1)
+                    .map(feedResponse -> {
+                        final String pkRangeIdSeparator = ":";
+                        final String segmentSeparator = "#";
+                        final String lsnPropertyName = "_lsn";
+                        String ownerValue = lease.getOwner();
+                        String sessionTokenLsn = feedResponse.getSessionToken();
+                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(pkRangeIdSeparator));
+                        String[] segments = parsedSessionToken.split(segmentSeparator);
+                        String latestLsn = segments[0];
+
+                        if (segments.length >= 2) {
+                            // default to Global LSN
+                            latestLsn = segments[1];
+                        }
+
+                        if (ownerValue == null) {
+                            ownerValue = "";
+                        }
+
+                        // An empty list of documents returned means that we are current (zero lag)
+                        if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
+                            return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0);
+                        }
+
+                        Integer currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
+                        Integer estimatedLag = Integer.valueOf(latestLsn);
+                        estimatedLag = estimatedLag - currentLsn + 1;
+
+                        return Pair.of(ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn, estimatedLag);
+                    });
+            })
+            .collectList()
+            .map(valueList -> {
+                Map<String, Integer> result = new ConcurrentHashMap<>();
+                for (Pair<String, Integer> pair : valueList) {
+                    result.put(pair.getKey(), pair.getValue());
+                }
+                return result;
+            });
+
+//        this.options = new ChangeFeedOptions();
+//        this.options.setMaxItemCount(settings.getMaxItemCount());
+//        this.options.setPartitionKeyRangeId(settings.getPartitionKeyRangeId());
+//        // this.setOptions.getSessionToken(getProperties.getSessionToken());
+//        this.options.setStartFromBeginning(settings.isStartFromBeginning());
+//        this.options.setRequestContinuation(settings.getStartContinuation());
+//        this.options.setStartDateTime(settings.getStartTime());
+//            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
+//            this.options)
     }
 
     /**
@@ -333,13 +420,13 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                this.databaseResourceId = databaseResourceResponse.getDatabase().getId();
+                this.databaseResourceId = databaseResourceResponse.getProperties().getId();
                 return this.databaseResourceId;
             })
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    this.collectionResourceId = documentCollectionResourceResponse.getContainer().getId();
+                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getId();
                     return this;
                 }));
     }

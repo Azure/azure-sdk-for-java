@@ -4,6 +4,9 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OfferAutoscaleSettings;
+import com.azure.cosmos.implementation.Resource;
+
+import java.time.OffsetDateTime;
 
 /**
  * Represents throughput of the resources in the Azure Cosmos DB service.
@@ -90,4 +93,54 @@ public class ThroughputProperties {
         return oldOffer;
     }
 
+    Resource getResource() {
+        return this.offer;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.offer.getId();
+    }
+
+    /**
+     * Sets the id
+     *
+     * @param id the name of the resource.
+     * @return the current instance of {@link ThroughputProperties}.
+     */
+    public ThroughputProperties setId(String id) {
+        this.offer.setId(id);
+        return this;
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.offer.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.offer.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.offer.getETag();
+    }
 }

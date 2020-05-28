@@ -69,7 +69,8 @@ public class BackPressureTest extends TestSuiteBase {
     public void readFeedPages() throws Exception {
         FeedOptions options = new FeedOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
@@ -113,7 +114,8 @@ public class BackPressureTest extends TestSuiteBase {
     public void readFeedItems() throws Exception {
         FeedOptions options = new FeedOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
@@ -255,7 +257,7 @@ public class BackPressureTest extends TestSuiteBase {
         // for bulk insert and later queries.
         Offer offer = rxClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
-                        createdCollection.read().block().getProperties().getResourceId())
+                    createdCollection.read().block().getProperties().getResourceId())
                         , null).take(1).map(FeedResponse::getResults).single().block().get(0);
         offer.setThroughput(6000);
         offer = rxClient.replaceOffer(offer).single().block().getResource();

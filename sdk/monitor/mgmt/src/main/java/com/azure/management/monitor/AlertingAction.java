@@ -6,9 +6,12 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /** The AlertingAction model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName(
@@ -16,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         + ".ScheduledQueryRules.AlertingAction")
 @JsonFlatten
 @Fluent
-public final class AlertingAction extends Action {
+public class AlertingAction extends Action {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertingAction.class);
+
     /*
      * Severity of the alert
      */
@@ -119,5 +124,30 @@ public final class AlertingAction extends Action {
     public AlertingAction withTrigger(TriggerCondition trigger) {
         this.trigger = trigger;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (severity() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property severity in model AlertingAction"));
+        }
+        if (aznsAction() != null) {
+            aznsAction().validate();
+        }
+        if (trigger() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property trigger in model AlertingAction"));
+        } else {
+            trigger().validate();
+        }
     }
 }

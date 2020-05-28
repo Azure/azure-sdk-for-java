@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BillingProfile model. */
 @Fluent
 public final class BillingProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfile.class);
+
     /*
      * Specifies the maximum price you are willing to pay for a Azure Spot
      * VM/VMSS. This price is in US Dollars. <br><br> This price will be
@@ -65,5 +69,13 @@ public final class BillingProfile {
     public BillingProfile withMaxPrice(Double maxPrice) {
         this.maxPrice = maxPrice;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

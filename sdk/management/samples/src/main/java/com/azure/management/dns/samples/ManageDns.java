@@ -10,7 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.PricingTier;
-import com.azure.management.appservice.CustomHostNameDnsRecordType;
+import com.azure.management.appservice.CustomHostnameDnsRecordType;
 import com.azure.management.appservice.WebApp;
 import com.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -19,7 +19,7 @@ import com.azure.management.dns.ARecordSet;
 import com.azure.management.dns.CNameRecordSet;
 import com.azure.management.dns.DnsRecordSet;
 import com.azure.management.dns.DnsZone;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -103,7 +103,7 @@ public class ManageDns {
 
             System.out.println("Updating DNS zone by adding a CName record...");
             rootDnsZone = rootDnsZone.update()
-                    .withCNameRecordSet("www", webApp.defaultHostName())
+                    .withCNameRecordSet("www", webApp.defaultHostname())
                     .apply();
             System.out.println("DNS zone updated");
             Utils.print(rootDnsZone);
@@ -120,7 +120,7 @@ public class ManageDns {
                     .defineHostnameBinding()
                         .withThirdPartyDomain(customDomainName)
                         .withSubDomain("www")
-                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                        .withDnsRecordType(CustomHostnameDnsRecordType.CNAME)
                         .attach()
                     .apply();
             System.out.println("Web app updated");
@@ -147,11 +147,11 @@ public class ManageDns {
             //============================================================
             // Update DNS zone by adding a A record in root DNS zone pointing to virtual machine IPv4 address
 
-            PublicIPAddress vm1PublicIPAddress = virtualMachine1.getPrimaryPublicIPAddress();
+            PublicIpAddress vm1PublicIpAddress = virtualMachine1.getPrimaryPublicIPAddress();
             System.out.println("Updating root DNS zone " + customDomainName + "...");
             rootDnsZone = rootDnsZone.update()
                     .defineARecordSet("employees")
-                        .withIPv4Address(vm1PublicIPAddress.ipAddress())
+                        .withIPv4Address(vm1PublicIpAddress.ipAddress())
                         .attach()
                     .apply();
             System.out.println("Updated root DNS zone " + rootDnsZone.name());
@@ -229,11 +229,11 @@ public class ManageDns {
             //============================================================
             // Update child DNS zone by adding a A record pointing to virtual machine IPv4 address
 
-            PublicIPAddress vm2PublicIPAddress = virtualMachine2.getPrimaryPublicIPAddress();
+            PublicIpAddress vm2PublicIpAddress = virtualMachine2.getPrimaryPublicIPAddress();
             System.out.println("Updating child DNS zone " + partnerSubDomainName + "...");
             partnersDnsZone = partnersDnsZone.update()
                     .defineARecordSet("@")
-                        .withIPv4Address(vm2PublicIPAddress.ipAddress())
+                        .withIPv4Address(vm2PublicIpAddress.ipAddress())
                         .attach()
                     .apply();
             System.out.println("Updated child DNS zone " + partnersDnsZone.name());
@@ -283,7 +283,7 @@ public class ManageDns {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

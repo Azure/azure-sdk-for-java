@@ -5,14 +5,12 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.ResourceWrapper;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -60,7 +58,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(ResourceWrapper::getResourceId).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(doc -> doc.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -105,7 +103,7 @@ public class TriggerQueryTest extends TestSuiteBase {
                 .Builder<CosmosTriggerProperties>()
                 .exactlyContainsInAnyOrder(expectedDocs
                         .stream()
-                        .map(ResourceWrapper::getResourceId)
+                        .map(doc -> doc.getResourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
@@ -122,7 +120,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
+                .instanceOf(CosmosException.class)
                 .statusCode(400)
                 .notNullActivityId()
                 .build();

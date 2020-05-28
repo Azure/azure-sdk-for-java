@@ -1,16 +1,24 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- Fix bug in FormRecognizer API's to support multipage document recognition.
+- Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
+- Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`
+- Adopt the `training` namespace for Form Recognizer Training Clients
+- Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients
+- Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
+- Replace parameters `filePrefix` and `includeSubFolders` with `TrainModelOptions` model
+- Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
 - Added AAD authentication support
 
 ## 1.0.0-beta.2 (2020-05-06)
 - Fixed Receipt type bug to select the valueString field via fieldValue.
 - Rename `apiKey()` to `credential()` on FormRecognizerClientBuilder.
 
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/src/samples) 
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/src/samples)
 demonstrate the new API.
 
 ## 1.0.0-beta.1 (2020-04-23)
@@ -32,8 +40,8 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 - All service errors use the base type: `com.azure.ai.formrecognizer.models.ErrorResponseException`
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/src/samples) 
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/src/samples)
 demonstrate the new API.

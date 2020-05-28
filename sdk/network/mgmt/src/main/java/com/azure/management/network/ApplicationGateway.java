@@ -4,8 +4,8 @@ package com.azure.management.network;
 
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.network.models.ApplicationGatewayInner;
-import com.azure.management.network.models.HasPrivateIPAddress;
-import com.azure.management.network.models.HasPublicIPAddress;
+import com.azure.management.network.models.HasPrivateIpAddress;
+import com.azure.management.network.models.HasPublicIpAddress;
 import com.azure.management.network.models.UpdatableWithTags;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -27,7 +27,7 @@ public interface ApplicationGateway
         Updatable<ApplicationGateway.Update>,
         UpdatableWithTags<ApplicationGateway>,
         HasSubnet,
-        HasPrivateIPAddress {
+    HasPrivateIpAddress {
 
     // Actions
 
@@ -113,7 +113,7 @@ public interface ApplicationGateway
     ApplicationGatewayOperationalState operationalState();
 
     /** @return IP configurations of this application gateway, indexed by name */
-    Map<String, ApplicationGatewayIPConfiguration> ipConfigurations();
+    Map<String, ApplicationGatewayIpConfiguration> ipConfigurations();
 
     /** @return backend address pools of this application gateway, indexed by name */
     Map<String, ApplicationGatewayBackend> backends();
@@ -122,7 +122,7 @@ public interface ApplicationGateway
     Map<String, ApplicationGatewayProbe> probes();
 
     /** @return the existing IP configurations if only one exists, else null */
-    ApplicationGatewayIPConfiguration defaultIPConfiguration();
+    ApplicationGatewayIpConfiguration defaultIPConfiguration();
 
     /** @return frontend IP configurations, indexed by name */
     Map<String, ApplicationGatewayFrontend> frontends();
@@ -201,7 +201,7 @@ public interface ApplicationGateway
          * IP address.
          */
         interface WithPublicIPAddress
-            extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
+            extends HasPublicIpAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
         }
 
         /**
@@ -488,7 +488,7 @@ public interface ApplicationGateway
          * The stage of an application gateway definition allowing to specify the default IP address the app gateway
          * will be internally available at, if a default private frontend has been enabled.
          */
-        interface WithPrivateIPAddress extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithCreate> {
+        interface WithPrivateIPAddress extends HasPrivateIpAddress.DefinitionStages.WithPrivateIPAddress<WithCreate> {
         }
 
         /** The stage of an application gateway definition allowing to specify Managed Service Identities. */
@@ -693,7 +693,7 @@ public interface ApplicationGateway
              * @param ipConfigurationName the name of an existing IP configuration
              * @return the first stage of an IP configuration update
              */
-            ApplicationGatewayIPConfiguration.Update updateIPConfiguration(String ipConfigurationName);
+            ApplicationGatewayIpConfiguration.Update updateIPConfiguration(String ipConfigurationName);
 
             /**
              * Begins the update of the default IP configuration i.e. the only one IP configuration that exists,
@@ -701,7 +701,7 @@ public interface ApplicationGateway
              *
              * @return the first stage of an IP configuration update.
              */
-            ApplicationGatewayIPConfiguration.Update updateDefaultIPConfiguration();
+            ApplicationGatewayIpConfiguration.Update updateDefaultIPConfiguration();
 
             /**
              * Begins the definition of the default IP configuration.
@@ -711,7 +711,7 @@ public interface ApplicationGateway
              *
              * @return the first stage of an IP configuration update
              */
-            ApplicationGatewayIPConfiguration.UpdateDefinitionStages.Blank<Update> defineDefaultIPConfiguration();
+            ApplicationGatewayIpConfiguration.UpdateDefinitionStages.Blank<Update> defineDefaultIPConfiguration();
         }
 
         /** The stage of an application gateway update allowing to modify front end ports. */
@@ -760,7 +760,7 @@ public interface ApplicationGateway
         /**
          * The stage of an application gateway update allowing to specify a public IP address for the public frontend.
          */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
+        interface WithPublicIPAddress extends HasPublicIpAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
         }
 
         /** The stage of an application gateway update allowing to modify frontend IP configurations. */

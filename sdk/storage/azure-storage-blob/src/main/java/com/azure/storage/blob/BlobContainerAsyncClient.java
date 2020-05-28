@@ -42,6 +42,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -55,8 +56,8 @@ import java.util.stream.Stream;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -112,6 +113,13 @@ public final class BlobContainerAsyncClient {
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(url);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)

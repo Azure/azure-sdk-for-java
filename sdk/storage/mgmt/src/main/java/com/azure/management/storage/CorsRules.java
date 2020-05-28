@@ -5,12 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CorsRules model. */
 @Fluent
 public final class CorsRules {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsRules.class);
+
     /*
      * The List of CORS rules. You can include up to five CorsRule elements in
      * the request.
@@ -36,5 +40,16 @@ public final class CorsRules {
     public CorsRules withCorsRules(List<CorsRule> corsRules) {
         this.corsRules = corsRules;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (corsRules() != null) {
+            corsRules().forEach(e -> e.validate());
+        }
     }
 }

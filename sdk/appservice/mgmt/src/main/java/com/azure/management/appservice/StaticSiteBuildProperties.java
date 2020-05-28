@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The StaticSiteBuildProperties model. */
 @Fluent
 public final class StaticSiteBuildProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteBuildProperties.class);
+
     /*
      * The path to the app code within the repository.
      */
@@ -86,5 +90,13 @@ public final class StaticSiteBuildProperties {
     public StaticSiteBuildProperties withAppArtifactLocation(String appArtifactLocation) {
         this.appArtifactLocation = appArtifactLocation;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

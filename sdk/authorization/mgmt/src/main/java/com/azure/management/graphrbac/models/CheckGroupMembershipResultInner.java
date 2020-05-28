@@ -5,12 +5,19 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The CheckGroupMembershipResult model. */
 @Fluent
 public final class CheckGroupMembershipResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckGroupMembershipResultInner.class);
+
     /*
      * True if the specified user, group, contact, or service principal has
      * either direct or transitive membership in the specified group;
@@ -22,8 +29,7 @@ public final class CheckGroupMembershipResultInner {
     /*
      * Server response for IsMemberOf API call
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the value property: True if the specified user, group, contact, or service principal has either direct or
@@ -52,6 +58,7 @@ public final class CheckGroupMembershipResultInner {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -65,5 +72,21 @@ public final class CheckGroupMembershipResultInner {
     public CheckGroupMembershipResultInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

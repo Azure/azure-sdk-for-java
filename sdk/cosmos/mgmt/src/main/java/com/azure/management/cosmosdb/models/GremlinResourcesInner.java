@@ -25,9 +25,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.cosmosdb.GremlinDatabaseCreateUpdateParameters;
 import com.azure.management.cosmosdb.GremlinGraphCreateUpdateParameters;
@@ -38,6 +39,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GremlinResources. */
 public final class GremlinResourcesInner {
+    private final ClientLogger logger = new ClientLogger(GremlinResourcesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final GremlinResourcesService service;
 
@@ -67,7 +70,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GremlinDatabaseListResultInner>> listGremlinDatabases(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -81,7 +84,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GremlinDatabaseGetResultsInner>> getGremlinDatabase(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -96,7 +99,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateGremlinDatabase(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -112,7 +115,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteGremlinDatabase(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -127,7 +130,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getGremlinDatabaseThroughput(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -142,7 +145,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> updateGremlinDatabaseThroughput(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -158,7 +161,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GremlinGraphListResultInner>> listGremlinGraphs(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -173,7 +176,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GremlinGraphGetResultsInner>> getGremlinGraph(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -189,7 +192,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateGremlinGraph(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -206,7 +209,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteGremlinGraph(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -223,7 +226,7 @@ public final class GremlinResourcesInner {
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
                 + "/throughputSettings/default")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getGremlinGraphThroughput(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -240,7 +243,7 @@ public final class GremlinResourcesInner {
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
                 + "/throughputSettings/default")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> updateGremlinGraphThroughput(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -257,7 +260,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GremlinDatabaseGetResultsInner>> beginCreateUpdateGremlinDatabase(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -273,7 +276,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteGremlinDatabase(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -288,7 +291,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateGremlinDatabaseThroughput(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -304,7 +307,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GremlinGraphGetResultsInner>> beginCreateUpdateGremlinGraph(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -321,7 +324,7 @@ public final class GremlinResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteGremlinGraph(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -338,7 +341,7 @@ public final class GremlinResourcesInner {
                 + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
                 + "/throughputSettings/default")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateGremlinGraphThroughput(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -357,13 +360,30 @@ public final class GremlinResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin databases and their properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GremlinDatabaseGetResultsInner>> listGremlinDatabasesSinglePageAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -388,8 +408,54 @@ public final class GremlinResourcesInner {
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Gremlin databases and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GremlinDatabaseGetResultsInner>> listGremlinDatabasesSinglePageAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listGremlinDatabases(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin databases and their properties.
      */
@@ -404,8 +470,25 @@ public final class GremlinResourcesInner {
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Gremlin databases and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GremlinDatabaseGetResultsInner> listGremlinDatabasesAsync(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(() -> listGremlinDatabasesSinglePageAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
+     * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin databases and their properties.
      */
@@ -422,13 +505,33 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<GremlinDatabaseGetResultsInner>> getGremlinDatabaseWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -451,8 +554,55 @@ public final class GremlinResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GremlinDatabaseGetResultsInner>> getGremlinDatabaseWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .getGremlinDatabase(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
      */
@@ -477,7 +627,7 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
      */
@@ -495,7 +645,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param createUpdateGremlinDatabaseParameters Parameters to create and update Cosmos DB Gremlin database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
@@ -505,6 +655,34 @@ public final class GremlinResourcesInner {
         String accountName,
         String databaseName,
         GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (createUpdateGremlinDatabaseParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateGremlinDatabaseParameters is required and cannot be null."));
+        } else {
+            createUpdateGremlinDatabaseParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -530,7 +708,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param createUpdateGremlinDatabaseParameters Parameters to create and update Cosmos DB Gremlin database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
@@ -562,7 +740,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param createUpdateGremlinDatabaseParameters Parameters to create and update Cosmos DB Gremlin database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
@@ -584,13 +762,33 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteGremlinDatabaseWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -614,7 +812,7 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -636,7 +834,7 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -652,7 +850,7 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      *     provided name.
@@ -660,6 +858,26 @@ public final class GremlinResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getGremlinDatabaseThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -683,8 +901,57 @@ public final class GremlinResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getGremlinDatabaseThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .getGremlinDatabaseThroughput(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      *     provided name.
@@ -711,7 +978,7 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      *     provided name.
@@ -730,7 +997,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -740,6 +1007,34 @@ public final class GremlinResourcesInner {
         String accountName,
         String databaseName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -765,7 +1060,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -797,7 +1092,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -819,13 +1114,33 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the graphs and their properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GremlinGraphGetResultsInner>> listGremlinGraphsSinglePageAsync(
         String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -852,8 +1167,59 @@ public final class GremlinResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the graphs and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GremlinGraphGetResultsInner>> listGremlinGraphsSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listGremlinGraphs(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the graphs and their properties.
      */
@@ -869,8 +1235,27 @@ public final class GremlinResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the graphs and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GremlinGraphGetResultsInner> listGremlinGraphsAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return new PagedFlux<>(
+            () -> listGremlinGraphsSinglePageAsync(resourceGroupName, accountName, databaseName, context));
+    }
+
+    /**
+     * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the graphs and their properties.
      */
@@ -888,13 +1273,36 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<GremlinGraphGetResultsInner>> getGremlinGraphWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String graphName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -919,8 +1327,60 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GremlinGraphGetResultsInner>> getGremlinGraphWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .getGremlinGraph(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                graphName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph under an existing Azure Cosmos DB database account.
      */
@@ -946,7 +1406,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph under an existing Azure Cosmos DB database account.
      */
@@ -965,7 +1425,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param createUpdateGremlinGraphParameters Parameters to create and update Cosmos DB Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
@@ -976,6 +1436,37 @@ public final class GremlinResourcesInner {
         String databaseName,
         String graphName,
         GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (createUpdateGremlinGraphParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateGremlinGraphParameters is required and cannot be null."));
+        } else {
+            createUpdateGremlinGraphParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1003,7 +1494,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param createUpdateGremlinGraphParameters Parameters to create and update Cosmos DB Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
@@ -1037,7 +1528,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param createUpdateGremlinGraphParameters Parameters to create and update Cosmos DB Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
@@ -1061,13 +1552,36 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteGremlinGraphWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String graphName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1093,7 +1607,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1117,7 +1631,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1134,13 +1648,36 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getGremlinGraphThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String graphName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1165,8 +1702,60 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getGremlinGraphThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .getGremlinGraphThroughput(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                graphName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
      */
@@ -1192,7 +1781,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
      */
@@ -1211,7 +1800,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1222,6 +1811,37 @@ public final class GremlinResourcesInner {
         String databaseName,
         String graphName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1249,7 +1869,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1283,7 +1903,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1307,7 +1927,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param createUpdateGremlinDatabaseParameters Parameters to create and update Cosmos DB Gremlin database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
@@ -1317,6 +1937,34 @@ public final class GremlinResourcesInner {
         String accountName,
         String databaseName,
         GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (createUpdateGremlinDatabaseParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateGremlinDatabaseParameters is required and cannot be null."));
+        } else {
+            createUpdateGremlinDatabaseParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1341,8 +1989,69 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateGremlinDatabaseParameters Parameters to create and update Cosmos DB Gremlin database.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Gremlin database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GremlinDatabaseGetResultsInner>> beginCreateUpdateGremlinDatabaseWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (createUpdateGremlinDatabaseParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateGremlinDatabaseParameters is required and cannot be null."));
+        } else {
+            createUpdateGremlinDatabaseParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginCreateUpdateGremlinDatabase(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                createUpdateGremlinDatabaseParameters,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateGremlinDatabaseParameters Parameters to create and update Cosmos DB Gremlin database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
@@ -1372,7 +2081,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param createUpdateGremlinDatabaseParameters Parameters to create and update Cosmos DB Gremlin database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
@@ -1394,13 +2103,33 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteGremlinDatabaseWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1423,8 +2152,55 @@ public final class GremlinResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteGremlinDatabaseWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginDeleteGremlinDatabase(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1442,7 +2218,7 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1458,7 +2234,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1469,6 +2245,34 @@ public final class GremlinResourcesInner {
             String accountName,
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1493,8 +2297,70 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>>
+        beginUpdateGremlinDatabaseThroughputWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginUpdateGremlinDatabaseThroughput(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                updateThroughputParameters,
+                context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1524,7 +2390,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1548,7 +2414,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param createUpdateGremlinGraphParameters Parameters to create and update Cosmos DB Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
@@ -1559,6 +2425,37 @@ public final class GremlinResourcesInner {
         String databaseName,
         String graphName,
         GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (createUpdateGremlinGraphParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateGremlinGraphParameters is required and cannot be null."));
+        } else {
+            createUpdateGremlinGraphParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1585,8 +2482,75 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @param createUpdateGremlinGraphParameters Parameters to create and update Cosmos DB Gremlin graph.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Gremlin graph.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GremlinGraphGetResultsInner>> beginCreateUpdateGremlinGraphWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (createUpdateGremlinGraphParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateGremlinGraphParameters is required and cannot be null."));
+        } else {
+            createUpdateGremlinGraphParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginCreateUpdateGremlinGraph(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                graphName,
+                apiVersion,
+                createUpdateGremlinGraphParameters,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin graph.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param createUpdateGremlinGraphParameters Parameters to create and update Cosmos DB Gremlin graph.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
@@ -1618,7 +2582,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param createUpdateGremlinGraphParameters Parameters to create and update Cosmos DB Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
@@ -1642,13 +2606,36 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteGremlinGraphWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String graphName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1673,8 +2660,60 @@ public final class GremlinResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteGremlinGraphWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginDeleteGremlinGraph(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                graphName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1693,7 +2732,7 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1711,7 +2750,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1722,6 +2761,37 @@ public final class GremlinResourcesInner {
         String databaseName,
         String graphName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1748,8 +2818,75 @@ public final class GremlinResourcesInner {
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateGremlinGraphThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginUpdateGremlinGraphThroughput(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                graphName,
+                apiVersion,
+                updateThroughputParameters,
+                context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Gremlin graph.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
@@ -1781,7 +2918,7 @@ public final class GremlinResourcesInner {
      * @param graphName Cosmos DB graph name.
      * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */

@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceSet model. */
 @Fluent
 public class ResourceSet {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSet.class);
+
     /*
      * The list of subscriptions.
      */
@@ -35,5 +39,13 @@ public class ResourceSet {
     public ResourceSet withSubscriptions(List<String> subscriptions) {
         this.subscriptions = subscriptions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

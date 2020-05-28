@@ -43,7 +43,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
     public void readPermissions() throws Exception {
         int maxItemCount = 2;
 
-        CosmosPagedFlux<CosmosPermissionProperties> feedObservable = createdUser.readAllPermissions(new FeedOptions());
+        CosmosPagedFlux<CosmosPermissionProperties> feedObservable = createdUser.readAllPermissions();
 
         int expectedPageSize = (createdPermissions.size() + maxItemCount - 1) / maxItemCount;
 
@@ -51,7 +51,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
                 .totalSize(createdPermissions.size())
                 .numberOfPages(expectedPageSize)
                 .exactlyContainsInAnyOrder(createdPermissions.stream().map(
-                    p -> ModelBridgeInternal.getResourceFromResourceWrapper(p).getResourceId()).collect(Collectors.toList()))
+                    p -> p.getResourceId()).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();

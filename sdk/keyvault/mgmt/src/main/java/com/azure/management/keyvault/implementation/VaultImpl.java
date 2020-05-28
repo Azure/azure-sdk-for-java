@@ -4,13 +4,13 @@
 package com.azure.management.keyvault.implementation;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.keyvault.AccessPolicy;
 import com.azure.management.keyvault.AccessPolicyEntry;
 import com.azure.management.keyvault.CreateMode;
-import com.azure.management.keyvault.IPRule;
+import com.azure.management.keyvault.IpRule;
 import com.azure.management.keyvault.Keys;
 import com.azure.management.keyvault.NetworkRuleAction;
 import com.azure.management.keyvault.NetworkRuleBypassOptions;
@@ -300,7 +300,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                                 .switchIfEmpty(
                                     Mono
                                         .error(
-                                            new CloudException(
+                                            new ManagementException(
                                                 String
                                                     .format(
                                                         "User principal name %s is not found in tenant %s",
@@ -317,7 +317,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                                 .switchIfEmpty(
                                     Mono
                                         .error(
-                                            new CloudException(
+                                            new ManagementException(
                                                 String
                                                     .format(
                                                         "Service principal name %s is not found in tenant %s",
@@ -408,14 +408,14 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
             networkRuleSet.withIpRules(new ArrayList<>());
         }
         boolean found = false;
-        for (IPRule rule : networkRuleSet.ipRules()) {
+        for (IpRule rule : networkRuleSet.ipRules()) {
             if (rule.value().equalsIgnoreCase(ipAddressOrRange)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            networkRuleSet.ipRules().add(new IPRule().withValue(ipAddressOrRange));
+            networkRuleSet.ipRules().add(new IpRule().withValue(ipAddressOrRange));
         }
         return this;
     }

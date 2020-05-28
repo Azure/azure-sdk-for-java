@@ -124,7 +124,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     public SubscriptionClientImpl(HttpPipeline httpPipeline, AzureEnvironment environment) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        //this.operations = new OperationsInner(this);
+//        this.operations = new OperationsInner(this);
         this.subscriptions = new SubscriptionsInner(this);
         this.tenants = new TenantsInner(this);
     }

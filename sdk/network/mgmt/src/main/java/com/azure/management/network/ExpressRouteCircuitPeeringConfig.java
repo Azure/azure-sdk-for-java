@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ExpressRouteCircuitPeeringConfig model. */
 @Fluent
 public final class ExpressRouteCircuitPeeringConfig {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringConfig.class);
+
     /*
      * The reference of AdvertisedPublicPrefixes.
      */
@@ -39,7 +43,7 @@ public final class ExpressRouteCircuitPeeringConfig {
      * The CustomerASN of the peering.
      */
     @JsonProperty(value = "customerASN")
-    private Integer customerASN;
+    private Integer customerAsn;
 
     /*
      * The RoutingRegistryName of the configuration.
@@ -129,22 +133,22 @@ public final class ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Get the customerASN property: The CustomerASN of the peering.
+     * Get the customerAsn property: The CustomerASN of the peering.
      *
-     * @return the customerASN value.
+     * @return the customerAsn value.
      */
-    public Integer customerASN() {
-        return this.customerASN;
+    public Integer customerAsn() {
+        return this.customerAsn;
     }
 
     /**
-     * Set the customerASN property: The CustomerASN of the peering.
+     * Set the customerAsn property: The CustomerASN of the peering.
      *
-     * @param customerASN the customerASN value to set.
+     * @param customerAsn the customerAsn value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
-    public ExpressRouteCircuitPeeringConfig withCustomerASN(Integer customerASN) {
-        this.customerASN = customerASN;
+    public ExpressRouteCircuitPeeringConfig withCustomerAsn(Integer customerAsn) {
+        this.customerAsn = customerAsn;
         return this;
     }
 
@@ -166,5 +170,13 @@ public final class ExpressRouteCircuitPeeringConfig {
     public ExpressRouteCircuitPeeringConfig withRoutingRegistryName(String routingRegistryName) {
         this.routingRegistryName = routingRegistryName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

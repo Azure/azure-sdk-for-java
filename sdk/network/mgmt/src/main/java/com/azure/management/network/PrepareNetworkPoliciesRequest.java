@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PrepareNetworkPoliciesRequest model. */
 @Fluent
 public final class PrepareNetworkPoliciesRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrepareNetworkPoliciesRequest.class);
+
     /*
      * The name of the service for which subnet is being prepared for.
      */
@@ -62,5 +66,16 @@ public final class PrepareNetworkPoliciesRequest {
         List<NetworkIntentPolicyConfiguration> networkIntentPolicyConfigurations) {
         this.networkIntentPolicyConfigurations = networkIntentPolicyConfigurations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkIntentPolicyConfigurations() != null) {
+            networkIntentPolicyConfigurations().forEach(e -> e.validate());
+        }
     }
 }

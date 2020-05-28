@@ -7,6 +7,8 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -15,6 +17,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class ElasticPoolDatabaseActivityInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolDatabaseActivityInner.class);
+
     /*
      * The geo-location where the resource lives
      */
@@ -265,5 +269,13 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
      */
     public String state() {
         return this.state;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

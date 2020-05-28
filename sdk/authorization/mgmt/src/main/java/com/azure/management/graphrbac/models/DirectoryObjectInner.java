@@ -5,11 +5,16 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The DirectoryObject model. */
@@ -27,6 +32,8 @@ import java.util.Map;
 })
 @Fluent
 public class DirectoryObjectInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectoryObjectInner.class);
+
     /*
      * The object ID.
      */
@@ -42,8 +49,7 @@ public class DirectoryObjectInner {
     /*
      * Represents an Azure Active Directory object.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the objectId property: The object ID.
@@ -68,6 +74,7 @@ public class DirectoryObjectInner {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -81,5 +88,21 @@ public class DirectoryObjectInner {
     public DirectoryObjectInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

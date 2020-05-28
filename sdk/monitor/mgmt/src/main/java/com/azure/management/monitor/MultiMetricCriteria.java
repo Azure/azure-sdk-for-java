@@ -5,6 +5,7 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,6 +30,8 @@ import java.util.Map;
 })
 @Fluent
 public class MultiMetricCriteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MultiMetricCriteria.class);
+
     /*
      * Name of the criteria.
      */
@@ -191,5 +194,32 @@ public class MultiMetricCriteria {
             additionalProperties = new HashMap<>();
         }
         additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model MultiMetricCriteria"));
+        }
+        if (metricName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property metricName in model MultiMetricCriteria"));
+        }
+        if (timeAggregation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property timeAggregation in model MultiMetricCriteria"));
+        }
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
+        }
     }
 }

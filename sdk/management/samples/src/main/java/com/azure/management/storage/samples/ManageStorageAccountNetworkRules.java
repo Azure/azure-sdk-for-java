@@ -12,7 +12,7 @@ import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.ServiceEndpointType;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -84,7 +84,7 @@ public final class ManageStorageAccountNetworkRules {
 
             System.out.println("Creating a Public IP address");
 
-            final PublicIPAddress publicIPAddress = azure.publicIPAddresses()
+            final PublicIpAddress publicIPAddress = azure.publicIpAddresses()
                     .define(publicIpName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
@@ -164,7 +164,7 @@ public final class ManageStorageAccountNetworkRules {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -5,12 +5,19 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The ResourceAccess model. */
 @Fluent
 public final class ResourceAccess {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceAccess.class);
+
     /*
      * The unique identifier for one of the OAuth2Permission or AppRole
      * instances that the resource application exposes.
@@ -30,8 +37,7 @@ public final class ResourceAccess {
      * application requires. The resourceAccess property of the
      * RequiredResourceAccess type is a collection of ResourceAccess.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the id property: The unique identifier for one of the OAuth2Permission or AppRole instances that the resource
@@ -83,6 +89,7 @@ public final class ResourceAccess {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -97,5 +104,26 @@ public final class ResourceAccess {
     public ResourceAccess withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model ResourceAccess"));
+        }
     }
 }

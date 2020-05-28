@@ -26,9 +26,11 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.msi.IdentityUpdate;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
@@ -37,6 +39,8 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in UserAssignedIdentities. */
 public final class UserAssignedIdentitiesInner
     implements InnerSupportsGet<IdentityInner>, InnerSupportsListing<IdentityInner>, InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(UserAssignedIdentitiesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final UserAssignedIdentitiesService service;
 
@@ -65,7 +69,7 @@ public final class UserAssignedIdentitiesInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedIdentity/userAssignedIdentities")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UserAssignedIdentitiesListResultInner>> list(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -77,7 +81,7 @@ public final class UserAssignedIdentitiesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ManagedIdentity/userAssignedIdentities")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UserAssignedIdentitiesListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -90,7 +94,7 @@ public final class UserAssignedIdentitiesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<IdentityInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -105,14 +109,14 @@ public final class UserAssignedIdentitiesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<IdentityInner>> update(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") IdentityInner parameters,
+            @BodyParam("application/json") IdentityUpdate parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -120,7 +124,7 @@ public final class UserAssignedIdentitiesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<IdentityInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -134,7 +138,7 @@ public final class UserAssignedIdentitiesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -146,14 +150,14 @@ public final class UserAssignedIdentitiesInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UserAssignedIdentitiesListResultInner>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UserAssignedIdentitiesListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -161,12 +165,22 @@ public final class UserAssignedIdentitiesInner
     /**
      * Lists all the userAssignedIdentities available under the specified subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IdentityInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -182,8 +196,8 @@ public final class UserAssignedIdentitiesInner
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -191,7 +205,41 @@ public final class UserAssignedIdentitiesInner
     /**
      * Lists all the userAssignedIdentities available under the specified subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IdentityInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the userAssignedIdentities available under the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
@@ -204,7 +252,22 @@ public final class UserAssignedIdentitiesInner
     /**
      * Lists all the userAssignedIdentities available under the specified subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IdentityInner> listAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the userAssignedIdentities available under the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
@@ -218,12 +281,26 @@ public final class UserAssignedIdentitiesInner
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IdentityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -240,8 +317,8 @@ public final class UserAssignedIdentitiesInner
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -250,8 +327,53 @@ public final class UserAssignedIdentitiesInner
      * Lists all the userAssignedIdentities available under the specified ResourceGroup.
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IdentityInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroup(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the userAssignedIdentities available under the specified ResourceGroup.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
@@ -266,8 +388,25 @@ public final class UserAssignedIdentitiesInner
      * Lists all the userAssignedIdentities available under the specified ResourceGroup.
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IdentityInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the userAssignedIdentities available under the specified ResourceGroup.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
@@ -283,13 +422,35 @@ public final class UserAssignedIdentitiesInner
      * @param resourceName The name of the identity resource.
      * @param parameters Describes an identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an identity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<IdentityInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String resourceName, IdentityInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -311,8 +472,56 @@ public final class UserAssignedIdentitiesInner
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Describes an identity resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an identity resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<IdentityInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, IdentityInner parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .createOrUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                this.client.getApiVersion(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Create or update an identity in the specified subscription and resource group.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param parameters Describes an identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an identity resource.
      */
@@ -337,7 +546,7 @@ public final class UserAssignedIdentitiesInner
      * @param resourceName The name of the identity resource.
      * @param parameters Describes an identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an identity resource.
      */
@@ -353,13 +562,35 @@ public final class UserAssignedIdentitiesInner
      * @param resourceName The name of the identity resource.
      * @param parameters Describes an identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an identity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<IdentityInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, IdentityInner parameters) {
+        String resourceGroupName, String resourceName, IdentityUpdate parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -381,13 +612,61 @@ public final class UserAssignedIdentitiesInner
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Describes an identity resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an identity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IdentityInner> updateAsync(String resourceGroupName, String resourceName, IdentityInner parameters) {
+    public Mono<SimpleResponse<IdentityInner>> updateWithResponseAsync(
+        String resourceGroupName, String resourceName, IdentityUpdate parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .update(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                this.client.getApiVersion(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Update an identity in the specified subscription and resource group.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param parameters Describes an identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an identity resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IdentityInner> updateAsync(String resourceGroupName, String resourceName, IdentityUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, resourceName, parameters)
             .flatMap(
                 (SimpleResponse<IdentityInner> res) -> {
@@ -406,12 +685,12 @@ public final class UserAssignedIdentitiesInner
      * @param resourceName The name of the identity resource.
      * @param parameters Describes an identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an identity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IdentityInner update(String resourceGroupName, String resourceName, IdentityInner parameters) {
+    public IdentityInner update(String resourceGroupName, String resourceName, IdentityUpdate parameters) {
         return updateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
@@ -421,13 +700,30 @@ public final class UserAssignedIdentitiesInner
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the identity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<IdentityInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String resourceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -447,8 +743,49 @@ public final class UserAssignedIdentitiesInner
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the identity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<IdentityInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Gets the identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the identity.
      */
@@ -471,7 +808,7 @@ public final class UserAssignedIdentitiesInner
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the identity.
      */
@@ -486,12 +823,29 @@ public final class UserAssignedIdentitiesInner
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -511,8 +865,49 @@ public final class UserAssignedIdentitiesInner
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        return service
+            .delete(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Deletes the identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -527,7 +922,7 @@ public final class UserAssignedIdentitiesInner
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -540,12 +935,15 @@ public final class UserAssignedIdentitiesInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IdentityInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listBySubscriptionNext(nextLink, context))
             .<PagedResponse<IdentityInner>>map(
@@ -554,8 +952,8 @@ public final class UserAssignedIdentitiesInner
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -564,13 +962,44 @@ public final class UserAssignedIdentitiesInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IdentityInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listBySubscriptionNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IdentityInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByResourceGroupNext(nextLink, context))
             .<PagedResponse<IdentityInner>>map(
@@ -579,9 +1008,37 @@ public final class UserAssignedIdentitiesInner
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        res.getValue().getValue(),
-                        res.getValue().getNextLink(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IdentityInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

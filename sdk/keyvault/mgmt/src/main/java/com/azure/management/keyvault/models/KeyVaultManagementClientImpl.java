@@ -10,10 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the KeyVaultManagementClientImpl type. */
 public final class KeyVaultManagementClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(KeyVaultManagementClientImpl.class);
+
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.

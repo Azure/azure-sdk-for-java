@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.IndexKind;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a spatial index in the Azure Cosmos DB database service.
@@ -32,6 +33,18 @@ public final class SpatialIndex extends Index {
      */
     SpatialIndex(String jsonString) {
         super(jsonString, IndexKind.SPATIAL);
+        if (this.getDataType() == null) {
+            throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
+        }
+    }
+
+    /**
+     * Initializes a new instance of the SpatialIndex class.
+     *
+     * @param objectNode the object node that represents the index.
+     */
+    SpatialIndex(ObjectNode objectNode) {
+        super(objectNode, IndexKind.SPATIAL);
         if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
         }

@@ -22,10 +22,10 @@ The authorization flow is composed of 3 phrases:
 
 #### Add Maven Dependency
 
-`azure-spring-boot-starter-active-directory` is published on Maven Central Repository.
+`azure-active-directory-spring-boot-starter` is published on Maven Central Repository.
 If you are using Maven, add the following dependency.
 
-[//]: # "{x-version-update-start;com.azure:azure-spring-boot-starter-active-directory;dependency}"
+[//]: # "{x-version-update-start;com.azure:azure-active-directory-spring-boot-starter;current}"
 ```xml
 <dependency>
     <groupId>com.azure</groupId>

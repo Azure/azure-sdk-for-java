@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VpnClientConnectionHealthDetail model. */
 @Immutable
 public final class VpnClientConnectionHealthDetail {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealthDetail.class);
+
     /*
      * The vpn client Id.
      */
@@ -44,7 +48,7 @@ public final class VpnClientConnectionHealthDetail {
      * The user name of a connected vpn client.
      */
     @JsonProperty(value = "vpnUserName", access = JsonProperty.Access.WRITE_ONLY)
-    private String vpnUserName;
+    private String vpnUsername;
 
     /*
      * The max band width.
@@ -128,12 +132,12 @@ public final class VpnClientConnectionHealthDetail {
     }
 
     /**
-     * Get the vpnUserName property: The user name of a connected vpn client.
+     * Get the vpnUsername property: The user name of a connected vpn client.
      *
-     * @return the vpnUserName value.
+     * @return the vpnUsername value.
      */
-    public String vpnUserName() {
-        return this.vpnUserName;
+    public String vpnUsername() {
+        return this.vpnUsername;
     }
 
     /**
@@ -188,5 +192,13 @@ public final class VpnClientConnectionHealthDetail {
      */
     public Long maxPacketsPerSecond() {
         return this.maxPacketsPerSecond;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

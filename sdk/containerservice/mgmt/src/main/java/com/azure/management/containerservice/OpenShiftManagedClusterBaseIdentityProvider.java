@@ -5,6 +5,8 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +19,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = OpenShiftManagedClusterBaseIdentityProvider.class)
 @JsonTypeName("OpenShiftManagedClusterBaseIdentityProvider")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AADIdentityProvider", value = OpenShiftManagedClusterAADIdentityProvider.class)
+    @JsonSubTypes.Type(name = "AADIdentityProvider", value = OpenShiftManagedClusterAadIdentityProvider.class)
 })
 @Immutable
 public class OpenShiftManagedClusterBaseIdentityProvider {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterBaseIdentityProvider.class);
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
 }

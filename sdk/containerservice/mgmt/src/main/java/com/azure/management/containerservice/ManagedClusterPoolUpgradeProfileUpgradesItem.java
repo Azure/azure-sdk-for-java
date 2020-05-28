@@ -5,11 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagedClusterPoolUpgradeProfileUpgradesItem model. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterPoolUpgradeProfileUpgradesItem.class);
+
     /*
      * Kubernetes version (major, minor, patch).
      */
@@ -60,5 +65,13 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
     public ManagedClusterPoolUpgradeProfileUpgradesItem withIsPreview(Boolean isPreview) {
         this.isPreview = isPreview;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

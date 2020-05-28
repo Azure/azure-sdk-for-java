@@ -5,11 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExpressRouteCrossConnectionRoutesTableSummary model. */
 @Fluent
 public final class ExpressRouteCrossConnectionRoutesTableSummary {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionRoutesTableSummary.class);
+
     /*
      * IP address of Neighbor router.
      */
@@ -118,5 +123,13 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     public ExpressRouteCrossConnectionRoutesTableSummary withStateOrPrefixesReceived(String stateOrPrefixesReceived) {
         this.stateOrPrefixesReceived = stateOrPrefixesReceived;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

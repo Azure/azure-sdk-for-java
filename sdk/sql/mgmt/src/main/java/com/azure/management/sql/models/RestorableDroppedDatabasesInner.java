@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableDroppedDatabases. */
 public final class RestorableDroppedDatabasesInner {
+    private final ClientLogger logger = new ClientLogger(RestorableDroppedDatabasesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final RestorableDroppedDatabasesService service;
 
@@ -59,7 +62,7 @@ public final class RestorableDroppedDatabasesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/restorableDroppedDatabases/{restorableDroppededDatabaseId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RestorableDroppedDatabaseInner>> get(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -74,7 +77,7 @@ public final class RestorableDroppedDatabasesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/restorableDroppedDatabases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RestorableDroppedDatabaseListResultInner>> listByServer(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -93,13 +96,36 @@ public final class RestorableDroppedDatabasesInner {
      * @param restorableDroppededDatabaseId The id of the deleted database in the form of
      *     databaseName,deletionTimeInFileTimeFormat.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted database that can be restored.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RestorableDroppedDatabaseInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String restorableDroppededDatabaseId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (restorableDroppededDatabaseId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter restorableDroppededDatabaseId is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -124,8 +150,60 @@ public final class RestorableDroppedDatabasesInner {
      * @param serverName The name of the server.
      * @param restorableDroppededDatabaseId The id of the deleted database in the form of
      *     databaseName,deletionTimeInFileTimeFormat.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted database that can be restored.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RestorableDroppedDatabaseInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String restorableDroppededDatabaseId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (restorableDroppededDatabaseId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter restorableDroppededDatabaseId is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .get(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                restorableDroppededDatabaseId,
+                context);
+    }
+
+    /**
+     * Gets a deleted database that can be restored.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param restorableDroppededDatabaseId The id of the deleted database in the form of
+     *     databaseName,deletionTimeInFileTimeFormat.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted database that can be restored.
      */
@@ -152,7 +230,7 @@ public final class RestorableDroppedDatabasesInner {
      * @param restorableDroppededDatabaseId The id of the deleted database in the form of
      *     databaseName,deletionTimeInFileTimeFormat.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted database that can be restored.
      */
@@ -169,13 +247,30 @@ public final class RestorableDroppedDatabasesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted databases that can be restored.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RestorableDroppedDatabaseInner>> listByServerSinglePageAsync(
         String resourceGroupName, String serverName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -201,8 +296,55 @@ public final class RestorableDroppedDatabasesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted databases that can be restored.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RestorableDroppedDatabaseInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        return service
+            .listByServer(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Gets a list of deleted databases that can be restored.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted databases that can be restored.
      */
@@ -217,8 +359,26 @@ public final class RestorableDroppedDatabasesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted databases that can be restored.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RestorableDroppedDatabaseInner> listByServerAsync(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context));
+    }
+
+    /**
+     * Gets a list of deleted databases that can be restored.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted databases that can be restored.
      */

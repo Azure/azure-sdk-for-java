@@ -27,9 +27,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.containerregistry.ImportImageParameters;
 import com.azure.management.containerregistry.PasswordName;
@@ -47,6 +48,8 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in Registries. */
 public final class RegistriesInner
     implements InnerSupportsGet<RegistryInner>, InnerSupportsListing<RegistryInner>, InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(RegistriesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final RegistriesService service;
 
@@ -76,7 +79,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/importImage")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> importImage(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -89,7 +92,7 @@ public final class RegistriesInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/checkNameAvailability")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryNameStatusInner>> checkNameAvailability(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -102,7 +105,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -116,7 +119,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> create(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -131,7 +134,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -145,7 +148,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> update(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -160,7 +163,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -171,7 +174,7 @@ public final class RegistriesInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -183,7 +186,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/listCredentials")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryListCredentialsResultInner>> listCredentials(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -197,7 +200,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/regenerateCredential")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryListCredentialsResultInner>> regenerateCredential(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -212,7 +215,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/listUsages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryUsageListResultInner>> listUsages(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -226,7 +229,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/listPolicies")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryPoliciesInner>> listPolicies(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -240,7 +243,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/updatePolicies")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> updatePolicies(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -255,7 +258,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> scheduleRun(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -270,7 +273,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/listBuildSourceUploadUrl")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SourceUploadDefinitionInner>> getBuildSourceUploadUrl(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -284,7 +287,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/importImage")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginImportImage(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -299,7 +302,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryInner>> beginCreate(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -314,7 +317,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -328,7 +331,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryInner>> beginUpdate(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -343,7 +346,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/updatePolicies")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryPoliciesInner>> beginUpdatePolicies(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -358,7 +361,7 @@ public final class RegistriesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RunInner>> beginScheduleRun(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -371,14 +374,14 @@ public final class RegistriesInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RegistryListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -390,13 +393,35 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param parameters The parameters specifying the image to copy and the source container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> importImageWithResponseAsync(
         String resourceGroupName, String registryName, ImportImageParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -420,7 +445,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param parameters The parameters specifying the image to copy and the source container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -443,7 +468,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param parameters The parameters specifying the image to copy and the source container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -457,12 +482,25 @@ public final class RegistriesInner
      *
      * @param name The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a container registry name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryNameStatusInner>> checkNameAvailabilityWithResponseAsync(String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         RegistryNameCheckRequest registryNameCheckRequest = new RegistryNameCheckRequest();
         registryNameCheckRequest.withName(name);
@@ -484,8 +522,43 @@ public final class RegistriesInner
      * characters, be globally unique, and between 5 and 50 characters in length.
      *
      * @param name The name of the container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to check the availability of a container registry name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryNameStatusInner>> checkNameAvailabilityWithResponseAsync(
+        String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        RegistryNameCheckRequest registryNameCheckRequest = new RegistryNameCheckRequest();
+        registryNameCheckRequest.withName(name);
+        return service
+            .checkNameAvailability(
+                this.client.getHost(), apiVersion, this.client.getSubscriptionId(), registryNameCheckRequest, context);
+    }
+
+    /**
+     * Checks whether the container registry name is available for use. The name must contain only alphanumeric
+     * characters, be globally unique, and between 5 and 50 characters in length.
+     *
+     * @param name The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a container registry name.
      */
@@ -508,7 +581,7 @@ public final class RegistriesInner
      *
      * @param name The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a container registry name.
      */
@@ -523,13 +596,30 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String registryName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -550,8 +640,50 @@ public final class RegistriesInner
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String registryName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                context);
+    }
+
+    /**
+     * Gets the properties of the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container registry.
      */
@@ -574,7 +706,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container registry.
      */
@@ -590,13 +722,35 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registry An object that represents a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String registryName, RegistryInner registry) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registry == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registry is required and cannot be null."));
+        } else {
+            registry.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -620,7 +774,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registry An object that represents a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -643,7 +797,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registry An object that represents a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -658,13 +812,30 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String registryName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -686,7 +857,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -706,7 +877,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -721,13 +892,37 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registryUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter registryUpdateParameters is required and cannot be null."));
+        } else {
+            registryUpdateParameters.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -751,7 +946,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -775,7 +970,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -790,12 +985,26 @@ public final class RegistriesInner
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RegistryInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -823,8 +1032,50 @@ public final class RegistriesInner
      * Lists all the container registries under the specified resource group.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RegistryInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .listByResourceGroup(
+                this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
@@ -839,8 +1090,25 @@ public final class RegistriesInner
      * Lists all the container registries under the specified resource group.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RegistryInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
@@ -852,12 +1120,22 @@ public final class RegistriesInner
     /**
      * Lists all the container registries under the specified subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RegistryInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -877,7 +1155,42 @@ public final class RegistriesInner
     /**
      * Lists all the container registries under the specified subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RegistryInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
@@ -889,7 +1202,21 @@ public final class RegistriesInner
     /**
      * Lists all the container registries under the specified subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RegistryInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
@@ -904,13 +1231,30 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the ListCredentials operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryListCredentialsResultInner>> listCredentialsWithResponseAsync(
         String resourceGroupName, String registryName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -931,8 +1275,50 @@ public final class RegistriesInner
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryListCredentialsResultInner>> listCredentialsWithResponseAsync(
+        String resourceGroupName, String registryName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .listCredentials(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                context);
+    }
+
+    /**
+     * Lists the login credentials for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the ListCredentials operation.
      */
@@ -956,7 +1342,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the ListCredentials operation.
      */
@@ -972,13 +1358,33 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param name The password name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the ListCredentials operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryListCredentialsResultInner>> regenerateCredentialWithResponseAsync(
         String resourceGroupName, String registryName, PasswordName name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         RegenerateCredentialParameters regenerateCredentialParameters = new RegenerateCredentialParameters();
         regenerateCredentialParameters.withName(name);
@@ -1003,8 +1409,57 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param name The password name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryListCredentialsResultInner>> regenerateCredentialWithResponseAsync(
+        String resourceGroupName, String registryName, PasswordName name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        RegenerateCredentialParameters regenerateCredentialParameters = new RegenerateCredentialParameters();
+        regenerateCredentialParameters.withName(name);
+        return service
+            .regenerateCredential(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                regenerateCredentialParameters,
+                context);
+    }
+
+    /**
+     * Regenerates one of the login credentials for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param name The password name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the ListCredentials operation.
      */
@@ -1029,7 +1484,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param name The password name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the ListCredentials operation.
      */
@@ -1045,13 +1500,30 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota usages for the specified container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryUsageListResultInner>> listUsagesWithResponseAsync(
         String resourceGroupName, String registryName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1072,8 +1544,50 @@ public final class RegistriesInner
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryUsageListResultInner>> listUsagesWithResponseAsync(
+        String resourceGroupName, String registryName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .listUsages(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                context);
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota usages for the specified container registry.
      */
@@ -1096,7 +1610,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota usages for the specified container registry.
      */
@@ -1111,13 +1625,30 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryPoliciesInner>> listPoliciesWithResponseAsync(
         String resourceGroupName, String registryName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1138,8 +1669,50 @@ public final class RegistriesInner
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents policies for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryPoliciesInner>> listPoliciesWithResponseAsync(
+        String resourceGroupName, String registryName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .listPolicies(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                context);
+    }
+
+    /**
+     * Lists the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
@@ -1162,7 +1735,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
@@ -1178,13 +1751,38 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> updatePoliciesWithResponseAsync(
         String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registryPoliciesUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter registryPoliciesUpdateParameters is required and cannot be null."));
+        } else {
+            registryPoliciesUpdateParameters.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1208,7 +1806,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
@@ -1232,7 +1830,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
@@ -1249,13 +1847,35 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param runRequest The request parameters for scheduling a run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> scheduleRunWithResponseAsync(
         String resourceGroupName, String registryName, RunRequest runRequest) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (runRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
+        } else {
+            runRequest.validate();
+        }
         final String apiVersion = "2018-09-01";
         return FluxUtil
             .withContext(
@@ -1279,7 +1899,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param runRequest The request parameters for scheduling a run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
@@ -1301,7 +1921,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param runRequest The request parameters for scheduling a run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
@@ -1316,13 +1936,30 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the upload location for the user to be able to upload the source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SourceUploadDefinitionInner>> getBuildSourceUploadUrlWithResponseAsync(
         String resourceGroupName, String registryName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
         final String apiVersion = "2018-09-01";
         return FluxUtil
             .withContext(
@@ -1343,8 +1980,50 @@ public final class RegistriesInner
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upload location for the user to be able to upload the source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SourceUploadDefinitionInner>> getBuildSourceUploadUrlWithResponseAsync(
+        String resourceGroupName, String registryName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-09-01";
+        return service
+            .getBuildSourceUploadUrl(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Get the upload location for the user to be able to upload the source.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the upload location for the user to be able to upload the source.
      */
@@ -1368,7 +2047,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the upload location for the user to be able to upload the source.
      */
@@ -1384,13 +2063,35 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param parameters The parameters specifying the image to copy and the source container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginImportImageWithResponseAsync(
         String resourceGroupName, String registryName, ImportImageParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1413,8 +2114,57 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginImportImageWithResponseAsync(
+        String resourceGroupName, String registryName, ImportImageParameters parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .beginImportImage(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                parameters,
+                context);
+    }
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1432,7 +2182,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param parameters The parameters specifying the image to copy and the source container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1447,13 +2197,35 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registry An object that represents a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryInner>> beginCreateWithResponseAsync(
         String resourceGroupName, String registryName, RegistryInner registry) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registry == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registry is required and cannot be null."));
+        } else {
+            registry.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1476,8 +2248,57 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param registry An object that represents a container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryInner>> beginCreateWithResponseAsync(
+        String resourceGroupName, String registryName, RegistryInner registry, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registry == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registry is required and cannot be null."));
+        } else {
+            registry.validate();
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .beginCreate(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                registry,
+                context);
+    }
+
+    /**
+     * Creates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registry An object that represents a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -1501,7 +2322,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registry An object that represents a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -1516,12 +2337,29 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String registryName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1542,8 +2380,50 @@ public final class RegistriesInner
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String registryName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                context);
+    }
+
+    /**
+     * Deletes a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1559,7 +2439,7 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1574,13 +2454,37 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryInner>> beginUpdateWithResponseAsync(
         String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registryUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter registryUpdateParameters is required and cannot be null."));
+        } else {
+            registryUpdateParameters.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1603,8 +2507,62 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        RegistryUpdateParameters registryUpdateParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registryUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter registryUpdateParameters is required and cannot be null."));
+        } else {
+            registryUpdateParameters.validate();
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .beginUpdate(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                registryUpdateParameters,
+                context);
+    }
+
+    /**
+     * Updates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryUpdateParameters The parameters for updating a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -1629,7 +2587,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a container registry.
      */
@@ -1646,13 +2604,38 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RegistryPoliciesInner>> beginUpdatePoliciesWithResponseAsync(
         String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registryPoliciesUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter registryPoliciesUpdateParameters is required and cannot be null."));
+        } else {
+            registryPoliciesUpdateParameters.validate();
+        }
         final String apiVersion = "2017-10-01";
         return FluxUtil
             .withContext(
@@ -1675,8 +2658,63 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents policies for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RegistryPoliciesInner>> beginUpdatePoliciesWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        RegistryPoliciesInner registryPoliciesUpdateParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (registryPoliciesUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter registryPoliciesUpdateParameters is required and cannot be null."));
+        } else {
+            registryPoliciesUpdateParameters.validate();
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .beginUpdatePolicies(
+                this.client.getHost(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                registryPoliciesUpdateParameters,
+                context);
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
@@ -1701,7 +2739,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents policies for a container registry.
      */
@@ -1718,13 +2756,35 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param runRequest The request parameters for scheduling a run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RunInner>> beginScheduleRunWithResponseAsync(
         String resourceGroupName, String registryName, RunRequest runRequest) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (runRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
+        } else {
+            runRequest.validate();
+        }
         final String apiVersion = "2018-09-01";
         return FluxUtil
             .withContext(
@@ -1747,8 +2807,57 @@ public final class RegistriesInner
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runRequest The request parameters for scheduling a run.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RunInner>> beginScheduleRunWithResponseAsync(
+        String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (runRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
+        } else {
+            runRequest.validate();
+        }
+        final String apiVersion = "2018-09-01";
+        return service
+            .beginScheduleRun(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                apiVersion,
+                runRequest,
+                context);
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request parameters for scheduling a run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
@@ -1772,7 +2881,7 @@ public final class RegistriesInner
      * @param registryName The name of the container registry.
      * @param runRequest The request parameters for scheduling a run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
@@ -1786,12 +2895,15 @@ public final class RegistriesInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RegistryInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByResourceGroupNext(nextLink, context))
             .<PagedResponse<RegistryInner>>map(
@@ -1810,13 +2922,44 @@ public final class RegistriesInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RegistryInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list container registries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RegistryInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<RegistryInner>>map(
@@ -1829,5 +2972,33 @@ public final class RegistriesInner
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RegistryInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AutoHealTriggers model. */
 @Fluent
 public final class AutoHealTriggers {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoHealTriggers.class);
+
     /*
      * A rule based on total requests.
      */
@@ -113,5 +117,22 @@ public final class AutoHealTriggers {
     public AutoHealTriggers withSlowRequests(SlowRequestsBasedTrigger slowRequests) {
         this.slowRequests = slowRequests;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (requests() != null) {
+            requests().validate();
+        }
+        if (statusCodes() != null) {
+            statusCodes().forEach(e -> e.validate());
+        }
+        if (slowRequests() != null) {
+            slowRequests().validate();
+        }
     }
 }

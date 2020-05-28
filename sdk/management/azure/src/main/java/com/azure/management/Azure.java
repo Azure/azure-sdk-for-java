@@ -5,7 +5,7 @@ package com.azure.management;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.management.appservice.AppServiceCertificateOrders;
 import com.azure.management.appservice.AppServiceCertificates;
 import com.azure.management.appservice.AppServiceDomains;
@@ -66,13 +66,15 @@ import com.azure.management.network.NetworkSecurityGroups;
 import com.azure.management.network.NetworkUsages;
 import com.azure.management.network.NetworkWatchers;
 import com.azure.management.network.Networks;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.network.RouteFilters;
 import com.azure.management.network.RouteTables;
 import com.azure.management.network.VirtualNetworkGateways;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.GenericResources;
+import com.azure.management.resources.PolicyAssignments;
+import com.azure.management.resources.PolicyDefinitions;
 import com.azure.management.resources.Providers;
 import com.azure.management.resources.ResourceGroups;
 import com.azure.management.resources.Subscription;
@@ -83,6 +85,7 @@ import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigu
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.SqlServers;
 import com.azure.management.sql.implementation.SqlServerManager;
@@ -93,6 +96,8 @@ import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.Usages;
 import com.azure.management.storage.implementation.StorageManager;
+
+import java.util.Objects;
 
 /** The entry point for accessing resource management APIs in Azure. */
 public final class Azure {
@@ -229,9 +234,10 @@ public final class Azure {
          * Selects the default subscription as the subscription for the APIs to work with.
          *
          * <p>The default subscription can be specified inside the Azure profile using {@link
-         * AzureProfile}. If no default subscription has been previously provided, the first subscription as
-         * returned by {@link Authenticated#subscriptions()} will be selected.</p>
+         * AzureProfile}. If no default subscription provided, we will try to set the only
+         * subscription if applicable returned by {@link Authenticated#subscriptions()}</p>
          *
+         * @throws IllegalStateException when no subscription or more than one subscription found in the tenant.
          * @return an authenticated Azure client configured to work with the default subscription
          */
         Azure withDefaultSubscription();
@@ -239,24 +245,27 @@ public final class Azure {
 
     /** The implementation for the Authenticated interface. */
     private static final class AuthenticatedImpl implements Authenticated {
-        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private final HttpPipeline httpPipeline;
-        private final AzureProfile profile;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
         private final GraphRbacManager graphRbacManager;
         private SdkContext sdkContext;
+        private String tenantId;
+        private String subscriptionId;
+        private final AzureEnvironment environment;
 
         private AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
             this.graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile);
             this.httpPipeline = httpPipeline;
-            this.profile = profile;
+            this.tenantId = profile.tenantId();
+            this.subscriptionId = profile.subscriptionId();
+            this.environment = profile.environment();
             this.sdkContext = new SdkContext();
         }
 
         @Override
         public String tenantId() {
-            return profile.tenantId();
+            return this.tenantId;
         }
 
         @Override
@@ -312,23 +321,22 @@ public final class Azure {
 
         @Override
         public Authenticated withTenantId(String tenantId) {
-            profile.withTenantId(tenantId);
+            Objects.requireNonNull(tenantId);
+            this.tenantId = tenantId;
             return this;
         }
 
         @Override
         public Azure withSubscription(String subscriptionId) {
-            profile.withSubscriptionId(subscriptionId);
-            return new Azure(httpPipeline, profile, this);
+            return new Azure(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
 
         @Override
         public Azure withDefaultSubscription() {
-            if (profile.subscriptionId() == null) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+            if (subscriptionId == null) {
+                subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
             }
-            return new Azure(httpPipeline, profile, this);
+            return new Azure(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
     }
 
@@ -416,19 +424,19 @@ public final class Azure {
         return resourceManager.providers();
     }
 
-    //    /**
-    //     * @return entry point to managing policy definitions.
-    //     */
-    //    public PolicyDefinitions policyDefinitions() {
-    //        return resourceManager.policyDefinitions();
-    //    }
-    //
-    //    /**
-    //     * @return entry point to managing policy assignments.
-    //     */
-    //    public PolicyAssignments policyAssignments() {
-    //        return resourceManager.policyAssignments();
-    //    }
+    /**
+     * @return entry point to managing policy definitions.
+     */
+    public PolicyDefinitions policyDefinitions() {
+        return resourceManager.policyDefinitions();
+    }
+
+    /**
+     * @return entry point to managing policy assignments.
+     */
+    public PolicyAssignments policyAssignments() {
+        return resourceManager.policyAssignments();
+    }
 
     /** @return entry point to managing storage accounts */
     public StorageAccounts storageAccounts() {
@@ -556,8 +564,8 @@ public final class Azure {
     }
 
     /** @return entry point to managing public IP addresses */
-    public PublicIPAddresses publicIPAddresses() {
-        return this.networkManager.publicIPAddresses();
+    public PublicIpAddresses publicIpAddresses() {
+        return this.networkManager.publicIpAddresses();
     }
 
     //    /**

@@ -29,8 +29,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.management.appservice.DefaultErrorResponseException;
+import com.azure.management.appservice.DefaultErrorResponseErrorException;
 import com.azure.management.appservice.DomainPatchResource;
 import com.azure.management.appservice.DomainRecommendationSearchParameters;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
@@ -43,6 +44,8 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in Domains. */
 public final class DomainsInner
     implements InnerSupportsGet<DomainInner>, InnerSupportsListing<DomainInner>, InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(DomainsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DomainsService service;
 
@@ -69,7 +72,7 @@ public final class DomainsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainAvailabilityCheckResultInner>> checkAvailability(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -80,7 +83,7 @@ public final class DomainsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainCollectionInner>> list(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -90,7 +93,7 @@ public final class DomainsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequest(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -100,7 +103,7 @@ public final class DomainsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<NameIdentifierCollectionInner>> listRecommendations(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -113,7 +116,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainCollectionInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -126,7 +129,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -140,7 +143,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -155,7 +158,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -170,7 +173,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainInner>> update(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -185,7 +188,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiers(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -199,7 +202,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainOwnershipIdentifierInner>> getOwnershipIdentifier(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -214,7 +217,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifier(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -230,7 +233,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteOwnershipIdentifier(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -245,7 +248,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainOwnershipIdentifierInner>> updateOwnershipIdentifier(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -261,7 +264,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}/renew")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> renew(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -275,7 +278,7 @@ public final class DomainsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.DomainRegistration/domains/{domainName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -288,28 +291,28 @@ public final class DomainsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<NameIdentifierCollectionInner>> listRecommendationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainCollectionInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -319,12 +322,22 @@ public final class DomainsInner
      *
      * @param name Name of the object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         NameIdentifierInner identifier = new NameIdentifierInner();
         identifier.withName(name);
         return FluxUtil
@@ -344,8 +357,42 @@ public final class DomainsInner
      * Description for Check if a domain is available for registration.
      *
      * @param name Name of the object.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain availability check result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
+        String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        NameIdentifierInner identifier = new NameIdentifierInner();
+        identifier.withName(name);
+        return service
+            .checkAvailability(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                identifier,
+                context);
+    }
+
+    /**
+     * Description for Check if a domain is available for registration.
+     *
+     * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
@@ -367,7 +414,7 @@ public final class DomainsInner
      *
      * @param name Name of the object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
@@ -379,12 +426,22 @@ public final class DomainsInner
     /**
      * Description for Get all domains in a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -409,7 +466,41 @@ public final class DomainsInner
     /**
      * Description for Get all domains in a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DomainInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get all domains in a subscription.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
@@ -421,7 +512,21 @@ public final class DomainsInner
     /**
      * Description for Get all domains in a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DomainInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get all domains in a subscription.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
@@ -433,12 +538,22 @@ public final class DomainsInner
     /**
      * Description for Generate a single sign-on request for the domain management portal.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on request information for domain management.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithResponseAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -454,7 +569,34 @@ public final class DomainsInner
     /**
      * Description for Generate a single sign-on request for the domain management portal.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single sign-on request information for domain management.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithResponseAsync(
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .getControlCenterSsoRequest(
+                this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Description for Generate a single sign-on request for the domain management portal.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on request information for domain management.
      */
@@ -474,7 +616,7 @@ public final class DomainsInner
     /**
      * Description for Generate a single sign-on request for the domain management portal.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on request information for domain management.
      */
@@ -488,13 +630,28 @@ public final class DomainsInner
      *
      * @param parameters Domain recommendation search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain name identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NameIdentifierInner>> listRecommendationsSinglePageAsync(
         DomainRecommendationSearchParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -521,8 +678,54 @@ public final class DomainsInner
      * Description for Get domain name recommendations based on keywords.
      *
      * @param parameters Domain recommendation search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain name identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<NameIdentifierInner>> listRecommendationsSinglePageAsync(
+        DomainRecommendationSearchParameters parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .listRecommendations(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get domain name recommendations based on keywords.
+     *
+     * @param parameters Domain recommendation search parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain name identifiers.
      */
@@ -537,8 +740,26 @@ public final class DomainsInner
      * Description for Get domain name recommendations based on keywords.
      *
      * @param parameters Domain recommendation search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain name identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NameIdentifierInner> listRecommendationsAsync(
+        DomainRecommendationSearchParameters parameters, Context context) {
+        return new PagedFlux<>(
+            () -> listRecommendationsSinglePageAsync(parameters, context),
+            nextLink -> listRecommendationsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get domain name recommendations based on keywords.
+     *
+     * @param parameters Domain recommendation search parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain name identifiers.
      */
@@ -552,12 +773,26 @@ public final class DomainsInner
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -584,8 +819,53 @@ public final class DomainsInner
      * Description for Get all domains in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroup(
+                this.client.getHost(),
+                resourceGroupName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get all domains in a resource group.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
@@ -600,8 +880,25 @@ public final class DomainsInner
      * Description for Get all domains in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DomainInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get all domains in a resource group.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
@@ -616,13 +913,30 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String domainName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -642,8 +956,49 @@ public final class DomainsInner
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String domainName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Get a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -666,7 +1021,7 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -682,13 +1037,35 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param domain Information about a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String domainName, DomainInner domain) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domain == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
+        } else {
+            domain.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -711,7 +1088,7 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param domain Information about a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -734,7 +1111,7 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param domain Information about a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -751,13 +1128,30 @@ public final class DomainsInner
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
      *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -780,8 +1174,52 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
      *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .delete(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                forceHardDeleteDomain,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Delete a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
+     *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -797,7 +1235,7 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -817,7 +1255,7 @@ public final class DomainsInner
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
      *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -831,7 +1269,7 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -848,13 +1286,35 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param domain ARM resource for a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainInner>> updateWithResponseAsync(
         String resourceGroupName, String domainName, DomainPatchResource domain) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domain == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
+        } else {
+            domain.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -876,8 +1336,56 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain ARM resource for a domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainInner>> updateWithResponseAsync(
+        String resourceGroupName, String domainName, DomainPatchResource domain, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domain == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
+        } else {
+            domain.validate();
+        }
+        return service
+            .update(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                domain,
+                context);
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain ARM resource for a domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -901,7 +1409,7 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param domain ARM resource for a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -916,13 +1424,30 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain ownership identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersSinglePageAsync(
         String resourceGroupName, String domainName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -951,8 +1476,58 @@ public final class DomainsInner
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain ownership identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersSinglePageAsync(
+        String resourceGroupName, String domainName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listOwnershipIdentifiers(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Lists domain ownership identifiers.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain ownership identifiers.
      */
@@ -969,8 +1544,27 @@ public final class DomainsInner
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain ownership identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DomainOwnershipIdentifierInner> listOwnershipIdentifiersAsync(
+        String resourceGroupName, String domainName, Context context) {
+        return new PagedFlux<>(
+            () -> listOwnershipIdentifiersSinglePageAsync(resourceGroupName, domainName, context),
+            nextLink -> listOwnershipIdentifiersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Lists domain ownership identifiers.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain ownership identifiers.
      */
@@ -987,13 +1581,33 @@ public final class DomainsInner
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(
         String resourceGroupName, String domainName, String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1015,8 +1629,54 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(
+        String resourceGroupName, String domainName, String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .getOwnershipIdentifier(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Get ownership identifier for domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1041,7 +1701,7 @@ public final class DomainsInner
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1060,7 +1720,7 @@ public final class DomainsInner
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier Domain ownership Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1070,6 +1730,34 @@ public final class DomainsInner
         String domainName,
         String name,
         DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domainOwnershipIdentifier == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter domainOwnershipIdentifier is required and cannot be null."));
+        } else {
+            domainOwnershipIdentifier.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1094,8 +1782,69 @@ public final class DomainsInner
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifierWithResponseAsync(
+        String resourceGroupName,
+        String domainName,
+        String name,
+        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domainOwnershipIdentifier == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter domainOwnershipIdentifier is required and cannot be null."));
+        } else {
+            domainOwnershipIdentifier.validate();
+        }
+        return service
+            .createOrUpdateOwnershipIdentifier(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                domainOwnershipIdentifier,
+                context);
+    }
+
+    /**
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifer.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1126,7 +1875,7 @@ public final class DomainsInner
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier Domain ownership Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1147,13 +1896,33 @@ public final class DomainsInner
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteOwnershipIdentifierWithResponseAsync(
         String resourceGroupName, String domainName, String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1175,8 +1944,54 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteOwnershipIdentifierWithResponseAsync(
+        String resourceGroupName, String domainName, String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .deleteOwnershipIdentifier(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Delete ownership identifier for domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1193,7 +2008,7 @@ public final class DomainsInner
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1210,7 +2025,7 @@ public final class DomainsInner
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier Domain ownership Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1220,6 +2035,34 @@ public final class DomainsInner
         String domainName,
         String name,
         DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domainOwnershipIdentifier == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter domainOwnershipIdentifier is required and cannot be null."));
+        } else {
+            domainOwnershipIdentifier.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1244,8 +2087,69 @@ public final class DomainsInner
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithResponseAsync(
+        String resourceGroupName,
+        String domainName,
+        String name,
+        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domainOwnershipIdentifier == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter domainOwnershipIdentifier is required and cannot be null."));
+        } else {
+            domainOwnershipIdentifier.validate();
+        }
+        return service
+            .updateOwnershipIdentifier(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                domainOwnershipIdentifier,
+                context);
+    }
+
+    /**
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifer.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1276,7 +2180,7 @@ public final class DomainsInner
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier Domain ownership Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -1295,12 +2199,29 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String domainName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1320,8 +2241,48 @@ public final class DomainsInner
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String domainName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .renew(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Renew a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1336,7 +2297,7 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1351,13 +2312,35 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param domain Information about a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String domainName, DomainInner domain) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domain == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
+        } else {
+            domain.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1379,8 +2362,56 @@ public final class DomainsInner
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domain == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
+        } else {
+            domain.validate();
+        }
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                domainName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                domain,
+                context);
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -1404,7 +2435,7 @@ public final class DomainsInner
      * @param domainName Name of the domain.
      * @param domain Information about a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -1418,12 +2449,15 @@ public final class DomainsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<DomainInner>>map(
@@ -1442,13 +2476,44 @@ public final class DomainsInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DomainInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain name identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NameIdentifierInner>> listRecommendationsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listRecommendationsNext(nextLink, context))
             .<PagedResponse<NameIdentifierInner>>map(
@@ -1467,13 +2532,45 @@ public final class DomainsInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain name identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<NameIdentifierInner>> listRecommendationsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listRecommendationsNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByResourceGroupNext(nextLink, context))
             .<PagedResponse<DomainInner>>map(
@@ -1492,14 +2589,45 @@ public final class DomainsInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DomainInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain ownership identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextSinglePageAsync(
         String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listOwnershipIdentifiersNext(nextLink, context))
             .<PagedResponse<DomainOwnershipIdentifierInner>>map(
@@ -1512,5 +2640,34 @@ public final class DomainsInner
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain ownership identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listOwnershipIdentifiersNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

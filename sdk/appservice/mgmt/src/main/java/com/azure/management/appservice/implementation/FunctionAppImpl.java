@@ -18,7 +18,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -105,7 +105,7 @@ class FunctionAppImpl
 
     private void initializeFunctionService() {
         if (functionService == null) {
-            UrlBuilder urlBuilder = UrlBuilder.parse(defaultHostName());
+            UrlBuilder urlBuilder = UrlBuilder.parse(this.defaultHostname());
             String baseUrl;
             if (urlBuilder.getScheme() == null) {
                 urlBuilder.setScheme("https");
@@ -216,7 +216,7 @@ class FunctionAppImpl
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().getSdkContext().randomResourceName(name(), 32));
+                                        this.manager().sdkContext().randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
                             }))
@@ -328,6 +328,13 @@ class FunctionAppImpl
                     .withGeneralPurposeAccountKind()
                     .withSku(sku);
         }
+        this.addDependency(storageAccountCreatable);
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl withNewStorageAccount(Creatable<StorageAccount> storageAccount) {
+        storageAccountCreatable = storageAccount;
         this.addDependency(storageAccountCreatable);
         return this;
     }
@@ -550,8 +557,8 @@ class FunctionAppImpl
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(
                 throwable -> {
-                    if (throwable instanceof CloudException
-                        && ((CloudException) throwable).getResponse().getStatusCode() == 200) {
+                    if (throwable instanceof ManagementException
+                        && ((ManagementException) throwable).getResponse().getStatusCode() == 200) {
                         return Mono.empty();
                     } else {
                         return Mono.error(throwable);
@@ -631,7 +638,7 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().getSdkContext().randomResourceName(name(), 20),
+                    this.manager().sdkContext().randomResourceName(name(), 20),
                     com.azure.management.storage.SkuName.STANDARD_GRS);
             }
         }

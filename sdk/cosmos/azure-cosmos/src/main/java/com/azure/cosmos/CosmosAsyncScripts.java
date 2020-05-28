@@ -5,7 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
-import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
@@ -46,7 +46,7 @@ public class CosmosAsyncScripts {
      * @param properties the cosmos stored procedure properties.
      * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedure(CosmosStoredProcedureProperties properties) {
+    public Mono<CosmosStoredProcedureResponse> createStoredProcedure(CosmosStoredProcedureProperties properties) {
         return this.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions());
     }
 
@@ -62,7 +62,7 @@ public class CosmosAsyncScripts {
      * @param options the stored procedure request options.
      * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedure(
+    public Mono<CosmosStoredProcedureResponse> createStoredProcedure(
         CosmosStoredProcedureProperties properties,
         CosmosStoredProcedureRequestOptions options) {
         if (options == null) {
@@ -73,8 +73,24 @@ public class CosmosAsyncScripts {
         sProc.setBody(properties.getBody());
         return database.getDocClientWrapper()
                    .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, this.container))
+                   .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
                    .single();
+    }
+
+    /**
+     * Reads all cosmos stored procedures in a container.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos stored
+     * procedure properties.
+     * In case of failure the {@link CosmosPagedFlux} will error.
+     *
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos stored
+     * procedures
+     * properties or an error.
+     */
+    public CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures() {
+        return readAllStoredProcedures(new FeedOptions());
     }
 
     /**
@@ -90,14 +106,14 @@ public class CosmosAsyncScripts {
      * procedures
      * properties or an error.
      */
-    public CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
+    CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
-                       .readStoredProcedures(container.getLink(), options)
-                       .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
-                           response.getResponseHeaders()));
+                .readStoredProcedures(container.getLink(), options)
+                .map(response -> BridgeInternal.createFeedResponse(
+                    ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
+                    response.getResponseHeaders()));
         });
     }
 
@@ -188,12 +204,27 @@ public class CosmosAsyncScripts {
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read user defined functions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined
+     * functions or an
+     * error.
+     */
+    public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions() {
+        return readAllUserDefinedFunctions(new FeedOptions());
+    }
+
+    /**
+     * Reads all cosmos user defined functions in the container
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read user defined functions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
+     *
      * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined
      * functions or an
      * error.
      */
-    public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(FeedOptions options) {
+    CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -274,8 +305,7 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
-        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
-            ModelBridgeInternal.getResourceFromResourceWrapper(properties)));
+        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getResource(properties)));
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)
@@ -291,19 +321,35 @@ public class CosmosAsyncScripts {
      * properties.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger
+     * properties or
+     * an error.
+     */
+    public CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers() {
+        return readAllTriggers(new FeedOptions());
+    }
+
+    /**
+     * Reads all triggers in a container
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger
+     * properties.
+     * In case of failure the {@link CosmosPagedFlux} will error.
+     *
      * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger
      * properties or
      * an error.
      */
-    public CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
+    CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
-                       .readTriggers(container.getLink(), options)
-                       .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
-                           response.getResponseHeaders()));
+                .readTriggers(container.getLink(), options)
+                .map(response -> BridgeInternal.createFeedResponse(
+                    ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
+                    response.getResponseHeaders()));
         });
     }
 

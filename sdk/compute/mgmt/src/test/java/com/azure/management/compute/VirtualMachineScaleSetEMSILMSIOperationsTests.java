@@ -258,7 +258,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -271,7 +271,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -287,7 +287,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
         // Remove identities one by one (second one)

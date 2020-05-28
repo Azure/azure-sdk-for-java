@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.FeedOptions;
@@ -98,12 +98,13 @@ public class BasicDemo {
     }
 
     private void createDbAndContainerBlocking() {
+
         client.createDatabaseIfNotExists(DATABASE_NAME)
-            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
-            .flatMap(dbResponse -> dbResponse.getDatabase()
-                                       .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
-                                                                                                 "/country")))
-            .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
+            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + DATABASE_NAME))
+            .flatMap(dbResponse -> client.getDatabase(DATABASE_NAME)
+                .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
+                    "/country")))
+            .doOnSuccess(cosmosContainerResponse -> log("Container: " + CONTAINER_NAME))
             .doOnError(throwable -> log(throwable.getMessage()))
             .publishOn(Schedulers.elastic())
             .block();
@@ -129,7 +130,7 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.setPopulateQueryMetrics(true);
+        options.setQueryMetricsEnabled(true);
         String continuation = null;
         do {
             CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
@@ -146,8 +147,8 @@ public class BasicDemo {
     }
 
     private void log(String msg, Throwable throwable) {
-        if (throwable instanceof CosmosClientException) {
-            log(msg + ": " + ((CosmosClientException) throwable).getStatusCode());
+        if (throwable instanceof CosmosException) {
+            log(msg + ": " + ((CosmosException) throwable).getStatusCode());
         }
     }
 
