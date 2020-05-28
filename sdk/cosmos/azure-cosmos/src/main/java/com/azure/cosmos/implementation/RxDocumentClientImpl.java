@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
@@ -887,8 +888,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         HttpHeaders customOptions = options.getHeaders();
         if (customOptions != null) {
-            // TODO: kirankk
-            // headers.putAll(customOptions);
+            for (HttpHeader entry : customOptions) {
+                headers.put(entry.getName(), entry.getValue());
+            }
         }
 
         if (options.getIfMatchETag() != null) {

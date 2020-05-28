@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.exception.AzureException;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -286,13 +287,19 @@ public class CosmosException extends AzureException {
         return null;
     }
 
-    private List<Map.Entry<String, String>> filterSensitiveData(HttpHeaders requestHeaders) {
+    private HttpHeaders filterSensitiveData(HttpHeaders requestHeaders) {
         if (requestHeaders == null) {
             return null;
         }
 
-        // TBD: kirankk
-        return null;
+        HttpHeaders filteredHeaders = new HttpHeaders();
+        for(HttpHeader entry : requestHeaders) {
+            if(! entry.getName().equalsIgnoreCase(HttpConstants.Headers.AUTHORIZATION)) {
+                filteredHeaders.put(entry.getName(), entry.getValue());
+            }
+        }
+
+        return filteredHeaders;
     }
 
     void setResourceAddress(String resourceAddress) {
