@@ -128,7 +128,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         int throughput = 1000;
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
-            throughput);
+            ThroughputProperties.createManualThroughput(throughput));
         validateContainerResponse(containerProperties, containerResponse);
     }
 

@@ -39,7 +39,7 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
 
-    // Async document client wrapper
+    // Async Cosmos client wrapper
     private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
@@ -397,7 +397,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @param options {@link FeedOptions}
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+    CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)

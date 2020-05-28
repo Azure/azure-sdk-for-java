@@ -10,7 +10,7 @@ import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -80,8 +80,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 return ModelBridgeInternal.getResource(((CosmosAsyncTriggerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncUserDefinedFunctionResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncUserResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncUserResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosUserResponse) {
+                return ModelBridgeInternal.getResource(((CosmosUserResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncPermissionResponse) {
                 return ModelBridgeInternal.getResource(((CosmosAsyncPermissionResponse) resourceResponse).getProperties());
             }
