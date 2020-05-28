@@ -42,8 +42,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .thenReturn(mockChangefeed)
 
         when:
-        BlobChangefeedPagedFluxFactory factory = new BlobChangefeedPagedFluxFactory(mockChangefeedFactory)
-        BlobChangefeedPagedFlux pagedFlux = factory.getBlobChangefeedPagedFlux(startTime, endTime)
+        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
 
         def sv = StepVerifier.create(pagedFlux)
 
@@ -71,8 +70,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .thenReturn(mockChangefeed)
 
         when:
-        BlobChangefeedPagedFluxFactory factory = new BlobChangefeedPagedFluxFactory(mockChangefeedFactory)
-        BlobChangefeedPagedFlux pagedFlux = factory.getBlobChangefeedPagedFlux(cursor)
+        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, cursor)
 
         def sv = StepVerifier.create(pagedFlux)
 
@@ -100,8 +98,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .thenReturn(mockChangefeed)
 
         when:
-        BlobChangefeedPagedFluxFactory factory = new BlobChangefeedPagedFluxFactory(mockChangefeedFactory)
-        BlobChangefeedPagedFlux pagedFlux = factory.getBlobChangefeedPagedFlux(startTime, endTime)
+        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
 
         def sv = StepVerifier.create(pagedFlux.byPage())
 
@@ -121,8 +118,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .thenReturn(mockChangefeed)
 
         when:
-        BlobChangefeedPagedFluxFactory factory = new BlobChangefeedPagedFluxFactory(mockChangefeedFactory)
-        BlobChangefeedPagedFlux pagedFlux = factory.getBlobChangefeedPagedFlux(startTime, endTime)
+        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
 
         def sv = StepVerifier.create(pagedFlux.byPage(size))
 
@@ -145,8 +141,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .thenReturn(mockChangefeed)
 
         when:
-        BlobChangefeedPagedFluxFactory factory = new BlobChangefeedPagedFluxFactory(mockChangefeedFactory)
-        BlobChangefeedPagedFlux pagedFlux = factory.getBlobChangefeedPagedFlux(startTime, endTime)
+        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
 
         def sv = StepVerifier.create(pagedFlux.byPage(null, size))
 
@@ -167,20 +162,17 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .thenReturn(mockChangefeed)
 
         when:
-        BlobChangefeedPagedFluxFactory factory = new BlobChangefeedPagedFluxFactory(mockChangefeedFactory)
-        BlobChangefeedPagedFlux pagedFlux = factory.getBlobChangefeedPagedFlux(startTime, endTime)
+        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
         def sv = StepVerifier.create(pagedFlux.byPage(randomCursor))
 
         then:
         sv.expectError(UnsupportedOperationException)
-        verify(mockChangefeedFactory).getChangefeed(startTime, endTime) || true
 
         when:
         sv = StepVerifier.create(pagedFlux.byPage(randomCursor, 7))
 
         then:
         sv.expectError(UnsupportedOperationException)
-        verify(mockChangefeedFactory).getChangefeed(startTime, endTime) || true
     }
 
     def "byPage IA"() {
@@ -191,18 +183,16 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .thenReturn(mockChangefeed)
 
         when:
-        BlobChangefeedPagedFluxFactory factory = new BlobChangefeedPagedFluxFactory(mockChangefeedFactory)
-        BlobChangefeedPagedFlux pagedFlux = factory.getBlobChangefeedPagedFlux(startTime, endTime)
+        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
         def sv = StepVerifier.create(pagedFlux.byPage(null,  -35))
 
         then:
         sv.expectError(IllegalArgumentException)
-        verify(mockChangefeedFactory).getChangefeed(startTime, endTime) || true
     }
 
     boolean validatePagedResponse(BlobChangefeedPagedResponse pagedResponse, String expectedCursor, List<Integer> expectedEvents) {
         boolean validate = true;
-        validate &= pagedResponse.getCursor() == expectedCursor
+        validate &= pagedResponse.getContinuationToken() == expectedCursor
         for (int i : expectedEvents) {
             validate &= pagedResponse.getValue().contains(mockEvents.get(i))
         }

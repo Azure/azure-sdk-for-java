@@ -4,7 +4,6 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
@@ -23,8 +22,6 @@ import java.util.List;
  * @see BlobChangefeedPagedIterable
  */
 public class BlobChangefeedPagedResponse implements ContinuablePage<String, BlobChangefeedEvent> {
-
-    private static ClientLogger logger = new ClientLogger(BlobChangefeedPagedResponse.class);
 
     private final List<BlobChangefeedEvent> events;
     private final ChangefeedCursor cursor;
@@ -56,20 +53,11 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
     }
 
     /**
-     * Continuation token is not supported. Use {@link BlobChangefeedPagedResponse#getCursor()} to obtain a cursor,
-     * should you want to re-initialize the BlobChangefeed at this point.
-     */
-    public String getContinuationToken() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("continuationToken not supported. Use "
-            + "getCursor() to obtain a cursor."));
-    }
-
-    /**
      * Gets a reference to the next page, should you want to re-initialize the BlobChangefeed.
      *
      * @return The {@link String cursor} that references the next page.
      */
-    public String getCursor() {
+    public String getContinuationToken() {
         /* Serialize the cursor and return it to the user as a String. */
         return cursor.serialize();
     }

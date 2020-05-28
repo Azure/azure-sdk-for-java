@@ -23,7 +23,7 @@ public class BlobChangefeedAsyncClient {
     static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
     private final BlobContainerAsyncClient client;
-    private final BlobChangefeedPagedFluxFactory pagedFluxFactory;
+    private final ChangefeedFactory changefeedFactory;
 
     /**
      * Package-private constructor for use by {@link BlobChangefeedClientBuilder}.
@@ -44,8 +44,7 @@ public class BlobChangefeedAsyncClient {
         ChunkFactory chunkFactory = new ChunkFactory(avroReaderFactory, blobLazyDownloaderFactory, client);
         ShardFactory shardFactory = new ShardFactory(chunkFactory, client);
         SegmentFactory segmentFactory = new SegmentFactory(shardFactory, client);
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(segmentFactory, client);
-        this.pagedFluxFactory = new BlobChangefeedPagedFluxFactory(changefeedFactory);
+        this.changefeedFactory = new ChangefeedFactory(segmentFactory, client);
     }
 
     /**
@@ -85,7 +84,7 @@ public class BlobChangefeedAsyncClient {
      * @return A reactive response emitting the changefeed events.
      */
     public BlobChangefeedPagedFlux getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
-        return this.pagedFluxFactory.getBlobChangefeedPagedFlux(startTime, endTime);
+        return new BlobChangefeedPagedFlux(changefeedFactory, startTime, endTime);
     }
 
     /**
@@ -105,7 +104,7 @@ public class BlobChangefeedAsyncClient {
      * @return A reactive response emitting the changefeed events.
      */
     public BlobChangefeedPagedFlux getEvents(String cursor) {
-        return this.pagedFluxFactory.getBlobChangefeedPagedFlux(cursor);
+        return new BlobChangefeedPagedFlux(changefeedFactory, cursor);
     }
 
 }

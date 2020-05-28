@@ -12,6 +12,7 @@ import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -21,17 +22,33 @@ import java.util.List;
 public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, BlobChangefeedEvent,
     BlobChangefeedPagedResponse> {
 
-    private final Changefeed changefeed;
+    private final ChangefeedFactory changefeedFactory;
+    private final OffsetDateTime startTime;
+    private final OffsetDateTime endTime;
+    private final String cursor;
+
     private static final Integer DEFAULT_PAGE_SIZE = 5000;
 
     /**
      * Creates an instance of {@link BlobChangefeedPagedFlux}.
-     *
-     * @param changefeed {@link Changefeed}
      */
-    BlobChangefeedPagedFlux(Changefeed changefeed) {
-        StorageImplUtils.assertNotNull("changefeed", changefeed);
-        this.changefeed = changefeed;
+    BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, OffsetDateTime startTime, OffsetDateTime endTime) {
+        StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
+        this.changefeedFactory = changefeedFactory;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.cursor = null;
+    }
+
+    /**
+     * Creates an instance of {@link BlobChangefeedPagedFlux}.
+     */
+    BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, String cursor) {
+        StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
+        this.changefeedFactory = changefeedFactory;
+        this.startTime = null;
+        this.endTime = null;
+        this.cursor = cursor;
     }
 
     @Override
@@ -61,6 +78,13 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 + preferredPageSize));
         }
         preferredPageSize = Integer.min(preferredPageSize, DEFAULT_PAGE_SIZE);
+
+        Changefeed changefeed;
+        if (cursor != null) {
+            changefeed = changefeedFactory.getChangefeed(cursor);
+        } else {
+            changefeed = changefeedFactory.getChangefeed(startTime, endTime);
+        }
 
         return changefeed.getEvents()
             /* Window the events to the page size. This takes the Flux<BlobChangefeedEventWrapper> and
