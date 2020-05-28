@@ -72,11 +72,11 @@ public class MappingUtils {
 
     public static PagedResponse<SearchIndex> mappingPagingSearchIndex(
         Response<ListIndexesResult> searchIndexResponse) {
-        List<SearchIndex> searchIndexNames = searchIndexResponse.getValue().getIndexes().stream()
+        List<SearchIndex> searchIndices = searchIndexResponse.getValue().getIndexes().stream()
             .map(SearchIndexConverter::map).collect(toList());
         return new PagedResponseBase<HttpHeaders, SearchIndex>(
             searchIndexResponse.getRequest(), searchIndexResponse.getStatusCode(), searchIndexResponse.getHeaders(),
-            searchIndexNames, null, null);
+            searchIndices, null, null);
     }
 
     public static PagedResponse<String> mappingPagingSearchIndexNames(
@@ -95,11 +95,11 @@ public class MappingUtils {
 
     public static PagedResponse<SearchIndexer> mappingPagingSearchIndexer(
         Response<ListIndexersResult> searchIndexerResponse) {
-        List<SearchIndexer> searchIndexerNames = searchIndexerResponse.getValue().getIndexers().stream()
+        List<SearchIndexer> searchIndexers = searchIndexerResponse.getValue().getIndexers().stream()
             .map(SearchIndexerConverter::map).collect(toList());
         return new PagedResponseBase<HttpHeaders, SearchIndexer>(
             searchIndexerResponse.getRequest(), searchIndexerResponse.getStatusCode(),
-            searchIndexerResponse.getHeaders(), searchIndexerNames, null, null);
+            searchIndexerResponse.getHeaders(), searchIndexers, null, null);
     }
 
     public static PagedResponse<String> mappingPagingSearchIndexerNames(
@@ -124,11 +124,11 @@ public class MappingUtils {
 
     public static PagedResponse<SearchIndexerSkillset> mappingPagingSkillset(
         Response<ListSkillsetsResult> skillsetResponse) {
-        List<SearchIndexerSkillset> synonymMaps = skillsetResponse.getValue().getSkillsets().stream()
+        List<SearchIndexerSkillset> skillsets = skillsetResponse.getValue().getSkillsets().stream()
             .map(SearchIndexerSkillsetConverter::map).collect(toList());
         return new PagedResponseBase<HttpHeaders, SearchIndexerSkillset>(
             skillsetResponse.getRequest(), skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(),
-            synonymMaps, null, null);
+            skillsets, null, null);
     }
 
     public static PagedResponse<String> mappingPagingSkillsetNames(
