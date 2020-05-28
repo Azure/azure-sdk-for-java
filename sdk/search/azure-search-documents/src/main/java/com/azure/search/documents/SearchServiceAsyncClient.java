@@ -25,7 +25,7 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.ServiceStatistics;
@@ -124,30 +124,30 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create or update.
+     * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @return the data source that was created or updated.
      */
-    public Mono<SearchIndexerDataSource> createOrUpdateDataSource(SearchIndexerDataSource dataSource) {
+    public Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSource(SearchIndexerDataSourceConnection dataSource) {
         return createOrUpdateDataSourceWithResponse(dataSource, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create or update.
+     * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a data source response.
      */
-    public Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(
-        SearchIndexerDataSource dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceWithResponse(
+        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateDataSourceWithResponse(dataSource, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceWithResponse(SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
@@ -170,24 +170,24 @@ public final class SearchServiceAsyncClient {
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SearchIndexerDataSource> createDataSource(SearchIndexerDataSource dataSource) {
+    public Mono<SearchIndexerDataSourceConnection> createDataSource(SearchIndexerDataSourceConnection dataSource) {
         return createDataSourceWithResponse(dataSource, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create.
+     * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    public Mono<Response<SearchIndexerDataSourceConnection>> createDataSourceWithResponse(SearchIndexerDataSourceConnection dataSource,
         RequestOptions requestOptions) {
         return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    Mono<Response<SearchIndexerDataSourceConnection>> createDataSourceWithResponse(SearchIndexerDataSourceConnection dataSource,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
@@ -203,27 +203,27 @@ public final class SearchServiceAsyncClient {
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the {@link SearchIndexerDataSource} to retrieve.
+     * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return the DataSource.
      */
-    public Mono<SearchIndexerDataSource> getDataSource(String dataSourceName) {
+    public Mono<SearchIndexerDataSourceConnection> getDataSource(String dataSourceName) {
         return getDataSourceWithResponse(dataSourceName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the {@link SearchIndexerDataSource} to retrieve.
+     * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a response containing the DataSource.
      */
-    public Mono<Response<SearchIndexerDataSource>> getDataSourceWithResponse(String dataSourceName,
+    public Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceWithResponse(String dataSourceName,
         RequestOptions requestOptions) {
         return withContext(context -> getDataSourceWithResponse(dataSourceName, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> getDataSourceWithResponse(String dataSourceName,
+    Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceWithResponse(String dataSourceName,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
@@ -240,7 +240,7 @@ public final class SearchServiceAsyncClient {
      *
      * @return a list of DataSources
      */
-    public PagedFlux<SearchIndexerDataSource> listDataSources() {
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSources() {
         return listDataSources(null, null);
     }
 
@@ -253,7 +253,7 @@ public final class SearchServiceAsyncClient {
      * help with debugging.
      * @return a list of DataSources
      */
-    public PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSources(String select, RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)));
@@ -262,7 +262,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexerDataSourceConnection> listDataSources(String select, RequestOptions requestOptions, Context context) {
         try {
             return new PagedFlux<>(() -> this.listDataSourcesWithResponse(select, requestOptions, context));
         } catch (RuntimeException ex) {
@@ -270,7 +270,7 @@ public final class SearchServiceAsyncClient {
         }
     }
 
-    private Mono<PagedResponse<SearchIndexerDataSource>> listDataSourcesWithResponse(String select,
+    private Mono<PagedResponse<SearchIndexerDataSourceConnection>> listDataSourcesWithResponse(String select,
         RequestOptions requestOptions, Context context) {
         return restClient.dataSources()
             .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
@@ -281,7 +281,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Delete a DataSource
      *
-     * @param dataSourceName the name of the {@link SearchIndexerDataSource} for deletion
+     * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} for deletion
      * @return a void Mono
      */
     public Mono<Void> deleteDataSource(String dataSourceName) {
@@ -292,14 +292,14 @@ public final class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSource The {@link SearchIndexerDataSource} to delete.
+     * @param dataSource The {@link SearchIndexerDataSourceConnection} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a mono response
      */
-    public Mono<Response<Void>> deleteDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    public Mono<Response<Void>> deleteDataSourceWithResponse(SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
         String etag = onlyIfUnchanged ? dataSource.getETag() : null;

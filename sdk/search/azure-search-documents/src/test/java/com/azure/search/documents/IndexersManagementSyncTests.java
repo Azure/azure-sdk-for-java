@@ -21,7 +21,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -64,7 +64,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     private SearchServiceClient client;
 
     private String createDataSource() {
-        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        SearchIndexerDataSourceConnection dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
         dataSourcesToDelete.add(dataSource.getName());
 
@@ -405,10 +405,10 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     @Test
     public void canCreateIndexerWithBlobParams() {
         // Create the needed Azure blob resources and data source object
-        SearchIndexerDataSource blobDataSource = createBlobDataSource();
+        SearchIndexerDataSourceConnection blobDataSource = createBlobDataSource();
 
         // Create the data source within the search service
-        SearchIndexerDataSource dataSource = client.createOrUpdateDataSource(blobDataSource);
+        SearchIndexerDataSourceConnection dataSource = client.createOrUpdateDataSource(blobDataSource);
         dataSourcesToDelete.add(dataSource.getName());
 
         // modify the indexer's blob params

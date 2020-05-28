@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.AzureActiveDirectoryApplicationCredentials;
+import com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 
 /**
@@ -24,11 +24,8 @@ public final class SearchResourceEncryptionKeyConverter {
         String keyVersion = obj.getKeyVersion();
         searchResourceEncryptionKey.setKeyVersion(keyVersion);
 
-        if (obj.getAccessCredentials() != null) {
-            AzureActiveDirectoryApplicationCredentials accessCredentials =
-                AzureActiveDirectoryApplicationCredentialsConverter.map(obj.getAccessCredentials());
-            searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
-        }
+        searchResourceEncryptionKey.setApplicationId(obj.getAccessCredentials().getApplicationId());
+        searchResourceEncryptionKey.setApplicationSecret(obj.getAccessCredentials().getApplicationSecret());
 
         String keyName = obj.getKeyName();
         searchResourceEncryptionKey.setKeyName(keyName);
@@ -52,10 +49,12 @@ public final class SearchResourceEncryptionKeyConverter {
         String keyVersion = obj.getKeyVersion();
         searchResourceEncryptionKey.setKeyVersion(keyVersion);
 
-        if (obj.getAccessCredentials() != null) {
-            com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials accessCredentials = AzureActiveDirectoryApplicationCredentialsConverter.map(obj.getAccessCredentials());
-            searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
-        }
+        AzureActiveDirectoryApplicationCredentials accessCredentials =
+            new AzureActiveDirectoryApplicationCredentials();
+        accessCredentials.setApplicationId(obj.getApplicationId());
+        accessCredentials.setApplicationSecret(obj.getApplicationSecret());
+        searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
+
 
         String keyName = obj.getKeyName();
         searchResourceEncryptionKey.setKeyName(keyName);

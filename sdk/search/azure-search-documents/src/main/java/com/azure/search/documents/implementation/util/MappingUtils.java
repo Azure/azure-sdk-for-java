@@ -33,7 +33,7 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.ServiceStatistics;
@@ -46,17 +46,17 @@ import static java.util.stream.Collectors.toList;
 
 public class MappingUtils {
 
-    public static Response<SearchIndexerDataSource> mappingExternalDataSource(
+    public static Response<SearchIndexerDataSourceConnection> mappingExternalDataSource(
         Response<com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource> dataSourceResponse) {
         return new SimpleResponse<>(dataSourceResponse,
             SearchIndexerDataSourceConverter.map(dataSourceResponse.getValue()));
     }
 
-    public static PagedResponse<SearchIndexerDataSource> mappingPagingDataSource(
+    public static PagedResponse<SearchIndexerDataSourceConnection> mappingPagingDataSource(
         Response<ListDataSourcesResult> dataSourceResponse) {
-        List<SearchIndexerDataSource> dataSourceMaps = dataSourceResponse.getValue().getDataSources().stream()
+        List<SearchIndexerDataSourceConnection> dataSourceMaps = dataSourceResponse.getValue().getDataSources().stream()
             .map(SearchIndexerDataSourceConverter::map).collect(toList());
-        return new PagedResponseBase<HttpHeaders, SearchIndexerDataSource>(
+        return new PagedResponseBase<HttpHeaders, SearchIndexerDataSourceConnection>(
             dataSourceResponse.getRequest(), dataSourceResponse.getStatusCode(), dataSourceResponse.getHeaders(),
             dataSourceMaps, null, null);
     }
