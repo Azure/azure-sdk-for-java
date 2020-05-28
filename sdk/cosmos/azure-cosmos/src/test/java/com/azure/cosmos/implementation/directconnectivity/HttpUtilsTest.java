@@ -20,6 +20,8 @@ public class HttpUtilsTest {
         HttpHeaders headersMap = new HttpHeaders();
         headersMap.put(HttpConstants.Headers.OWNER_FULL_NAME, OWNER_FULL_NAME_VALUE);
 
+        HttpUtils.unescapeOwnerFullName(headersMap);
+
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         Mockito.when(httpResponse.headers()).thenReturn(headersMap);
         HttpHeaders httpResponseHeaders = httpResponse.headers();

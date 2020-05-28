@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
@@ -476,6 +477,7 @@ public class StoreReaderTest {
               Mockito.eq(request) , Mockito.eq(false));
 
         StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
+        Mockito.when(storeResponse.getHeaders()).thenReturn(Mockito.mock(HttpHeaders.class));
         Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
 
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);

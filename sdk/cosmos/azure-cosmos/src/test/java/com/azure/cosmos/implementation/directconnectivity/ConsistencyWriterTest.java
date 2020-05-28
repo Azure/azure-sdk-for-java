@@ -89,6 +89,7 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        Mockito.when(dsr.getHeaders()).thenReturn(Mockito.mock(HttpHeaders.class));
 
         Mono<StoreResponse> res = consistencyWriter.writeAsync(dsr, timeoutHelper, false);
 
