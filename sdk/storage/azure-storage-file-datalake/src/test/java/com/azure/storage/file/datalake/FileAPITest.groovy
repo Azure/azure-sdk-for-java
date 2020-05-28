@@ -3372,14 +3372,14 @@ class FileAPITest extends APISpec {
         fileClient.create()
 
         when:
-        fileClient.scheduleDeletion(options)
+        fileClient.scheduleDeletion(fileScheduleDeletionOptions)
         def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
 
         then:
         (expiryTimeProperty != null) == hasExpiry
 
         where:
-        options                                                                                 | hasExpiry
+        fileScheduleDeletionOptions                                                             | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
@@ -3394,7 +3394,7 @@ class FileAPITest extends APISpec {
         fileClient.create()
 
         when:
-        def resposne = fileClient.scheduleDeletionWithResponse(options, null, Context.NONE)
+        def resposne = fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions, null, Context.NONE)
         def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
 
         then:
@@ -3402,7 +3402,7 @@ class FileAPITest extends APISpec {
         (expiryTimeProperty != null) == hasExpiry
 
         where:
-        options                                                                                 | hasExpiry
+        fileScheduleDeletionOptions                                                             | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
@@ -3417,7 +3417,7 @@ class FileAPITest extends APISpec {
         fileClient.create().block()
 
         when:
-        def propertiesMono = fileClient.scheduleDeletion(options)
+        def propertiesMono = fileClient.scheduleDeletion(fileScheduleDeletionOptions)
             .then(fileClient.getProperties())
 
         then:
@@ -3428,7 +3428,7 @@ class FileAPITest extends APISpec {
             .verifyComplete()
 
         where:
-        options                                                                                 | hasExpiry
+        fileScheduleDeletionOptions                                                             | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
@@ -3443,7 +3443,7 @@ class FileAPITest extends APISpec {
         fileClient.create().block()
 
         when:
-        def responseMono = fileClient.scheduleDeletionWithResponse(options)
+        def responseMono = fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions)
         def propertiesMono = fileClient.getProperties()
         def resultMono = responseMono
             .then(responseMono.zipWith(propertiesMono))
@@ -3457,7 +3457,7 @@ class FileAPITest extends APISpec {
             .verifyComplete()
 
         where:
-        options                                                                                 | hasExpiry
+        fileScheduleDeletionOptions                                                             | hasExpiry
         new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
         new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
