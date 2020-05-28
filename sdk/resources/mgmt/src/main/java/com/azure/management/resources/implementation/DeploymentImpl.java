@@ -3,6 +3,7 @@
 
 package com.azure.management.resources.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.management.resources.DebugSetting;
 import com.azure.management.resources.Dependency;
 import com.azure.management.resources.Deployment;
@@ -24,16 +25,20 @@ import com.azure.management.resources.WhatIfOperationResult;
 import com.azure.management.resources.WhatIfResultFormat;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.azure.management.resources.fluentcore.model.AcceptedCreatable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
+import com.azure.management.resources.fluentcore.model.implementation.AcceptedCreatableImpl;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.models.DeploymentExtendedInner;
 import com.azure.management.resources.models.DeploymentInner;
 import com.azure.management.resources.models.ProviderInner;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -303,6 +308,21 @@ public final class DeploymentImpl extends
         setInner(this.manager().inner().deployments()
             .beginCreateOrUpdate(resourceGroupName(), name(), createRequestFromInner()));
         return this;
+    }
+
+    @Override
+    public AcceptedCreatable<DeploymentExtendedInner, Deployment> acceptCreate() {
+        if (this.creatableResourceGroup != null) {
+            this.creatableResourceGroup.create();
+        }
+        Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().deployments()
+            .createOrUpdateWithResponseAsync(resourceGroupName(), name(), createRequestFromInner()).block();
+        return new AcceptedCreatableImpl<>(activationResponse,
+            this.manager().inner().getSerializerAdapter(),
+            this.manager().inner().getHttpPipeline(),
+            DeploymentExtendedInner.class,
+            DeploymentExtendedInner.class,
+            inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
     }
 
     @Override

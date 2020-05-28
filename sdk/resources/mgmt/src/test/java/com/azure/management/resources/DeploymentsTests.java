@@ -7,7 +7,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.model.AcceptedCreatable;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.models.DeploymentExtendedInner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -81,6 +83,26 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         DeploymentOperation op = deployment.deploymentOperations().getById(operations.iterator().next().operationId());
         Assertions.assertNotNull(op);
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
+    }
+
+    @Test
+    public void canBeginDeployVirtualNetwork() throws Exception {
+        final String dpName = "dpA" + testId;
+
+        // Create
+        AcceptedCreatable<DeploymentExtendedInner, Deployment> acceptedCreatable = resourceClient.deployments()
+            .define(dpName)
+            .withExistingResourceGroup(rgName)
+            .withTemplateLink(templateUri, contentVersion)
+            .withParametersLink(parametersUri, contentVersion)
+            .withMode(DeploymentMode.COMPLETE)
+            .acceptCreate();
+
+        Deployment acceptedDeployment = acceptedCreatable.getAcceptedResult();
+        // this can be done later
+        Deployment finalDeployment = acceptedCreatable.getFinalResult();
+
+        int i = 1;
     }
 
     @Test

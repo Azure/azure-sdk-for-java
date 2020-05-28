@@ -9,6 +9,7 @@ import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.models.HasId;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.arm.models.HasName;
+import com.azure.management.resources.fluentcore.model.AcceptedCreatable;
 import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
@@ -263,6 +264,8 @@ public interface Deployment extends
             Deployment beginCreate();
 
             Mono<Deployment> beginCreateAsync();
+
+            AcceptedCreatable<DeploymentExtendedInner, Deployment> acceptCreate();
         }
     }
 
