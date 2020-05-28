@@ -37,6 +37,7 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -243,8 +244,8 @@ public class RequestResponseChannel implements Disposable {
                                 .replace("-", "").getBytes(UTF_8));
 
                             delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
-                            if (transaction != null) {
-                                logger.verbose("Setting transaction on delivery.");
+                            if (transaction != null && transaction.getTransactionId() != null) {
+                                logger.verbose("Setting transaction id on the delivery.");
                                 TransactionalState transactionalState = new TransactionalState();
                                 transactionalState.setTxnId(new Binary(transaction.getTransactionId().array()));
                                 delivery.disposition(transactionalState);
@@ -256,6 +257,7 @@ public class RequestResponseChannel implements Disposable {
                             final int encodedSize = message.encode(bytes, 0, payloadSize);
                             receiveLink.flow(1);
                             sendLink.send(bytes, 0, encodedSize);
+                            delivery.settle();
                             sendLink.advance();
                         });
                     } catch (IOException e) {

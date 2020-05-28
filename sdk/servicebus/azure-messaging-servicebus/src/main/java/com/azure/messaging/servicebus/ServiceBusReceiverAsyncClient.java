@@ -225,6 +225,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId());
     }
 
+    /**
+     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
+     * This will make the message available again for processing. Abandoning a message will increase the delivery count
+     * on the message.
+     *
+     * @param lockToken Lock token of the message.
+     * @param propertiesToModify Properties to modify on the message.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
         return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId(), transactionContext);
@@ -249,7 +266,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
             propertiesToModify, sessionId, null);
     }
-
+    /**
+     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
+     * This will make the message available again for processing. Abandoning a message will increase the delivery count
+     * on the message.
+     *
+     * @param lockToken Lock token of the message.
+     * @param propertiesToModify Properties to modify on the message.
+     * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
@@ -277,6 +311,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
     }
 
+    /**
+     * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
+     * service.
+     *
+     * @param lockToken Lock token of the message.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that finishes when the message is completed on Service Bus.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
     public Mono<Void> complete(MessageLockToken lockToken, ServiceBusTransactionContext transactionContext) {
         return complete(lockToken, receiverOptions.getSessionId(), transactionContext);
     }
@@ -299,7 +348,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             null, sessionId, null);
     }
 
-    public Mono<Void> complete(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
+    /**
+     * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
+     * service.
+     *
+     * @param lockToken Lock token of the message.
+     * @param sessionId Session id of the message to complete. {@code null} if there is no session.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that finishes when the message is completed on Service Bus.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
+    public Mono<Void> complete(MessageLockToken lockToken, String sessionId,
+        ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
             null, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
     }
@@ -357,6 +423,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return defer(lockToken, propertiesToModify, receiverOptions.getSessionId());
     }
 
+    /**
+     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
+     * move message into the deferred subqueue.
+     *
+     * @param lockToken Lock token of the message.
+     * @param propertiesToModify Message properties to modify.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that completes when the defer operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
+     */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
         return defer(lockToken, propertiesToModify, receiverOptions.getSessionId(), transactionContext);
@@ -382,6 +465,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             propertiesToModify, sessionId, null);
     }
 
+    /**
+     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
+     * move message into the deferred subqueue.
+     *
+     * @param lockToken Lock token of the message.
+     * @param propertiesToModify Message properties to modify.
+     * @param sessionId Session id of the message to defer. {@code null} if there is no session.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
+     */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
@@ -423,6 +524,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId);
     }
 
+    /**
+     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
+     *
+     * @param lockToken Lock token of the message.
+     * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that completes when the dead letter operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
+     *     queues</a>
+     */
     public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId, transactionContext);
@@ -445,6 +563,22 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return deadLetter(lockToken, deadLetterOptions, receiverOptions.getSessionId());
     }
 
+    /**
+     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
+     * description, and/or modified properties.
+     *
+     * @param lockToken Lock token of the message.
+     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that completes when the dead letter operation finishes.
+     * @throws NullPointerException if {@code lockToken} or {@code deadLetterOptions} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
         return deadLetter(lockToken, deadLetterOptions, receiverOptions.getSessionId(), transactionContext);
@@ -474,6 +608,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             null);
     }
 
+    /**
+     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
+     * description, and/or modified properties.
+     *
+     * @param lockToken Lock token of the message.
+     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
+     * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
+     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *
+     * @return A {@link Mono} that completes when the dead letter operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),

@@ -71,7 +71,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         // In the case that this test failed... we're going to drain the queue or subscription.
-        try {
+       /* try {
             if (isSessionEnabled) {
                 logger.info("Sessioned receiver. It is probably locked until some time.");
             } else {
@@ -89,6 +89,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
+        */
     }
 
     /**
@@ -264,16 +265,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can complete a message with lock token only with a transaction.
+     * This specifically test that we can use lockToken. This use case is valid when a message is moved from one
+     * machine to another machine and user just have access to lock token.
+     * Verifies that we can complete a message with lock token only with a transaction and rollback.
      */
-    @Test
-    void transactionCommitMessagesWithLockTokenTest() throws InterruptedException {
-        // Arrange
-        MessagingEntityType entityType = MessagingEntityType.QUEUE;
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void transactionCommitMessagesAndRollbackWithLockTokenTest(MessagingEntityType entityType) {
 
-        setSenderAndReceiver(entityType, false);
-        ServiceBusReceiverAsyncClient receiverNonConnectionSharing = getReceiverBuilder(false, entityType, Function.identity())
-            .buildAsyncClient();
+        // Arrange
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        ServiceBusReceiverAsyncClient receiverNonConnectionSharing = getReceiverBuilder(false, entityType,
+            Function.identity()).buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -282,6 +286,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+
+        // create a transaction.
         StepVerifier.create(receiverNonConnectionSharing.createTransaction())
             .assertNext(txn -> {
                 transaction.set(txn);
@@ -290,21 +296,30 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         AtomicReference<MessageLockToken> messageLockToken = new AtomicReference<>();
-        receiver.receive()
+
+        // receive a message and get lock token.
+        StepVerifier.create( receiver.receive().next()
             .map(messageContext -> {
                 ServiceBusReceivedMessage received =  messageContext.getMessage();
                 messageLockToken.set(MessageLockToken.fromString(received.getLockToken()));
                 return messageContext;
-            })
-            .subscribe();
+            }))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .verifyComplete();
 
-        TimeUnit.SECONDS.sleep(15);
-
+        // complete the message using lock token only using a receiver which represent a different machine
         StepVerifier.create(receiverNonConnectionSharing.complete(messageLockToken.get(), transaction.get()))
             .verifyComplete();
 
-        StepVerifier.create(receiverNonConnectionSharing.commitTransaction(transaction.get()))
+        // rollback the transaction.
+        StepVerifier.create(receiverNonConnectionSharing.rollbackTransaction(transaction.get()))
             .verifyComplete();
+
+        // read the message back, since it was rolled-back previously.
+        final ServiceBusReceivedMessageContext receivedContext = receiveAndDeleteReceiver.receive().next().block(TIMEOUT);
+        assertMessageEquals(receivedContext, messageId, isSessionEnabled);
+
+        messagesPending.decrementAndGet();
     }
 
     /**
