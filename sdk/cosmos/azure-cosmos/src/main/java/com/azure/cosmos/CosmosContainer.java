@@ -67,7 +67,7 @@ public class CosmosContainer {
      * Reads the current container while specifying additional options such as If-Match.
      *
      * @param options the options.
-     * @return the Cosmos sync container response.
+     * @return the Cosmos container response.
      */
     public CosmosContainerResponse read(CosmosContainerRequestOptions options) {
         return database.mapContainerResponseAndBlock(this.asyncContainer.read(options));
@@ -77,7 +77,7 @@ public class CosmosContainer {
      * Deletes the current Cosmos container while specifying additional options such as If-Match.
      *
      * @param options the options.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse delete(CosmosContainerRequestOptions options) {
         return database.mapContainerResponseAndBlock(this.asyncContainer.delete(options));
@@ -86,7 +86,7 @@ public class CosmosContainer {
     /**
      * Deletes the current cosmos container.
      *
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse delete() {
         return database.mapContainerResponseAndBlock(this.asyncContainer.delete());
@@ -96,7 +96,7 @@ public class CosmosContainer {
      * Replaces the current container properties.
      *
      * @param containerProperties the container properties.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse replace(CosmosContainerProperties containerProperties) {
         return database.mapContainerResponseAndBlock(this.asyncContainer.replace(containerProperties));
@@ -107,7 +107,7 @@ public class CosmosContainer {
      *
      * @param containerProperties the container properties.
      * @param options the options.
-     * @return the cosmos sync container response.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse replace(CosmosContainerProperties containerProperties,
                                            CosmosContainerRequestOptions options) {

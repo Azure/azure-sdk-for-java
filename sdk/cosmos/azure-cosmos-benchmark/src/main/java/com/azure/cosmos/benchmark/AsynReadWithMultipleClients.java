@@ -243,10 +243,12 @@ public class AsynReadWithMultipleClients<T> {
                     CosmosAsyncContainer cosmosAsyncContainer = null;
                     boolean databaseCreated = false;
                     try {
-                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
+                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId());
+                        cosmosAsyncDatabase.read().block();
                     } catch (CosmosException e) {
                         if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                            cosmosAsyncDatabase = asyncClient.createDatabase(this.configuration.getDatabaseId()).block().getDatabase();
+                            asyncClient.createDatabase(this.configuration.getDatabaseId()).block();
+                            cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId());
                             logger.info("Database {} is created for this test on host {}", this.configuration.getDatabaseId(), endpoint);
                             databaseCreated = true;
                             databaseListToClear.add(cosmosAsyncDatabase);
@@ -256,15 +258,17 @@ public class AsynReadWithMultipleClients<T> {
                     }
 
                     try {
-                        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block().getContainer();
+                        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+                        cosmosAsyncContainer.read().block();
                     } catch (CosmosException e) {
                         if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                            cosmosAsyncContainer =
-                                cosmosAsyncDatabase.createContainer(
-                                    this.configuration.getCollectionId(),
-                                    Configuration.DEFAULT_PARTITION_KEY_PATH,
-                                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
-                                ).block().getContainer();
+                            cosmosAsyncDatabase.createContainer(
+                                this.configuration.getCollectionId(),
+                                Configuration.DEFAULT_PARTITION_KEY_PATH,
+                                ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+                            ).block();
+
+                            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
                             logger.info("Collection {} is created for this test on host {}", this.configuration.getCollectionId(), endpoint);
                             if(!databaseCreated) {
                                 collectionListToClear.add(cosmosAsyncContainer);
