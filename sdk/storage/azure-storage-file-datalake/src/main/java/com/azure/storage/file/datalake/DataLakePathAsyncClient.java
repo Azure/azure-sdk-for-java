@@ -88,7 +88,7 @@ public class DataLakePathAsyncClient {
             .url(url)
             .version(serviceVersion.getVersion())
             .build();
-        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url,"blob", "dfs");
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url, "blob", "dfs");
         this.blobDataLakeStorage = new DataLakeStorageClientBuilder()
             .pipeline(pipeline)
             .url(blobUrl)
