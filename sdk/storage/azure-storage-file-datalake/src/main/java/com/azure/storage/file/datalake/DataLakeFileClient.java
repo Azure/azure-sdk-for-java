@@ -582,10 +582,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options,
                                                        Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<Void> response = blockBlobClient.scheduleDeletionWithResponse(
-                Transforms.toBlobScheduleDeletionOptions(options), timeout, context);
-            return new SimpleResponse<>(response, null);
-        }, logger);
+        Mono<Response<Void>> response = this.dataLakeFileAsyncClient.scheduleDeletionWithResponse(options, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

@@ -8,22 +8,18 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
 import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobExpirationOffset;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
-import com.azure.storage.blob.models.BlobScheduleDeletionOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
@@ -605,74 +601,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                     hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
                     hd.getVersionId());
                 return new SimpleResponse<>(rb, item);
-            });
-    }
-
-    // TODO (kasobol-msft) add REST DOCS
-    /**
-     * Schedules the blob for deletion.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.scheduleDeletion#BlobScheduleDeletionOptions}
-     *
-     * @param options Schedule deletion parameters.
-     * @return A reactive response signalling completion.
-     */
-    public Mono<Void> scheduleDeletion(BlobScheduleDeletionOptions options) {
-        try {
-            return this.scheduleDeletionWithResponse(options)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    // TODO (kasobol-msft) add REST DOCS
-    /**
-     * Schedules the blob for deletion.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.scheduleDeletionWithResponse#BlobScheduleDeletionOptions}
-     *
-     * @param options Schedule deletion parameters.
-     * @return A reactive response signalling completion.
-     */
-    public Mono<Response<Void>> scheduleDeletionWithResponse(BlobScheduleDeletionOptions options) {
-        try {
-            return withContext(context -> scheduleDeletionWithResponse(options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Void>> scheduleDeletionWithResponse(BlobScheduleDeletionOptions options, Context context) {
-        BlobExpiryOptions blobExpiryOptions;
-        String expiresOn = null;
-        if (options != null && options.getExpiresOn() != null) {
-            blobExpiryOptions = BlobExpiryOptions.ABSOLUTE;
-            expiresOn = new DateTimeRfc1123(options.getExpiresOn()).toString();
-        } else if (options != null && options.getTimeToExpire() != null) {
-            if (options.getExpiryRelativeTo() == BlobExpirationOffset.CREATION_TIME) {
-                blobExpiryOptions = BlobExpiryOptions.RELATIVE_TO_CREATION;
-            } else {
-                blobExpiryOptions = BlobExpiryOptions.RELATIVE_TO_NOW;
-            }
-            expiresOn = Long.toString(options.getTimeToExpire().toMillis());
-        } else {
-            blobExpiryOptions = BlobExpiryOptions.NEVER_EXPIRE;
-        }
-        return this.azureBlobStorage.blobs().setExpiryWithRestResponseAsync(null, null,
-            blobExpiryOptions, null,
-            null, expiresOn,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> {
-                return new SimpleResponse<>(rb, null);
             });
     }
 }

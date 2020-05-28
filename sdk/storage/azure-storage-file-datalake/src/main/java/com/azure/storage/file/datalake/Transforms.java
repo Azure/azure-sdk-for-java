@@ -12,12 +12,10 @@ import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
-import com.azure.storage.blob.models.BlobExpirationOffset;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobScheduleDeletionOptions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
@@ -456,34 +454,5 @@ class Transforms {
             return null;
         }
         return pr::reportProgress;
-    }
-
-    static BlobScheduleDeletionOptions toBlobScheduleDeletionOptions(
-        FileScheduleDeletionOptions fileScheduleDeletionOptions) {
-        if (fileScheduleDeletionOptions == null) {
-            return null;
-        }
-
-        if (fileScheduleDeletionOptions.getExpiresOn() != null) {
-            return new BlobScheduleDeletionOptions(fileScheduleDeletionOptions.getExpiresOn());
-        } else if (fileScheduleDeletionOptions.getTimeToExpire() != null) {
-            return new BlobScheduleDeletionOptions(
-                fileScheduleDeletionOptions.getTimeToExpire(),
-                toBlobExpirationOffset(fileScheduleDeletionOptions.getExpiryRelativeTo())
-            );
-        } else {
-            return new BlobScheduleDeletionOptions();
-        }
-    }
-
-    static BlobExpirationOffset toBlobExpirationOffset(FileExpirationOffset fileExpirationOffset) {
-        switch (fileExpirationOffset) {
-            case NOW:
-                return BlobExpirationOffset.NOW;
-            case CREATION_TIME:
-                return BlobExpirationOffset.CREATION_TIME;
-            default:
-                throw new IllegalArgumentException("Unknown fileExpirationOffset");
-        }
     }
 }

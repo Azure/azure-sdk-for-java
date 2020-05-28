@@ -8,7 +8,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobScheduleDeletionOptions;
 import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
@@ -279,30 +278,5 @@ public class BlockBlobClientJavaDocCodeSnippets {
                     .setTier(AccessTier.HOT).setRequestConditions(requestConditions), timeout, context)
                 .getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlockBlobCommitBlockListOptions-Duration-Context
-    }
-
-    /**
-     * Code snippet for {@link BlockBlobClient#scheduleDeletion(BlobScheduleDeletionOptions)}
-     */
-    public void scheduleDeletion() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletion#BlobScheduleDeletionOptions
-        BlobScheduleDeletionOptions options = new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
-
-        client.scheduleDeletion(options);
-        System.out.println("Blob deletion has been scheduled");
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletion#BlobScheduleDeletionOptions
-    }
-
-    /**
-     * Code snippet for {@link BlockBlobClient#scheduleDeletionWithResponse(BlobScheduleDeletionOptions, Duration, Context)}
-     */
-    public void scheduleDeletionWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletionWithResponse#BlobScheduleDeletionOptions-Duration-Context
-        BlobScheduleDeletionOptions options = new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
-        Context context = new Context("key", "value");
-
-        client.scheduleDeletionWithResponse(options, timeout, context);
-        System.out.println("Blob deletion has been scheduled");
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletionWithResponse#BlobScheduleDeletionOptions-Duration-Context
     }
 }

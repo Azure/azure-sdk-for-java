@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -20,11 +21,13 @@ import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
@@ -912,10 +915,32 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public Mono<Response<Void>> scheduleDeletionWithResponse(FileScheduleDeletionOptions options) {
         try {
-            return blockBlobAsyncClient.scheduleDeletionWithResponse(Transforms.toBlobScheduleDeletionOptions(options))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+            return withContext(context -> scheduleDeletionWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    Mono<Response<Void>> scheduleDeletionWithResponse(FileScheduleDeletionOptions options, Context context) {
+        PathExpiryOptions pathExpiryOptions;
+        String expiresOn = null;
+        if (options != null && options.getExpiresOn() != null) {
+            pathExpiryOptions = PathExpiryOptions.ABSOLUTE;
+            expiresOn = new DateTimeRfc1123(options.getExpiresOn()).toString();
+        } else if (options != null && options.getTimeToExpire() != null) {
+            if (options.getExpiryRelativeTo() == FileExpirationOffset.CREATION_TIME) {
+                pathExpiryOptions = PathExpiryOptions.RELATIVE_TO_CREATION;
+            } else {
+                pathExpiryOptions = PathExpiryOptions.RELATIVE_TO_NOW;
+            }
+            expiresOn = Long.toString(options.getTimeToExpire().toMillis());
+        } else {
+            pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
+        }
+        return this.blobDataLakeStorage.paths().setExpiryWithRestResponseAsync(
+            pathExpiryOptions, null,
+            null, expiresOn,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(rb -> new SimpleResponse<>(rb, null));
     }
 }

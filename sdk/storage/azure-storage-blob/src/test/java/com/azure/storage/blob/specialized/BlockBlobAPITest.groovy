@@ -19,19 +19,16 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobExpirationOffset
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobScheduleDeletionOptions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobUploadFromFileOptions
 import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions
 import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.common.implementation.Constants
@@ -48,7 +45,6 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
-import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -1777,136 +1773,5 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
-    }
-
-    @Unroll
-    def "Schedule Deletion min"() {
-        given:
-        def containerClient = dataLakeBlobServiceClient.createBlobContainer(getContainerName())
-        def blobClient = containerClient.getBlobClient(getBlobName())
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
-
-        when:
-        blobClient.getBlockBlobClient().scheduleDeletion(options)
-        def expiryTimeProperty = blobClient.getProperties().getExpiresOn()
-        def expiryTimeListProperty = containerClient
-            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
-            .first()
-            .getProperties()
-            .getExpiresOn()
-
-        then:
-        (expiryTimeProperty != null) == hasExpiry
-        (expiryTimeListProperty != null) == hasExpiry
-        expiryTimeProperty == expiryTimeListProperty
-
-        where:
-        options                                                                                 | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
-        new BlobScheduleDeletionOptions()                                                       | false
-        null                                                                                    | false
-    }
-
-    @Unroll
-    def "Schedule Deletion max"() {
-        given:
-        def containerClient = dataLakeBlobServiceClient.createBlobContainer(getContainerName())
-        def blobClient = containerClient.getBlobClient(getBlobName())
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
-
-        when:
-        def resposne = blobClient.getBlockBlobClient().scheduleDeletionWithResponse(options, null, Context.NONE)
-        def expiryTimeProperty = blobClient.getProperties().getExpiresOn()
-        def expiryTimeListProperty = containerClient
-            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
-            .first()
-            .getProperties()
-            .getExpiresOn()
-
-        then:
-        resposne.getStatusCode() == 200
-        (expiryTimeProperty != null) == hasExpiry
-        (expiryTimeListProperty != null) == hasExpiry
-        expiryTimeProperty == expiryTimeListProperty
-
-        where:
-        options                                                                                 | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
-        new BlobScheduleDeletionOptions()                                                       | false
-        null                                                                                    | false
-    }
-
-    @Unroll
-    def "Schedule Deletion min async"() {
-        given:
-        def containerClient = dataLakeBlobServiceAsyncClient.createBlobContainer(getContainerName()).block()
-        def blobClient = containerClient.getBlobAsyncClient(getBlobName())
-        blobClient.upload(defaultFlux, null).block()
-
-        when:
-        def propertiesMono = blobClient.getProperties()
-        def listPropertiesMono = containerClient
-            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
-            .next()
-            .map { it.getProperties() }
-        def expiryTimeTupleMono = blobClient.getBlockBlobAsyncClient().scheduleDeletion(options)
-        .then(propertiesMono.zipWith(listPropertiesMono))
-
-        then:
-        StepVerifier.create(expiryTimeTupleMono)
-            .assertNext {
-                assert (it.getT1().getExpiresOn() != null) == hasExpiry
-                assert (it.getT2().getExpiresOn() != null) == hasExpiry
-                assert it.getT1().getExpiresOn() == it.getT2().getExpiresOn()
-            }
-            .verifyComplete()
-
-        where:
-        options                                                                                 | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
-        new BlobScheduleDeletionOptions()                                                       | false
-        null                                                                                    | false
-    }
-
-    @Unroll
-    def "Schedule Deletion max async"() {
-        given:
-        def containerClient = dataLakeBlobServiceAsyncClient.createBlobContainer(getContainerName()).block()
-        def blobClient = containerClient.getBlobAsyncClient(getBlobName())
-        blobClient.upload(defaultFlux, null).block()
-
-        when:
-        def propertiesMono = blobClient.getProperties()
-        def listPropertiesMono = containerClient
-            .listBlobs(new ListBlobsOptions().setPrefix(blobClient.getBlobName()), null)
-            .next()
-            .map { it.getProperties() }
-        def responseMono = blobClient.getBlockBlobAsyncClient().scheduleDeletionWithResponse(options)
-        def aggregatedResultsMono = responseMono.
-            then(Mono.zip(propertiesMono, listPropertiesMono, responseMono))
-
-        then:
-        StepVerifier.create(aggregatedResultsMono)
-            .assertNext {
-                assert (it.getT1().getExpiresOn() != null) == hasExpiry
-                assert (it.getT2().getExpiresOn() != null) == hasExpiry
-                assert it.getT1().getExpiresOn() == it.getT2().getExpiresOn()
-                assert it.getT3().getStatusCode() == 200
-            }
-            .verifyComplete()
-
-        where:
-        options                                                                                 | hasExpiry
-        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                       | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CREATION_TIME) | true
-        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.NOW)           | true
-        new BlobScheduleDeletionOptions()                                                       | false
-        null                                                                                    | false
     }
 }

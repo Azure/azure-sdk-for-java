@@ -15,7 +15,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobScheduleDeletionOptions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -574,43 +573,6 @@ public final class BlockBlobClient extends BlobClientBase {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
             base64BlockIds, options, context);
 
-        return blockWithOptionalTimeout(response, timeout);
-    }
-
-    // TODO (kasobol-msft) add REST DOCS
-    /**
-     * Schedules the blob for deletion.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletion#BlobScheduleDeletionOptions}
-     *
-     * @param options Schedule deletion parameters.
-     */
-    public void scheduleDeletion(BlobScheduleDeletionOptions options) {
-        scheduleDeletionWithResponse(options, null, Context.NONE);
-    }
-
-    // TODO (kasobol-msft) add REST DOCS
-    /**
-     * Schedules the blob for deletion.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.scheduleDeletionWithResponse#BlobScheduleDeletionOptions-Duration-Context}
-     *
-     * @param options Schedule deletion parameters.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers
-     */
-    public Response<Void> scheduleDeletionWithResponse(BlobScheduleDeletionOptions options, Duration timeout,
-                                                       Context context) {
-        Mono<Response<Void>> response = client.scheduleDeletionWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 }

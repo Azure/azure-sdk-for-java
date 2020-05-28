@@ -120,6 +120,20 @@ directive:
     $.patch.consumes = ["application/octet-stream"];
 ```
 
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?comp=expiry
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?comp=expiry"].put
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
 
 
 ### Make ACL on Path Get Properties lower case

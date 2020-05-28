@@ -59,6 +59,7 @@ public class DataLakePathAsyncClient {
     private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
 
     final DataLakeStorageClientImpl dataLakeStorage;
+    final DataLakeStorageClientImpl blobDataLakeStorage;
     private final String accountName;
     private final String fileSystemName;
     final String pathName;
@@ -85,6 +86,12 @@ public class DataLakePathAsyncClient {
         this.dataLakeStorage = new DataLakeStorageClientBuilder()
             .pipeline(pipeline)
             .url(url)
+            .version(serviceVersion.getVersion())
+            .build();
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url,"blob", "dfs");
+        this.blobDataLakeStorage = new DataLakeStorageClientBuilder()
+            .pipeline(pipeline)
+            .url(blobUrl)
             .version(serviceVersion.getVersion())
             .build();
         this.serviceVersion = serviceVersion;

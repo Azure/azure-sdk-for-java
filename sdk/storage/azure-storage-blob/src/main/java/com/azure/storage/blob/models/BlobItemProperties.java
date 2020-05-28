@@ -64,7 +64,6 @@ public final class BlobItemProperties {
         this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
         this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
         this.tagCount = blobItemPropertiesInternal.getTagCount();
-        this.expiresOn = blobItemPropertiesInternal.getExpiresOn();
 
         // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
         /*this.objectReplicationSourcePolicies = new HashMap<>();
@@ -293,8 +292,6 @@ public final class BlobItemProperties {
      */
     @JsonProperty(value = "TagCount")
     private Integer tagCount;
-
-    private OffsetDateTime expiresOn;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -980,26 +977,6 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setTagCount(Integer tagCount) {
         this.tagCount = tagCount;
-        return this;
-    }
-
-    /**
-     * Get the expiresOn property: The expiresOn property.
-     *
-     * @return the expiresOn value.
-     */
-    public OffsetDateTime getExpiresOn() {
-        return expiresOn;
-    }
-
-    /**
-     * Set the expiresOn property: The expiresOn property.
-     *
-     * @param expiresOn the expiresOn value to set.
-     * @return the BlobItemProperties object itself.
-     */
-    public BlobItemProperties setExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
         return this;
     }
 }

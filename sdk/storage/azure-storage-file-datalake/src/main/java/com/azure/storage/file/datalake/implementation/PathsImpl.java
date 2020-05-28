@@ -138,7 +138,7 @@ public final class PathsImpl {
         @Put("{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsSetExpiryResponse> setExpiry(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions, @HeaderParam("x-ms-expiry-time") String expiresOn, @QueryParam("comp") String comp, Context context);
+        Mono<PathsSetExpiryResponse> setExpiry(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions, @HeaderParam("x-ms-expiry-time") String expiresOn, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -907,7 +907,7 @@ public final class PathsImpl {
         final String requestId = null;
         final String expiresOn = null;
         final String comp = "expiry";
-        return service.setExpiry(this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
+        return service.setExpiry(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
     }
 
     /**
@@ -924,6 +924,6 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetExpiryResponse> setExpiryWithRestResponseAsync(PathExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
         final String comp = "expiry";
-        return service.setExpiry(this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
+        return service.setExpiry(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
     }
 }

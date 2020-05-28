@@ -125,13 +125,11 @@ class APISpec extends Specification {
      acquire so we do not run them in the nightly live run tests. */
     static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
     static def VERSIONED_STORAGE = "VERSIONED_STORAGE_"
-    static def DATA_LAKE_STORAGE = "STORAGE_DATA_LAKE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
-    static StorageSharedKeyCredential dataLakeCredential
     static StorageSharedKeyCredential managedDiskCredential
     static StorageSharedKeyCredential versionedCredential
     static TestMode testMode
@@ -143,8 +141,6 @@ class APISpec extends Specification {
     BlobServiceClient premiumBlobServiceClient
     BlobServiceClient managedDiskServiceClient
     BlobServiceClient versionedBlobServiceClient
-    BlobServiceClient dataLakeBlobServiceClient
-    BlobServiceAsyncClient dataLakeBlobServiceAsyncClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -160,7 +156,6 @@ class APISpec extends Specification {
         premiumCredential = getCredential(PREMIUM_STORAGE)
         managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
         versionedCredential = getCredential(VERSIONED_STORAGE)
-        dataLakeCredential = getCredential(DATA_LAKE_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
@@ -190,8 +185,6 @@ class APISpec extends Specification {
         premiumBlobServiceClient = setClient(premiumCredential)
         managedDiskServiceClient = setClient(managedDiskCredential)
         versionedBlobServiceClient = setClient(versionedCredential)
-        dataLakeBlobServiceClient = setClient(dataLakeCredential)
-        dataLakeBlobServiceAsyncClient = getServiceAsyncClient(dataLakeCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
