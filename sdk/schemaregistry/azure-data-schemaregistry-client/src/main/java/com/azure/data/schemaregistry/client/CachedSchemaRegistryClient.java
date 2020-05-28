@@ -5,7 +5,6 @@ package com.azure.data.schemaregistry.client;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;

@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Copyright (c) Microsoft Corporation. All rights reserved.
   ~ Licensed under the MIT License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -17,11 +15,12 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-data-schemaregistry-serde-avro</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-avro;current} -->
+  <artifactId>azure-data-schemaregistry-client</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-client;current} -->
 
-  <name>Microsoft Azure Schema Registry - Avro-specific package for client library</name>
-  <description>Avro-specih,fic package for Azure Schema Registry client library</description>
+  <name>Microsoft Azure Schema Registry - REST Client</name>
+  <description>REST client implementation for Azure Schema Registry</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -37,22 +36,23 @@
     <tag>HEAD</tag>
   </scm>
 
+
+  <!-- SchemaRegistrySkip - Needed temporary values to not fail. -->
   <properties>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-data-schemaregistry-serde-common</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-common;dependency} -->
-      <scope>compile</scope>
+      <artifactId>azure-core</artifactId>
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
-      <groupId>org.apache.avro</groupId>
-      <artifactId>avro</artifactId>
-      <version>1.9.2</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
-      <scope>compile</scope>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -74,25 +74,11 @@
       <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <include>com.azure:*</include>
-                <include>org.apache.avro:avro:[1.9.2]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

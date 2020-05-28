@@ -189,18 +189,18 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-schemaregistry-client</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-client;current} -->
+      <artifactId>azure-data-schemaregistry-client</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-client;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-schemaregistry-serde-avro</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-avro;current} -->
+      <artifactId>azure-data-schemaregistry-serde-avro</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-serde-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-schemaregistry-serde-common</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-common;current} -->
+      <artifactId>azure-data-schemaregistry-serde-common</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-serde-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

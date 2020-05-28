@@ -17,7 +17,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-serde-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-common;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-serde-common;current} -->
 
   <name>Microsoft Azure Schema Registry - Common SerDe Package for client library</name>
   <description>Common SerDe Package containing base serialization/deserialization implementation for Azure Schema Registry client library</description>
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry-client</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-client;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-client;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
