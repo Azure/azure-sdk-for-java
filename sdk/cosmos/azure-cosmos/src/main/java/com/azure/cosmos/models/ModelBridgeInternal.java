@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -113,9 +111,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
-                                                                              CosmosAsyncContainer container) {
-        return new CosmosAsyncTriggerResponse(response, container);
+    public static CosmosTriggerResponse createCosmosTriggerResponse(ResourceResponse<Trigger> response) {
+        return new CosmosTriggerResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -124,19 +121,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserResponse createCosmosAsyncUserResponse(ResourceResponse<User> response) {
+    public static CosmosUserResponse createCosmosUserResponse(ResourceResponse<User> response) {
         return new CosmosUserResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
         return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosTriggerResponse createCosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
-                                        CosmosTrigger syncTrigger) {
-        return new CosmosTriggerResponse(asyncResponse, syncTrigger);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

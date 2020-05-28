@@ -544,7 +544,7 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosUserResponse> createUser(CosmosUserProperties userProperties) {
         return getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
+                                    .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
 
@@ -561,7 +561,7 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosUserResponse> upsertUser(CosmosUserProperties userProperties) {
         return getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
+                                    .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**
