@@ -163,11 +163,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container cosmos container response.
-=======
      * Create a Cosmos container.
->>>>>>> master
      *
      * @param id the container id.
      * @param partitionKeyPath the partition key path.
@@ -178,11 +174,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container cosmos container response.
-=======
      * Create a Cosmos container.
->>>>>>> master
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
@@ -194,11 +186,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container if not exists cosmos container response.
-=======
      * Create container if one matching the id in the properties object does not exist.
->>>>>>> master
      *
      * @param containerProperties the container properties.
      * @return the cosmos container response.
@@ -208,11 +196,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container if not exists cosmos container response.
-=======
      * Create container if one does not exist.
->>>>>>> master
      *
      * @param containerProperties the container properties.
      * @param throughput the throughput.
@@ -226,11 +210,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container if not exists cosmos container response.
-=======
      * Creates a Cosmos container if one matching the id in the properties object does not exist.
->>>>>>> master
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -247,11 +227,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container if not exists cosmos container response.
-=======
      * Creates a Cosmos container if one matching the id does not exist.
->>>>>>> master
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
@@ -264,11 +240,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container if not exists cosmos container response.
-=======
      * Creates a Cosmos container if one matching the id does not exist.
->>>>>>> master
      * <p>
      * The throughput settings will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -287,11 +259,7 @@ public class CosmosDatabase {
     }
 
     /**
-<<<<<<< HEAD
-     * Create container if not exists cosmos container response.
-=======
      * Creates a Cosmos container if one matching the id does not exist.
->>>>>>> master
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.

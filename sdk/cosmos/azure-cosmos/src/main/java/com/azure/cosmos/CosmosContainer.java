@@ -84,11 +84,7 @@ public class CosmosContainer {
     }
 
     /**
-<<<<<<< HEAD
-     * Deletes the current cosmos container response.
-=======
      * Deletes the current cosmos container.
->>>>>>> master
      *
      * @return the cosmos container response.
      */
