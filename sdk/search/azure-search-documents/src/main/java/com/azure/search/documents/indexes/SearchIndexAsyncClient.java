@@ -295,8 +295,8 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    private Mono<SimpleResponse<ListIndexesResult>> listIndexesWithResponse(String select, RequestOptions requestOptions,
-        Context context) {
+    private Mono<SimpleResponse<ListIndexesResult>> listIndexesWithResponse(String select,
+        RequestOptions requestOptions, Context context) {
         return restClient.indexes()
             .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper);

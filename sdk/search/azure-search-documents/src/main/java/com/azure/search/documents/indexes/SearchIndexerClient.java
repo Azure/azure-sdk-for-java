@@ -459,7 +459,7 @@ public class SearchIndexerClient {
      * @return the list of skillsets.
      */
     public PagedIterable<SearchIndexerSkillset> listSkillsets() {
-        return listSkillsets( null, Context.NONE);
+        return listSkillsets(null, Context.NONE);
     }
 
     /**
@@ -481,7 +481,7 @@ public class SearchIndexerClient {
      * @return the list of skillset names.
      */
     public PagedIterable<String> listSkillsetNames() {
-        return listSkillsetNames( null, Context.NONE);
+        return listSkillsetNames(null, Context.NONE);
     }
 
     /**
