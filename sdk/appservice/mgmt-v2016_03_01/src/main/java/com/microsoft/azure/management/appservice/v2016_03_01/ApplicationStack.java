@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2016_03_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_03_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_03_01.implementation.ApplicationStackInner;
 import java.util.List;
 
 /**
  * Type representing ApplicationStack.
  */
-public interface ApplicationStack extends HasInner<ApplicationStackInner>, HasManager<AppServiceManager> {
+public interface ApplicationStack extends HasInner<ApplicationStackInner>, HasManager<WebManager> {
     /**
      * @return the dependency value.
      */
