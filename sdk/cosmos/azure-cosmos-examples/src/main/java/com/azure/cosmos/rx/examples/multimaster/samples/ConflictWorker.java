@@ -576,7 +576,7 @@ public class ConflictWorker {
     }
 
     private boolean isDelete(Conflict conflict) {
-        return OperationKind.DELETE == conflict.getOperationKind());
+        return OperationKind.DELETE == conflict.getOperationKind();
     }
 
 
