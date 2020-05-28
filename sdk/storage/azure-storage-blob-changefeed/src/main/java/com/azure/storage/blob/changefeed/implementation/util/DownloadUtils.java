@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.changefeed.implementation.util;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +18,7 @@ public class DownloadUtils {
         return client.getBlobAsyncClient(blobPath)
             .download()
             .reduce(new StringBuilder(), (sb, buffer) -> {
-                sb.append(new String(buffer.array(), StandardCharsets.UTF_8));
+                sb.append(new String(FluxUtil.byteBufferToArray(buffer), StandardCharsets.UTF_8));
                 return sb;
             }).map(StringBuilder::toString);
     }

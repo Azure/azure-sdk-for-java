@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
@@ -13,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,8 @@ import java.util.List;
  * ...}
  */
 class Segment {
+
+    private final ClientLogger logger = new ClientLogger(Segment.class);
 
     private static final String CHUNK_FILE_PATHS = "chunkFilePaths";
 
@@ -73,7 +78,7 @@ class Segment {
             JsonNode jsonNode = objectMapper.readTree(json);
             return Mono.just(jsonNode);
         } catch (IOException e) {
-            return Mono.error(e);
+            return FluxUtil.monoError(logger, new UncheckedIOException(e));
         }
     }
 

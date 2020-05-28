@@ -8,7 +8,6 @@ import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.ListBlobsOptions
-import com.fasterxml.jackson.core.JsonParseException
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatcher
 import reactor.core.publisher.Flux
@@ -97,7 +96,7 @@ class ChangefeedTest extends Specification {
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
-        sv.verifyError(JsonParseException.class)
+        sv.verifyError(UncheckedIOException.class)
         verify(mockContainer).exists() || true
         verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
         verify(mockMetadataClient).download() || true

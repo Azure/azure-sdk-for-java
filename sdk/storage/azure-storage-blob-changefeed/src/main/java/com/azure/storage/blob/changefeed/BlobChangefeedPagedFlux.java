@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
@@ -21,6 +23,8 @@ import java.util.List;
  */
 public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, BlobChangefeedEvent,
     BlobChangefeedPagedResponse> {
+
+    private final ClientLogger logger = new ClientLogger(BlobChangefeedPagedFlux.class);
 
     private final ChangefeedFactory changefeedFactory;
     private final OffsetDateTime startTime;
@@ -70,12 +74,12 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken, int preferredPageSize) {
 
         if (continuationToken != null) {
-            return Flux.error(new UnsupportedOperationException("continuationToken not supported. Use "
+            return FluxUtil.fluxError(logger, new UnsupportedOperationException("continuationToken not supported. Use "
                 + "client.getEvents(String) to pass in a cursor."));
         }
         if (preferredPageSize <= 0) {
-            return Flux.error(new IllegalArgumentException("preferredPageSize > 0 required but provided: "
-                + preferredPageSize));
+            return FluxUtil.fluxError(logger, new IllegalArgumentException("preferredPageSize > 0 required but "
+                + "provided: " + preferredPageSize));
         }
         preferredPageSize = Integer.min(preferredPageSize, DEFAULT_PAGE_SIZE);
 

@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
@@ -16,6 +18,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -30,6 +33,8 @@ import java.time.OffsetDateTime;
  * all records within a specified time, consume the consecutive previous and next hour segment.
  */
 class Changefeed {
+
+    private final ClientLogger logger = new ClientLogger(Changefeed.class);
 
     private static final String SEGMENT_PREFIX = "idx/segments/";
     private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
@@ -65,8 +70,8 @@ class Changefeed {
      */
     Flux<BlobChangefeedEventWrapper> getEvents() {
         return validateChangefeed()
-            .flatMap(ignore -> populateLastConsumable())
-            .flatMapMany(ignore -> listYears())
+            .then(populateLastConsumable())
+            .thenMany(listYears())
             .concatMap(this::listSegmentsForYear)
             .concatMap(this::getEventsForSegment);
     }
@@ -78,7 +83,8 @@ class Changefeed {
         return this.client.exists()
             .flatMap(exists -> {
                 if (exists == null || !exists) {
-                    return Mono.error(new RuntimeException("Changefeed has not been enabled for this account."));
+                    return FluxUtil.monoError(logger, new RuntimeException("Changefeed has not been enabled for "
+                        + "this account."));
                 }
                 return Mono.just(true);
             });
@@ -103,7 +109,7 @@ class Changefeed {
                     }
                     return Mono.just(this.lastConsumable);
                 } catch (IOException e) {
-                    return Mono.error(e);
+                    return FluxUtil.monoError(logger, new UncheckedIOException(e));
                 }
             });
     }
