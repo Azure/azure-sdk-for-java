@@ -4,7 +4,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
@@ -89,9 +88,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
-                                                                                    CosmosAsyncUser cosmosUser) {
-        return new CosmosAsyncPermissionResponse(response, cosmosUser);
+    public static CosmosPermissionResponse createCosmosPermissionResponse(ResourceResponse<Permission> response) {
+        return new CosmosPermissionResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
