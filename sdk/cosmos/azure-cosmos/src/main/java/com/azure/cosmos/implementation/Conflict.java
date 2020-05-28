@@ -33,8 +33,8 @@ public final class Conflict extends Resource {
      *
      * @return the operation kind.
      */
-    public String getOperationKind() {
-        return super.getString(Constants.Properties.OPERATION_TYPE);
+    public OperationKind getOperationKind() {
+        return OperationKind.fromServiceSerializedFormat(super.getString(Constants.Properties.OPERATION_TYPE));
     }
 
     /**
