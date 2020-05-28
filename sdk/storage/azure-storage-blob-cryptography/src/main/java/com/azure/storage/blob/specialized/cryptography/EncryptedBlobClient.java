@@ -4,12 +4,15 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryResponse;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
@@ -22,6 +25,8 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
@@ -238,6 +243,43 @@ public class EncryptedBlobClient extends BlobClient {
     public PageBlobClient getPageBlobClient() {
         throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
             + " blob client"));
+    }
+
+    /**
+     * Unsupported. Cannot query data encrypted on client side.
+     */
+    @Override
+    public InputStream openQueryInputStream(String expression) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side."));
+    }
+
+    /**
+     * Unsupported. Cannot query data encrypted on client side.
+     */
+    @Override
+    public InputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side."));
+    }
+
+    /**
+     * Unsupported. Cannot query data encrypted on client side.
+     */
+    @Override
+    public void query(OutputStream stream, String expression) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side."));
+    }
+
+    /**
+     * Unsupported. Cannot query data encrypted on client side.
+     */
+    @Override
+    public BlobQueryResponse queryWithResponse(OutputStream stream, String expression, BlobQueryOptions queryOptions,
+        Duration timeout, Context context) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side."));
     }
 
 }

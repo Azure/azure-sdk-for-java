@@ -15,6 +15,12 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
+import com.azure.storage.blob.models.BlobQueryError;
+import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryProgress;
+import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -28,6 +34,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;
@@ -39,6 +46,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Code snippets for {@link BlobClientBase}
@@ -511,5 +519,90 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#openQueryInputStream(String)}
+     */
+    public void openQueryInputStream() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String
+        String expression = "SELECT * from BlobStorage";
+        InputStream inputStream = client.openQueryInputStream(expression);
+        // Now you can read from the input stream like you would normally.
+        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#openQueryInputStream(String, BlobQueryOptions)}
+     */
+    public void openQueryInputStream2() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions
+        String expression = "SELECT * from BlobStorage";
+        BlobQuerySerialization input = new BlobQueryDelimitedSerialization()
+            .setColumnSeparator(',')
+            .setEscapeChar('\n')
+            .setRecordSeparator('\n')
+            .setHeadersPresent(true)
+            .setFieldQuote('"');
+        BlobQuerySerialization output = new BlobQueryJsonSerialization()
+            .setRecordSeparator('\n');
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId("leaseId");
+        Consumer<BlobQueryError> errorConsumer = System.out::println;
+        Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
+            + progress.getBytesScanned());
+        BlobQueryOptions queryOptions = new BlobQueryOptions()
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
+
+        InputStream inputStream = client.openQueryInputStream(expression, queryOptions);
+        // Now you can read from the input stream like you would normally.
+        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#query(OutputStream, String)}
+     */
+    public void query() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+        String expression = "SELECT * from BlobStorage";
+        client.query(queryData, expression);
+        System.out.println("Query completed.");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#queryWithResponse(OutputStream, String, BlobQueryOptions, Duration, Context)}
+     */
+    public void queryWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+        String expression = "SELECT * from BlobStorage";
+        BlobQueryJsonSerialization input = new BlobQueryJsonSerialization()
+            .setRecordSeparator('\n');
+        BlobQueryDelimitedSerialization output = new BlobQueryDelimitedSerialization()
+            .setEscapeChar('\0')
+            .setColumnSeparator(',')
+            .setRecordSeparator('\n')
+            .setFieldQuote('\'')
+            .setHeadersPresent(true);
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        Consumer<BlobQueryError> errorConsumer = System.out::println;
+        Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
+            + progress.getBytesScanned());
+        BlobQueryOptions queryOptions = new BlobQueryOptions()
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
+        System.out.printf("Query completed with status %d%n",
+            client.queryWithResponse(queryData, expression, queryOptions, timeout, new Context(key1, value1))
+                .getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context
     }
 }
