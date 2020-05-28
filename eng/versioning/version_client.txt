@@ -26,9 +26,8 @@ com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs;5.1.0;5.2.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.1.0;1.2.0-beta.1
 com.azure:azure-messaging-servicebus;7.0.0-beta.2;7.0.0-beta.3
-com.azure:azure-data-schemaregistry-client;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-schemaregistry-serde-common;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-schemaregistry-serde-avro;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-data-schemaregistry;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-data-schemaregistry-avro;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-search-documents;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-security-keyvault-certificates;4.1.0-beta.2;4.1.0-beta.3
 com.azure:azure-security-keyvault-keys;4.2.0-beta.3;4.2.0-beta.4
