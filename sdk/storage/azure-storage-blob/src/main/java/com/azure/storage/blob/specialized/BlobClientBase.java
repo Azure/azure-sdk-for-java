@@ -7,8 +7,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
@@ -19,25 +19,30 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
-import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -1052,5 +1057,105 @@ public class BlobClientBase {
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
         return this.client.generateSas(blobServiceSasSignatureValues);
+    }
+
+    /* TODO (gapra): Populate Rest Api docs for quick query. */
+    /**
+     * Opens a blob input stream to query the blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String}
+     *
+     * @param expression The query expression.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     */
+    public InputStream openQueryInputStream(String expression) {
+        return openQueryInputStream(expression, null);
+    }
+
+    /**
+     * Opens a blob input stream to query the blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions}
+     *
+     * @param expression The query expression.
+     * @param queryOptions {@link BlobQueryOptions The query options}.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     */
+    public InputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
+
+        // Data to subscribe to and read from.
+        BlobQueryAsyncResponse response = client.queryWithResponse(expression, queryOptions)
+            .block();
+
+        // Create input stream from the data.
+        if (response == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+        }
+        return new FluxInputStream(response.getValue());
+    }
+
+    /**
+     * Queries an entire blob into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String}
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public void query(OutputStream stream, String expression) {
+        queryWithResponse(stream, expression, null, null, Context.NONE);
+    }
+
+    /**
+     * Queries an entire blob into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context}
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @param queryOptions {@link BlobQueryOptions The query options}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public BlobQueryResponse queryWithResponse(OutputStream stream, String expression, BlobQueryOptions queryOptions,
+        Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("stream", stream);
+        Mono<BlobQueryResponse> download = client
+            .queryWithResponse(expression, queryOptions, context)
+            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new BlobQueryResponse(response)));
+
+        return blockWithOptionalTimeout(download, timeout);
     }
 }

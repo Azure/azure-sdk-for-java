@@ -7,6 +7,7 @@ package com.azure.storage.blob.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.storage.blob.models.BlobQueryHeaders;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;

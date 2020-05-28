@@ -10,15 +10,20 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
@@ -28,6 +33,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -547,6 +553,98 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
+    }
+
+    /* TODO (gapra): Populate Rest Api docs for quick query. */
+    /**
+     * Opens an input stream to query the file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#String}
+     *
+     * @param expression The query expression.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     */
+    public InputStream openQueryInputStream(String expression) {
+        return openQueryInputStream(expression, null);
+    }
+
+    /**
+     * Opens an input stream to query the file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#String-FileQueryOptions}
+     *
+     * @param expression The query expression.
+     * @param queryOptions {@link FileQueryOptions The query options}.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     */
+    public InputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
+
+        // Data to subscribe to and read from.
+        FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(expression, queryOptions)
+            .block();
+
+        // Create input stream from the data.
+        if (response == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+        }
+        return new FluxInputStream(response.getValue());
+    }
+
+    /**
+     * Queries an entire file into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.query#OutputStream-String}
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public void query(OutputStream stream, String expression) {
+        queryWithResponse(stream, expression, null, null, Context.NONE);
+    }
+
+    /**
+     * Queries an entire file into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-String-FileQueryOptions-Duration-Context}
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @param queryOptions {@link FileQueryOptions The query options}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public FileQueryResponse queryWithResponse(OutputStream stream, String expression, FileQueryOptions queryOptions,
+        Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            BlobQueryResponse response = blockBlobClient.queryWithResponse(stream, expression,
+                Transforms.toBlobQueryOptions(queryOptions), timeout, context);
+            return Transforms.toFileQueryResponse(response);
+        }, logger);
     }
 
     // TODO (kasobol-msft) add REST DOCS

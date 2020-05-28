@@ -28,6 +28,8 @@ import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileExpirationOffset;
+import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.models.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileScheduleDeletionOptions;
@@ -881,6 +883,45 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /* TODO (gapra): Service docs*/
+    /**
+     * Queries the entire file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.query#String}
+     *
+     * @param expression The query expression.
+     * @return A reactive response containing the queried data.
+     */
+    public Flux<ByteBuffer> query(String expression) {
+        return queryWithResponse(expression, null)
+            .flatMapMany(FileQueryAsyncResponse::getValue);
+    }
+
+    /**
+     * Queries the entire file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions}
+     *
+     * @param expression The query expression.
+     * @param queryOptions {@link FileQueryOptions The query options}
+     * @return A reactive response containing the queried data.
+     */
+    public Mono<FileQueryAsyncResponse> queryWithResponse(String expression, FileQueryOptions queryOptions) {
+        return blockBlobAsyncClient.queryWithResponse(expression, Transforms.toBlobQueryOptions(queryOptions))
+            .map(Transforms::toFileQueryAsyncResponse)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     // TODO (kasobol-msft) add REST DOCS

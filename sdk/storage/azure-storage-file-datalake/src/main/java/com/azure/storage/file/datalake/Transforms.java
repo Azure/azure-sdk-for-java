@@ -14,6 +14,15 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
+import com.azure.storage.blob.models.BlobQueryError;
+import com.azure.storage.blob.models.BlobQueryHeaders;
+import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryProgress;
+import com.azure.storage.blob.models.BlobQueryResponse;
+import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -29,7 +38,17 @@ import com.azure.storage.file.datalake.models.CopyStatusType;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileExpirationOffset;
+import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
+import com.azure.storage.file.datalake.models.FileQueryError;
+import com.azure.storage.file.datalake.models.FileQueryHeaders;
+import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.models.FileQueryProgress;
+import com.azure.storage.file.datalake.models.FileQueryResponse;
+import com.azure.storage.file.datalake.models.FileQuerySerialization;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileReadHeaders;
@@ -48,7 +67,6 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
-import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 
@@ -56,6 +74,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 class Transforms {
 
@@ -454,5 +473,119 @@ class Transforms {
             return null;
         }
         return pr::reportProgress;
+    }
+
+    static BlobQuerySerialization toBlobQuerySerialization(FileQuerySerialization ser) {
+        if (ser == null) {
+            return null;
+        }
+        if (ser instanceof FileQueryJsonSerialization) {
+            FileQueryJsonSerialization jsonSer = (FileQueryJsonSerialization) ser;
+            return new BlobQueryJsonSerialization().setRecordSeparator(jsonSer.getRecordSeparator());
+        } else if (ser instanceof FileQueryDelimitedSerialization) {
+            FileQueryDelimitedSerialization delSer = (FileQueryDelimitedSerialization) ser;
+            return new BlobQueryDelimitedSerialization()
+                .setColumnSeparator(delSer.getColumnSeparator())
+                .setEscapeChar(delSer.getEscapeChar())
+                .setFieldQuote(delSer.getFieldQuote())
+                .setHeadersPresent(delSer.isHeadersPresent())
+                .setRecordSeparator(delSer.getRecordSeparator());
+        } else {
+            throw new IllegalArgumentException("serialization must be FileQueryJsonSerialization or "
+                + "FileQueryDelimitedSerialization");
+        }
+    }
+
+    static Consumer<BlobQueryError> toBlobQueryErrorConsumer(Consumer<FileQueryError> er) {
+        if (er == null) {
+            return null;
+        }
+        return error -> er.accept(toFileQueryError(error));
+    }
+
+    static Consumer<BlobQueryProgress> toBlobQueryProgressConsumer(Consumer<FileQueryProgress> pr) {
+        if (pr == null) {
+            return null;
+        }
+        return progress -> pr.accept(toFileQueryProgress(progress));
+    }
+
+    private static FileQueryError toFileQueryError(BlobQueryError error) {
+        if (error == null) {
+            return null;
+        }
+        return new FileQueryError(error.isFatal(), error.getName(), error.getDescription(), error.getPosition());
+    }
+
+    private static FileQueryProgress toFileQueryProgress(BlobQueryProgress progress) {
+        if (progress == null) {
+            return null;
+        }
+        return new FileQueryProgress(progress.getBytesScanned(), progress.getTotalBytes());
+    }
+
+    static FileQueryResponse toFileQueryResponse(BlobQueryResponse r) {
+        if (r == null) {
+            return null;
+        }
+        return new FileQueryResponse(Transforms.toFileQueryAsyncResponse(new BlobQueryAsyncResponse(r.getRequest(),
+            r.getStatusCode(), r.getHeaders(), null, r.getDeserializedHeaders())));
+    }
+
+    static FileQueryAsyncResponse toFileQueryAsyncResponse(BlobQueryAsyncResponse r) {
+        if (r == null) {
+            return null;
+        }
+        return new FileQueryAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
+            Transforms.toFileQueryHeaders(r.getDeserializedHeaders()));
+    }
+
+    private static FileQueryHeaders toFileQueryHeaders(BlobQueryHeaders h) {
+        if (h == null) {
+            return null;
+        }
+        return new FileQueryHeaders()
+            .setLastModified(h.getLastModified())
+            .setMetadata(h.getMetadata())
+            .setContentLength(h.getContentLength())
+            .setContentType(h.getContentType())
+            .setContentRange(h.getContentRange())
+            .setETag(h.getETag())
+            .setContentMd5(h.getContentMD5())
+            .setContentEncoding(h.getContentEncoding())
+            .setCacheControl(h.getCacheControl())
+            .setContentDisposition(h.getContentDisposition())
+            .setContentLanguage(h.getContentLanguage())
+            .setCopyCompletionTime(h.getCopyCompletionTime())
+            .setCopyStatusDescription(h.getCopyStatusDescription())
+            .setCopyId(h.getCopyId())
+            .setCopyProgress(h.getCopyProgress())
+            .setCopySource(h.getCopySource())
+            .setCopyStatus(Transforms.toDataLakeCopyStatusType(h.getCopyStatus()))
+            .setLeaseDuration(Transforms.toDataLakeLeaseDurationType(h.getLeaseDuration()))
+            .setLeaseState(Transforms.toDataLakeLeaseStateType(h.getLeaseState()))
+            .setLeaseStatus(Transforms.toDataLakeLeaseStatusType(h.getLeaseStatus()))
+            .setClientRequestId(h.getClientRequestId())
+            .setRequestId(h.getRequestId())
+            .setVersion(h.getVersion())
+            .setAcceptRanges(h.getAcceptRanges())
+            .setDateProperty(h.getDateProperty())
+            .setServerEncrypted(h.isServerEncrypted())
+            .setEncryptionKeySha256(h.getEncryptionKeySha256())
+            .setFileContentMd5(h.getBlobContentMD5())
+            .setContentCrc64(h.getContentCrc64())
+            .setErrorCode(h.getErrorCode());
+    }
+
+    static BlobQueryOptions toBlobQueryOptions(FileQueryOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlobQueryOptions()
+            .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
+            .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
+            .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
+            .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
+            .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
     }
 }

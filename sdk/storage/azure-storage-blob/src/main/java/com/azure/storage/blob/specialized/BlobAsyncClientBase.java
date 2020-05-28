@@ -27,6 +27,9 @@ import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.models.QueryRequest;
+import com.azure.storage.blob.implementation.models.QuerySerialization;
+import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -38,6 +41,8 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -1785,5 +1790,76 @@ public class BlobAsyncClientBase {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
             getSnapshotId(), getVersionId())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+    }
+
+    /* TODO (gapra): Quick Query service docs. */
+    /**
+     * Queries the entire blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String}
+     *
+     * @param expression The query expression.
+     * @return A reactive response containing the queried data.
+     */
+    public Flux<ByteBuffer> query(String expression) {
+        return queryWithResponse(expression, null)
+            .flatMapMany(BlobQueryAsyncResponse::getValue);
+    }
+
+    /**
+     * Queries the entire blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQueryOptions}
+     *
+     * @param expression The query expression.
+     * @param queryOptions {@link BlobQueryOptions The query options}.
+     * @return A reactive response containing the queried data.
+     */
+    public Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions) {
+        try {
+            return withContext(context ->
+                queryWithResponse(expression, queryOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions, Context context) {
+
+        BlobQueryOptions finalQueryOptions = queryOptions == null ? new BlobQueryOptions() : queryOptions;
+        BlobRequestConditions requestConditions = finalQueryOptions.getRequestConditions() == null
+            ? new BlobRequestConditions() : finalQueryOptions.getRequestConditions();
+
+        QuerySerialization in = BlobQueryReader.transformSerialization(finalQueryOptions.getInputSerialization(),
+            logger);
+        QuerySerialization out = BlobQueryReader.transformSerialization(finalQueryOptions.getOutputSerialization(),
+            logger);
+
+        QueryRequest qr = new QueryRequest()
+            .setExpression(expression)
+            .setInputSerialization(in)
+            .setOutputSerialization(out);
+
+        return this.azureBlobStorage.blobs().queryWithRestResponseAsync(null, null, qr,
+            getSnapshotId(), null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                /* Parse the avro reactive stream. */
+                new BlobQueryReader(response.getValue(), finalQueryOptions.getProgressConsumer(),
+                    finalQueryOptions.getErrorConsumer())
+                    .read(),
+                response.getDeserializedHeaders()));
     }
 }
