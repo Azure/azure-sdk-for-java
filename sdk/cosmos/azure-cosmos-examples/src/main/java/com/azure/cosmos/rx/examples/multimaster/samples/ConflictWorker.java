@@ -4,6 +4,7 @@
 package com.azure.cosmos.rx.examples.multimaster.samples;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
