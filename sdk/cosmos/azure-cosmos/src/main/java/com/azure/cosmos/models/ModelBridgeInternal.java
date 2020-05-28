@@ -65,9 +65,8 @@ public final class ModelBridgeInternal {
     private ModelBridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncConflictResponse createCosmosAsyncConflictResponse(ResourceResponse<Conflict> response,
-                                                                                CosmosAsyncContainer container) {
-        return new CosmosAsyncConflictResponse(response, container);
+    public static CosmosConflictResponse createCosmosConflictResponse(ResourceResponse<Conflict> response) {
+        return new CosmosConflictResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
