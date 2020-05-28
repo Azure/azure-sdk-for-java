@@ -37,19 +37,6 @@ public class StoreResponse {
         this.content = content;
     }
 
-    public StoreResponse newStoreResponse(
-        int status,
-        List<Entry<String, String>> headerEntries,
-        byte[] content) {
-
-        HttpHeaders headersMap = new HttpHeaders();
-        for(Entry<String, String> headerEntry: headerEntries) {
-            headersMap.put( headerEntry.getKey(),  headerEntry.getValue());
-        }
-
-        return new StoreResponse(status, headersMap, content);
-    }
-
     public int getStatus() {
         return status;
     }
@@ -73,10 +60,6 @@ public class StoreResponse {
 
     public String getPartitionKeyRangeId() {
         return this.httpHeaders.getValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
-    }
-
-    public String getContinuation() {
-        return this.httpHeaders.getValue(HttpConstants.Headers.CONTINUATION);
     }
 
     public CosmosDiagnostics getCosmosDiagnostics() {

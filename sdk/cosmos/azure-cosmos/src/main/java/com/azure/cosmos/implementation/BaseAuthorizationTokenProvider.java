@@ -138,7 +138,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 .append('\n');
 
         String xDateHeaderValue = headers.getValue(HttpConstants.Headers.X_DATE);
-        if (headers.getValue(HttpConstants.Headers.X_DATE) != null) {
+        if (xDateHeaderValue != null) {
             body.append(xDateHeaderValue.toLowerCase(Locale.ROOT));
         }
 

@@ -23,20 +23,10 @@ public class RetryWithException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public RetryWithException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                              com.azure.core.http.HttpHeaders responseHeaders) {
+                              HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.RETRY_WITH, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
-    }
-
-    RetryWithException(String message, URI requestUri) {
-        this(message, null, null, requestUri);
-    }
-
-    RetryWithException(String message,
-                       Exception innerException,
-                       URI requestUri) {
-        this(message, innerException, null, requestUri);
     }
 
     /**
@@ -51,18 +41,6 @@ public class RetryWithException extends CosmosException {
             null,
             headers,
             HttpConstants.StatusCodes.RETRY_WITH,
-            requestUri != null ? requestUri.toString() : null);
-    }
-
-    RetryWithException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, headers, HttpConstants.StatusCodes.RETRY_WITH, requestUriString);
-    }
-
-    RetryWithException(String message,
-                       Exception innerException,
-                       HttpHeaders headers,
-                       URI requestUri) {
-        super(message, innerException, headers, HttpConstants.StatusCodes.RETRY_WITH,
             requestUri != null ? requestUri.toString() : null);
     }
 }

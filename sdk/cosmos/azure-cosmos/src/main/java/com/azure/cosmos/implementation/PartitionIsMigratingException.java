@@ -33,7 +33,7 @@ public class PartitionIsMigratingException extends CosmosException {
     public PartitionIsMigratingException(CosmosError cosmosError,
                                          long lsn,
                                          String partitionKeyRangeId,
-                                         com.azure.core.http.HttpHeaders responseHeaders) {
+                                         HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -41,11 +41,6 @@ public class PartitionIsMigratingException extends CosmosException {
 
     PartitionIsMigratingException(String msg) {
         super(HttpConstants.StatusCodes.GONE, msg);
-        setSubStatus();
-    }
-
-    PartitionIsMigratingException(String msg, String resourceAddress) {
-        super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
         setSubStatus();
     }
 
@@ -58,10 +53,6 @@ public class PartitionIsMigratingException extends CosmosException {
      */
     public PartitionIsMigratingException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
-    }
-
-    PartitionIsMigratingException(Exception innerException) {
-        this(RMResources.Gone, innerException, null, null);
     }
 
     PartitionIsMigratingException(String message,

@@ -671,7 +671,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final HttpHeaders requestHeaders = record.args().serviceRequest().getHeaders();
             final String requestUri = record.args().physicalAddress().toString();
 
-            final GoneException error = new GoneException(message, cause, (com.azure.core.http.HttpHeaders) null, requestUri);
+            final GoneException error = new GoneException(message, cause, (HttpHeaders) null, requestUri);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
 
             record.completeExceptionally(error);

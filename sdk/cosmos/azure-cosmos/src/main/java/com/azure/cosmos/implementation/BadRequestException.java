@@ -22,7 +22,7 @@ public class BadRequestException extends CosmosException {
      * @param innerException the inner exception
      */
     public BadRequestException(String message, Exception innerException) {
-        super(message, innerException, new com.azure.core.http.HttpHeaders(), HttpConstants.StatusCodes.BADREQUEST, null);
+        super(message, innerException, new HttpHeaders(), HttpConstants.StatusCodes.BADREQUEST, null);
     }
 
     /**
@@ -41,7 +41,7 @@ public class BadRequestException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public BadRequestException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                               com.azure.core.http.HttpHeaders responseHeaders) {
+                               HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.BADREQUEST, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -69,10 +69,6 @@ public class BadRequestException extends CosmosException {
      */
     public BadRequestException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
-    }
-
-    BadRequestException(Exception innerException) {
-        this(RMResources.BadRequest, innerException, null, null);
     }
 
     BadRequestException(String message,

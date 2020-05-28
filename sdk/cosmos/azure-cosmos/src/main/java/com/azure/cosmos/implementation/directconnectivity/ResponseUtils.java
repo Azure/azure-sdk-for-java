@@ -27,8 +27,8 @@ class ResponseUtils {
 
         return contentObservable.map(byteArrayContent -> {
             // transforms to Mono<StoreResponse>
-            com.azure.core.http.HttpHeaders responseHeaders = httpResponseHeaders;
-            HttpUtils.OwnerFullName(responseHeaders);
+            HttpHeaders responseHeaders = httpResponseHeaders;
+            HttpUtils.unescapeOwnerFullName(responseHeaders);
             return new StoreResponse(httpClientResponse.statusCode(), responseHeaders, byteArrayContent);
         });
     }

@@ -31,7 +31,7 @@ public class RequestTimeoutException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public RequestTimeoutException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                                   com.azure.core.http.HttpHeaders responseHeaders) {
+                                   HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.REQUEST_TIMEOUT, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -45,17 +45,6 @@ public class RequestTimeoutException extends CosmosException {
      */
     public RequestTimeoutException(String message, URI requestUri) {
         this(message, null, null, requestUri);
-    }
-
-    RequestTimeoutException(String message,
-                            Exception innerException,
-                            URI requestUri,
-                            String localIpAddress) {
-        this(message(localIpAddress, message), innerException, null, requestUri);
-    }
-
-    RequestTimeoutException(Exception innerException) {
-        this(RMResources.Gone, innerException, (HttpHeaders) null, null);
     }
 
     /**
@@ -73,10 +62,6 @@ public class RequestTimeoutException extends CosmosException {
             requestUrl != null
                 ? requestUrl.toString()
                 : null);
-    }
-
-    RequestTimeoutException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, headers, HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUriString);
     }
 
     RequestTimeoutException(String message,

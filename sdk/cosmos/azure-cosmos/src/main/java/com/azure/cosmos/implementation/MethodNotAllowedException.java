@@ -29,7 +29,7 @@ public class MethodNotAllowedException extends CosmosException {
     public MethodNotAllowedException(CosmosError cosmosError,
                                      long lsn,
                                      String partitionKeyRangeId,
-                                     com.azure.core.http.HttpHeaders responseHeaders) {
+                                     HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.METHOD_NOT_ALLOWED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -37,18 +37,6 @@ public class MethodNotAllowedException extends CosmosException {
 
     MethodNotAllowedException(String message) {
         this(message, null, null, null);
-    }
-
-    MethodNotAllowedException(String message, HttpHeaders headers, String requestUriString) {
-        this(message, null, headers, requestUriString);
-    }
-
-    MethodNotAllowedException(String message, HttpHeaders headers, URI requestUri) {
-        this(message, headers, requestUri != null ? requestUri.toString() : null);
-    }
-
-    MethodNotAllowedException(Exception innerException) {
-        this(RMResources.MethodNotAllowed, innerException, null, null);
     }
 
     /**

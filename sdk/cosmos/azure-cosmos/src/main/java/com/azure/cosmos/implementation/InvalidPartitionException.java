@@ -33,7 +33,7 @@ public class InvalidPartitionException extends CosmosException {
     public InvalidPartitionException(CosmosError cosmosError,
                                      long lsn,
                                      String partitionKeyRangeId,
-                                     com.azure.core.http.HttpHeaders responseHeaders) {
+                                     HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -69,10 +69,6 @@ public class InvalidPartitionException extends CosmosException {
      */
     public InvalidPartitionException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
-    }
-
-    InvalidPartitionException(Exception innerException) {
-        this(RMResources.Gone, innerException, null, null);
     }
 
     InvalidPartitionException(String message,

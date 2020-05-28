@@ -31,7 +31,7 @@ public class PartitionKeyRangeIsSplittingException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public PartitionKeyRangeIsSplittingException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                                                 com.azure.core.http.HttpHeaders responseHeaders) {
+                                                 HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -39,11 +39,6 @@ public class PartitionKeyRangeIsSplittingException extends CosmosException {
 
     PartitionKeyRangeIsSplittingException(String msg) {
         super(HttpConstants.StatusCodes.GONE, msg);
-        setSubStatus();
-    }
-
-    PartitionKeyRangeIsSplittingException(String msg, String resourceAddress) {
-        super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
         setSubStatus();
     }
 
@@ -56,10 +51,6 @@ public class PartitionKeyRangeIsSplittingException extends CosmosException {
      */
     public PartitionKeyRangeIsSplittingException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
-    }
-
-    PartitionKeyRangeIsSplittingException(Exception innerException) {
-        this(RMResources.Gone, innerException, null, null);
     }
 
     PartitionKeyRangeIsSplittingException(String message,

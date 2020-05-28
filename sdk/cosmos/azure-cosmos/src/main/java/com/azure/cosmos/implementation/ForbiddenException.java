@@ -25,7 +25,7 @@ public class ForbiddenException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public ForbiddenException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                              com.azure.core.http.HttpHeaders responseHeaders) {
+                              HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.FORBIDDEN, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -47,10 +47,6 @@ public class ForbiddenException extends CosmosException {
      */
     public ForbiddenException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
-    }
-
-    ForbiddenException(Exception innerException) {
-        this(RMResources.Forbidden, innerException, null, null);
     }
 
     ForbiddenException(String message,

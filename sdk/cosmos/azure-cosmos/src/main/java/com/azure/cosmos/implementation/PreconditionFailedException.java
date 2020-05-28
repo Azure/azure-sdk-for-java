@@ -28,7 +28,7 @@ public class PreconditionFailedException extends CosmosException {
     public PreconditionFailedException(CosmosError cosmosError,
                                        long lsn,
                                        String partitionKeyRangeId,
-                                       com.azure.core.http.HttpHeaders responseHeaders) {
+                                       HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.PRECONDITION_FAILED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -36,10 +36,6 @@ public class PreconditionFailedException extends CosmosException {
 
     PreconditionFailedException(String msg) {
         super(HttpConstants.StatusCodes.PRECONDITION_FAILED, msg);
-    }
-
-    PreconditionFailedException(String msg, String resourceAddress) {
-        super(msg, null, null, HttpConstants.StatusCodes.PRECONDITION_FAILED, resourceAddress);
     }
 
     /**
@@ -50,10 +46,6 @@ public class PreconditionFailedException extends CosmosException {
      */
     public PreconditionFailedException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
-    }
-
-    PreconditionFailedException(Exception innerException) {
-        this(RMResources.PreconditionFailed, innerException, null, null);
     }
 
     PreconditionFailedException(String message,

@@ -9,10 +9,6 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HttpUtilsTest {
@@ -33,7 +29,7 @@ public class HttpUtilsTest {
         assertThat(entry.getName()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
 
-        HttpUtils.OwnerFullName(httpResponseHeaders);
+        HttpUtils.unescapeOwnerFullName(httpResponseHeaders);
         assertThat(httpResponseHeaders.getSize()).isEqualTo(1);
         entry = httpResponseHeaders.iterator().next();
         assertThat(entry.getName()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);

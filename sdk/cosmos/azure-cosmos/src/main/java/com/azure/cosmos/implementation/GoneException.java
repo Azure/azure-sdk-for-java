@@ -39,7 +39,7 @@ public class GoneException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public GoneException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                         com.azure.core.http.HttpHeaders responseHeaders) {
+                         HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -52,7 +52,7 @@ public class GoneException extends CosmosException {
      * @param requestUri the request uri
      */
     public GoneException(String message, String requestUri) {
-        this(message, null, new com.azure.core.http.HttpHeaders(), requestUri);
+        this(message, null, new HttpHeaders (), requestUri);
     }
 
     GoneException(String message,
@@ -114,7 +114,7 @@ public class GoneException extends CosmosException {
      */
     public GoneException(String message,
                          Exception innerException,
-                         com.azure.core.http.HttpHeaders headers,
+                         HttpHeaders  headers,
                          String requestUriString) {
         super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUriString);
     }

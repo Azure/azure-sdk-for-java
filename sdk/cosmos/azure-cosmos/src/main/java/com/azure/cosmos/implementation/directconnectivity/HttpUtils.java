@@ -54,8 +54,9 @@ public class HttpUtils {
         return date != null ? date : StringUtils.EMPTY;
     }
 
-    public static void OwnerFullName(HttpHeaders httpHeaders) {
+    public static void unescapeOwnerFullName(HttpHeaders httpHeaders) {
         String ownerValue = httpHeaders.getValue(HttpConstants.Headers.OWNER_FULL_NAME);
+
         if (StringUtils.isNotEmpty(ownerValue)) {
             String unescapedUrl = HttpUtils.urlDecode(ownerValue);
             httpHeaders.put(HttpConstants.Headers.OWNER_FULL_NAME, unescapedUrl);

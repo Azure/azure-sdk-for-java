@@ -33,7 +33,7 @@ public class RequestRateTooLargeException extends CosmosException {
     public RequestRateTooLargeException(CosmosError cosmosError,
                                         long lsn,
                                         String partitionKeyRangeId,
-                                        com.azure.core.http.HttpHeaders responseHeaders) {
+                                        HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.TOO_MANY_REQUESTS, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -41,16 +41,6 @@ public class RequestRateTooLargeException extends CosmosException {
 
     RequestRateTooLargeException(String message, URI requestUri) {
         this(message, null, null, requestUri);
-    }
-
-    RequestRateTooLargeException(String message,
-                                 Exception innerException,
-                                 URI requestUri) {
-        this(message, innerException, null, requestUri);
-    }
-
-    RequestRateTooLargeException(Exception innerException) {
-        this(RMResources.TooManyRequests, innerException, null, null);
     }
 
     /**
@@ -63,10 +53,6 @@ public class RequestRateTooLargeException extends CosmosException {
     public RequestRateTooLargeException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, headers, HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
             requestUri != null ? requestUri.toString() : null);
-    }
-
-    RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, headers, HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
     }
 
     RequestRateTooLargeException(String message,

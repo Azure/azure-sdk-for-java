@@ -35,7 +35,7 @@ public class PartitionKeyRangeGoneException extends CosmosException {
     public PartitionKeyRangeGoneException(CosmosError cosmosError,
                                           long lsn,
                                           String partitionKeyRangeId,
-                                          com.azure.core.http.HttpHeaders responseHeaders) {
+                                          HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -50,15 +50,6 @@ public class PartitionKeyRangeGoneException extends CosmosException {
     public PartitionKeyRangeGoneException(String message) {
         this(message, null, null, null);
     }
-
-    PartitionKeyRangeGoneException(String message, Exception innerException) {
-        this(message, innerException, null, null);
-    }
-
-    PartitionKeyRangeGoneException(Exception innerException) {
-        this(RMResources.Gone, innerException, null, null);
-    }
-
 
     /**
      * Instantiates a new Partition key range gone exception.

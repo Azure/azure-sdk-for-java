@@ -29,7 +29,7 @@ public class ServiceUnavailableException extends CosmosException {
     public ServiceUnavailableException(CosmosError cosmosError,
                                        long lsn,
                                        String partitionKeyRangeId,
-                                       com.azure.core.http.HttpHeaders responseHeaders) {
+                                       HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -52,10 +52,6 @@ public class ServiceUnavailableException extends CosmosException {
      */
     public ServiceUnavailableException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
-    }
-
-    ServiceUnavailableException(Exception innerException) {
-        this(RMResources.ServiceUnavailable, innerException, null, null);
     }
 
     /**

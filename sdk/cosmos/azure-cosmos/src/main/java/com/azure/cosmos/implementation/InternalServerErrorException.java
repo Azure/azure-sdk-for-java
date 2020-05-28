@@ -34,7 +34,7 @@ public class InternalServerErrorException extends CosmosException {
     public InternalServerErrorException(CosmosError cosmosError,
                                         long lsn,
                                         String partitionKeyRangeId,
-                                        com.azure.core.http.HttpHeaders responseHeaders) {
+                                        HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -49,15 +49,6 @@ public class InternalServerErrorException extends CosmosException {
         this(message, (Exception) null, (HttpHeaders) null, (String) null);
     }
 
-
-    InternalServerErrorException(String message, Exception innerException) {
-        this(message, innerException, (HttpHeaders) null, (String) null);
-    }
-
-    InternalServerErrorException(Exception innerException) {
-        this(RMResources.InternalServerError, innerException, (HttpHeaders) null, (String) null);
-    }
-
     /**
      * Instantiates a new Internal server error exception.
      *
@@ -67,16 +58,6 @@ public class InternalServerErrorException extends CosmosException {
      */
     public InternalServerErrorException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-            requestUri != null ? requestUri.toString() : null);
-    }
-
-    InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, null, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-            requestUriString);
-    }
-
-    InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, URI requestUri) {
-        super(message, innerException, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUri != null ? requestUri.toString() : null);
     }
 

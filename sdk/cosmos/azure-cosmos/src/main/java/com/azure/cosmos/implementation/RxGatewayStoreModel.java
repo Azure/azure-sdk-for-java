@@ -9,6 +9,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -273,6 +274,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
                                // transforms to Observable<StoreResponse>
+                               HttpUtils.unescapeOwnerFullName(httpResponseHeaders);
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
                                    httpResponseHeaders,
                                    content);
@@ -314,7 +316,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private void validateOrThrow(RxDocumentServiceRequest request,
                                  HttpResponseStatus status,
-                                 com.azure.core.http.HttpHeaders headers,
+                                 HttpHeaders headers,
                                  byte[] bodyAsBytes) {
 
         int statusCode = status.code();
@@ -402,7 +404,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         );
     }
 
-    private void captureSessionToken(RxDocumentServiceRequest request, com.azure.core.http.HttpHeaders responseHeaders) {
+    private void captureSessionToken(RxDocumentServiceRequest request, HttpHeaders responseHeaders) {
         if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
             String resourceId;
             if (request.getIsNameBased()) {

@@ -26,7 +26,7 @@ public class LockedException extends CosmosException {
      * @param responseHeaders the response headers
      */
     public LockedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                           com.azure.core.http.HttpHeaders responseHeaders) {
+                           HttpHeaders responseHeaders) {
         super(HttpConstants.StatusCodes.LOCKED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -34,10 +34,6 @@ public class LockedException extends CosmosException {
 
     LockedException(String msg) {
         super(HttpConstants.StatusCodes.LOCKED, msg);
-    }
-
-    LockedException(String msg, String resourceAddress) {
-        super(msg, null, null, HttpConstants.StatusCodes.LOCKED, resourceAddress);
     }
 
     /**
@@ -49,10 +45,6 @@ public class LockedException extends CosmosException {
      */
     public LockedException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
-    }
-
-    LockedException(Exception innerException) {
-        this(RMResources.Locked, innerException, null, null);
     }
 
     LockedException(String message,
