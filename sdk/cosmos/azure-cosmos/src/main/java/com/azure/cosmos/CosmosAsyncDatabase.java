@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
@@ -542,9 +542,9 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single resource response with the
      * created cosmos user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> createUser(CosmosUserProperties userProperties) {
+    public Mono<CosmosUserResponse> createUser(CosmosUserProperties userProperties) {
         return getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, this)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
     }
 
 
@@ -559,9 +559,9 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single resource response with the
      * upserted user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> upsertUser(CosmosUserProperties userProperties) {
+    public Mono<CosmosUserResponse> upsertUser(CosmosUserProperties userProperties) {
         return getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, this)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
     }
 
     /**

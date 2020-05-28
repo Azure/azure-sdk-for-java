@@ -4,14 +4,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -484,9 +483,9 @@ public class CosmosDatabase {
         return new CosmosUser(databaseWrapper.getUser(id), this, id);
     }
 
-    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosAsyncUserResponse> containerMono) {
+    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosUserResponse> containerMono) {
         try {
-            return containerMono.map(this::convertUserResponse).block();
+            return containerMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -495,10 +494,6 @@ public class CosmosDatabase {
                 throw Exceptions.propagate(ex);
             }
         }
-    }
-
-    private CosmosUserResponse convertUserResponse(CosmosAsyncUserResponse response) {
-        return ModelBridgeInternal.createCosmosUserResponse(response, this);
     }
 
     /**
