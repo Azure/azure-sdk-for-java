@@ -13,12 +13,10 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
-import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -259,7 +257,7 @@ public class ReactorSession implements AmqpSession {
 
         sender.open();
 
-        final ReactorCoordinator coordinator = new ReactorCoordinator(sender, sendLinkHandler, provider,
+        final ReactorSender coordinator = new ReactorSender(linkName, sender, sendLinkHandler, provider, null,
             messageSerializer, timeout, retry);
 
         final Disposable subscription = coordinator.getEndpointStates().subscribe(state -> { },
@@ -275,41 +273,28 @@ public class ReactorSession implements AmqpSession {
 
     public Mono<AmqpTransaction> createTransaction() {
         return createTransactionCoordinator()
-            .cast(ReactorCoordinator.class)
+            .cast(ReactorSender.class)
             .flatMap(coordinator -> {
                 return coordinator.createTransaction();
-            })
-            .map(state -> {
-                Binary txnId = null;
-                if (state instanceof Declared) {
-                    Declared declared = (Declared) state;
-                    txnId = declared.getTxnId();
-                    logger.verbose("Created new TX started: {}", txnId);
-                } else {
-                    logger.error("Error in creating transaction, Not supported response: state {}", state);
-                }
-
-                return new AmqpTransaction(txnId.asByteBuffer());
             });
 
     }
 
     public Mono<Void> commitTransaction(AmqpTransaction transaction) {
         return createTransactionCoordinator()
-            .cast(ReactorCoordinator.class)
+            .cast(ReactorSender.class)
             .flatMap(coordinator -> {
                 return coordinator.completeTransaction(transaction, true);
-            })
-             .then();
+            });
+
     }
 
     public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
         return createTransactionCoordinator()
-            .cast(ReactorCoordinator.class)
+            .cast(ReactorSender.class)
             .flatMap(coordinator -> {
                 return coordinator.completeTransaction(transaction, false);
-            })
-            .then();
+            });
     }
 
     /**

@@ -8,29 +8,88 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.MonoSink;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Represents a work item that can be scheduled multiple times.
  */
-final class RetriableWorkItem extends WorkItem {
+class RetriableWorkItem {
+    private final AtomicInteger retryAttempts = new AtomicInteger();
+    private final MonoSink<DeliveryState> monoSink;
+    private final TimeoutTracker timeoutTracker;
+    private final byte[] amqpMessage;
+    private final int messageFormat;
+    private final int encodedMessageSize;
+    private final AmqpTransaction transactionId;
 
-    private final MonoSink<Void> monoSink;
+    private boolean waitingForAck;
+    private Exception lastKnownException;
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-        Duration timeout, AmqpTransaction transactionId) {
+    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
+                      Duration timeout, AmqpTransaction transactionId) {
+        this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
+            false), transactionId);
+    }
 
-        super(amqpMessage, encodedMessageSize, messageFormat, timeout, transactionId);
+    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
+        monoSink, TimeoutTracker timeout, AmqpTransaction transactionId) {
+        this.amqpMessage = amqpMessage;
+        this.encodedMessageSize = encodedMessageSize;
+        this.messageFormat = messageFormat;
         this.monoSink = monoSink;
+        this.timeoutTracker = timeout;
+        this.transactionId = transactionId;
     }
 
-    @Override
+    byte[] getMessage() {
+        return amqpMessage;
+    }
+
+    AmqpTransaction getTransactionId() {
+        return transactionId;
+    }
+
+    TimeoutTracker getTimeoutTracker() {
+        return timeoutTracker;
+    }
+
     void success(DeliveryState deliveryState) {
-        monoSink.success();
+        monoSink.success(deliveryState);
     }
 
-    @Override
     void error(Throwable error) {
         monoSink.error(error);
     }
 
+    int incrementRetryAttempts() {
+        return retryAttempts.incrementAndGet();
+    }
+
+    boolean hasBeenRetried() {
+        return retryAttempts.get() == 0;
+    }
+
+    int getEncodedMessageSize() {
+        return encodedMessageSize;
+    }
+
+    int getMessageFormat() {
+        return messageFormat;
+    }
+
+    Exception getLastKnownException() {
+        return this.lastKnownException;
+    }
+
+    void setLastKnownException(Exception exception) {
+        this.lastKnownException = exception;
+    }
+
+    void setWaitingForAck() {
+        this.waitingForAck = true;
+    }
+
+    boolean isWaitingForAck() {
+        return this.waitingForAck;
+    }
 }

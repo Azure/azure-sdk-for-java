@@ -241,6 +241,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
             .verifyComplete();
+
+        // read the message back, since it was rolled-back previously.
+        final ServiceBusReceivedMessageContext received = receiveAndDeleteReceiver.receive().next().block(TIMEOUT);
+        assertMessageEquals(received, messageId, isSessionEnabled);
+
+        messagesPending.decrementAndGet();
     }
 
     /**
