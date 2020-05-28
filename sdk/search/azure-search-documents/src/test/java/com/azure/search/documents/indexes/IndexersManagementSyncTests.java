@@ -48,7 +48,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -190,15 +189,16 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         searchIndexerClient.createIndexer(indexer2);
         indexersToDelete.add(indexer2.getName());
 
-        Iterator<SearchIndexer> indexersRes = searchIndexerClient.listIndexers("name", generateRequestOptions(), Context.NONE).iterator();
+        Iterator<String> indexersRes = searchIndexerClient.listIndexerNames(generateRequestOptions(), Context.NONE)
+            .iterator();
 
-        SearchIndexer actualIndexer = indexersRes.next();
-        assertEquals(indexer1.getName(), actualIndexer.getName());
-        assertAllIndexerFieldsNullExceptName(actualIndexer);
+        String actualIndexer = indexersRes.next();
+        assertNotNull(actualIndexer);
+        assertEquals(indexer1.getName(), actualIndexer);
 
         actualIndexer = indexersRes.next();
-        assertEquals(indexer2.getName(), actualIndexer.getName());
-        assertAllIndexerFieldsNullExceptName(actualIndexer);
+        assertNotNull(actualIndexer);
+        assertEquals(indexer2.getName(), actualIndexer);
 
         assertFalse(indexersRes.hasNext());
     }
@@ -811,18 +811,6 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         // There ought to be a start time in the response; We just can't know what it is because it would
         // make the test timing-dependent.
         expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
-    }
-
-    void assertAllIndexerFieldsNullExceptName(SearchIndexer indexer) {
-        assertNull(indexer.getParameters());
-        assertNull(indexer.getDataSourceName());
-        assertNull(indexer.getDescription());
-        assertNull(indexer.getETag());
-        assertNull(indexer.getFieldMappings());
-        assertNull(indexer.getOutputFieldMappings());
-        assertNull(indexer.getSchedule());
-        assertNull(indexer.getSkillsetName());
-        assertNull(indexer.getTargetIndexName());
     }
 
     void assertStartAndEndTimeValid(IndexerExecutionResult result) {
