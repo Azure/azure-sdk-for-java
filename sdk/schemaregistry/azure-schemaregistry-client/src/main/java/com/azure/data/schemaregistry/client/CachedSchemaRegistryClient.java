@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestServiceClientBuilder;
 import com.azure.data.schemaregistry.client.implementation.models.GetSchemaByIdResponse;
 import com.azure.data.schemaregistry.client.implementation.models.SchemaId;
 
@@ -58,20 +57,10 @@ public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
     private final Map<String, SchemaRegistryObject> schemaStringCache;
 
     CachedSchemaRegistryClient(
-        String registryUrl,
-        HttpPipeline pipeline,
+        AzureSchemaRegistryRestService restService,
         int maxSchemaMapSize,
         ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
-        if (CoreUtils.isNullOrEmpty(registryUrl)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Schema Registry URL cannot be null or empty."));
-        }
-
-        this.restService = new AzureSchemaRegistryRestServiceClientBuilder()
-            .host(registryUrl)
-            .pipeline(pipeline)
-            .buildClient();
-
+        this.restService = restService;
         this.maxSchemaMapSize = maxSchemaMapSize;
         this.typeParserMap = typeParserMap;
         this.idCache = new ConcurrentHashMap<>();

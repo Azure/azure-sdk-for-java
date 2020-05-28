@@ -21,6 +21,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
+import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestServiceClientBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -277,10 +279,11 @@ public class CachedSchemaRegistryClientBuilder {
                 .build();
         }
 
-        return new CachedSchemaRegistryClient(
-            schemaRegistryUrl,
-            pipeline,
-            maxSchemaMapSize,
-            typeParserMap);
+        AzureSchemaRegistryRestService restService = new AzureSchemaRegistryRestServiceClientBuilder()
+            .host(this.schemaRegistryUrl)
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new CachedSchemaRegistryClient(restService, maxSchemaMapSize, typeParserMap);
     }
 }
