@@ -30,6 +30,7 @@ import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -480,7 +481,7 @@ public class IdentityClient {
                 return getPublicClientApplication(false)
                     .acquireTokenSilently(parametersBuilder.build());
             } catch (MalformedURLException e) {
-                return CompletableFuture.failedFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
+                return getFailedCompletableFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
             }
         }).map(ar -> new MsalToken(ar, options))
             .filter(t -> !t.isExpired())
@@ -493,7 +494,7 @@ public class IdentityClient {
                 try {
                     return getPublicClientApplication(false).acquireTokenSilently(forceParametersBuilder.build());
                 } catch (MalformedURLException e) {
-                    return CompletableFuture.failedFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
+                    return getFailedCompletableFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
                 }
             }).map(result -> new MsalToken(result, options)));
     }
@@ -511,7 +512,7 @@ public class IdentityClient {
             try {
                 return getConfidentialClientApplication().acquireTokenSilently(parametersBuilder.build());
             } catch (MalformedURLException e) {
-                return CompletableFuture.failedFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
+                return getFailedCompletableFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
             }
         }).map(ar -> (AccessToken) new MsalToken(ar, options))
             .filter(t -> !t.isExpired());
@@ -888,5 +889,11 @@ public class IdentityClient {
         } else {
             logger.error("Browser could not be opened - please open {} in a browser on this device.", url);
         }
+    }
+
+    private CompletableFuture<IAuthenticationResult> getFailedCompletableFuture(Exception e) {
+        CompletableFuture<IAuthenticationResult> completableFuture = new CompletableFuture<>();
+        completableFuture.completeExceptionally(e);
+        return completableFuture;
     }
 }
