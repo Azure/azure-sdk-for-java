@@ -33,7 +33,7 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * SearchIndexerClient SearchServiceClients} and {@link SearchIndexerAsyncClient SearchServiceAsyncClients}. Call {@link
+ * SearchIndexerClient SearchIndexerClients} and {@link SearchIndexerAsyncClient SearchIndexerAsyncClients}. Call {@link
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  * <p>
@@ -75,7 +75,7 @@ public class SearchIndexerClientBuilder {
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchIndexerClient
-     * SearchServiceClients} and {@link SearchIndexerAsyncClient SearchServiceAsyncClients}.
+     * SearchIndexerClients} and {@link SearchIndexerAsyncClient SearchIndexerAsyncClients}.
      */
     public SearchIndexerClientBuilder() {
         Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
@@ -90,7 +90,7 @@ public class SearchIndexerClientBuilder {
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and {@link #endpoint(String)
      * endpoint} are used to create the {@link SearchIndexerClient client}. All other builder settings are ignored.
      *
-     * @return A SearchServiceClient with the options set from the builder.
+     * @return A SearchIndexerClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
     public SearchIndexerClient buildClient() {
@@ -105,7 +105,7 @@ public class SearchIndexerClientBuilder {
      * endpoint} are used to create the {@link SearchIndexerAsyncClient client}. All other builder settings are
      * ignored.
      *
-     * @return A SearchServiceAsyncClient with the options set from the builder.
+     * @return A SearchIndexerAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
     public SearchIndexerAsyncClient buildAsyncClient() {
@@ -153,7 +153,7 @@ public class SearchIndexerClientBuilder {
      * Sets the service endpoint for the Azure Search instance.
      *
      * @param endpoint The URL of the Azure Search instance.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public SearchIndexerClientBuilder endpoint(String endpoint) {
@@ -170,7 +170,7 @@ public class SearchIndexerClientBuilder {
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      * @throws NullPointerException If {@code keyCredential} is {@code null}.
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
@@ -192,7 +192,7 @@ public class SearchIndexerClientBuilder {
      * If logging configurations aren't provided HTTP requests and responses won't be logged.
      *
      * @param logOptions The logging configuration for HTTP requests and responses.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      */
     public SearchIndexerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
@@ -206,7 +206,7 @@ public class SearchIndexerClientBuilder {
      * policy list. All policies will be added after the retry policy.
      *
      * @param policy The pipeline policies to added to the policy list.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public SearchIndexerClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -218,7 +218,7 @@ public class SearchIndexerClientBuilder {
      * Sets the HTTP client to use for sending requests and receiving responses.
      *
      * @param client The HTTP client that will handle sending requests and receiving responses.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      */
     public SearchIndexerClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
@@ -236,7 +236,7 @@ public class SearchIndexerClientBuilder {
      * building a {@link SearchIndexerClient} or {@link SearchIndexerAsyncClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      */
     public SearchIndexerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
@@ -254,7 +254,7 @@ public class SearchIndexerClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store that will be used.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      */
     public SearchIndexerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -267,7 +267,7 @@ public class SearchIndexerClientBuilder {
      * A default retry policy will be supplied if one isn't provided.
      *
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      */
     public SearchIndexerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
@@ -281,7 +281,7 @@ public class SearchIndexerClientBuilder {
      * this default is used updating to a newer client library may result in a newer version of the service being used.
      *
      * @param serviceVersion The version of the service to be used when making requests.
-     * @return The updated SearchServiceClientBuilder object.
+     * @return The updated SearchIndexerClientBuilder object.
      */
     public SearchIndexerClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
