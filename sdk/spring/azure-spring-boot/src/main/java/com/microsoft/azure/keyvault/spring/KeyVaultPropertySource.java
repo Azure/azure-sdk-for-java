@@ -3,13 +3,14 @@
 
 package com.microsoft.azure.keyvault.spring;
 
-import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import org.springframework.core.env.EnumerablePropertySource;
 
+import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
+import org.springframework.core.env.PropertySource;
 /**
  * A key vault implementation of {@link EnumerablePropertySource} to enumerate all property pairs in Key Vault.
  */
-public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOperation> {
+public class KeyVaultPropertySource extends PropertySource<KeyVaultOperation> {
 
     private final KeyVaultOperation operations;
 
@@ -25,7 +26,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
 
 
     public String[] getPropertyNames() {
-        return this.operations.list();
+        return this.operations.getPropertyNames();
     }
 
 
