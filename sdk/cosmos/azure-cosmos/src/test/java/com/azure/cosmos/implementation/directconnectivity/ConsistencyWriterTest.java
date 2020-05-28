@@ -186,7 +186,10 @@ public class ConsistencyWriterTest {
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
 
-        spyConsistencyWriter.writeAsync(Mockito.mock(RxDocumentServiceRequest.class), timeoutHelper, false)
+        RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.when(dsr.getHeaders()).thenReturn(Mockito.mock(HttpHeaders.class));
+
+        spyConsistencyWriter.writeAsync(dsr, timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
