@@ -423,7 +423,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection, RequestOptions options);
 
     /**
-     * Deletes a document collection by the collection link.
+     * Deletes a document collection
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted database.
@@ -436,7 +436,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink, RequestOptions options);
 
     /**
-     * Reads a document collection by the collection link.
+     * Reads a document collection
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read collection.
@@ -549,7 +549,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
 
     /**
-     * Deletes a document by the document link.
+     * Deletes a document
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted document.
@@ -562,7 +562,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
 
     /**
-     * Reads a document by the document link.
+     * Reads a document
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read document.
@@ -685,7 +685,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure, RequestOptions options);
 
     /**
-     * Deletes a stored procedure by the stored procedure link.
+     * Deletes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored procedure.
@@ -698,7 +698,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink, RequestOptions options);
 
     /**
-     * READ a stored procedure by the stored procedure link.
+     * READ a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored procedure.
@@ -753,7 +753,7 @@ public interface AsyncDocumentClient {
                                                                     FeedOptions options);
 
     /**
-     * Executes a stored procedure by the stored procedure link.
+     * Executes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
@@ -766,7 +766,7 @@ public interface AsyncDocumentClient {
     Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, List<Object> procedureParams);
 
     /**
-     * Executes a stored procedure by the stored procedure link.
+     * Executes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
@@ -835,7 +835,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options);
 
     /**
-     * Reads a trigger by the trigger link.
+     * Reads a trigger
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.

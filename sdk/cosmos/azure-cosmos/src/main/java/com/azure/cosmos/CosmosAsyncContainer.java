@@ -3,18 +3,21 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -28,6 +31,7 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -50,110 +54,110 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Get the id of the {@link CosmosAsyncContainer}
+     * Get the id of the {@link CosmosAsyncContainer}.
      *
-     * @return the id of the {@link CosmosAsyncContainer}
+     * @return the id of the {@link CosmosAsyncContainer}.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Reads the document container
+     * Reads the current container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single cosmos container response with
+     * successful completion will contain a single Cosmos container response with
      * the read container. In case of failure the {@link Mono} will error.
      *
-     * @return an {@link Mono} containing the single cosmos container response with
+     * @return an {@link Mono} containing the single Cosmos container response with
      * the read container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> read() {
+    public Mono<CosmosContainerResponse> read() {
         return read(new CosmosContainerRequestOptions());
     }
 
     /**
-     * Reads the document container by the container link.
+     * Reads the current container while specifying additional options such as If-Match.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single cosmos container response with
+     * successful completion will contain a single Cosmos container response with
      * the read container. In case of failure the {@link Mono} will error.
      *
-     * @param options The cosmos container request options.
-     * @return an {@link Mono} containing the single cosmos container response with
+     * @param options the Cosmos container request options.
+     * @return an {@link Mono} containing the single Cosmos container response with
      * the read container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> read(CosmosContainerRequestOptions options) {
+    public Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options) {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().readCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /**
      * Deletes the item container
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single cosmos container response for the
+     * successful completion will contain a single Cosmos container response for the
      * deleted database. In case of failure the {@link Mono} will error.
      *
      * @param options the request options.
-     * @return an {@link Mono} containing the single cosmos container response for
+     * @return an {@link Mono} containing the single Cosmos container response for
      * the deleted database or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> delete(CosmosContainerRequestOptions options) {
+    public Mono<CosmosContainerResponse> delete(CosmosContainerRequestOptions options) {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().deleteCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /**
-     * Deletes the item container
+     * Deletes the current container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single cosmos container response for the
+     * successful completion will contain a single Cosmos container response for the
      * deleted container. In case of failure the {@link Mono} will error.
      *
-     * @return an {@link Mono} containing the single cosmos container response for
+     * @return an {@link Mono} containing the single Cosmos container response for
      * the deleted container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> delete() {
+    public Mono<CosmosContainerResponse> delete() {
         return delete(new CosmosContainerRequestOptions());
     }
 
     /**
-     * Replaces a document container.
+     * Replaces the current container's properties.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single cosmos container response with
-     * the replaced document container. In case of failure the {@link Mono} will
+     * successful completion will contain a single Cosmos container response with
+     * the replaced container properties. In case of failure the {@link Mono} will
      * error.
      *
      * @param containerProperties the item container properties
-     * @return an {@link Mono} containing the single cosmos container response with
-     * the replaced document container or an error.
+     * @return an {@link Mono} containing the single Cosmos container response with
+     * the replaced container properties or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> replace(CosmosContainerProperties containerProperties) {
+    public Mono<CosmosContainerResponse> replace(CosmosContainerProperties containerProperties) {
         return replace(containerProperties, null);
     }
 
     /**
-     * Replaces a document container.
+     * Replaces the current container properties while using non-default request options.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single cosmos container response with
-     * the replaced document container. In case of failure the {@link Mono} will
+     * successful completion will contain a single Cosmos container response with
+     * the replaced container properties. In case of failure the {@link Mono} will
      * error.
      *
      * @param containerProperties the item container properties
-     * @param options the cosmos container request options.
-     * @return an {@link Mono} containing the single cosmos container response with
-     * the replaced document container or an error.
+     * @param options the Cosmos container request options.
+     * @return an {@link Mono} containing the single Cosmos container response with
+     * the replaced container properties or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> replace(
+    public Mono<CosmosContainerResponse> replace(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
         if (options == null) {
@@ -161,39 +165,39 @@ public class CosmosAsyncContainer {
         }
         return database.getDocClientWrapper()
                    .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     /* CosmosAsyncItem operations */
 
     /**
-     * Creates a cosmos item.
+     * Creates an item.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response with the
-     * created cosmos item. In case of failure the {@link Mono} will error.
+     * created Cosmos item. In case of failure the {@link Mono} will error.
      *
-     * @param <T> the type parameter
-     * @param item the cosmos item represented as a POJO or cosmos item object.
+     * @param <T> the type parameter.
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
      * @return an {@link Mono} containing the single resource response with the
-     * created cosmos item or an error.
+     * created Cosmos item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> createItem(T item) {
         return createItem(item, new CosmosItemRequestOptions());
     }
 
     /**
-     * Creates a cosmos item.
+     * Creates an item.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response with the
-     * created cosmos item. In case of failure the {@link Mono} will error.
+     * created Cosmos item. In case of failure the {@link Mono} will error.
      *
-     * @param <T> the type parameter
-     * @param item the cosmos item represented as a POJO or cosmos item object.
-     * @param partitionKey the partition key
+     * @param <T> the type parameter.
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey the partition key.
      * @param options the request options.
-     * @return an {@link Mono} containing the single resource response with the created cosmos item or an error.
+     * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> createItem(
         T item,
@@ -208,12 +212,12 @@ public class CosmosAsyncContainer {
 
 
     /**
-     * Create an item.
+     * Creates a Cosmos item.
      *
-     * @param <T> the type parameter
-     * @param item the item
-     * @param options the item request options
-     * @return an {@link Mono} containing the single resource response with the created cosmos item or an error.
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param options the item request options.
+     * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> createItem(T item, CosmosItemRequestOptions options) {
         if (options == null) {
@@ -235,25 +239,25 @@ public class CosmosAsyncContainer {
      * successful completion will contain a single resource response with the
      * upserted item. In case of failure the {@link Mono} will error.
      *
-     * @param <T> the type parameter
+     * @param <T> the type parameter.
      * @param item the item represented as a POJO or Item object to upsert.
-     * @return an {@link Mono} containing the single resource response with the upserted document or an error.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> upsertItem(T item) {
         return upsertItem(item, new CosmosItemRequestOptions());
     }
 
     /**
-     * Upserts a cosmos item.
+     * Upserts an item.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response with the
      * upserted item. In case of failure the {@link Mono} will error.
      *
-     * @param <T> the type parameter
+     * @param <T> the type parameter.
      * @param item the item represented as a POJO or Item object to upsert.
      * @param options the request options.
-     * @return an {@link Mono} containing the single resource response with the upserted document or an error.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions options) {
         if (options == null) {
@@ -268,35 +272,35 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads all cosmos items in the container.
+     * Reads all the items in the current container.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
-     * contain one or several feed response of the read cosmos items. In case of
+     * contain one or several feed response of the read Cosmos items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter
-     * @param classType the class type
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos items or an
+     * @param <T> the type parameter.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read Cosmos items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> readAllItems(Class<T> classType) {
+    <T> CosmosPagedFlux<T> readAllItems(Class<T> classType) {
         return readAllItems(new FeedOptions(), classType);
     }
 
     /**
-     * Reads all cosmos items in a container.
+     * Reads all the items in the current container.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
-     * contain one or several feed response of the read cosmos items. In case of
+     * contain one or several feed response of the read Cosmos items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter
+     * @param <T> the type parameter.
      * @param options the feed options.
-     * @param classType the class type
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos items or an
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read Cosmos items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> readAllItems(FeedOptions options, Class<T> classType) {
+    <T> CosmosPagedFlux<T> readAllItems(FeedOptions options, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
@@ -305,15 +309,15 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Query for documents in a items in a container
+     * Query for items in the current container.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter
+     * @param <T> the type parameter.
      * @param query the query.
-     * @param classType the class type
+     * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
@@ -322,16 +326,16 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Query for documents in a items in a container
+     * Query for items in the current container using a string.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter
+     * @param <T> the type parameter.
      * @param query the query.
      * @param options the feed options.
-     * @param classType the class type
+     * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
@@ -340,15 +344,15 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Query for documents in a items in a container
+     * Query for items in the current container using a {@link SqlQuerySpec}.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter
+     * @param <T> the type parameter.
      * @param querySpec the SQL query specification.
-     * @param classType the class type
+     * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
@@ -357,16 +361,16 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Query for documents in a items in a container
+     * Query for items in the current container using a {@link SqlQuerySpec} and {@link FeedOptions}.
      * <p>
      * After subscription the operation will be performed. The {@link Flux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter
+     * @param <T> the type parameter.
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @param classType the class type
+     * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
@@ -385,42 +389,58 @@ public class CosmosAsyncContainer {
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
-        return BridgeInternal.createFeedResponseWithQueryMetrics(response.getElements().stream()
-            .map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, classType, jsonSerializer()))
-            .collect(Collectors.toList()), response.getResponseHeaders(), ModelBridgeInternal.queryMetrics(response));
+        QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
+        if (queryInfo != null && queryInfo.hasSelectValue()) {
+            List<T> transformedResults = response.getResults()
+                                             .stream()
+                                             .map(d -> d.get(Constants.Properties.VALUE))
+                                             .map(object -> transform(object, classType))
+                                             .collect(Collectors.toList());
+
+            return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
+                                                                     response.getResponseHeaders(),
+                                                                     ModelBridgeInternal.queryMetrics(response));
+
+        }
+        return BridgeInternal.createFeedResponseWithQueryMetrics(
+            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
+                classType, jsonSerializer()))
+                 .collect(Collectors.toList())), response.getResponseHeaders(),
+            ModelBridgeInternal.queryMetrics(response));
     }
 
+    private <T> T transform(Object object, Class<T> classType) {
+        return Utils.getSimpleObjectMapper().convertValue(object, classType);
+    }
 
     /**
      * Reads an item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a cosmos item response with the read item
-     * In case of failure the {@link Mono} will error.
+     * The {@link Mono} upon successful completion will contain an item response with the read item.
      *
-     * @param <T> the type parameter
-     * @param itemId the item id
-     * @param partitionKey the partition key
-     * @param itemType the item type
-     * @return an {@link Mono} containing the cosmos item response with the read item or an error
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param itemType the item type.
+     * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
         return readItem(itemId, partitionKey, ModelBridgeInternal.createCosmosItemRequestOptions(partitionKey), itemType);
     }
 
     /**
-     * Reads an item.
+     * Reads an item using a configured {@link CosmosItemRequestOptions}.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a cosmos item response with the read item
-     * In case of failure the {@link Mono} will error.
+     * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
      *
-     * @param <T> the type parameter
-     * @param itemId the item id
-     * @param partitionKey the partition key
-     * @param options the request cosmosItemRequestOptions
-     * @param itemType the item type
-     * @return an {@link Mono} containing the cosmos item response with the read item or an error
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param options the request {@link CosmosItemRequestOptions}.
+     * @param itemType the item type.
+     * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> readItem(
         String itemId, PartitionKey partitionKey,
@@ -440,14 +460,13 @@ public class CosmosAsyncContainer {
      * Replaces an item with the passed in item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
-     * In case of failure the {@link Mono} will error.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
-     * @param <T> the type parameter
-     * @param item the item to replace (containing the document id).
-     * @param itemId the item id
-     * @param partitionKey the partition key
-     * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
+     * @param <T> the type parameter.
+     * @param item the item to replace (containing the item id).
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey) {
         return replaceItem(item, itemId, partitionKey, new CosmosItemRequestOptions());
@@ -457,15 +476,14 @@ public class CosmosAsyncContainer {
      * Replaces an item with the passed in item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
-     * In case of failure the {@link Mono} will error.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
-     * @param <T> the type parameter
-     * @param item the item to replace (containing the document id).
-     * @param itemId the item id
-     * @param partitionKey the partition key
-     * @param options the request comosItemRequestOptions
-     * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
+     * @param <T> the type parameter.
+     * @param item the item to replace (containing the item id).
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param options the request comosItemRequestOptions.
+     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(
         T item, String itemId, PartitionKey partitionKey,
@@ -485,15 +503,14 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Deletes the item.
+     * Deletes an item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
-     * In case of failure the {@link Mono} will error.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
-     * @param itemId the item id
-     * @param partitionKey the partition key
-     * @return an {@link Mono} containing the  cosmos item resource response.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @return an {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey) {
         return deleteItem(itemId, partitionKey, new CosmosItemRequestOptions());
@@ -503,13 +520,12 @@ public class CosmosAsyncContainer {
      * Deletes the item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
-     * In case of failure the {@link Mono} will error.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
-     * @param itemId id of the item
-     * @param partitionKey partitionKey of the item
-     * @param options the request options
-     * @return an {@link Mono} containing the  cosmos item resource response.
+     * @param itemId id of the item.
+     * @param partitionKey partitionKey of the item.
+     * @param options the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosAsyncItemResponse<Object>> deleteItem(
         String itemId, PartitionKey partitionKey,
@@ -537,9 +553,11 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Gets scripts. This can be used to perform various operations on cosmos scripts
+     * Gets a {@link CosmosAsyncScripts} using the current container as context.
+     * <p>
+     * This can be further used to perform various operations on Cosmos scripts.
      *
-     * @return the {@link CosmosAsyncScripts}
+     * @return the {@link CosmosAsyncScripts}.
      */
     public CosmosAsyncScripts getScripts() {
         if (this.scripts == null) {
@@ -549,7 +567,7 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Lists all the conflicts in the container
+     * Lists all the conflicts in the current container.
      *
      * @param options the feed options
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
@@ -566,9 +584,9 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Queries all the conflicts in the container
+     * Queries all the conflicts in the current container.
      *
-     * @param query the query
+     * @param query the query.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
@@ -577,10 +595,10 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Queries all the conflicts in the container
+     * Queries all the conflicts in the current container.
      *
-     * @param query the query
-     * @param options the feed options
+     * @param query the query.
+     * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
@@ -595,73 +613,20 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Gets a CosmosAsyncConflict object without making a service call
+     * Gets a {@link CosmosAsyncConflict} object using current container for context.
      *
-     * @param id id of the cosmos conflict
-     * @return a cosmos conflict
+     * @param id the id of the Cosmos conflict.
+     * @return a Cosmos conflict.
      */
     public CosmosAsyncConflict getConflict(String id) {
         return new CosmosAsyncConflict(id, this);
     }
 
     /**
-     * Gets the throughput of the container
+     * Replace the throughput provisioned for the current container.
      *
-     * @return a {@link Mono} containing throughput or an error.
-     */
-    public Mono<Integer> readProvisionedThroughput() {
-        return this.read()
-                   .flatMap(cosmosContainerResponse ->
-                                database.getDocClientWrapper()
-                                    .queryOffers("select * from c where c.offerResourceId = '"
-                                                     + cosmosContainerResponse.getProperties()
-                                                           .getResourceId() + "'", new FeedOptions())
-                                    .single())
-                   .flatMap(offerFeedResponse -> {
-                       if (offerFeedResponse.getResults().isEmpty()) {
-                           return Mono.error(
-                               BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
-                                                                          "No offers found for the resource"));
-                       }
-                       return database.getDocClientWrapper()
-                                  .readOffer(offerFeedResponse.getResults().get(0).getSelfLink())
-                                  .single();
-                   }).map(cosmosOfferResponse -> cosmosOfferResponse.getResource().getThroughput());
-    }
-
-    /**
-     * Sets throughput provisioned for a container in measurement of
-     * Requests-per-Unit in the Azure Cosmos service.
-     *
-     * @param requestUnitsPerSecond the cosmos container throughput, expressed in
-     * Request Units per second
-     * @return a {@link Mono} containing throughput or an error.
-     */
-    public Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond) {
-        return this.read()
-                   .flatMap(cosmosContainerResponse ->
-                                database.getDocClientWrapper()
-                                    .queryOffers("select * from c where c.offerResourceId = '"
-                                                     + cosmosContainerResponse.getProperties()
-                                                           .getResourceId() + "'", new FeedOptions())
-                                    .single())
-                   .flatMap(offerFeedResponse -> {
-                       if (offerFeedResponse.getResults().isEmpty()) {
-                           return Mono.error(
-                               BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
-                                                                          "No offers found for the resource"));
-                       }
-                       Offer offer = offerFeedResponse.getResults().get(0);
-                       offer.setThroughput(requestUnitsPerSecond);
-                       return database.getDocClientWrapper().replaceOffer(offer).single();
-                   }).map(offerResourceResponse -> offerResourceResponse.getResource().getThroughput());
-    }
-
-    /**
-     * Replace the throughput .
-     *
-     * @param throughputProperties the throughput properties
-     * @return the mono containing throughput response
+     * @param throughputProperties the throughput properties.
+     * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return this.read()
@@ -690,9 +655,9 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Read the throughput throughput .
+     * Read the throughput provisioned for the current container.
      *
-     * @return the mono containing throughput response
+     * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
@@ -720,9 +685,9 @@ public class CosmosAsyncContainer {
 
 
     /**
-     * Gets the parent Database
+     * Gets the parent {@link CosmosAsyncDatabase} for the current container.
      *
-     * @return the {@link CosmosAsyncDatabase}
+     * @return the {@link CosmosAsyncDatabase}.
      */
     public CosmosAsyncDatabase getDatabase() {
         return database;

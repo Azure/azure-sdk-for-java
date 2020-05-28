@@ -20,6 +20,7 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -97,7 +98,6 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setMaxItemCount(10)
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
-                    .setExistingLeasesDiscarded(true)
                 )
                 .build();
 
@@ -161,7 +161,6 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartTime(OffsetDateTime.now().minusDays(1))
                     .setMinScaleCount(1)
                     .setMaxScaleCount(3)
-                    .setExistingLeasesDiscarded(true)
                 )
                 .build();
 
@@ -189,6 +188,83 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             // Wait for the feed processor to shutdown.
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void getEstimatedLag() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<CosmosItemProperties> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges((List<JsonNode> docs) -> {
+                    ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (JsonNode item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .build();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .then(Mono.just(changeFeedProcessor)
+                        .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .flatMap(value -> changeFeedProcessor.stop()
+                            .subscribeOn(Schedulers.elastic())
+                            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        ))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+            Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            // Test for "zero" lag
+            Map<String, Integer> estimatedLagResult = changeFeedProcessor.getEstimatedLag()
+                .map(getEstimatedLag -> {
+                    System.out.println(getEstimatedLag);
+                    return getEstimatedLag;
+                }).block();
+
+            int totalLag = 0;
+            for (int lag : estimatedLagResult.values()) {
+                totalLag += lag;
+            }
+
+            assertThat(totalLag == 0).as("Change Feed Processor estimated total lag at start").isTrue();
+
+            // Test for "FEED_COUNT total lag
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+            estimatedLagResult = changeFeedProcessor.getEstimatedLag()
+                .map(getEstimatedLag -> {
+                    System.out.println(getEstimatedLag);
+                    return getEstimatedLag;
+                }).block();
+
+            totalLag = 0;
+            for (int lag : estimatedLagResult.values()) {
+                totalLag += lag;
+            }
+
+            assertThat(totalLag == FEED_COUNT).as("Change Feed Processor estimated total lag").isTrue();
 
         } finally {
             safeDeleteCollection(createdFeedCollection);
@@ -376,9 +452,12 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 })
                 .then(
                     // increase throughput to force a single partition collection to go through a split
-                    createdFeedCollectionForSplit.readProvisionedThroughput().subscribeOn(Schedulers.elastic())
+                    createdFeedCollectionForSplit
+                        .readThroughput().subscribeOn(Schedulers.elastic())
                         .flatMap(currentThroughput ->
-                            createdFeedCollectionForSplit.replaceProvisionedThroughput(FEED_COLLECTION_THROUGHPUT).subscribeOn(Schedulers.elastic())
+                            createdFeedCollectionForSplit
+                                .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT))
+                                .subscribeOn(Schedulers.elastic())
                         )
                         .then()
                 )

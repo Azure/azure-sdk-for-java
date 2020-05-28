@@ -69,7 +69,8 @@ public class BackPressureTest extends TestSuiteBase {
     public void readFeedPages() throws Exception {
         FeedOptions options = new FeedOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
@@ -113,7 +114,8 @@ public class BackPressureTest extends TestSuiteBase {
     public void readFeedItems() throws Exception {
         FeedOptions options = new FeedOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();

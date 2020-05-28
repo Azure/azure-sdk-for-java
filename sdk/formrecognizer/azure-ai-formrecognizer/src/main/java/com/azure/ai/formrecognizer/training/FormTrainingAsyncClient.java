@@ -79,10 +79,10 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Creates a new {@link FormRecognizerAsyncClient} object. The new {@code FormTrainingAsyncClient}
-     * uses the same request policy pipeline as the {@code FormTrainingAsyncClient}.
+     * Creates a new {@link FormRecognizerAsyncClient} object. The new {@link FormTrainingAsyncClient}
+     * uses the same request policy pipeline as the {@link FormTrainingAsyncClient}.
      *
-     * @return A new {@code FormRecognizerAsyncClient} object.
+     * @return A new {@link FormRecognizerAsyncClient} object.
      */
     public FormRecognizerAsyncClient getFormRecognizerAsyncClient() {
         return new FormRecognizerClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline()).buildAsyncClient();

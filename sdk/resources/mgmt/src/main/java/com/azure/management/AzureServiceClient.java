@@ -120,6 +120,8 @@ public abstract class AzureServiceClient {
             String packageName = this.getClass().getPackage().getName();
             if (packageName.endsWith(".models")) {
                 sdkName = packageName.substring(0, packageName.length() - ".models".length());
+            } else {
+                sdkName = packageName;
             }
         }
         context = context.addData("Sdk-Name", sdkName);

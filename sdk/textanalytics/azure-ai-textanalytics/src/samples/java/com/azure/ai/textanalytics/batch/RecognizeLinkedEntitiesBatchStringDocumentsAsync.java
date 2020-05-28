@@ -5,6 +5,9 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -34,23 +37,37 @@ public class RecognizeLinkedEntitiesBatchStringDocumentsAsync {
             "Mount Shasta has lenticular clouds."
         );
 
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+
         // Recognizing linked entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.recognizeLinkedEntitiesBatch(documents, "en").subscribe(
-            entitiesResult -> {
-                System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
-                if (entitiesResult.isError()) {
-                    // Erroneous document
-                    System.out.printf("Cannot recognize linked entities. Error: %s%n", entitiesResult.getError().getMessage());
-                } else {
-                    // Valid document
-                    entitiesResult.getEntities().forEach(linkedEntity -> {
-                        System.out.println("Linked Entities:");
-                        System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                            linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-                        linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
-                            "\tMatched entity: %s, confidence score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
-                    });
+        client.recognizeLinkedEntitiesBatch(documents, "en", requestOptions).subscribe(
+            linkedEntitiesResultCollection -> {
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", linkedEntitiesResultCollection.getModelVersion());
+
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = linkedEntitiesResultCollection.getStatistics();
+                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                // Recognized linked entities from a batch of documents
+                for (RecognizeLinkedEntitiesResult entitiesResult : linkedEntitiesResultCollection) {
+                    System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
+                    if (entitiesResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot recognize linked entities. Error: %s%n", entitiesResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        entitiesResult.getEntities().forEach(linkedEntity -> {
+                            System.out.println("Linked Entities:");
+                            System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                            linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                                "\tMatched entity: %s, confidence score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                        });
+                    }
                 }
             },
             error -> System.err.println("There was an error recognizing linked entities of the documents." + error),

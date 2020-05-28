@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.implementation.Resource;
 
 import java.time.OffsetDateTime;
@@ -37,7 +38,7 @@ public final class CosmosConflictProperties {
      *
      * @return the operation kind.
      */
-    public String getOperationKind() {
+    public OperationKind getOperationKind() {
         return this.conflict.getOperationKind();
     }
 
@@ -46,8 +47,8 @@ public final class CosmosConflictProperties {
      *
      * @return the resource type.
      */
-    public String getResourceType() {
-        return this.conflict.getResouceType();
+    String getResourceType() {
+        return this.conflict.getResourceType();
     }
 
     Resource getResource() {

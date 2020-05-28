@@ -9,11 +9,13 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jwt.JWTParser;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.ResourceRetriever;
+import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
@@ -135,6 +137,24 @@ public class UserPrincipalManager {
         return new UserPrincipal(jwsObject, jwtClaimsSet);
     }
 
+    public boolean isTokenIssuedByAAD(String token) {
+        try {
+            final JWT jwt = JWTParser.parse(token);
+            return isAADIssuer(jwt.getJWTClaimsSet().getIssuer());
+        } catch (ParseException e) {
+            LOGGER.info("Fail to parse JWT {}, exception {}", token, e);
+        }
+        return false;
+    }
+
+    private static boolean isAADIssuer(String issuer) {
+        if (issuer == null) {
+            return false;
+        }
+        return issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER) || issuer.startsWith(STS_WINDOWS_ISSUER)
+            || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER);
+    }
+
     private ConfigurableJWTProcessor<SecurityContext> getAadJwtTokenValidator(JWSAlgorithm jwsAlgorithm) {
         final ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
 
@@ -148,9 +168,7 @@ public class UserPrincipalManager {
             public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
                 super.verify(claimsSet, ctx);
                 final String issuer = claimsSet.getIssuer();
-                if (issuer == null || !(issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-                    || issuer.startsWith(STS_WINDOWS_ISSUER)
-                    || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER))) {
+                if (!isAADIssuer(issuer)) {
                     throw new BadJWTException("Invalid token issuer");
                 }
                 if (explicitAudienceCheck) {

@@ -90,7 +90,8 @@ public class UniqueIndexTest extends TestSuiteBase {
         JsonNode doc2 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"playwright\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
         JsonNode doc3 = om.readValue("{\"name\":\"حافظ شیرازی\",\"description\":\"poet\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
 
-        collection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        collection = database.getContainer(collectionDefinition.getId());
 
         CosmosItemProperties properties = collection.createItem(doc1)
             .map(CosmosAsyncItemResponseImpl::getProperties)
@@ -129,7 +130,8 @@ public class UniqueIndexTest extends TestSuiteBase {
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
-        collection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        collection = database.getContainer(collectionDefinition.getId());
 
         ObjectMapper om = new ObjectMapper();
 
@@ -196,7 +198,8 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
-        CosmosAsyncContainer createdCollection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
 
         CosmosContainerProperties collection = createdCollection.read().block().getProperties();
 

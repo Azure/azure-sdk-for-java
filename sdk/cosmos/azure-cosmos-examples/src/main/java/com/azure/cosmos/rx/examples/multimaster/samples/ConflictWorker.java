@@ -4,6 +4,7 @@
 package com.azure.cosmos.rx.examples.multimaster.samples;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
@@ -575,7 +576,7 @@ public class ConflictWorker {
     }
 
     private boolean isDelete(Conflict conflict) {
-        return StringUtils.equalsIgnoreCase(conflict.getOperationKind(), "delete");
+        return OperationKind.DELETE == conflict.getOperationKind();
     }
 
 
