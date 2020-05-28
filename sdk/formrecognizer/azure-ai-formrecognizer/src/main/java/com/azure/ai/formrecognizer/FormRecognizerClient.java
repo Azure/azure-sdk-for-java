@@ -81,7 +81,7 @@ public final class FormRecognizerClient {
      * 5 seconds is used.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@code RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
@@ -106,7 +106,7 @@ public final class FormRecognizerClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link SyncPoller} that polls the extract custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@code RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
@@ -132,7 +132,7 @@ public final class FormRecognizerClient {
      * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@code RecognizedForm}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
@@ -175,7 +175,7 @@ public final class FormRecognizerClient {
      * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has
-     * failed, or has been cancelled. The completed operation returns a List of {@code FormPage}.
+     * failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
@@ -196,7 +196,7 @@ public final class FormRecognizerClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a List of {@code FormPage}.
+     * been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
@@ -220,7 +220,7 @@ public final class FormRecognizerClient {
      * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@code FormPage}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
@@ -265,7 +265,7 @@ public final class FormRecognizerClient {
      * 5 seconds is used.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@code RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
@@ -287,7 +287,7 @@ public final class FormRecognizerClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@code RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
@@ -312,7 +312,7 @@ public final class FormRecognizerClient {
      * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@code RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>

@@ -34,18 +34,18 @@ public class GetBoundingBoxes {
 
         String modelId = "{model_Id}";
         String filePath = "{analyze_file_path}";
-        SyncPoller<OperationResult, List<RecognizedForm>> trainingPoller =
+        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(filePath, modelId, true, null);
 
-        List<RecognizedForm> recognizedForms = trainingPoller.getFinalResult();
+        List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
         System.out.println("--------RECOGNIZING FORM --------");
         for (int i = 0; i < recognizedForms.size(); i++) {
             final RecognizedForm recognizedForm = recognizedForms.get(i);
             System.out.printf("Form %s has type: %s%n", i, recognizedForm.getFormType());
             // each field is of type FormField
-            //     The value of the field can also be a FormField, or a list of FormFields
-            //     In our sample, it is not.
+            // The value of the field can also be a FormField, or a list of FormFields
+            // In our sample, it is not.
             recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s "
                     + "based on %s with a confidence score "
                     + "of %.2f.%n",
@@ -67,8 +67,8 @@ public class GetBoundingBoxes {
                     System.out.printf("Table %s%n", i2);
                     formTable.getCells().forEach(formTableCell -> {
                         System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
-                        // text_content only exists if you set include_text_content to True in your
-                        // function call to recognize_custom_forms
+                        // textContent only exists if you set includeTextContent to True in your
+                        // call to beginRecognizeCustomFormsFromUrl
                         // It is also a list of FormWords and FormLines, but in this example, we only deal with
                         // FormWords
                         formTableCell.getElements().forEach(formContent -> {
