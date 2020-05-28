@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -17,10 +15,8 @@ import io.netty.handler.codec.CorruptedFrameException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.AbstractMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.HttpConstants.Headers;
@@ -279,112 +275,112 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     private void collectEntries(final HttpHeaders responseHeaders) {
 
-        AddLongHeaderIfPresent(this.LSN, BackendHeaders.LSN, responseHeaders);
-        AddLongHeaderIfPresent(this.collectionLazyIndexProgress, Headers.COLLECTION_LAZY_INDEXING_PROGRESS, responseHeaders);
-        AddLongHeaderIfPresent(this.collectionPartitionIndex, BackendHeaders.COLLECTION_PARTITION_INDEX, responseHeaders);
+        addLongHeaderIfPresent(this.LSN, BackendHeaders.LSN, responseHeaders);
+        addLongHeaderIfPresent(this.collectionLazyIndexProgress, Headers.COLLECTION_LAZY_INDEXING_PROGRESS, responseHeaders);
+        addLongHeaderIfPresent(this.collectionPartitionIndex, BackendHeaders.COLLECTION_PARTITION_INDEX, responseHeaders);
 
-        AddStringHeaderIfPresent(this.collectionSecurityIdentifier, BackendHeaders.COLLECTION_SECURITY_IDENTIFIER, responseHeaders);
+        addStringHeaderIfPresent(this.collectionSecurityIdentifier, BackendHeaders.COLLECTION_SECURITY_IDENTIFIER, responseHeaders);
 
-        AddLongHeaderIfPresent(this.collectionServiceIndex, BackendHeaders.COLLECTION_SERVICE_INDEX, responseHeaders);
+        addLongHeaderIfPresent(this.collectionServiceIndex, BackendHeaders.COLLECTION_SERVICE_INDEX, responseHeaders);
 
-        AddLongHeaderIfPresent(this.collectionUpdateProgress, Headers.COLLECTION_INDEX_TRANSFORMATION_PROGRESS, responseHeaders);
+        addLongHeaderIfPresent(this.collectionUpdateProgress, Headers.COLLECTION_INDEX_TRANSFORMATION_PROGRESS, responseHeaders);
 
-        AddStringHeaderIfPresent(this.continuationToken, Headers.CONTINUATION, responseHeaders);
+        addStringHeaderIfPresent(this.continuationToken, Headers.CONTINUATION, responseHeaders);
 
-        AddLongHeaderIfPresent(this.currentReplicaSetSize, BackendHeaders.CURRENT_REPLICA_SET_SIZE, responseHeaders);
-        AddLongHeaderIfPresent(this.currentWriteQuorum, BackendHeaders.CURRENT_WRITE_QUORUM, responseHeaders);
+        addLongHeaderIfPresent(this.currentReplicaSetSize, BackendHeaders.CURRENT_REPLICA_SET_SIZE, responseHeaders);
+        addLongHeaderIfPresent(this.currentWriteQuorum, BackendHeaders.CURRENT_WRITE_QUORUM, responseHeaders);
 
-        AddStringHeaderIfPresent(this.databaseAccountId, BackendHeaders.DATABASE_ACCOUNT_ID, responseHeaders);
-        AddBooleanHeaderIfPresent(this.disableRntbdChannel, Headers.DISABLE_RNTBD_CHANNEL, responseHeaders);
+        addStringHeaderIfPresent(this.databaseAccountId, BackendHeaders.DATABASE_ACCOUNT_ID, responseHeaders);
+        addBooleanHeaderIfPresent(this.disableRntbdChannel, Headers.DISABLE_RNTBD_CHANNEL, responseHeaders);
 
-        AddStringHeaderIfPresent(this.eTag, Headers.E_TAG, responseHeaders);
+        addStringHeaderIfPresent(this.eTag, Headers.E_TAG, responseHeaders);
 
-        AddLongHeaderIfPresent(this.globalCommittedLSN, BackendHeaders.GLOBAL_COMMITTED_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.globalCommittedLSN, BackendHeaders.GLOBAL_COMMITTED_LSN, responseHeaders);
 
-        AddBooleanHeaderIfPresent(this.hasTentativeWrites, BackendHeaders.HAS_TENTATIVE_WRITES, responseHeaders);
+        addBooleanHeaderIfPresent(this.hasTentativeWrites, BackendHeaders.HAS_TENTATIVE_WRITES, responseHeaders);
 
         if(this.indexingDirective.isPresent()) {
             responseHeaders.put(Headers.INDEXING_DIRECTIVE, RntbdIndexingDirective.fromId(this.indexingDirective.getValue(Byte.class)).name());
         }
 
-        AddByteHeaderIfPresent(this.isRUPerMinuteUsed, BackendHeaders.IS_RU_PER_MINUTE_USED, responseHeaders);
+        addByteHeaderIfPresent(this.isRUPerMinuteUsed, BackendHeaders.IS_RU_PER_MINUTE_USED, responseHeaders);
 
-        AddLongHeaderIfPresent(this.itemCount, Headers.ITEM_COUNT, responseHeaders);
-        AddLongHeaderIfPresent(this.itemLSN, BackendHeaders.ITEM_LSN, responseHeaders);
-        AddLongHeaderIfPresent(this.itemLocalLSN, BackendHeaders.ITEM_LOCAL_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.itemCount, Headers.ITEM_COUNT, responseHeaders);
+        addLongHeaderIfPresent(this.itemLSN, BackendHeaders.ITEM_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.itemLocalLSN, BackendHeaders.ITEM_LOCAL_LSN, responseHeaders);
 
-        AddStringHeaderIfPresent(this.lastStateChangeDateTime, Headers.LAST_STATE_CHANGE_UTC, responseHeaders);
+        addStringHeaderIfPresent(this.lastStateChangeDateTime, Headers.LAST_STATE_CHANGE_UTC, responseHeaders);
 
-        AddLongHeaderIfPresent(this.localLSN, BackendHeaders.LOCAL_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.localLSN, BackendHeaders.LOCAL_LSN, responseHeaders);
 
-        AddStringHeaderIfPresent(this.logResults, Headers.LOG_RESULTS, responseHeaders);
+        addStringHeaderIfPresent(this.logResults, Headers.LOG_RESULTS, responseHeaders);
 
-        AddLongHeaderIfPresent(this.numberOfReadRegions, BackendHeaders.NUMBER_OF_READ_REGIONS, responseHeaders);
+        addLongHeaderIfPresent(this.numberOfReadRegions, BackendHeaders.NUMBER_OF_READ_REGIONS, responseHeaders);
 
-        AddBooleanHeaderIfPresent(this.offerReplacePending, BackendHeaders.OFFER_REPLACE_PENDING, responseHeaders);
+        addBooleanHeaderIfPresent(this.offerReplacePending, BackendHeaders.OFFER_REPLACE_PENDING, responseHeaders);
 
-        AddStringHeaderIfPresent(this.ownerFullName, Headers.OWNER_FULL_NAME, responseHeaders);
-        AddStringHeaderIfPresent(this.ownerId, Headers.OWNER_ID, responseHeaders);
-        AddStringHeaderIfPresent(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, responseHeaders);
-        AddStringHeaderIfPresent(this.queryMetrics, BackendHeaders.QUERY_METRICS, responseHeaders);
+        addStringHeaderIfPresent(this.ownerFullName, Headers.OWNER_FULL_NAME, responseHeaders);
+        addStringHeaderIfPresent(this.ownerId, Headers.OWNER_ID, responseHeaders);
+        addStringHeaderIfPresent(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, responseHeaders);
+        addStringHeaderIfPresent(this.queryMetrics, BackendHeaders.QUERY_METRICS, responseHeaders);
 
-        AddLongHeaderIfPresent(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, responseHeaders);
-        AddLongHeaderIfPresent(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, responseHeaders);
 
-        AddCurrencyEntryTokenHeaderIfPresent(this.requestCharge, Headers.REQUEST_CHARGE, responseHeaders);
+        addCurrencyEntryTokenHeaderIfPresent(this.requestCharge, Headers.REQUEST_CHARGE, responseHeaders);
 
-        AddByteHeaderIfPresent(this.requestValidationFailure, BackendHeaders.REQUEST_VALIDATION_FAILURE, responseHeaders);
+        addByteHeaderIfPresent(this.requestValidationFailure, BackendHeaders.REQUEST_VALIDATION_FAILURE, responseHeaders);
 
-        AddStringHeaderIfPresent(this.restoreState, BackendHeaders.RESTORE_STATE, responseHeaders);
+        addStringHeaderIfPresent(this.restoreState, BackendHeaders.RESTORE_STATE, responseHeaders);
 
-        AddLongHeaderIfPresent(this.retryAfterMilliseconds, Headers.RETRY_AFTER_IN_MILLISECONDS, responseHeaders);
+        addLongHeaderIfPresent(this.retryAfterMilliseconds, Headers.RETRY_AFTER_IN_MILLISECONDS, responseHeaders);
 
-        AddStringHeaderIfPresent(this.schemaVersion, Headers.SCHEMA_VERSION, responseHeaders);
-        AddStringHeaderIfPresent(this.serverDateTimeUtc, Headers.X_DATE, responseHeaders);
+        addStringHeaderIfPresent(this.schemaVersion, Headers.SCHEMA_VERSION, responseHeaders);
+        addStringHeaderIfPresent(this.serverDateTimeUtc, Headers.X_DATE, responseHeaders);
 
-        AddSessionTokenHeaderIfPresent(this.sessionToken, Headers.SESSION_TOKEN, responseHeaders);
+        addSessionTokenHeaderIfPresent(this.sessionToken, Headers.SESSION_TOKEN, responseHeaders);
 
-        AddBooleanHeaderIfPresent(this.shareThroughput, BackendHeaders.SHARE_THROUGHPUT, responseHeaders);
+        addBooleanHeaderIfPresent(this.shareThroughput, BackendHeaders.SHARE_THROUGHPUT, responseHeaders);
 
-        AddStringHeaderIfPresent(this.storageMaxResoureQuota, Headers.MAX_RESOURCE_QUOTA, responseHeaders);
-        AddStringHeaderIfPresent(this.storageResourceQuotaUsage, Headers.CURRENT_RESOURCE_QUOTA_USAGE, responseHeaders);
+        addStringHeaderIfPresent(this.storageMaxResoureQuota, Headers.MAX_RESOURCE_QUOTA, responseHeaders);
+        addStringHeaderIfPresent(this.storageResourceQuotaUsage, Headers.CURRENT_RESOURCE_QUOTA_USAGE, responseHeaders);
 
-        AddLongHeaderIfPresent(this.subStatus, Headers.SUB_STATUS, responseHeaders);
-        AddLongHeaderIfPresent(this.transportRequestID, Headers.TRANSPORT_REQUEST_ID, responseHeaders);
-        AddLongHeaderIfPresent(this.xpRole, BackendHeaders.XP_ROLE, responseHeaders);
+        addLongHeaderIfPresent(this.subStatus, Headers.SUB_STATUS, responseHeaders);
+        addLongHeaderIfPresent(this.transportRequestID, Headers.TRANSPORT_REQUEST_ID, responseHeaders);
+        addLongHeaderIfPresent(this.xpRole, BackendHeaders.XP_ROLE, responseHeaders);
     }
 
-    private void AddLongHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+    private void addLongHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
             responseHeaders.put(headerName, Long.toString(this.LSN.getValue(Long.class)));
         }
     }
 
-    private void AddStringHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+    private void addStringHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
             responseHeaders.put(headerName, token.getValue(String.class));
         }
     }
 
-    private void AddBooleanHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+    private void addBooleanHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
             responseHeaders.put(headerName, String.valueOf(token.getValue(Byte.class) != 0));
         }
     }
 
-    private void AddByteHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+    private void addByteHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
             responseHeaders.put(headerName, Byte.toString(token.getValue(Byte.class)));
         }
     }
 
-    private void AddSessionTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+    private void addSessionTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
             responseHeaders.put(headerName, this.partitionKeyRangeId.getValue(String.class) + ":" + this.sessionToken.getValue(String.class));
         }
     }
 
-    private void AddCurrencyEntryTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+    private void addCurrencyEntryTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
             final BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
             responseHeaders.put(headerName, value.toString());
@@ -397,19 +393,6 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
         if (value != null) {
             token.setValue(parse.apply(value));
-        }
-    }
-
-    private static Map.Entry<String, String> toCurrencyEntry(final String name, final RntbdToken token) {
-        final BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
-        return new Entry(name, value.toString());
-    }
-
-    private static final class Entry extends AbstractMap.SimpleImmutableEntry<String, String> implements Serializable {
-        private static final long serialVersionUID = -5926883743469858929L;
-
-        Entry(final String name, final String value) {
-            super(name, value);
         }
     }
 }
