@@ -21,7 +21,7 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
-import com.azure.ai.formrecognizer.models.PageRange;
+import com.azure.ai.formrecognizer.models.FormPageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -69,12 +69,12 @@ final class Transforms {
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
             extractedFormList = new ArrayList<>();
             for (DocumentResult documentResultItem : documentResults) {
-                PageRange pageRange;
+                FormPageRange formPageRange;
                 List<Integer> documentPageRange = documentResultItem.getPageRange();
                 if (documentPageRange.size() == 2) {
-                    pageRange = new PageRange(documentPageRange.get(0), documentPageRange.get(1));
+                    formPageRange = new FormPageRange(documentPageRange.get(0), documentPageRange.get(1));
                 } else {
-                    pageRange = new PageRange(1, 1);
+                    formPageRange = new FormPageRange(1, 1);
                 }
 
                 Map<String, FormField<?>> extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults,
@@ -82,8 +82,8 @@ final class Transforms {
                 extractedFormList.add(new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
-                    pageRange,
-                    formPages.subList(pageRange.getStartPageNumber() - 1, pageRange.getEndPageNumber())));
+                    formPageRange,
+                    formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber())));
             }
         } else {
             extractedFormList = new ArrayList<>();
@@ -100,7 +100,7 @@ final class Transforms {
                 extractedFormList.add(new RecognizedForm(
                     extractedFieldMap,
                     formType.toString(),
-                    new PageRange(pageNumber, pageNumber),
+                    new FormPageRange(pageNumber, pageNumber),
                     Collections.singletonList(formPages.get(index))));
             }));
         }
