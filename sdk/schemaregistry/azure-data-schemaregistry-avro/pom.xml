@@ -38,6 +38,7 @@
   </scm>
 
   <properties>
+    <!-- SchemaRegistrySkip temporarily relaxing code coverage -->
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
   </properties>
 
