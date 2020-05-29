@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
+    private final static String SDK_VERSION = HttpConstants.Versions.SDK_VERSION;
+
     private final int statusCode;
     private final Map<String, String> responseHeaders;
 
@@ -258,7 +260,7 @@ public class CosmosException extends AzureException {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='"
+        return getClass().getSimpleName() + "{" + "sdkVersion=" + SDK_VERSION + ", error=" + cosmosError + ", resourceAddress='"
                    + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage()
                    + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
                    + filterSensitiveData(requestHeaders) + '}';
