@@ -9,22 +9,22 @@ import java.util.List;
  * A helper Field model to build a complex field which uses {@code SearchFieldDataType.EDM_COMPLEX_TYPE} or
  * collection of {@code SearchFieldDataType.EDM_COMPLEX_TYPE}.
  */
-public class ComplexField extends SearchFieldBase {
+public class ComplexFieldBuilder extends SearchFieldBase {
     private List<SearchField> fields;
 
     /**
-     * Initializes a new instance of the {@link ComplexField} class.
+     * Initializes a new instance of the {@link ComplexFieldBuilder} class.
      *
      * @param name The name of the field, which must be unique within the index or parent field.
      * @param collection Whether the field is a collection of strings.
      */
-    public ComplexField(String name, boolean collection) {
+    public ComplexFieldBuilder(String name, boolean collection) {
         super(name, collection ? SearchFieldDataType.collection(SearchFieldDataType.COMPLEX)
             : SearchFieldDataType.COMPLEX);
     }
 
     /**
-     * Gets a collection of {@link SimpleField} or {@link ComplexField} child fields.
+     * Gets a collection of {@link SimpleFieldBuilder} or {@link ComplexFieldBuilder} child fields.
      *
      * @return The list of sub-fields.
      */
@@ -33,12 +33,12 @@ public class ComplexField extends SearchFieldBase {
     }
 
     /**
-     * Sets a collection of {@link SimpleField} or {@link ComplexField} child fields.
+     * Sets a collection of {@link SimpleFieldBuilder} or {@link ComplexFieldBuilder} child fields.
      *
      * @param fields The list of sub-fields.
-     * @return The {@link ComplexField} object itself.
+     * @return The {@link ComplexFieldBuilder} object itself.
      */
-    public ComplexField setFields(List<SearchField> fields) {
+    public ComplexFieldBuilder setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
     }

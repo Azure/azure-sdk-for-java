@@ -6,77 +6,64 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for VisualFeature.
  */
-public enum VisualFeature {
+public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
     /**
-     * Enum value adult.
+     * Static value adult for VisualFeature.
      */
-    ADULT("adult"),
+    public static final VisualFeature ADULT = fromString("adult");
 
     /**
-     * Enum value brands.
+     * Static value brands for VisualFeature.
      */
-    BRANDS("brands"),
+    public static final VisualFeature BRANDS = fromString("brands");
 
     /**
-     * Enum value categories.
+     * Static value categories for VisualFeature.
      */
-    CATEGORIES("categories"),
+    public static final VisualFeature CATEGORIES = fromString("categories");
 
     /**
-     * Enum value description.
+     * Static value description for VisualFeature.
      */
-    DESCRIPTION("description"),
+    public static final VisualFeature DESCRIPTION = fromString("description");
 
     /**
-     * Enum value faces.
+     * Static value faces for VisualFeature.
      */
-    FACES("faces"),
+    public static final VisualFeature FACES = fromString("faces");
 
     /**
-     * Enum value objects.
+     * Static value objects for VisualFeature.
      */
-    OBJECTS("objects"),
+    public static final VisualFeature OBJECTS = fromString("objects");
 
     /**
-     * Enum value tags.
+     * Static value tags for VisualFeature.
      */
-    TAGS("tags");
+    public static final VisualFeature TAGS = fromString("tags");
 
     /**
-     * The actual serialized value for a VisualFeature instance.
-     */
-    private final String value;
-
-    VisualFeature(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a VisualFeature instance.
+     * Creates or finds a VisualFeature from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed VisualFeature object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding VisualFeature.
      */
     @JsonCreator
-    public static VisualFeature fromString(String value) {
-        VisualFeature[] items = VisualFeature.values();
-        for (VisualFeature item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static VisualFeature fromString(String name) {
+        return fromString(name, VisualFeature.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known VisualFeature values.
+     */
+    public static Collection<VisualFeature> values() {
+        return values(VisualFeature.class);
     }
 }

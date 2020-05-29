@@ -24,7 +24,7 @@ public final class SearchIndexerSkillset {
     /*
      * The description of the skillset.
      */
-    @JsonProperty(value = "description", required = true)
+    @JsonProperty(value = "description")
     private String description;
 
     /*

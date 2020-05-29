@@ -303,14 +303,14 @@ public class IndexManagementSyncTests extends SearchTestBase {
                 new SearchField()
                     .setName("HotelName")
                     .setType(SearchFieldDataType.STRING)
-                    .setSynonymMaps(Collections.singletonList(synonymMapName))
+                    .setSynonymMapNames(Collections.singletonList(synonymMapName))
             ));
 
         SearchIndex createdIndex = client.createIndex(index);
         indexesToDelete.add(createdIndex.getName());
 
-        List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
-        List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
+        List<String> actualSynonym = index.getFields().get(1).getSynonymMapNames();
+        List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMapNames();
         assertEquals(actualSynonym, expectedSynonym);
     }
 
@@ -327,14 +327,14 @@ public class IndexManagementSyncTests extends SearchTestBase {
         // Create an index
         SearchIndex index = createTestIndex();
         SearchField hotelNameField = getFieldByName(index, "HotelName");
-        hotelNameField.setSynonymMaps(Collections.singletonList(synonymMapName));
+        hotelNameField.setSynonymMapNames(Collections.singletonList(synonymMapName));
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
         // Update an existing index
         SearchIndex existingIndex = client.getIndex(index.getName());
         hotelNameField = getFieldByName(existingIndex, "HotelName");
-        hotelNameField.setSynonymMaps(Collections.emptyList());
+        hotelNameField.setSynonymMapNames(Collections.emptyList());
 
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, false, generateRequestOptions(), Context.NONE).getValue();
@@ -378,8 +378,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
         SearchField tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setHidden(true)
-            .setSearchAnalyzer(LexicalAnalyzerName.WHITESPACE)
-            .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
+            .setSearchAnalyzerName(LexicalAnalyzerName.WHITESPACE)
+            .setSynonymMapNames(Collections.singletonList(synonymMap.getName()));
 
         SearchField hotelWebSiteField = new SearchField()
             .setName("HotelWebsite")
