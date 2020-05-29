@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-table</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-table;current} -->
   <name>Microsoft Azure SDK for Azure Table</name>
   <description>This package contains the Microsoft Azure Cosmos Table client library.</description>
   <packaging>jar</packaging>
@@ -34,8 +34,7 @@ Licensed under the MIT License.
 
   <!-- CosmosTableSkip - Needed temporary values to 10% not fail. -->
   <properties>
-    <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
+    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
   </properties>
 
   <dependencies>
