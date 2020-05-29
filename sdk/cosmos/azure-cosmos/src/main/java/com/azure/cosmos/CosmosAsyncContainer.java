@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -180,7 +180,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single resource response with the
      * created Cosmos item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> createItem(T item) {
+    public <T> Mono<CosmosItemResponse<T>> createItem(T item) {
         return createItem(item, new CosmosItemRequestOptions());
     }
 
@@ -197,7 +197,7 @@ public class CosmosAsyncContainer {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> createItem(
+    public <T> Mono<CosmosItemResponse<T>> createItem(
         T item,
         PartitionKey partitionKey,
         CosmosItemRequestOptions options) {
@@ -217,7 +217,7 @@ public class CosmosAsyncContainer {
      * @param options the item request options.
      * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> createItem(T item, CosmosItemRequestOptions options) {
+    public <T> Mono<CosmosItemResponse<T>> createItem(T item, CosmosItemRequestOptions options) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
@@ -244,7 +244,7 @@ public class CosmosAsyncContainer {
      * @param item the item represented as a POJO or Item object to upsert.
      * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> upsertItem(T item) {
+    public <T> Mono<CosmosItemResponse<T>> upsertItem(T item) {
         return upsertItem(item, new CosmosItemRequestOptions());
     }
 
@@ -260,7 +260,7 @@ public class CosmosAsyncContainer {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions options) {
+    public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions options) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
@@ -429,7 +429,7 @@ public class CosmosAsyncContainer {
      * @param itemType the item type.
      * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
+    public <T> Mono<CosmosItemResponse<T>> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
         return readItem(itemId, partitionKey, ModelBridgeInternal.createCosmosItemRequestOptions(partitionKey), itemType);
     }
 
@@ -446,7 +446,7 @@ public class CosmosAsyncContainer {
      * @param itemType the item type.
      * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> readItem(
+    public <T> Mono<CosmosItemResponse<T>> readItem(
         String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options, Class<T> itemType) {
         if (options == null) {
@@ -472,7 +472,7 @@ public class CosmosAsyncContainer {
      * @param partitionKey the partition key.
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey) {
+    public <T> Mono<CosmosItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey) {
         return replaceItem(item, itemId, partitionKey, new CosmosItemRequestOptions());
     }
 
@@ -489,7 +489,7 @@ public class CosmosAsyncContainer {
      * @param options the request comosItemRequestOptions.
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(
+    public <T> Mono<CosmosItemResponse<T>> replaceItem(
         T item, String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options) {
         Document doc = CosmosItemProperties.fromObject(item);
@@ -516,7 +516,7 @@ public class CosmosAsyncContainer {
      * @param partitionKey the partition key.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    public Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey) {
+    public Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey) {
         return deleteItem(itemId, partitionKey, new CosmosItemRequestOptions());
     }
 
@@ -531,7 +531,7 @@ public class CosmosAsyncContainer {
      * @param options the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    public Mono<CosmosAsyncItemResponse<Object>> deleteItem(
+    public Mono<CosmosItemResponse<Object>> deleteItem(
         String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options) {
         if (options == null) {
