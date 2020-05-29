@@ -47,12 +47,12 @@ public final class SearchFieldConverter {
 
         if (obj.getAnalyzer() != null) {
             LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
-            searchField.setAnalyzer(analyzer);
+            searchField.setAnalyzerName(analyzer);
         }
 
         if (obj.getSearchAnalyzer() != null) {
             LexicalAnalyzerName searchAnalyzer = LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzer());
-            searchField.setSearchAnalyzer(searchAnalyzer);
+            searchField.setSearchAnalyzerName(searchAnalyzer);
         }
 
         String name = obj.getName();
@@ -60,7 +60,7 @@ public final class SearchFieldConverter {
 
         if (obj.getIndexAnalyzer() != null) {
             LexicalAnalyzerName indexAnalyzer = LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzer());
-            searchField.setIndexAnalyzer(indexAnalyzer);
+            searchField.setIndexAnalyzerName(indexAnalyzer);
         }
 
         Boolean facetable = obj.isFacetable();
@@ -68,7 +68,7 @@ public final class SearchFieldConverter {
 
         if (obj.getSynonymMaps() != null) {
             List<String> synonymMaps = new ArrayList<>(obj.getSynonymMaps());
-            searchField.setSynonymMaps(synonymMaps);
+            searchField.setSynonymMapNames(synonymMaps);
         }
 
         if (obj.getFields() != null) {
@@ -110,32 +110,32 @@ public final class SearchFieldConverter {
         Boolean searchable = obj.isSearchable();
         searchField.setSearchable(searchable);
 
-        if (obj.getAnalyzer() != null) {
+        if (obj.getAnalyzerName() != null) {
             com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName analyzer =
-                LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
+                LexicalAnalyzerNameConverter.map(obj.getAnalyzerName());
             searchField.setAnalyzer(analyzer);
         }
 
-        if (obj.getSearchAnalyzer() != null) {
+        if (obj.getSearchAnalyzerName() != null) {
             com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName searchAnalyzer =
-                LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzer());
+                LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzerName());
             searchField.setSearchAnalyzer(searchAnalyzer);
         }
 
         String name = obj.getName();
         searchField.setName(name);
 
-        if (obj.getIndexAnalyzer() != null) {
+        if (obj.getIndexAnalyzerName() != null) {
             com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName indexAnalyzer =
-                LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzer());
+                LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzerName());
             searchField.setIndexAnalyzer(indexAnalyzer);
         }
 
         Boolean facetable = obj.isFacetable();
         searchField.setFacetable(facetable);
 
-        if (obj.getSynonymMaps() != null) {
-            List<String> synonymMaps = new ArrayList<>(obj.getSynonymMaps());
+        if (obj.getSynonymMapNames() != null) {
+            List<String> synonymMaps = new ArrayList<>(obj.getSynonymMapNames());
             searchField.setSynonymMaps(synonymMaps);
         }
 

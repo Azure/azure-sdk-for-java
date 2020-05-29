@@ -167,7 +167,7 @@ public class LifecycleSetupExample {
                         .setKey(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
                         .setSortable(Boolean.FALSE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
                     new SearchField()
                         .setName("Description")
                         .setType(SearchFieldDataType.STRING)
@@ -176,7 +176,7 @@ public class LifecycleSetupExample {
                         .setHidden(Boolean.FALSE)
                         .setSortable(Boolean.FALSE)
                         .setFacetable(Boolean.FALSE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
                     new SearchField()
                         .setName("Tags")
                         .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
@@ -184,7 +184,7 @@ public class LifecycleSetupExample {
                         .setFilterable(Boolean.TRUE)
                         .setHidden(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT)));
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
         index.setSuggesters(Collections.singletonList(new Suggester()

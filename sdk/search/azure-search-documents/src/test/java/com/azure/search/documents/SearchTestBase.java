@@ -206,20 +206,20 @@ public abstract class SearchTestBase extends TestBase {
                     .setName("Description")
                     .setType(SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(LexicalAnalyzerName.EN_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("DescriptionFr")
                     .setType(SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(LexicalAnalyzerName.FR_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("Description_Custom")
                     .setType(SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setSearchAnalyzer(LexicalAnalyzerName.STOP)
-                    .setIndexAnalyzer(LexicalAnalyzerName.STOP)
+                    .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
+                    .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("Category")
@@ -321,12 +321,12 @@ public abstract class SearchTestBase extends TestBase {
                             .setName("Description")
                             .setType(SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setAnalyzer(LexicalAnalyzerName.EN_LUCENE),
+                            .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
                         new SearchField()
                             .setName("DescriptionFr")
                             .setType(SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setAnalyzer(LexicalAnalyzerName.FR_LUCENE)
+                            .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
                             .setHidden(Boolean.FALSE),
                         new SearchField()
                             .setName("Type")

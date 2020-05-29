@@ -126,7 +126,7 @@ public final class SearchField {
      * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "analyzer")
-    private LexicalAnalyzerName analyzer;
+    private LexicalAnalyzerName analyzerName;
 
     /*
      * The name of the analyzer used at search time for the field. This option
@@ -157,7 +157,7 @@ public final class SearchField {
      * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "searchAnalyzer")
-    private LexicalAnalyzerName searchAnalyzer;
+    private LexicalAnalyzerName searchAnalyzerName;
 
     /*
      * The name of the analyzer used at indexing time for the field. This
@@ -189,7 +189,7 @@ public final class SearchField {
      * 'Whitespace'
      */
     @JsonProperty(value = "indexAnalyzer")
-    private LexicalAnalyzerName indexAnalyzer;
+    private LexicalAnalyzerName indexAnalyzerName;
 
     /*
      * A list of the names of synonym maps to associate with this field. This
@@ -200,7 +200,7 @@ public final class SearchField {
      * existing fields. Must be null or an empty collection for complex fields.
      */
     @JsonProperty(value = "synonymMaps")
-    private List<String> synonymMaps;
+    private List<String> synonymMapNames;
 
     /*
      * A list of sub-fields if this is a field of type Edm.ComplexType or
@@ -481,8 +481,8 @@ public final class SearchField {
      *
      * @return the analyzer value.
      */
-    public LexicalAnalyzerName getAnalyzer() {
-        return this.analyzer;
+    public LexicalAnalyzerName getAnalyzerName() {
+        return this.analyzerName;
     }
 
     /**
@@ -512,11 +512,11 @@ public final class SearchField {
      * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
      * 'Whitespace'.
      *
-     * @param analyzer the analyzer value to set.
+     * @param analyzerName the analyzer value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setAnalyzer(LexicalAnalyzerName analyzer) {
-        this.analyzer = analyzer;
+    public SearchField setAnalyzerName(LexicalAnalyzerName analyzerName) {
+        this.analyzerName = analyzerName;
         return this;
     }
 
@@ -551,8 +551,8 @@ public final class SearchField {
      *
      * @return the searchAnalyzer value.
      */
-    public LexicalAnalyzerName getSearchAnalyzer() {
-        return this.searchAnalyzer;
+    public LexicalAnalyzerName getSearchAnalyzerName() {
+        return this.searchAnalyzerName;
     }
 
     /**
@@ -584,11 +584,11 @@ public final class SearchField {
      * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
      * 'Simple', 'Stop', 'Whitespace'.
      *
-     * @param searchAnalyzer the searchAnalyzer value to set.
+     * @param searchAnalyzerName the searchAnalyzer value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setSearchAnalyzer(LexicalAnalyzerName searchAnalyzer) {
-        this.searchAnalyzer = searchAnalyzer;
+    public SearchField setSearchAnalyzerName(LexicalAnalyzerName searchAnalyzerName) {
+        this.searchAnalyzerName = searchAnalyzerName;
         return this;
     }
 
@@ -623,8 +623,8 @@ public final class SearchField {
      *
      * @return the indexAnalyzer value.
      */
-    public LexicalAnalyzerName getIndexAnalyzer() {
-        return this.indexAnalyzer;
+    public LexicalAnalyzerName getIndexAnalyzerName() {
+        return this.indexAnalyzerName;
     }
 
     /**
@@ -656,11 +656,11 @@ public final class SearchField {
      * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
      * 'Simple', 'Stop', 'Whitespace'.
      *
-     * @param indexAnalyzer the indexAnalyzer value to set.
+     * @param indexAnalyzerName the indexAnalyzer value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setIndexAnalyzer(LexicalAnalyzerName indexAnalyzer) {
-        this.indexAnalyzer = indexAnalyzer;
+    public SearchField setIndexAnalyzerName(LexicalAnalyzerName indexAnalyzerName) {
+        this.indexAnalyzerName = indexAnalyzerName;
         return this;
     }
 
@@ -675,8 +675,8 @@ public final class SearchField {
      *
      * @return the synonymMaps value.
      */
-    public List<String> getSynonymMaps() {
-        return this.synonymMaps;
+    public List<String> getSynonymMapNames() {
+        return this.synonymMapNames;
     }
 
     /**
@@ -688,11 +688,11 @@ public final class SearchField {
      * attribute can be changed on existing fields. Must be null or an empty
      * collection for complex fields.
      *
-     * @param synonymMaps the synonymMaps value to set.
+     * @param synonymMapNames the synonymMaps value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setSynonymMaps(List<String> synonymMaps) {
-        this.synonymMaps = synonymMaps;
+    public SearchField setSynonymMapNames(List<String> synonymMapNames) {
+        this.synonymMapNames = synonymMapNames;
         return this;
     }
 

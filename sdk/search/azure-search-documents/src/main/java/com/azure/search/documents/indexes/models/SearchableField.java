@@ -9,9 +9,9 @@ import java.util.List;
  * A helper Field model to build a searchable {@link SearchField}.
  */
 public class SearchableField extends SimpleField {
-    private LexicalAnalyzerName analyzer;
-    private LexicalAnalyzerName searchAnalyzer;
-    private LexicalAnalyzerName indexAnalyzer;
+    private LexicalAnalyzerName analyzerName;
+    private LexicalAnalyzerName searchAnalyzerName;
+    private LexicalAnalyzerName indexAnalyzerName;
     private List<String> synonymMapNames;
 
     /**
@@ -31,19 +31,19 @@ public class SearchableField extends SimpleField {
      *
      * @return The {@link LexicalAnalyzerName} used for analyzer.
      */
-    public LexicalAnalyzerName getAnalyzer() {
-        return analyzer;
+    public LexicalAnalyzerName getAnalyzerName() {
+        return analyzerName;
     }
 
     /**
      * Sets the name of the language analyzer. This property cannot be set when either {@code searchAnalyzer} or
      * {@code indexAnalyzer} are set. Once the analyzer is chosen, it cannot be changed for the field in the index.
      *
-     * @param analyzer The {@link LexicalAnalyzerName} used for analyzer.
+     * @param analyzerName The {@link LexicalAnalyzerName} used for analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setAnalyzer(LexicalAnalyzerName analyzer) {
-        this.analyzer = analyzer;
+    public SearchableField setAnalyzerName(LexicalAnalyzerName analyzerName) {
+        this.analyzerName = analyzerName;
         return this;
     }
 
@@ -54,8 +54,8 @@ public class SearchableField extends SimpleField {
      *
      * @return The {@link LexicalAnalyzerName} used for search analyzer.
      */
-    public LexicalAnalyzerName getSearchAnalyzer() {
-        return searchAnalyzer;
+    public LexicalAnalyzerName getSearchAnalyzerName() {
+        return searchAnalyzerName;
     }
 
     /**
@@ -63,11 +63,11 @@ public class SearchableField extends SimpleField {
      * {@code indexAnalyzer}, and cannot be set when {@code analyzer} is set. Once the analyzer is chosen, it cannot be
      * changed for the field in the index.
      *
-     * @param searchAnalyzer The {@link LexicalAnalyzerName} used for search analyzer.
+     * @param searchAnalyzerName The {@link LexicalAnalyzerName} used for search analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setSearchAnalyzer(LexicalAnalyzerName searchAnalyzer) {
-        this.searchAnalyzer = searchAnalyzer;
+    public SearchableField setSearchAnalyzerName(LexicalAnalyzerName searchAnalyzerName) {
+        this.searchAnalyzerName = searchAnalyzerName;
         return this;
     }
 
@@ -78,8 +78,8 @@ public class SearchableField extends SimpleField {
      *
      * @return The {@link LexicalAnalyzerName} used for index analyzer.
      */
-    public LexicalAnalyzerName getIndexAnalyzer() {
-        return indexAnalyzer;
+    public LexicalAnalyzerName getIndexAnalyzerName() {
+        return indexAnalyzerName;
     }
 
     /**
@@ -87,11 +87,11 @@ public class SearchableField extends SimpleField {
      * {@code searchAnalyzer}, and cannot be set when {@code analyzer} is set. Once the analyzer is chosen, it cannot be
      * changed for the field in the index.
      *
-     * @param indexAnalyzer The {@link LexicalAnalyzerName} used for index analyzer.
+     * @param indexAnalyzerName The {@link LexicalAnalyzerName} used for index analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setIndexAnalyzer(LexicalAnalyzerName indexAnalyzer) {
-        this.indexAnalyzer = indexAnalyzer;
+    public SearchableField setIndexAnalyzerName(LexicalAnalyzerName indexAnalyzerName) {
+        this.indexAnalyzerName = indexAnalyzerName;
         return this;
     }
 
@@ -138,9 +138,9 @@ public class SearchableField extends SimpleField {
             .setFilterable(super.isFilterable())
             .setHidden(super.isHidden())
             .setFacetable(super.isFacetable())
-            .setAnalyzer(this.analyzer)
-            .setSearchAnalyzer(this.searchAnalyzer)
-            .setIndexAnalyzer(this.indexAnalyzer)
-            .setSynonymMaps(this.synonymMapNames);
+            .setAnalyzerName(this.analyzerName)
+            .setSearchAnalyzerName(this.searchAnalyzerName)
+            .setIndexAnalyzerName(this.indexAnalyzerName)
+            .setSynonymMapNames(this.synonymMapNames);
     }
 }
