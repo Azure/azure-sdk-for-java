@@ -30,7 +30,7 @@ import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
 import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
@@ -451,7 +451,7 @@ public abstract class SearchTestBase extends TestBase {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Collections.singletonList(new Suggester()
+            .setSearchSuggesters(Collections.singletonList(new SearchSuggester()
                 .setName("FancySuggester")
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }

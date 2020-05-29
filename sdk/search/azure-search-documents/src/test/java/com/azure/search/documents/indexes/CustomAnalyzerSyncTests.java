@@ -19,12 +19,11 @@ import com.azure.search.documents.indexes.models.CommonGramTokenFilter;
 import com.azure.search.documents.indexes.models.CustomAnalyzer;
 import com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
-import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterV2;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenizer;
 import com.azure.search.documents.indexes.models.ElisionTokenFilter;
 import com.azure.search.documents.indexes.models.KeepTokenFilter;
 import com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter;
-import com.azure.search.documents.indexes.models.KeywordTokenizerV2;
+import com.azure.search.documents.indexes.models.KeywordTokenizer;
 import com.azure.search.documents.indexes.models.LengthTokenFilter;
 import com.azure.search.documents.indexes.models.LexicalAnalyzer;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
@@ -32,15 +31,13 @@ import com.azure.search.documents.indexes.models.LexicalTokenizer;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.LimitTokenFilter;
 import com.azure.search.documents.indexes.models.LuceneStandardAnalyzer;
-import com.azure.search.documents.indexes.models.LuceneStandardTokenizerV2;
 import com.azure.search.documents.indexes.models.MappingCharFilter;
 import com.azure.search.documents.indexes.models.MicrosoftLanguageStemmingTokenizer;
 import com.azure.search.documents.indexes.models.MicrosoftLanguageTokenizer;
 import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
 import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
-import com.azure.search.documents.indexes.models.NGramTokenFilterV2;
 import com.azure.search.documents.indexes.models.NGramTokenizer;
-import com.azure.search.documents.indexes.models.PathHierarchyTokenizerV2;
+import com.azure.search.documents.indexes.models.PathHierarchyTokenizer;
 import com.azure.search.documents.indexes.models.PatternAnalyzer;
 import com.azure.search.documents.indexes.models.PatternCaptureTokenFilter;
 import com.azure.search.documents.indexes.models.PatternReplaceCharFilter;
@@ -952,7 +949,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new ClassicTokenizer()
                     .setMaxTokenLength(100)
                     .setName(generateName()),
-                new KeywordTokenizerV2()
+                new KeywordTokenizer()
                     .setMaxTokenLength(100)
                     .setName(generateName()),
                 new MicrosoftLanguageStemmingTokenizer()
@@ -965,7 +962,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setIsSearchTokenizer(true)
                     .setLanguage(MicrosoftTokenizerLanguage.THAI)
                     .setName(generateName()),
-                new PathHierarchyTokenizerV2()
+                new PathHierarchyTokenizer()
                     .setDelimiter(":")
                     .setReplacement("_")
                     .setMaxTokenLength(300)
@@ -1143,13 +1140,13 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateSimpleName(i++)),
                 new ClassicTokenizer()
                     .setName(generateSimpleName(i++)),
-                new KeywordTokenizerV2()
+                new KeywordTokenizer()
                     .setName(generateSimpleName(i++)),
                 new MicrosoftLanguageStemmingTokenizer()
                     .setName(generateSimpleName(i++)),
                 new MicrosoftLanguageTokenizer()
                     .setName(generateSimpleName(i++)),
-                new PathHierarchyTokenizerV2()
+                new PathHierarchyTokenizer()
                     .setName(generateSimpleName(i++)),
                 new PatternTokenizer()
                     .setName(generateSimpleName(i++)),
@@ -1215,7 +1212,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new ClassicTokenizer()
                     .setMaxTokenLength(255)
                     .setName(generateSimpleName(i++)),
-                new KeywordTokenizerV2()
+                new KeywordTokenizer()
                     .setMaxTokenLength(256)
                     .setName(generateSimpleName(i++)),
                 new MicrosoftLanguageStemmingTokenizer()
@@ -1228,7 +1225,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setIsSearchTokenizer(false)
                     .setLanguage(MicrosoftTokenizerLanguage.ENGLISH)
                     .setName(generateSimpleName(i++)),
-                new PathHierarchyTokenizerV2()
+                new PathHierarchyTokenizer()
                     .setDelimiter("/")
                     .setReplacement("/")
                     .setMaxTokenLength(300)

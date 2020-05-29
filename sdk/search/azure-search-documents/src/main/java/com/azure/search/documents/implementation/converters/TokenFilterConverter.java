@@ -9,7 +9,6 @@ import com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFi
 import com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter;
-import com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterV2;
 import com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.KeepTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter;

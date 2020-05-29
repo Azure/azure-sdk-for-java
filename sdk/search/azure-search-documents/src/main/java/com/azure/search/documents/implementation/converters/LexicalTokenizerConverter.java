@@ -7,13 +7,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.ClassicTokenizer;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenizer;
 import com.azure.search.documents.indexes.models.KeywordTokenizer;
-import com.azure.search.documents.indexes.models.KeywordTokenizerV2;
 import com.azure.search.documents.indexes.models.LuceneStandardTokenizer;
-import com.azure.search.documents.indexes.models.LuceneStandardTokenizerV2;
 import com.azure.search.documents.indexes.models.MicrosoftLanguageStemmingTokenizer;
 import com.azure.search.documents.indexes.models.MicrosoftLanguageTokenizer;
 import com.azure.search.documents.indexes.models.NGramTokenizer;
-import com.azure.search.documents.indexes.models.PathHierarchyTokenizerV2;
+import com.azure.search.documents.indexes.models.PathHierarchyTokenizer;
 import com.azure.search.documents.indexes.models.PatternTokenizer;
 import com.azure.search.documents.indexes.models.UaxUrlEmailTokenizer;
 import com.azure.search.documents.indexes.models.LexicalTokenizer;
@@ -43,7 +41,7 @@ public final class LexicalTokenizerConverter {
             return LuceneStandardTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2) {
-            return PathHierarchyTokenizerV2Converter.map((com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2) obj);
+            return PathHierarchyTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.implementation.models.ClassicTokenizer) {
             return ClassicTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.ClassicTokenizer) obj);
@@ -58,7 +56,7 @@ public final class LexicalTokenizerConverter {
             return UaxUrlEmailTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2) {
-            return KeywordTokenizerV2Converter.map((com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2) obj);
+            return KeywordTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer) {
             return MicrosoftLanguageTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer) obj);
@@ -87,8 +85,8 @@ public final class LexicalTokenizerConverter {
         if (obj instanceof MicrosoftLanguageStemmingTokenizer) {
             return MicrosoftLanguageStemmingTokenizerConverter.map((MicrosoftLanguageStemmingTokenizer) obj);
         }
-        if (obj instanceof KeywordTokenizerV2) {
-            return KeywordTokenizerV2Converter.map((KeywordTokenizerV2) obj);
+        if (obj instanceof KeywordTokenizer) {
+            return KeywordTokenizerConverter.map((KeywordTokenizer) obj);
         }
         if (obj instanceof KeywordTokenizer) {
             return KeywordTokenizerConverter.map((KeywordTokenizer) obj);
@@ -105,8 +103,8 @@ public final class LexicalTokenizerConverter {
         if (obj instanceof UaxUrlEmailTokenizer) {
             return UaxUrlEmailTokenizerConverter.map((UaxUrlEmailTokenizer) obj);
         }
-        if (obj instanceof PathHierarchyTokenizerV2) {
-            return PathHierarchyTokenizerV2Converter.map((PathHierarchyTokenizerV2) obj);
+        if (obj instanceof PathHierarchyTokenizer) {
+            return PathHierarchyTokenizerConverter.map((PathHierarchyTokenizer) obj);
         }
         if (obj instanceof ClassicTokenizer) {
             return ClassicTokenizerConverter.map((ClassicTokenizer) obj);

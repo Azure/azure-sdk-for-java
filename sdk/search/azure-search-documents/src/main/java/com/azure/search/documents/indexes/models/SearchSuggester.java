@@ -11,7 +11,7 @@ import java.util.List;
  * Defines how the Suggest API should apply to a group of fields in the index.
  */
 @Fluent
-public final class Suggester {
+public final class SearchSuggester {
     /*
      * A value indicating the capabilities of the suggester.
      */
@@ -46,7 +46,7 @@ public final class Suggester {
      * @param name the name value to set.
      * @return the Suggester object itself.
      */
-    public Suggester setName(String name) {
+    public SearchSuggester setName(String name) {
         this.name = name;
         return this;
     }
@@ -68,7 +68,7 @@ public final class Suggester {
      * @param sourceFields the sourceFields value to set.
      * @return the Suggester object itself.
      */
-    public Suggester setSourceFields(List<String> sourceFields) {
+    public SearchSuggester setSourceFields(List<String> sourceFields) {
         this.sourceFields = sourceFields;
         return this;
     }
