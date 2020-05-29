@@ -27,7 +27,20 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DatabaseInner extends Resource {
     /**
-     * The name and tier of the SKU.
+     * The database SKU.
+     *
+     * The list of SKUs may vary by region and support offer. To determine the
+     * SKUs (including the SKU name, tier/edition, family, and capacity) that
+     * are available to your subscription in an Azure region, use the
+     * `Capabilities_ListByLocation` REST API or one of the following commands:
+     *
+     * ```azurecli
+     * az sql db list-editions -l &lt;location&gt; -o table
+     * ````
+     *
+     * ```powershell
+     * Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     * ````.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -125,7 +138,8 @@ public class DatabaseInner extends Resource {
      * 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline',
      * 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying',
      * 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused',
-     * 'Resuming', 'Scaling'.
+     * 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers',
+     * 'OnlineChangingDwPerformanceTiers', 'Disabled'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatus status;
@@ -222,7 +236,9 @@ public class DatabaseInner extends Resource {
     private Boolean zoneRedundant;
 
     /**
-     * The license type to apply for this database. Possible values include:
+     * The license type to apply for this database. `LicenseIncluded` if you
+     * need a license, or `BasePrice` if you have a license and are eligible
+     * for the Azure Hybrid Benefit. Possible values include:
      * 'LicenseIncluded', 'BasePrice'.
      */
     @JsonProperty(value = "properties.licenseType")
@@ -242,13 +258,21 @@ public class DatabaseInner extends Resource {
     private DateTime earliestRestoreDate;
 
     /**
-     * The state of read-only routing. If enabled, connections that have
-     * application intent set to readonly in their connection string may be
-     * routed to a readonly secondary replica in the same region. Possible
-     * values include: 'Enabled', 'Disabled'.
+     * If enabled, connections that have application intent set to readonly in
+     * their connection string may be routed to a readonly secondary replica.
+     * This property is only settable for Premium and Business Critical
+     * databases. Possible values include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.readScale")
     private DatabaseReadScale readScale;
+
+    /**
+     * The number of readonly secondary replicas associated with the database
+     * to which readonly application intent connections may be routed. This
+     * property is only settable for Hyperscale edition databases.
+     */
+    @JsonProperty(value = "properties.readReplicaCount")
+    private Integer readReplicaCount;
 
     /**
      * The name and tier of the SKU.
@@ -257,7 +281,42 @@ public class DatabaseInner extends Resource {
     private Sku currentSku;
 
     /**
-     * Get the name and tier of the SKU.
+     * Time in minutes after which database is automatically paused. A value of
+     * -1 means that automatic pause is disabled.
+     */
+    @JsonProperty(value = "properties.autoPauseDelay")
+    private Integer autoPauseDelay;
+
+    /**
+     * Minimal capacity that database will always have allocated, if not
+     * paused.
+     */
+    @JsonProperty(value = "properties.minCapacity")
+    private Double minCapacity;
+
+    /**
+     * The date when database was paused by user configuration or action
+     * (ISO8601 format). Null if the database is ready.
+     */
+    @JsonProperty(value = "properties.pausedDate", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime pausedDate;
+
+    /**
+     * The date when database was resumed by user action or database login
+     * (ISO8601 format). Null if the database is paused.
+     */
+    @JsonProperty(value = "properties.resumedDate", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime resumedDate;
+
+    /**
+     * Get the database SKU.
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````.
      *
      * @return the sku value
      */
@@ -266,7 +325,14 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the name and tier of the SKU.
+     * Set the database SKU.
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````.
      *
      * @param sku the sku value to set
      * @return the DatabaseInner object itself.
@@ -431,7 +497,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling'.
+     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers', 'OnlineChangingDwPerformanceTiers', 'Disabled'.
      *
      * @return the status value
      */
@@ -654,7 +720,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'.
+     * Get the license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit. Possible values include: 'LicenseIncluded', 'BasePrice'.
      *
      * @return the licenseType value
      */
@@ -663,7 +729,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'.
+     * Set the license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit. Possible values include: 'LicenseIncluded', 'BasePrice'.
      *
      * @param licenseType the licenseType value to set
      * @return the DatabaseInner object itself.
@@ -692,7 +758,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'Enabled', 'Disabled'.
+     * Get if enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica. This property is only settable for Premium and Business Critical databases. Possible values include: 'Enabled', 'Disabled'.
      *
      * @return the readScale value
      */
@@ -701,7 +767,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'Enabled', 'Disabled'.
+     * Set if enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica. This property is only settable for Premium and Business Critical databases. Possible values include: 'Enabled', 'Disabled'.
      *
      * @param readScale the readScale value to set
      * @return the DatabaseInner object itself.
@@ -712,12 +778,90 @@ public class DatabaseInner extends Resource {
     }
 
     /**
+     * Get the number of readonly secondary replicas associated with the database to which readonly application intent connections may be routed. This property is only settable for Hyperscale edition databases.
+     *
+     * @return the readReplicaCount value
+     */
+    public Integer readReplicaCount() {
+        return this.readReplicaCount;
+    }
+
+    /**
+     * Set the number of readonly secondary replicas associated with the database to which readonly application intent connections may be routed. This property is only settable for Hyperscale edition databases.
+     *
+     * @param readReplicaCount the readReplicaCount value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withReadReplicaCount(Integer readReplicaCount) {
+        this.readReplicaCount = readReplicaCount;
+        return this;
+    }
+
+    /**
      * Get the name and tier of the SKU.
      *
      * @return the currentSku value
      */
     public Sku currentSku() {
         return this.currentSku;
+    }
+
+    /**
+     * Get time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @return the autoPauseDelay value
+     */
+    public Integer autoPauseDelay() {
+        return this.autoPauseDelay;
+    }
+
+    /**
+     * Set time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @param autoPauseDelay the autoPauseDelay value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withAutoPauseDelay(Integer autoPauseDelay) {
+        this.autoPauseDelay = autoPauseDelay;
+        return this;
+    }
+
+    /**
+     * Get minimal capacity that database will always have allocated, if not paused.
+     *
+     * @return the minCapacity value
+     */
+    public Double minCapacity() {
+        return this.minCapacity;
+    }
+
+    /**
+     * Set minimal capacity that database will always have allocated, if not paused.
+     *
+     * @param minCapacity the minCapacity value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withMinCapacity(Double minCapacity) {
+        this.minCapacity = minCapacity;
+        return this;
+    }
+
+    /**
+     * Get the date when database was paused by user configuration or action (ISO8601 format). Null if the database is ready.
+     *
+     * @return the pausedDate value
+     */
+    public DateTime pausedDate() {
+        return this.pausedDate;
+    }
+
+    /**
+     * Get the date when database was resumed by user action or database login (ISO8601 format). Null if the database is paused.
+     *
+     * @return the resumedDate value
+     */
+    public DateTime resumedDate() {
+        return this.resumedDate;
     }
 
 }
