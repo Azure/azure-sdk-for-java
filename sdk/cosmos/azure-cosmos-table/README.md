@@ -33,6 +33,6 @@ Use the client library for Tables to:
 
 ## Next steps
 
-## Contribution and Feedback
+## Contributing
 
 ## License
