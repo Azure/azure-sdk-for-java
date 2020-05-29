@@ -8,6 +8,10 @@
 - Removed `SearchServiceClientBuilder`.
 - Renamed `SearchIndexClient` to `SearchClient` and `SearchIndexAsyncClient` to `SearchAsyncClient`.
 - Put all models used `SearchIndexClient` and `SearchIndexerClient` (same for async clients) under `com.azure.search.documents.indexes`.
+- Removed `SearchIndexerDataSource` to `SearchIndexerDataSourceConnection`, 
+and renamed `SearchIndexerDataSourceConnection` CRUD methods in `SearchIndexerClient` and `SearchIndexerAsyncClient`.
+- Removed `DataSourceCredential` and `AzureActiveDirectoryApplicationCredentials`, 
+and uplifted the properties to `SearchIndexerDataSourceConnection` and `SearchResourceEncryptionKey` respectively.
 
 ## 1.0.0-beta.3 (2020-05-05)
 - Replaced `isRetrievable` API with `isHidden`, parameter name changed from `retrievable` to `hidden`.
