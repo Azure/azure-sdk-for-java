@@ -15,12 +15,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * to rank the search results.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
-    defaultImpl = Similarity.class)
+    defaultImpl = SimilarityAlgorithm.class)
 @JsonTypeName("Similarity")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicSimilarity", value = ClassicSimilarity.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.BM25Similarity", value = BM25Similarity.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicSimilarity", value = ClassicSimilarityAlgorithm.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.BM25Similarity", value = BM25SimilarityAlgorithm.class)
 })
 @Fluent
-public class Similarity {
+public class SimilarityAlgorithm {
 }

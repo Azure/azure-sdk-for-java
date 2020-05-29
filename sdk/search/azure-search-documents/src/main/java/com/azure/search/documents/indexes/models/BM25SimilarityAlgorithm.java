@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.BM25Similarity")
 @Fluent
-public final class BM25Similarity extends Similarity {
+public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * This property controls the scaling function between the term frequency
      * of each matching terms and the final relevance score of a document-query
@@ -57,7 +57,7 @@ public final class BM25Similarity extends Similarity {
      * @param k1 the k1 value to set.
      * @return the BM25Similarity object itself.
      */
-    public BM25Similarity setK1(Double k1) {
+    public BM25SimilarityAlgorithm setK1(Double k1) {
         this.k1 = k1;
         return this;
     }
@@ -83,7 +83,7 @@ public final class BM25Similarity extends Similarity {
      * @param b the b value to set.
      * @return the BM25Similarity object itself.
      */
-    public BM25Similarity setB(Double b) {
+    public BM25SimilarityAlgorithm setB(Double b) {
         this.b = b;
         return this;
     }

@@ -14,6 +14,10 @@
 and uplifted the properties to `SearchIndexerDataSourceConnection` and `SearchResourceEncryptionKey` respectively.
 - Removed `select` parameter from list service resource APIs.
 - Added list names APIs for each search service resource. (e.g. `listSearchIndexNames`, `listSearchIndexerNames`, `listDataSourceNames`, `listSkillsetNames`, `listSynonymMapNames`)
+- Removed deprecated versions and removed the V2 suffix. SDK is currently having `EdgeNGramTokenFilter`, `KeywordTokenizer`, `LuceneStandardTokenizer`,
+`NGramTokenFilter`, and `PathHierarchyTokenizer`.
+- Renamed `Similarity` to `SimilarityAlgorithm`.
+- Renamed `Suggester` to `SearchSuggester`.
 
 ## 1.0.0-beta.3 (2020-05-05)
 - Replaced `isRetrievable` API with `isHidden`, parameter name changed from `retrievable` to `hidden`.

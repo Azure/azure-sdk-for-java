@@ -20,7 +20,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -187,7 +187,7 @@ public class LifecycleSetupExample {
                         .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
-        index.setSuggesters(Collections.singletonList(new Suggester()
+        index.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
             .setName(SUGGESTER_NAME)
             .setSourceFields(Collections.singletonList("Tags"))));
 
