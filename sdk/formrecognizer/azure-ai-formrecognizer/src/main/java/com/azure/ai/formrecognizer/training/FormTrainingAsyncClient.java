@@ -490,6 +490,7 @@ public final class FormTrainingAsyncClient {
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid)
                     .map(modelSimpleResponse -> {
                         CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
+                        throwIfCopyOperationStatusInvalid(copyOperationResult);
                         return new CustomFormModelInfo(copyModelId,
                             copyOperationResult.getStatus() == OperationStatus.SUCCEEDED
                                 ? CustomFormModelStatus.READY
@@ -512,10 +513,8 @@ public final class FormTrainingAsyncClient {
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId)
                         .flatMap(modelSimpleResponse ->
                             processCopyModelResponse(modelSimpleResponse, operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                throw logger.logExceptionAsError(e);
-                // Not Throwing?
-                // return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (HttpResponseException ex) {
+                return monoError(logger, ex);
             }
         };
     }
@@ -556,7 +555,6 @@ public final class FormTrainingAsyncClient {
                 break;
             case FAILED:
                 status = LongRunningOperationStatus.FAILED;
-                throwIfCopyOperationStatusInvalid(copyModel.getValue());
                 break;
             default:
                 status = LongRunningOperationStatus.fromString(copyModel.getValue().getStatus().toString(), true);

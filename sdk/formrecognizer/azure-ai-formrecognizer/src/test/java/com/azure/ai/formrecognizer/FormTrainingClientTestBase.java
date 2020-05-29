@@ -40,8 +40,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    private static final String RESOURCE_ID = Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TARGET_RESOURCE_ID");
-    private static final String RESOURCE_REGION = Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TARGET_RESOURCE_REGION");
+    private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
+    private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
 
     void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
         CopyAuthorization actualResult) {
@@ -209,15 +209,15 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void beginCopyRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept(RESOURCE_ID, RESOURCE_REGION);
+        testRunner.accept(getTargetResourceId(), getTargetResourceRegion());
     }
 
     void beginCopyInvalidRegionRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept(RESOURCE_ID, "RESOURCE_REGION");
+        testRunner.accept(getTargetResourceId(), "RESOURCE_REGION");
     }
 
     void beginCopyIncorrectRegionRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept(RESOURCE_ID, "westus2");
+        testRunner.accept(getTargetResourceId(), "westus2");
     }
 
     /**
@@ -228,6 +228,27 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     String getApiKey() {
         return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
+    }
+
+    /**
+     * Get the target resource Identifier based on the test running mode.
+     *
+     * @return the target resource Identifier
+     */
+    String getTargetResourceId() {
+        return interceptorManager.isPlaybackMode() ? "resourceIdInPlayback"
+            : Configuration.getGlobalConfiguration().get(RESOURCE_ID);
+    }
+
+
+    /**
+     * Get the target resource region based on the test running mode.
+     *
+     * @return the target resource region
+     */
+    String getTargetResourceRegion() {
+        return interceptorManager.isPlaybackMode() ? "resourceRegionInPlayback"
+            : Configuration.getGlobalConfiguration().get(RESOURCE_REGION);
     }
 
     String getEndpoint() {
