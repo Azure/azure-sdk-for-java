@@ -102,7 +102,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
             profile,
             new StorageManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
