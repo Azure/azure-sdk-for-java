@@ -265,8 +265,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target);
                 final CustomFormModelInfo copyModel = copyPoller.getFinalResult();
                 assertEquals(target.getModelId(), copyModel.getModelId());
-                assertNotNull(actualModel.getCreatedOn());
-                assertNotNull(actualModel.getLastUpdatedOn());
+                assertNotNull(actualModel.getRequestedOn());
+                assertNotNull(actualModel.getCompletedOn());
                 assertEquals(CustomFormModelStatus.fromString("succeeded"), copyModel.getStatus());
             });
         });

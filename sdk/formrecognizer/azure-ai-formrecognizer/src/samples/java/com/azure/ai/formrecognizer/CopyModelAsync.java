@@ -47,8 +47,8 @@ public class CopyModelAsync {
                                 + " last updated on: %s.%n",
                             customFormModelInfo.getModelId(),
                             customFormModelInfo.getStatus(),
-                            customFormModelInfo.getCreatedOn(),
-                            customFormModelInfo.getLastUpdatedOn());
+                            customFormModelInfo.getRequestedOn(),
+                            customFormModelInfo.getCompletedOn());
 
                         // Get the copied model from the target resource
                         targetClient.getCustomModel(copyAuthorization.getModelId()).subscribe(customFormModel ->
@@ -56,8 +56,8 @@ public class CopyModelAsync {
                                     + " last updated on: %s.%n",
                                 customFormModel.getModelId(),
                                 customFormModel.getModelStatus(),
-                                customFormModel.getCreatedOn(),
-                                customFormModel.getLastUpdatedOn()));
+                                customFormModel.getRequestedOn(),
+                                customFormModel.getCompletedOn()));
                     })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

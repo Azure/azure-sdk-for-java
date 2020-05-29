@@ -53,11 +53,11 @@ public class CopyModel {
         CustomFormModel copiedModel = targetClient.getCustomModel(modelCopyAuthorization.getModelId());
 
         System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
-                + " last updated on: %s.%n",
+                + " transfer completed on: %s.%n",
             copiedModel.getModelId(),
             copiedModel.getModelStatus(),
-            copiedModel.getCreatedOn(),
-            copiedModel.getLastUpdatedOn());
+            copiedModel.getRequestedOn(),
+            copiedModel.getCompletedOn());
     }
 }
 
