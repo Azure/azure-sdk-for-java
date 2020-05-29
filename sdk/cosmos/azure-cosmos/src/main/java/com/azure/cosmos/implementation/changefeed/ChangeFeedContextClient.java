@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
@@ -73,9 +73,9 @@ public interface ChangeFeedContextClient {
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
      * @return an {@link Mono} containing the single resource response with the created cosmos item or an error.
      */
-    <T> Mono<CosmosAsyncItemResponse<T>> createItem(CosmosAsyncContainer containerLink, T document,
-                                              CosmosItemRequestOptions options,
-                                             boolean disableAutomaticIdGeneration);
+    <T> Mono<CosmosItemResponse<T>> createItem(CosmosAsyncContainer containerLink, T document,
+                                               CosmosItemRequestOptions options,
+                                               boolean disableAutomaticIdGeneration);
 
     /**
      * DELETE a cosmos item.
@@ -84,8 +84,8 @@ public interface ChangeFeedContextClient {
      * @param options   the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the deleted item or an error.
      */
-    Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
-                                             CosmosItemRequestOptions options);
+    Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
+                                                CosmosItemRequestOptions options);
 
     /**
      * Replaces a cosmos item.
@@ -95,8 +95,8 @@ public interface ChangeFeedContextClient {
      * @param options      the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
      */
-    <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
-                                              CosmosItemRequestOptions options);
+    <T> Mono<CosmosItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
+                                                CosmosItemRequestOptions options);
 
     /**
      * Reads a cosmos item
@@ -105,7 +105,7 @@ public interface ChangeFeedContextClient {
      * @param options      the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the read item or an error.
      */
-    <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
+    <T> Mono<CosmosItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
                                              CosmosItemRequestOptions options, Class<T> itemType);
 
     /**

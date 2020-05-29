@@ -5,7 +5,7 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -48,9 +48,9 @@ public class BasicDemo {
 
         //CREATE an Item async
 
-        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono = container.createItem(testObject);
+        Mono<CosmosItemResponse<TestObject>> itemResponseMono = container.createItem(testObject);
         //CREATE another Item async
-        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono1 = container.createItem(testObject2);
+        Mono<CosmosItemResponse<TestObject>> itemResponseMono1 = container.createItem(testObject2);
 
         //Wait for completion
         try {

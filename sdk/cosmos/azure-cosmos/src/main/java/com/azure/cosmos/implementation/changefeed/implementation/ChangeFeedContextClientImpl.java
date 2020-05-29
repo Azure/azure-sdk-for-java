@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -113,8 +113,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public <T> Mono<CosmosAsyncItemResponse<T>> createItem(CosmosAsyncContainer containerLink, T document,
-                                                     CosmosItemRequestOptions options, boolean disableAutomaticIdGeneration) {
+    public <T> Mono<CosmosItemResponse<T>> createItem(CosmosAsyncContainer containerLink, T document,
+                                                      CosmosItemRequestOptions options, boolean disableAutomaticIdGeneration) {
         if (options != null) {
             return containerLink.createItem(document, options)
                 .publishOn(this.rxScheduler);
@@ -125,22 +125,22 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
-                                                    CosmosItemRequestOptions options) {
+    public Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
+                                                       CosmosItemRequestOptions options) {
         return cosmosContainer.deleteItem(itemId, partitionKey, options)
             .publishOn(this.rxScheduler);
     }
 
     @Override
-    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
-                                                     CosmosItemRequestOptions options) {
+    public <T> Mono<CosmosItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
+                                                       CosmosItemRequestOptions options) {
         return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
             .publishOn(this.rxScheduler);
     }
 
     @Override
-    public <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
-                                                  CosmosItemRequestOptions options, Class<T> itemType) {
+    public <T> Mono<CosmosItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
+                                                    CosmosItemRequestOptions options, Class<T> itemType) {
         return cosmosContainer.readItem(itemId, partitionKey, options, itemType)
             .publishOn(this.rxScheduler);
     }

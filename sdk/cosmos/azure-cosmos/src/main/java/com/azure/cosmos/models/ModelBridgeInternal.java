@@ -77,13 +77,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
-        return new CosmosAsyncItemResponse<>(response, classType);
+    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+        return new CosmosItemResponse<>(response, classType);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosAsyncItemResponse<>(response, Object.class);
+    public static CosmosItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
+        return new CosmosItemResponse<>(response, Object.class);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -127,11 +127,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
-        return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -149,11 +144,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosDatabaseProperties> getCosmosDatabasePropertiesFromV2Results(List<Database> results) {
         return CosmosDatabaseProperties.getFromV2Results(results);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

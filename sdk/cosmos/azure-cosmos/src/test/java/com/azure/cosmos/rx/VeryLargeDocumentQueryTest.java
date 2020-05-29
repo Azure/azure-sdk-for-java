@@ -5,7 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -49,7 +49,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         }
 
         FeedOptions options = new FeedOptions();
-        
+
         CosmosPagedFlux<CosmosItemProperties> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
             options, CosmosItemProperties.class);
 
@@ -71,7 +71,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         int size = (int) (ONE_MB * 1.999);
         BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
 
-        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = 
+        Mono<CosmosItemResponse<CosmosItemProperties>> createObservable =
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
