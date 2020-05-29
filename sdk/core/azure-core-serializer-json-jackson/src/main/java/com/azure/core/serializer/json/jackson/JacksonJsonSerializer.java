@@ -4,7 +4,9 @@
 package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.implementation.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonNode;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -41,11 +43,39 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
+    public <T> T deserializeTree(JsonNode jsonNode, Class<T> clazz) {
+        try {
+            return mapper.treeToValue(JsonNodeUtils.toJacksonNode(jsonNode), clazz);
+        } catch (JsonProcessingException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    @Override
     public byte[] serialize(Object value) {
         try {
             return mapper.writeValueAsBytes(value);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    @Override
+    public byte[] serializeTree(JsonNode jsonNode) {
+        return serialize(JsonNodeUtils.toJacksonNode(jsonNode));
+    }
+
+    @Override
+    public JsonNode toTree(byte[] input) {
+        try {
+            return JsonNodeUtils.fromJacksonNode(mapper.readTree(input));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    @Override
+    public JsonNode toTree(Object value) {
+        return JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value));
     }
 }

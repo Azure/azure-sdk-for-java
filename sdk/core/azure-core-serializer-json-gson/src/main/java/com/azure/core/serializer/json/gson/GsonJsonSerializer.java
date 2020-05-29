@@ -4,8 +4,10 @@
 package com.azure.core.serializer.json.gson;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.implementation.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonNode;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 
 import java.nio.charset.StandardCharsets;
 
@@ -30,7 +32,27 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
+    public <T> T deserializeTree(JsonNode jsonNode, Class<T> clazz) {
+        return gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), clazz);
+    }
+
+    @Override
     public byte[] serialize(Object value) {
         return gson.toJson(value).getBytes(StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public byte[] serializeTree(JsonNode jsonNode) {
+        return gson.toJson(JsonNodeUtils.toGsonElement(jsonNode)).getBytes(StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public JsonNode toTree(byte[] input) {
+        return JsonNodeUtils.fromGsonElement(new JsonParser().parse(new String(input, StandardCharsets.UTF_8)));
+    }
+
+    @Override
+    public JsonNode toTree(Object value) {
+        return JsonNodeUtils.fromGsonElement(gson.toJsonTree(value));
     }
 }

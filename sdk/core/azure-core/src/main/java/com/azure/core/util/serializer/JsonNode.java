@@ -1,0 +1,34 @@
+package com.azure.core.util.serializer;
+
+/**
+ * Interfaces that represents a JSON node.
+ */
+public interface JsonNode {
+    /**
+     * @return True if this {@link JsonNode} is an instance of {@link JsonArray}.
+     */
+    default boolean isArray() {
+        return false;
+    }
+
+    /**
+     * @return True if this {@link JsonNode} is an instance of {@link JsonNull}.
+     */
+    default boolean isNull() {
+        return false;
+    }
+
+    /**
+     * @return True if this {@link JsonNode} is an instance of {@link JsonObject}.
+     */
+    default boolean isObject() {
+        return false;
+    }
+
+    /**
+     * @return True if this {@link JsonNode} is an instance of {@link JsonValue}.
+     */
+    default boolean isValue() {
+        return false;
+    }
+}
