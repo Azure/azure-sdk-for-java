@@ -64,10 +64,14 @@ class ServerCommunicationLinksImpl extends WrapperImpl<ServerCommunicationLinksI
     public Observable<ServerCommunicationLink> getAsync(String resourceGroupName, String serverName, String communicationLinkName) {
         ServerCommunicationLinksInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, communicationLinkName)
-        .map(new Func1<ServerCommunicationLinkInner, ServerCommunicationLink>() {
+        .flatMap(new Func1<ServerCommunicationLinkInner, Observable<ServerCommunicationLink>>() {
             @Override
-            public ServerCommunicationLink call(ServerCommunicationLinkInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerCommunicationLink> call(ServerCommunicationLinkInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerCommunicationLink)wrapModel(inner));
+                }
             }
        });
     }
