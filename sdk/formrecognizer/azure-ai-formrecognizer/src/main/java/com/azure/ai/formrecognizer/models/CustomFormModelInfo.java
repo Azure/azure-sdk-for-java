@@ -34,7 +34,7 @@ public final class CustomFormModelInfo {
     private final OffsetDateTime completedOn;
 
     /**
-     * Constructs a {@link CustomFormModelInfo} box object.
+     * Constructs a {@link CustomFormModelInfo} object.
      *
      * @param modelId The model identifier.
      * @param status The status of the model.
@@ -52,7 +52,7 @@ public final class CustomFormModelInfo {
     /**
      * Get the model identifier.
      *
-     * @return the modelId value.
+     * @return the {@code modelId} value.
      */
     public String getModelId() {
         return this.modelId;
@@ -61,7 +61,7 @@ public final class CustomFormModelInfo {
     /**
      * Get the Status of the model.
      *
-     * @return the status value.
+     * @return the {@code status} value.
      */
     public CustomFormModelStatus getStatus() {
         return this.status;
@@ -70,7 +70,7 @@ public final class CustomFormModelInfo {
     /**
      * Get the date and time (UTC) when the training was requested.
      *
-     * @return the requestedOn value.
+     * @return the {@code requestedOn} value.
      */
     public OffsetDateTime getRequestedOn() {
         return this.requestedOn;
@@ -79,7 +79,7 @@ public final class CustomFormModelInfo {
     /**
      * Get the date and time (UTC) when the model training was completed.
      *
-     * @return the completedOn value.
+     * @return the {@code completedOn} value.
      */
     public OffsetDateTime getCompletedOn() {
         return this.completedOn;

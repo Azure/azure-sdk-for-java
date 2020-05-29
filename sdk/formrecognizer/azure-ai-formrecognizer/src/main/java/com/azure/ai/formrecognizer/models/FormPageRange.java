@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The PageRange model.
+ * The FormPageRange model.
  */
 @Immutable
 public final class FormPageRange {
@@ -23,7 +23,7 @@ public final class FormPageRange {
 
 
     /**
-     * Construct a PageRange object.
+     * Construct a FormPageRange object.
      *
      * @param firstPageNumber The first page number of the range.
      * @param lastPageNumber The first page number of the range..
@@ -34,7 +34,7 @@ public final class FormPageRange {
     }
 
     /**
-     * Get the first page number.
+     * Get the first page number of the range.
      *
      * @return the first page number of the range.
      */

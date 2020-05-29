@@ -79,7 +79,7 @@ public final class CustomFormModel {
     /**
      * Get the Model identifier.
      *
-     * @return the modelId value.
+     * @return the {@code modelId} value.
      */
     public String getModelId() {
         return this.modelId;
@@ -88,7 +88,7 @@ public final class CustomFormModel {
     /**
      * Get the status of the model.
      *
-     * @return the status value.
+     * @return the {@code modelStatus} value.
      */
     public CustomFormModelStatus getModelStatus() {
         return this.modelStatus;
@@ -97,7 +97,7 @@ public final class CustomFormModel {
     /**
      * Get the Date and time (UTC) when the training model was requested.
      *
-     * @return the requestedOn value.
+     * @return the {@code requestedOn} value.
      */
     public OffsetDateTime getRequestedOn() {
         return this.requestedOn;
@@ -106,7 +106,7 @@ public final class CustomFormModel {
     /**
      * Get the Date and time (UTC) when the model training was completed.
      *
-     * @return the completedOn value.
+     * @return the {@code completedOn} value.
      */
     public OffsetDateTime getCompletedOn() {
         return this.completedOn;
@@ -115,7 +115,7 @@ public final class CustomFormModel {
     /**
      * Get the errors returned during the training operation.
      *
-     * @return the errors value.
+     * @return the {@code modelError} value.
      */
     public List<FormRecognizerError> getModelError() {
         return this.modelError;
@@ -125,7 +125,7 @@ public final class CustomFormModel {
      * Get the list of sub model that are part of this model, each of which can recognize
      * and extract fields from a different type of form.
      *
-     * @return the sub models value.
+     * @return the {@code submodels} value.
      */
     public IterableStream<CustomFormSubmodel> getSubmodels() {
         return this.submodels;
@@ -134,7 +134,7 @@ public final class CustomFormModel {
     /**
      * Get the list of the documents used to train the model and any errors reported in each document.
      *
-     * @return the trainingDocuments value.
+     * @return the {@code trainingDocuments} value.
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;
