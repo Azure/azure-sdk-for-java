@@ -28,7 +28,7 @@ public class Target {
 
     /**
      * The digest of the content, as defined by the Registry V2 HTTP API
-     * Specificiation.
+     * Specification.
      */
     @JsonProperty(value = "digest")
     private String digest;
@@ -98,7 +98,7 @@ public class Target {
     }
 
     /**
-     * Get the digest of the content, as defined by the Registry V2 HTTP API Specificiation.
+     * Get the digest of the content, as defined by the Registry V2 HTTP API Specification.
      *
      * @return the digest value
      */
@@ -107,7 +107,7 @@ public class Target {
     }
 
     /**
-     * Set the digest of the content, as defined by the Registry V2 HTTP API Specificiation.
+     * Set the digest of the content, as defined by the Registry V2 HTTP API Specification.
      *
      * @param digest the digest value to set
      * @return the Target object itself.
