@@ -38,7 +38,7 @@ class NamespaceAuthorizationRuleImpl extends CreatableUpdatableImpl<NamespaceAut
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.namespaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "namespaces");
-        this.authorizationRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "AuthorizationRules");
+        this.authorizationRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "authorizationRules");
         //
     }
 
