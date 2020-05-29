@@ -37,7 +37,6 @@ import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -453,7 +452,7 @@ public class IdentityClient {
                 return getPublicClientApplication(false)
                     .acquireTokenSilently(parametersBuilder.build());
             } catch (MalformedURLException e) {
-                return getFailedCompletableFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
+                return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
             }
         }).map(ar -> new MsalToken(ar, options))
             .filter(t -> !t.isExpired())
@@ -466,7 +465,7 @@ public class IdentityClient {
                 try {
                     return getPublicClientApplication(false).acquireTokenSilently(forceParametersBuilder.build());
                 } catch (MalformedURLException e) {
-                    return getFailedCompletableFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
+                    return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
                 }
             }).map(result -> new MsalToken(result, options)));
     }
@@ -484,7 +483,7 @@ public class IdentityClient {
             try {
                 return getConfidentialClientApplication().acquireTokenSilently(parametersBuilder.build());
             } catch (MalformedURLException e) {
-                return getFailedCompletableFuture(logger.logExceptionAsError(Exceptions.propagate(e)));
+                return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
             }
         }).map(ar -> (AccessToken) new MsalToken(ar, options))
             .filter(t -> !t.isExpired());
