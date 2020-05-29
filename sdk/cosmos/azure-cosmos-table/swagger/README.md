@@ -1,4 +1,4 @@
-# Azure Cognitive Service - Text Analytics for Java
+# Azure Cosmos Table
 
 > see https://aka.ms/autorest
 

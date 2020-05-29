@@ -7,7 +7,7 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
@@ -15,7 +15,7 @@ Licensed under the MIT License.
   <artifactId>azure-cosmos-table</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for Azure Table</name>
-  <description>This Package contains Microsoft Azure Cosmos Table</description>
+  <description>This package contains the Microsoft Azure Cosmos Table client library.</description>
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
