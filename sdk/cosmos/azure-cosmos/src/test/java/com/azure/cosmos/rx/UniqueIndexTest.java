@@ -65,8 +65,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
@@ -122,8 +121,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
@@ -173,8 +171,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
