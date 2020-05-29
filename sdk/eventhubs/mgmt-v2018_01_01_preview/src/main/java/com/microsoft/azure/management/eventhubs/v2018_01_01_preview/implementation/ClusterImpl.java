@@ -21,7 +21,7 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
     @Override
     public Observable<Cluster> createResourceAsync() {
         ClustersInner client = this.manager().inner().clusters();
-        return client.putAsync(this.resourceGroupName(), this.name())
+        return client.putAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -45,8 +45,8 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
 
 
     @Override
-    public String created() {
-        return this.inner().created();
+    public String createdAt() {
+        return this.inner().createdAt();
     }
 
     @Override
@@ -65,8 +65,8 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
     }
 
     @Override
-    public String updated() {
-        return this.inner().updated();
+    public String updatedAt() {
+        return this.inner().updatedAt();
     }
 
     @Override
