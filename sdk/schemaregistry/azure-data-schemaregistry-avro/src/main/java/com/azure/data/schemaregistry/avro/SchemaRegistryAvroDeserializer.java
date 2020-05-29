@@ -11,9 +11,9 @@ import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
 /**
  * A deserializer implementation capable of automatedly deserializing encoded byte array payloads into Java objects by
  * fetching payload-specified schemas from the Azure Schema Registry store.
- *
+ * <p>
  * SchemaRegistryAvroDeserializer instances should be built using the static Builder class.
- *
+ * <p>
  * Pluggable with the core Azure SDK Deserializer interface.
  *
  * @see AbstractDataDeserializer See AbstractDataDeserializer for internal deserialization implementation
