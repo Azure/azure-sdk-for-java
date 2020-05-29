@@ -32,6 +32,7 @@ import com.microsoft.azure.management.sql.v2015_05_01_preview.SyncAgents;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.SyncGroups;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.SyncMembers;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.SubscriptionUsages;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.VirtualClusters;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.VirtualNetworkRules;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -56,6 +57,7 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private SyncGroups syncGroups;
     private SyncMembers syncMembers;
     private SubscriptionUsages subscriptionUsages;
+    private VirtualClusters virtualClusters;
     private VirtualNetworkRules virtualNetworkRules;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
@@ -262,6 +264,16 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.subscriptionUsages = new SubscriptionUsagesImpl(this);
         }
         return this.subscriptionUsages;
+    }
+
+    /**
+     * @return Entry point to manage VirtualClusters.
+     */
+    public VirtualClusters virtualClusters() {
+        if (this.virtualClusters == null) {
+            this.virtualClusters = new VirtualClustersImpl(this);
+        }
+        return this.virtualClusters;
     }
 
     /**

@@ -12,8 +12,12 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstance;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceUpdate;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.Sku;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedServerCreateMode;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceLicenseType;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceProxyOverride;
 import rx.functions.Func1;
 
 class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, ManagedInstanceInner, ManagedInstanceImpl, SqlManager> implements ManagedInstance, ManagedInstance.Definition, ManagedInstance.Update {
@@ -102,13 +106,53 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public String licenseType() {
+    public String instancePoolId() {
+        return this.inner().instancePoolId();
+    }
+
+    @Override
+    public ManagedInstanceLicenseType licenseType() {
         return this.inner().licenseType();
+    }
+
+    @Override
+    public String maintenanceConfigurationId() {
+        return this.inner().maintenanceConfigurationId();
+    }
+
+    @Override
+    public ManagedServerCreateMode managedInstanceCreateMode() {
+        return this.inner().managedInstanceCreateMode();
+    }
+
+    @Override
+    public String minimalTlsVersion() {
+        return this.inner().minimalTlsVersion();
+    }
+
+    @Override
+    public ManagedInstanceProxyOverride proxyOverride() {
+        return this.inner().proxyOverride();
+    }
+
+    @Override
+    public Boolean publicDataEndpointEnabled() {
+        return this.inner().publicDataEndpointEnabled();
+    }
+
+    @Override
+    public DateTime restorePointInTime() {
+        return this.inner().restorePointInTime();
     }
 
     @Override
     public Sku sku() {
         return this.inner().sku();
+    }
+
+    @Override
+    public String sourceManagedInstanceId() {
+        return this.inner().sourceManagedInstanceId();
     }
 
     @Override
@@ -124,6 +168,11 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     @Override
     public String subnetId() {
         return this.inner().subnetId();
+    }
+
+    @Override
+    public String timezoneId() {
+        return this.inner().timezoneId();
     }
 
     @Override
@@ -178,11 +227,81 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public ManagedInstanceImpl withLicenseType(String licenseType) {
+    public ManagedInstanceImpl withInstancePoolId(String instancePoolId) {
+        if (isInCreateMode()) {
+            this.inner().withInstancePoolId(instancePoolId);
+        } else {
+            this.updateParameter.withInstancePoolId(instancePoolId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withLicenseType(ManagedInstanceLicenseType licenseType) {
         if (isInCreateMode()) {
             this.inner().withLicenseType(licenseType);
         } else {
             this.updateParameter.withLicenseType(licenseType);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (isInCreateMode()) {
+            this.inner().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        } else {
+            this.updateParameter.withMaintenanceConfigurationId(maintenanceConfigurationId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode) {
+        if (isInCreateMode()) {
+            this.inner().withManagedInstanceCreateMode(managedInstanceCreateMode);
+        } else {
+            this.updateParameter.withManagedInstanceCreateMode(managedInstanceCreateMode);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withMinimalTlsVersion(String minimalTlsVersion) {
+        if (isInCreateMode()) {
+            this.inner().withMinimalTlsVersion(minimalTlsVersion);
+        } else {
+            this.updateParameter.withMinimalTlsVersion(minimalTlsVersion);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
+        if (isInCreateMode()) {
+            this.inner().withProxyOverride(proxyOverride);
+        } else {
+            this.updateParameter.withProxyOverride(proxyOverride);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled) {
+        if (isInCreateMode()) {
+            this.inner().withPublicDataEndpointEnabled(publicDataEndpointEnabled);
+        } else {
+            this.updateParameter.withPublicDataEndpointEnabled(publicDataEndpointEnabled);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withRestorePointInTime(DateTime restorePointInTime) {
+        if (isInCreateMode()) {
+            this.inner().withRestorePointInTime(restorePointInTime);
+        } else {
+            this.updateParameter.withRestorePointInTime(restorePointInTime);
         }
         return this;
     }
@@ -193,6 +312,16 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
             this.inner().withSku(sku);
         } else {
             this.updateParameter.withSku(sku);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withSourceManagedInstanceId(String sourceManagedInstanceId) {
+        if (isInCreateMode()) {
+            this.inner().withSourceManagedInstanceId(sourceManagedInstanceId);
+        } else {
+            this.updateParameter.withSourceManagedInstanceId(sourceManagedInstanceId);
         }
         return this;
     }
@@ -213,6 +342,16 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
             this.inner().withSubnetId(subnetId);
         } else {
             this.updateParameter.withSubnetId(subnetId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withTimezoneId(String timezoneId) {
+        if (isInCreateMode()) {
+            this.inner().withTimezoneId(timezoneId);
+        } else {
+            this.updateParameter.withTimezoneId(timezoneId);
         }
         return this;
     }
