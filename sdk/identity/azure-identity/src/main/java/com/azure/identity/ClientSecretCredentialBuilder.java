@@ -18,7 +18,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     /**
      * Sets the client secret for the authentication.
      * @param clientSecret the secret value of the AAD application.
-     * @return the ClientSecretCredentialBuilder itself
+     * @return An updated instance of this builder.
      */
     public ClientSecretCredentialBuilder clientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
@@ -30,7 +30,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      *
      * @param enabled indicates whether to enable using the shared token cache.
      *
-     * @return An updated instance of this builder with if the shared token cache enabled specified.
+     * @return An updated instance of this builder.
      */
     public ClientSecretCredentialBuilder enablePersistentCache(boolean enabled) {
         this.identityClientOptions.enablePersistentCache(enabled);
