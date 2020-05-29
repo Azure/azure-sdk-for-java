@@ -36,7 +36,7 @@ public final class CosmosDatabaseProperties {
         this.database = new Database(jsonString);
     }
 
-    // Converting document collection to CosmosContainerProperties
+    // Converting container to CosmosContainerProperties
     CosmosDatabaseProperties(Database database) {
         this.database = database;
     }
@@ -76,6 +76,7 @@ public final class CosmosDatabaseProperties {
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
@@ -85,6 +86,7 @@ public final class CosmosDatabaseProperties {
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

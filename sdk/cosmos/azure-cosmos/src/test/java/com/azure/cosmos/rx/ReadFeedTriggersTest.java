@@ -37,9 +37,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readTriggers() throws Exception {
-        FeedOptions options = new FeedOptions();
-
-        CosmosPagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers(options);
+        CosmosPagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers();
         int maxItemCount = 2;
         int expectedPageSize = (createdTriggers.size() + maxItemCount - 1) / maxItemCount;
 

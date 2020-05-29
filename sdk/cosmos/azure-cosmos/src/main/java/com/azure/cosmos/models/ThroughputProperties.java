@@ -99,6 +99,7 @@ public class ThroughputProperties {
 
     /**
      * Gets the name of the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the name of the resource.
      */
@@ -112,7 +113,7 @@ public class ThroughputProperties {
      * @param id the name of the resource.
      * @return the current instance of {@link ThroughputProperties}.
      */
-    public ThroughputProperties setId(String id) {
+    ThroughputProperties setId(String id) {
         this.offer.setId(id);
         return this;
     }
@@ -128,6 +129,7 @@ public class ThroughputProperties {
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
@@ -137,6 +139,7 @@ public class ThroughputProperties {
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

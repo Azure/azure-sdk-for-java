@@ -3,21 +3,13 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncUser;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.CosmosStoredProcedure;
-import com.azure.cosmos.CosmosTrigger;
-import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -70,21 +62,18 @@ public final class ModelBridgeInternal {
     private ModelBridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncConflictResponse createCosmosAsyncConflictResponse(ResourceResponse<Conflict> response,
-                                                                                CosmosAsyncContainer container) {
-        return new CosmosAsyncConflictResponse(response, container);
+    public static CosmosConflictResponse createCosmosConflictResponse(ResourceResponse<Conflict> response) {
+        return new CosmosConflictResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncContainerResponse createCosmosAsyncContainerResponse(ResourceResponse<DocumentCollection> response,
-                                                                                  CosmosAsyncDatabase database) {
-        return new CosmosAsyncContainerResponse(response, database);
+    public static CosmosContainerResponse createCosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
+        return new CosmosContainerResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncDatabaseResponse createCosmosAsyncDatabaseResponse(ResourceResponse<Database> response,
-                                                                                 CosmosAsyncClient client) {
-        return new CosmosAsyncDatabaseResponse(response, client);
+    public static CosmosDatabaseResponse createCosmosDatabaseResponse(ResourceResponse<Database> response) {
+        return new CosmosDatabaseResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -98,22 +87,18 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
-                                                                                    CosmosAsyncUser cosmosUser) {
-        return new CosmosAsyncPermissionResponse(response, cosmosUser);
+    public static CosmosPermissionResponse createCosmosPermissionResponse(ResourceResponse<Permission> response) {
+        return new CosmosPermissionResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncStoredProcedureResponse createCosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response,
-                                                                                              CosmosAsyncContainer cosmosContainer) {
-        return new CosmosAsyncStoredProcedureResponse(response, cosmosContainer);
+    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(ResourceResponse<StoredProcedure> response) {
+        return new CosmosStoredProcedureResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncStoredProcedureResponse createCosmosAsyncStoredProcedureResponse(StoredProcedureResponse response,
-                                                                                              CosmosAsyncContainer cosmosContainer,
-                                                                                              String storedProcedureId) {
-        return new CosmosAsyncStoredProcedureResponse(response, cosmosContainer, storedProcedureId);
+    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(StoredProcedureResponse response) {
+        return new CosmosStoredProcedureResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -127,59 +112,23 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
-                                                                              CosmosAsyncContainer container) {
-        return new CosmosAsyncTriggerResponse(response, container);
+    public static CosmosTriggerResponse createCosmosTriggerResponse(ResourceResponse<Trigger> response) {
+        return new CosmosTriggerResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUserDefinedFunctionResponse createCosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
-                                                                                                      CosmosAsyncContainer container) {
-        return new CosmosAsyncUserDefinedFunctionResponse(response, container);
+    public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response) {
+        return new CosmosUserDefinedFunctionResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUserResponse createCosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
-        return new CosmosAsyncUserResponse(response, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainerResponse createCosmosContainerResponse(CosmosAsyncContainerResponse response,
-                                                                        CosmosDatabase database, CosmosClient client) {
-        return new CosmosContainerResponse(response, database, client);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserResponse createCosmosUserResponse(CosmosAsyncUserResponse response, CosmosDatabase database) {
-        return new CosmosUserResponse(response, database);
+    public static CosmosUserResponse createCosmosUserResponse(ResourceResponse<User> response) {
+        return new CosmosUserResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
         return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabaseResponse createCosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
-        return new CosmosDatabaseResponse(response, client);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(CosmosAsyncStoredProcedureResponse resourceResponse,
-                                                CosmosStoredProcedure storedProcedure) {
-        return new CosmosStoredProcedureResponse(resourceResponse, storedProcedure);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(CosmosAsyncUserDefinedFunctionResponse resourceResponse,
-                                                    CosmosUserDefinedFunction userDefinedFunction) {
-        return new CosmosUserDefinedFunctionResponse(resourceResponse, userDefinedFunction);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosTriggerResponse createCosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
-                                        CosmosTrigger syncTrigger) {
-        return new CosmosTriggerResponse(asyncResponse, syncTrigger);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -611,8 +560,6 @@ public final class ModelBridgeInternal {
             ((CompositePath) t).populatePropertyBag();
         } else if (t instanceof ConflictResolutionPolicy) {
             ((ConflictResolutionPolicy) t).populatePropertyBag();
-        } else if (t instanceof DatabaseAccountLocation) {
-            ((DatabaseAccountLocation) t).populatePropertyBag();
         } else if (t instanceof ExcludedPath) {
             ((ExcludedPath) t).populatePropertyBag();
         } else if (t instanceof IncludedPath) {
@@ -646,8 +593,6 @@ public final class ModelBridgeInternal {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
-        } else if (t instanceof DatabaseAccountLocation) {
-            return ((DatabaseAccountLocation) t).getJsonSerializable();
         } else if (t instanceof ExcludedPath) {
             return ((ExcludedPath) t).getJsonSerializable();
         } else if (t instanceof IncludedPath) {

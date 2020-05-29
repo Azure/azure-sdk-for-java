@@ -54,8 +54,8 @@ public class MetadataDiagnosticsContext {
                 Duration.ZERO : Duration.between(metaDataDiagnostic.startTimeUTC, metaDataDiagnostic.endTimeUTC);
             jsonGenerator.writeStartObject();
             jsonGenerator.writeObjectField("metaDataName", metaDataDiagnostic.metaDataName);
-            jsonGenerator.writeStringField("startTimeUTC", ZonedDateTimeSerializer.formatDateTime(metaDataDiagnostic.startTimeUTC));
-            jsonGenerator.writeStringField("endTimeUTC", ZonedDateTimeSerializer.formatDateTime(metaDataDiagnostic.endTimeUTC));
+            jsonGenerator.writeStringField("startTimeUTC", DiagnosticsInstantSerializer.formatDateTime(metaDataDiagnostic.startTimeUTC));
+            jsonGenerator.writeStringField("endTimeUTC", DiagnosticsInstantSerializer.formatDateTime(metaDataDiagnostic.endTimeUTC));
             if(durationinMS != null) {
                 jsonGenerator.writeNumberField("durationinMS", durationinMS.toMillis());
             }

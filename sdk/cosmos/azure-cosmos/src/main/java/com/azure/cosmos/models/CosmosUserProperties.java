@@ -43,7 +43,7 @@ public final class CosmosUserProperties {
         this.user = new User(jsonString);
     }
 
-    // Converting document collection to CosmosContainerProperties
+    // Converting container to CosmosContainerProperties
     CosmosUserProperties(User user) {
         this.user = user;
     }
@@ -86,6 +86,7 @@ public final class CosmosUserProperties {
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
@@ -95,6 +96,7 @@ public final class CosmosUserProperties {
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

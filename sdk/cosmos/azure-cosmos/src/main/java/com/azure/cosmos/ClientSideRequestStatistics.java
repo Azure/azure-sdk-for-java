@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.ZonedDateTimeSerializer;
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -236,7 +236,7 @@ class ClientSideRequestStatistics {
     static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
         StoreResult storeResult;
-        @JsonSerialize(using = ZonedDateTimeSerializer.class)
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant requestResponseTime;
         ResourceType requestResourceType;
         OperationType requestOperationType;
@@ -280,8 +280,8 @@ class ClientSideRequestStatistics {
             generator.writeStartObject();
             long requestLatency = statistics.getDuration().toMillis();
             generator.writeNumberField("requestLatency", requestLatency);
-            generator.writeStringField("requestStartTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestStartTimeUTC));
-            generator.writeStringField("requestEndTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestEndTimeUTC));
+            generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestStartTimeUTC));
+            generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestEndTimeUTC));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
@@ -326,9 +326,9 @@ class ClientSideRequestStatistics {
     }
 
     private static class AddressResolutionStatistics {
-        @JsonSerialize(using = ZonedDateTimeSerializer.class)
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant startTime;
-        @JsonSerialize(using = ZonedDateTimeSerializer.class)
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant endTime;
         String targetEndpoint;
     }

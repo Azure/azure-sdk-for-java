@@ -16,12 +16,13 @@ import java.util.List;
 /**
  * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
  * instances as logical representation of the Azure Cosmos database service.
- *
+ * <p>
  * When building client, endpoint() and key() are mandatory APIs, without these the initialization will fail.
- *
+ * <p>
  * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
- * By default, database account level consistency level is used if none is provided.
- *
+ * By default, account consistency level is used if none is provided.
+ * <p>
+ * By default, direct connection mode is used if none specified. 
  * <pre>
  *     Building Cosmos Async Client minimal APIs (without any customized configurations)
  * {@code
@@ -476,7 +477,7 @@ public class CosmosClientBuilder {
      * "East US" as the preferred region.
      * <p>
      * When EnableEndpointDiscovery is true and PreferredRegions is non-empty,
-     * the SDK will prefer to use the regions in the collection in the order
+     * the SDK will prefer to use the regions in the container in the order
      * they are specified to perform operations.
      * <p>
      * If EnableEndpointDiscovery is set to false, this property is ignored.

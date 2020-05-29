@@ -19,14 +19,14 @@ public final class ChangeFeedOptions {
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
-    private final boolean populateQueryMetrics;
+    private final boolean queryMetricsEnabled;
     private Map<String, Object> properties;
 
     /**
      * Instantiates a new Change feed options.
      */
     public ChangeFeedOptions() {
-        this.populateQueryMetrics = false;
+        this.queryMetricsEnabled = false;
     }
 
     /**
@@ -41,7 +41,7 @@ public final class ChangeFeedOptions {
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
-        this.populateQueryMetrics = options.populateQueryMetrics;
+        this.queryMetricsEnabled = options.queryMetricsEnabled;
     }
 
     /**

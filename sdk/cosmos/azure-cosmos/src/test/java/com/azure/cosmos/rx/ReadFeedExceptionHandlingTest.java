@@ -47,9 +47,9 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
                                                                     .mergeWith(Flux.fromIterable(frps));
 
         final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
-        Mockito.when(mockedClientWrapper.readAllDatabases(null)).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> response));
+        Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> response));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
-        mockedClientWrapper.readAllDatabases(null).byPage().subscribe(subscriber);
+        mockedClientWrapper.readAllDatabases().byPage().subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);
         assertThat(subscriber.assertNotComplete());
         assertThat(subscriber.assertTerminated());
@@ -73,8 +73,8 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
             this.cosmosAsyncClient = cosmosAsyncClient;
         }
 
-        CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions feedOptions) {
-            return cosmosAsyncClient.readAllDatabases(feedOptions);
+        CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases() {
+            return cosmosAsyncClient.readAllDatabases();
         }
     }
 }

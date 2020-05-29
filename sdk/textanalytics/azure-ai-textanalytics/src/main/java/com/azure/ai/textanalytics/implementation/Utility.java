@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -173,14 +174,14 @@ public final class Utility {
         if (innerError == null) {
             final ErrorCodeValue errorCodeValue = textAnalyticsError.getCode();
             return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                errorCodeValue == null ? null : errorCodeValue.toString(),
+                TextAnalyticsErrorCode.fromString(errorCodeValue == null ? null : errorCodeValue.toString()),
                 textAnalyticsError.getMessage(),
                 textAnalyticsError.getTarget());
         }
 
         final InnerErrorCodeValue innerErrorCodeValue = innerError.getCode();
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            innerErrorCodeValue == null ? null : innerErrorCodeValue.toString(),
+            TextAnalyticsErrorCode.fromString(innerErrorCodeValue == null ? null : innerErrorCodeValue.toString()),
             innerError.getMessage(),
             innerError.getTarget());
     }
@@ -209,7 +210,7 @@ public final class Utility {
      */
     public static TextAnalyticsException toTextAnalyticsException(
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
-        return new TextAnalyticsException(error.getMessage(), error.getErrorCode().toString(), error.getTarget());
+        return new TextAnalyticsException(error.getMessage(), error.getErrorCode(), error.getTarget());
     }
 
     /**

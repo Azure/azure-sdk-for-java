@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.IndexKind;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * Represents the index of a collection in the Azure Cosmos DB database service.
+ * Represents the index of a container in the Azure Cosmos DB database service.
  */
 public abstract class Index {
     JsonSerializable jsonSerializable;

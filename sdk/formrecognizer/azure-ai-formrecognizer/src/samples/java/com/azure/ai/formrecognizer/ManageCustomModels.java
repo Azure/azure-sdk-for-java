@@ -40,7 +40,7 @@ public class ManageCustomModels {
             accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
         // Next, we get a paged list of all of our custom models
-        PagedIterable<CustomFormModelInfo> customModels = client.getModelInfos();
+        PagedIterable<CustomFormModelInfo> customModels = client.listCustomModels();
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
@@ -49,13 +49,13 @@ public class ManageCustomModels {
             CustomFormModel customModel = client.getCustomModel(customFormModelInfo.getModelId());
             System.out.printf("Model Id: %s%n", customModel.getModelId());
             System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-            System.out.printf("Created on: %s%n", customModel.getCreatedOn());
-            System.out.printf("Updated on: %s%n", customModel.getLastUpdatedOn());
-            customModel.getSubModels().forEach(customFormSubModel -> {
-                System.out.printf("Custom Model Form type: %s%n", customFormSubModel.getFormType());
-                System.out.printf("Custom Model Accuracy: %.2f%n", customFormSubModel.getAccuracy());
-                if (customFormSubModel.getFieldMap() != null) {
-                    customFormSubModel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+            System.out.printf("Created on: %s%n", customModel.getRequestedOn());
+            System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+            customModel.getSubmodels().forEach(customFormSubmodel -> {
+                System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
+                System.out.printf("Custom Model Accuracy: %.2f%n", customFormSubmodel.getAccuracy());
+                if (customFormSubmodel.getFieldMap() != null) {
+                    customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                         System.out.printf("Field Text: %s%n", fieldText);
                         System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                     });
