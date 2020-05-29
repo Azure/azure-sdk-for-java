@@ -9,14 +9,7 @@ import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.share.models.NtfsFileAttributes
-import com.azure.storage.file.share.models.PermissionCopyModeType
-import com.azure.storage.file.share.models.ShareErrorCode
-import com.azure.storage.file.share.models.ShareFileCopyInfo
-import com.azure.storage.file.share.models.ShareFileHttpHeaders
-import com.azure.storage.file.share.models.ShareFileRange
-import com.azure.storage.file.share.models.ShareSnapshotInfo
-import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.models.*
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
@@ -439,8 +432,10 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
+    @Unroll
     def "Upload range from URL"() {
         given:
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath + pathSuffix).buildFileClient()
         primaryFileClient.create(1024)
         def data = "The quick brown fox jumps over the lazy dog"
         def sourceOffset = 5
@@ -473,10 +468,16 @@ class FileAPITests extends APISpec {
         for(int i = 0; i < length; i++) {
             result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
         }
+        where:
+        pathSuffix || _
+        ""         || _
+        "ü1ü"      || _ /* Something url encoded. */
     }
 
+    @Unroll
     def "Start copy"() {
         given:
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath + pathSuffix).buildFileClient()
         primaryFileClient.create(1024)
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
@@ -491,6 +492,11 @@ class FileAPITests extends APISpec {
 
         then:
         assert pollResponse.getValue().getCopyId() != null
+
+        where:
+        pathSuffix || _
+        ""         || _
+        "ü1ü"      || _ /* Something url encoded. */
     }
 
     @Unroll
