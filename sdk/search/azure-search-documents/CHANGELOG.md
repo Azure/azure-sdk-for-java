@@ -18,6 +18,11 @@ and uplifted the properties to `SearchIndexerDataSourceConnection` and `SearchRe
 `NGramTokenFilter`, and `PathHierarchyTokenizer`.
 - Renamed `Similarity` to `SimilarityAlgorithm`.
 - Renamed `Suggester` to `SearchSuggester`.
+- Renamed fields `synonymMaps` to `synonymMapNames`, `analyzer` to `analyzerName`, 
+`searchAnalyzer` to `searchAnalyzerName` and `indexAnalyzer` to `indexAnalyzerName` 
+in `SearchField`, `SearchableField`.
+- Renamed `SimpleField` to `SimpleFieldBuilder`, `SearchableField` to `SearchableFieldBuilder`
+and `ComplexField` to `ComplexFieldBuilder`.
 
 ## 1.0.0-beta.3 (2020-05-05)
 - Replaced `isRetrievable` API with `isHidden`, parameter name changed from `retrievable` to `hidden`.

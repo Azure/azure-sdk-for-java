@@ -136,7 +136,7 @@ public class RefineSearchCapabilitiesExample {
 
         SearchIndex index = client.getIndex(INDEX_NAME);
         List<SearchField> fields = index.getFields();
-        fields.get(1).setSynonymMaps(Collections.singletonList(synonymMapName));
+        fields.get(1).setSynonymMapNames(Collections.singletonList(synonymMapName));
         index.setFields(fields);
 
         client.createOrUpdateIndex(index);
