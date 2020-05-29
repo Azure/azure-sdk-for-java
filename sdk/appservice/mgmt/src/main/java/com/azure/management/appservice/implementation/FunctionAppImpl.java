@@ -216,7 +216,7 @@ class FunctionAppImpl
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().getSdkContext().randomResourceName(name(), 32));
+                                        this.manager().sdkContext().randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
                             }))
@@ -328,6 +328,13 @@ class FunctionAppImpl
                     .withGeneralPurposeAccountKind()
                     .withSku(sku);
         }
+        this.addDependency(storageAccountCreatable);
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl withNewStorageAccount(Creatable<StorageAccount> storageAccount) {
+        storageAccountCreatable = storageAccount;
         this.addDependency(storageAccountCreatable);
         return this;
     }
@@ -631,7 +638,7 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().getSdkContext().randomResourceName(name(), 20),
+                    this.manager().sdkContext().randomResourceName(name(), 20),
                     com.azure.management.storage.models.SkuName.STANDARD_GRS);
             }
         }

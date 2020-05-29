@@ -6,12 +6,13 @@ package com.azure.cosmos.models;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.FeedResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,8 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final static String defaultPartition = "0";
-    private final FeedResponseDiagnostics feedResponseDiagnostics;
+    private final CosmosDiagnostics cosmosDiagnostics;
+    private QueryInfo queryInfo;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -63,7 +65,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
-        this.feedResponseDiagnostics = BridgeInternal.createFeedResponseDiagnostics(queryMetricsMap);
+        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
     }
 
     /**
@@ -309,8 +311,8 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      *
      * @return Feed response diagnostics
      */
-    public FeedResponseDiagnostics getFeedResponseDiagnostics() {
-        return this.feedResponseDiagnostics;
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return this.cosmosDiagnostics;
     }
 
     ConcurrentMap<String, QueryMetrics> queryMetrics() {
@@ -400,4 +402,13 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         }
         return null;
     }
+
+    void setQueryInfo(QueryInfo queryInfo) {
+        this.queryInfo = queryInfo;
+    }
+
+    QueryInfo getQueryInfo() {
+        return this.queryInfo;
+    }
+
 }

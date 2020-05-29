@@ -184,7 +184,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testDeployments() throws Exception {
-        String testId = azure.deployments().manager().getSdkContext().randomResourceName("", 8);
+        String testId = azure.deployments().manager().sdkContext().randomResourceName("", 8);
         PagedIterable<Deployment> deployments = azure.deployments().list();
         System.out.println("Deployments: " + TestUtilities.getSize(deployments));
         Deployment deployment =
@@ -216,13 +216,13 @@ public class AzureTests extends TestBase {
         NetworkSecurityGroup nsg =
             azure
                 .networkSecurityGroups()
-                .define(azure.networkSecurityGroups().manager().getSdkContext().randomResourceName("nsg", 13))
+                .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("nsg", 13))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .create();
         azure
             .publicIpAddresses()
-            .define(azure.networkSecurityGroups().manager().getSdkContext().randomResourceName("pip", 13))
+            .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("pip", 13))
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(nsg.resourceGroupName())
             .create();
@@ -559,7 +559,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testManagedDiskVMUpdate() throws Exception {
-        SdkContext context = azure.disks().manager().getSdkContext();
+        SdkContext context = azure.disks().manager().sdkContext();
         final String rgName = context.randomResourceName("rg", 13);
         final String linuxVM2Name = context.randomResourceName("vm" + "-", 10);
         final String linuxVM2Pip = context.randomResourceName("pip" + "-", 18);

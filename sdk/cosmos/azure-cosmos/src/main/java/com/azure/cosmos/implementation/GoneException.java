@@ -4,13 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RMResources;
-import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -19,7 +15,7 @@ import java.util.Map;
 /**
  * The type Gone exception.
  */
-public class GoneException extends CosmosClientException {
+public class GoneException extends CosmosException {
 
     /**
      * Instantiates a new Gone exception.
@@ -106,7 +102,7 @@ public class GoneException extends CosmosClientException {
             innerException,
             HttpUtils.asMap(headers),
             HttpConstants.StatusCodes.GONE,
-            requestUrl != null 
+            requestUrl != null
                 ? requestUrl.toString()
                 : null);
     }

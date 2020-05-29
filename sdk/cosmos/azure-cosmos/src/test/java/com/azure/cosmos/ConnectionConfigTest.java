@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.rx.TestSuiteBase;
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -141,18 +140,18 @@ public class ConnectionConfigTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" })
     public void buildClient_withNoConnectionConfig() {
-        CosmosClient cosmosClient = null;
-        try {
-            cosmosClient = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .buildClient();
-            Assertions.failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
-        } catch (Exception e) {
-            assertThat(e instanceof IllegalArgumentException);
-        } finally {
-            safeCloseSyncClient(cosmosClient);
-        }
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY);
+
+        CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
+
+        AsyncDocumentClient asyncDocumentClient =
+            CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
+        ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
+        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT));
+        validateDirectConnectionConfig(connectionPolicy, cosmosClientBuilder, DirectConnectionConfig.getDefaultConfig());
+        safeCloseSyncClient(cosmosClient);
     }
 
     private void validateDirectAndGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder,

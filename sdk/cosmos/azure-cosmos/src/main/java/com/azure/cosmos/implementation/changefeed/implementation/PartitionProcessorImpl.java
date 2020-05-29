@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -121,10 +120,10 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 }
             })
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
+                if (throwable instanceof CosmosException) {
 
-                    CosmosClientException clientException = (CosmosClientException) throwable;
-                    logger.warn("CosmosClientException: partition {} from thread {}",
+                    CosmosException clientException = (CosmosException) throwable;
+                    logger.warn("CosmosException: partition {} from thread {}",
                         this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.AccessCondition;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
@@ -20,17 +19,18 @@ public class RequestOptions {
     private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
-    private AccessCondition accessCondition;
     private IndexingDirective indexingDirective;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Integer resourceTokenExpirySeconds;
     private String offerType;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private Integer offerThroughput;
     private PartitionKey partitionkey;
     private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
-    private boolean populateQuotaInfo;
+    private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
 
@@ -71,21 +71,39 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return tthe ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return this.accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      */
-    public void setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public void setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
+     */
+    public void setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
     }
 
     /**
@@ -261,25 +279,25 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
+     * Gets the quotaInfoEnabled setting for document collection read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting document collection quota related stats for document
      * collection read requests.
      *
-     * @return true if PopulateQuotaInfo is enabled
+     * @return true if quotaInfoEnabled is enabled
      */
-    public boolean isPopulateQuotaInfo() {
-        return populateQuotaInfo;
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
     }
 
     /**
-     * Sets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
+     * Sets the quotaInfoEnabled setting for document collection read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting document collection quota related stats for document
      * collection read requests.
      *
-     * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      */
-    public void setPopulateQuotaInfo(boolean populateQuotaInfo) {
-        this.populateQuotaInfo = populateQuotaInfo;
+    public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
     }
 
     /**

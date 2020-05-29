@@ -111,7 +111,7 @@ class VirtualNetworkGatewayImpl
     @Override
     public VirtualNetworkGatewayImpl withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
         withNewNetwork(
-            this.manager().getSdkContext().randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
+            this.manager().sdkContext().randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
         return this;
     }
 
@@ -141,7 +141,7 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withNewPublicIpAddress() {
-        final String pipName = this.manager().getSdkContext().randomResourceName("pip", 9);
+        final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
         this.creatablePip =
             this
                 .manager()
@@ -361,7 +361,7 @@ class VirtualNetworkGatewayImpl
         VirtualNetworkGatewayIpConfigurationImpl ipConfig =
             (VirtualNetworkGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
-            String name = this.manager().getSdkContext().randomResourceName("ipcfg", 11);
+            String name = this.manager().sdkContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
@@ -370,7 +370,7 @@ class VirtualNetworkGatewayImpl
 
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().getSdkContext().randomResourceName("pip", 9);
+            final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
             this.creatablePip =
                 this
                     .manager()

@@ -326,6 +326,14 @@ public interface FunctionApp extends WebAppBase, Refreshable<FunctionApp>, Updat
             WithCreate withNewStorageAccount(String name, StorageAccountSkuType sku);
 
             /**
+             * Creates a new storage account to use for the function app.
+             *
+             * @param storageAccount a creatable definition for a new storage account
+             * @return the next stage of the definition
+             */
+            WithCreate withNewStorageAccount(Creatable<StorageAccount> storageAccount);
+
+            /**
              * Specifies the storage account to use for the function app.
              *
              * @param storageAccount the storage account to use

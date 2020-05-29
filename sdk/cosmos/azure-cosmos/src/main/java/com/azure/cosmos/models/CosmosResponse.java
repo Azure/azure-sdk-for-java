@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 
@@ -15,24 +15,24 @@ import java.util.Map;
  */
 public class CosmosResponse<T> {
     private T properties;
-    protected final ResourceResponse<?> resourceResponseWrapper;
+    final ResourceResponse<?> resourceResponseWrapper;
 
-    protected CosmosResponse(ResourceResponse<?> resourceResponse) {
+    CosmosResponse(ResourceResponse<?> resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;
     }
 
-    protected CosmosResponse(T properties) {
+    CosmosResponse(T properties) {
         this.properties = properties;
         this.resourceResponseWrapper = null;
     }
 
-    protected CosmosResponse(ResourceResponse<?> resourceResponse, T properties) {
+    CosmosResponse(ResourceResponse<?> resourceResponse, T properties) {
         this.resourceResponseWrapper = resourceResponse;
         this.properties = properties;
     }
 
-    // Only used in CosmosAsyncStoredProcedureResponse compatibility with StoredProcedureResponse
-    protected CosmosResponse(StoredProcedureResponse response) {
+    // Only used in CosmosStoredProcedureResponse compatibility with StoredProcedureResponse
+    CosmosResponse(StoredProcedureResponse response) {
         this.resourceResponseWrapper = null;
     }
 
@@ -45,7 +45,7 @@ public class CosmosResponse<T> {
         return properties;
     }
 
-    protected CosmosResponse<T> setProperties(T resourceSettings) {
+    CosmosResponse<T> setProperties(T resourceSettings) {
         this.properties = resourceSettings;
         return this;
     }
@@ -119,8 +119,8 @@ public class CosmosResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return resourceResponseWrapper.getResponseDiagnostics();
+    public CosmosDiagnostics getDiagnostics() {
+        return resourceResponseWrapper.getDiagnostics();
     }
 
     /**
@@ -128,7 +128,7 @@ public class CosmosResponse<T> {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    public Duration getRequestLatency() {
-        return resourceResponseWrapper.getRequestLatency();
+    public Duration getDuration() {
+        return resourceResponseWrapper.getDuration();
     }
 }

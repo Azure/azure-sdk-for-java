@@ -55,14 +55,6 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
         return new ImmutabilityPolicyImpl(inner, manager());
     }
 
-    public Mono<ImmutabilityPolicyInner> getImmutabilityPolicyInnerUsingBlobContainersClientAsync(String id) {
-        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
-        String accountName = IdParsingUtils.getValueFromIdByName(id, "storageAccounts");
-        String containerName = IdParsingUtils.getValueFromIdByName(id, "containers");
-        BlobContainersClient client = this.inner();
-        return client.getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName);
-    }
-
     @Override
     public PagedFlux<ListContainerItemInner> listAsync(String resourceGroupName, String accountName) {
         BlobContainersClient client = this.inner();
@@ -104,22 +96,28 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
+        return getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
+    }
+
+    @Override
+    public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
+        String resourceGroupName, String accountName, String containerName, String eTagValue) {
         BlobContainersClient client = this.inner();
         return client
-            .getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName)
+            .getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
             .map(this::wrapImmutabilityPolicyModel);
     }
 
     @Override
-    public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
+    public Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
         return deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
-    public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
+    public Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
-        return inner().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue);
+        return inner().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).then();
     }
 
     @Override

@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -47,7 +48,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     private FormTrainingAsyncClient getFormTrainingAsyncClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
-        FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -56,7 +57,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK)
             ? new AzureKeyCredential(INVALID_KEY) : new AzureKeyCredential(getApiKey());
         builder.credential(credential);
-        return builder.buildAsyncClient().getFormTrainingAsyncClient();
+        return builder.buildAsyncClient();
     }
 
     /**
@@ -180,9 +181,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((storageSASUrl, useTrainingLabels) -> {
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useTrainingLabels).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
@@ -193,7 +194,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable ->
-                    throwable.getMessage().contains(HttpResponseStatus.NOT_FOUND.toString()));
+                    assertTrue(throwable.getMessage().contains("404")));
         });
     }
 
@@ -232,9 +233,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void beginTrainingLabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((storageSASUrl, useTrainingLabels) -> {
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useTrainingLabels).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             validateCustomModelData(syncPoller.getFinalResult(), true);
         });
@@ -247,9 +248,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingUnlabeledRunner((storageSASUrl, useTrainingLabels) -> {
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useTrainingLabels).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             validateCustomModelData(syncPoller.getFinalResult(), false);
         });

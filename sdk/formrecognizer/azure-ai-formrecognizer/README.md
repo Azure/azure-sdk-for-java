@@ -23,13 +23,13 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Create a Form Recognizer resource
-Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
+Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's 
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Form Recognizer access only,
 create a Form Recognizer resource.
 
@@ -50,10 +50,10 @@ az group create --name my-resource-group --location westus2
 ```bash
 # Create Form Recognizer
 az cognitiveservices account create \
-    --name text-analytics-resource \
+    --name form-recognizer-resource \
     --resource-group my-resource-group \
-    --kind TextAnalytics \
-    --sku F0 \
+    --kind FormRecognizer \
+    --sku S0 \
     --location westus2 \
     --yes
 ```
@@ -74,7 +74,7 @@ To use AzureKeyCredential authentication, provide the [key][key] as a string to 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ``` 
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L38-L41 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -83,7 +83,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L48-L54 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L55 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -143,17 +143,18 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L58-L74 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L59-L76 -->
 ```java
-String analyzeFilePath = "{file_source_url}";
+String formUrl = "{file_url}";
 String modelId = "{custom_trained_model_id}";
-SyncPoller<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-    formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
+SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
+    formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
 
-IterableStream<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
+List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
-recognizedForms.forEach(form -> {
-    System.out.println("----------- Recognized Form -----------");
+for (int i = 0; i < recognizedForms.size(); i++) {
+    RecognizedForm form = recognizedForms.get(i);
+    System.out.printf("----------- Recognized Form %s%n-----------", i);
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) -> {
         System.out.printf("Field %s has value %s with confidence score of %d.%n", label,
@@ -161,22 +162,23 @@ recognizedForms.forEach(form -> {
             formField.getConfidence());
     });
     System.out.print("-----------------------------------");
-});
+}
 ```
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L78-L98 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L80-L101 -->
 ```java
-String analyzeFilePath = "{file_source_url}";
-SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
-    formRecognizerClient.beginRecognizeContentFromUrl(analyzeFilePath);
+String contentFileUrl = "{file_url}";
+SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+    formRecognizerClient.beginRecognizeContentFromUrl(contentFileUrl);
 
-IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
-layoutPageResults.forEach(formPage -> {
+for (int i = 0; i < contentPageResults.size(); i++) {
+    FormPage formPage = contentPageResults.get(i);
+    System.out.printf("----Recognizing content for page %s%n----", i);
     // Table information
-    System.out.println("----Recognizing content ----");
     System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),
         formPage.getHeight(),
         formPage.getUnit());
@@ -188,20 +190,22 @@ layoutPageResults.forEach(formPage -> {
         });
         System.out.println();
     });
-});
+}
 ```
 
 ### Recognize receipts
 Recognize data from a USA sales receipts using a prebuilt model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L102-L119 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L105-L124 -->
 ```java
-String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
-SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-    formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
-IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = 
+    formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
+List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
-receiptPageResults.forEach(recognizedReceipt -> {
+for (int i = 0; i < receiptPageResults.size(); i++) {
+    System.out.printf("----Recognizing receipt for page %s%n----", i);
+    RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
     USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
     System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
     System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
@@ -212,14 +216,14 @@ receiptPageResults.forEach(recognizedReceipt -> {
     System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
     System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
     System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
-});
+}
 ``` 
 
 ### Train a model
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L123-L143 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L128-L148 -->
 ```java
 String trainingFilesUrl = "{training_set_SAS_URL}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -246,7 +250,7 @@ customFormModel.getSubModels().forEach(customFormSubModel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L147-L176 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L152-L181 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -288,7 +292,7 @@ to provide an invalid file source URL an `ErrorResponseException` would be raise
 In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L183-L187 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L188-L192 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -354,8 +358,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [form_recognizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [form_recognizer_async_client]: src/main/java/com/azure/ai/formrecognizer/FormRecognizerAsyncClient.java
 [form_recognizer_sync_client]: src/main/java/com/azure/ai/formrecognizer/FormRecognizerClient.java
-[form_training_async_client]: src/main/java/com/azure/ai/formrecognizer/FormTrainingAsyncClient.java
-[form_training_sync_client]: src/main/java/com/azure/ai/formrecognizer/FormTrainingClient.java
+[form_training_async_client]: src/main/java/com/azure/ai/formrecognizer/training/FormTrainingAsyncClient.java
+[form_training_sync_client]: src/main/java/com/azure/ai/formrecognizer/training/FormTrainingClient.java
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [fr_labeling_tool]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/label-tool
 [fr_train_without_labels]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-without-labels
