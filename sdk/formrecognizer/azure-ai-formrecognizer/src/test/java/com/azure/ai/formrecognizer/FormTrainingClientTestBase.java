@@ -8,7 +8,7 @@ import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
-import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
@@ -93,12 +93,12 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
             actualCustomModel.getModelStatus().toString());
         validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getCreatedOn());
-        assertNotNull(actualCustomModel.getLastUpdatedOn());
+        assertNotNull(actualCustomModel.getRequestedOn());
+        assertNotNull(actualCustomModel.getCompletedOn());
         validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
             actualCustomModel.getTrainingDocuments());
-        final List<CustomFormSubModel> subModelList =
-            actualCustomModel.getSubModels().stream().collect(Collectors.toList());
+        final List<CustomFormSubmodel> subModelList =
+            actualCustomModel.getSubmodels().stream().collect(Collectors.toList());
         if (isLabeled) {
             final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
             for (final FormFieldsReport expectedField : fields) {
@@ -164,7 +164,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     abstract void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);

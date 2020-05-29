@@ -71,8 +71,8 @@ public class DataSourceSyncTests extends SearchTestBase {
 
         Iterator<SearchIndexerDataSourceConnection> results = client.listDataSourceConnections().iterator();
 
-        assertEquals(dataSource1.getName(), results.next().getName());
-        assertEquals(dataSource2.getName(), results.next().getName());
+        assertDataSourceEquals(dataSource1, results.next());
+        assertDataSourceEquals(dataSource2, results.next());
         assertFalse(results.hasNext());
     }
 
@@ -86,10 +86,9 @@ public class DataSourceSyncTests extends SearchTestBase {
         client.createOrUpdateDataSourceConnectionWithResponse(dataSource2, false, new RequestOptions(), Context.NONE);
         dataSourcesToDelete.add(dataSource2.getName());
 
-        Iterator<SearchIndexerDataSourceConnection> results = client.listDataSourceConnections("name", new RequestOptions(), Context.NONE).iterator();
-
-        assertEquals(dataSource1.getName(), results.next().getName());
-        assertEquals(dataSource2.getName(), results.next().getName());
+        Iterator<String> results = client.listDataSourceConnectionNames(new RequestOptions(), Context.NONE).iterator();
+        assertEquals(dataSource1.getName(), results.next());
+        assertEquals(dataSource2.getName(), results.next());
         assertFalse(results.hasNext());
     }
 
@@ -405,5 +404,13 @@ public class DataSourceSyncTests extends SearchTestBase {
         return SearchIndexerDataSources.createFromCosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
             "SELECT ... FROM x where x._ts > @HighWaterMark", useChangeDetection, FAKE_DESCRIPTION,
             deletionDetectionPolicy);
+    }
+
+    private void assertDataSourceEquals(SearchIndexerDataSourceConnection expect,
+        SearchIndexerDataSourceConnection actual) {
+        assertEquals(expect.getName(), actual.getName());
+        assertEquals(expect.getDescription(), actual.getDescription());
+        assertEquals(expect.getType(), actual.getType());
+        assertEquals(expect.getContainer().getName(), actual.getContainer().getName());
     }
 }

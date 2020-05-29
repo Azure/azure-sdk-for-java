@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import java.util.Map;
 
 /**
- * The CustomFormSubModel model.
+ * The CustomFormSubmodel model.
  */
 @Immutable
-public final class CustomFormSubModel {
+public final class CustomFormSubmodel {
 
     /*
      * Estimated extraction accuracy for this model.
@@ -23,19 +23,19 @@ public final class CustomFormSubModel {
      */
     private final Map<String, CustomFormModelField> fieldMap;
 
-    /**
+    /*
      * The form type.
      */
     private final String formType;
 
     /**
-     * Constructs a CustomFormSubModel object.
+     * Constructs a CustomFormSubmodel object.
      *
      * @param accuracy The estimated extraction accuracy for this model.
      * @param fieldMap The Map of fields used to train the model.
      * @param formType The recognized form type.
      */
-    public CustomFormSubModel(final Float accuracy, final Map<String, CustomFormModelField> fieldMap,
+    public CustomFormSubmodel(final Float accuracy, final Map<String, CustomFormModelField> fieldMap,
         final String formType) {
         this.accuracy = accuracy;
         this.fieldMap = fieldMap;

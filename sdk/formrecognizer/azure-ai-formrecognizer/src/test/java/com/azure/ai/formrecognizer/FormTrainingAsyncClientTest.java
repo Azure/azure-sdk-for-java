@@ -203,12 +203,12 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+     public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getModelInfos())
+        StepVerifier.create(client.listCustomModels())
             .thenConsumeWhile(customFormModelInfo ->
-                customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
-                    && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
+                customFormModelInfo.getModelId() != null && customFormModelInfo.getRequestedOn() != null
+                    && customFormModelInfo.getCompletedOn() != null && customFormModelInfo.getStatus() != null)
             .verifyComplete();
     }
 

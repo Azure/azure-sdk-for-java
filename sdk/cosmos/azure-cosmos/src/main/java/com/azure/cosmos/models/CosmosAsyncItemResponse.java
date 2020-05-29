@@ -182,6 +182,7 @@ public class CosmosAsyncItemResponse<T> {
 
     /**
      * Gets the ETag from the response headers.
+     * This is only relevant when getting response from the server.
      *
      * Null in case of delete operation.
      *
