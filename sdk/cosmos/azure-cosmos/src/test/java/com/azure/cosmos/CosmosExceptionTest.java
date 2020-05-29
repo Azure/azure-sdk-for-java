@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
@@ -57,7 +58,7 @@ public class CosmosExceptionTest {
     @Test(groups = { "unit" })
     public void sdkVersionPresent() {
         CosmosException dce = BridgeInternal.createCosmosException(0);
-        assertThat(dce.toString()).contains("sdkVersion=" + HttpConstants.Versions.SDK_VERSION);
+        assertThat(dce.toString()).contains("userAgent=" + Utils.getUserAgent());
     }
 
     @Test(groups = { "unit" })
@@ -117,7 +118,7 @@ public class CosmosExceptionTest {
             constructor.setAccessible(true);
             final CosmosException instance = constructor.newInstance("some-message", null, "some-uri");
             assertEquals(instance.getStatusCode(), expectedStatusCode);
-            assertThat(instance.toString()).contains("sdkVersion=" + HttpConstants.Versions.SDK_VERSION);
+            assertThat(instance.toString()).contains("userAgent=" + Utils.getUserAgent());
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
             String message = lenientFormat("could not create instance of %s due to %s", type, error);
             throw new AssertionError(message, error);

@@ -374,6 +374,10 @@ public class Utils {
         }
     }
 
+    public static String getUserAgent() {
+        return getUserAgent(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.SDK_VERSION);
+    }
+
     public static String getUserAgent(String sdkName, String sdkVersion) {
         String osName = System.getProperty("os.name");
         if (osName == null) {

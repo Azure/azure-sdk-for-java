@@ -7,6 +7,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
-    private final static String SDK_VERSION = HttpConstants.Versions.SDK_VERSION;
+    private final static String USER_AGENT = Utils.getUserAgent();
 
     private final int statusCode;
     private final Map<String, String> responseHeaders;
@@ -260,7 +261,7 @@ public class CosmosException extends AzureException {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "sdkVersion=" + SDK_VERSION + ", error=" + cosmosError + ", resourceAddress='"
+        return getClass().getSimpleName() + "{" + "userAgent=" + USER_AGENT + ", error=" + cosmosError + ", resourceAddress='"
                    + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage()
                    + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
                    + filterSensitiveData(requestHeaders) + '}';

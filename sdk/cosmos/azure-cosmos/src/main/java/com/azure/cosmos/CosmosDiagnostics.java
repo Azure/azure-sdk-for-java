@@ -3,7 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -17,6 +17,8 @@ import java.time.Duration;
 public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static final String USER_AGENT = Utils.getUserAgent();
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
@@ -45,16 +47,18 @@ public final class CosmosDiagnostics {
      */
     @Override
     public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("userAgent=").append(USER_AGENT).append("\n");
         if (this.feedResponseDiagnostics != null) {
-            return feedResponseDiagnostics.toString();
+            stringBuilder.append(feedResponseDiagnostics);
+        } else {
+            try {
+                stringBuilder.append(OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics));
+            } catch (JsonProcessingException e) {
+                LOGGER.error("Error while parsing diagnostics " + e);
+            }
         }
-
-        try {
-            return OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Error while parsing diagnostics " + e);
-        }
-        return StringUtils.EMPTY;
+        return stringBuilder.toString();
     }
 
     /**
