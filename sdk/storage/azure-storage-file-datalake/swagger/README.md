@@ -64,6 +64,7 @@ directive:
   where: $["x-ms-paths"]["/{filesystem}/{path}"]["patch"]
   transform: >
       delete $.responses["200"]["schema"];
+      $.responses["200"]["headers"]["x-ms-continuation"]["x-ms-client-name"] = "Continuation";
 ```
 
 ### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=append
