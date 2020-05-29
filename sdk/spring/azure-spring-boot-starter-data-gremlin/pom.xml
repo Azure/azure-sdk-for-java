@@ -56,7 +56,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:*</include>
+                <include>com.microsoft.azure:azure-spring-boot:[2.2.5-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.2.3]</include> <!-- {x-include-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->

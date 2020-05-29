@@ -516,12 +516,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if (!$includeNode.NextSibling -or $includeNode.NextSibling.NodeType -ne "Comment")
                 {
                     $script:FoundError = $true
-                    Write-Error-With-Color "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);external_dependency} -->"
+                    Write-Error-With-Color "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
-                elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(\w+)?$($groupId):$($artifactId);external_dependency}")
+                elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(\w+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}")
                 {
                     $script:FoundError = $true
-                    Write-Error-With-Color "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);external_dependency} -->"
+                    Write-Error-With-Color "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
                 else
                 {
@@ -539,18 +539,45 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                         # entries in case it's an external dependency entry. Because this has already
                         # been validated for format, grab the group:artifact
                         $depKey = $includeNode.NextSibling.Value.Trim().Split(";")[1]
-                        if ($extDepHash.ContainsKey($depKey))
+                        $depType = $includeNode.NextSibling.Value.Trim().Split(";")[2]
+                        $depType = $depType.Substring(0, $depType.IndexOf("}"))
+                        if ($depType -eq $DependencyTypeExternal)
                         {
-                            if ($versionWithoutBraces -ne $extDepHash[$depKey].ver)
+                            if ($extDepHash.ContainsKey($depKey))
+                            {
+                                if ($versionWithoutBraces -ne $extDepHash[$depKey].ver)
+                                {
+                                    $script:FoundError = $true
+                                    Write-Error-With-Color "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
+                                }
+                            }
+                            else
                             {
                                 $script:FoundError = $true
-                                Write-Error-With-Color "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
+                                Write-Error-With-Color "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
                             }
-                        }
+                        } 
                         else
                         {
-                            $script:FoundError = $true
-                            Write-Error-With-Color "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
+                            if ($depType -eq $DependencyTypeDependency)
+                            {
+                                if ($versionWithoutBraces -ne $libHash[$depKey].depVer)
+                                {
+                                    return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
+                                }
+                            }
+                            elseif ($depType -eq $DependencyTypeCurrent) 
+                            {
+                                # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
+                                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
+                                {
+                                    return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
+                                }
+                                if ($versionWithoutBraces -ne $libHash[$depKey].curVer)
+                                {
+                                    return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
+                                }
+                            }
                         }
                     }
                 }
