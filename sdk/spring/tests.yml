@@ -11,7 +11,7 @@ jobs:
             OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.8'
             DisplayName: 'Linux - Java 8'
-            CloudType: AzureCloud
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
             AZURE_TEST_HTTP_CLIENTS: netty
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
