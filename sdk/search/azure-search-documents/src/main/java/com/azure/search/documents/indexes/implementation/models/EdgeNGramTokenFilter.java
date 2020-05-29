@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * of an input token. This token filter is implemented using Apache Lucene.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.EdgeNGramTokenFilterV2")
+@JsonTypeName("#Microsoft.Azure.Search.EdgeNGramTokenFilter")
 @Fluent
 public final class EdgeNGramTokenFilter extends TokenFilter {
     /*
