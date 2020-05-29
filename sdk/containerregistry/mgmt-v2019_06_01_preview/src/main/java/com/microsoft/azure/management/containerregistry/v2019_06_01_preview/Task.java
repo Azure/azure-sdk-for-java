@@ -30,6 +30,11 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
     AgentProperties agentConfiguration();
 
     /**
+     * @return the agentPoolName value.
+     */
+    String agentPoolName();
+
+    /**
      * @return the creationDate value.
      */
     DateTime creationDate();
@@ -177,6 +182,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         }
 
         /**
+         * The stage of the task definition allowing to specify AgentPoolName.
+         */
+        interface WithAgentPoolName {
+            /**
+             * Specifies agentPoolName.
+             * @param agentPoolName The dedicated agent pool for the task
+             * @return the next definition stage
+             */
+            WithCreate withAgentPoolName(String agentPoolName);
+        }
+
+        /**
          * The stage of the task definition allowing to specify Credentials.
          */
         interface WithCredentials {
@@ -253,13 +270,13 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Task>, DefinitionStages.WithAgentConfiguration, DefinitionStages.WithCredentials, DefinitionStages.WithIdentity, DefinitionStages.WithStatus, DefinitionStages.WithTags, DefinitionStages.WithTimeout, DefinitionStages.WithTrigger {
+        interface WithCreate extends Creatable<Task>, DefinitionStages.WithAgentConfiguration, DefinitionStages.WithAgentPoolName, DefinitionStages.WithCredentials, DefinitionStages.WithIdentity, DefinitionStages.WithStatus, DefinitionStages.WithTags, DefinitionStages.WithTimeout, DefinitionStages.WithTrigger {
         }
     }
     /**
      * The template for a Task update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Task>, UpdateStages.WithAgentConfiguration, UpdateStages.WithCredentials, UpdateStages.WithIdentity, UpdateStages.WithPlatform, UpdateStages.WithStatus, UpdateStages.WithStep, UpdateStages.WithTags, UpdateStages.WithTimeout, UpdateStages.WithTrigger {
+    interface Update extends Appliable<Task>, UpdateStages.WithAgentConfiguration, UpdateStages.WithAgentPoolName, UpdateStages.WithCredentials, UpdateStages.WithIdentity, UpdateStages.WithPlatform, UpdateStages.WithStatus, UpdateStages.WithStep, UpdateStages.WithTags, UpdateStages.WithTimeout, UpdateStages.WithTrigger {
     }
 
     /**
@@ -276,6 +293,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
              * @return the next update stage
              */
             Update withAgentConfiguration(AgentProperties agentConfiguration);
+        }
+
+        /**
+         * The stage of the task update allowing to specify AgentPoolName.
+         */
+        interface WithAgentPoolName {
+            /**
+             * Specifies agentPoolName.
+             * @param agentPoolName The dedicated agent pool for the task
+             * @return the next update stage
+             */
+            Update withAgentPoolName(String agentPoolName);
         }
 
         /**

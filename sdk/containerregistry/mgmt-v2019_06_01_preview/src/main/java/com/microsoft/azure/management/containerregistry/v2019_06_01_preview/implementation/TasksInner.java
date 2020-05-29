@@ -11,8 +11,8 @@ package com.microsoft.azure.management.containerregistry.v2019_06_01_preview.imp
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.ErrorResponseException;
 import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.TaskUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -112,7 +112,7 @@ public class TasksInner {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TaskInner&gt; object if successful.
      */
@@ -222,10 +222,10 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TaskInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<TaskInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<TaskInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TaskInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TaskInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -236,7 +236,7 @@ public class TasksInner {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskInner object if successful.
      */
@@ -315,10 +315,10 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<TaskInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TaskInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TaskInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TaskInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TaskInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -330,7 +330,7 @@ public class TasksInner {
      * @param taskName The name of the container registry task.
      * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskInner object if successful.
      */
@@ -414,7 +414,7 @@ public class TasksInner {
      * @param taskName The name of the container registry task.
      * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskInner object if successful.
      */
@@ -500,11 +500,11 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<TaskInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TaskInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TaskInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TaskInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TaskInner>() { }.getType())
                 .register(201, new TypeToken<TaskInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -515,7 +515,7 @@ public class TasksInner {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String registryName, String taskName) {
@@ -590,7 +590,7 @@ public class TasksInner {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String registryName, String taskName) {
@@ -668,12 +668,12 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -685,7 +685,7 @@ public class TasksInner {
      * @param taskName The name of the container registry task.
      * @param taskUpdateParameters The parameters for updating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskInner object if successful.
      */
@@ -769,7 +769,7 @@ public class TasksInner {
      * @param taskName The name of the container registry task.
      * @param taskUpdateParameters The parameters for updating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskInner object if successful.
      */
@@ -855,11 +855,11 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<TaskInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TaskInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TaskInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TaskInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TaskInner>() { }.getType())
                 .register(201, new TypeToken<TaskInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -870,7 +870,7 @@ public class TasksInner {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskInner object if successful.
      */
@@ -949,10 +949,10 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<TaskInner> getDetailsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TaskInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TaskInner> getDetailsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TaskInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TaskInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -961,7 +961,7 @@ public class TasksInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TaskInner&gt; object if successful.
      */
@@ -1060,10 +1060,10 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TaskInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<TaskInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<TaskInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TaskInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TaskInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
