@@ -1,0 +1,142 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "String"
+    },
+    "tenantId": {
+      "type": "String"
+    },
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "endpointSuffix": {
+      "defaultValue": "vault.azure.net",
+      "type": "String"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
+    "secretName": "spring-cosmos-db-key",
+    "secretValue": "rock",
+    "keyVaultName": "[parameters('baseName')]",
+    "appServicePlanName": "[concat(parameters('baseName'), '-plan')]",
+    "appServiceName": "[concat(parameters('baseName'), '-app')]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-11-01",
+      "name": "[variables('appServicePlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[variables('location')]",
+      "kind": "linux",
+      "tags": null,
+      "properties": {
+        "name": "[variables('appServicePlanName')]",
+        "workerSize": "0",
+        "workerSizeId": "0",
+        "numberOfWorkers": "1",
+        "reserved": true
+      },
+      "sku": {
+        "Tier": "Basic",
+        "Name": "B1"
+      }
+    },
+    {
+      "apiVersion": "2018-11-01",
+      "name": "[variables('appServiceName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "properties": {
+        "name": "[variables('appServiceName')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AZURE_KEYVAULT_URI",
+              "value": "[variables('azureKeyVaultUrl')]"
+            }
+          ],
+          "linuxFxVersion": "JAVA|8-jre8",
+          "alwaysOn": false
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "clientAffinityEnabled": false
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2016-10-01",
+      "name": "[variables('keyVaultName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
+      ],
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('testApplicationOid')]",
+            "permissions": {
+              "secrets": [ "get", "list" ]
+            }
+          },
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('appServiceName')), '2019-08-01', 'Full').identity.principalId]",
+            "permissions": {
+                "secrets": [ "get", "list" ]
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false,
+        "enableSoftDelete": false
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', variables('secretName'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[variables('secretValue')]"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_KEYVAULT_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultUrl')]"
+    },
+    "KEY_VAULT_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('secretName')]"
+    },
+    "KEY_VAULT_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('secretValue')]"
+    },
+    "APP_SERVICE_NAME": {
+      "type": "string",
+      "value": "[variables('appServiceName')]"
+    }
+  }
+}

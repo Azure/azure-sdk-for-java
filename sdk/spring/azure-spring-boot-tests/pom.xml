@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-spring-boot-tests</artifactId>
+  <version>2.2.5-beta.1</version>
+  <packaging>pom</packaging>
+
+  <name>Azure Spring Boot Tests</name>
+  <description>Tests for Azure Spring Boot</description>
+
+  <modules>
+    <module>azure-spring-boot-test-core</module>
+    <module>azure-spring-boot-test-aad</module>
+    <module>azure-spring-boot-test-cosmosdb</module>
+    <module>azure-spring-boot-test-keyvault</module>
+  </modules>
+
+  <properties>
+    <!-- For module that has different relative path to the root dir, project.rootdir should be redefined
+    in its module pom file -->
+    <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
+    <azure.spring.boot.version>2.2.5-beta.1</azure.spring.boot.version>
+    <cobertura.version>2.1.1</cobertura.version>
+    <secure.channel.version>0.1.53</secure.channel.version>
+    <expect4j.version>1.6</expect4j.version>
+    <commons.net.version>3.3</commons.net.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-spring-boot-bom</artifactId>
+        <version>${azure.spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>net.sourceforge.cobertura</groupId>
+        <artifactId>cobertura</artifactId>
+        <version>${cobertura.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-spring-boot-test-core</artifactId>
+        <version>${azure.spring.boot.version}</version>
+      </dependency>
+
+      <!--  SSH  -->
+      <dependency>
+        <groupId>com.jcraft</groupId>
+        <artifactId>jsch</artifactId>
+        <version>${secure.channel.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.cverges.expect4j</groupId>
+        <artifactId>expect4j</artifactId>
+        <version>${expect4j.version}</version>
+      </dependency>
+
+      <!--  Azure Management  -->
+
+      <!--      <dependency>-->
+<!--        <groupId>commons-net</groupId>-->
+<!--        <artifactId>commons-net</artifactId>-->
+<!--        <version>${commons.net.version}</version>-->
+<!--      </dependency>-->
+    </dependencies>
+  </dependencyManagement>
+</project>
