@@ -361,13 +361,13 @@ The following section provides several code snippets illustrating common pattern
 These code samples show common scenario operations with the Azure Form Recognizer client library.
 The async versions of the samples show asynchronous operations with Form Recognizer.
 
-* Recognize receipts: [RecognizeReceipts][recognize_receipts], ([async][recognize_receipts_async])
-* Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url], ([async][recognize_receipts_from_url_async])
-* Recognize content: [RecognizeContent][recognize_content], ([async][recognize_content_async])
-* Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms], ([async][recognize_custom_forms_async])
-* Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model], ([async][train_unlabeled_model_async])
-* Train a model with labels: [TrainModelWithLabels][train_labeled_model], ([async][train_labeled_model_async])
-* Manage custom models: [ManageCustomModels][manage_custom_models], ([async_version][manage_custom_models_async])
+* Recognize receipts: [RecognizeReceipts][recognize_receipts] ([async][recognize_receipts_async])
+* Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url] ([async][recognize_receipts_from_url_async])
+* Recognize content: [RecognizeContent][recognize_content] ([async][recognize_content_async])
+* Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms] ([async][recognize_custom_forms_async])
+* Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model] ([async][train_unlabeled_model_async])
+* Train a model with labels: [TrainModelWithLabels][train_labeled_model] ([async][train_labeled_model_async])
+* Manage custom models: [ManageCustomModels][manage_custom_models] ([async][manage_custom_models_async])
 
 ### Additional documentation
 
@@ -387,7 +387,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
+[azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
