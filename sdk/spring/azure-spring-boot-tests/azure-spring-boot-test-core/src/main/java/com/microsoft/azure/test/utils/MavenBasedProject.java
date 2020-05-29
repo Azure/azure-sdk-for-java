@@ -58,10 +58,9 @@ public class MavenBasedProject {
     public String artifact() {
         try (FileInputStream input = new FileInputStream(new File(path, "pom.xml"))) {
             MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(input);
+            reader.read(input);
 
-            String artifact = String.format("%s-%s.jar", model.getArtifactId(), model.getVersion());
-            File result = new File(new File(path, "target"), artifact);
+            File result = new File(new File(path, "target"), "app.jar");
             return result.getAbsolutePath();
 
         } catch (IOException | XmlPullParserException ex) {
