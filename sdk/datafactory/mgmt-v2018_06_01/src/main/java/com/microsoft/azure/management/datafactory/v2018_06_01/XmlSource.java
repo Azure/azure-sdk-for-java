@@ -14,22 +14,22 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A copy activity Json source.
+ * A copy activity Xml source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = JsonSource.class)
-@JsonTypeName("JsonSource")
-public class JsonSource extends CopySource {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = XmlSource.class)
+@JsonTypeName("XmlSource")
+public class XmlSource extends CopySource {
     /**
-     * Json store settings.
+     * Xml store settings.
      */
     @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
     /**
-     * Json format settings.
+     * Xml format settings.
      */
     @JsonProperty(value = "formatSettings")
-    private JsonReadSettings formatSettings;
+    private XmlReadSettings formatSettings;
 
     /**
      * Specifies the additional columns to be added to source data. Type: array
@@ -39,7 +39,7 @@ public class JsonSource extends CopySource {
     private List<AdditionalColumns> additionalColumns;
 
     /**
-     * Get json store settings.
+     * Get xml store settings.
      *
      * @return the storeSettings value
      */
@@ -48,32 +48,32 @@ public class JsonSource extends CopySource {
     }
 
     /**
-     * Set json store settings.
+     * Set xml store settings.
      *
      * @param storeSettings the storeSettings value to set
-     * @return the JsonSource object itself.
+     * @return the XmlSource object itself.
      */
-    public JsonSource withStoreSettings(StoreReadSettings storeSettings) {
+    public XmlSource withStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
     }
 
     /**
-     * Get json format settings.
+     * Get xml format settings.
      *
      * @return the formatSettings value
      */
-    public JsonReadSettings formatSettings() {
+    public XmlReadSettings formatSettings() {
         return this.formatSettings;
     }
 
     /**
-     * Set json format settings.
+     * Set xml format settings.
      *
      * @param formatSettings the formatSettings value to set
-     * @return the JsonSource object itself.
+     * @return the XmlSource object itself.
      */
-    public JsonSource withFormatSettings(JsonReadSettings formatSettings) {
+    public XmlSource withFormatSettings(XmlReadSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
     }
@@ -91,9 +91,9 @@ public class JsonSource extends CopySource {
      * Set specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
      *
      * @param additionalColumns the additionalColumns value to set
-     * @return the JsonSource object itself.
+     * @return the XmlSource object itself.
      */
-    public JsonSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public XmlSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
     }
