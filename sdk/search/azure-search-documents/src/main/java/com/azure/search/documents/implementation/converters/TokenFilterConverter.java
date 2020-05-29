@@ -9,6 +9,7 @@ import com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFi
 import com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter;
+import com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterV2;
 import com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.KeepTokenFilter;
 import com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter;
@@ -72,13 +73,13 @@ public final class TokenFilterConverter {
             return CjkBigramTokenFilterConverter.map((CjkBigramTokenFilter) obj);
         }
         if (obj instanceof EdgeNGramTokenFilterV2) {
-            return EdgeNGramTokenFilterV2Converter.map((EdgeNGramTokenFilterV2) obj);
+            return EdgeNGramTokenFilterConverter.map((EdgeNGramTokenFilterV2) obj);
         }
         if (obj instanceof PatternCaptureTokenFilter) {
             return PatternCaptureTokenFilterConverter.map((PatternCaptureTokenFilter) obj);
         }
         if (obj instanceof NGramTokenFilterV2) {
-            return NGramTokenFilterV2Converter.map((NGramTokenFilterV2) obj);
+            return NGramTokenFilterConverter.map((NGramTokenFilterV2) obj);
         }
         if (obj instanceof PatternReplaceTokenFilter) {
             return PatternReplaceTokenFilterConverter.map((PatternReplaceTokenFilter) obj);
@@ -164,17 +165,11 @@ public final class TokenFilterConverter {
         if (obj instanceof com.azure.search.documents.indexes.models.EdgeNGramTokenFilter) {
             return EdgeNGramTokenFilterConverter.map((com.azure.search.documents.indexes.models.EdgeNGramTokenFilter) obj);
         }
-        if (obj instanceof com.azure.search.documents.indexes.models.EdgeNGramTokenFilterV2) {
-            return EdgeNGramTokenFilterV2Converter.map((com.azure.search.documents.indexes.models.EdgeNGramTokenFilterV2) obj);
-        }
         if (obj instanceof com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter) {
             return DictionaryDecompounderTokenFilterConverter.map((com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.models.PatternReplaceTokenFilter) {
             return PatternReplaceTokenFilterConverter.map((com.azure.search.documents.indexes.models.PatternReplaceTokenFilter) obj);
-        }
-        if (obj instanceof com.azure.search.documents.indexes.models.NGramTokenFilterV2) {
-            return NGramTokenFilterV2Converter.map((com.azure.search.documents.indexes.models.NGramTokenFilterV2) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.models.StemmerTokenFilter) {
             return StemmerTokenFilterConverter.map((com.azure.search.documents.indexes.models.StemmerTokenFilter) obj);

@@ -29,7 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = PathHierarchyTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternTokenizer", value = PatternTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizer", value = LuceneStandardTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizerV2", value = LuceneStandardTokenizerV2.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer", value = UaxUrlEmailTokenizer.class)
 })
 @Fluent

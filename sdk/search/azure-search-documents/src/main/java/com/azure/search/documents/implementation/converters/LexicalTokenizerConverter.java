@@ -50,7 +50,7 @@ public final class LexicalTokenizerConverter {
             return KeywordTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.KeywordTokenizer) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2) {
-            return LuceneStandardTokenizerV2Converter.map((com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2) obj);
+            return LuceneStandardTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2) obj);
         }
         if (obj instanceof com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer) {
             return UaxUrlEmailTokenizerConverter.map((com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer) obj);
@@ -93,9 +93,6 @@ public final class LexicalTokenizerConverter {
         }
         if (obj instanceof MicrosoftLanguageTokenizer) {
             return MicrosoftLanguageTokenizerConverter.map((MicrosoftLanguageTokenizer) obj);
-        }
-        if (obj instanceof LuceneStandardTokenizerV2) {
-            return LuceneStandardTokenizerV2Converter.map((LuceneStandardTokenizerV2) obj);
         }
         if (obj instanceof LuceneStandardTokenizer) {
             return LuceneStandardTokenizerConverter.map((LuceneStandardTokenizer) obj);
