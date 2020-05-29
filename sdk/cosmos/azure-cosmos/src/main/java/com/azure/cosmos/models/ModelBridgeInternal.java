@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -559,8 +560,6 @@ public final class ModelBridgeInternal {
             ((CompositePath) t).populatePropertyBag();
         } else if (t instanceof ConflictResolutionPolicy) {
             ((ConflictResolutionPolicy) t).populatePropertyBag();
-        } else if (t instanceof DatabaseAccountLocation) {
-            ((DatabaseAccountLocation) t).populatePropertyBag();
         } else if (t instanceof ExcludedPath) {
             ((ExcludedPath) t).populatePropertyBag();
         } else if (t instanceof IncludedPath) {
@@ -594,8 +593,6 @@ public final class ModelBridgeInternal {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
-        } else if (t instanceof DatabaseAccountLocation) {
-            return ((DatabaseAccountLocation) t).getJsonSerializable();
         } else if (t instanceof ExcludedPath) {
             return ((ExcludedPath) t).getJsonSerializable();
         } else if (t instanceof IncludedPath) {
