@@ -6,7 +6,7 @@ package com.azure.search.documents.indexes.models;
 /**
  * A helper Field model to build a simple {@link SearchField}.
  */
-public class SimpleField extends SearchFieldBase {
+public class SimpleFieldBuilder extends SearchFieldBase {
     private boolean key;
     private boolean facetable;
     private boolean sortable;
@@ -14,14 +14,14 @@ public class SimpleField extends SearchFieldBase {
     private boolean hidden;
 
     /**
-     * Initializes a new instance of the {@link SimpleField} class.
+     * Initializes a new instance of the {@link SimpleFieldBuilder} class.
      *
      * @param name The name of the field, which must be unique within the index or parent field.
      * @param dataType The {@link SearchFieldDataType} of the {@link SearchField}.
      * @param collection boolean field to indicate whether the dataType is collection.
      * @throws NullPointerException when {@code name} is null.
      */
-    public SimpleField(String name, SearchFieldDataType dataType, boolean collection) {
+    public SimpleFieldBuilder(String name, SearchFieldDataType dataType, boolean collection) {
         super(name, collection ? SearchFieldDataType.collection(dataType) : dataType);
     }
 
@@ -40,7 +40,7 @@ public class SimpleField extends SearchFieldBase {
      * @param key boolean to indicate whether the field is key field or not.
      * @return The SimpleField object itself.
      */
-    public SimpleField setKey(boolean key) {
+    public SimpleFieldBuilder setKey(boolean key) {
         this.key = key;
         return this;
     }
@@ -65,7 +65,7 @@ public class SimpleField extends SearchFieldBase {
      * @param sortable The boolean to indicate whether the field is sortable or not.
      * @return The SimpleField object itself.
      */
-    public SimpleField setSortable(boolean sortable) {
+    public SimpleFieldBuilder setSortable(boolean sortable) {
         this.sortable = sortable;
         return this;
     }
@@ -86,7 +86,7 @@ public class SimpleField extends SearchFieldBase {
      * @param filterable The boolean to indicate whether the field is filterable or not.
      * @return The SimpleField object itself.
      */
-    public SimpleField setFilterable(boolean filterable) {
+    public SimpleFieldBuilder setFilterable(boolean filterable) {
         this.filterable = filterable;
         return this;
     }
@@ -107,7 +107,7 @@ public class SimpleField extends SearchFieldBase {
      * @param hidden The boolean to indicate whether the field is hidden or not.
      * @return The SimpleField object itself.
      */
-    public SimpleField setHidden(boolean hidden) {
+    public SimpleFieldBuilder setHidden(boolean hidden) {
         this.hidden = hidden;
         return this;
     }
@@ -131,7 +131,7 @@ public class SimpleField extends SearchFieldBase {
      * @param facetable The boolean to indicate whether the field is facetable or not.
      * @return The SimpleField object itself.
      */
-    public SimpleField setFacetable(boolean facetable) {
+    public SimpleFieldBuilder setFacetable(boolean facetable) {
         this.facetable = facetable;
         return this;
     }
