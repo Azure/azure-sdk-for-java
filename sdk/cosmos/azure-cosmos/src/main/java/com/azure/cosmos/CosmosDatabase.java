@@ -10,7 +10,7 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -302,7 +302,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    CosmosPagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+    CosmosPagedIterable<CosmosContainerProperties> readAllContainers(QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllContainers(options));
     }
 
@@ -332,7 +332,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(query, options));
     }
 
@@ -355,7 +355,7 @@ public class CosmosDatabase {
      */
     public CosmosPagedIterable<CosmosContainerProperties> queryContainers(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(querySpec, options));
     }
 
@@ -411,7 +411,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    CosmosPagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
+    CosmosPagedIterable<CosmosUserProperties> readAllUsers(QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllUsers(options));
     }
 
@@ -432,7 +432,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(query, options));
     }
 
@@ -453,7 +453,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(querySpec, options));
     }
 

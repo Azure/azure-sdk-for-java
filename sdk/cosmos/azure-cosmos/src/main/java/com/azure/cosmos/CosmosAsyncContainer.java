@@ -17,7 +17,7 @@ import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -287,7 +287,7 @@ public class CosmosAsyncContainer {
      * error.
      */
     <T> CosmosPagedFlux<T> readAllItems(Class<T> classType) {
-        return readAllItems(new FeedOptions(), classType);
+        return readAllItems(new QueryRequestOptions(), classType);
     }
 
     /**
@@ -303,7 +303,7 @@ public class CosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read Cosmos items or an
      * error.
      */
-    <T> CosmosPagedFlux<T> readAllItems(FeedOptions options, Class<T> classType) {
+    <T> CosmosPagedFlux<T> readAllItems(QueryRequestOptions options, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
@@ -337,12 +337,12 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter.
      * @param query the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(String query, FeedOptions options, Class<T> classType) {
+    public <T> CosmosPagedFlux<T> queryItems(String query, QueryRequestOptions options, Class<T> classType) {
         return queryItems(new SqlQuerySpec(query), options, classType);
     }
 
@@ -360,11 +360,11 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
-        return queryItems(querySpec, new FeedOptions(), classType);
+        return queryItems(querySpec, new QueryRequestOptions(), classType);
     }
 
     /**
-     * Query for items in the current container using a {@link SqlQuerySpec} and {@link FeedOptions}.
+     * Query for items in the current container using a {@link SqlQuerySpec} and {@link QueryRequestOptions}.
      * <p>
      * After subscription the operation will be performed. The {@link Flux} will
      * contain one or several feed response of the obtained items. In case of
@@ -372,21 +372,21 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter.
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, QueryRequestOptions options, Class<T> classType) {
         return queryItemsInternal(querySpec, options, classType);
     }
 
     private <T> CosmosPagedFlux<T> queryItemsInternal(
-        SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> classType) {
+        SqlQuerySpec sqlQuerySpec, QueryRequestOptions queryRequestOptions, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, queryRequestOptions);
             return getDatabase().getDocClientWrapper()
-                       .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
+                       .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, queryRequestOptions)
                        .map(response ->
                                 prepareFeedResponse(response, classType));
         });
@@ -573,11 +573,11 @@ public class CosmosAsyncContainer {
     /**
      * Lists all the conflicts in the current container.
      *
-     * @param options the feed options
+     * @param options the query request options
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public CosmosPagedFlux<CosmosConflictProperties> readAllConflicts(FeedOptions options) {
+    public CosmosPagedFlux<CosmosConflictProperties> readAllConflicts(QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().readConflicts(getLink(), options)
@@ -595,18 +595,18 @@ public class CosmosAsyncContainer {
      * obtained conflicts or an error.
      */
     public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query) {
-        return queryConflicts(query, new FeedOptions());
+        return queryConflicts(query, new QueryRequestOptions());
     }
 
     /**
      * Queries all the conflicts in the current container.
      *
      * @param query the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query, QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
@@ -637,7 +637,7 @@ public class CosmosAsyncContainer {
                    .flatMap(response -> this.database.getDocClientWrapper()
                                             .queryOffers(database.getOfferQuerySpecFromResourceId(response.getProperties()
                                                                                                       .getResourceId())
-                                                , new FeedOptions())
+                                                , new QueryRequestOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
@@ -668,7 +668,7 @@ public class CosmosAsyncContainer {
                    .flatMap(response -> this.database.getDocClientWrapper()
                                             .queryOffers(database.getOfferQuerySpecFromResourceId(response.getProperties()
                                                                                                       .getResourceId())
-                                                , new FeedOptions())
+                                                , new QueryRequestOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {

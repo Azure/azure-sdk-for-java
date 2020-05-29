@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -595,15 +595,15 @@ public class Utils {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
+    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, QueryRequestOptions queryRequestOptions) {
         if (pagedFluxOptions == null) {
             return;
         }
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            ModelBridgeInternal.setFeedOptionsContinuationToken(feedOptions, pagedFluxOptions.getRequestContinuation());
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(queryRequestOptions, pagedFluxOptions.getRequestContinuation());
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
-            ModelBridgeInternal.setFeedOptionsMaxItemCount(feedOptions, pagedFluxOptions.getMaxItemCount());
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(queryRequestOptions, pagedFluxOptions.getMaxItemCount());
         }
     }
 

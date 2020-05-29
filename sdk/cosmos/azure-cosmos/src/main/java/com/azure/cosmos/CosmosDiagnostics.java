@@ -48,7 +48,7 @@ public final class CosmosDiagnostics {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("userAgent=").append(USER_AGENT).append("\n");
+        stringBuilder.append("userAgent=").append(USER_AGENT).append(System.lineSeparator());
         if (this.feedResponseDiagnostics != null) {
             stringBuilder.append(feedResponseDiagnostics);
         } else {

@@ -14,7 +14,7 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -77,8 +77,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, FeedOptions feedOptions) {
-        return this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, feedOptions)
+    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, QueryRequestOptions queryRequestOptions) {
+        return this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, queryRequestOptions)
             .publishOn(this.rxScheduler);
     }
 
@@ -147,7 +147,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
     @Override
     public <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec,
-                                                FeedOptions options, Class<T> klass) {
+                                                QueryRequestOptions options, Class<T> klass) {
         return containerLink.queryItems(querySpec, options, klass)
                             .byPage()
                             .publishOn(this.rxScheduler);

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -50,28 +50,28 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     @DataProvider(name = "responseContinuationTokenLimitParamProvider")
     public static Object[][] responseContinuationTokenLimitParamProvider() {
 
-        FeedOptions options1 = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options1, 1);
+        QueryRequestOptions options1 = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options1, 1);
         options1.getResponseContinuationTokenLimitInKb(5);
         options1.setPartitionKey(new PartitionKey("99"));
         String query1 = "Select * from r";
         boolean multiPartitionCollection1 = true;
 
-        FeedOptions options2 = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options2, 1);
+        QueryRequestOptions options2 = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options2, 1);
         options2.getResponseContinuationTokenLimitInKb(5);
         options2.setPartitionKey(new PartitionKey("99"));
         String query2 = "Select * from r order by r.prop";
         boolean multiPartitionCollection2 = false;
 
-        FeedOptions options3 = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options3, 1);
+        QueryRequestOptions options3 = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options3, 1);
         options3.getResponseContinuationTokenLimitInKb(5);
         options3.setPartitionKey(new PartitionKey("99"));
         String query3 = "Select * from r";
         boolean multiPartitionCollection3 = false;
 
-        FeedOptions options4 = new FeedOptions();
+        QueryRequestOptions options4 = new QueryRequestOptions();
         options4.setPartitionKey(new PartitionKey("99"));
         String query4 = "Select * from r order by r.prop";
         boolean multiPartitionCollection4 = false;
@@ -85,7 +85,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     }
 
     @Test(dataProvider = "responseContinuationTokenLimitParamProvider", groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryWithContinuationTokenLimit(FeedOptions options, String query, boolean isMultiParitionCollection) throws Exception {
+    public void queryWithContinuationTokenLimit(QueryRequestOptions options, String query, boolean isMultiParitionCollection) throws Exception {
         String collectionLink;
         if (isMultiParitionCollection) {
             collectionLink = getMultiPartitionCollectionLink();
@@ -160,7 +160,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         // wait for catch up
         TimeUnit.SECONDS.sleep(1);
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)
