@@ -19,7 +19,7 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -412,7 +412,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
             new SearchField()
                 .setName("HotelRewards")
                 .setType(SearchFieldDataType.STRING)));
-        existingIndex.setSuggesters(Collections.singletonList(new Suggester()
+        existingIndex.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
             .setName("Suggestion")
             .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
         ));
@@ -430,7 +430,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
         SearchIndex existingIndex = client.getIndex(index.getName());
         String existingFieldName = "Category";
-        existingIndex.setSuggesters(Collections.singletonList(new Suggester()
+        existingIndex.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
             .setName("Suggestion")
             .setSourceFields(Collections.singletonList(existingFieldName))
         ));
