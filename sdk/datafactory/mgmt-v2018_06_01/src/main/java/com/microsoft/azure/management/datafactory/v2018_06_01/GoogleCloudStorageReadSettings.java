@@ -61,6 +61,13 @@ public class GoogleCloudStorageReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /**
      * The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
      */
@@ -191,6 +198,26 @@ public class GoogleCloudStorageReadSettings extends StoreReadSettings {
      */
     public GoogleCloudStorageReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the GoogleCloudStorageReadSettings object itself.
+     */
+    public GoogleCloudStorageReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
         return this;
     }
 
