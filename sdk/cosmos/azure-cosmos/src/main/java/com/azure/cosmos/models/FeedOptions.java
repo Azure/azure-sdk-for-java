@@ -181,7 +181,7 @@ public final class FeedOptions {
     }
 
     /**
-     * Sets the ResponseContinuationTokenLimitInKb request option for document query
+     * Sets the ResponseContinuationTokenLimitInKb request option for item query
      * requests in the Azure Cosmos DB service.
      * <p>
      * ResponseContinuationTokenLimitInKb is used to limit the length of
@@ -206,7 +206,7 @@ public final class FeedOptions {
     }
 
     /**
-     * Gets the ResponseContinuationTokenLimitInKb request option for document query
+     * Gets the ResponseContinuationTokenLimitInKb request option for item query
      * requests in the Azure Cosmos DB service. If not already set returns 0.
      * <p>
      * ResponseContinuationTokenLimitInKb is used to limit the length of
@@ -293,7 +293,7 @@ public final class FeedOptions {
     }
 
     /**
-     * Sets the option to enable/disable getting metrics relating to query execution on document query requests
+     * Sets the option to enable/disable getting metrics relating to query execution on item query requests
      *
      * @param queryMetricsEnabled whether to enable or disable query metrics
      * @return the FeedOptionsBase.

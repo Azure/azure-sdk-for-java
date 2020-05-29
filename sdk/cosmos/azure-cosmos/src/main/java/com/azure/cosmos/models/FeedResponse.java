@@ -96,7 +96,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the maximum quota for collection resources within an account from the Azure Cosmos DB service.
+     * Gets the maximum quota for container resources within an account from the Azure Cosmos DB service.
      *
      * @return The maximum quota for the account.
      */
@@ -105,9 +105,9 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the current number of collection resources within the account from the Azure Cosmos DB service.
+     * Gets the current number of container resources within the account from the Azure Cosmos DB service.
      *
-     * @return The current number of collections.
+     * @return The current number of containers.
      */
     public long getCollectionUsage() {
         return this.currentQuotaHeader(Constants.Quota.COLLECTION);
@@ -150,7 +150,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the maximum size of a collection in kilobytes from the Azure Cosmos DB service.
+     * Gets the maximum size of a container in kilobytes from the Azure Cosmos DB service.
      *
      * @return The maximum quota in kilobytes.
      */
@@ -159,16 +159,16 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the current size of a collection in kilobytes from the Azure Cosmos DB service.
+     * Gets the current size of a container in kilobytes from the Azure Cosmos DB service.
      *
-     * @return The current size of a collection in kilobytes.
+     * @return The current size of a container in kilobytes.
      */
     public long getCollectionSizeUsage() {
         return this.currentQuotaHeader(Constants.Quota.COLLECTION_SIZE);
     }
 
     /**
-     * Gets the maximum quota of stored procedures for a collection from the Azure Cosmos DB service.
+     * Gets the maximum quota of stored procedures for a container from the Azure Cosmos DB service.
      *
      * @return The maximum stored procedure quota.
      */
@@ -177,7 +177,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the current number of stored procedures for a collection from the Azure Cosmos DB service.
+     * Gets the current number of stored procedures for a container from the Azure Cosmos DB service.
      *
      * @return The current number of stored procedures.
      */
@@ -186,7 +186,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the maximum quota of triggers for a collection from the Azure Cosmos DB service.
+     * Gets the maximum quota of triggers for a container from the Azure Cosmos DB service.
      *
      * @return The maximum triggers quota.
      */
@@ -195,7 +195,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Get the current number of triggers for a collection from the Azure Cosmos DB service.
+     * Get the current number of triggers for a container from the Azure Cosmos DB service.
      *
      * @return The current number of triggers.
      */
@@ -204,7 +204,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the maximum quota of user defined functions for a collection from the Azure Cosmos DB service.
+     * Gets the maximum quota of user defined functions for a container from the Azure Cosmos DB service.
      *
      * @return The maximum user defined functions quota.
      */
@@ -213,7 +213,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the current number of user defined functions for a collection from the Azure Cosmos DB service.
+     * Gets the current number of user defined functions for a container from the Azure Cosmos DB service.
      *
      * @return the current number of user defined functions.
      */
@@ -225,7 +225,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      * Gets the maximum size limit for this entity from the Azure Cosmos DB service.
      *
      * @return the maximum size limit for this entity.
-     * Measured in kilobytes for document resources and in counts for other resources.
+     * Measured in kilobytes for item resources and in counts for other resources.
      */
     public String getMaxResourceQuota() {
         return getValueOrNull(header,
@@ -235,7 +235,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     /**
      * Gets the current size of this entity from the Azure Cosmos DB service.
      *
-     * @return the current size for this entity. Measured in kilobytes for document resources
+     * @return the current size for this entity. Measured in kilobytes for item resources
      * and in counts for other resources.
      */
     public String getCurrentResourceQuotaUsage() {
@@ -320,7 +320,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             return queryMetricsMap;
         }
 
-        //We parse query metrics for un-partitioned collection here
+        //We parse query metrics for un-partitioned container here
         if (!StringUtils.isEmpty(getQueryMetricsString())) {
             String qm = getQueryMetricsString();
             qm += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, getRequestCharge());

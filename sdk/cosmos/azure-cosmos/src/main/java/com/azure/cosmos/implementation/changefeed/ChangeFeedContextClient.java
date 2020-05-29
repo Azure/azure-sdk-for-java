@@ -109,7 +109,7 @@ public interface ChangeFeedContextClient {
                                              CosmosItemRequestOptions options, Class<T> itemType);
 
     /**
-     * Query for items in a document container.
+     * Query for items in a container.
      *
      * @param containerLink  the reference to the parent container.
      * @param querySpec      the SQL query specification.

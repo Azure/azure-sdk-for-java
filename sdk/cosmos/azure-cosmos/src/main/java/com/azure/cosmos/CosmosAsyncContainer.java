@@ -94,7 +94,7 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Deletes the item container
+     * Deletes the container
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single Cosmos container response for the
@@ -134,7 +134,7 @@ public class CosmosAsyncContainer {
      * the replaced container properties. In case of failure the {@link Mono} will
      * error.
      *
-     * @param containerProperties the item container properties
+     * @param containerProperties the container properties
      * @return an {@link Mono} containing the single Cosmos container response with
      * the replaced container properties or an error.
      */
@@ -150,7 +150,7 @@ public class CosmosAsyncContainer {
      * the replaced container properties. In case of failure the {@link Mono} will
      * error.
      *
-     * @param containerProperties the item container properties
+     * @param containerProperties the container properties
      * @param options the Cosmos container request options.
      * @return an {@link Mono} containing the single Cosmos container response with
      * the replaced container properties or an error.
