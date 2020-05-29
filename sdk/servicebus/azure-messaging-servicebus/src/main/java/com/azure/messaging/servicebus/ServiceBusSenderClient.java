@@ -3,18 +3,13 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
-
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
 
 /**
  * A <b>synchronous</b> sender responsible for sending {@link ServiceBusMessage} to  specific queue or topic on
@@ -229,7 +224,6 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
      *
      * @param transactionContext to be committed.
-     * @return a completable {@link Mono}.
      */
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.commitTransaction(transactionContext).block(tryTimeout);
@@ -239,7 +233,6 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
      *
      * @param transactionContext to be rollbacked.
-     * @return a completable {@link Mono}.
      */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.rollbackTransaction(transactionContext).block(tryTimeout);

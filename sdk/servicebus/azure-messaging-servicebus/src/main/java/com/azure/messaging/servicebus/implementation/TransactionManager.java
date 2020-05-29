@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
@@ -20,7 +23,7 @@ public interface TransactionManager {
      * Commits the given transaction.
      *
      * @param transactionContext to commit.
-     * @return {@link Mono<Void>} which user can subscribe.
+     * @return {@link Mono} which user can subscribe.
      */
     Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext);
 
@@ -28,7 +31,7 @@ public interface TransactionManager {
      * Rollbacks the given transaction.
      *
      * @param transactionContext to rollback.
-     * @return {@link Mono<Void>} which user can subscribe.
+     * @return {@link Mono} which user can subscribe.
      */
     Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext);
 

@@ -188,14 +188,14 @@ class ReactorSender implements AmqpSendLink {
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
     public Mono<Void> completeTransaction(AmqpTransaction transaction, boolean isCommit) {
-        Mono<DeliveryState> deliveryStateMono = Mono.create(sink -> sendTransaction(
+        Mono<DeliveryState> completeTransaction = Mono.create(sink -> sendTransaction(
             getCompleteTransactionMessage(transaction, isCommit), sink));
         if (hasConnected.get()) {
-            return deliveryStateMono.then();
+            return completeTransaction.then();
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                .then(deliveryStateMono)
+                .then(completeTransaction)
                 .then();
         }
     }
@@ -206,10 +206,10 @@ class ReactorSender implements AmqpSendLink {
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
     public Mono<AmqpTransaction> createTransaction() {
-        Mono<DeliveryState> deliveryStateMono = Mono.create(sink -> sendTransaction(
+        Mono<DeliveryState> createTransaction = Mono.create(sink -> sendTransaction(
             getCreateTransactionMessage(), sink));
 
-        Mono<AmqpTransaction> amqpTransactionMono = deliveryStateMono.map(state -> {
+        Mono<AmqpTransaction> amqpTransactionMono = createTransaction.map(state -> {
             Binary txnId = null;
             if (state instanceof Declared) {
                 Declared declared = (Declared) state;
@@ -410,16 +410,16 @@ class ReactorSender implements AmqpSendLink {
 
     Mono<Void> sendTransaction(byte[] bytes, int arrayOffset, int messageFormat, AmqpTransaction transactionId) {
 
-        Mono<DeliveryState> deliveryStateMono = Mono.create(sink -> sendTransaction(new RetriableWorkItem(bytes,
+        Mono<DeliveryState> workToSend = Mono.create(sink -> sendTransaction(new RetriableWorkItem(bytes,
             arrayOffset, messageFormat, sink, timeout, transactionId)));
 
         if (hasConnected.get()) {
-            return deliveryStateMono.then();
+            return workToSend.then();
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
                 timeout, retry)
-                .then(deliveryStateMono)
+                .then(workToSend)
                 .then();
         }
     }
@@ -429,7 +429,8 @@ class ReactorSender implements AmqpSendLink {
      *
      * @param workItem to be processed.
      */
-    private void sendTransaction(RetriableWorkItem workItem) {
+    void sendTransaction(RetriableWorkItem workItem) {
+        System.out.println("!!!! in sendTransaction with RetriableWorkItem");
         final String deliveryTag = UUID.randomUUID().toString().replace("-", "");
 
         synchronized (pendingSendLock) {

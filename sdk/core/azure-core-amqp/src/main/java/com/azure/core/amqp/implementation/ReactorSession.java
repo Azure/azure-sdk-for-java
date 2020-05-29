@@ -150,6 +150,10 @@ public class ReactorSession implements AmqpSession {
         return this.session;
     }
 
+    AmqpRetryPolicy getRetryPolicy() {
+        return retryPolicy;
+    }
+
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
         return endpointStates;
@@ -201,7 +205,7 @@ public class ReactorSession implements AmqpSession {
         return createTransactionCoordinator(TRANSACTION_LINK_NAME, openTimeout, retryPolicy);
     }
 
-    private Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+    Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot create coordinator link '%s' from a closed session.", linkName))));

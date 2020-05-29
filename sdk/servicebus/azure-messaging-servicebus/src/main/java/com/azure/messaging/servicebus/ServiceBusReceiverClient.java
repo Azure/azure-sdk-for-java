@@ -11,7 +11,6 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -818,7 +817,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
      *
      * @param transactionContext to be committed.
-     * @return a completable {@link Mono}.
      */
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.commitTransaction(transactionContext).block(operationTimeout);
@@ -828,7 +826,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
      *
      * @param transactionContext to be rollbacked.
-     * @return a completable {@link Mono}.
      */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);

@@ -5,11 +5,9 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.time.Instant;
 
 /**

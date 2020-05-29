@@ -16,8 +16,6 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -106,7 +104,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         }
 
         @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId) {
+        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState,
+            AmqpTransaction transactionId) {
             return link.updateDisposition(lockToken, deliveryState, transactionId);
         }
 

@@ -245,6 +245,8 @@ public abstract class IntegrationTestBase extends TestBase {
         if (sharedConnection && sharedBuilder ==  null) {
             sharedBuilder = getBuilder(useCredentials);
             builder = sharedBuilder;
+        } else if (sharedConnection && sharedBuilder !=  null) {
+            builder = sharedBuilder;
         } else {
             builder = getBuilder(useCredentials);
         }
@@ -269,9 +271,8 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
-                                                                 MessagingEntityType entityType,
-                                                                 Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
-        return getReceiverBuilder( useCredentials, entityType, onBuilderCreate, false);
+        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+        return getReceiverBuilder(useCredentials, entityType, onBuilderCreate, false);
     }
 
 

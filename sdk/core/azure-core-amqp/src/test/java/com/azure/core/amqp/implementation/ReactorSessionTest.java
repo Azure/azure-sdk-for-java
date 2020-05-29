@@ -4,6 +4,8 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -37,9 +39,13 @@ public class ReactorSessionTest {
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
+    private ReactorSession reactorSessionWithRetryPolicy;
+    private AmqpRetryPolicy retryPolicy;
 
     @Mock
     private Session session;
+    @Mock
+    private Session sessionForRetryPolicy;
     @Mock
     private Reactor reactor;
     @Mock
@@ -70,6 +76,10 @@ public class ReactorSessionTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
+
+        this.retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
+        this.reactorSessionWithRetryPolicy = new ReactorSession(sessionForRetryPolicy, new SessionHandler(ID, HOST, ENTITY_PATH, dispatcher, Duration.ofSeconds(60)), NAME, reactorProvider, handlerProvider,
+            Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT, retryPolicy);
     }
 
     @AfterEach
@@ -79,6 +89,8 @@ public class ReactorSessionTest {
         selectable = null;
         event = null;
         cbsNode = null;
+        reactorSessionWithRetryPolicy = null;
+        sessionForRetryPolicy = null;
 
         Mockito.framework().clearInlineMocks();
     }
@@ -91,6 +103,17 @@ public class ReactorSessionTest {
         Assertions.assertSame(session, reactorSession.session());
         Assertions.assertEquals(NAME, reactorSession.getSessionName());
         Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
+    }
+
+    @Test
+    public void verifyConstructorWithRetryPolicy() {
+
+        // Assert
+        verify(sessionForRetryPolicy, times(1)).open();
+        Assertions.assertSame(retryPolicy, reactorSessionWithRetryPolicy.getRetryPolicy());
+        Assertions.assertSame(sessionForRetryPolicy, reactorSessionWithRetryPolicy.session());
+        Assertions.assertEquals(NAME, reactorSessionWithRetryPolicy.getSessionName());
+        Assertions.assertEquals(TIMEOUT, reactorSessionWithRetryPolicy.getOperationTimeout());
     }
 
     @Test
@@ -107,7 +130,7 @@ public class ReactorSessionTest {
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
-    
+
     @Test
     public void verifyDispose() {
         reactorSession.dispose();
