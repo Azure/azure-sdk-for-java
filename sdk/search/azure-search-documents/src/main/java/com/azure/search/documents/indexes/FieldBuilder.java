@@ -200,15 +200,16 @@ public final class FieldBuilder {
                     "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
             }
             if (!searchableFieldPropertyAnnotation.analyzer().isEmpty()) {
-                searchField.setAnalyzerName(LexicalAnalyzerName.fromString((searchableFieldPropertyAnnotation.analyzer())));
+                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                    searchableFieldPropertyAnnotation.analyzer()));
             }
             if (!searchableFieldPropertyAnnotation.searchAnalyzer().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    (searchableFieldPropertyAnnotation.searchAnalyzer())));
+                    searchableFieldPropertyAnnotation.searchAnalyzer()));
             }
             if (!searchableFieldPropertyAnnotation.indexAnalyzer().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    (searchableFieldPropertyAnnotation.indexAnalyzer())));
+                    searchableFieldPropertyAnnotation.indexAnalyzer()));
             }
             if (searchableFieldPropertyAnnotation.synonymMaps().length != 0) {
                 List<String> synonymMaps = Arrays.stream(searchableFieldPropertyAnnotation.synonymMaps())
