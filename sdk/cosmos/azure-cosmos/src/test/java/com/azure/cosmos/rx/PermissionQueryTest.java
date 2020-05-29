@@ -58,7 +58,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator.Builder<CosmosPermissionProperties>()
                 .totalSize(expectedDocs.size())
-                .containsExactlyIds(expectedDocs.stream().map(CosmosPermissionProperties::getId).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosPermissionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -94,7 +94,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosPermissionProperties>()
-                .containsExactlyIds(createdPermissions
+                .exactlyContainsIdsInAnyOrder(createdPermissions
                         .stream()
                         .map(CosmosPermissionProperties::getId)
                         .collect(Collectors.toList()))

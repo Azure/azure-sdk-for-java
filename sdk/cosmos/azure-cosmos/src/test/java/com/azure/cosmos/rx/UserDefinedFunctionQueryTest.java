@@ -60,7 +60,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(expectedDocs.size())
-                .containsExactlyIds(expectedDocs.stream().map(CosmosUserDefinedFunctionProperties::getId).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosUserDefinedFunctionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -102,7 +102,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosUserDefinedFunctionProperties>()
-                .containsExactlyIds(expectedDocs
+                .exactlyContainsIdsInAnyOrder(expectedDocs
                         .stream()
                         .map(CosmosUserDefinedFunctionProperties::getId)
                         .collect(Collectors.toList()))

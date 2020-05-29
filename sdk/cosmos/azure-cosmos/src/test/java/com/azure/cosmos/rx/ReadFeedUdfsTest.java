@@ -47,7 +47,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(createdUserDefinedFunctions.size())
-                .containsExactlyIds(
+                .exactlyContainsIdsInAnyOrder(
                         createdUserDefinedFunctions.stream().map(CosmosUserDefinedFunctionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()

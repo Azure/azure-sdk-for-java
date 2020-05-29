@@ -58,7 +58,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(expectedDocs.size())
-                .containsExactlyIds(expectedDocs.stream().map(CosmosTriggerProperties::getId).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosTriggerProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -102,7 +102,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosTriggerProperties>()
-                .containsExactlyIds(expectedDocs
+                .exactlyContainsIdsInAnyOrder(expectedDocs
                         .stream()
                         .map(CosmosTriggerProperties::getId)
                         .collect(Collectors.toList()))
