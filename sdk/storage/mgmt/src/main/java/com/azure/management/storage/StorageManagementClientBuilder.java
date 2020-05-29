@@ -34,16 +34,16 @@ public final class StorageManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the StorageManagementClientBuilder.
      */
-    public StorageManagementClientBuilder host(String host) {
-        this.host = host;
+    public StorageManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -90,8 +90,8 @@ public final class StorageManagementClientBuilder {
      * @return an instance of StorageManagementClient.
      */
     public StorageManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (apiVersion == null) {
             this.apiVersion = "2019-06-01";
@@ -106,7 +106,7 @@ public final class StorageManagementClientBuilder {
                     .build();
         }
         StorageManagementClient client = new StorageManagementClient(pipeline, environment,
-            host, apiVersion, subscriptionId);
+            endpoint, apiVersion, subscriptionId);
         return client;
     }
 }

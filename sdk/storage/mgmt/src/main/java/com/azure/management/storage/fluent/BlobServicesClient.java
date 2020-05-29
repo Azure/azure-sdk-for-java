@@ -121,9 +121,9 @@ public final class BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobServicePropertiesInner>> listSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -143,7 +143,7 @@ public final class BlobServicesClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -172,9 +172,9 @@ public final class BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobServicePropertiesInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,7 +191,7 @@ public final class BlobServicesClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -292,9 +292,9 @@ public final class BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -320,7 +320,7 @@ public final class BlobServicesClient {
                 context ->
                     service
                         .setServiceProperties(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -349,9 +349,9 @@ public final class BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -374,7 +374,7 @@ public final class BlobServicesClient {
         final String blobServicesName = "default";
         return service
             .setServiceProperties(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -499,9 +499,9 @@ public final class BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -522,7 +522,7 @@ public final class BlobServicesClient {
                 context ->
                     service
                         .getServiceProperties(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -550,9 +550,9 @@ public final class BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -570,7 +570,7 @@ public final class BlobServicesClient {
         final String blobServicesName = "default";
         return service
             .getServiceProperties(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),

@@ -84,9 +84,9 @@ public final class PrivateLinkResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -106,7 +106,7 @@ public final class PrivateLinkResourcesClient {
                 context ->
                     service
                         .listByStorageAccount(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -131,9 +131,9 @@ public final class PrivateLinkResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -150,7 +150,7 @@ public final class PrivateLinkResourcesClient {
         }
         return service
             .listByStorageAccount(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),

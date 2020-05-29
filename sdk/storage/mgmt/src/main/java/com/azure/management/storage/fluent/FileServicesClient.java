@@ -119,9 +119,9 @@ public final class FileServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServiceItemsInner>> listWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -141,7 +141,7 @@ public final class FileServicesClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -166,9 +166,9 @@ public final class FileServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServiceItemsInner>> listWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,7 +185,7 @@ public final class FileServicesClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -299,9 +299,9 @@ public final class FileServicesClient {
         String accountName,
         CorsRules cors,
         DeleteRetentionPolicy shareDeleteRetentionPolicy) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -331,7 +331,7 @@ public final class FileServicesClient {
                 context ->
                     service
                         .setServiceProperties(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -364,9 +364,9 @@ public final class FileServicesClient {
         CorsRules cors,
         DeleteRetentionPolicy shareDeleteRetentionPolicy,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -393,7 +393,7 @@ public final class FileServicesClient {
         parameters.withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
         return service
             .setServiceProperties(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -533,9 +533,9 @@ public final class FileServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,7 +556,7 @@ public final class FileServicesClient {
                 context ->
                     service
                         .getServiceProperties(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -583,9 +583,9 @@ public final class FileServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -603,7 +603,7 @@ public final class FileServicesClient {
         final String fileServicesName = "default";
         return service
             .getServiceProperties(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),

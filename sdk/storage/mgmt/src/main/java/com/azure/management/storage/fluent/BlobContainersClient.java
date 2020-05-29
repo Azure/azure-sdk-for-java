@@ -321,9 +321,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ListContainerItemInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand include) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -343,7 +343,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -389,9 +389,9 @@ public final class BlobContainersClient {
         String filter,
         ListSharesExpand include,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -408,7 +408,7 @@ public final class BlobContainersClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -598,9 +598,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobContainerInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -628,7 +628,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -664,9 +664,9 @@ public final class BlobContainersClient {
         String containerName,
         BlobContainerInner blobContainer,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -691,7 +691,7 @@ public final class BlobContainersClient {
         }
         return service
             .create(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -839,9 +839,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobContainerInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -869,7 +869,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -905,9 +905,9 @@ public final class BlobContainersClient {
         String containerName,
         BlobContainerInner blobContainer,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -932,7 +932,7 @@ public final class BlobContainersClient {
         }
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -1078,9 +1078,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobContainerInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String containerName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1103,7 +1103,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -1132,9 +1132,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobContainerInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1154,7 +1154,7 @@ public final class BlobContainersClient {
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -1280,9 +1280,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String containerName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1305,7 +1305,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -1334,9 +1334,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1356,7 +1356,7 @@ public final class BlobContainersClient {
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -1467,9 +1467,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LegalHoldInner>> setLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1497,7 +1497,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .setLegalHold(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -1529,9 +1529,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LegalHoldInner>> setLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1556,7 +1556,7 @@ public final class BlobContainersClient {
         legalHold.withTags(tags);
         return service
             .setLegalHold(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -1696,9 +1696,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LegalHoldInner>> clearLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1726,7 +1726,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .clearLegalHold(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -1758,9 +1758,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LegalHoldInner>> clearLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1785,7 +1785,7 @@ public final class BlobContainersClient {
         legalHold.withTags(tags);
         return service
             .clearLegalHold(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -1939,9 +1939,9 @@ public final class BlobContainersClient {
             String ifMatch,
             Integer immutabilityPeriodSinceCreationInDays,
             Boolean allowProtectedAppendWrites) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1972,7 +1972,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .createOrUpdateImmutabilityPolicy(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -2021,9 +2021,9 @@ public final class BlobContainersClient {
             Integer immutabilityPeriodSinceCreationInDays,
             Boolean allowProtectedAppendWrites,
             Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2051,7 +2051,7 @@ public final class BlobContainersClient {
         ImmutabilityPolicyInner parameters = parametersInternal;
         return service
             .createOrUpdateImmutabilityPolicy(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -2276,9 +2276,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2302,7 +2302,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .getImmutabilityPolicy(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -2336,9 +2336,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2359,7 +2359,7 @@ public final class BlobContainersClient {
         final String immutabilityPolicyName = "default";
         return service
             .getImmutabilityPolicy(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -2561,9 +2561,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2590,7 +2590,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .deleteImmutabilityPolicy(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -2626,9 +2626,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2652,7 +2652,7 @@ public final class BlobContainersClient {
         final String immutabilityPolicyName = "default";
         return service
             .deleteImmutabilityPolicy(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -2808,9 +2808,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2836,7 +2836,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .lockImmutabilityPolicy(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -2870,9 +2870,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2895,7 +2895,7 @@ public final class BlobContainersClient {
         }
         return service
             .lockImmutabilityPolicy(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -3056,9 +3056,9 @@ public final class BlobContainersClient {
         String ifMatch,
         Integer immutabilityPeriodSinceCreationInDays,
         Boolean allowProtectedAppendWrites) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3091,7 +3091,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .extendImmutabilityPolicy(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -3138,9 +3138,9 @@ public final class BlobContainersClient {
         Integer immutabilityPeriodSinceCreationInDays,
         Boolean allowProtectedAppendWrites,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3170,7 +3170,7 @@ public final class BlobContainersClient {
         ImmutabilityPolicyInner parameters = parametersInternal;
         return service
             .extendImmutabilityPolicy(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -3393,9 +3393,9 @@ public final class BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LeaseContainerResponseInner>> leaseWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3421,7 +3421,7 @@ public final class BlobContainersClient {
                 context ->
                     service
                         .lease(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             containerName,
@@ -3457,9 +3457,9 @@ public final class BlobContainersClient {
         String containerName,
         LeaseContainerRequest parameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3482,7 +3482,7 @@ public final class BlobContainersClient {
         }
         return service
             .lease(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 containerName,

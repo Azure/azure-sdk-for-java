@@ -190,9 +190,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FileShareItemInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand expand) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,7 +212,7 @@ public final class FileSharesClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -257,9 +257,9 @@ public final class FileSharesClient {
         String filter,
         ListSharesExpand expand,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -276,7 +276,7 @@ public final class FileSharesClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -460,9 +460,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -490,7 +490,7 @@ public final class FileSharesClient {
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             shareName,
@@ -522,9 +522,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -549,7 +549,7 @@ public final class FileSharesClient {
         }
         return service
             .create(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 shareName,
@@ -689,9 +689,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -719,7 +719,7 @@ public final class FileSharesClient {
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             shareName,
@@ -751,9 +751,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -778,7 +778,7 @@ public final class FileSharesClient {
         }
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 shareName,
@@ -917,9 +917,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -942,7 +942,7 @@ public final class FileSharesClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             shareName,
@@ -973,9 +973,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -995,7 +995,7 @@ public final class FileSharesClient {
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 shareName,
@@ -1180,9 +1180,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String shareName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1205,7 +1205,7 @@ public final class FileSharesClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             shareName,
@@ -1234,9 +1234,9 @@ public final class FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1256,7 +1256,7 @@ public final class FileSharesClient {
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 shareName,
@@ -1371,9 +1371,9 @@ public final class FileSharesClient {
         String shareName,
         String deletedShareName,
         String deletedShareVersion) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1407,7 +1407,7 @@ public final class FileSharesClient {
                 context ->
                     service
                         .restore(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             shareName,
@@ -1444,9 +1444,9 @@ public final class FileSharesClient {
         String deletedShareName,
         String deletedShareVersion,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1477,7 +1477,7 @@ public final class FileSharesClient {
         deletedShare.withDeletedShareVersion(deletedShareVersion);
         return service
             .restore(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 shareName,

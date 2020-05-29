@@ -80,9 +80,9 @@ public final class UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -98,7 +98,7 @@ public final class UsagesClient {
                 context ->
                     service
                         .listByLocation(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             location,
@@ -122,9 +122,9 @@ public final class UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -137,7 +137,7 @@ public final class UsagesClient {
         }
         return service
             .listByLocation(
-                this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), location, context)
+                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

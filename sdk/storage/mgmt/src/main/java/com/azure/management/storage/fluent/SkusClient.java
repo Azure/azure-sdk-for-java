@@ -77,9 +77,9 @@ public final class SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SkuInformationInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -92,7 +92,7 @@ public final class SkusClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
@@ -114,9 +114,9 @@ public final class SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SkuInformationInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -125,7 +125,7 @@ public final class SkusClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

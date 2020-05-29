@@ -74,12 +74,12 @@ public final class OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.list(this.client.getHost(), this.client.getApiVersion(), context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), context))
             .<PagedResponse<OperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -98,12 +98,12 @@ public final class OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getApiVersion(), context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

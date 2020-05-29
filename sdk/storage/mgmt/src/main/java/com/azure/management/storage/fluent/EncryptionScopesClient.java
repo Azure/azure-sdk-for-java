@@ -154,9 +154,9 @@ public final class EncryptionScopesClient {
         String accountName,
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -186,7 +186,7 @@ public final class EncryptionScopesClient {
                 context ->
                     service
                         .put(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -223,9 +223,9 @@ public final class EncryptionScopesClient {
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -252,7 +252,7 @@ public final class EncryptionScopesClient {
         }
         return service
             .put(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -413,9 +413,9 @@ public final class EncryptionScopesClient {
         String accountName,
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -445,7 +445,7 @@ public final class EncryptionScopesClient {
                 context ->
                     service
                         .patch(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -481,9 +481,9 @@ public final class EncryptionScopesClient {
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -510,7 +510,7 @@ public final class EncryptionScopesClient {
         }
         return service
             .patch(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -662,9 +662,9 @@ public final class EncryptionScopesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<EncryptionScopeInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String encryptionScopeName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -688,7 +688,7 @@ public final class EncryptionScopesClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -717,9 +717,9 @@ public final class EncryptionScopesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<EncryptionScopeInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String encryptionScopeName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -740,7 +740,7 @@ public final class EncryptionScopesClient {
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -865,9 +865,9 @@ public final class EncryptionScopesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EncryptionScopeInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -887,7 +887,7 @@ public final class EncryptionScopesClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -922,9 +922,9 @@ public final class EncryptionScopesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EncryptionScopeInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -941,7 +941,7 @@ public final class EncryptionScopesClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),

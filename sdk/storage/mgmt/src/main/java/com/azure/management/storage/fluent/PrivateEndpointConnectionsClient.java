@@ -142,9 +142,9 @@ public final class PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -164,7 +164,7 @@ public final class PrivateEndpointConnectionsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -193,9 +193,9 @@ public final class PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,7 +212,7 @@ public final class PrivateEndpointConnectionsClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -313,9 +313,9 @@ public final class PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -341,7 +341,7 @@ public final class PrivateEndpointConnectionsClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -369,9 +369,9 @@ public final class PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -394,7 +394,7 @@ public final class PrivateEndpointConnectionsClient {
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -525,9 +525,9 @@ public final class PrivateEndpointConnectionsClient {
         String privateEndpointConnectionName,
         PrivateEndpoint privateEndpoint,
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -562,7 +562,7 @@ public final class PrivateEndpointConnectionsClient {
                 context ->
                     service
                         .put(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -599,9 +599,9 @@ public final class PrivateEndpointConnectionsClient {
         PrivateEndpoint privateEndpoint,
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -633,7 +633,7 @@ public final class PrivateEndpointConnectionsClient {
         properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return service
             .put(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -812,9 +812,9 @@ public final class PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -840,7 +840,7 @@ public final class PrivateEndpointConnectionsClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -868,9 +868,9 @@ public final class PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -893,7 +893,7 @@ public final class PrivateEndpointConnectionsClient {
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),

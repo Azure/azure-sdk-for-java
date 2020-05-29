@@ -142,9 +142,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -164,7 +164,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -193,9 +193,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,7 +212,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -312,9 +312,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ObjectReplicationPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -340,7 +340,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -367,9 +367,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ObjectReplicationPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -392,7 +392,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -516,9 +516,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
         String accountName,
         String objectReplicationPolicyId,
         ObjectReplicationPolicyInner properties) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -549,7 +549,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -583,9 +583,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
         String objectReplicationPolicyId,
         ObjectReplicationPolicyInner properties,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -613,7 +613,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         }
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -757,9 +757,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -785,7 +785,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -812,9 +812,9 @@ public final class ObjectReplicationPoliciesOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -837,7 +837,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),

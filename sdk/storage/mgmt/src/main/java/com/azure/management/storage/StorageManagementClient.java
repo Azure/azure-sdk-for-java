@@ -5,7 +5,6 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +28,7 @@ import com.azure.management.storage.fluent.TablesClient;
 import com.azure.management.storage.fluent.UsagesClient;
 
 /** Initializes a new instance of the StorageManagementClient type. */
-@ServiceClient(builder = ServiceClientBuilder.class)
+@ServiceClient(builder = StorageManagementClientBuilder.class)
 public final class StorageManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(StorageManagementClient.class);
 
@@ -46,15 +45,15 @@ public final class StorageManagementClient extends AzureServiceClient {
     }
 
     /** server parameter. */
-    private final String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
@@ -292,7 +291,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      * @param environment The Azure environment.
      */
     StorageManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment,
-                            String host, String apiVersion, String subscriptionId) {
+                            String endpoint, String apiVersion, String subscriptionId) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
         this.operations = new OperationsClient(this);
@@ -312,7 +311,7 @@ public final class StorageManagementClient extends AzureServiceClient {
         this.queues = new QueuesClient(this);
         this.tableServices = new TableServicesClient(this);
         this.tables = new TablesClient(this);
-        this.host = host;
+        this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.subscriptionId = subscriptionId;
     }

@@ -351,9 +351,9 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -371,7 +371,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .checkNameAvailability(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             accountName,
@@ -392,9 +392,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -409,7 +409,7 @@ public final class StorageAccountsClient
         accountName.withName(name);
         return service
             .checkNameAvailability(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 accountName,
@@ -509,9 +509,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -536,7 +536,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -566,9 +566,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -590,7 +590,7 @@ public final class StorageAccountsClient
         }
         return service
             .create(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -772,9 +772,9 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -794,7 +794,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -818,9 +818,9 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -837,7 +837,7 @@ public final class StorageAccountsClient
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -932,9 +932,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountExpand expand) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -954,7 +954,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -983,9 +983,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountExpand expand, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1002,7 +1002,7 @@ public final class StorageAccountsClient
         }
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -1182,9 +1182,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1209,7 +1209,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -1241,9 +1241,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1265,7 +1265,7 @@ public final class StorageAccountsClient
         }
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -1398,9 +1398,9 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StorageAccountInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1413,7 +1413,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
@@ -1441,9 +1441,9 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StorageAccountInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1452,7 +1452,7 @@ public final class StorageAccountsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1533,9 +1533,9 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StorageAccountInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1552,7 +1552,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -1579,9 +1579,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StorageAccountInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1595,7 +1595,7 @@ public final class StorageAccountsClient
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -1688,9 +1688,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
         String resourceGroupName, String accountName, ListKeyExpand expand) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1710,7 +1710,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .listKeys(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -1737,9 +1737,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
         String resourceGroupName, String accountName, ListKeyExpand expand, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1756,7 +1756,7 @@ public final class StorageAccountsClient
         }
         return service
             .listKeys(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -1922,9 +1922,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, String keyName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1949,7 +1949,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .regenerateKey(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -1977,9 +1977,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, String keyName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2001,7 +2001,7 @@ public final class StorageAccountsClient
         regenerateKey.withKeyName(keyName);
         return service
             .regenerateKey(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -2124,9 +2124,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
         String resourceGroupName, String accountName, AccountSasParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2151,7 +2151,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .listAccountSas(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -2178,9 +2178,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
         String resourceGroupName, String accountName, AccountSasParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2202,7 +2202,7 @@ public final class StorageAccountsClient
         }
         return service
             .listAccountSas(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -2321,9 +2321,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
         String resourceGroupName, String accountName, ServiceSasParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2348,7 +2348,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .listServiceSas(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -2375,9 +2375,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
         String resourceGroupName, String accountName, ServiceSasParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2399,7 +2399,7 @@ public final class StorageAccountsClient
         }
         return service
             .listServiceSas(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -2519,9 +2519,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> failoverWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2541,7 +2541,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .failover(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -2568,9 +2568,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> failoverWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2587,7 +2587,7 @@ public final class StorageAccountsClient
         }
         return service
             .failover(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -2742,9 +2742,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2775,7 +2775,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .restoreBlobRanges(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -2807,9 +2807,9 @@ public final class StorageAccountsClient
         OffsetDateTime timeToRestore,
         List<BlobRestoreRange> blobRanges,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2837,7 +2837,7 @@ public final class StorageAccountsClient
         parameters.withBlobRanges(blobRanges);
         return service
             .restoreBlobRanges(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -3020,9 +3020,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeUserDelegationKeysWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3042,7 +3042,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .revokeUserDelegationKeys(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -3067,9 +3067,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeUserDelegationKeysWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3086,7 +3086,7 @@ public final class StorageAccountsClient
         }
         return service
             .revokeUserDelegationKeys(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -3183,9 +3183,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3210,7 +3210,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .beginCreateWithoutPolling(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -3240,9 +3240,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3264,7 +3264,7 @@ public final class StorageAccountsClient
         }
         return service
             .beginCreateWithoutPolling(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -3396,9 +3396,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginFailoverWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3418,7 +3418,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .beginFailoverWithoutPolling(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -3445,9 +3445,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginFailoverWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3464,7 +3464,7 @@ public final class StorageAccountsClient
         }
         return service
             .beginFailoverWithoutPolling(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -3567,9 +3567,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3600,7 +3600,7 @@ public final class StorageAccountsClient
                 context ->
                     service
                         .beginRestoreBlobRangesWithoutPolling(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -3632,9 +3632,9 @@ public final class StorageAccountsClient
         OffsetDateTime timeToRestore,
         List<BlobRestoreRange> blobRanges,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3662,7 +3662,7 @@ public final class StorageAccountsClient
         parameters.withBlobRanges(blobRanges);
         return service
             .beginRestoreBlobRangesWithoutPolling(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),

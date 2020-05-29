@@ -121,9 +121,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagementPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -144,7 +144,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -170,9 +170,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagementPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,7 +190,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
         final String managementPolicyName = "default";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -302,9 +302,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, ManagementPolicySchema policy) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -330,7 +330,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -359,9 +359,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, ManagementPolicySchema policy, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -384,7 +384,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
         properties.withPolicy(policy);
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
@@ -506,9 +506,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -529,7 +529,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
@@ -554,9 +554,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -574,7 +574,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
         final String managementPolicyName = "default";
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
