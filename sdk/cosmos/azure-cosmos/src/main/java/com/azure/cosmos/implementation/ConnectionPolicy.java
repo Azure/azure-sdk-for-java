@@ -18,6 +18,9 @@ import java.util.List;
  */
 public final class ConnectionPolicy {
 
+    private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
+        .getMaxConnectionPoolSize();
+
     private static final ConnectionPolicy defaultPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
     private ConnectionMode connectionMode;
@@ -58,16 +61,18 @@ public final class ConnectionPolicy {
         this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
+        this.requestTimeout = directConnectionConfig.getRequestTimeout();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
         this.connectionMode = connectionMode;
         //  Default values
+        this.endpointDiscoveryEnabled = true;
+        this.maxConnectionPoolSize = defaultGatewayMaxConnectionPoolSize;
+        this.multipleWriteRegionsEnabled = true;
+        this.readRequestsFallbackEnabled = true;
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
-        this.readRequestsFallbackEnabled = true;
-        this.endpointDiscoveryEnabled = true;
-        this.multipleWriteRegionsEnabled = true;
     }
 
     /**
