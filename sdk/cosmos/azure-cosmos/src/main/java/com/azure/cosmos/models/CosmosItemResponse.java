@@ -35,7 +35,7 @@ public class CosmosItemResponse<T> {
     }
 
     /**
-     * Gets the resource .
+     * Gets the resource.
      *
      * @return the resource
      */
