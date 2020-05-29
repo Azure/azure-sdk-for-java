@@ -28,7 +28,7 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
@@ -456,18 +456,18 @@ public abstract class SearchTestBase extends TestBase {
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }
 
-    protected SearchIndexerDataSource createTestSqlDataSourceObject() {
+    protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject() {
         return createTestSqlDataSourceObject(null, null);
     }
 
-    protected SearchIndexerDataSource createTestSqlDataSourceObject(
+    protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         return SearchIndexerDataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
             dataDeletionDetectionPolicy);
     }
 
-    protected SearchIndexerDataSource createBlobDataSource() {
+    protected SearchIndexerDataSourceConnection createBlobDataSource() {
         String storageConnectionString = Configuration.getGlobalConfiguration()
             .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
         String blobContainerName = Configuration.getGlobalConfiguration()

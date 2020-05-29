@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * indexer.
  */
 @Fluent
-public final class SearchIndexerDataSource {
+public final class SearchIndexerDataSourceConnection {
     /*
      * The name of the datasource.
      */
@@ -32,10 +32,10 @@ public final class SearchIndexerDataSource {
     private SearchIndexerDataSourceType type;
 
     /*
-     * Credentials for the datasource.
+     * The connection string for the datasource.
      */
-    @JsonProperty(value = "credentials", required = true)
-    private DataSourceCredentials credentials;
+    @JsonProperty(value = "connectionString")
+    private String connectionString;
 
     /*
      * The data container for the datasource.
@@ -76,7 +76,7 @@ public final class SearchIndexerDataSource {
      * @param name the name value to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setName(String name) {
+    public SearchIndexerDataSourceConnection setName(String name) {
         this.name = name;
         return this;
     }
@@ -96,7 +96,7 @@ public final class SearchIndexerDataSource {
      * @param description the description value to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setDescription(String description) {
+    public SearchIndexerDataSourceConnection setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -118,28 +118,30 @@ public final class SearchIndexerDataSource {
      * @param type the type value to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setType(SearchIndexerDataSourceType type) {
+    public SearchIndexerDataSourceConnection setType(SearchIndexerDataSourceType type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the credentials property: Credentials for the datasource.
+     * Get the connectionString property: The connection string for the
+     * datasource.
      *
-     * @return the credentials value.
+     * @return the connectionString value.
      */
-    public DataSourceCredentials getCredentials() {
-        return this.credentials;
+    public String getConnectionString() {
+        return this.connectionString;
     }
 
     /**
-     * Set the credentials property: Credentials for the datasource.
+     * Set the connectionString property: The connection string for the
+     * datasource.
      *
-     * @param credentials the credentials value to set.
+     * @param connectionString the connectionString value to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setCredentials(DataSourceCredentials credentials) {
-        this.credentials = credentials;
+    public SearchIndexerDataSourceConnection setConnectionString(String connectionString) {
+        this.connectionString = connectionString;
         return this;
     }
 
@@ -158,7 +160,7 @@ public final class SearchIndexerDataSource {
      * @param container the container value to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setContainer(SearchIndexerDataContainer container) {
+    public SearchIndexerDataSourceConnection setContainer(SearchIndexerDataContainer container) {
         this.container = container;
         return this;
     }
@@ -181,7 +183,8 @@ public final class SearchIndexerDataSource {
      * set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+    public SearchIndexerDataSourceConnection setDataChangeDetectionPolicy(
+        DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         this.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
         return this;
     }
@@ -204,7 +207,7 @@ public final class SearchIndexerDataSource {
      * to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setDataDeletionDetectionPolicy(
+    public SearchIndexerDataSourceConnection setDataDeletionDetectionPolicy(
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
         return this;
@@ -225,7 +228,7 @@ public final class SearchIndexerDataSource {
      * @param eTag the eTag value to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setETag(String eTag) {
+    public SearchIndexerDataSourceConnection setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

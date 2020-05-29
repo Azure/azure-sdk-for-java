@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -227,12 +227,12 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             if (properties != null) {
                 feedOptions.setProperties(properties);
             }
-            ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant addressCallStartTime = Instant.now();
             return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder
                     .flatMap(p -> {
                         if(metaDataDiagnosticsContext != null) {
-                            ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                            Instant addressCallEndTime = Instant.now();
                             MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
                                 addressCallEndTime,
                                 MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);

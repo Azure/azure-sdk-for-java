@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OfferAutoscaleSettings;
 import com.azure.cosmos.implementation.Resource;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Represents throughput of the resources in the Azure Cosmos DB service.
@@ -133,7 +133,7 @@ public class ThroughputProperties {
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.offer.getTimestamp();
     }
 
