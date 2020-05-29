@@ -192,7 +192,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -259,7 +261,9 @@ public final class FileSharesClient {
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -462,7 +466,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -524,7 +530,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -691,7 +699,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -753,7 +763,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -919,7 +931,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -975,7 +989,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1182,7 +1198,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1236,7 +1254,9 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1373,7 +1393,9 @@ public final class FileSharesClient {
         String deletedShareVersion) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1446,7 +1468,9 @@ public final class FileSharesClient {
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono

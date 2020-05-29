@@ -79,7 +79,9 @@ public final class SkusClient {
     public Mono<PagedResponse<SkuInformationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -116,7 +118,9 @@ public final class SkusClient {
     public Mono<PagedResponse<SkuInformationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono

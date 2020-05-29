@@ -162,7 +162,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -215,7 +217,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -358,7 +362,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -411,7 +417,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -554,7 +562,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -607,7 +617,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -749,7 +761,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -802,7 +816,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -925,7 +941,9 @@ public final class TablesClient {
     public Mono<PagedResponse<TableInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -981,7 +999,9 @@ public final class TablesClient {
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono

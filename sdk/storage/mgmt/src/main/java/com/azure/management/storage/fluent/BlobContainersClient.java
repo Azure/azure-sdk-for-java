@@ -323,7 +323,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand include) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -391,7 +393,9 @@ public final class BlobContainersClient {
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -600,7 +604,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -666,7 +672,9 @@ public final class BlobContainersClient {
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -841,7 +849,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -907,7 +917,9 @@ public final class BlobContainersClient {
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1080,7 +1092,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1134,7 +1148,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1282,7 +1298,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1336,7 +1354,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1469,7 +1489,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1531,7 +1553,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1698,7 +1722,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1760,7 +1786,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1941,7 +1969,9 @@ public final class BlobContainersClient {
             Boolean allowProtectedAppendWrites) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2023,7 +2053,9 @@ public final class BlobContainersClient {
             Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2278,7 +2310,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2338,7 +2372,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2563,7 +2599,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2628,7 +2666,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2810,7 +2850,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2872,7 +2914,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3058,7 +3102,9 @@ public final class BlobContainersClient {
         Boolean allowProtectedAppendWrites) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3140,7 +3186,9 @@ public final class BlobContainersClient {
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3395,7 +3443,9 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3459,7 +3509,9 @@ public final class BlobContainersClient {
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono

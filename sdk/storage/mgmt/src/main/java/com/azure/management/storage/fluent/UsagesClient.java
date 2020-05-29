@@ -82,7 +82,9 @@ public final class UsagesClient {
     public Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -124,7 +126,9 @@ public final class UsagesClient {
     public Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -137,7 +141,11 @@ public final class UsagesClient {
         }
         return service
             .listByLocation(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location, context)
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                location,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -76,7 +76,9 @@ public final class OperationsClient {
     public Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), context))
@@ -100,7 +102,9 @@ public final class OperationsClient {
     public Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), context)
