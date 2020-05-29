@@ -40,7 +40,7 @@ public class SearchableFieldBuilder extends SimpleFieldBuilder {
      * {@code indexAnalyzer} are set. Once the analyzer is chosen, it cannot be changed for the field in the index.
      *
      * @param analyzerName The {@link LexicalAnalyzerName} used for analyzer.
-     * @return The SearchableField object itself.
+     * @return The SearchableFieldBuilder object itself.
      */
     public SearchableFieldBuilder setAnalyzerName(LexicalAnalyzerName analyzerName) {
         this.analyzerName = analyzerName;
