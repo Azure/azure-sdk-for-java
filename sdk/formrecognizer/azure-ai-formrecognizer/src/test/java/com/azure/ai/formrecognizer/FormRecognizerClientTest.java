@@ -166,7 +166,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, List<FormPage>> syncPoller =
                 client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -193,7 +193,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         SyncPoller<OperationResult, List<FormPage>> syncPoller =
             client.beginRecognizeContent(getContentDetectionFileData(LAYOUT_LOCAL_URL), LAYOUT_FILE_LENGTH, null, null);
         syncPoller.waitForCompletion();
-        validateLayoutDataResults(syncPoller.getFinalResult(), false);
+        validateContentResultData(syncPoller.getFinalResult(), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -204,7 +204,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, List<FormPage>> syncPoller
                 = client.beginRecognizeContentFromUrl(sourceUrl);
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -338,7 +338,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, List<FormPage>> syncPoller =
                 client.beginRecognizeContent(data, MULTIPAGE_INVOICE_FILE_LENGTH, FormContentType.APPLICATION_PDF);
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -407,7 +407,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, List<FormPage>> syncPoller =
                 client.beginRecognizeContentFromUrl(fileUrl);
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 }

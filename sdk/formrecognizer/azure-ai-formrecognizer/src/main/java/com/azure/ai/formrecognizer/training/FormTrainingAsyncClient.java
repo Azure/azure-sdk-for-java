@@ -14,7 +14,7 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainModelOptions;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -149,12 +149,12 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainModelOptions-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
-     * @param trainModelOptions Filter to apply to the documents in the source path for training.
+     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -163,13 +163,13 @@ public final class FormTrainingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainModelOptions trainModelOptions, Duration pollInterval) {
+        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(trainingFilesUrl,
-                trainModelOptions != null ? trainModelOptions.isIncludeSubFolders() : false,
-                trainModelOptions != null ? trainModelOptions.getPrefix() : null,
+                trainingFileFilter != null ? trainingFileFilter.isIncludeSubFolders() : false,
+                trainingFileFilter != null ? trainingFileFilter.getPrefix() : null,
                 useTrainingLabels),
             createTrainingPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -298,12 +298,12 @@ public final class FormTrainingAsyncClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getModelInfos}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels}
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomFormModelInfo> getModelInfos() {
+    public PagedFlux<CustomFormModelInfo> listCustomModels() {
         try {
             return new PagedFlux<>(() -> withContext(context -> listFirstPageModelInfo(context)),
                 continuationToken -> withContext(context -> listNextPageModelInfo(continuationToken, context)));
@@ -319,7 +319,7 @@ public final class FormTrainingAsyncClient {
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
-    PagedFlux<CustomFormModelInfo> getModelInfos(Context context) {
+    PagedFlux<CustomFormModelInfo> listCustomModels(Context context) {
         return new PagedFlux<>(() -> listFirstPageModelInfo(context),
             continuationToken -> listNextPageModelInfo(continuationToken, context));
     }

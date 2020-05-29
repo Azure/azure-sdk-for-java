@@ -33,9 +33,10 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
     public void replaceTrigger() throws Exception {
 
         // create a trigger
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
         CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getProperties();

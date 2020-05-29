@@ -125,7 +125,6 @@ public class ReadmeSamples {
             System.out.printf("----Recognizing receipt for page %s%n----", i);
             RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
             System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
             System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
@@ -147,15 +146,15 @@ public class ReadmeSamples {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model created on: %s%n", customFormModel.getCreatedOn());
-        System.out.printf("Model last updated: %s%n%n", customFormModel.getLastUpdatedOn());
+        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
+        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
 
         System.out.println("Recognized Fields:");
         // looping through the sub-models, which contains the fields they were trained on
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
-        customFormModel.getSubModels().forEach(customFormSubModel -> {
+        customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            customFormSubModel.getFieldMap().forEach((field, customFormModelField) ->
+            customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
                 System.out.printf("Field: %s Field Label: %s%n",
                     field, customFormModelField.getLabel()));
         });
@@ -169,7 +168,7 @@ public class ReadmeSamples {
             accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
         // Next, we get a paged list of all of our custom models
-        PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.getModelInfos();
+        PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.listCustomModels();
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
@@ -177,13 +176,13 @@ public class ReadmeSamples {
             modelId.set(customFormModelInfo.getModelId());
             CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
             System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-            System.out.printf("Created on: %s%n", customModel.getCreatedOn());
-            System.out.printf("Updated on: %s%n", customModel.getLastUpdatedOn());
-            customModel.getSubModels().forEach(customFormSubModel -> {
-                System.out.printf("Custom Model Form type: %s%n", customFormSubModel.getFormType());
-                System.out.printf("Custom Model Accuracy: %d%n", customFormSubModel.getAccuracy());
-                if (customFormSubModel.getFieldMap() != null) {
-                    customFormSubModel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+            System.out.printf("Created on: %s%n", customModel.getRequestedOn());
+            System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+            customModel.getSubmodels().forEach(customFormSubmodel -> {
+                System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
+                System.out.printf("Custom Model Accuracy: %d%n", customFormSubmodel.getAccuracy());
+                if (customFormSubmodel.getFieldMap() != null) {
+                    customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                         System.out.printf("Field Text: %s%n", fieldText);
                         System.out.printf("Field Accuracy: %d%n", customFormModelField.getAccuracy());
                     });

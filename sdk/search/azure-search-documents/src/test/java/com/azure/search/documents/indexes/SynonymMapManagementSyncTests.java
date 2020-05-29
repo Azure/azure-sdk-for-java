@@ -9,22 +9,23 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -289,20 +290,17 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
     public void canCreateAndListSynonymMaps() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap();
-        Set<String> expectedNames = new HashSet<>();
-        expectedNames.add(synonymMap1.getName());
-        expectedNames.add(synonymMap2.getName());
 
         client.createSynonymMap(synonymMap1);
         synonymMapsToDelete.add(synonymMap1.getName());
         client.createSynonymMap(synonymMap2);
         synonymMapsToDelete.add(synonymMap2.getName());
 
-        PagedIterable<SynonymMap> actual = client.listSynonymMaps();
-        List<SynonymMap> result = actual.stream().collect(Collectors.toList());
+        Iterator<SynonymMap> actual = client.listSynonymMaps().iterator();
 
-        assertEquals(2, result.size());
-        expectedNames.containsAll(result);
+        assertObjectEquals(synonymMap1, actual.next(), true);
+        assertObjectEquals(synonymMap2, actual.next(), true);
+        assertFalse(actual.hasNext());
     }
 
     @Test
@@ -318,14 +316,10 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         client.createSynonymMap(synonymMap2);
         synonymMapsToDelete.add(synonymMap2.getName());
 
-        PagedIterable<SynonymMap> listResponse = client.listSynonymMaps("name", generateRequestOptions(), Context.NONE);
-        List<SynonymMap> result = listResponse.stream().collect(Collectors.toList());
+        PagedIterable<String> listResponse = client.listSynonymMapNames(generateRequestOptions(), Context.NONE);
+        List<String> result = listResponse.stream().collect(Collectors.toList());
 
-        result.forEach(res -> {
-            assertNotNull(res.getName());
-            assertNull(res.getSynonyms());
-            assertNull(res.getETag());
-        });
+        result.forEach(Assertions::assertNotNull);
 
         assertEquals(2, result.size());
         expectedNames.containsAll(result);

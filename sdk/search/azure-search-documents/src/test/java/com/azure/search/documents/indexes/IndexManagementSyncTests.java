@@ -21,6 +21,7 @@ import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.Suggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -259,8 +260,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
         List<SearchIndex> result = actual.stream().collect(Collectors.toList());
 
         assertEquals(2, result.size());
-        assertEquals(index1.getName(), result.get(0).getName());
-        assertEquals(index2.getName(), result.get(1).getName());
+        assertObjectEquals(index1, result.get(0), true);
+        assertObjectEquals(index2, result.get(1), true);
     }
 
     @Test
@@ -275,26 +276,14 @@ public class IndexManagementSyncTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
-        PagedIterable<SearchIndex> selectedFieldListResponse = client.listIndexes("name",
-            generateRequestOptions(), Context.NONE);
-        List<SearchIndex> result = selectedFieldListResponse.stream().collect(Collectors.toList());
+        PagedIterable<String> selectedFieldListResponse = client.listIndexNames(generateRequestOptions(), Context.NONE);
+        List<String> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
-        result.forEach(res -> {
-            assertNotNull(res.getName());
-            assertNull(res.getFields());
-            assertNull(res.getDefaultScoringProfile());
-            assertNull(res.getCorsOptions());
-            assertNull(res.getScoringProfiles());
-            assertNull(res.getSuggesters());
-            assertNull(res.getAnalyzers());
-            assertNull(res.getTokenizers());
-            assertNull(res.getTokenFilters());
-            assertNull(res.getCharFilters());
-        });
+        result.forEach(Assertions::assertNotNull);
 
         assertEquals(2, result.size());
-        assertEquals(result.get(0).getName(), index1.getName());
-        assertEquals(result.get(1).getName(), index2.getName());
+        assertEquals(result.get(0), index1.getName());
+        assertEquals(result.get(1), index2.getName());
     }
 
     @Test

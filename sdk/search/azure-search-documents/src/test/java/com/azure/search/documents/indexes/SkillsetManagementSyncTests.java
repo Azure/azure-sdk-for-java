@@ -35,6 +35,7 @@ import com.azure.search.documents.indexes.models.TextExtractionAlgorithm;
 import com.azure.search.documents.indexes.models.TextSplitMode;
 import com.azure.search.documents.indexes.models.VisualFeature;
 import com.azure.search.documents.indexes.models.WebApiSkill;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,8 +53,6 @@ import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -340,12 +340,11 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         client.createSkillset(skillset2);
         skillsetsToDelete.add(skillset2.getName());
 
-        PagedIterable<SearchIndexerSkillset> actual = client.listSkillsets();
-        List<SearchIndexerSkillset> result = actual.stream().collect(Collectors.toList());
+        Iterator<SearchIndexerSkillset> actual = client.listSkillsets().iterator();
 
-        assertEquals(2, result.size());
-        assertEquals(skillset1.getName(), result.get(0).getName());
-        assertEquals(skillset2.getName(), result.get(1).getName());
+        assertObjectEquals(skillset1, actual.next(), true);
+        assertObjectEquals(skillset2, actual.next(), true);
+        assertFalse(actual.hasNext());
     }
 
     @Test
@@ -358,20 +357,15 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         client.createSkillset(skillset2);
         skillsetsToDelete.add(skillset2.getName());
 
-        PagedIterable<SearchIndexerSkillset> selectedFieldListResponse = client.listSkillsets("name", generateRequestOptions(), Context.NONE);
-        List<SearchIndexerSkillset> result = selectedFieldListResponse.stream().collect(Collectors.toList());
+        PagedIterable<String> selectedFieldListResponse =
+            client.listSkillsetNames(generateRequestOptions(), Context.NONE);
+        List<String> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
-        result.forEach(res -> {
-            assertNotNull(res.getName());
-            assertNull(res.getCognitiveServicesAccount());
-            assertNull(res.getDescription());
-            assertNull(res.getSkills());
-            assertNull(res.getETag());
-        });
+        result.forEach(Assertions::assertNotNull);
 
         assertEquals(2, result.size());
-        assertEquals(result.get(0).getName(), skillset1.getName());
-        assertEquals(result.get(1).getName(), skillset2.getName());
+        assertEquals(result.get(0), skillset1.getName());
+        assertEquals(result.get(1), skillset2.getName());
     }
 
     @Test

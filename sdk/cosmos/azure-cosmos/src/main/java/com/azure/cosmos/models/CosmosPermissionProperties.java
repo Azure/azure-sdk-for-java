@@ -125,7 +125,7 @@ public final class CosmosPermissionProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.permission.getResourceId();
     }
 

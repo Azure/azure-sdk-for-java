@@ -206,7 +206,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 client.beginRecognizeContent(toFluxByteBuffer(data), LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG,
                     null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -234,7 +234,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 client.beginRecognizeContent(getReplayableBufferData(LAYOUT_LOCAL_URL), LAYOUT_FILE_LENGTH, null,
                     null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -249,7 +249,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<OperationResult, List<FormPage>> syncPoller =
                 client.beginRecognizeContentFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -432,7 +432,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<OperationResult, List<FormPage>> syncPoller =
                 client.beginRecognizeContentFromUrl(fileUrl).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -445,7 +445,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 client.beginRecognizeContent(toFluxByteBuffer(data), MULTIPAGE_INVOICE_FILE_LENGTH,
                     FormContentType.APPLICATION_PDF).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), false);
+            validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
 

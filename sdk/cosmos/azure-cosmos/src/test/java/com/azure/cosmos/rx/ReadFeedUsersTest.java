@@ -45,7 +45,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(createdUsers.size())
-                .exactlyContainsInAnyOrder(createdUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(createdUsers.stream().map(CosmosUserProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())

@@ -45,6 +45,11 @@ public final class FormPage {
      */
     private final float width;
 
+    /*
+     * The 1 based page number.
+     */
+    private final Integer pageNumber;
+
     /**
      * Constructs a FormPage object.
      *
@@ -54,15 +59,17 @@ public final class FormPage {
      * @param width The width of the image/PDF in pixels/inches, respectively.
      * @param lines When includeTextDetails is set to true, a list of recognized text lines.
      * @param tables List of data tables extracted from the page.
+     * @param pageNumber the 1-based page number in the input document.
      */
     public FormPage(final float height, final float textAngle, final DimensionUnit unit,
-        final float width, final List<FormLine> lines, final List<FormTable> tables) {
+        final float width, final List<FormLine> lines, final List<FormTable> tables, final Integer pageNumber) {
         this.height = height;
         this.textAngle = textAngle;
         this.unit = unit;
         this.width = width;
         this.lines = lines;
         this.tables = tables;
+        this.pageNumber = pageNumber;
     }
 
     /**
@@ -122,6 +129,15 @@ public final class FormPage {
      */
     public float getWidth() {
         return this.width;
+    }
+
+    /**
+     * Get the 1-based page number in the input document.
+     *
+     * @return the page number value.
+     */
+    public Integer getPageNumber() {
+        return this.pageNumber;
     }
 }
 
