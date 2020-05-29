@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericContainer;
 
+import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +73,7 @@ class AvroSchemaUtils {
             return PRIMITIVE_SCHEMAS.get("Double");
         } else if (object instanceof CharSequence) {
             return PRIMITIVE_SCHEMAS.get("String");
-        } else if (object instanceof byte[]) {
+        } else if (object instanceof byte[] || object instanceof ByteBuffer) {
             return PRIMITIVE_SCHEMAS.get("Bytes");
         } else if (object instanceof GenericContainer) {
             return ((GenericContainer) object).getSchema();

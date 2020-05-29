@@ -23,18 +23,14 @@ import java.io.IOException;
 public class AvroByteEncoder extends AvroCodec
         implements ByteEncoder {
     private final ClientLogger logger = new ClientLogger(AvroByteEncoder.class);
-    private final EncoderFactory encoderFactory = EncoderFactory.get();
-
-    /**
-     * Instantiates AvroByteEncoder instance.
-     */
-    public AvroByteEncoder() { }
+    private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
     /**
      * @param object Schema object used to generate schema string
      * @see AvroSchemaUtils for distinction between primitive and Avro schema generation
      * @return string representation of schema
      */
+    @Override
     public String getSchemaString(Object object) {
         Schema schema = AvroSchemaUtils.getSchema(object);
         return schema.toString();
@@ -46,6 +42,7 @@ public class AvroByteEncoder extends AvroCodec
      * @param object Schema object used to generate schema path
      * @return schema name as string
      */
+    @Override
     public String getSchemaName(Object object) {
         return AvroSchemaUtils.getSchema(object).getFullName();
     }
@@ -56,15 +53,16 @@ public class AvroByteEncoder extends AvroCodec
      * @return closed ByteArrayOutputStream
      * @throws SerializationException wraps runtime exceptions
      */
-    public ByteArrayOutputStream encode(Object object) throws SerializationException {
+    @Override
+    public ByteArrayOutputStream encode(Object object) {
         Schema schema = AvroSchemaUtils.getSchema(object);
 
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             if (object instanceof byte[]) {
-                out.write((byte[]) object);
+                out.write((byte[]) object); // todo: real avro byte arrays require writing array size to buffer
             } else {
-                BinaryEncoder encoder = encoderFactory.directBinaryEncoder(out, null);
+                BinaryEncoder encoder = ENCODER_FACTORY.directBinaryEncoder(out, null);
                 DatumWriter<Object> writer;
                 if (object instanceof SpecificRecord) {
                     writer = new SpecificDatumWriter<>(schema);
@@ -74,7 +72,6 @@ public class AvroByteEncoder extends AvroCodec
                 writer.write(object, encoder);
                 encoder.flush();
             }
-            out.close();
             return out;
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc

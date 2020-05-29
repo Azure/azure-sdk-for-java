@@ -47,13 +47,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;dependency} -->
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
       <version>1.9.2</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
-      <scope>compile</scope>
     </dependency>
 
     <!-- Test dependencies -->

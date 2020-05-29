@@ -3,10 +3,9 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.AbstractDataSerializer;
 import com.azure.data.schemaregistry.SerializationException;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
 
 /**
  * A serializer implementation capable of serializing objects and automatedly storing serialization schemas
@@ -19,16 +18,10 @@ import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
  * @see AbstractDataSerializer See AbstractDataSerializer for internal serialization implementation
  */
 public class SchemaRegistryAvroSerializer extends AbstractDataSerializer {
-    SchemaRegistryAvroSerializer(String registryUrl,
-                                 TokenCredential credential,
+    SchemaRegistryAvroSerializer(CachedSchemaRegistryClient registryClient,
                                  String schemaGroup,
-                                 boolean autoRegisterSchemas,
-                                 Integer maxSchemaMapSize) {
-        super(new CachedSchemaRegistryClientBuilder()
-                .endpoint(registryUrl)
-                .credential(credential)
-                .maxSchemaMapSize(maxSchemaMapSize)
-                .buildClient());
+                                 boolean autoRegisterSchemas) {
+        super(registryClient);
 
         setByteEncoder(new AvroByteEncoder());
 
@@ -41,9 +34,8 @@ public class SchemaRegistryAvroSerializer extends AbstractDataSerializer {
      * @param object target of serialization
      * @return byte array containing GUID reference to schema, then the object serialized into bytes
      * @throws SerializationException Throws on serialization failure.
-     * Exception may contain inner exceptions detailing failure condition.
      */
-    public byte[] serializeSync(Object object) throws SerializationException {
+    public byte[] serialize(Object object) throws SerializationException {
         if (object == null) {
             return null;
         }

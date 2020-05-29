@@ -3,10 +3,9 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.AbstractDataDeserializer;
 import com.azure.data.schemaregistry.SerializationException;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
 
 /**
  * A deserializer implementation capable of automatedly deserializing encoded byte array payloads into Java objects by
@@ -19,15 +18,8 @@ import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
  * @see AbstractDataDeserializer See AbstractDataDeserializer for internal deserialization implementation
  */
 public class SchemaRegistryAvroDeserializer extends AbstractDataDeserializer {
-    SchemaRegistryAvroDeserializer(String registryUrl,
-                                   TokenCredential credential,
-                                   boolean avroSpecificReader,
-                                   Integer maxSchemaMapSize) {
-        super(new CachedSchemaRegistryClientBuilder()
-            .endpoint(registryUrl)
-            .credential(credential)
-            .maxSchemaMapSize(maxSchemaMapSize)
-            .buildClient());
+    SchemaRegistryAvroDeserializer(CachedSchemaRegistryClient registryClient, boolean avroSpecificReader) {
+        super(registryClient);
 
         loadByteDecoder(new AvroByteDecoder(avroSpecificReader));
     }
@@ -36,14 +28,12 @@ public class SchemaRegistryAvroDeserializer extends AbstractDataDeserializer {
      * Deserializes byte array into Java object using payload-specified schema.
      *
      * @param data Byte array containing serialized bytes
-     * @return Java object.
-     *
-     * Object type is testable with instanceof operator.  Return value can be casted in the caller layer.
+     * @return decoded Java object
      *
      * @throws SerializationException Throws on deserialization failure.
      * Exception may contain inner exceptions detailing failure condition.
      */
-    public Object deserializeSync(byte[] data) throws SerializationException {
+    public Object deserialize(byte[] data) throws SerializationException {
         return super.deserialize(data);
     }
 }

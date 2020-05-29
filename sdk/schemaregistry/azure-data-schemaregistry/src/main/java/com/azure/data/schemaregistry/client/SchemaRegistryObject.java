@@ -66,7 +66,12 @@ public class SchemaRegistryObject {
 
             logger.verbose("Deserializing schema, id: '{}', schema string '{}'", this.schemaId, schemaString);
 
-            this.deserialized = parseMethod.apply(schemaString);
+            try {
+                this.deserialized = parseMethod.apply(schemaString);
+            } catch (Exception e) {
+                logger.logExceptionAsError(new SchemaRegistryClientException("Failed to deserialize schema", e));
+            }
+
         }
         return deserialized;
     }

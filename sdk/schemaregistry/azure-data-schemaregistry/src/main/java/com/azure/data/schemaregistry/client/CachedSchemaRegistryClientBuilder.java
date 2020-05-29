@@ -88,12 +88,13 @@ public class CachedSchemaRegistryClientBuilder {
      * @throws IllegalArgumentException if {@code schemaRegistryUrl} cannot be parsed into a valid URL
      */
     public CachedSchemaRegistryClientBuilder endpoint(String schemaRegistryUrl) {
-        Objects.requireNonNull(schemaRegistryUrl, "'endpoint' cannot be null.");
+        Objects.requireNonNull(schemaRegistryUrl, "'schemaRegistryUrl' cannot be null.");
 
         try {
             new URL(schemaRegistryUrl);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
+            throw logger.logExceptionAsWarning(
+                new IllegalArgumentException("'schemaRegistryUrl' must be a valid URL.", ex));
         }
 
         if (schemaRegistryUrl.endsWith("/")) {
@@ -217,6 +218,7 @@ public class CachedSchemaRegistryClientBuilder {
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
      */
     public CachedSchemaRegistryClientBuilder addSchemaParser(Codec codec) {
+        Objects.requireNonNull(codec, "'codec' cannot be null.");
         if (CoreUtils.isNullOrEmpty(codec.schemaType())) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Serialization type cannot be null or empty."));

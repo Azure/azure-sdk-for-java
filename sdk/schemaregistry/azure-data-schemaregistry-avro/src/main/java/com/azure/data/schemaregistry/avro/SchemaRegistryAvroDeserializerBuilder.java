@@ -4,28 +4,44 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
+
+import java.util.Objects;
 
 /**
  * Builder class for constructing {@link SchemaRegistryAvroDeserializer} and {@link SchemaRegistryAvroAsyncDeserializer}
  */
 public class SchemaRegistryAvroDeserializerBuilder {
 
-    private final String registryUrl;
+    private String registryUrl;
     private TokenCredential credential;
     private boolean avroSpecificReader;
     private Integer maxSchemaMapSize;
 
     /**
      * Instantiates instance of Builder class.
-     * Supplies client defaults.
+     * Supplies default avro.specific.reader value.
      *
-     * @param registryUrl base schema registry URL for storing and fetching schemas
      */
-    public SchemaRegistryAvroDeserializerBuilder(String registryUrl) {
-        this.registryUrl = registryUrl;
+    public SchemaRegistryAvroDeserializerBuilder() {
+        this.registryUrl = null;
         this.credential = null;
         this.avroSpecificReader = false;
         this.maxSchemaMapSize = null;
+    }
+
+    /**
+     * Sets the service endpoint for the Azure Schema Registry instance.
+     *
+     * @return The updated {@link SchemaRegistryAvroDeserializerBuilder} object.
+     * @param schemaRegistryUrl The URL of the Azure Schema Registry instance
+     * @throws NullPointerException if {@code schemaRegistryUrl} is null
+     */
+    public SchemaRegistryAvroDeserializerBuilder schemaRegistryUrl(String schemaRegistryUrl) {
+        Objects.requireNonNull(schemaRegistryUrl, "'schemaRegistryUrl' cannot be null.");
+        this.registryUrl = schemaRegistryUrl;
+        return this;
     }
 
     /**
@@ -81,10 +97,11 @@ public class SchemaRegistryAvroDeserializerBuilder {
      * @throws IllegalArgumentException if credential is not set.
      */
     public SchemaRegistryAvroDeserializer buildSyncClient() {
-        return new SchemaRegistryAvroDeserializer(
-            this.registryUrl,
-            this.credential,
-            this.avroSpecificReader,
-            this.maxSchemaMapSize);
+        CachedSchemaRegistryClient client = new CachedSchemaRegistryClientBuilder()
+            .endpoint(registryUrl)
+            .credential(credential)
+            .maxSchemaMapSize(maxSchemaMapSize)
+            .buildClient();
+        return new SchemaRegistryAvroDeserializer(client, this.avroSpecificReader);
     }
 }

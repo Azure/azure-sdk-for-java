@@ -9,6 +9,6 @@ public class TestDummyDeserializer extends AbstractDataDeserializer {
     TestDummyDeserializer(SchemaRegistryClient mockClient) {
         super(mockClient);
         ByteDecoder sampleDecoder = new SampleByteDecoder();
-        this.byteDecoderMap.put(sampleDecoder.schemaType(), sampleDecoder);
+        this.loadByteDecoder(sampleDecoder);
     }
 }

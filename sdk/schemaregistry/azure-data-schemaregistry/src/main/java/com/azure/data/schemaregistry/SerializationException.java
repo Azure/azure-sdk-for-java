@@ -3,10 +3,12 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.core.exception.AzureException;
+
 /**
  * Exception thrown by Schema Registry serializer/deserializer implementations for runtime error cases.
  */
-public class SerializationException extends RuntimeException {
+public class SerializationException extends AzureException {
     /**
      * @param s error message explaining serde operation failure
      */

@@ -5,12 +5,16 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.AbstractDataSerializer;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
+
+import java.util.Objects;
 
 /**
  * Builder implemenation for building {@link SchemaRegistryAvroSerializer} and {@link SchemaRegistryAvroAsyncSerializer}
  */
 public final class SchemaRegistryAvroSerializerBuilder {
-    private final String registryUrl;
+    private String registryUrl;
     private TokenCredential credential;
     private boolean autoRegisterSchemas;
     private String schemaGroup;
@@ -19,15 +23,26 @@ public final class SchemaRegistryAvroSerializerBuilder {
     /**
      * Instantiates instance of Builder class.
      * Supplies client defaults.
-     *
-     * @param registryUrl base schema registry URL for storing and fetching schemas
      */
-    private SchemaRegistryAvroSerializerBuilder(String registryUrl) {
-        this.registryUrl = registryUrl;
+    private SchemaRegistryAvroSerializerBuilder() {
+        this.registryUrl = null;
         this.credential = null;
         this.autoRegisterSchemas = AbstractDataSerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
         this.schemaGroup = AbstractDataSerializer.SCHEMA_GROUP_DEFAULT;
         this.maxSchemaMapSize = null;
+    }
+
+    /**
+     * Sets the service endpoint for the Azure Schema Registry instance.
+     *
+     * @return The updated {@link SchemaRegistryAvroSerializerBuilder} object.
+     * @param schemaRegistryUrl The URL of the Azure Schema Registry instance
+     * @throws NullPointerException if {@code schemaRegistryUrl} is null
+     */
+    public SchemaRegistryAvroSerializerBuilder schemaRegistryUrl(String schemaRegistryUrl) {
+        Objects.requireNonNull(schemaRegistryUrl, "'schemaRegistryUrl' cannot be null.");
+        this.registryUrl = schemaRegistryUrl;
+        return this;
     }
 
     /**
@@ -102,11 +117,12 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws IllegalArgumentException if credential is not set.
      */
     public SchemaRegistryAvroSerializer buildSyncClient() {
-        return new SchemaRegistryAvroSerializer(
-            this.registryUrl,
-            this.credential,
-            this.schemaGroup,
-            this.autoRegisterSchemas,
-            this.maxSchemaMapSize);
+        CachedSchemaRegistryClient client = new CachedSchemaRegistryClientBuilder()
+            .endpoint(registryUrl)
+            .credential(credential)
+            .maxSchemaMapSize(maxSchemaMapSize)
+            .buildClient();
+
+        return new SchemaRegistryAvroSerializer(client, this.schemaGroup, this.autoRegisterSchemas);
     }
 }

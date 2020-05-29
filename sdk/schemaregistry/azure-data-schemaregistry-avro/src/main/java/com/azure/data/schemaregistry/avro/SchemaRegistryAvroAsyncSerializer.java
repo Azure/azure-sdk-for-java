@@ -35,13 +35,13 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractDataSerializer {
      * @return Avro byte representation of object
      * @throws SerializationException upon serialization operation failure
      */
-    public Mono<byte[]> serializeAsync(Object object) throws SerializationException {
+    public Mono<byte[]> serialize(Object object) throws SerializationException {
         if (object == null) {
             return Mono.empty();
         }
 
         return Mono
-            .fromCallable(() -> this.serializer.serializeSync(object))
+            .fromCallable(() -> this.serializer.serialize(object))
             .subscribeOn(scheduler);
     }
 }

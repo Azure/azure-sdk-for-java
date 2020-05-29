@@ -13,22 +13,23 @@ import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
- * ByteDecoder implementation with all Avro-specific functionality required to deserialize byte arrays
+ * Apache Avro ByteDecoder implementation with all Avro-specific functionality required to deserialize byte arrays
  * given an Avro schema.
  */
 public class AvroByteDecoder extends AvroCodec
         implements ByteDecoder {
     private final ClientLogger logger = new ClientLogger(AvroByteDecoder.class);
-    private final DecoderFactory decoderFactory = DecoderFactory.get();
+    private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private final boolean avroSpecificReader;
 
     /**
      * Instantiates AvroByteDecoder instance
      * @param avroSpecificReader flag indicating if attempting to decode as Avro SpecificRecord
      */
-    public AvroByteDecoder(Boolean avroSpecificReader) {
+    public AvroByteDecoder(boolean avroSpecificReader) {
         this.avroSpecificReader = avroSpecificReader;
     }
 
@@ -38,10 +39,12 @@ public class AvroByteDecoder extends AvroCodec
      * @return deserialized object
      * @throws SerializationException upon deserialization failure
      */
-    public Object decodeBytes(byte[] b, Object object) throws SerializationException {
+    public Object decodeBytes(byte[] b, Object object) {
+        Objects.requireNonNull(object, "Schema must not be null.");
+
         if (!(object instanceof Schema)) {
             throw logger.logExceptionAsError(
-                new SerializationException("Attempted to decode with non-Avro schema object in AvroByteDecoder"));
+                new SerializationException("Object must be an Avro schema."));
         }
         Schema schema = (Schema) object;
 
@@ -52,7 +55,7 @@ public class AvroByteDecoder extends AvroCodec
         DatumReader<?> reader = getDatumReader(schema);
 
         try {
-            Object result = reader.read(null, decoderFactory.binaryDecoder(b, null));
+            Object result = reader.read(null, DECODER_FACTORY.binaryDecoder(b, null));
 
             if (schema.getType().equals(Schema.Type.STRING)) {
                 return result.toString();

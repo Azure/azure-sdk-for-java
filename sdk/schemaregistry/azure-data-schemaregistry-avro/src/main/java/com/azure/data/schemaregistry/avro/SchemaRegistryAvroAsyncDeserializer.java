@@ -35,9 +35,9 @@ public class SchemaRegistryAvroAsyncDeserializer {
      * @return Mono wrapper around deserialized object
      * @throws SerializationException if deserialization operation fails
      */
-    public Mono<Object> deserializeAsync(byte[] data) throws SerializationException {
+    public Mono<Object> deserialize(byte[] data) throws SerializationException {
         return Mono
-            .fromCallable(() -> this.deserializer.deserializeSync(data))
+            .fromCallable(() -> this.deserializer.deserialize(data))
             .subscribeOn(scheduler);
     }
 }

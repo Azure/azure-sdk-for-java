@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
     private final ClientLogger logger = new ClientLogger(AbstractDataDeserializer.class);
 
-    protected final Map<String, ByteDecoder> byteDecoderMap = new ConcurrentHashMap<>();
+    private final Map<String, ByteDecoder> byteDecoderMap = new ConcurrentHashMap<>();
 
     /**
      * Constructor called by all concrete implementation constructors.
@@ -61,12 +61,11 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
                 new SerializationException(String.format("Failed to retrieve schema for id %s", schemaGuid), e));
         }
 
-        // TODO: how to handle unknown formats
         if (payloadSchema == null) {
             throw logger.logExceptionAsError(
              new SerializationException(
-                    String.format("Cast failure for REST object from registry. Object type: %s",
-                            registryObject.deserialize().getClass().getName())));
+                    String.format("Payload schema returned as null. Schema type: %s, Schema ID: %s",
+                            registryObject.getSchemaType(), registryObject.getSchemaId())));
         }
 
         int start = buffer.position() + buffer.arrayOffset();
