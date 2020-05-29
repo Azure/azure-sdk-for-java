@@ -44,7 +44,8 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #credential(AzureKeyCredential)} gives the builder access credential.
+ * {@link #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} gives
+ * the builder access credential.
  * </p>
  *
  * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>

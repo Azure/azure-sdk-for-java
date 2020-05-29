@@ -20,10 +20,10 @@ import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormPageRange;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
-import com.azure.ai.formrecognizer.models.FormPageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItemType;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -31,6 +31,7 @@ import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.TextContentType;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.ai.formrecognizer.models.USReceiptItem;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -51,7 +52,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -76,6 +76,23 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     FormRecognizerClientBuilder getFormRecognizerClientBuilder(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
+            .endpoint(getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy());
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        return builder;
+    }
+
+    FormTrainingClientBuilder getFormTrainingClientBuilder(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -591,16 +608,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(1000, receiptPage3.getTotal().getFieldValue());
         assertNotNull(receiptPage1.getRecognizedForm().getPages());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3.getReceiptType().getType());
-    }
-
-    /**
-     * Get the string of API key value based on the test running mode.
-     *
-     * @return the API key string
-     */
-    String getApiKey() {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
     }
 
     protected String getEndpoint() {
