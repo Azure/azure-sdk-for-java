@@ -74,10 +74,14 @@ class BuildsImpl extends WrapperImpl<BuildsInner> implements Builds {
     public Observable<Build> getAsync(String resourceGroupName, String registryName, String buildId) {
         BuildsInner client = this.inner();
         return client.getAsync(resourceGroupName, registryName, buildId)
-        .map(new Func1<BuildInner, Build>() {
+        .flatMap(new Func1<BuildInner, Observable<Build>>() {
             @Override
-            public Build call(BuildInner inner) {
-                return wrapModel(inner);
+            public Observable<Build> call(BuildInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Build)wrapModel(inner));
+                }
             }
        });
     }
