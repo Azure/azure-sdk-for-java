@@ -98,7 +98,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-spring-boot:[2.2.5-beta.1]</include> <!-- x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
+                <include>com.microsoft.azure:azure-spring-boot:[2.2.5-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
                 <include>javax.validation:validation-api:[2.0.1.Final]</include> <!-- {x-include-update;javax.validation:validation-api;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
