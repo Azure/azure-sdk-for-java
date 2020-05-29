@@ -38,7 +38,6 @@ public class RecognizeReceiptsFromUrl {
             final RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             System.out.printf("----------- Recognized Receipt page %s -----------", i);
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Page Number: %d%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(),
                 usReceipt.getMerchantName().getConfidence());
             System.out.printf("Merchant Address: %s, confidence: %.2f%n", usReceipt.getMerchantAddress().getName(),
