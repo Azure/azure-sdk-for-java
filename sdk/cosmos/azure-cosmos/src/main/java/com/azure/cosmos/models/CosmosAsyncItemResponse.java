@@ -12,23 +12,21 @@ import com.azure.cosmos.implementation.Utils;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
- * The type Cosmos item response. This contains the item and response methods
+ * The type Cosmos async item response. This contains the item and response methods
  *
  * @param <T> the type parameter
  */
-public class CosmosItemResponse<T> {
+public class CosmosAsyncItemResponse<T> {
     private final Class<T> itemClassType;
     private final byte[] responseBodyAsByteArray;
     private T item;
     private final ResourceResponse<Document> resourceResponse;
     private CosmosItemProperties props;
 
-    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
         this.itemClassType = classType;
         this.responseBodyAsByteArray = response.getBodyAsByteArray();
         this.resourceResponse = response;
