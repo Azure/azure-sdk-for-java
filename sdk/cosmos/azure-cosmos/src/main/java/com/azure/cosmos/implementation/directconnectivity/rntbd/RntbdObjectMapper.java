@@ -26,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -41,7 +41,7 @@ public final class RntbdObjectMapper {
         .registerModule(new SimpleModule()
             .addSerializer(Duration.class, ToStringSerializer.instance)
             .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
-            .addSerializer(OffsetDateTime.class, ToStringSerializer.instance))
+            .addSerializer(Instant.class, ToStringSerializer.instance))
         .setFilterProvider(filterProvider)
         .registerModule(new AfterburnerModule());
 
