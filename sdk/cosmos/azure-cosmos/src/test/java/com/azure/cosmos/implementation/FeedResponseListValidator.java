@@ -143,6 +143,23 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
+        public Builder<T> exactlyContainsIdsInAnyOrder(List<String> expectedIds) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<String> actualIds = feedList
+                        .stream()
+                        .flatMap(f -> f.getResults().stream())
+                        .map(r -> getResource(r).getId())
+                        .collect(Collectors.toList());
+                    assertThat(actualIds)
+                        .describedAs("IDs of results")
+                        .containsOnlyElementsOf(expectedIds);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> numberOfPages(int expectedNumberOfPages) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override

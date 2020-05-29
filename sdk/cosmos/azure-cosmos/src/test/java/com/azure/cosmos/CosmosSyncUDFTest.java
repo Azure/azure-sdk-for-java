@@ -94,9 +94,11 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     }
 
     private CosmosUserDefinedFunctionProperties getCosmosUserDefinedFunctionProperties() {
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return udf;
     }
 

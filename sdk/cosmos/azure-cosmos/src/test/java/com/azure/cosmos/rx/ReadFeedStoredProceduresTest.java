@@ -45,8 +45,8 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(createdStoredProcedures.size())
-                .exactlyContainsInAnyOrder(
-                        createdStoredProcedures.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(
+                        createdStoredProcedures.stream().map(CosmosStoredProcedureProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -73,9 +73,11 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     }
 
     public CosmosStoredProcedureProperties createStoredProcedures(CosmosAsyncContainer cosmosContainer) {
-        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties();
-        sproc.setId(UUID.randomUUID().toString());
-        sproc.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return cosmosContainer.getScripts().createStoredProcedure(sproc, new CosmosStoredProcedureRequestOptions())
                 .block().getProperties();
     }

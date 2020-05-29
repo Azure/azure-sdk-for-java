@@ -100,11 +100,13 @@ public class CosmosTriggerTest extends TestSuiteBase {
     }
 
     private CosmosTriggerProperties getCosmosTriggerProperties() {
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
+
         return trigger;
     }
 

@@ -80,7 +80,7 @@ public final class CosmosConflictProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.conflict.getResourceId();
     }
 

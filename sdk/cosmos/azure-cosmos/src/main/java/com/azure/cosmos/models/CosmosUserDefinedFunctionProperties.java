@@ -17,16 +17,28 @@ public final class CosmosUserDefinedFunctionProperties {
     private UserDefinedFunction userDefinedFunction;
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public CosmosUserDefinedFunctionProperties() {
+    CosmosUserDefinedFunctionProperties() {
         this.userDefinedFunction = new UserDefinedFunction();
     }
 
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the cosmos user defined function properties.
+     * @param id the id of the Cosmos user defined function.
+     * @param body the body of the Cosmos user defined function.
+     */
+    public CosmosUserDefinedFunctionProperties(String id, String body) {
+        this.userDefinedFunction = new UserDefinedFunction();
+        userDefinedFunction.setId(id);
+        userDefinedFunction.setBody(body);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param jsonString the JSON string that represents the cosmos user defined function properties.
      */
     CosmosUserDefinedFunctionProperties(String jsonString) {
         this.userDefinedFunction = new UserDefinedFunction(jsonString);
@@ -81,7 +93,7 @@ public final class CosmosUserDefinedFunctionProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.userDefinedFunction.getResourceId();
     }
 

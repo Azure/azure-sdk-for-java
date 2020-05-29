@@ -23,7 +23,7 @@ public final class CosmosStoredProcedureProperties {
     /**
      * Constructor.
      */
-    public CosmosStoredProcedureProperties() {
+    CosmosStoredProcedureProperties() {
         this.storedProcedure = new StoredProcedure();
     }
 
@@ -97,7 +97,7 @@ public final class CosmosStoredProcedureProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.storedProcedure.getResourceId();
     }
 

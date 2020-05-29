@@ -37,9 +37,11 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     public void replaceStoredProcedure() throws Exception {
 
         // create a stored procedure
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         CosmosStoredProcedureProperties readBackSp = createdCollection.getScripts()
                 .createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block()
                 .getProperties();

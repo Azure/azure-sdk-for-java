@@ -127,9 +127,11 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     }
 
     private CosmosStoredProcedureProperties getCosmosStoredProcedureProperties() {
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return storedProcedureDef;
     }
 
@@ -146,9 +148,10 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     }
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
-        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties()
-                                                        .setId(UUID.randomUUID().toString());
-        sproc.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
 
         CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(sproc);
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
