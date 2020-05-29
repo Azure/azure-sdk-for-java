@@ -13,8 +13,9 @@ import java.util.stream.Collectors;
  * Represents a stored procedure in the Azure Cosmos DB database service.
  * <p>
  * Cosmos DB allows stored procedures to be executed in the storage tier, directly against a container. The
- * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
- * additional details, refer to the server-side JavaScript API documentation.
+ * script gets executed under ACID transactions on the primary storage partition of the specified container. For
+ * additional details, refer to
+ * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-write-stored-procedures-triggers-udfs">documentation</a>
  */
 public final class CosmosStoredProcedureProperties {
 
@@ -102,6 +103,7 @@ public final class CosmosStoredProcedureProperties {
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
@@ -111,6 +113,7 @@ public final class CosmosStoredProcedureProperties {
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

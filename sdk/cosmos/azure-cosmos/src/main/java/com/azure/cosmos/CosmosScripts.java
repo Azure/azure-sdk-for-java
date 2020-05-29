@@ -4,16 +4,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -131,7 +128,7 @@ public class CosmosScripts {
      * Create user defined function
      *
      * @param properties the properties
-     * @return the cosmos sync user defined function response
+     * @return the cosmos user defined function response
      */
     public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties) {
         return mapUDFResponseAndBlock(asyncScripts.createUserDefinedFunction(properties));
@@ -283,17 +280,15 @@ public class CosmosScripts {
     }
 
     /**
-     * Map udf response and block cosmos sync user defined function response.
+     * Map udf response and block cosmos user defined function response.
      *
      * @param responseMono the response mono
-     * @return the cosmos sync user defined function response
+     * @return the cosmos user defined function response
      */
     CosmosUserDefinedFunctionResponse mapUDFResponseAndBlock(
-        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono) {
+        Mono<CosmosUserDefinedFunctionResponse> responseMono) {
         try {
-            return responseMono
-                       .map(this::convertResponse)
-                       .block();
+            return responseMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -301,22 +296,6 @@ public class CosmosScripts {
             } else {
                 throw Exceptions.propagate(ex);
             }
-        }
-    }
-
-    /**
-     * Convert response cosmos sync user defined function response.
-     *
-     * @param response the response
-     * @return the cosmos sync user defined function response
-     */
-    CosmosUserDefinedFunctionResponse convertResponse(CosmosAsyncUserDefinedFunctionResponse response) {
-        if (response.getUserDefinedFunction() != null) {
-            return ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response,
-                                                         getUserDefinedFunction(response.getUserDefinedFunction()
-                                                                                    .getId()));
-        } else {
-            return ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response, null);
         }
     }
 
@@ -328,11 +307,9 @@ public class CosmosScripts {
      * @param responseMono the response mono
      * @return the cosmos sync trigger response
      */
-    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosAsyncTriggerResponse> responseMono) {
+    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosTriggerResponse> responseMono) {
         try {
-            return responseMono
-                       .map(this::convertResponse)
-                       .block();
+            return responseMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -340,21 +317,6 @@ public class CosmosScripts {
             } else {
                 throw Exceptions.propagate(ex);
             }
-        }
-    }
-
-    /**
-     * Convert response cosmos sync trigger response.
-     *
-     * @param response the response
-     * @return the cosmos sync trigger response
-     */
-    CosmosTriggerResponse convertResponse(CosmosAsyncTriggerResponse response) {
-        if (response.getTrigger() != null) {
-            return ModelBridgeInternal.createCosmosTriggerResponse(response,
-                                             getTrigger(response.getTrigger().getId()));
-        } else {
-            return ModelBridgeInternal.createCosmosTriggerResponse(response, null);
         }
     }
 

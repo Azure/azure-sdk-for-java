@@ -1,6 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
 - Fix bug in FormRecognizer API's to support multipage document recognition.
 - Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
 - Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`

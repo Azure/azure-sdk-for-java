@@ -5,11 +5,10 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncTrigger;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import org.testng.annotations.AfterClass;
@@ -40,10 +39,10 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
 
-        Mono<CosmosAsyncTriggerResponse> createObservable = createdCollection.getScripts().createTrigger(trigger);
+        Mono<CosmosTriggerResponse> createObservable = createdCollection.getScripts().createTrigger(trigger);
 
         // validate trigger creation
-        CosmosResponseValidator<CosmosAsyncTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
+        CosmosResponseValidator<CosmosTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
                 .withId(trigger.getId())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
@@ -60,14 +59,16 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.setBody("function() {var x = 10;}");
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
-        CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getTrigger();
+        CosmosTriggerResponse readBackTriggerResponse = createdCollection.getScripts().createTrigger(trigger).block();
+        CosmosAsyncTrigger readBackTrigger =
+            createdCollection.getScripts().getTrigger(readBackTriggerResponse.getProperties().getId());
 
         // read trigger
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        Mono<CosmosAsyncTriggerResponse> readObservable = readBackTrigger.read();
+        Mono<CosmosTriggerResponse> readObservable = readBackTrigger.read();
 
         // validate read trigger
-        CosmosResponseValidator<CosmosAsyncTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
+        CosmosResponseValidator<CosmosTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
                 .withId(trigger.getId())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
@@ -84,13 +85,15 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.setBody("function() {var x = 10;}");
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
-        CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getTrigger();
+        CosmosTriggerResponse readBackTriggerResponse = createdCollection.getScripts().createTrigger(trigger).block();
+        CosmosAsyncTrigger readBackTrigger =
+            createdCollection.getScripts().getTrigger(readBackTriggerResponse.getProperties().getId());
 
         // delete trigger
-        Mono<CosmosAsyncTriggerResponse> deleteObservable = readBackTrigger.delete();
+        Mono<CosmosTriggerResponse> deleteObservable = readBackTrigger.delete();
 
         // validate delete trigger
-        CosmosResponseValidator<CosmosAsyncTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
+        CosmosResponseValidator<CosmosTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);

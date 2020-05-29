@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.implementation.Resource;
 
 import java.time.OffsetDateTime;
@@ -37,7 +38,7 @@ public final class CosmosConflictProperties {
      *
      * @return the operation kind.
      */
-    public String getOperationKind() {
+    public OperationKind getOperationKind() {
         return this.conflict.getOperationKind();
     }
 
@@ -85,6 +86,7 @@ public final class CosmosConflictProperties {
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
@@ -94,6 +96,7 @@ public final class CosmosConflictProperties {
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

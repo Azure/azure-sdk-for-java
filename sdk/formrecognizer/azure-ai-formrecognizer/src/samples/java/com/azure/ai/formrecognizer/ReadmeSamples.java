@@ -17,10 +17,10 @@ import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -69,15 +69,16 @@ public class ReadmeSamples {
     }
 
     public void recognizeCustomForm() {
-        String analyzeFilePath = "{file_source_url}";
+        String formUrl = "{file_url}";
         String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-            formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
+        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
+            formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
 
-        IterableStream<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
+        List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
-        recognizedForms.forEach(form -> {
-            System.out.println("----------- Recognized Form -----------");
+        for (int i = 0; i < recognizedForms.size(); i++) {
+            RecognizedForm form = recognizedForms.get(i);
+            System.out.printf("----------- Recognized Form %s%n-----------", i);
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) -> {
                 System.out.printf("Field %s has value %s with confidence score of %d.%n", label,
@@ -85,19 +86,20 @@ public class ReadmeSamples {
                     formField.getConfidence());
             });
             System.out.print("-----------------------------------");
-        });
+        }
     }
 
     public void recognizeContent() {
-        String analyzeFilePath = "{file_source_url}";
-        SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
-            formRecognizerClient.beginRecognizeContentFromUrl(analyzeFilePath);
+        String contentFileUrl = "{file_url}";
+        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+            formRecognizerClient.beginRecognizeContentFromUrl(contentFileUrl);
 
-        IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+        List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
-        layoutPageResults.forEach(formPage -> {
+        for (int i = 0; i < contentPageResults.size(); i++) {
+            FormPage formPage = contentPageResults.get(i);
+            System.out.printf("----Recognizing content for page %s%n----", i);
             // Table information
-            System.out.println("----Recognizing content ----");
             System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
@@ -109,17 +111,19 @@ public class ReadmeSamples {
                 });
                 System.out.println();
             });
-        });
+        }
     }
 
     public void recognizeReceipt() {
-        String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-            formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
-        IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+        SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+            formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
+        List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
-        receiptPageResults.forEach(recognizedReceipt -> {
+        for (int i = 0; i < receiptPageResults.size(); i++) {
+            System.out.printf("----Recognizing receipt for page %s%n----", i);
+            RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
             System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
@@ -130,7 +134,7 @@ public class ReadmeSamples {
             System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
             System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
             System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
-        });
+        }
     }
 
     public void trainModel() {

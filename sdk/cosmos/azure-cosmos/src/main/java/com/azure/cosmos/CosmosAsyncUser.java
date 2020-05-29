@@ -57,8 +57,8 @@ public class CosmosAsyncUser {
      */
     public Mono<CosmosUserResponse> read() {
         return this.database.getDocClientWrapper()
-                   .readUser(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
+                            .readUser(getLink(), null)
+                            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**
@@ -69,8 +69,8 @@ public class CosmosAsyncUser {
      */
     public Mono<CosmosUserResponse> replace(CosmosUserProperties userSettings) {
         return this.database.getDocClientWrapper()
-                   .replaceUser(ModelBridgeInternal.getV2User(userSettings), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
+                            .replaceUser(ModelBridgeInternal.getV2User(userSettings), null)
+                            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**
@@ -80,8 +80,8 @@ public class CosmosAsyncUser {
      */
     public Mono<CosmosUserResponse> delete() {
         return this.database.getDocClientWrapper()
-                   .deleteUser(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
+                            .deleteUser(getLink(), null)
+                            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**

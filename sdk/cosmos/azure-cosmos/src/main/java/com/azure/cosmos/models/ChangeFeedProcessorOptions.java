@@ -138,7 +138,7 @@ public final class ChangeFeedProcessorOptions {
      * Gets a prefix to be used as part of the lease ID.
      * <p>
      * This can be used to support multiple instances of {@link ChangeFeedProcessor} instances pointing at the same
-     * feed while using the same auxiliary collection.
+     * feed while using the same auxiliary container.
      *
      * @return a prefix to be used as part of the lease ID.
      */
@@ -180,10 +180,10 @@ public final class ChangeFeedProcessorOptions {
     /**
      * Gets the start request continuation token to start looking for changes after.
      * <p>
-     * This option can be used when lease store is not initialized and it is ignored if a lease document exists and
+     * This option can be used when lease store is not initialized and it is ignored if a lease item exists and
      * has continuation token that is not null. If this is specified, both StartTime and StartFromBeginning are ignored.
      *
-     * @return the string representing a continuation token that will be used to get document feeds starting with.
+     * @return the string representing a continuation token that will be used to get item feeds starting with.
      */
     public String getStartContinuation() {
         return this.startContinuation;
@@ -192,11 +192,11 @@ public final class ChangeFeedProcessorOptions {
     /**
      * Sets the start request continuation token to start looking for changes after.
      * <p>
-     * This option can be used when lease store is not initialized and it is ignored if a lease document exists and
+     * This option can be used when lease store is not initialized and it is ignored if a lease item exists and
      * has continuation token that is not null. If this is specified, both StartTime and StartFromBeginning are ignored.
      *
      * @param startContinuation the start request continuation token to start looking for changes after.
-     * @return the string representing a continuation token that will be used to get document feeds starting with.
+     * @return the string representing a continuation token that will be used to get item feeds starting with.
      */
     public ChangeFeedProcessorOptions setStartContinuation(String startContinuation) {
         this.startContinuation = startContinuation;
@@ -207,7 +207,7 @@ public final class ChangeFeedProcessorOptions {
      * Gets the time (exclusive) to start looking for changes after.
      * <p>
      * This option can be used when:
-     * (1) Lease documents are not initialized; this setting will be ignored if the lease documents exists and have a
+     * (1) Lease items are not initialized; this setting will be ignored if the lease items exists and have a
      *   valid continuation token.
      * (2) Start continuation token option is not specified.
      * If this option is specified, "start from beginning" option is ignored.
@@ -222,7 +222,7 @@ public final class ChangeFeedProcessorOptions {
      * Sets the time (exclusive) to start looking for changes after (UTC time).
      * <p>
      * This option can be used when:
-     * (1) Lease documents are not initialized; this setting will be ignored if the lease documents exists and have a
+     * (1) Lease items are not initialized; this setting will be ignored if the lease items exists and have a
      *   valid continuation token.
      * (2) Start continuation token option is not specified.
      * If this option is specified, "start from beginning" option is ignored.
@@ -240,7 +240,7 @@ public final class ChangeFeedProcessorOptions {
      * or from current (false). By default it's start from current (false).
      * <p>
      * This option can be used when:
-     * (1) Lease documents are not initialized; this setting will be ignored if the lease documents exists and have a
+     * (1) Lease items are not initialized; this setting will be ignored if the lease items exists and have a
      *   valid continuation token.
      * (2) Start continuation token option is not specified.
      * (3) Start time option is not specified.
@@ -255,7 +255,7 @@ public final class ChangeFeedProcessorOptions {
      * Sets a value indicating whether change feed in the Azure Cosmos DB service should start from beginning.
      * <p>
      * This option can be used when:
-     * (1) Lease documents are not initialized; this setting will be ignored if the lease documents exists and have a
+     * (1) Lease items are not initialized; this setting will be ignored if the lease items exists and have a
      *   valid continuation token.
      * (2) Start continuation token option is not specified.
      * (3) Start time option is not specified.

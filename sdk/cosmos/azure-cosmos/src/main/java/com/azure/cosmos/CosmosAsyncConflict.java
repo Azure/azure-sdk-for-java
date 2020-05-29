@@ -70,7 +70,7 @@ public final class CosmosAsyncConflict {
     }
 
     /**
-     * Reads all conflicts in a document collection.
+     * Reads all conflicts in a container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} will
      * contain one or several feed response pages of the read conflicts. In case of

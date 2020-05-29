@@ -3,16 +3,13 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosTrigger;
-import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -70,9 +67,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainerResponse createCosmosContainerResponse(ResourceResponse<DocumentCollection> response,
-                                                                        CosmosAsyncDatabase database) {
-        return new CosmosContainerResponse(response, database);
+    public static CosmosContainerResponse createCosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
+        return new CosmosContainerResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -116,37 +112,23 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
-                                                                              CosmosAsyncContainer container) {
-        return new CosmosAsyncTriggerResponse(response, container);
+    public static CosmosTriggerResponse createCosmosTriggerResponse(ResourceResponse<Trigger> response) {
+        return new CosmosTriggerResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUserDefinedFunctionResponse createCosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
-                                                                                                      CosmosAsyncContainer container) {
-        return new CosmosAsyncUserDefinedFunctionResponse(response, container);
+    public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response) {
+        return new CosmosUserDefinedFunctionResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserResponse createCosmosAsyncUserResponse(ResourceResponse<User> response) {
+    public static CosmosUserResponse createCosmosUserResponse(ResourceResponse<User> response) {
         return new CosmosUserResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
         return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(CosmosAsyncUserDefinedFunctionResponse resourceResponse,
-                                                    CosmosUserDefinedFunction userDefinedFunction) {
-        return new CosmosUserDefinedFunctionResponse(resourceResponse, userDefinedFunction);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosTriggerResponse createCosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
-                                        CosmosTrigger syncTrigger) {
-        return new CosmosTriggerResponse(asyncResponse, syncTrigger);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -578,8 +560,6 @@ public final class ModelBridgeInternal {
             ((CompositePath) t).populatePropertyBag();
         } else if (t instanceof ConflictResolutionPolicy) {
             ((ConflictResolutionPolicy) t).populatePropertyBag();
-        } else if (t instanceof DatabaseAccountLocation) {
-            ((DatabaseAccountLocation) t).populatePropertyBag();
         } else if (t instanceof ExcludedPath) {
             ((ExcludedPath) t).populatePropertyBag();
         } else if (t instanceof IncludedPath) {
@@ -613,8 +593,6 @@ public final class ModelBridgeInternal {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
-        } else if (t instanceof DatabaseAccountLocation) {
-            return ((DatabaseAccountLocation) t).getJsonSerializable();
         } else if (t instanceof ExcludedPath) {
             return ((ExcludedPath) t).getJsonSerializable();
         } else if (t instanceof IncludedPath) {

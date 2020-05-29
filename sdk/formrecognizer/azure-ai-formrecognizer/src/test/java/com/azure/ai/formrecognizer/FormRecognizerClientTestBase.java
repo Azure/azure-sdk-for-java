@@ -39,20 +39,17 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
@@ -94,9 +91,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateReferenceElementsData(List<String> expectedElements,
-        IterableStream<FormContent> actualFormContents, List<ReadResult> readResults) {
-        if (expectedElements != null && actualFormContents != null) {
-            List<FormContent> actualFormContentList = actualFormContents.stream().collect(Collectors.toList());
+        List<FormContent> actualFormContentList, List<ReadResult> readResults) {
+        if (expectedElements != null && actualFormContentList != null) {
             assertEquals(expectedElements.size(), actualFormContentList.size());
             for (int i = 0; i < actualFormContentList.size(); i++) {
                 String[] indices = NON_DIGIT_PATTERN.matcher(expectedElements.get(i)).replaceAll(" ").trim().split(" ");
@@ -131,8 +127,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateFormTableData(List<DataTable> expectedFormTables,
-        IterableStream<FormTable> actualFormTables, List<ReadResult> readResults, boolean includeTextDetails) {
-        List<FormTable> actualFormTable = actualFormTables.stream().collect(Collectors.toList());
+        List<FormTable> actualFormTable, List<ReadResult> readResults, boolean includeTextDetails) {
         assertEquals(expectedFormTables.size(), actualFormTable.size());
         for (int i = 0; i < actualFormTable.size(); i++) {
             DataTable expectedTable = expectedFormTables.get(i);
@@ -144,8 +139,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateCellData(List<DataTableCell> expectedTableCells,
-        IterableStream<FormTableCell> actualTableCells, List<ReadResult> readResults, boolean includeTextDetails) {
-        List<FormTableCell> actualTableCellList = actualTableCells.stream().collect(Collectors.toList());
+        List<FormTableCell> actualTableCellList, List<ReadResult> readResults, boolean includeTextDetails) {
         assertEquals(expectedTableCells.size(), actualTableCellList.size());
         for (int i = 0; i < actualTableCellList.size(); i++) {
             DataTableCell expectedTableCell = expectedTableCells.get(i);
@@ -162,8 +156,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateFormLineData(List<TextLine> expectedLines, IterableStream<FormLine> actualLines) {
-        List<FormLine> actualLineList = actualLines.stream().collect(Collectors.toList());
+    private static void validateFormLineData(List<TextLine> expectedLines, List<FormLine> actualLineList) {
         assertEquals(expectedLines.size(), actualLineList.size());
         for (int i = 0; i < actualLineList.size(); i++) {
             TextLine expectedLine = expectedLines.get(i);
@@ -175,8 +168,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateFormWordData(List<TextWord> expectedFormWords,
-        IterableStream<FormWord> actualFormWords) {
-        List<FormWord> actualFormWordList = actualFormWords.stream().collect(Collectors.toList());
+        List<FormWord> actualFormWordList) {
         assertEquals(expectedFormWords.size(), actualFormWordList.size());
         for (int i = 0; i < actualFormWordList.size(); i++) {
 
@@ -248,8 +240,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateReceiptItemsData(List<FieldValue> expectedReceiptItemList,
-        List<USReceiptItem> actualReceiptItems, List<ReadResult> readResults, boolean includeTextDetails) {
-        List<USReceiptItem> actualReceiptItemList = new ArrayList<>(actualReceiptItems);
+        List<USReceiptItem> actualReceiptItemList, List<ReadResult> readResults, boolean includeTextDetails) {
         assertEquals(expectedReceiptItemList.size(), actualReceiptItemList.size());
         for (int i = 0; i < expectedReceiptItemList.size(); i++) {
             FieldValue expectedReceiptItem = expectedReceiptItemList.get(i);
@@ -373,11 +364,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             actualRecognizedReceipt.getReceiptItems(), readResults, includeTextDetails);
     }
 
-    void validateLayoutDataResults(IterableStream<FormPage> actualFormPages, boolean includeTextDetails) {
+    void validateLayoutDataResults(List<FormPage> actualFormPageList, boolean includeTextDetails) {
         AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         final List<PageResult> pageResults = analyzeResult.getPageResults();
         final List<ReadResult> readResults = analyzeResult.getReadResults();
-        List<FormPage> actualFormPageList = actualFormPages.stream().collect(Collectors.toList());
         for (int i = 0; i < actualFormPageList.size(); i++) {
             FormPage actualFormPage = actualFormPageList.get(i);
             ReadResult readResult = readResults.get(i);
@@ -395,9 +385,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void validateReceiptResultData(IterableStream<RecognizedReceipt> actualResult, boolean includeTextDetails) {
+    void validateReceiptResultData(List<RecognizedReceipt> actualReceiptList, boolean includeTextDetails) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
-        List<RecognizedReceipt> actualReceiptList = actualResult.stream().collect(Collectors.toList());
         for (int i = 0; i < actualReceiptList.size(); i++) {
             final RecognizedReceipt actualReceipt = actualReceiptList.get(i);
             assertEquals("en-US", actualReceipt.getReceiptLocale());
@@ -406,13 +395,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void validateRecognizedResult(IterableStream<RecognizedForm> actualForms, boolean includeTextDetails,
+    void validateRecognizedResult(List<RecognizedForm> actualFormList, boolean includeTextDetails,
         boolean isLabeled) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = rawResponse.getReadResults();
         List<PageResult> pageResults = rawResponse.getPageResults();
         List<DocumentResult> documentResults = rawResponse.getDocumentResults();
-        List<RecognizedForm> actualFormList = actualForms.stream().collect(Collectors.toList());
 
         for (int i = 0; i < actualFormList.size(); i++) {
             validateLayoutDataResults(actualFormList.get(i).getPages(), includeTextDetails);
@@ -538,13 +526,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         });
     }
 
-    static void validateMultiPageDataLabeled(IterableStream<RecognizedForm> recognizedFormResult) {
-        List<RecognizedForm> actualRecognizedFormsList = recognizedFormResult.stream().collect(Collectors.toList());
+    static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList) {
         actualRecognizedFormsList.forEach(recognizedForm -> {
             assertEquals("custom:form", recognizedForm.getFormType());
             assertEquals(1, recognizedForm.getPageRange().getStartPageNumber());
             assertEquals(3, recognizedForm.getPageRange().getEndPageNumber());
-            assertEquals(3, (int) recognizedForm.getPages().stream().count());
+            assertEquals(3, recognizedForm.getPages().size());
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());
                 assertNotNull(formField.getFieldValue());
@@ -554,8 +541,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         });
     }
 
-    static void validateMultiPageDataUnlabeled(IterableStream<RecognizedForm> recognizedFormResult) {
-        List<RecognizedForm> actualRecognizedFormsList = recognizedFormResult.stream().collect(Collectors.toList());
+    static void validateMultiPageDataUnlabeled(List<RecognizedForm> actualRecognizedFormsList) {
         actualRecognizedFormsList.forEach(recognizedForm -> {
             assertNotNull(recognizedForm.getFormType());
             assertEquals(1, recognizedForm.getPages().stream().count());
@@ -568,8 +554,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         });
     }
 
-    static void validateMultipageReceiptData(IterableStream<RecognizedReceipt> actualReceiptResult) {
-        List<RecognizedReceipt> recognizedReceipts = actualReceiptResult.stream().collect(Collectors.toList());
+    static void validateMultipageReceiptData(List<RecognizedReceipt> recognizedReceipts) {
         assertEquals(3, recognizedReceipts.size());
         USReceipt receiptPage1 = ReceiptExtensions.asUSReceipt(recognizedReceipts.get(0));
         USReceipt receiptPage2 = ReceiptExtensions.asUSReceipt(recognizedReceipts.get(1));
@@ -586,10 +571,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         // Assert no fields, tables and lines on second page
         assertEquals(0, receiptPage2.getRecognizedForm().getFields().size());
-        IterableStream<FormPage> receipt2Pages = receiptPage2.getRecognizedForm().getPages();
-        assertEquals(1, receipt2Pages.stream().count());
-        assertEquals(0, receipt2Pages.stream().findFirst().get().getTables().stream().count());
-        assertEquals(0, receipt2Pages.stream().findFirst().get().getLines().stream().count());
+        List<FormPage> receipt2Pages = receiptPage2.getRecognizedForm().getPages();
+        assertEquals(1, receipt2Pages.size());
+        assertEquals(0, receipt2Pages.stream().findFirst().get().getTables().size());
+        assertEquals(0, receipt2Pages.stream().findFirst().get().getLines().size());
         assertEquals(2, receiptPage2.getRecognizedForm().getPageRange().getStartPageNumber());
         assertEquals(2, receiptPage2.getRecognizedForm().getPageRange().getEndPageNumber());
 
