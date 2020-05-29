@@ -5,17 +5,16 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.ComplexField;
-import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchableField;
 import com.azure.search.documents.indexes.models.SimpleField;
-import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
 import com.azure.search.documents.test.environment.models.HotelCircularDependencies;
 import com.azure.search.documents.test.environment.models.HotelSearchException;
 import com.azure.search.documents.test.environment.models.HotelSearchableExceptionOnList;
 import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
+import com.azure.search.documents.test.environment.models.HotelWithArray;
 import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
 import org.junit.jupiter.api.Test;
 
@@ -28,13 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FieldBuilderTest {
-    @Test
-    public void hotelComparison() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(Hotel.class));
-        List<SearchField> expectedFields = sortByFieldName(buildHotelFields());
-        assertListFieldEquals(expectedFields, actualFields);
-    }
+public class FieldBuilderTests {
 
     @Test
     public void hotelSearchableThrowException() {
@@ -80,6 +73,13 @@ public class FieldBuilderTest {
             "either analyzer or both searchAnalyzer and indexAnalyzer");
     }
 
+    @Test
+    public void hotelWithArrayType() {
+        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelWithArray.class));
+        List<SearchField> expectedFields = sortByFieldName(buildHotelWithArrayModel());
+        assertListFieldEquals(expectedFields, actualFields);
+    }
+
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
@@ -105,25 +105,11 @@ public class FieldBuilderTest {
         return Collections.singletonList(hotel);
     }
 
-    private List<SearchField> buildHotelFields() {
-        SearchField hotelId = new SimpleField("hotelId", SearchFieldDataType.STRING, false).setSortable(true)
-            .setKey(true).build();
-        SearchField hotelName = new SearchableField("hotelName", false).setAnalyzer(LexicalAnalyzerName.fromString("en.lucene"))
+    private List<SearchField> buildHotelWithArrayModel() {
+        SearchField hotelId = new SimpleField("hotelId", SearchFieldDataType.STRING, false).setKey(true)
             .setSortable(true).build();
-        SearchField description = new SimpleField("description", SearchFieldDataType.STRING, false).build();
-        SearchField category = new SimpleField("category", SearchFieldDataType.STRING, false).build();
         SearchField tags = new SearchableField("tags", true).build();
-        SearchField parkingIncluded = new SimpleField("parkingIncluded", SearchFieldDataType.BOOLEAN, false).build();
-        SearchField smokingAllowed = new SimpleField("smokingAllowed", SearchFieldDataType.BOOLEAN, false).build();
-        SearchField lastRenovationDate = new SimpleField("lastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET, false).build();
-        SearchField rating = new SimpleField("rating", SearchFieldDataType.INT32, false).build();
-        SearchField location = new SimpleField("location", SearchFieldDataType.GEOGRAPHY_POINT, false).build();
-        SearchField address = new ComplexField("address", false)
-            .setFields(buildHotelAddressField()).build();
-        SearchField rooms = new ComplexField("rooms", true).setFields(buildHotelRoomField()).build();
-
-        return Arrays.asList(hotelId, hotelName, description, category, tags, parkingIncluded, smokingAllowed,
-            lastRenovationDate, rating, location, address, rooms);
+        return Arrays.asList(hotelId, tags);
     }
 
     private List<SearchField> buildHotelAddressField() {

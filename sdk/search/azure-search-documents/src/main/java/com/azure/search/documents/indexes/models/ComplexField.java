@@ -51,12 +51,6 @@ public class ComplexField extends SearchFieldBase {
     public SearchField build() {
         return new SearchField().setName(super.getName())
             .setType(super.getDataType())
-            .setFields(fields)
-            .setKey(false)
-            .setFilterable(false)
-            .setSortable(false)
-            .setHidden(false)
-            .setSearchable(false)
-            .setFacetable(false);
+            .setFields(fields);
     }
 }
