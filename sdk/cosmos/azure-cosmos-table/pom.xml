@@ -32,7 +32,7 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
-  <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
+  <!-- CosmosTableSkip - Needed temporary values to 10% not fail. -->
   <properties>
     <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
@@ -43,49 +43,11 @@ Licensed under the MIT License.
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-        <configuration>
-          <groups>unit</groups>
-          <includes>
-            <include>%regex[.*]</include>
-          </includes>
-          <properties>
-            <property>
-              <name>surefire.testng.verbose</name>
-              <value>2</value>
-            </property>
-          </properties>
-        </configuration>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
