@@ -30,7 +30,7 @@ public class AutoCompleteExample {
 
     public static void main(String[] args) {
 
-        SearchIndexClient searchClient = new SearchIndexClientBuilder()
+        SearchClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels-sample-index")
@@ -41,7 +41,7 @@ public class AutoCompleteExample {
         autoCompleteWithFilterAndFuzzy(searchClient);
     }
 
-    private static void autoCompleteWithOneTermContext(SearchIndexClient searchClient) {
+    private static void autoCompleteWithOneTermContext(SearchClient searchClient) {
 
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
@@ -61,7 +61,7 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithHighlighting(SearchIndexClient searchClient) {
+    private static void autoCompleteWithHighlighting(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("Address/City eq 'San Diego' or Address/City eq 'Hartford'")
@@ -83,7 +83,7 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithFilterAndFuzzy(SearchIndexClient searchClient) {
+    private static void autoCompleteWithFilterAndFuzzy(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true)

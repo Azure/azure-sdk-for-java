@@ -4,9 +4,9 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -53,7 +53,7 @@ public interface ChangeFeedContextClient {
      * @param options the {@link CosmosContainerRequestOptions} for this request; it can be set as null.
      * @return an {@link Mono} containing the single cosmos database response with the read database or an error.
      */
-    Mono<CosmosAsyncDatabaseResponse> readDatabase(CosmosAsyncDatabase database, CosmosDatabaseRequestOptions options);
+    Mono<CosmosDatabaseResponse> readDatabase(CosmosAsyncDatabase database, CosmosDatabaseRequestOptions options);
 
     /**
      * Reads a {@link CosmosAsyncContainer}.
@@ -62,7 +62,7 @@ public interface ChangeFeedContextClient {
      * @param options         the {@link CosmosContainerRequestOptions} for this request; it can be set as null.
      * @return an {@link Mono} containing the single cosmos container response with the read container or an error.
      */
-    Mono<CosmosAsyncContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options);
+    Mono<CosmosContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options);
 
     /**
      * Creates a cosmos item.
@@ -109,7 +109,7 @@ public interface ChangeFeedContextClient {
                                              CosmosItemRequestOptions options, Class<T> itemType);
 
     /**
-     * Query for items in a document container.
+     * Query for items in a container.
      *
      * @param containerLink  the reference to the parent container.
      * @param querySpec      the SQL query specification.

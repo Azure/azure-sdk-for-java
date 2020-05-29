@@ -37,20 +37,18 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readUserDefinedFunctions() throws Exception {
-
-        FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
         CosmosPagedFlux<CosmosUserDefinedFunctionProperties> feedObservable = createdCollection.getScripts()
-                                                                                               .readAllUserDefinedFunctions(options);
+                                                                                               .readAllUserDefinedFunctions();
 
         int expectedPageSize = (createdUserDefinedFunctions.size() + maxItemCount - 1)
                 / maxItemCount;
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(createdUserDefinedFunctions.size())
-                .exactlyContainsInAnyOrder(
-                        createdUserDefinedFunctions.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(
+                        createdUserDefinedFunctions.stream().map(CosmosUserDefinedFunctionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -77,9 +75,11 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     }
 
     public CosmosUserDefinedFunctionProperties createUserDefinedFunctions(CosmosAsyncContainer cosmosContainer) {
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return cosmosContainer.getScripts().createUserDefinedFunction(udf).block()
                 .getProperties();
     }

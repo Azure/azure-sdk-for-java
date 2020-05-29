@@ -38,9 +38,9 @@ public final class CategorizedEntity {
      * @param subcategory The entity subcategory, such as Age/Year/TimeRange etc.
      * @param confidenceScore A confidence score between 0 and 1 of the extracted entity.
      */
-    public CategorizedEntity(String text, String category, String subcategory, double confidenceScore) {
+    public CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore) {
         this.text = text;
-        this.category = EntityCategory.fromString(category);
+        this.category = category;
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
     }

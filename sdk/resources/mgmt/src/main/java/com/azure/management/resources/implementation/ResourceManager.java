@@ -31,6 +31,8 @@ import com.azure.management.resources.models.ResourceManagementClientImpl;
 import com.azure.management.resources.models.SubscriptionClientBuilder;
 import com.azure.management.resources.models.SubscriptionClientImpl;
 
+import java.util.Objects;
+
 /**
  * Entry point to Azure resource management.
  */
@@ -186,14 +188,16 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
 
         @Override
         public ResourceManager withSubscription(String subscriptionId) {
-            profile.withSubscriptionId(subscriptionId);
+            Objects.requireNonNull(subscriptionId);
+            profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
 
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                profile.withSubscriptionId(Utils.defaultSubscription(this.subscriptions().list()));
+                String subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
+                profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }

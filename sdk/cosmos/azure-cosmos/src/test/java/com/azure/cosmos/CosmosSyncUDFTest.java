@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -95,9 +94,11 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     }
 
     private CosmosUserDefinedFunctionProperties getCosmosUserDefinedFunctionProperties() {
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return udf;
     }
 

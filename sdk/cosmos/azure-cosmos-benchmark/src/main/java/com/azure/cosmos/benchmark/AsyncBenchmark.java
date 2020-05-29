@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
@@ -82,12 +83,14 @@ abstract class AsyncBenchmark<T> {
         logger = LoggerFactory.getLogger(this.getClass());
 
         try {
-            cosmosAsyncDatabase = cosmosClient.getDatabase(
-                this.configuration.getDatabaseId()
-            ).read().block().getDatabase();
+            cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+            cosmosAsyncDatabase.read().doOnError(error ->
+                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
+            ).block();
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosAsyncDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).block().getDatabase();
+                cosmosClient.createDatabase(cfg.getDatabaseId()).block();
+                cosmosAsyncDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
                 logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
                 databaseCreated = true;
             } else {
@@ -96,17 +99,22 @@ abstract class AsyncBenchmark<T> {
         }
 
         try {
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(
-                this.configuration.getCollectionId()
-            ).read().block().getContainer();
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+
+            cosmosAsyncContainer.read().doOnError(error ->
+                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
+            ).block();
+
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosAsyncContainer = cosmosAsyncDatabase.createContainer(
+                cosmosAsyncDatabase.createContainer(
                     this.configuration.getCollectionId(),
                     Configuration.DEFAULT_PARTITION_KEY_PATH,
-                    this.configuration.getThroughput()
-                ).block().getContainer();
-                logger.info("Container {} is created for this test", this.configuration.getCollectionId());
+                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+                ).block();
+
+                cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+                logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
                 throw e;

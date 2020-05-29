@@ -34,7 +34,7 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
     private static final String INDEX_NAME = "hotels-sample-index";
 
     public static void main(String[] args) {
-        SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
+        SearchAsyncClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)

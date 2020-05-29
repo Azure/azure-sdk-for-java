@@ -65,8 +65,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
@@ -90,7 +89,8 @@ public class UniqueIndexTest extends TestSuiteBase {
         JsonNode doc2 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"playwright\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
         JsonNode doc3 = om.readValue("{\"name\":\"حافظ شیرازی\",\"description\":\"poet\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
 
-        collection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        collection = database.getContainer(collectionDefinition.getId());
 
         CosmosItemProperties properties = BridgeInternal.getProperties(collection.createItem(doc1).block());
 
@@ -121,12 +121,12 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
-        collection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        collection = database.getContainer(collectionDefinition.getId());
 
         ObjectMapper om = new ObjectMapper();
 
@@ -171,8 +171,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
@@ -190,7 +189,8 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
-        CosmosAsyncContainer createdCollection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
 
         CosmosContainerProperties collection = createdCollection.read().block().getProperties();
 

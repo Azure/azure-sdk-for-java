@@ -40,7 +40,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -341,7 +341,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTimestamp(Resource resource, OffsetDateTime date) {
+    public static void setTimestamp(Resource resource, Instant date) {
         ModelBridgeInternal.setTimestamp(resource, date);
     }
 
@@ -468,16 +468,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncStoredProcedure createCosmosAsyncStoredProcedure(String id, CosmosAsyncContainer cosmosContainer) {
-        return new CosmosAsyncStoredProcedure(id, cosmosContainer);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncTrigger createCosmosAsyncTrigger(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncTrigger(id, container);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosAsyncUserDefinedFunction createCosmosAsyncUserDefinedFunction(String id, CosmosAsyncContainer container) {
         return new CosmosAsyncUserDefinedFunction(id, container);
     }
@@ -485,11 +475,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosAsyncUser createCosmosAsyncUser(String id, CosmosAsyncDatabase database) {
         return new CosmosAsyncUser(id, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosContainer createCosmosContainer(String id, CosmosDatabase database, CosmosAsyncContainer container) {
-        return new CosmosContainer(id, database, container);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

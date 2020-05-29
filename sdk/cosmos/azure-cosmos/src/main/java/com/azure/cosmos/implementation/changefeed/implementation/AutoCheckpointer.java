@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ class AutoCheckpointer implements ChangeFeedObserver {
     private final CheckpointFrequency checkpointFrequency;
     private final ChangeFeedObserver observer;
     private volatile int processedDocCount;
-    private volatile ZonedDateTime lastCheckpointTime;
+    private volatile Instant lastCheckpointTime;
 
     public AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver observer) {
         if (checkpointFrequency == null) {
@@ -38,7 +38,7 @@ class AutoCheckpointer implements ChangeFeedObserver {
 
         this.checkpointFrequency = checkpointFrequency;
         this.observer = observer;
-        this.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
+        this.lastCheckpointTime = Instant.now();
     }
 
     @Override
@@ -70,7 +70,7 @@ class AutoCheckpointer implements ChangeFeedObserver {
                 })
                 .doOnSuccess((Void) -> {
                     this.processedDocCount = 0;
-                    this.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
+                    this.lastCheckpointTime = Instant.now();
                 })
                 .then();
         }
@@ -86,7 +86,7 @@ class AutoCheckpointer implements ChangeFeedObserver {
             return true;
         }
 
-        Duration delta = Duration.between(this.lastCheckpointTime, ZonedDateTime.now(ZoneId.of("UTC")));
+        Duration delta = Duration.between(this.lastCheckpointTime, Instant.now());
 
         return delta.compareTo(this.checkpointFrequency.getTimeInterval()) >= 0;
     }

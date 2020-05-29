@@ -30,6 +30,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +64,7 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+        Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
@@ -287,6 +289,13 @@ public class Utils {
             }
         }
         return resourceFullName;
+    }
+
+    public static <T> int getCollectionSize(Collection<T> collection) {
+        if (collection == null) {
+            return 0;
+        }
+        return collection.size();
     }
 
     public static Boolean isCollectionPartitioned(DocumentCollection collection) {

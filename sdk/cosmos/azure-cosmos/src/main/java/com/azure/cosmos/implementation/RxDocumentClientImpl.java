@@ -7,6 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -47,8 +49,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -422,9 +423,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             validateResource(database);
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
-            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationStartTimeUTC = Instant.now();
             ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(database);
-            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
                 serializationEndTimeUTC,
@@ -561,9 +562,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
                 DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, queryResourceLink, false, activityId);
-        return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
+        return executionContext.flatMap(iDocumentQueryExecutionContext -> {
+            QueryInfo queryInfo = null;
+            if (iDocumentQueryExecutionContext instanceof PipelinedDocumentQueryExecutionContext) {
+                queryInfo = ((PipelinedDocumentQueryExecutionContext<T>) iDocumentQueryExecutionContext).getQueryInfo();
+            }
+            if (queryInfo != null && queryInfo.hasSelectValue()) {
+                QueryInfo finalQueryInfo = queryInfo;
+                return iDocumentQueryExecutionContext.executeAsync()
+                           .map(tFeedResponse -> {
+                               ModelBridgeInternal
+                                   .addQueryInfoToFeedResponse(tFeedResponse, finalQueryInfo);
+                               return tFeedResponse;
+                           });
+            }
+            return iDocumentQueryExecutionContext.executeAsync();
+        });
     }
-
 
     @Override
     public Flux<FeedResponse<Database>> queryDatabases(String query, FeedOptions options) {
@@ -600,9 +615,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
 
-            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationStartTimeUTC = Instant.now();
             ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
-            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
                 serializationEndTimeUTC,
@@ -651,9 +666,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
-            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationStartTimeUTC = Instant.now();
             ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
-            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
                 serializationEndTimeUTC,
@@ -942,7 +957,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        if (options.isPopulateQuotaInfo()) {
+        if (options.isQuotaInfoEnabled()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
 
@@ -1002,9 +1017,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 cosmosItemProperties = new CosmosItemProperties(contentAsByteBuffer);
             }
 
-            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationStartTime = Instant.now();
             partitionKeyInternal =  extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
-            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationEndTime = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,
                 serializationEndTime,
@@ -1060,9 +1075,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
-        ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant serializationStartTimeUTC = Instant.now();
         ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
-        ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant serializationEndTimeUTC = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
             serializationStartTimeUTC,
             serializationEndTimeUTC,
@@ -1331,9 +1346,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
         final String path = Utils.joinPath(documentLink, null);
         final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
-        ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant serializationStartTimeUTC = Instant.now();
         ByteBuffer content = serializeJsonToByteBuffer(document);
-        ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
             serializationStartTimeUTC,
             serializationEndTime,

@@ -14,6 +14,7 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -127,7 +128,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         int throughput = 1000;
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
-            throughput);
+            ThroughputProperties.createManualThroughput(throughput));
         validateContainerResponse(containerProperties, containerResponse);
     }
 
@@ -169,7 +170,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         int throughput = 1000;
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(collectionName,
-            partitionKeyPath, throughput);
+            partitionKeyPath, ThroughputProperties.createManualThroughput(throughput));
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 
@@ -226,13 +227,13 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         assertThat(containerResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
-        CosmosContainerResponse replaceResponse = containerResponse.getContainer()
+        CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(
                                                               new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.LAZY);
 
-        CosmosContainerResponse replaceResponse1 = containerResponse.getContainer()
+        CosmosContainerResponse replaceResponse1 = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(
                                                               new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)),
                                                               options);

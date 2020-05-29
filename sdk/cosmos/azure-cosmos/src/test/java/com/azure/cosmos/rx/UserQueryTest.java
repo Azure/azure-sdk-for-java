@@ -59,7 +59,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(expectedUsers.size())
-                .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedUsers.stream().map(CosmosUserProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -86,7 +86,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(expectedUsers.size())
-                .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedUsers.stream().map(CosmosUserProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
