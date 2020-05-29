@@ -298,8 +298,15 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
 
         Iterator<SynonymMap> actual = client.listSynonymMaps().iterator();
 
-        assertObjectEquals(synonymMap1, actual.next(), true);
-        assertObjectEquals(synonymMap2, actual.next(), true);
+        SynonymMap temp = actual.next();
+        if (synonymMap1.getName().equals(temp.getName())) {
+            assertObjectEquals(synonymMap1, temp, true);
+            assertObjectEquals(synonymMap2, actual.next(), true);
+        } else {
+            assertObjectEquals(synonymMap2, temp, true);
+            assertObjectEquals(synonymMap1, actual.next(), true);
+        }
+
         assertFalse(actual.hasNext());
     }
 
