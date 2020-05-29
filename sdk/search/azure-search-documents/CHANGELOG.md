@@ -8,6 +8,10 @@
 - Removed `SearchServiceClientBuilder`.
 - Renamed `SearchIndexClient` to `SearchClient` and `SearchIndexAsyncClient` to `SearchAsyncClient`.
 - Put all models used `SearchIndexClient` and `SearchIndexerClient` (same for async clients) under `com.azure.search.documents.indexes`.
+- Removed `SearchIndexerDataSource` to `SearchIndexerDataSourceConnection`, 
+- Renamed methods on `SearchIndexerClient` and `SearchIndexerAsyncClient` idiomatically matching "DataSource" to "DataSourceConnection".
+- Removed `DataSourceCredential` and `AzureActiveDirectoryApplicationCredentials`, 
+and uplifted the properties to `SearchIndexerDataSourceConnection` and `SearchResourceEncryptionKey` respectively.
 - Removed `select` parameter from list service resource APIs.
 - Added list names APIs for each search service resource. (e.g. `listSearchIndexNames`, `listSearchIndexerNames`, `listDataSourceNames`, `listSkillsetNames`, `listSynonymMapNames`)
 

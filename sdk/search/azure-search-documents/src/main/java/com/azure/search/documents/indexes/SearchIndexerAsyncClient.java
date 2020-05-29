@@ -22,7 +22,7 @@ import com.azure.search.documents.indexes.implementation.models.ListDataSourcesR
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.models.RequestOptions;
@@ -106,30 +106,32 @@ public class SearchIndexerAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create or update.
+     * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @return the data source that was created or updated.
      */
-    public Mono<SearchIndexerDataSource> createOrUpdateDataSource(SearchIndexerDataSource dataSource) {
-        return createOrUpdateDataSourceWithResponse(dataSource, false, null).map(Response::getValue);
+    public Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnection(
+        SearchIndexerDataSourceConnection dataSource) {
+        return createOrUpdateDataSourceConnectionWithResponse(dataSource, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create or update.
+     * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a data source response.
      */
-    public Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(
-        SearchIndexerDataSource dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions) {
+    public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
+        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateDataSourceWithResponse(dataSource, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateDataSourceConnectionWithResponse(dataSource, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
+        SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
@@ -152,25 +154,26 @@ public class SearchIndexerAsyncClient {
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SearchIndexerDataSource> createDataSource(SearchIndexerDataSource dataSource) {
-        return createDataSourceWithResponse(dataSource, null).map(Response::getValue);
+    public Mono<SearchIndexerDataSourceConnection> createDataSourceConnection(
+        SearchIndexerDataSourceConnection dataSource) {
+        return createDataSourceConnectionWithResponse(dataSource, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource The definition of the {@link SearchIndexerDataSource} to create.
+     * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
-        RequestOptions requestOptions) {
-        return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
+    public Mono<Response<SearchIndexerDataSourceConnection>> createDataSourceConnectionWithResponse(
+        SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions) {
+        return withContext(context -> this.createDataSourceConnectionWithResponse(dataSource, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
-        RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndexerDataSourceConnection>> createDataSourceConnectionWithResponse(
+        SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
                 .createWithRestResponseAsync(SearchIndexerDataSourceConverter.map(dataSource),
@@ -185,27 +188,27 @@ public class SearchIndexerAsyncClient {
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the {@link SearchIndexerDataSource} to retrieve.
+     * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return the DataSource.
      */
-    public Mono<SearchIndexerDataSource> getDataSource(String dataSourceName) {
-        return getDataSourceWithResponse(dataSourceName, null).map(Response::getValue);
+    public Mono<SearchIndexerDataSourceConnection> getDataSourceConnection(String dataSourceName) {
+        return getDataSourceConnectionWithResponse(dataSourceName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the {@link SearchIndexerDataSource} to retrieve.
+     * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a response containing the DataSource.
      */
-    public Mono<Response<SearchIndexerDataSource>> getDataSourceWithResponse(String dataSourceName,
+    public Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(String dataSourceName,
         RequestOptions requestOptions) {
-        return withContext(context -> getDataSourceWithResponse(dataSourceName, requestOptions, context));
+        return withContext(context -> getDataSourceConnectionWithResponse(dataSourceName, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> getDataSourceWithResponse(String dataSourceName,
+    Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(String dataSourceName,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
@@ -222,8 +225,8 @@ public class SearchIndexerAsyncClient {
      *
      * @return a list of DataSources
      */
-    public PagedFlux<SearchIndexerDataSource> listDataSources() {
-        return listDataSources(null, null);
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections() {
+        return listDataSourceConnections(null, null);
     }
 
     /**
@@ -233,19 +236,20 @@ public class SearchIndexerAsyncClient {
      * help with debugging.
      * @return a list of DataSources
      */
-    public PagedFlux<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnection(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listDataSourcesWithResponse(null, requestOptions, context))
+                withContext(context -> this.listDataSourceConnectionsWithResponse(null, requestOptions, context))
                     .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections(RequestOptions requestOptions,
+        Context context) {
         try {
-            return new PagedFlux<>(() -> this.listDataSourcesWithResponse(null, requestOptions, context)
+            return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse(null, requestOptions, context)
                 .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
@@ -257,8 +261,8 @@ public class SearchIndexerAsyncClient {
      *
      * @return a list of DataSource names
      */
-    public PagedFlux<SearchIndexerDataSource> listDataSourceNames() {
-        return listDataSources(null, null);
+    public PagedFlux<String> listDataSourceConnectionNames() {
+        return listDataSourceConnectionNames(null, null);
     }
 
     /**
@@ -268,26 +272,26 @@ public class SearchIndexerAsyncClient {
      * help with debugging.
      * @return a list of DataSource names
      */
-    public PagedFlux<String> listDataSourceNames(RequestOptions requestOptions) {
+    public PagedFlux<String> listDataSourceConnectionNames(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listDataSourcesWithResponse("name", requestOptions, context))
+                withContext(context -> this.listDataSourceConnectionsWithResponse("name", requestOptions, context))
                     .map(MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<String> listDataSourceNames(RequestOptions requestOptions, Context context) {
+    PagedFlux<String> listDataSourceConnectionNames(RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> this.listDataSourcesWithResponse("name", requestOptions, context)
+            return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse("name", requestOptions, context)
                 .map(MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    private Mono<SimpleResponse<ListDataSourcesResult>> listDataSourcesWithResponse(String select,
+    private Mono<SimpleResponse<ListDataSourcesResult>> listDataSourceConnectionsWithResponse(String select,
         RequestOptions requestOptions, Context context) {
         return restClient.dataSources()
             .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
@@ -297,34 +301,34 @@ public class SearchIndexerAsyncClient {
     /**
      * Delete a DataSource
      *
-     * @param dataSourceName the name of the {@link SearchIndexerDataSource} for deletion
+     * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} for deletion
      * @return a void Mono
      */
-    public Mono<Void> deleteDataSource(String dataSourceName) {
+    public Mono<Void> deleteDataSourceConnection(String dataSourceName) {
         return withContext(context ->
-            deleteDataSourceWithResponse(dataSourceName, null, null, context).flatMap(FluxUtil::toMono));
+            deleteDataSourceConnectionWithResponse(dataSourceName, null, null, context).flatMap(FluxUtil::toMono));
     }
 
     /**
      * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSource The {@link SearchIndexerDataSource} to delete.
+     * @param dataSource The {@link SearchIndexerDataSourceConnection} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a mono response
      */
-    public Mono<Response<Void>> deleteDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    public Mono<Response<Void>> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
         String etag = onlyIfUnchanged ? dataSource.getETag() : null;
         return withContext(context ->
-            deleteDataSourceWithResponse(dataSource.getName(), etag, requestOptions, context));
+            deleteDataSourceConnectionWithResponse(dataSource.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, String etag, RequestOptions requestOptions,
-        Context context) {
+    Mono<Response<Void>> deleteDataSourceConnectionWithResponse(String dataSourceName, String etag,
+        RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
                 .deleteWithRestResponseAsync(
