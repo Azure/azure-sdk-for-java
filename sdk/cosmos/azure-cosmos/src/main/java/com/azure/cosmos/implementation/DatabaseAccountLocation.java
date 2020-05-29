@@ -8,14 +8,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Represents the location of a database account in the Azure Cosmos DB database service.
  */
-public final class DatabaseAccountLocation extends JsonSerializable{
+public final class DatabaseAccountLocation extends JsonSerializable {
     /**
      * Constructor.
      *
      * @param objectNode the {@link ObjectNode} that represent the
      * {@link JsonSerializable}
      */
-    DatabaseAccountLocation(ObjectNode objectNode) {
+    public DatabaseAccountLocation(ObjectNode objectNode) {
         super(objectNode);
     }
 
