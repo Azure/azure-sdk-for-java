@@ -30,9 +30,9 @@ public final class SearchIndexerDataSources {
      * @throws IllegalArgumentException If {@code dataSourceName}, {@code sqlConnectionString}, or {@code
      * tableOrViewName} is null or empty.
      */
-    public static SearchIndexerDataSourceConnection createFromAzureSql(String dataSourceName, String sqlConnectionString,
-        String tableOrViewName, String description, DataChangeDetectionPolicy changeDetectionPolicy,
-        DataDeletionDetectionPolicy deletionDetectionPolicy) {
+    public static SearchIndexerDataSourceConnection createFromAzureSql(String dataSourceName,
+        String sqlConnectionString, String tableOrViewName, String description,
+        DataChangeDetectionPolicy changeDetectionPolicy, DataDeletionDetectionPolicy deletionDetectionPolicy) {
         if (CoreUtils.isNullOrEmpty(dataSourceName)) {
             throw new IllegalArgumentException("'dataSourceName' cannot be null or empty.");
         }
@@ -58,9 +58,10 @@ public final class SearchIndexerDataSources {
      * @throws IllegalArgumentException If {@code dataSourceName}, {@code sqlConnectionString}, or {@code
      * tableOrViewName} is null or empty.
      */
-    public static SearchIndexerDataSourceConnection createFromAzureSql(String dataSourceName, String sqlConnectionString,
-        String tableOrViewName) {
-        return createFromAzureSql(dataSourceName, sqlConnectionString, tableOrViewName, null, null, null);
+    public static SearchIndexerDataSourceConnection createFromAzureSql(String dataSourceName,
+        String sqlConnectionString, String tableOrViewName) {
+        return createFromAzureSql(dataSourceName, sqlConnectionString, tableOrViewName, null,
+            null, null);
     }
 
     /**
@@ -191,9 +192,9 @@ public final class SearchIndexerDataSources {
      * @throws IllegalArgumentException If {@code dataSourceName}, {@code collectionName}, or {@code
      * cosmosConnectionString} is null or empty.
      */
-    public static SearchIndexerDataSourceConnection createFromCosmos(String dataSourceName, String cosmosConnectionString,
-        String collectionName, String query, Boolean useChangeDetection, String description,
-        DataDeletionDetectionPolicy deletionDetectionPolicy) {
+    public static SearchIndexerDataSourceConnection createFromCosmos(String dataSourceName,
+        String cosmosConnectionString, String collectionName, String query, Boolean useChangeDetection,
+        String description, DataDeletionDetectionPolicy deletionDetectionPolicy) {
         if (CoreUtils.isNullOrEmpty(dataSourceName)) {
             throw new IllegalArgumentException("'dataSourceName' cannot be null or empty.");
         }
@@ -227,14 +228,15 @@ public final class SearchIndexerDataSources {
      * @throws IllegalArgumentException If {@code dataSourceName}, {@code collectionName}, or {@code
      * cosmosConnectionString} is null or empty.
      */
-    public static SearchIndexerDataSourceConnection createFromCosmos(String dataSourceName, String cosmosConnectionString,
-        String collectionName, Boolean useChangeDetection) {
+    public static SearchIndexerDataSourceConnection createFromCosmos(String dataSourceName,
+        String cosmosConnectionString, String collectionName, Boolean useChangeDetection) {
         return createFromCosmos(dataSourceName, cosmosConnectionString, collectionName, null, useChangeDetection, null,
             null);
     }
 
     /**
-     * Creates a new {@link SearchIndexerDataSourceConnection} to connect to a Cosmos database with change detection set to true.
+     * Creates a new {@link SearchIndexerDataSourceConnection} to connect to a Cosmos database with change detection
+     * set to true.
      *
      * @param dataSourceName The name of the data source.
      * @param cosmosConnectionString The connection string for the Cosmos database. It must follow this format:
@@ -246,17 +248,19 @@ public final class SearchIndexerDataSources {
      * @throws IllegalArgumentException If {@code dataSourceName}, {@code collectionName}, or {@code
      * cosmosConnectionString} is null or empty.
      */
-    public static SearchIndexerDataSourceConnection createFromCosmos(String dataSourceName, String cosmosConnectionString,
-        String collectionName) {
-        return createFromCosmos(dataSourceName, cosmosConnectionString, collectionName, null, true, null, null);
+    public static SearchIndexerDataSourceConnection createFromCosmos(String dataSourceName,
+        String cosmosConnectionString, String collectionName) {
+        return createFromCosmos(dataSourceName, cosmosConnectionString, collectionName, null,
+            true, null, null);
     }
 
     /*
      * Helper method that creates a generic SearchIndexerDataSource.
      */
-    private static SearchIndexerDataSourceConnection createSearchIndexerDataSource(String name, SearchIndexerDataSourceType type,
-        String connectionString, String dataSourceName, String dataSourceQuery, String description,
-        DataChangeDetectionPolicy dataChangeDetectionPolicy, DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
+    private static SearchIndexerDataSourceConnection createSearchIndexerDataSource(String name,
+        SearchIndexerDataSourceType type, String connectionString, String dataSourceName, String dataSourceQuery,
+        String description, DataChangeDetectionPolicy dataChangeDetectionPolicy,
+        DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         return new SearchIndexerDataSourceConnection()
             .setName(name)
             .setType(type)

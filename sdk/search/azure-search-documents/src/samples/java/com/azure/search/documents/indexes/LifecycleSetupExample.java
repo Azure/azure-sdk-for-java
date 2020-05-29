@@ -207,7 +207,7 @@ public class LifecycleSetupExample {
             .setContainer(dataContainer)
             .setDataChangeDetectionPolicy(highWaterMarkChangeDetectionPolicy);
 
-        return client.createOrUpdateDataSource(dataSource);
+        return client.createOrUpdateDataSourceConnection(dataSource);
     }
 
 

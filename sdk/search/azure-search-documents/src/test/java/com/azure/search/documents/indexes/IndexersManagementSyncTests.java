@@ -67,7 +67,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
 
     private String createDataSource() {
         SearchIndexerDataSourceConnection dataSource = createTestSqlDataSourceObject();
-        searchIndexerClient.createOrUpdateDataSource(dataSource);
+        searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
 
         dataSourcesToDelete.add(dataSource.getName());
 
@@ -122,7 +122,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         }
 
         for (String dataSource : dataSourcesToDelete) {
-            searchIndexerClient.deleteDataSource(dataSource);
+            searchIndexerClient.deleteDataSourceConnection(dataSource);
         }
 
         for (String indexer : indexersToDelete) {
@@ -390,7 +390,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     @Test
     public void canUpdateIndexerBlobParams() {
         String indexName = createIndex();
-        String dataSourceName = searchIndexerClient.createDataSource(createBlobDataSource()).getName();
+        String dataSourceName = searchIndexerClient.createDataSourceConnection(createBlobDataSource()).getName();
         dataSourcesToDelete.add(dataSourceName);
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
@@ -413,7 +413,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         SearchIndexerDataSourceConnection blobDataSource = createBlobDataSource();
 
         // Create the data source within the search service
-        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.createOrUpdateDataSource(blobDataSource);
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.createOrUpdateDataSourceConnection(blobDataSource);
 
         dataSourcesToDelete.add(dataSource.getName());
 

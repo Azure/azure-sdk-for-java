@@ -183,7 +183,8 @@ public final class SearchIndexerDataSourceConnection {
      * set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSourceConnection setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+    public SearchIndexerDataSourceConnection setDataChangeDetectionPolicy(
+        DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         this.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
         return this;
     }

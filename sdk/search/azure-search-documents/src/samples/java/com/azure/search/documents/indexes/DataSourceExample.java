@@ -53,7 +53,7 @@ public class DataSourceExample {
         /*
          * Get all existing data sources; list should include the ones we just created.
          * */
-        PagedIterable<SearchIndexerDataSourceConnection> dataSources = client.listDataSources();
+        PagedIterable<SearchIndexerDataSourceConnection> dataSources = client.listDataSourceConnections();
         for (SearchIndexerDataSourceConnection dataSource : dataSources) {
             if (names.contains(dataSource.getName())) {
                 System.out.println(String.format("Found data source %s of type %s", dataSource.getName(),
@@ -71,7 +71,7 @@ public class DataSourceExample {
 
     private static void deleteDataSource(SearchIndexerClient client, String dataSourceName) {
         try {
-            client.deleteDataSource(dataSourceName);
+            client.deleteDataSourceConnection(dataSourceName);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }
@@ -98,7 +98,7 @@ public class DataSourceExample {
         SearchIndexerDataSourceConnection dataSource = createSampleDatasource(type, connectionString, container,
             dataChangeDetectionPolicy);
         try {
-            client.createOrUpdateDataSource(dataSource);
+            client.createOrUpdateDataSourceConnection(dataSource);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }

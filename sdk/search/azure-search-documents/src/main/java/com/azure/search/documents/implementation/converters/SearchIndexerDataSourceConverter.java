@@ -4,6 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.implementation.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
@@ -11,15 +12,15 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
 /**
- * A converter between {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource} and
+ * A converter between {@link SearchIndexerDataSource} and
  * {@link SearchIndexerDataSourceConnection}.
  */
 public final class SearchIndexerDataSourceConverter {
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource} to
+     * Maps from {@link SearchIndexerDataSource} to
      * {@link SearchIndexerDataSourceConnection}.
      */
-    public static SearchIndexerDataSourceConnection map(com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource obj) {
+    public static SearchIndexerDataSourceConnection map(SearchIndexerDataSource obj) {
         if (obj == null) {
             return null;
         }
@@ -63,14 +64,14 @@ public final class SearchIndexerDataSourceConverter {
 
     /**
      * Maps from {@link SearchIndexerDataSourceConnection} to
-     * {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource}.
+     * {@link SearchIndexerDataSource}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource map(SearchIndexerDataSourceConnection obj) {
+    public static SearchIndexerDataSource map(SearchIndexerDataSourceConnection obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource searchIndexerDataSource =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource();
+        SearchIndexerDataSource searchIndexerDataSource =
+            new SearchIndexerDataSource();
 
         if (obj.getContainer() != null) {
             com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer container =
@@ -79,8 +80,8 @@ public final class SearchIndexerDataSourceConverter {
         }
 
         if (obj.getDataChangeDetectionPolicy() != null) {
-            com.azure.search.documents.indexes.implementation.models.DataChangeDetectionPolicy dataChangeDetectionPolicy =
-                DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
+            com.azure.search.documents.indexes.implementation.models.DataChangeDetectionPolicy
+                dataChangeDetectionPolicy = DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
             searchIndexerDataSource.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
 
