@@ -61,6 +61,15 @@ public class MappingUtils {
             dataSourceMaps, null, null);
     }
 
+    public static PagedResponse<String> mappingPagingDataSourceNames(
+        Response<ListDataSourcesResult> dataSourceResponse) {
+        List<String> dataSourceNames = dataSourceResponse.getValue().getDataSources().stream()
+            .map(SearchIndexerDataSourceConverter::map).map(SearchIndexerDataSource::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(
+            dataSourceResponse.getRequest(), dataSourceResponse.getStatusCode(), dataSourceResponse.getHeaders(),
+            dataSourceNames, null, null);
+    }
+
     public static PagedResponse<SearchIndex> mappingPagingSearchIndex(
         Response<ListIndexesResult> searchIndexResponse) {
         List<SearchIndex> searchIndices = searchIndexResponse.getValue().getIndexes().stream()
@@ -68,6 +77,15 @@ public class MappingUtils {
         return new PagedResponseBase<HttpHeaders, SearchIndex>(
             searchIndexResponse.getRequest(), searchIndexResponse.getStatusCode(), searchIndexResponse.getHeaders(),
             searchIndices, null, null);
+    }
+
+    public static PagedResponse<String> mappingPagingSearchIndexNames(Response<ListIndexesResult> 
+        searchIndexResponse) {
+        List<String> searchIndexNames = searchIndexResponse.getValue().getIndexes().stream()
+            .map(SearchIndexConverter::map).map(SearchIndex::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(
+            searchIndexResponse.getRequest(), searchIndexResponse.getStatusCode(), searchIndexResponse.getHeaders(),
+            searchIndexNames, null, null);
     }
 
     public static Response<SearchIndex> mappingExternalSearchIndex(
@@ -84,6 +102,15 @@ public class MappingUtils {
             searchIndexerResponse.getHeaders(), searchIndexers, null, null);
     }
 
+    public static PagedResponse<String> mappingPagingSearchIndexerNames(
+        Response<ListIndexersResult> searchIndexerResponse) {
+        List<String> searchIndexerNames = searchIndexerResponse.getValue().getIndexers().stream()
+            .map(SearchIndexerConverter::map).map(SearchIndexer::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(
+            searchIndexerResponse.getRequest(), searchIndexerResponse.getStatusCode(),
+            searchIndexerResponse.getHeaders(), searchIndexerNames, null, null);
+    }
+
     public static Response<SearchIndexer> mappingExternalSearchIndexer(
         Response<com.azure.search.documents.indexes.implementation.models.SearchIndexer> indexerResponse) {
         return new SimpleResponse<>(indexerResponse, SearchIndexerConverter.map(indexerResponse.getValue()));
@@ -97,11 +124,20 @@ public class MappingUtils {
 
     public static PagedResponse<SearchIndexerSkillset> mappingPagingSkillset(
         Response<ListSkillsetsResult> skillsetResponse) {
-        List<SearchIndexerSkillset> synonymMaps = skillsetResponse.getValue().getSkillsets().stream()
+        List<SearchIndexerSkillset> skillsets = skillsetResponse.getValue().getSkillsets().stream()
             .map(SearchIndexerSkillsetConverter::map).collect(toList());
         return new PagedResponseBase<HttpHeaders, SearchIndexerSkillset>(
             skillsetResponse.getRequest(), skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(),
-            synonymMaps, null, null);
+            skillsets, null, null);
+    }
+
+    public static PagedResponse<String> mappingPagingSkillsetNames(
+        Response<ListSkillsetsResult> skillsetResponse) {
+        List<String> skillsetNames = skillsetResponse.getValue().getSkillsets().stream()
+            .map(SearchIndexerSkillsetConverter::map).map(SearchIndexerSkillset::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(
+            skillsetResponse.getRequest(), skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(),
+            skillsetNames, null, null);
     }
 
     public static Response<SynonymMap> mappingExternalSynonymMap(
@@ -116,6 +152,15 @@ public class MappingUtils {
         return new PagedResponseBase<HttpHeaders, SynonymMap>(
             synonymMapResponse.getRequest(), synonymMapResponse.getStatusCode(), synonymMapResponse.getHeaders(),
             synonymMaps, null, null);
+    }
+
+    public static PagedResponse<String> mappingPagingSynonymMapNames(
+        Response<ListSynonymMapsResult> synonymMapsResponse) {
+        List<String> synonymMapNames = synonymMapsResponse.getValue().getSynonymMaps().stream()
+            .map(SynonymMapConverter::map).map(SynonymMap::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(
+            synonymMapsResponse.getRequest(), synonymMapsResponse.getStatusCode(), synonymMapsResponse.getHeaders(),
+            synonymMapNames, null, null);
     }
 
     public static Response<ServiceStatistics> mappingExternalServiceStatistics(

@@ -5,8 +5,8 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,6 +18,9 @@ import com.azure.search.documents.implementation.converters.SearchIndexerSkillse
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
+import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
+import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
+import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -226,35 +229,69 @@ public class SearchIndexerAsyncClient {
     /**
      * List all DataSources from an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a list of DataSources
      */
-    public PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)));
+                withContext(context -> this.listDataSourcesWithResponse(null, requestOptions, context))
+                    .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> this.listDataSourcesWithResponse(select, requestOptions, context));
+            return new PagedFlux<>(() -> this.listDataSourcesWithResponse(null, requestOptions, context)
+                .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    private Mono<PagedResponse<SearchIndexerDataSource>> listDataSourcesWithResponse(String select,
+    /**
+     * List all DataSource names from an Azure Cognitive Search service.
+     *
+     * @return a list of DataSource names
+     */
+    public PagedFlux<SearchIndexerDataSource> listDataSourceNames() {
+        return listDataSources(null, null);
+    }
+
+    /**
+     * List all DataSource names from an Azure Cognitive Search service.
+     *
+     * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging.
+     * @return a list of DataSource names
+     */
+    public PagedFlux<String> listDataSourceNames(RequestOptions requestOptions) {
+        try {
+            return new PagedFlux<>(() ->
+                withContext(context -> this.listDataSourcesWithResponse("name", requestOptions, context))
+                    .map(MappingUtils::mappingPagingDataSourceNames));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<String> listDataSourceNames(RequestOptions requestOptions, Context context) {
+        try {
+            return new PagedFlux<>(() -> this.listDataSourcesWithResponse("name", requestOptions, context)
+                .map(MappingUtils::mappingPagingDataSourceNames));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    private Mono<SimpleResponse<ListDataSourcesResult>> listDataSourcesWithResponse(String select,
         RequestOptions requestOptions, Context context) {
         return restClient.dataSources()
             .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
-            .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingPagingDataSource);
+            .onErrorMap(MappingUtils::exceptionMapper);
     }
 
     /**
@@ -416,43 +453,78 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
+     * Lists all indexers available for an Azure Cognitive Search service.
+     *
      * @return all Indexers from the Search service.
      */
     public PagedFlux<SearchIndexer> listIndexers() {
-        return listIndexers(null, null);
+        return listIndexers(null);
     }
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of the indexers to retrieve. Specified as a comma-separated list
-     * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
-    public PagedFlux<SearchIndexer> listIndexers(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexer> listIndexers(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)));
+                withContext(context -> this.listIndexersWithResponse(null, requestOptions, context))
+                    .map(MappingUtils::mappingPagingSearchIndexer));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexer> listIndexers(RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> this.listIndexersWithResponse(select, requestOptions, context));
+            return new PagedFlux<>(() -> this.listIndexersWithResponse(null, requestOptions, context)
+                .map(MappingUtils::mappingPagingSearchIndexer));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    private Mono<PagedResponse<SearchIndexer>> listIndexersWithResponse(String select, RequestOptions requestOptions,
-        Context context) {
+    /**
+     * Lists all indexers names for an Azure Cognitive Search service.
+     *
+     * @return all Indexer names from the Search service.
+     */
+    public PagedFlux<String> listIndexerNames() {
+        return listIndexerNames(null, null);
+    }
+
+    /**
+     * Lists all indexers available for an Azure Cognitive Search service.
+     *
+     * @param requestOptions Additional parameters for the operation.
+     * @return a response containing all Indexers from the Search service.
+     */
+    public PagedFlux<String> listIndexerNames(RequestOptions requestOptions) {
+        try {
+            return new PagedFlux<>(() ->
+                withContext(context -> this.listIndexersWithResponse("name", requestOptions, context))
+                    .map(MappingUtils::mappingPagingSearchIndexerNames));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<String> listIndexerNames(RequestOptions requestOptions, Context context) {
+        try {
+            return new PagedFlux<>(() -> this.listIndexersWithResponse("name", requestOptions, context)
+                .map(MappingUtils::mappingPagingSearchIndexerNames));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    private Mono<SimpleResponse<ListIndexersResult>> listIndexersWithResponse(String select,
+        RequestOptions requestOptions, Context context) {
         return restClient.indexers()
             .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
-            .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingPagingSearchIndexer);
+            .onErrorMap(MappingUtils::exceptionMapper);
     }
 
     /**
@@ -692,36 +764,70 @@ public class SearchIndexerAsyncClient {
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the skillset definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
-    public PagedFlux<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listSkillsetsWithResponse(select, requestOptions, context)));
+                withContext(context -> listSkillsetsWithResponse(null, requestOptions, context))
+                    .map(MappingUtils::mappingPagingSkillset));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> listSkillsetsWithResponse(select, requestOptions, context));
+            return new PagedFlux<>(() -> listSkillsetsWithResponse(null, requestOptions, context)
+                .map(MappingUtils::mappingPagingSkillset));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    private Mono<PagedResponse<SearchIndexerSkillset>> listSkillsetsWithResponse(String select,
+    /**
+     * Lists all skillsets names for an Azure Cognitive Search service.
+     *
+     * @return a reactive response emitting the list of skillset names.
+     */
+    public PagedFlux<String> listSkillsetNames() {
+        return listSkillsetNames(null, null);
+    }
+
+    /**
+     * Lists all skillset names for an Azure Cognitive Search service.
+     *
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
+     * @return a reactive response emitting the list of skillset names.
+     */
+    public PagedFlux<String> listSkillsetNames(RequestOptions requestOptions) {
+        try {
+            return new PagedFlux<>(() ->
+                withContext(context -> listSkillsetsWithResponse("name", requestOptions, context))
+                    .map(MappingUtils::mappingPagingSkillsetNames));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<String> listSkillsetNames(RequestOptions requestOptions, Context context) {
+        try {
+            return new PagedFlux<>(() -> listSkillsetsWithResponse("name", requestOptions, context)
+                .map(MappingUtils::mappingPagingSkillsetNames));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    private Mono<SimpleResponse<ListSkillsetsResult>> listSkillsetsWithResponse(String select,
         RequestOptions requestOptions,
         Context context) {
         return this.restClient.skillsets()
             .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
-            .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingPagingSkillset);
+            .onErrorMap(MappingUtils::exceptionMapper);
     }
 
     /**
