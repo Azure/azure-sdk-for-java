@@ -3,12 +3,34 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "baseName": {
-            "type": "String"
+            "type": "string",
+            "defaultValue": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The base resource name."
+            }
         },
         "testApplicationOid": {
             "type": "string",
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
+            }
+        },
+        "tenantId": {
+            "type": "String",
+            "metadata": {
+                "description": "The tenant id to which the application and resources belong."
+            }
+        },
+        "testApplicationId": {
+            "type": "String",
+            "metadata": {
+                "description": "The application client id used to run tests."
+            }
+        },
+        "testApplicationSecret": {
+            "type": "String",
+            "metadata": {
+                "description": "The application client secret used to run tests."
             }
         },
         "formRecognizerEndpointSuffix": {
@@ -98,9 +120,17 @@
         }
     ],
     "outputs": {
-        "AZURE_FORM_RECOGNIZER_API_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('formRecognizerBaseName')), variables('formRecognizerApiVersion')).key1]"
+        "AZURE_TENANT_ID": {
+            "type": "String",
+            "value": "[parameters('tenantId')]"
+        },
+        "AZURE_CLIENT_ID": {
+            "type": "String",
+            "value": "[parameters('testApplicationId')]"
+        },
+        "AZURE_CLIENT_SECRET": {
+            "type": "String",
+            "value": "[parameters('testApplicationSecret')]"
         },
         "AZURE_FORM_RECOGNIZER_ENDPOINT": {
             "type": "string",

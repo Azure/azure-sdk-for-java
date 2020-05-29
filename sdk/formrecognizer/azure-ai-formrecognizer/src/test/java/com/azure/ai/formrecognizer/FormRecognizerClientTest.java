@@ -43,16 +43,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     private FormRecognizerClient getFormRecognizerClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
-        FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
-            .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
-        AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK)
-            ? new AzureKeyCredential(INVALID_KEY) : new AzureKeyCredential(getApiKey());
-        builder.credential(credential);
-        return builder.buildClient();
+        return getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
     }
 
     private FormTrainingClient getFormTrainingClient(HttpClient httpClient,

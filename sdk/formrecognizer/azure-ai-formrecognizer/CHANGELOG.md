@@ -9,7 +9,7 @@
 - Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
 - Replace parameters `filePrefix` and `includeSubFolders` with `TrainModelOptions` model
 - Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
-- Added AAD authentication support
+- Added support for AAD Authentication.
 
 ## 1.0.0-beta.2 (2020-05-06)
 - Fixed Receipt type bug to select the valueString field via fieldValue.

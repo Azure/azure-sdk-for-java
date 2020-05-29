@@ -58,33 +58,39 @@ az cognitiveservices account create \
     --yes
 ```
 ### Authenticate the client
-In order to interact with the Form Recognizer service, you will need to create an instance of the Form Recognizer client,
-both the asynchronous and synchronous clients can be created by using `FormRecognizerClientBuilder` invoking `buildClient()`
-creates a synchronous client while `buildAsyncClient` creates its asynchronous counterpart. 
+In order to interact with the Form Recognizer service, you will need to create an instance of the Form Recognizer client.
+Both the asynchronous and synchronous clients can be created by using `FormRecognizerClientBuilder`. Invoking `buildClient()`
+will create the synchronous client, while invoking `buildAsyncClient` will create its asynchronous counterpart. 
 
-You will need an **endpoint** and a **key** to instantiate a client object, 
-they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
-Form Recognizer resource. See the full details regarding [authentication][authentication] of Cognitive Services.
+You will need an **endpoint** and a **key** to instantiate a client object.
+
+##### Looking up the endpoint
+You can find the **endpoint** for your Form Recognizer resource in the [Azure Portal][azure_portal] under the "Keys and Endpoint",
+or [Azure CLI][azure_cli_endpoint].
+```bash
+# Get the endpoint for the resource
+az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "endpoint"
+```
 
 #### Create a Form Recognizer client using AzureKeyCredential
 To use `AzureKeyCredential` authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. 
-This key can be found in the [Azure Portal][azure_portal] under the "Quickstart" section in your created Form Recognizer
+This key can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Form Recognizer
 resource, or by running the following Azure CLI command to get the key from the Form Recognizer resource:
 
 ```bash
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ``` 
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L41-L44 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
+The Azure Form Recognizer client library provides a way to **rotate the existing key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L55 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L62-L68 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -95,35 +101,37 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 credential.update("{new_key}");
 ```
 
-#### Create a Form Recognizer client using Microsoft identity platform (formerly Azure Active Directory)
-
+#### Create a Form Recognizer client with Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
-platform. First, add the package:
+platform. 
 
-[//]: # ({x-version-update-start;com.azure:azure-identity;current})
+Authentication with AAD requires some initial setup:
+* Add the Azure Identity package
+
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+* [Register a new Azure Active Directory application][register_AAD_application]
+* [Grant access][grant_access] to Form Recognizer by assigning the `"Cognitive Services User"` role to your service principal.
 
-All the implemented ways to request a credential can be found under the `com.azure.identity.credential` package. The
-sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Form
-Recognizer.
-
-##### Authorizing with DefaultAzureCredential
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use. 
+As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET. 
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, please
 refer to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L54 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L51-L55 -->
 ```java
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .endpoint("{endpoint}")
     .credential(credential)
@@ -175,11 +183,10 @@ The following section provides several code snippets covering some of the most c
 * [Train a Model](#train-a-model "Train a model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 
-
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L59-L75 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L72-L88 -->
 ```java
 String analyzeFilePath = "{file_source_url}";
 String modelId = "{custom_trained_model_id}";
@@ -202,7 +209,7 @@ recognizedForms.forEach(form -> {
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L79-L99 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L92-L112 -->
 ```java
 String analyzeFilePath = "{file_source_url}";
 SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
@@ -229,7 +236,7 @@ layoutPageResults.forEach(formPage -> {
 
 ### Recognize receipts
 Recognize data from a USA sales receipts using a prebuilt model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L103-L120 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L116-L133 -->
 ```java
 String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
@@ -255,7 +262,7 @@ receiptPageResults.forEach(recognizedReceipt -> {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L124-L144 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L137-L157 -->
 ```java
 String trainingFilesUrl = "{training_set_SAS_URL}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -282,7 +289,7 @@ customFormModel.getSubModels().forEach(customFormSubModel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L148-L177 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L161-L190 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -324,7 +331,7 @@ to provide an invalid file source URL an `ErrorResponseException` would be raise
 In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L184-L188 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L197-L201 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -372,7 +379,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[aad_authorization]: https://docs.microsoft.com/en-us/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
@@ -393,10 +400,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [form_recognizer_sync_client]: src/main/java/com/azure/ai/formrecognizer/FormRecognizerClient.java
 [form_training_async_client]: src/main/java/com/azure/ai/formrecognizer/training/FormTrainingAsyncClient.java
 [form_training_sync_client]: src/main/java/com/azure/ai/formrecognizer/training/FormTrainingClient.java
+[grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
-[fr_labeling_tool]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/label-tool
-[fr_train_without_labels]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-without-labels
-[fr_train_with_labels]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-with-labels
+[fr_labeling_tool]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/label-tool
+[fr_train_without_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
+[fr_train_with_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
 [error_response_exception]: src/main/java/com/azure/ai/formrecognizer/models/ErrorResponseException.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
@@ -413,13 +421,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_receipts_from_url_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrlAsync.java
 [recognize_custom_forms]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomForms.java
 [recognize_custom_forms_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
+[register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [train_unlabeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabels.java
 [train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabelsAsync.java
 [train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabels.java
 [train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabelsAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[service_doc_train_unlabeled]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-without-labels
-[service_doc_train_labeled]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-with-labels
+[service_doc_train_unlabeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
+[service_doc_train_labeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
 [source_code]: src
 [quickstart_training]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract#train-a-form-recognizer-model
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

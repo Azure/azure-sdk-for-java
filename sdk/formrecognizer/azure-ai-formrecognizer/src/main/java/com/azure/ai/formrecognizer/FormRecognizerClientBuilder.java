@@ -253,11 +253,10 @@ public final class FormRecognizerClientBuilder {
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated {@link FormRecognizerClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is {@code null}.
+     * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public FormRecognizerClientBuilder credential(TokenCredential tokenCredential) {
-        Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.tokenCredential = tokenCredential;
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
 

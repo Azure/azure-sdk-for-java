@@ -59,15 +59,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
     private FormRecognizerAsyncClient getFormRecognizerAsyncClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
-        FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
-            .endpoint(getEndpoint()).httpClient(httpClient == null
-                ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion).addPolicy(interceptorManager.getRecordPolicy());
-        AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK) ? new AzureKeyCredential(INVALID_KEY)
-            : new AzureKeyCredential(getApiKey());
-        builder.credential(credential);
-        return builder.buildAsyncClient();
+        return getFormRecognizerClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
 
     private FormTrainingAsyncClient getFormTrainingAsyncClient(HttpClient httpClient,

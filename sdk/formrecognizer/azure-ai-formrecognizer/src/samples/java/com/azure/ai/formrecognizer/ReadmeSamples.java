@@ -48,8 +48,7 @@ public class ReadmeSamples {
      * Code snippet for getting async client using AAD authentication.
      */
     public void useAadAsyncClient() {
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
