@@ -10,7 +10,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
@@ -171,10 +171,10 @@ public class TestSuiteBase extends DocumentClientTest {
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
 
-            FeedOptions options = new FeedOptions();
+            QueryRequestOptions options = new QueryRequestOptions();
             options.setMaxDegreeOfParallelism(-1);
 
-            ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 100);
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 
@@ -504,7 +504,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setPartitionKey(new PartitionKey(docId));
         List<Document> res = client
                 .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)

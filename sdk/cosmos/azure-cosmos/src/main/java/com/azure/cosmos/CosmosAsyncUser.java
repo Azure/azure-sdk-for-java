@@ -9,7 +9,7 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -144,7 +144,7 @@ public class CosmosAsyncUser {
      * error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions() {
-        return readAllPermissions(new FeedOptions());
+        return readAllPermissions(new QueryRequestOptions());
     }
 
     /**
@@ -154,11 +154,11 @@ public class CosmosAsyncUser {
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
      * error.
      */
-    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
+    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
@@ -181,7 +181,7 @@ public class CosmosAsyncUser {
      * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
-        return queryPermissions(query, new FeedOptions());
+        return queryPermissions(query, new QueryRequestOptions());
     }
 
     /**
@@ -192,11 +192,11 @@ public class CosmosAsyncUser {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or
      * an error.
      */
-    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()

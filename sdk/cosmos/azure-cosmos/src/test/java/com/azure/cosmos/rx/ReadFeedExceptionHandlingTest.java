@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.reactivex.subscribers.TestSubscriber;

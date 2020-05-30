@@ -9,7 +9,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -508,7 +508,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Database>> readDatabases(FeedOptions options) {
+    public Flux<FeedResponse<Database>> readDatabases(QueryRequestOptions options) {
         return readFeed(options, ResourceType.Database, Database.class, Paths.DATABASES_ROOT);
     }
 
@@ -552,7 +552,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private <T extends Resource> Flux<FeedResponse<T>> createQuery(
             String parentResourceLink,
             SqlQuerySpec sqlQuery,
-            FeedOptions options,
+            QueryRequestOptions options,
             Class<T> klass,
             ResourceType resourceTypeEnum) {
 
@@ -581,13 +581,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Database>> queryDatabases(String query, FeedOptions options) {
+    public Flux<FeedResponse<Database>> queryDatabases(String query, QueryRequestOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
 
     @Override
-    public Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+    public Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, QueryRequestOptions options) {
         return createQuery(Paths.DATABASES_ROOT, querySpec, options, Database.class, ResourceType.Database);
     }
 
@@ -807,7 +807,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, FeedOptions options) {
+    public Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(databaseLink)) {
             throw new IllegalArgumentException("databaseLink");
@@ -819,13 +819,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query,
-                                                                         FeedOptions options) {
+                                                                   QueryRequestOptions options) {
         return createQuery(databaseLink, new SqlQuerySpec(query), options, DocumentCollection.class, ResourceType.DocumentCollection);
     }
 
     @Override
     public Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink,
-                                                                         SqlQuerySpec querySpec, FeedOptions options) {
+                                                                         SqlQuerySpec querySpec, QueryRequestOptions options) {
         return createQuery(databaseLink, querySpec, options, DocumentCollection.class, ResourceType.DocumentCollection);
     }
 
@@ -1449,7 +1449,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Document>> readDocuments(String collectionLink, FeedOptions options) {
+    public Flux<FeedResponse<Document>> readDocuments(String collectionLink, QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -1462,7 +1462,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public <T> Mono<FeedResponse<T>> readMany(
         List<Pair<String, PartitionKey>> itemKeyList,
         String collectionLink,
-        FeedOptions options,
+        QueryRequestOptions options,
         Class<T> klass) {
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
@@ -1669,7 +1669,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private <T extends Resource> Flux<FeedResponse<T>> createReadManyQuery(
         String parentResourceLink,
         SqlQuerySpec sqlQuery,
-        FeedOptions options,
+        QueryRequestOptions options,
         Class<T> klass,
         ResourceType resourceTypeEnum,
         DocumentCollection collection,
@@ -1691,8 +1691,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query,
-                                                             FeedOptions options) {
+    public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, QueryRequestOptions options) {
         return queryDocuments(collectionLink, new SqlQuerySpec(query), options);
     }
 
@@ -1747,7 +1746,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec,
-                                                             FeedOptions options) {
+                                                             QueryRequestOptions options) {
         return createQuery(collectionLink, querySpec, options, Document.class, ResourceType.Document);
     }
 
@@ -1767,7 +1766,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(final String collectionLink,
-                                                                              FeedOptions options) {
+                                                                              QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -1993,7 +1992,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink,
-                                                                          FeedOptions options) {
+                                                                          QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -2005,13 +2004,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query,
-                                                                           FeedOptions options) {
+                                                                           QueryRequestOptions options) {
         return queryStoredProcedures(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
     public Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink,
-                                                                           SqlQuerySpec querySpec, FeedOptions options) {
+                                                                           SqlQuerySpec querySpec, QueryRequestOptions options) {
         return createQuery(collectionLink, querySpec, options, StoredProcedure.class, ResourceType.StoredProcedure);
     }
 
@@ -2225,7 +2224,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, FeedOptions options) {
+    public Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -2237,13 +2236,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query,
-                                                           FeedOptions options) {
+                                                           QueryRequestOptions options) {
         return queryTriggers(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
     public Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec,
-                                                           FeedOptions options) {
+                                                           QueryRequestOptions options) {
         return createQuery(collectionLink, querySpec, options, Trigger.class, ResourceType.Trigger);
     }
 
@@ -2424,7 +2423,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink,
-                                                                                  FeedOptions options) {
+                                                                                  QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -2436,13 +2435,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink,
-                                                                                   String query, FeedOptions options) {
+                                                                                   String query, QueryRequestOptions options) {
         return queryUserDefinedFunctions(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
     public Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink,
-                                                                                   SqlQuerySpec querySpec, FeedOptions options) {
+                                                                                   SqlQuerySpec querySpec, QueryRequestOptions options) {
         return createQuery(collectionLink, querySpec, options, UserDefinedFunction.class, ResourceType.UserDefinedFunction);
     }
 
@@ -2481,7 +2480,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, FeedOptions options) {
+    public Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -2493,13 +2492,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query,
-                                                             FeedOptions options) {
+                                                             QueryRequestOptions options) {
         return queryConflicts(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
     public Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec,
-                                                             FeedOptions options) {
+                                                             QueryRequestOptions options) {
         return createQuery(collectionLink, querySpec, options, Conflict.class, ResourceType.Conflict);
     }
 
@@ -2687,7 +2686,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<User>> readUsers(String databaseLink, FeedOptions options) {
+    public Flux<FeedResponse<User>> readUsers(String databaseLink, QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(databaseLink)) {
             throw new IllegalArgumentException("databaseLink");
@@ -2698,13 +2697,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, FeedOptions options) {
+    public Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, QueryRequestOptions options) {
         return queryUsers(databaseLink, new SqlQuerySpec(query), options);
     }
 
     @Override
     public Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec,
-                                                     FeedOptions options) {
+                                                     QueryRequestOptions options) {
         return createQuery(databaseLink, querySpec, options, User.class, ResourceType.User);
     }
 
@@ -2866,7 +2865,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Permission>> readPermissions(String userLink, FeedOptions options) {
+    public Flux<FeedResponse<Permission>> readPermissions(String userLink, QueryRequestOptions options) {
 
         if (StringUtils.isEmpty(userLink)) {
             throw new IllegalArgumentException("userLink");
@@ -2878,13 +2877,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<Permission>> queryPermissions(String userLink, String query,
-                                                                 FeedOptions options) {
+                                                                 QueryRequestOptions options) {
         return queryPermissions(userLink, new SqlQuerySpec(query), options);
     }
 
     @Override
     public Flux<FeedResponse<Permission>> queryPermissions(String userLink, SqlQuerySpec querySpec,
-                                                                 FeedOptions options) {
+                                                                 QueryRequestOptions options) {
         return createQuery(userLink, querySpec, options, Permission.class, ResourceType.Permission);
     }
 
@@ -2942,7 +2941,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Offer>> readOffers(FeedOptions options) {
+    public Flux<FeedResponse<Offer>> readOffers(QueryRequestOptions options) {
         return readFeed(options, ResourceType.Offer, Offer.class,
                 Utils.joinPath(Paths.OFFERS_PATH_SEGMENT, null));
     }
@@ -2982,13 +2981,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 //        return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
 //    }
 
-    private <T extends Resource> Flux<FeedResponse<T>> readFeed(FeedOptions options, ResourceType resourceType, Class<T> klass, String resourceLink) {
+    private <T extends Resource> Flux<FeedResponse<T>> readFeed(QueryRequestOptions options, ResourceType resourceType, Class<T> klass, String resourceLink) {
         if (options == null) {
-            options = new FeedOptions();
+            options = new QueryRequestOptions();
         }
 
-        int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
-        final FeedOptions finalFeedOptions = options;
+        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+        int maxPageSize = maxItemCount != null ? maxItemCount : -1;
+        final QueryRequestOptions finalQueryRequestOptions = options;
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
@@ -2996,7 +2996,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(OperationType.ReadFeed,
-                    resourceType, resourceLink, requestHeaders, finalFeedOptions);
+                    resourceType, resourceLink, requestHeaders, finalQueryRequestOptions);
             return request;
         };
 
@@ -3009,12 +3009,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Offer>> queryOffers(String query, FeedOptions options) {
+    public Flux<FeedResponse<Offer>> queryOffers(String query, QueryRequestOptions options) {
         return queryOffers(new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, FeedOptions options) {
+    public Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, QueryRequestOptions options) {
         return createQuery(null, querySpec, options, Offer.class, ResourceType.Offer);
     }
 

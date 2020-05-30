@@ -6,10 +6,10 @@ package com.azure.cosmos.models;
 import java.util.Map;
 
 /**
- * Specifies the options associated with feed methods (enumeration operations)
+ * Specifies the options associated with query methods (enumeration operations)
  * in the Azure Cosmos DB database service.
  */
-public final class FeedOptions {
+public final class QueryRequestOptions {
     private String sessionToken;
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
@@ -25,17 +25,17 @@ public final class FeedOptions {
     private boolean emptyPagesAllowed;
 
     /**
-     * Instantiates a new Feed options.
+     * Instantiates a new query request options.
      */
-    public FeedOptions() {
+    public QueryRequestOptions() {
     }
 
     /**
-     * Instantiates a new Feed options.
+     * Instantiates a new query request options.
      *
      * @param options the options
      */
-    public FeedOptions(FeedOptions options) {
+    QueryRequestOptions(QueryRequestOptions options) {
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
         this.scanInQueryEnabled = options.scanInQueryEnabled;
@@ -63,9 +63,9 @@ public final class FeedOptions {
      * Sets the partitionKeyRangeId.
      *
      * @param partitionKeyRangeId the partitionKeyRangeId.
-     * @return the FeedOptions.
+     * @return the QueryRequestOptions.
      */
-    FeedOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
+    QueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
         return this;
     }
@@ -83,9 +83,9 @@ public final class FeedOptions {
      * Sets the session token for use with session consistency.
      *
      * @param sessionToken the session token.
-     * @return the FeedOptions.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setSessionToken(String sessionToken) {
+    public QueryRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;
     }
@@ -105,9 +105,9 @@ public final class FeedOptions {
      * indexing was opted out on the requested paths.
      *
      * @param scanInQueryEnabled the option of enable scan in query.
-     * @return the FeedOptions.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
+    public QueryRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
         this.scanInQueryEnabled = scanInQueryEnabled;
         return this;
     }
@@ -118,7 +118,7 @@ public final class FeedOptions {
      *
      * @return the emit verbose traces in query.
      */
-    public Boolean isEmitVerboseTracesInQuery() {
+    Boolean isEmitVerboseTracesInQuery() {
         return this.emitVerboseTracesInQuery;
     }
 
@@ -127,9 +127,9 @@ public final class FeedOptions {
      * investigation.
      *
      * @param emitVerboseTracesInQuery the emit verbose traces in query.
-     * @return the FeedOptions.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
+    QueryRequestOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
         this.emitVerboseTracesInQuery = emitVerboseTracesInQuery;
         return this;
     }
@@ -150,9 +150,9 @@ public final class FeedOptions {
      * query execution.
      *
      * @param maxDegreeOfParallelism number of concurrent operations.
-     * @return the FeedOptions.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
+    public QueryRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
@@ -173,9 +173,9 @@ public final class FeedOptions {
      * parallel query execution.
      *
      * @param maxBufferedItemCount maximum number of items.
-     * @return the FeedOptions.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
+    public QueryRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
         return this;
     }
@@ -198,9 +198,9 @@ public final class FeedOptions {
      * size.
      *
      * @param limitInKb continuation token size limit.
-     * @return the FeedOptions.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions getResponseContinuationTokenLimitInKb(int limitInKb) {
+    public QueryRequestOptions getResponseContinuationTokenLimitInKb(int limitInKb) {
         this.responseContinuationTokenLimitInKb = limitInKb;
         return this;
     }
@@ -225,7 +225,7 @@ public final class FeedOptions {
      *
      * @return the max number of items.
      */
-    public Integer getMaxItemCount() {
+    Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -234,9 +234,9 @@ public final class FeedOptions {
      * operation.
      *
      * @param maxItemCount the max number of items.
-     * @return the FeedOptionsBase.
+     * @return the QueryRequestOptions.
      */
-    FeedOptions setMaxItemCount(Integer maxItemCount) {
+    QueryRequestOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -246,7 +246,7 @@ public final class FeedOptions {
      *
      * @return the request continuation.
      */
-    public String getRequestContinuation() {
+    String getRequestContinuation() {
         return this.requestContinuation;
     }
 
@@ -254,9 +254,9 @@ public final class FeedOptions {
      * Sets the request continuation token.
      *
      * @param requestContinuation the request continuation.
-     * @return the FeedOptionsBase.
+     * @return the QueryRequestOptions.
      */
-    FeedOptions setRequestContinuation(String requestContinuation) {
+    QueryRequestOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }
@@ -276,9 +276,9 @@ public final class FeedOptions {
      * partition.
      *
      * @param partitionkey the partition key value.
-     * @return the FeedOptionsBase.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setPartitionKey(PartitionKey partitionkey) {
+    public QueryRequestOptions setPartitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
         return this;
     }
@@ -296,9 +296,9 @@ public final class FeedOptions {
      * Sets the option to enable/disable getting metrics relating to query execution on item query requests
      *
      * @param queryMetricsEnabled whether to enable or disable query metrics
-     * @return the FeedOptionsBase.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
+    public QueryRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
         this.queryMetricsEnabled = queryMetricsEnabled;
         return this;
     }
@@ -308,7 +308,7 @@ public final class FeedOptions {
      *
      * @return Map of request options properties
      */
-    public Map<String, Object> getProperties() {
+    Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -316,9 +316,9 @@ public final class FeedOptions {
      * Sets the properties used to identify the request token.
      *
      * @param properties the properties.
-     * @return the FeedOptionsBase.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setProperties(Map<String, Object> properties) {
+    QueryRequestOptions setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -328,16 +328,16 @@ public final class FeedOptions {
      *
      * @return whether to enable allow empty pages or not
      */
-    public boolean isEmptyPagesAllowed() {
+    boolean isEmptyPagesAllowed() {
         return emptyPagesAllowed;
     }
 
     /**
      * Sets the option to allow empty result pages in feed response. Defaults to false
      * @param emptyPagesAllowed whether to allow empty pages in feed response
-     * @return the FeedOptionsBase.
+     * @return the QueryRequestOptions.
      */
-    public FeedOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
+    QueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
         return this;
     }

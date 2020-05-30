@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -44,10 +44,10 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     protected int top = -1;
 
     protected ParallelDocumentQueryExecutionContextBase(IDocumentQueryClient client,
-            List<PartitionKeyRange> partitionKeyRanges, ResourceType resourceTypeEnum, Class<T> resourceType,
-            SqlQuerySpec query, FeedOptions feedOptions, String resourceLink, String rewrittenQuery,
-            boolean isContinuationExpected, boolean getLazyFeedResponse, UUID correlatedActivityId) {
-        super(client, resourceTypeEnum, resourceType, query, feedOptions, resourceLink, getLazyFeedResponse,
+                                                        List<PartitionKeyRange> partitionKeyRanges, ResourceType resourceTypeEnum, Class<T> resourceType,
+                                                        SqlQuerySpec query, QueryRequestOptions queryRequestOptions, String resourceLink, String rewrittenQuery,
+                                                        boolean isContinuationExpected, boolean getLazyFeedResponse, UUID correlatedActivityId) {
+        super(client, resourceTypeEnum, resourceType, query, queryRequestOptions, resourceLink, getLazyFeedResponse,
                 correlatedActivityId);
 
         logger = LoggerFactory.getLogger(this.getClass());
@@ -76,8 +76,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
                 PartitionKeyInternal partitionKeyInternal = null;
-                if (feedOptions.getPartitionKey() != null && feedOptions.getPartitionKey() != PartitionKey.NONE) {
-                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
+                if (queryRequestOptions.getPartitionKey() != null && queryRequestOptions.getPartitionKey() != PartitionKey.NONE) {
+                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(queryRequestOptions.getPartitionKey());
                     headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
                         partitionKeyInternal.toJson());
 
@@ -92,7 +92,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             final PartitionKeyRange targetRange = entry.getKey();
             final String continuationToken = entry.getValue();
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
-                continuationToken, initialPageSize, feedOptions,
+                continuationToken, initialPageSize, queryRequestOptions,
                 querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
                 () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy());
 
@@ -134,7 +134,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     }
 
     abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
-            String initialContinuationToken, int initialPageSize, FeedOptions feedOptions, SqlQuerySpec querySpecForInit,
+            String initialContinuationToken, int initialPageSize, QueryRequestOptions queryRequestOptions, SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -154,7 +154,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     protected void initializeReadMany(
         IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuerySpec,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
-        FeedOptions feedOptions,
+        QueryRequestOptions queryRequestOptions,
         UUID activityId,
         String collectionRid) {
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
@@ -182,7 +182,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
             // TODO: Review pagesize -1
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
-                                                            null, -1, feedOptions,
+                                                            null, -1, queryRequestOptions,
                                                             querySpec,
                                                             commonRequestHeaders, createRequestFunc, executeFunc,
                                                             () -> client.getResetSessionTokenRetryPolicy()

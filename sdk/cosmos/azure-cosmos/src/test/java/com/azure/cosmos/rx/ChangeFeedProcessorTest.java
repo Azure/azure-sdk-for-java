@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -346,9 +346,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         SqlQuerySpec querySpec = new SqlQuerySpec(
                             "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)", Collections.singletonList(param));
 
-                        FeedOptions feedOptions = new FeedOptions();
+                        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
 
-                        createdLeaseCollection.queryItems(querySpec, feedOptions, CosmosItemProperties.class).byPage()
+                        createdLeaseCollection.queryItems(querySpec, queryRequestOptions, CosmosItemProperties.class).byPage()
                             .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                             .flatMap(doc -> {
                                 ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
