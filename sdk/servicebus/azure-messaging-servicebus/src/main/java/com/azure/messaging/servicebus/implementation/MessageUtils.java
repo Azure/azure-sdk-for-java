@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -30,6 +31,8 @@ import java.util.UUID;
  * Contains helper methods for message conversions, reading status codes, and getting delivery state.
  */
 public final class MessageUtils {
+    private static final ClientLogger logger = new ClientLogger(MessageUtils.class);
+
     static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
 
@@ -115,7 +118,7 @@ public final class MessageUtils {
         final DeliveryState state;
         switch (dispositionStatus) {
             case COMPLETED:
-                if (transactionId != null) {
+                if (transactionId != null && transactionId.getTransactionId() != null) {
                     TransactionalState tState = new TransactionalState();
                     tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
                     tState.setOutcome(Accepted.getInstance());
@@ -140,7 +143,14 @@ public final class MessageUtils {
                 error.setInfo(errorInfo);
                 rejected.setError(error);
 
-                state = rejected;
+                if (transactionId != null && transactionId.getTransactionId() != null) {
+                   TransactionalState tState = new TransactionalState();
+                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    tState.setOutcome(rejected);
+                    state = tState;
+                } else {
+                    state = rejected;
+                }
                 break;
             case ABANDONED:
                 final Modified outcome = new Modified();
@@ -148,7 +158,14 @@ public final class MessageUtils {
                     outcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                state = outcome;
+                if (transactionId != null && transactionId.getTransactionId() != null) {
+                    TransactionalState tState = new TransactionalState();
+                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    tState.setOutcome(outcome);
+                    state = tState;
+                } else {
+                    state = outcome;
+                }
                 break;
             case DEFERRED:
                 final Modified deferredOutcome = new Modified();
@@ -157,7 +174,14 @@ public final class MessageUtils {
                     deferredOutcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                state = deferredOutcome;
+                if (transactionId != null && transactionId.getTransactionId() != null) {
+                    TransactionalState tState = new TransactionalState();
+                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    tState.setOutcome(deferredOutcome);
+                    state = tState;
+                } else {
+                    state = deferredOutcome;
+                }
                 break;
             default:
                 state = null;

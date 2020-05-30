@@ -378,6 +378,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected static Stream<Arguments> messagingEntityTxnWithSessions() {
         return Stream.of(
+            // The data corresponds to :entityType, isSessionEnabled, commit, dispositionStatus
             Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.SUSPENDED),

@@ -199,9 +199,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        receiver.receive()
-            .map(messageContext -> receiver.complete(messageContext.getMessage(), transaction.get()))
-            .subscribe();
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+            .verifyComplete();
 
         StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
             .verifyComplete();
@@ -210,15 +215,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can create transaction and complete.
      */
-    @Test
-    void createTansactionAndRollbackMessagesTest() {
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void createTansactionAndRollbackMessagesTest(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+        Duration timeout = Duration.ofSeconds(60);
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block(OPERATION_TIMEOUT);
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -229,7 +237,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(OPERATION_TIMEOUT);
         assertNotNull(receivedContext);
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
@@ -239,11 +247,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
-        StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-            .verifyComplete();
+        receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(5)).block(timeout);
 
         // read the message back, since it was rolled-back previously.
-        final ServiceBusReceivedMessageContext received = receiveAndDeleteReceiver.receive().next().block(TIMEOUT);
+        final ServiceBusReceivedMessageContext received = receiveAndDeleteReceiver.receive().next().block(OPERATION_TIMEOUT);
         assertMessageEquals(received, messageId, isSessionEnabled);
 
         messagesPending.decrementAndGet();
@@ -343,9 +350,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled, true);
 
-        final String messageId1 = UUID.randomUUID().toString();
+        final String messageId1 = "1";
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
-        final String messageId2 = UUID.randomUUID().toString();
+        final String messageId2 = "2";
         final ServiceBusMessage message2 = getMessage(messageId2, isSessionEnabled);
         sendMessage(message1).block(TIMEOUT);
 
@@ -408,10 +415,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * 2. receive and complete with transactionContext.
      * 3. Rollback this transaction using sender.
      */
-    @Test
-    void transactionReceiveCompleteRollbackMixClient() {
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void transactionReceiveCompleteRollbackMixClient(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false, true);
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, isSessionEnabled, true);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -483,10 +492,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * 2. send message  with transactionContext
      * 3. Rollback this transaction.
      */
-    @Test
-    void transactionMessageSendAndRollback() {
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void transactionMessageSendAndRollback(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
