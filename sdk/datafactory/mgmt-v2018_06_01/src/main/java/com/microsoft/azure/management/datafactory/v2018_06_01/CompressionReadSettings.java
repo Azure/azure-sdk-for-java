@@ -15,17 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * Format read settings.
+ * Compression read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = FormatReadSettings.class)
-@JsonTypeName("FormatReadSettings")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = CompressionReadSettings.class)
+@JsonTypeName("CompressionReadSettings")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "BinaryReadSettings", value = BinaryReadSettings.class),
-    @JsonSubTypes.Type(name = "XmlReadSettings", value = XmlReadSettings.class),
-    @JsonSubTypes.Type(name = "JsonReadSettings", value = JsonReadSettings.class),
-    @JsonSubTypes.Type(name = "DelimitedTextReadSettings", value = DelimitedTextReadSettings.class)
+    @JsonSubTypes.Type(name = "ZipDeflateReadSettings", value = ZipDeflateReadSettings.class)
 })
-public class FormatReadSettings {
+public class CompressionReadSettings {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
@@ -45,9 +42,9 @@ public class FormatReadSettings {
      * Set unmatched properties from the message are deserialized this collection.
      *
      * @param additionalProperties the additionalProperties value to set
-     * @return the FormatReadSettings object itself.
+     * @return the CompressionReadSettings object itself.
      */
-    public FormatReadSettings withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public CompressionReadSettings withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
