@@ -15,17 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * Format read settings.
+ * Import command settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = FormatReadSettings.class)
-@JsonTypeName("FormatReadSettings")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ImportSettings.class)
+@JsonTypeName("ImportSettings")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "BinaryReadSettings", value = BinaryReadSettings.class),
-    @JsonSubTypes.Type(name = "XmlReadSettings", value = XmlReadSettings.class),
-    @JsonSubTypes.Type(name = "JsonReadSettings", value = JsonReadSettings.class),
-    @JsonSubTypes.Type(name = "DelimitedTextReadSettings", value = DelimitedTextReadSettings.class)
+    @JsonSubTypes.Type(name = "SnowflakeImportCopyCommand", value = SnowflakeImportCopyCommand.class)
 })
-public class FormatReadSettings {
+public class ImportSettings {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
@@ -45,9 +42,9 @@ public class FormatReadSettings {
      * Set unmatched properties from the message are deserialized this collection.
      *
      * @param additionalProperties the additionalProperties value to set
-     * @return the FormatReadSettings object itself.
+     * @return the ImportSettings object itself.
      */
-    public FormatReadSettings withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public ImportSettings withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
