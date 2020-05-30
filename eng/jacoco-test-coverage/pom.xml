@@ -193,6 +193,16 @@
       <version>1.0.4-beta.20</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-schemaregistry</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-schemaregistry-avro</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
+    </dependency>
+    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot</artifactId>
       <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
@@ -238,7 +248,6 @@
       <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current} -->
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>

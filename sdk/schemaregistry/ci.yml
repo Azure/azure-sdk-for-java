@@ -37,12 +37,9 @@ stages:
     parameters:
       ServiceDirectory: schemaregistry
       Artifacts:
-        - name: azure-schemaregistry-client
+        - name: azure-data-schemaregistry
           groupId: com.azure
-          safeName: azureschemaregistryclient
-        - name: azure-schemaregistry-serde-common
+          safeName: azuredataschemaregistry
+        - name: azure-data-schemaregistry-avro
           groupId: com.azure
-          safeName: azureschemaregistryserdecommon
-        - name: azure-schemaregistry-serde-avro
-          groupId: com.azure
-          safeName: azureschemaregistryserde-avro
+          safeName: azuredataschemaregistryavro
