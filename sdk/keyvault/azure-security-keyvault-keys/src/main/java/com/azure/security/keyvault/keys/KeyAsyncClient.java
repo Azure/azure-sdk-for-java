@@ -1228,13 +1228,7 @@ public final class KeyAsyncClient {
             return service.getKeyVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
-                .doOnSuccess(response -> {
-                    if (response.getValue().size() == 0) {
-                        throw new ResourceNotFoundException(String.format("Key with name: %s not found", name), null);
-                    } else {
-                        logger.info("Listed key versions - {}", name);
-                    }
-                })
+                .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
                 .doOnError(error -> logger.warning(String.format("Failed to list key versions - %s", name), error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
