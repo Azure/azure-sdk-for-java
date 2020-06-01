@@ -207,7 +207,6 @@ public final class Utility {
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
         final long[] currentTotalLength = new long[1];
-        final int[] firstConcatMap = new int[1];
         return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
             .map(i -> i * blockSize)
             .concatMap(pos -> Mono.fromCallable(() -> {
@@ -220,22 +219,6 @@ public final class Utility {
                 boolean firstRead = true;
                 while (numOfBytes != -1 && offset < count) {
                     numOfBytes = data.read(cache, offset, len);
-                    if (numOfBytes == -1) {
-                        break;
-                    }
-                    firstRead = false;
-                    boolean empty = true;
-                    //for (int i=offset; i < offset + numOfBytes; i++) {
-                    for (byte b : cache) {
-                        //byte b = cache[i];
-                        if (b != 0) {
-                            empty = false;
-                            break;
-                        }
-                    }
-                    if (empty) {
-                        System.out.println("BLOCK DATA WAS EMPTY: Reading from stream.");
-                    }
                     offset += numOfBytes;
                     len -= numOfBytes;
                     if (numOfBytes != -1) {
@@ -247,17 +230,6 @@ public final class Utility {
                         String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                             currentTotalLength[0], length), currentTotalLength[0], length));
                 }
-                boolean empty = true;
-                for (byte b : cache) {
-                    if (b != 0) {
-                        empty = false;
-                        break;
-                    }
-                }
-                if (empty) {
-                    System.out.println("BLOCK DATA WAS EMPTY: Converting to flux. ");
-                }
-                firstConcatMap[0] = 1;
                 return ByteBuffer.wrap(cache);
             }))
             .doOnComplete(() -> {
@@ -274,6 +246,10 @@ public final class Utility {
                 }
             })
             .doFirst(() -> {
+                /*
+                If the request needs to be retried, the flux will be resubscribed to. The stream and counter must be
+                reset in order to correctly return the same data again.
+                 */
                 currentTotalLength[0] = 0;
                 try {
                     data.reset();
