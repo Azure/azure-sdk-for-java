@@ -83,6 +83,8 @@
               <includes>
                 <include>com.azure:*</include>
                 <include>com.microsoft.azure:*</include>
+                <include>com.jcraft:jsch:[0.1.53]</include>
+                <include>com.github.cverges.expect4j:expect4j:[1.6]</include>
                 <include>org.apache.maven:maven-embedder:[3.6.2]</include>
                 <include>org.apache.maven:maven-compat:[3.6.2]</include>
                 <include>org.apache.maven.wagon:wagon-http:[3.3.4]</include>
