@@ -460,7 +460,7 @@ class FileAPITests extends APISpec {
             .encode()
 
         when:
-        ShareFileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
+        ShareFileClient client = fileBuilderHelper(interceptorManager, shareName, "destination" + pathSuffix)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .buildFileClient()
 
@@ -478,7 +478,7 @@ class FileAPITests extends APISpec {
         where:
         pathSuffix || _
         ""         || _
-        "ü1ü"      || _ /* Something url encoded. */
+        "ü1ü"      || _ /* Something that needs to be url encoded. */
     }
 
     @Unroll
@@ -503,7 +503,7 @@ class FileAPITests extends APISpec {
         where:
         pathSuffix || _
         ""         || _
-        "ü1ü"      || _ /* Something url encoded. */
+        "ü1ü"      || _ /* Something that needs to be url encoded. */
     }
 
     @Unroll
