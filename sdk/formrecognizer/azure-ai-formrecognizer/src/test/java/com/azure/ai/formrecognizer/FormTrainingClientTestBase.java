@@ -187,14 +187,14 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
-    @Test
-    abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    // @Test
+    // abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    //
+    // @Test
+    // abstract void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    //
+    // @Test
+    // abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
