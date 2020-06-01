@@ -43,8 +43,6 @@ class BlobLazyDownloader {
         this.range = new BlobRange(0, totalSize);
     }
 
-    /* TODO (gapra) : It may be possible to unduplicate the code below as well to share between downloadToFile but
-       wasnt immediately obvious to me */
     public Flux<ByteBuffer> download() {
         ParallelTransferOptions options = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize);
@@ -65,25 +63,9 @@ class BlobLazyDownloader {
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .concatMap(chunkNum -> { /* TODO (gapra) : This was the biggest difference - downloadToFile does
-                                                                it in parallel, but we want this to be strictly
-                                                                 sequential. */
-//                        // The first chunk was retrieved during setup.
-//                        if (chunkNum == 0) {
-//                            return initialResponse.getValue();
-//                        }
-//
-//                        // Calculate whether we need a full chunk or something smaller because we are at the end.
-//                        long modifier = chunkNum.longValue() * options.getBlockSizeLong();
-//                        long chunkSizeActual = Math.min(options.getBlockSizeLong(),
-//                            newCount - modifier);
-//                        BlobRange chunkRange = new BlobRange(range.getOffset() + modifier, chunkSizeActual);
-//
-//                        // Make the download call.
-//                        return client.downloadWithResponse(chunkRange, null, finalConditions, false)
-//                            .flatMapMany(BlobDownloadAsyncResponse::getValue);
-                        return ChunkedDownloadUtils.downloadChunk(client, chunkNum, initialResponse, range, options, finalConditions, newCount);
-                    });
+                    .concatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(client, chunkNum, initialResponse,
+                        range, null, options, finalConditions, false, newCount,
+                        BlobDownloadAsyncResponse::getValue));
             });
     }
 

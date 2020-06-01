@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import reactor.core.publisher.Flux;
@@ -15,7 +16,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple3;
 
-import java.nio.ByteBuffer;
 import java.util.function.Function;
 
 import static java.lang.StrictMath.toIntExact;
@@ -93,12 +93,13 @@ public class ChunkedDownloadUtils {
             });
     }
 
-    public static Flux<ByteBuffer> downloadChunk(BlobAsyncClientBase client, Integer chunkNum,
-        BlobDownloadAsyncResponse initialResponse, BlobRange range, ParallelTransferOptions options,
-        BlobRequestConditions finalConditions, long newCount) {
+    public static <T> Flux<T> downloadChunk(BlobAsyncClientBase client, Integer chunkNum,
+        BlobDownloadAsyncResponse initialResponse, BlobRange range, DownloadRetryOptions retryOptions,
+        ParallelTransferOptions options, BlobRequestConditions finalConditions, boolean getRangeContentMd5,
+        long newCount, Function<BlobDownloadAsyncResponse, Flux<T>> func) {
         // The first chunk was retrieved during setup.
         if (chunkNum == 0) {
-            return initialResponse.getValue();
+            return func.apply(initialResponse);
         }
 
         // Calculate whether we need a full chunk or something smaller because we are at the end.
@@ -108,8 +109,9 @@ public class ChunkedDownloadUtils {
         BlobRange chunkRange = new BlobRange(range.getOffset() + modifier, chunkSizeActual);
 
         // Make the download call.
-        return client.downloadWithResponse(chunkRange, null, finalConditions, false)
-            .flatMapMany(BlobDownloadAsyncResponse::getValue);
+        return client.downloadWithResponse(chunkRange, retryOptions, finalConditions, getRangeContentMd5)
+            .subscribeOn(Schedulers.elastic())
+            .flatMapMany(func);
     }
 
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {

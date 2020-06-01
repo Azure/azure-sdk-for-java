@@ -62,7 +62,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -1021,27 +1020,11 @@ public class BlobAsyncClientBase {
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .flatMap(chunkNum -> {
-                        // The first chunk was retrieved during setup.
-                        if (chunkNum == 0) {
-                            return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions,
-                                progressLock, totalProgress);
-                        }
-
-                        // Calculate whether we need a full chunk or something smaller because we are at the end.
-                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSizeLong();
-                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSizeLong(),
-                            newCount - modifier);
-                        BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
-
-                        // Make the download call.
-                        return this.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions,
-                            rangeGetContentMd5, null)
-                            .subscribeOn(Schedulers.elastic())
-                            .flatMap(response ->
-                                writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
-                                    totalProgress));
-                    })
+                    .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(this, chunkNum, initialResponse,
+                        finalRange, downloadRetryOptions, finalParallelTransferOptions, finalConditions,
+                        rangeGetContentMd5, newCount,
+                        response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
+                            progressLock, totalProgress).flux()))
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
             });
