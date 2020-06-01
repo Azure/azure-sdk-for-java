@@ -21,7 +21,14 @@
     "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
     "secretName": "spring-cosmos-db-key",
     "secretValue": "rock",
+    "duplicateSecretName": "duplicateKey",
+    "duplicateSecretValue1": "duplicate1",
     "keyVaultName": "[parameters('baseName')]",
+    "azureKeyVault2Url": "[format('https://{0}.{1}/', variables('keyVaultName2'), parameters('endpointSuffix'))]",
+    "secretName2": "spring-cosmos-db-key-2",
+    "secretValue2": "rock-2",
+    "duplicateSecretValue2": "duplicate2",
+    "keyVaultName2": "[concat(parameters('baseName'),'-2')]",
     "appServicePlanName": "[concat(parameters('baseName'), '-plan')]",
     "appServiceName": "[concat(parameters('baseName'), '-app')]",
     "vmName": "[concat(parameters('baseName'), '-vm')]",
@@ -317,6 +324,68 @@
       "properties": {
         "value": "[variables('secretValue')]"
       }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', variables('duplicateSecretName'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[variables('duplicateSecretValue1')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2016-10-01",
+      "name": "[variables('keyVaultName2')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('testApplicationOid')]",
+            "permissions": {
+              "secrets": [ "get", "list" ]
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false,
+        "enableSoftDelete": false
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName2'), '/', variables('secretName2'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName2'))]"
+      ],
+      "properties": {
+        "value": "[variables('secretValue2')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName2'), '/', variables('duplicateSecretName'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName2'))]"
+      ],
+      "properties": {
+        "value": "[variables('duplicateSecretValue2')]"
+      }
     }
   ],
   "outputs": {
@@ -331,6 +400,30 @@
     "KEY_VAULT_SECRET_VALUE": {
       "type": "string",
       "value": "[variables('secretValue')]"
+    },
+    "AZURE_KEYVAULT2_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('azureKeyVault2Url')]"
+    },
+    "KEY_VAULT2_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('secretName2')]"
+    },
+    "KEY_VAULT2_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('secretValue2')]"
+    },
+    "KEY_VAULT_COMMON_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('duplicateSecretName')]"
+    },
+    "KEY_VAULT1_COMMON_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('duplicateSecretValue1')]"
+    },
+    "KEY_VAULT2_COMMON_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('duplicateSecretValue2')]"
     },
     "APP_SERVICE_NAME": {
       "type": "string",

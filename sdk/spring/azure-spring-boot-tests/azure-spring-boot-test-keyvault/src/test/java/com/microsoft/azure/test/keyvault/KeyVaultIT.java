@@ -47,7 +47,7 @@ public class KeyVaultIT {
     private static final int DEFAULT_MAX_RETRY_TIMES = 3;
     private static final Azure AZURE;
     private static final ClientSecretAccess CLIENT_SECRET_ACCESS;
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     static {
         CLIENT_SECRET_ACCESS = ClientSecretAccess.load();
@@ -63,6 +63,7 @@ public class KeyVaultIT {
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+
 
             final ConfigurableApplicationContext dummy = app.start("dummy");
             final ConfigurableEnvironment environment = dummy.getEnvironment();
@@ -85,6 +86,7 @@ public class KeyVaultIT {
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+
             app.property("azure.keyvault.secret.keys", KEY_VAULT_SECRET_NAME + " , azure-cosmosdb-key");
             LOGGER.info("====" + KEY_VAULT_SECRET_NAME + " , azure-cosmosdb-key");
 
@@ -159,10 +161,10 @@ public class KeyVaultIT {
         // run java application
         final List<String> commands = new ArrayList<>();
         commands.add(String.format("cd /home/%s", VM_USER_USERNAME));
-        commands.add(String.format("nohup java -jar -Xdebug " +
-                "-Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n " +
-                "-Dazure.keyvault.uri=%s %s &" +
-                " >/log.txt  2>&1",
+        commands.add(String.format("nohup java -jar -Xdebug "
+                + "-Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n "
+                + "-Dazure.keyvault.uri=%s %s &"
+                + " >/log.txt  2>&1",
             AZURE_KEYVAULT_ENDPOINT,
             "app.jar"));
 
@@ -194,7 +196,7 @@ public class KeyVaultIT {
             LOGGER.info("CURLing " + resourceUrl);
 
             try {
-                response = restTemplate.getForEntity(resourceUrl, clazz);
+                response = REST_TEMPLATE.getForEntity(resourceUrl, clazz);
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
             }

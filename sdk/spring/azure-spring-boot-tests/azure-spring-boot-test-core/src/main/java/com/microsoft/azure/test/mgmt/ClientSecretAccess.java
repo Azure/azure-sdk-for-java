@@ -79,6 +79,4 @@ public class ClientSecretAccess implements Access {
         return clientSecret;
     }
 
-
-
 }

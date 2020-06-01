@@ -49,8 +49,8 @@ public final class SSHShell implements Closeable {
             throws JSchException, IOException, MalformedPatternException {
         final Closure expectClosure = getExpectClosure();
         for (final String linuxPromptPattern : new String[]{"\\>", "#", "~#", "~\\$"}) {
-                final Match match = new RegExpMatch(linuxPromptPattern, expectClosure);
-                linuxPromptMatches.add(match);
+            final Match match = new RegExpMatch(linuxPromptPattern, expectClosure);
+            linuxPromptMatches.add(match);
         }
         final JSch jsch = new JSch();
         this.session = jsch.getSession(userName, host, port);

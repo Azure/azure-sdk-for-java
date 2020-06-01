@@ -4,7 +4,6 @@
 package com.microsoft.azure.test.utils;
 
 import org.apache.maven.cli.MavenCli;
-import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
