@@ -50,16 +50,8 @@
         <configuration>
           <rules>
             <bannedDependencies>
-              <searchTransitive>false</searchTransitive>
-              <excludes>
-                <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
-                dependencies when they are used for test scope or otherwise) -->
-                <exclude>*:*:*:*:runtime</exclude>
-                <exclude>*:*:*:*:compile</exclude>
-                <exclude>*:*:*:*:provided</exclude>
-              </excludes>
               <includes>
-                <include>com.microsoft.azure:*</include>
+                <include>com.microsoft.azure:azure-spring-boot:[2.2.5-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.43.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
               </includes>

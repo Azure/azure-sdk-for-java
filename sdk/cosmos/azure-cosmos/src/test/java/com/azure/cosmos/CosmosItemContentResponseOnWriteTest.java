@@ -140,7 +140,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     private void validateMinimalItemResponse(CosmosItemProperties containerProperties,
-                                      CosmosItemResponse<?> createResponse, boolean withETag) {
+                                             CosmosItemResponse<?> createResponse, boolean withETag) {
         // Basic validation
         assertThat(CosmosItemResponseImpl.getProperties(createResponse)).isNull();
         assertThat(createResponse.getStatusCode()).isNotNull();

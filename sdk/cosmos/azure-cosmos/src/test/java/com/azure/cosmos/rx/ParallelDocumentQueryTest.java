@@ -21,13 +21,13 @@ import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava27.Strings;
-import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
@@ -80,7 +80,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
@@ -103,7 +103,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryMetricEquality() throws Exception {
         String query = "SELECT * from c where c.prop = 99";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setQueryMetricsEnabled(true);
         options.setMaxDegreeOfParallelism(0);
@@ -138,7 +138,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocuments_NoResults() {
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -155,7 +155,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     public void queryDocumentsWithPageSize() {
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int pageSize = 3;
         options.setMaxDegreeOfParallelism(-1);
 
@@ -182,7 +182,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySyntax() {
         String query = "I am an invalid query";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -197,7 +197,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void crossPartitionQueryNotEnabled() {
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments;
@@ -221,7 +221,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .flatMap(p -> Flux.fromIterable(p.getResults()))
                 .map(Resource::getId).collectList().single().block()) {
             String query = "SELECT * from root";
-            FeedOptions options = new FeedOptions();
+            QueryRequestOptions options = new QueryRequestOptions();
             partitionKeyRangeIdInternal(options, partitionKeyRangeId);
             int queryResultCount = createdCollection.queryItems(query, options, CosmosItemProperties.class)
                 .byPage()
@@ -282,7 +282,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" })
     public void queryDocumentsStringValue(){
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setMaxDegreeOfParallelism(2);
 
@@ -301,7 +301,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" })
     @SuppressWarnings("rawtypes")
     public void queryDocumentsArrayValue(){
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setMaxDegreeOfParallelism(2);
 
@@ -333,7 +333,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" })
     public void queryDocumentsIntegerValue(){
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setMaxDegreeOfParallelism(2);
 
@@ -351,7 +351,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void queryDocumentsBooleanValue() {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setMaxDegreeOfParallelism(2);
 
@@ -372,7 +372,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void queryDocumentsDoubleValue() {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setMaxDegreeOfParallelism(2);
 
@@ -393,7 +393,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void queryDocumentsDoubleValueToInt() {
         // When try try to fetch double value using integer class, it should fail
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
         String query = "Select value c._value from c";
         CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options, Integer.class);
@@ -410,7 +410,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" })
     public void queryDocumentsPojo(){
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         options.setMaxDegreeOfParallelism(2);
         String query = "Select * from c";
@@ -546,7 +546,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
 
         String query = "I am an invalid query";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -559,7 +559,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
 
-        return cosmosContainer.createItem(docDefinition).map(CosmosAsyncItemResponseImpl::getProperties).block();
+        return cosmosContainer.createItem(docDefinition).map(CosmosItemResponseImpl::getProperties).block();
     }
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {
@@ -584,7 +584,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         List<String> continuationTokens = new ArrayList<String>();
         List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
         do {
-            FeedOptions options = new FeedOptions();
+            QueryRequestOptions options = new QueryRequestOptions();
 
             options.setMaxDegreeOfParallelism(2);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);

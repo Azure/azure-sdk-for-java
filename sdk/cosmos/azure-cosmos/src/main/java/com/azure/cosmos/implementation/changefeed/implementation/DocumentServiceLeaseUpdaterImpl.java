@@ -10,15 +10,14 @@ import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
-import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT;
@@ -50,7 +49,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             return Mono.empty();
         }
 
-        localLease.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
+        localLease.setTimestamp(Instant.now());
 
         cachedLease.setServiceItemLease(localLease);
 
@@ -79,7 +78,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         return Mono.error(throwable);
                     })
                     .map(cosmosItemResponse -> {
-                        CosmosItemProperties document = CosmosAsyncItemResponseImpl.getProperties(cosmosItemResponse);
+                        CosmosItemProperties document = CosmosItemResponseImpl.getProperties(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
                             "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
@@ -122,7 +121,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey)
                                                                                         throws LeaseLostException {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
-            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .map(CosmosItemResponseImpl::getProperties)
             .onErrorResume(re -> {
                 if (re instanceof CosmosException) {
                     CosmosException ex = (CosmosException) re;

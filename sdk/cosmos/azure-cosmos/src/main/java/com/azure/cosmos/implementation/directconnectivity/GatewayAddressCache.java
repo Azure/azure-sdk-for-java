@@ -48,7 +48,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -300,7 +299,7 @@ public class GatewayAddressCache implements IAddressCache {
             httpHeaders.set(entry.getKey(), entry.getValue());
         }
 
-        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
@@ -310,7 +309,7 @@ public class GatewayAddressCache implements IAddressCache {
                 dsr -> {
                     MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
                     if (metadataDiagnosticsContext != null) {
-                        ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                        Instant addressCallEndTime = Instant.now();
                         MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
                             addressCallEndTime,
                             MetadataType.SERVER_ADDRESS_LOOKUP);
@@ -489,7 +488,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         HttpRequest httpRequest;
         httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
-        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant addressCallStartTime = Instant.now();
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
@@ -497,7 +496,7 @@ public class GatewayAddressCache implements IAddressCache {
                 dsr -> {
                     MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
                     if (metadataDiagnosticsContext != null) {
-                        ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                        Instant addressCallEndTime = Instant.now();
                         MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
                             addressCallEndTime,
                             MetadataType.MASTER_ADDRESS_LOOK_UP);

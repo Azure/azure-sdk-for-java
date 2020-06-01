@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
@@ -17,11 +16,11 @@ import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -56,7 +55,8 @@ public class LifecycleSetupExample {
         SearchIndexClient indexClient = createIndexClient();
         SearchIndexerClient indexerClient = createIndexerClient();
         // Create a data source for a Cosmos DB database
-        SearchIndexerDataSource dataSource = createCosmosDataSource(indexerClient);
+        SearchIndexerDataSourceConnection dataSource = createCosmosDataSource(indexerClient);
+
         System.out.println("Created DataSource " + dataSource.getName());
 
         // Create an index
@@ -102,7 +102,7 @@ public class LifecycleSetupExample {
         client.createOrUpdateIndexer(indexer);
     }
 
-    private static SearchIndexer createIndexer(SearchIndexerClient client, SearchIndexerDataSource dataSource,
+    private static SearchIndexer createIndexer(SearchIndexerClient client, SearchIndexerDataSourceConnection dataSource,
         SearchIndexerSkillset skillset, SearchIndex index) {
         SearchIndexer indexer = new SearchIndexer()
             .setName(INDEXER_NAME)
@@ -167,7 +167,7 @@ public class LifecycleSetupExample {
                         .setKey(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
                         .setSortable(Boolean.FALSE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
                     new SearchField()
                         .setName("Description")
                         .setType(SearchFieldDataType.STRING)
@@ -176,7 +176,7 @@ public class LifecycleSetupExample {
                         .setHidden(Boolean.FALSE)
                         .setSortable(Boolean.FALSE)
                         .setFacetable(Boolean.FALSE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
                     new SearchField()
                         .setName("Tags")
                         .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
@@ -184,31 +184,30 @@ public class LifecycleSetupExample {
                         .setFilterable(Boolean.TRUE)
                         .setHidden(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT)));
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
-        index.setSuggesters(Collections.singletonList(new Suggester()
+        index.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
             .setName(SUGGESTER_NAME)
             .setSourceFields(Collections.singletonList("Tags"))));
 
         return client.createOrUpdateIndex(index);
     }
 
-    private static SearchIndexerDataSource createCosmosDataSource(SearchIndexerClient client) {
+    private static SearchIndexerDataSourceConnection createCosmosDataSource(SearchIndexerClient client) {
 
         SearchIndexerDataContainer dataContainer = new SearchIndexerDataContainer().setName(COSMOS_COLLECTION_NAME);
         HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =
             new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts");
 
-        SearchIndexerDataSource dataSource = new SearchIndexerDataSource()
+        SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection()
             .setName(DATASOURCE_NAME)
             .setType(SearchIndexerDataSourceType.COSMOS_DB)
-            .setCredentials(new DataSourceCredentials()
-                .setConnectionString(COSMOS_CONNECTION_STRING))
+            .setConnectionString(COSMOS_CONNECTION_STRING)
             .setContainer(dataContainer)
             .setDataChangeDetectionPolicy(highWaterMarkChangeDetectionPolicy);
 
-        return client.createOrUpdateDataSource(dataSource);
+        return client.createOrUpdateDataSourceConnection(dataSource);
     }
 
 

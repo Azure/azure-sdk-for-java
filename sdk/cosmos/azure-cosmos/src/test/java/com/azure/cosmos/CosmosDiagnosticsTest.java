@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -77,6 +78,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
+        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
         validateTransportRequestTimelineGateway(diagnostics);
     }
@@ -109,6 +111,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
+            assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
         } finally {
@@ -128,6 +131,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("availableMemory");
         assertThat(diagnostics).contains("processCpuLoad");
         assertThat(diagnostics).contains("systemCpuLoad");
+        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
     }
 
@@ -145,6 +149,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
+        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
         validateTransportRequestTimelineDirect(diagnostics);
     }
@@ -253,6 +258,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosItemProperties properties = readItemResponse.getItem();
         diagnostics = readItemResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("\"serializationType\":\"ITEM_DESERIALIZATION\"");
+        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
     }
 
     private CosmosItemProperties getCosmosItemProperties() {

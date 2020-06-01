@@ -432,7 +432,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Collections.singletonList("vcr/dvd")),
+                    .tags(new String[] { "vcr/dvd" }),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -441,7 +441,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd", "jacuzzi tub"))
+                    .tags(new String[] {"vcr/dvd", "jacuzzi tub"})
             ));
 
         // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
@@ -463,7 +463,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         // Fields whose values get updated are updated, and whose values get erased remain the same.
@@ -492,7 +492,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         List<Hotel> originalDocs = new ArrayList<>();
@@ -561,7 +561,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Collections.singletonList("vcr/dvd")),
+                    .tags(new String[] { "vcr/dvd" }),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -570,7 +570,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd", "jacuzzi tub"))
+                    .tags(new String[] { "vcr/dvd", "jacuzzi tub" })
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
@@ -589,7 +589,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .type("Budget Room")
                     .baseRate(10.5)
                     .smokingAllowed(false)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
@@ -621,7 +621,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions(null)
                     .sleepsCount(null)
                     .smokingAllowed(false)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         List<LoudHotel> originalDocs = new ArrayList<>();

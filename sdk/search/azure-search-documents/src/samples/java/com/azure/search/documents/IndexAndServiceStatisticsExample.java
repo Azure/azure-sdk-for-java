@@ -22,7 +22,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.ServiceStatistics;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
@@ -155,7 +155,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setAnalyzer(LexicalAnalyzerName.EN_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("DescriptionFr")
@@ -164,7 +164,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setAnalyzer(LexicalAnalyzerName.FR_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("Description_Custom")
@@ -173,8 +173,8 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setSearchAnalyzer(LexicalAnalyzerName.STOP)
-                    .setIndexAnalyzer(LexicalAnalyzerName.STOP)
+                    .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
+                    .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("Category")
@@ -279,13 +279,13 @@ public class IndexAndServiceStatisticsExample {
                             .setType(SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE)
-                            .setAnalyzer(LexicalAnalyzerName.EN_LUCENE),
+                            .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
                         new SearchField()
                             .setName("DescriptionFr")
                             .setType(SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE)
-                            .setAnalyzer(LexicalAnalyzerName.FR_LUCENE),
+                            .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE),
                         new SearchField()
                             .setName("Type")
                             .setType(SearchFieldDataType.STRING)
@@ -412,7 +412,7 @@ public class IndexAndServiceStatisticsExample {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Collections.singletonList(new Suggester()
+            .setSearchSuggesters(Collections.singletonList(new SearchSuggester()
                 .setName("FancySuggester")
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }

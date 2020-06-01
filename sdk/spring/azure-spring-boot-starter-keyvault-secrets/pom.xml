@@ -46,7 +46,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:*</include>
+                <include>com.microsoft.azure:azure-spring-boot:[2.2.5-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>

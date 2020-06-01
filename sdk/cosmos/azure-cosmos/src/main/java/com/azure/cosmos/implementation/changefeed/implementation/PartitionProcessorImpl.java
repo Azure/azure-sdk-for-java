@@ -23,7 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
 
@@ -78,11 +78,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     return Flux.just(value);
                 }
 
-                ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.settings.getFeedPollDelay());
+                Instant stopTimer = Instant.now().plus(this.settings.getFeedPollDelay());
                 return Mono.just(value)
                     .delayElement(Duration.ofMillis(100))
                     .repeat( () -> {
-                        ZonedDateTime currentTime = ZonedDateTime.now();
+                        Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                     }).last();
 
@@ -155,12 +155,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         case TRANSIENT_ERROR: {
                             // Retry on transient (429) errors
                             if (clientException.getRetryAfterDuration().toMillis() > 0) {
-                                ZonedDateTime stopTimer = ZonedDateTime.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
+                                Instant stopTimer = Instant.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
                                 return Mono.just(clientException.getRetryAfterDuration().toMillis()) // set some seed value to be able to run
                                            // the repeat loop
                                            .delayElement(Duration.ofMillis(100))
                                            .repeat(() -> {
-                                        ZonedDateTime currentTime = ZonedDateTime.now();
+                                               Instant currentTime = Instant.now();
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                                     }).flatMap(values -> Flux.empty());
                             }

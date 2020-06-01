@@ -502,7 +502,7 @@ public class CosmosClientBuilder {
      * "East US" as the preferred region.
      * <p>
      * When EnableEndpointDiscovery is true and PreferredRegions is non-empty,
-     * the SDK will prefer to use the regions in the collection in the order
+     * the SDK will prefer to use the regions in the container in the order
      * they are specified to perform operations.
      * <p>
      * If EnableEndpointDiscovery is set to false, this property is ignored.

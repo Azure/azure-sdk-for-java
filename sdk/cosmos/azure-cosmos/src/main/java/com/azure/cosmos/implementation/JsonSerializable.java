@@ -6,14 +6,12 @@ package com.azure.cosmos.implementation;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
-import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.SerializationFormattingPolicy;
 import com.azure.cosmos.models.SpatialSpec;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -693,7 +691,6 @@ public class JsonSerializable {
     <T> boolean containsJsonSerializable(Class<T> c) {
         return CompositePath.class.equals(c)
             || ConflictResolutionPolicy.class.equals(c)
-            || DatabaseAccountLocation.class.equals(c)
             || ExcludedPath.class.equals(c)
             || IncludedPath.class.equals(c)
             || IndexingPolicy.class.equals(c)

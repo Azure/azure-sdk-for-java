@@ -11,8 +11,6 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.AfterClass;
@@ -50,8 +48,8 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator.Builder<CosmosPermissionProperties>()
                 .totalSize(createdPermissions.size())
                 .numberOfPages(expectedPageSize)
-                .exactlyContainsInAnyOrder(createdPermissions.stream().map(
-                    p -> p.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(createdPermissions.stream().map(
+                    CosmosPermissionProperties::getId).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();

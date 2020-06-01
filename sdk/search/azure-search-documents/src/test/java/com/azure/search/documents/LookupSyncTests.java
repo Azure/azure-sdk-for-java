@@ -406,7 +406,7 @@ public class LookupSyncTests extends SearchTestBase {
         return new Hotel().hotelId("1")
             .tags(new ArrayList<>())
             .rooms(Collections.singletonList(
-                new HotelRoom().tags(new ArrayList<>())
+                new HotelRoom().tags(new String[0])
             ));
     }
 
@@ -437,7 +437,7 @@ public class LookupSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Collections.singletonList("coffee maker")),
+                    .tags(new String[] { "coffee maker" }),
                 new HotelRoom()
                     .description("Budget Room, 1 Queen Bed (Amenities)")
                     .descriptionFr("Chambre Économique, 1 grand lit (Services)")
@@ -446,7 +446,7 @@ public class LookupSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(false)
-                    .tags(Collections.singletonList("coffee maker"))));
+                    .tags(new String[] { "coffee maker" })));
     }
 
     ModelWithPrimitiveCollections preparePrimitivesModel() {

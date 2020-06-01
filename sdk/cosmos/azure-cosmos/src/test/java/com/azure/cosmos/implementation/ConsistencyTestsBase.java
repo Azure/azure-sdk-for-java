@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,7 +53,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         Resource writeResource = resourceToWorkWith;
         while (numberOfTestIteration-- > 0) //Write from a client and do point read through second client and ensure TS matches.
         {
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000); //Timestamp is in granularity of seconds.
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof User) {
@@ -137,7 +137,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         int numberOfTestIteration = 5;
         Document writeDocument = documentToWorkWith;
         while (numberOfTestIteration-- > 0) {
-            OffsetDateTime sourceTimestamp = writeDocument.getTimestamp();
+            Instant sourceTimestamp = writeDocument.getTimestamp();
             Thread.sleep(1000);//Timestamp is in granularity of seconds.
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentToWorkWith, "mypk")));
@@ -231,12 +231,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     boolean validateConsistentPrefix(Resource resourceToWorkWith) throws InterruptedException {
         int numberOfTestIteration = 5;
-        OffsetDateTime lastReadDateTime = resourceToWorkWith.getTimestamp();
+        Instant lastReadDateTime = resourceToWorkWith.getTimestamp();
         boolean readLagging = false;
         Resource writeResource = resourceToWorkWith;
 
         while (numberOfTestIteration-- > 0) { //Write from a client and do point read through second client and ensure TS monotonically increases.
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000); //Timestamp is in granularity of seconds.
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof User) {
@@ -276,12 +276,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     boolean validateReadSession(Resource resourceToWorkWith) throws InterruptedException {
         int numberOfTestIteration = 5;
-        OffsetDateTime lastReadDateTime = OffsetDateTime.MIN;
+        Instant lastReadDateTime = Instant.MIN;
         boolean readLagging = false;
         Resource writeResource = resourceToWorkWith;
 
         while (numberOfTestIteration-- > 0) {
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000);
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof Document) {
@@ -312,12 +312,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     boolean validateWriteSession(Resource resourceToWorkWith) throws InterruptedException {
         int numberOfTestIteration = 5;
-        OffsetDateTime lastReadDateTime = OffsetDateTime.MIN;
+        Instant lastReadDateTime = Instant.MIN;
         boolean readLagging = false;
         Resource writeResource = resourceToWorkWith;
 
         while (numberOfTestIteration-- > 0) {
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000);
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof Document) {

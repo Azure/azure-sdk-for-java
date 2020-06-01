@@ -14,14 +14,14 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RetryAnalyzer;
-import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -331,13 +331,13 @@ public class CollectionCrudTest extends TestSuiteBase {
             BridgeInternal.setProperty(document, "mypk", "mypkValue");
             createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-            CosmosAsyncItemResponse<CosmosItemProperties> readDocumentResponse =
+            CosmosItemResponse<CosmosItemProperties> readDocumentResponse =
                 collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
             logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
-            CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
+            CosmosItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
 
@@ -361,7 +361,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getDuration());
 
-            CosmosItemProperties readDocument = CosmosAsyncItemResponseImpl.getProperties(readDocumentResponse);
+            CosmosItemProperties readDocument = CosmosItemResponseImpl.getProperties(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")

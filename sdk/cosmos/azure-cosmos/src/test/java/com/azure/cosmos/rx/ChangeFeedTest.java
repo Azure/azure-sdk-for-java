@@ -29,7 +29,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Method;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -164,11 +164,11 @@ public class ChangeFeedTest extends TestSuiteBase {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
 
         changeFeedOption.setPartitionKey(new PartitionKey(partitionKey));
-        OffsetDateTime befTime = OffsetDateTime.now();
+        Instant befTime = Instant.now();
         // Waiting for at-least a second to ensure that new document is created after we took the time stamp
         waitAtleastASecond(befTime);
 
-        OffsetDateTime dateTimeBeforeCreatingDoc = OffsetDateTime.now();
+        Instant dateTimeBeforeCreatingDoc = Instant.now();
         changeFeedOption.setStartDateTime(dateTimeBeforeCreatingDoc);
 
         // Waiting for at-least a second to ensure that new document is created after we took the time stamp
@@ -288,8 +288,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         return doc;
     }
 
-    private static void waitAtleastASecond(OffsetDateTime befTime) throws InterruptedException {
-        while (befTime.plusSeconds(1).isAfter(OffsetDateTime.now())) {
+    private static void waitAtleastASecond(Instant befTime) throws InterruptedException {
+        while (befTime.plusSeconds(1).isAfter(Instant.now())) {
             Thread.sleep(100);
         }
     }

@@ -16,7 +16,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
-import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.DataType;
@@ -65,8 +65,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
@@ -94,13 +93,13 @@ public class UniqueIndexTest extends TestSuiteBase {
         collection = database.getContainer(collectionDefinition.getId());
 
         CosmosItemProperties properties = collection.createItem(doc1)
-            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .map(CosmosItemResponseImpl::getProperties)
             .block();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemProperties itemSettings = collection.readItem(properties.getId(), PartitionKey.NONE, options,
             CosmosItemProperties.class)
-            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .map(CosmosItemResponseImpl::getProperties)
             .block();
 
         assertThat(itemSettings.getId()).isEqualTo(doc1.get("id").textValue());
@@ -125,8 +124,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
@@ -140,15 +138,15 @@ public class UniqueIndexTest extends TestSuiteBase {
         ObjectNode doc2 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"mathematician\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
 
         CosmosItemProperties doc1Inserted = collection.createItem(doc1, new CosmosItemRequestOptions())
-            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .map(CosmosItemResponseImpl::getProperties)
             .block();
 
         collection.replaceItem(doc1Inserted, doc1.get("id").asText(), PartitionKey.NONE, new CosmosItemRequestOptions())
-            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .map(CosmosItemResponseImpl::getProperties)
             .block();     // REPLACE with same values -- OK.
 
         CosmosItemProperties doc2Inserted = collection.createItem(doc2, new CosmosItemRequestOptions())
-            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .map(CosmosItemResponseImpl::getProperties)
             .block();
 
         CosmosItemProperties doc2Replacement = new CosmosItemProperties(ModelBridgeInternal.toJsonFromJsonSerializable(doc1Inserted));
@@ -179,8 +177,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 

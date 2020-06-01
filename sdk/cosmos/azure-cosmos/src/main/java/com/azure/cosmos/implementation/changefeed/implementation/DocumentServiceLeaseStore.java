@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
-import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
@@ -51,11 +51,11 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties doc = new CosmosItemProperties();
         doc.setId(markerDocId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
+        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
-            .map(documentResourceResponse -> CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse) != null)
+            .map(documentResourceResponse -> CosmosItemResponseImpl.getProperties(documentResourceResponse) != null)
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
                     CosmosException e = (CosmosException) throwable;
@@ -99,7 +99,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
-                CosmosItemProperties itemProperties = CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse);
+                CosmosItemProperties itemProperties = CosmosItemResponseImpl.getProperties(documentResourceResponse);
                 if (itemProperties != null) {
                     this.lockETag = itemProperties.getETag();
                     return true;
@@ -126,7 +126,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties doc = new CosmosItemProperties();
         doc.setId(lockId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
+        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
         if (requestOptions == null) {

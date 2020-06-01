@@ -9,9 +9,9 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
@@ -363,10 +363,10 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response of the read databases.
      * In case of failure the {@link Flux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    Flux<FeedResponse<Database>> readDatabases(FeedOptions options);
+    Flux<FeedResponse<Database>> readDatabases(QueryRequestOptions options);
 
     /**
      * Query for databases.
@@ -376,10 +376,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param query   the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    Flux<FeedResponse<Database>> queryDatabases(String query, FeedOptions options);
+    Flux<FeedResponse<Database>> queryDatabases(String query, QueryRequestOptions options);
 
     /**
      * Query for databases.
@@ -389,10 +389,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options   the feed options.
+     * @param options   the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained databases or an error.
      */
-    Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Creates a document collection.
@@ -456,10 +456,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param databaseLink the database link.
-     * @param options      the fee options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read collections or an error.
      */
-    Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, FeedOptions options);
+    Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, QueryRequestOptions options);
 
     /**
      * Query for document collections in a database.
@@ -470,10 +470,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param query        the query.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained collections or an error.
      */
-    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query, FeedOptions options);
+    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query, QueryRequestOptions options);
 
     /**
      * Query for document collections in a database.
@@ -484,10 +484,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained collections or an error.
      */
-    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Creates a document.
@@ -582,10 +582,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read documents or an error.
      */
-    Flux<FeedResponse<Document>> readDocuments(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<Document>> readDocuments(String collectionLink, QueryRequestOptions options);
 
 
     /**
@@ -597,10 +597,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the link to the parent document collection.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained document or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, QueryRequestOptions options);
 
     /**
      * Query for documents in a document collection.
@@ -611,10 +611,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the link to the parent document collection.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Query for documents change feed in a document collection.
@@ -636,10 +636,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the link to the parent document collection.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained partition key ranges or an error.
      */
-    Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, QueryRequestOptions options);
 
     /**
      * Creates a stored procedure.
@@ -718,10 +718,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read stored procedures or an error.
      */
-    Flux<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink, QueryRequestOptions options);
 
     /**
      * Query for stored procedures in a document collection.
@@ -732,10 +732,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
      */
-    Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query, QueryRequestOptions options);
 
     /**
      * Query for stored procedures in a document collection.
@@ -746,11 +746,11 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
      */
     Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, SqlQuerySpec querySpec,
-                                                                    FeedOptions options);
+                                                                    QueryRequestOptions options);
 
     /**
      * Executes a stored procedure
@@ -855,10 +855,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read triggers or an error.
      */
-    Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, QueryRequestOptions options);
 
     /**
      * Query for triggers.
@@ -869,10 +869,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
-    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query, QueryRequestOptions options);
 
     /**
      * Query for triggers.
@@ -883,10 +883,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
-    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Creates a user defined function.
@@ -965,10 +965,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read user defined functions or an error.
      */
-    Flux<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink, QueryRequestOptions options);
 
     /**
      * Query for user defined functions.
@@ -979,11 +979,11 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, String query,
-                                                                            FeedOptions options);
+                                                                      QueryRequestOptions options);
 
     /**
      * Query for user defined functions.
@@ -994,11 +994,11 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, SqlQuerySpec querySpec,
-                                                                            FeedOptions options);
+                                                                      QueryRequestOptions options);
 
     /**
      * Reads a conflict.
@@ -1021,10 +1021,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read conflicts or an error.
      */
-    Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, QueryRequestOptions options);
 
     /**
      * Query for conflicts.
@@ -1035,10 +1035,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
      */
-    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query, QueryRequestOptions options);
 
     /**
      * Query for conflicts.
@@ -1049,10 +1049,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
      */
-    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Deletes a conflict.
@@ -1142,10 +1142,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param databaseLink the database link.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read users or an error.
      */
-    Flux<FeedResponse<User>> readUsers(String databaseLink, FeedOptions options);
+    Flux<FeedResponse<User>> readUsers(String databaseLink, QueryRequestOptions options);
 
     /**
      * Query for users.
@@ -1156,10 +1156,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param query        the query.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained users or an error.
      */
-    Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, FeedOptions options);
+    Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, QueryRequestOptions options);
 
     /**
      * Query for users.
@@ -1170,10 +1170,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained users or an error.
      */
-    Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Creates a permission.
@@ -1250,10 +1250,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param permissionLink the permission link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read permissions or an error.
      */
-    Flux<FeedResponse<Permission>> readPermissions(String permissionLink, FeedOptions options);
+    Flux<FeedResponse<Permission>> readPermissions(String permissionLink, QueryRequestOptions options);
 
     /**
      * Query for permissions.
@@ -1264,10 +1264,10 @@ public interface AsyncDocumentClient {
      *
      * @param permissionLink the permission link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, String query, QueryRequestOptions options);
 
     /**
      * Query for permissions.
@@ -1278,10 +1278,10 @@ public interface AsyncDocumentClient {
      *
      * @param permissionLink the permission link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Replaces an offer.
@@ -1314,10 +1314,10 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the read offers.
      * In case of failure the {@link Flux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read offers or an error.
      */
-    Flux<FeedResponse<Offer>> readOffers(FeedOptions options);
+    Flux<FeedResponse<Offer>> readOffers(QueryRequestOptions options);
 
     /**
      * Query for offers in a database.
@@ -1327,10 +1327,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param query   the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained offers or an error.
      */
-    Flux<FeedResponse<Offer>> queryOffers(String query, FeedOptions options);
+    Flux<FeedResponse<Offer>> queryOffers(String query, QueryRequestOptions options);
 
     /**
      * Query for offers in a database.
@@ -1340,10 +1340,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param querySpec the query specification.
-     * @param options   the feed options.
+     * @param options   the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained offers or an error.
      */
-    Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, QueryRequestOptions options);
 
     /**
      * Gets database account information.
@@ -1360,14 +1360,14 @@ public interface AsyncDocumentClient {
      * Reads many documents at once
      * @param itemKeyList document id and partition key pair that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
-     * @param options the feed options
+     * @param options the query request options
      * @param klass class type
      * @return a Mono with feed response of documents
      */
     <T> Mono<FeedResponse<T>> readMany(
         List<Pair<String, PartitionKey>> itemKeyList,
         String collectionLink,
-        FeedOptions options,
+        QueryRequestOptions options,
         Class<T> klass);
 
     /**

@@ -11,9 +11,9 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -130,7 +130,8 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
         GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         container.createItem(gsonPojo);
 
-        FeedOptions feedOptions = new FeedOptions().setPartitionKey(new PartitionKey(gsonPojo.getMypk()));
+        QueryRequestOptions feedOptions = new QueryRequestOptions()
+            .setPartitionKey(new PartitionKey(gsonPojo.getMypk()));
 
         CosmosPagedIterable<GsonPojo> feedResponseIterator3 = container.readAllItems(feedOptions, GsonPojo.class);
         Iterator<GsonPojo> pojoIterator = feedResponseIterator3.iterator();
@@ -147,7 +148,8 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
         container.createItem(gsonPojo);
 
         String query = String.format("SELECT * from c where c.id = '%s'", gsonPojo.getId());
-        FeedOptions feedOptions = new FeedOptions().setPartitionKey(new PartitionKey(gsonPojo.getMypk()));
+        QueryRequestOptions feedOptions = new QueryRequestOptions()
+            .setPartitionKey(new PartitionKey(gsonPojo.getMypk()));
 
         CosmosPagedIterable<GsonPojo> feedResponseIterator1 =
             container.queryItems(query, feedOptions, GsonPojo.class);
@@ -183,7 +185,7 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
         String query = String.format("SELECT * from c where c.id in ('%s', '%s', '%s')", actualIds.get(0),
             actualIds.get(1), actualIds.get(2));
-        FeedOptions feedOptions = new FeedOptions().setPartitionKey(new PartitionKey(partitionKey));
+        QueryRequestOptions feedOptions = new QueryRequestOptions().setPartitionKey(new PartitionKey(partitionKey));
         String continuationToken = null;
         int pageSize = 1;
 

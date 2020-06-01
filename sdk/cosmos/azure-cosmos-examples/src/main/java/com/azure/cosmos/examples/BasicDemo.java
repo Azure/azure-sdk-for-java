@@ -5,12 +5,12 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
@@ -48,9 +48,9 @@ public class BasicDemo {
 
         //CREATE an Item async
 
-        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono = container.createItem(testObject);
+        Mono<CosmosItemResponse<TestObject>> itemResponseMono = container.createItem(testObject);
         //CREATE another Item async
-        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono1 = container.createItem(testObject2);
+        Mono<CosmosItemResponse<TestObject>> itemResponseMono1 = container.createItem(testObject2);
 
         //Wait for completion
         try {
@@ -113,7 +113,7 @@ public class BasicDemo {
     private void queryItems() {
         log("+ Querying the collection ");
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
@@ -129,7 +129,7 @@ public class BasicDemo {
     private void queryWithContinuationToken() {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setQueryMetricsEnabled(true);
         String continuation = null;
         do {

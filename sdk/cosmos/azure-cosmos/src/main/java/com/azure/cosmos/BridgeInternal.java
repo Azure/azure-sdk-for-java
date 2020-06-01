@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
@@ -27,8 +28,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -39,7 +38,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
-import java.time.OffsetDateTime;
+import java.nio.ByteBuffer;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +61,12 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.fromObject(document, mapper);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper,
+        JsonSerializer jsonSerializer) {
+        return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper, jsonSerializer);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -335,7 +341,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTimestamp(Resource resource, OffsetDateTime date) {
+    public static void setTimestamp(Resource resource, Instant date) {
         ModelBridgeInternal.setTimestamp(resource, date);
     }
 
@@ -449,11 +455,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosAsyncPermission createCosmosAsyncPermission(String id, CosmosAsyncUser user) {
         return new CosmosAsyncPermission(id, user);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncTrigger createCosmosAsyncTrigger(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncTrigger(id, container);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
