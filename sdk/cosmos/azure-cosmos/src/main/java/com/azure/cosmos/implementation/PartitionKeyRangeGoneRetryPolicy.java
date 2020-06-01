@@ -7,7 +7,8 @@ import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -23,7 +24,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     private final DocumentClientRetryPolicy nextRetryPolicy;
     private final IPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
-    private final FeedOptions feedOptions;
+    private final QueryRequestOptions queryRequestOptions;
     private volatile boolean retried;
     private RxDocumentServiceRequest request;
 
@@ -32,12 +33,12 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
             IPartitionKeyRangeCache partitionKeyRangeCache,
             String collectionLink,
             DocumentClientRetryPolicy nextRetryPolicy,
-            FeedOptions feedOptions) {
+            QueryRequestOptions queryRequestOptions) {
         this.collectionCache = collectionCache;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.collectionLink = collectionLink;
         this.nextRetryPolicy = nextRetryPolicy;
-        this.feedOptions = feedOptions;
+        this.queryRequestOptions = queryRequestOptions;
         this.request = null;
     }
 
@@ -64,8 +65,8 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                     null
                     // AuthorizationTokenType.PrimaryMasterKey)
                     );
-            if (this.feedOptions != null) {
-                request.properties = this.feedOptions.getProperties();
+            if (this.queryRequestOptions != null) {
+                request.properties = ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.queryRequestOptions);
             }
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),

@@ -41,28 +41,28 @@ public class CosmosUserDefinedFunction {
     /**
      * Read cosmos user defined function.
      *
-     * @return the cosmos sync user defined function response
+     * @return the cosmos user defined function response
      */
     public CosmosUserDefinedFunctionResponse read() {
-        return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.read());
+        return container.getScripts().blockUDFResponse(userDefinedFunction.read());
     }
 
     /**
      * Replace cosmos user defined function.
      *
      * @param udfSettings the udf settings
-     * @return the cosmos sync user defined function response
+     * @return the cosmos user defined function response
      */
     public CosmosUserDefinedFunctionResponse replace(CosmosUserDefinedFunctionProperties udfSettings) {
-        return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.replace(udfSettings));
+        return container.getScripts().blockUDFResponse(userDefinedFunction.replace(udfSettings));
     }
 
     /**
      * Delete cosmos user defined function.
      *
-     * @return the cosmos sync response
+     * @return the cosmos user defined function
      */
     public CosmosUserDefinedFunctionResponse delete() {
-        return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.delete());
+        return container.getScripts().blockUDFResponse(userDefinedFunction.delete());
     }
 }

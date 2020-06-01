@@ -4,26 +4,28 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.CorsOptions;
-import com.azure.search.documents.models.DistanceScoringFunction;
-import com.azure.search.documents.models.DistanceScoringParameters;
-import com.azure.search.documents.models.FreshnessScoringFunction;
-import com.azure.search.documents.models.FreshnessScoringParameters;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.LexicalAnalyzerName;
-import com.azure.search.documents.models.MagnitudeScoringFunction;
-import com.azure.search.documents.models.MagnitudeScoringParameters;
-import com.azure.search.documents.models.ScoringFunctionAggregation;
-import com.azure.search.documents.models.ScoringFunctionInterpolation;
-import com.azure.search.documents.models.ScoringProfile;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.Suggester;
-import com.azure.search.documents.models.TagScoringFunction;
-import com.azure.search.documents.models.TagScoringParameters;
-import com.azure.search.documents.models.TextWeights;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.DistanceScoringFunction;
+import com.azure.search.documents.indexes.models.DistanceScoringParameters;
+import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
+import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
+import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
+import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
+import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
+import com.azure.search.documents.indexes.models.ScoringProfile;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.TagScoringFunction;
+import com.azure.search.documents.indexes.models.TagScoringParameters;
+import com.azure.search.documents.indexes.models.TextWeights;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -46,12 +48,12 @@ public class IndexAndServiceStatisticsExample {
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     public static void main(String[] args) {
-        SearchServiceClient client = createClient();
+        SearchIndexClient client = createClient();
         getIndexStatistics(client);
         getServiceStatistics(client);
     }
 
-    private static void getServiceStatistics(SearchServiceClient client) {
+    private static void getServiceStatistics(SearchIndexClient client) {
         ServiceStatistics serviceStatistics = client.getServiceStatistics();
 
         System.out.println(":" + serviceStatistics);
@@ -101,7 +103,7 @@ public class IndexAndServiceStatisticsExample {
          */
     }
 
-    private static void getIndexStatistics(SearchServiceClient client) {
+    private static void getIndexStatistics(SearchIndexClient client) {
         SearchIndex testIndex = createTestIndex();
         SearchIndex index = client.createOrUpdateIndex(testIndex);
         GetIndexStatisticsResult result = client.getIndexStatistics(index.getName());
@@ -153,7 +155,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setAnalyzer(LexicalAnalyzerName.EN_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("DescriptionFr")
@@ -162,7 +164,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setAnalyzer(LexicalAnalyzerName.FR_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("Description_Custom")
@@ -171,8 +173,8 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setSearchAnalyzer(LexicalAnalyzerName.STOP)
-                    .setIndexAnalyzer(LexicalAnalyzerName.STOP)
+                    .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
+                    .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
                     .setHidden(Boolean.FALSE),
                 new SearchField()
                     .setName("Category")
@@ -277,13 +279,13 @@ public class IndexAndServiceStatisticsExample {
                             .setType(SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE)
-                            .setAnalyzer(LexicalAnalyzerName.EN_LUCENE),
+                            .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
                         new SearchField()
                             .setName("DescriptionFr")
                             .setType(SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE)
-                            .setAnalyzer(LexicalAnalyzerName.FR_LUCENE),
+                            .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE),
                         new SearchField()
                             .setName("Type")
                             .setType(SearchFieldDataType.STRING)
@@ -410,19 +412,19 @@ public class IndexAndServiceStatisticsExample {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Collections.singletonList(new Suggester()
+            .setSearchSuggesters(Collections.singletonList(new SearchSuggester()
                 .setName("FancySuggester")
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }
 
     /**
-     * Builds a {@link SearchServiceClient}
+     * Builds a {@link SearchIndexClient}
      *
      * @return async service client
      */
-    private static SearchServiceClient createClient() {
+    private static SearchIndexClient createClient() {
         AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential(ADMIN_KEY);
-        return new SearchServiceClientBuilder()
+        return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(searchApiKeyCredential)
             .buildClient();

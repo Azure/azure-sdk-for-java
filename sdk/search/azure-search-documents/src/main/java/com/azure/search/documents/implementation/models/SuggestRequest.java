@@ -138,7 +138,7 @@ public final class SuggestRequest {
      *
      * @return the useFuzzyMatching value.
      */
-    public Boolean useFuzzyMatching() {
+    public Boolean isUseFuzzyMatching() {
         return this.useFuzzyMatching;
     }
 

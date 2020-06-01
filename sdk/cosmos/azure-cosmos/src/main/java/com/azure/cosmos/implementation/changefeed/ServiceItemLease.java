@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -121,16 +122,12 @@ public class ServiceItemLease implements Lease {
     }
 
     @Override
-    public void setTimestamp(ZonedDateTime timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.withTimestamp(timestamp);
     }
 
     public void setTimestamp(Date date) {
-        this.withTimestamp(date.toInstant().atZone(ZoneId.systemDefault()));
-    }
-
-    public void setTimestamp(Date date, ZoneId zoneId) {
-        this.withTimestamp(date.toInstant().atZone(zoneId));
+        this.withTimestamp(date.toInstant());
     }
 
     public void setTimestamp(String timestamp) {
@@ -178,7 +175,7 @@ public class ServiceItemLease implements Lease {
         return this.timestamp;
     }
 
-    public ServiceItemLease withTimestamp(ZonedDateTime timestamp) {
+    public ServiceItemLease withTimestamp(Instant timestamp) {
         this.timestamp = timestamp.toString();
         return this;
     }
@@ -203,7 +200,7 @@ public class ServiceItemLease implements Lease {
 
         String leaseTimestamp = ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_TIMESTAMP);
         if (leaseTimestamp != null) {
-            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
+            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp).toInstant());
         } else {
             return lease;
         }
@@ -218,7 +215,7 @@ public class ServiceItemLease implements Lease {
 
         String leaseTimestamp = lease.getTimestamp();
         if (leaseTimestamp != null) {
-           this.setTimestamp(ZonedDateTime.parse(leaseTimestamp));
+           this.setTimestamp(ZonedDateTime.parse(leaseTimestamp).toInstant());
         } else {
             this.setTimestamp(lease.getTimestamp());
         }
