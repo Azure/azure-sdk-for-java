@@ -42,8 +42,7 @@ public final class RntbdObjectMapper {
             .addSerializer(Duration.class, ToStringSerializer.instance)
             .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
             .addSerializer(Instant.class, ToStringSerializer.instance))
-        .setFilterProvider(filterProvider)
-        .registerModule(new AfterburnerModule());
+        .setFilterProvider(filterProvider);
 
     private static final ObjectWriter objectWriter = objectMapper.writer();
 
