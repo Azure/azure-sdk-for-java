@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.2.0-beta.1 (Unreleased)
+- Added support to schedule file expiration. 
 - Added support to query a file. 
 
 ## 12.1.1 (2020-05-06)
