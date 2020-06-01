@@ -28,6 +28,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -306,6 +307,31 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         Objects.requireNonNull(data);
+        data.mark(Integer.MAX_VALUE);
+        boolean empty = true;
+        try {
+            if (data.available() == 0) {
+                System.out.println("NO DATA AVAILABLE 1");
+            }
+            int b = data.read();
+            while (b != -1) {
+                if (b != 0) {
+                    empty = false;
+                    break;
+                }
+                b = data.read();
+            }
+            if (empty) {
+                System.out.println("BLOCK DATA WAS EMPTY: Before converting to flux");
+            }
+            data.reset();
+            if (data.available() == 0) {
+                System.out.println("NO DATA AVAILABLE 2");
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
