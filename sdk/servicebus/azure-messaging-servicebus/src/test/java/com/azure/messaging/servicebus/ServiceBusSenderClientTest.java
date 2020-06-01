@@ -20,6 +20,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,9 +36,13 @@ public class ServiceBusSenderClientTest {
 
     @Mock
     private ServiceBusSenderAsyncClient asyncSender;
+    @Mock
+    ServiceBusTransactionContext transactionContext;
 
     @Captor
     private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
+    @Captor
+    private ArgumentCaptor<ServiceBusTransactionContext> transactionCaptor;
 
     @Captor
     private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
@@ -151,6 +156,32 @@ public class ServiceBusSenderClientTest {
     }
 
     /**
+     * Verifies that sending an array of message will result in calling sender.send(Message..., transaction).
+     */
+    @Test
+    void sendMessageListWithTransaction() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
+            contents);
+
+        when(asyncSender.send(messages, transactionContext)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(messages, transactionContext);
+
+        // Assert
+        verify(asyncSender, times(1)).send(messages, transactionContext);
+        verify(asyncSender).send(messageListCaptor.capture(), transactionCaptor.capture());
+
+        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
+        Assertions.assertEquals(count, sentMessages.size());
+        sentMessages.forEach(serviceBusMessage -> Assertions.assertArrayEquals(contents, serviceBusMessage.getBody()));
+        Assertions.assertEquals(transactionContext, transactionCaptor.getValue());
+    }
+
+    /**
      * Verifies that sending an array of message will result in calling sender.send(Message...).
      */
     @Test
@@ -173,6 +204,73 @@ public class ServiceBusSenderClientTest {
         final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
         Assertions.assertEquals(count, sentMessages.size());
         sentMessages.forEach(serviceBusMessage -> Assertions.assertArrayEquals(contents, serviceBusMessage.getBody()));
+    }
+
+    /**
+     * Verifies that sending a single message will result in calling sender.send(List ServiceBusMessage, transaction).
+     */
+    @Test
+    void sendListMessageNullTransaction() {
+        // Arrange
+        final ServiceBusTransactionContext nullTransaction = null;
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        List<ServiceBusMessage> messages = new ArrayList<>();
+        messages.add(testData);
+        when(asyncSender.send(messages, transactionContext)).thenReturn(Mono.empty());
+
+        // Act
+        try {
+            sender.send(messages, nullTransaction);
+            Assertions.fail("This should have failed with NullPointerException.");
+        } catch (Exception ex) {
+            Assertions.assertTrue(ex instanceof NullPointerException);
+        }
+    }
+
+    /**
+     * Verifies that sending a single message will result in calling sender.send(Message, transaction).
+     */
+    @Test
+    void sendSingleMessageNullTransaction() {
+        // Arrange
+        final ServiceBusTransactionContext nullTransaction = null;
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+
+        when(asyncSender.send(testData, transactionContext)).thenReturn(Mono.empty());
+
+        // Act
+        try {
+            sender.send(testData, nullTransaction);
+            Assertions.fail("This should have failed with NullPointerException.");
+        } catch (Exception ex) {
+            Assertions.assertTrue(ex instanceof NullPointerException);
+        }
+    }
+
+    /**
+     * Verifies that sending a single message will result in calling sender.send(Message, transaction).
+     */
+    @Test
+    void sendSingleMessageWithTransaction() {
+        // Arrange
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+
+        when(asyncSender.send(testData, transactionContext)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(testData, transactionContext);
+
+        // Assert
+        verify(asyncSender, times(1)).send(testData, transactionContext);
+        verify(asyncSender).send(singleMessageCaptor.capture(), transactionCaptor.capture());
+
+        final ServiceBusMessage message = singleMessageCaptor.getValue();
+        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
+        Assertions.assertEquals(transactionContext, transactionCaptor.getValue());
+
     }
 
     /**
@@ -222,6 +320,35 @@ public class ServiceBusSenderClientTest {
 
         final Instant scheduledEnqueueTimeActual = scheduleMessageCaptor.getValue();
         Assertions.assertEquals(scheduledEnqueueTime, scheduledEnqueueTimeActual);
+    }
+
+    /**
+     * Verifies that scheduling a message will result in calling asyncSender.scheduleMessage() with transaction.
+     */
+    @Test
+    void scheduleMessageWithTransaction() {
+        // Arrange
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final Instant scheduledEnqueueTime = Instant.now();
+        final long sequenceNumber = 1;
+
+        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext)).thenReturn(Mono.just(sequenceNumber));
+
+        // Act
+        sender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
+
+        // Assert
+        verify(asyncSender, times(1)).scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
+        verify(asyncSender).scheduleMessage(singleMessageCaptor.capture(), scheduleMessageCaptor.capture(), transactionCaptor.capture());
+
+        final ServiceBusMessage message = singleMessageCaptor.getValue();
+        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
+
+        final Instant scheduledEnqueueTimeActual = scheduleMessageCaptor.getValue();
+        Assertions.assertEquals(scheduledEnqueueTime, scheduledEnqueueTimeActual);
+
+        Assertions.assertEquals(transactionContext, transactionCaptor.getValue());
     }
 
     /**

@@ -283,6 +283,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(transactionContext)) {
+            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+        } else if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+        }
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
             propertiesToModify, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
     }
@@ -303,8 +308,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (lockToken instanceof ServiceBusReceivedMessage) {
             return complete(lockToken, ((ServiceBusReceivedMessage) lockToken).getSessionId());
         } else {
-            String sessionId = null;
-            return complete(lockToken, sessionId);
+            return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
+                null, null, null);
         }
     }
 
@@ -318,7 +323,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -356,13 +362,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
      */
     public Mono<Void> complete(MessageLockToken lockToken, String sessionId,
         ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(transactionContext)) {
+            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+        } else if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+        }
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
             null, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
     }
@@ -431,7 +443,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the defer operation finishes.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -474,7 +487,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -482,6 +496,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(transactionContext)) {
+            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+        } else if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+        }
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
             propertiesToModify, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
     }
@@ -531,7 +550,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -571,7 +591,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code lockToken} or {@code deadLetterOptions} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code deadLetterOptions}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -624,6 +645,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
         ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(transactionContext)) {
+            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+        } else if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+        }
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId,
             new AmqpTransaction(transactionContext.getTransactionId()));

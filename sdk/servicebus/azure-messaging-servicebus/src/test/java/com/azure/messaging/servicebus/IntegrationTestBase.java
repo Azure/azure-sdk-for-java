@@ -234,7 +234,7 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        boolean isSessionAware){
+        boolean isSessionAware) {
         return getSenderBuilder(useCredentials, entityType, isSessionAware, false);
     }
 

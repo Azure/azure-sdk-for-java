@@ -9,12 +9,10 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
-import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -31,7 +29,6 @@ import java.util.UUID;
  * Contains helper methods for message conversions, reading status codes, and getting delivery state.
  */
 public final class MessageUtils {
-    private static final ClientLogger logger = new ClientLogger(MessageUtils.class);
 
     static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
@@ -144,7 +141,7 @@ public final class MessageUtils {
                 rejected.setError(error);
 
                 if (transactionId != null && transactionId.getTransactionId() != null) {
-                   TransactionalState tState = new TransactionalState();
+                    TransactionalState tState = new TransactionalState();
                     tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
                     tState.setOutcome(rejected);
                     state = tState;

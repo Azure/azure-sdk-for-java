@@ -278,7 +278,6 @@ class RequestResponseChannelTest {
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
 
-        //verify(spyReactorSender).sendTransaction(captor.capture());
         // Getting the runnable so we can manually invoke it and verify contents are correct.
         verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
         dispatcherCaptor.getAllValues().forEach(work -> {

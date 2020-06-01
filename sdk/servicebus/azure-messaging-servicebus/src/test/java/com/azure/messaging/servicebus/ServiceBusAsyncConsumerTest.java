@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -40,6 +39,8 @@ import java.util.function.BiFunction;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -98,7 +99,7 @@ class ServiceBusAsyncConsumerTest {
             new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link.updateDisposition(anyString(), any(DeliveryState.class), null)).thenReturn(Mono.empty());
+        when(link.updateDisposition(anyString(), any(DeliveryState.class), same(null))).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -142,7 +143,7 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1, receivedMessage2)
             .verifyComplete();
 
-        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()), null);
+        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()), isNull());
     }
 
     /**
@@ -177,7 +178,7 @@ class ServiceBusAsyncConsumerTest {
             .thenCancel()
             .verify();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), null);
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), isNull());
     }
 
     /**
@@ -210,6 +211,6 @@ class ServiceBusAsyncConsumerTest {
             .then(() -> consumer.close())
             .verifyComplete();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), null);
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), isNull());
     }
 }

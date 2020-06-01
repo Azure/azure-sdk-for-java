@@ -69,7 +69,7 @@ public class ReceiveMessageWithTransactionAsyncSample {
                 if (messageProcessed) {
                     return receiver.complete(context.getMessage(), transaction.get());
                 } else {
-                    return receiver.abandon(context.getMessage(),null, transaction.get());
+                    return receiver.abandon(context.getMessage(), null, transaction.get());
                 }
             })
             .then(

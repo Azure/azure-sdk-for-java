@@ -7,8 +7,10 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -187,6 +189,66 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertEquals(noMessages, messages.stream().count());
+    }
+
+    /**
+     * Verifies that we can send, receive one message and settle.
+     */
+    @MethodSource("messagingEntityTxnWithSessions")
+    @ParameterizedTest
+    void transactionMessageAndSettle(MessagingEntityType entityType, boolean isSessionEnabled, boolean commitTxn,
+        DispositionStatus dispositionStatus) {
+
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        int maxMessages = 1;
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+
+        // Act & Assert
+        final Stream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT)
+            .stream().map(ServiceBusReceivedMessageContext::getMessage);
+
+        final ServiceBusTransactionContext transaction = receiver.createTransaction();
+
+        List<ServiceBusReceivedMessage> messageList = messages.collect(Collectors.toList());
+        assertEquals(maxMessages, messageList.size());
+
+        ServiceBusReceivedMessage receivedMessage = messageList.get(0);
+
+        if (DispositionStatus.ABANDONED == dispositionStatus && isSessionEnabled) {
+            receiver.abandon(receivedMessage, null, sessionId, transaction);
+        } else if (DispositionStatus.ABANDONED == dispositionStatus && !isSessionEnabled) {
+            receiver.abandon(receivedMessage, null, transaction);
+        } else if (DispositionStatus.SUSPENDED == dispositionStatus && isSessionEnabled) {
+            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
+            receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction);
+        } else if (DispositionStatus.SUSPENDED == dispositionStatus && !isSessionEnabled) {
+            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
+            receiver.deadLetter(receivedMessage, deadLetterOptions, transaction);
+        } else if (DispositionStatus.COMPLETED == dispositionStatus && isSessionEnabled) {
+            receiver.complete(receivedMessage, sessionId, transaction);
+            messagesPending.decrementAndGet();
+        } else if (DispositionStatus.COMPLETED == dispositionStatus && !isSessionEnabled) {
+            receiver.complete(receivedMessage, transaction);
+            messagesPending.decrementAndGet();
+        } else if (DispositionStatus.DEFERRED == dispositionStatus && isSessionEnabled) {
+            receiver.defer(receivedMessage, null, sessionId, transaction);
+        } else if (DispositionStatus.DEFERRED == dispositionStatus && !isSessionEnabled) {
+            receiver.defer(receivedMessage, null, transaction);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Disposition status not recognized for this test case: " + dispositionStatus));
+        }
+
+        if (commitTxn) {
+            receiver.commitTransaction(transaction);
+        } else {
+            receiver.rollbackTransaction(transaction);
+        }
     }
 
     /**

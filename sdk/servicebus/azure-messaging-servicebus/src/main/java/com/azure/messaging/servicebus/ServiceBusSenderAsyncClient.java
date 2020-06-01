@@ -139,6 +139,16 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return sendInternal(Flux.just(message), null);
     }
 
+    /**
+     * Sends a message to a Service Bus queue or topic.
+     *
+     * @param message Message to be sent to Service Bus queue or topic.
+     * @param transactionContext to be set on batch message before sending to Service Bus.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     */
     public Mono<Void> send(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -376,7 +386,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return scheduleMessageInternal(message, scheduledEnqueueTime, new AmqpTransaction(transactionContext.getTransactionId()));
+        return scheduleMessageInternal(message, scheduledEnqueueTime,
+            new AmqpTransaction(transactionContext.getTransactionId()));
     }
 
     /**

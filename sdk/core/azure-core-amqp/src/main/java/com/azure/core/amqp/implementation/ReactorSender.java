@@ -174,6 +174,12 @@ class ReactorSender implements AmqpSendLink {
 
             int encodedSize = message.encode(bytes, 0, allocationSize);
             return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null);
+        }).map(state -> {
+            if (!(state instanceof Accepted)) {
+                AmqpException error = new AmqpException(false, state.toString(), getErrorContext());
+                throw logger.logExceptionAsError(Exceptions.propagate(error));
+            }
+            return state;
         }).then();
     }
 

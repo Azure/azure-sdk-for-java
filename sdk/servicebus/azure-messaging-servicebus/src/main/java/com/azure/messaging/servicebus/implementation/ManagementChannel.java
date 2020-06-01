@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
@@ -33,7 +32,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
 import java.nio.BufferOverflowException;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -378,8 +376,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     @Override
     public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-                                        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-                                        String associatedLinkName, AmqpTransaction transactionId) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
+        String associatedLinkName, AmqpTransaction transactionId) {
 
         final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
@@ -427,7 +425,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
         tokenManager.close();
     }
 
-    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message, AmqpTransaction transactionId) {
+    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message,
+        AmqpTransaction transactionId) {
         return channel.sendWithAck(message, transactionId)
             .handle((Message response, SynchronousSink<Message> sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {

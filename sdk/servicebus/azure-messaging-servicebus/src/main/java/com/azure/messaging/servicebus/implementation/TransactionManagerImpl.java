@@ -5,8 +5,6 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransaction;
-import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import reactor.core.publisher.Mono;
@@ -48,9 +46,5 @@ public class TransactionManagerImpl implements TransactionManager {
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         return session.flatMap(session ->
             session.rollbackTransaction(new AmqpTransaction(transactionContext.getTransactionId()))).then();
-    }
-
-    private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(fullyQualifiedNamespace, linkName);
     }
 }

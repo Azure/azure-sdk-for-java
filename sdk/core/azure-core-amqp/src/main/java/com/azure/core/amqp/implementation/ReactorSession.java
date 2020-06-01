@@ -205,7 +205,7 @@ public class ReactorSession implements AmqpSession {
         return createTransactionCoordinator(TRANSACTION_LINK_NAME, openTimeout, retryPolicy);
     }
 
-    Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+    private Mono<AmqpLink> createTransactionCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot create coordinator link '%s' from a closed session.", linkName))));

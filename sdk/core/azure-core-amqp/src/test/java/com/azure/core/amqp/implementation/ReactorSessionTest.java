@@ -105,6 +105,26 @@ public class ReactorSessionTest {
         Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
     }
 
+   /* @Test
+    public void createTransaction() {
+        String txnId = "1";
+        AmqpTransaction transaction = new AmqpTransaction(ByteBuffer.wrap(txnId.getBytes()));
+        when(sessionForRetryPolicy.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        // Assert
+        when(event.getSession()).thenReturn(sessionForRetryPolicy);
+
+        //when(reactorSessionWithRetryPolicy.createTransaction()).thenReturn(Mono.just(transaction));
+        // when(sessionForRetryPolicy.sender(anyString())).thenReturn()
+        StepVerifier.create(reactorSessionWithRetryPolicy.createTransaction())
+            .then(() -> {
+                 handler.onSessionRemoteOpen(event);
+            })
+        .expectNext(transaction)
+        .verifyComplete();
+    }
+    */
+
     @Test
     public void verifyConstructorWithRetryPolicy() {
 

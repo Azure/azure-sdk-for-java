@@ -119,7 +119,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     @Override
-    public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId) {
+    public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState,
+        AmqpTransaction transaction) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
         }
@@ -348,11 +349,10 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         UpdateDispositionWorkItem workItem) {
 
         boolean isSettled = delivery != null && delivery.remotelySettled();
-
-        if (workItem.getDeliveryState() instanceof  TransactionalState){
-            isSettled = delivery.getRemoteState().getType() == workItem.getDeliveryState().getType();
+        /*if (workItem.getDeliveryState() instanceof  TransactionalState){
+            //isSettled = delivery.getRemoteState().getType() == workItem.getDeliveryState().getType();
         }
-
+        */
         if (isSettled) {
             delivery.settle();
         }

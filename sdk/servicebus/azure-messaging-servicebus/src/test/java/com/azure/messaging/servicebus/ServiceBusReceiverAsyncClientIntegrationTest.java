@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +20,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -71,7 +73,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         // In the case that this test failed... we're going to drain the queue or subscription.
-       /* try {
+        try {
             if (isSessionEnabled) {
                 logger.info("Sessioned receiver. It is probably locked until some time.");
             } else {
@@ -89,7 +91,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
-        */
+
     }
 
     /**
@@ -149,14 +151,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(transaction);
             })
             .verifyComplete();
-
-            StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
+        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
             .assertNext(sequenceNumber -> {
                 assertNotNull(sequenceNumber);
                 assertTrue(sequenceNumber.intValue() > 0);
             })
             .verifyComplete();
-
 
         if (commitTxn) {
             StepVerifier.create(sender.commitTransaction(transaction.get()))
@@ -311,7 +311,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         AtomicReference<MessageLockToken> messageLockToken = new AtomicReference<>();
 
         // receive a message and get lock token.
-        StepVerifier.create( receiver.receive().next()
+        StepVerifier.create(receiver.receive().next()
             .map(messageContext -> {
                 ServiceBusReceivedMessage received =  messageContext.getMessage();
                 messageLockToken.set(MessageLockToken.fromString(received.getLockToken()));
@@ -368,8 +368,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message2, transaction.get()))
             .verifyComplete();
+        Date start = new Date();
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
+        Date end = new Date();
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
@@ -392,14 +394,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             operation = receiver.defer(receivedMessage, null, sessionId, transaction.get());
         } else if (DispositionStatus.DEFERRED == dispositionStatus && !isSessionEnabled) {
             operation = receiver.defer(receivedMessage, null, transaction.get());
-        }else {
+        } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
+        start = new Date();
         StepVerifier.create(operation)
             .verifyComplete();
+        end = new Date();
 
+        start = new Date();
         if (commitTxn) {
             StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
@@ -407,6 +412,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
         }
+        end = new Date();
     }
 
     /**
