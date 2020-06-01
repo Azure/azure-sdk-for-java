@@ -12,6 +12,7 @@ import com.microsoft.azure.test.mgmt.ClientSecretAccess;
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.utils.MavenBasedProject;
 import com.microsoft.azure.test.utils.SSHShell;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,6 +139,7 @@ public class KeyVaultIT {
     }
 
     @Test
+    @Ignore
     public void keyVaultWithVirtualMachineMSI() throws Exception {
         final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);
 
