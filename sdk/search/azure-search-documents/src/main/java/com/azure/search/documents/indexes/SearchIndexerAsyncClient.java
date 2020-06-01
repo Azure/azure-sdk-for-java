@@ -86,15 +86,6 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Gets search service version.
-     *
-     * @return the search service version value.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.serviceVersion;
-    }
-
-    /**
      * Gets the endpoint for the Azure Cognitive Search service.
      *
      * @return the endpoint value.

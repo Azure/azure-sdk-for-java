@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -31,15 +30,6 @@ public class SearchIndexerClient {
      */
     HttpPipeline getHttpPipeline() {
         return this.asyncClient.getHttpPipeline();
-    }
-
-    /**
-     * Gets search service version.
-     *
-     * @return the search service version value.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.asyncClient.getServiceVersion();
     }
 
     /**

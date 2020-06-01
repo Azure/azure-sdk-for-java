@@ -321,15 +321,6 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Gets the version of the Search service the client is using.
-     *
-     * @return The version of the Search service the client is using.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.serviceVersion;
-    }
-
-    /**
      * Gets the endpoint for the Azure Cognitive Search service.
      *
      * @return the endpoint value.

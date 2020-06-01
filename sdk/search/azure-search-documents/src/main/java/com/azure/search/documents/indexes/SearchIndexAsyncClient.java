@@ -92,15 +92,6 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Gets search service version.
-     *
-     * @return the search service version value.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.serviceVersion;
-    }
-
-    /**
      * Gets the endpoint for the Azure Cognitive Search service.
      *
      * @return the endpoint value.
@@ -266,6 +257,15 @@ public final class SearchIndexAsyncClient {
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
+    }
+
+    /**
+     * Lists all indexes names for an Azure Cognitive Search service.
+     *
+     * @return a reactive response emitting the list of index names.
+     */
+    public PagedFlux<String> listIndexNames() {
+        return listIndexNames(null);
     }
 
     /**
@@ -540,6 +540,15 @@ public final class SearchIndexAsyncClient {
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
+    }
+
+    /**
+     * Lists all synonym map names for an Azure Cognitive Search service.
+     *
+     * @return a reactive response emitting the list of synonym map names.
+     */
+    public PagedFlux<String> listSynonymMapNames() {
+        return listIndexNames(null);
     }
 
     /**

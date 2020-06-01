@@ -8,14 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.indexes.models.AnalyzeRequest;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.ServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.RequestOptions;
 
 /**
  * Synchronous Client to manage and query indexes, as well as manage Synonym Map, on a Cognitive Search service
@@ -35,15 +34,6 @@ public final class SearchIndexClient {
      */
     HttpPipeline getHttpPipeline() {
         return this.asyncClient.getHttpPipeline();
-    }
-
-    /**
-     * Gets search service version.
-     *
-     * @return the search service version value.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.asyncClient.getServiceVersion();
     }
 
     /**
