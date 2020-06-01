@@ -76,7 +76,7 @@ You may learn more about partitioning [here](https://docs.microsoft.com/en-us/az
 
 ## Examples
 
-See the complete code in [`HelloWorldDemo.java`](./azure-cosmos-examples/src/main/java/com/azure/cosmos/examples/HelloWorldDemo.java)
+See the complete code in [`HelloWorldDemo.java`](../azure-cosmos-examples/src/main/java/com/azure/cosmos/examples/HelloWorldDemo.java)
 
 ```java
 import com.azure.cosmos.*;
@@ -280,11 +280,14 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 <!-- LINKS -->
 [source_code]: src
 [cosmos_introduction]: https://docs.microsoft.com/en-us/azure/cosmos-db/
-[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/4.0.1-beta.3/index.html
 [cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 [samples_readme]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples/blob/master/README.md
