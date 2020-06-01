@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.RequestOptions;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -37,7 +37,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
 
         } else if (i % 100 == 0) {
 
-            FeedOptions options = new FeedOptions();
+            QueryRequestOptions options = new QueryRequestOptions();
 
             String sqlQuery = "Select top 100 * from c order by c._ts";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);

@@ -10,7 +10,8 @@ import java.time.Duration;
 /**
  * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos DB database service.
  * For performance tips on how to optimize Direct connection configuration,
- * refer to performance tips guide: https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
+ * refer to performance tips guide:
+ * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async">Performance tips guide</a>
  */
 public final class DirectConnectionConfig {
     //  Constants

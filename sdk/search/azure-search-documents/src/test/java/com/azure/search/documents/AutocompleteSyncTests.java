@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class AutocompleteSyncTests extends SearchTestBase {
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Override
     protected void beforeTest() {
@@ -37,7 +37,7 @@ public class AutocompleteSyncTests extends SearchTestBase {
 
     @Override
     protected void afterTest() {
-        getSearchServiceClientBuilder().buildClient().deleteIndex(client.getIndexName());
+        getSearchIndexClientBuilder().buildClient().deleteIndex(client.getIndexName());
     }
 
     @Test

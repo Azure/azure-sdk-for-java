@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -263,7 +263,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                //Adding transport client request timeline to diagnostics
                                ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().getReactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
-                                   reactorNettyRequestRecord.setTimeCompleted(OffsetDateTime.now());
+                                   reactorNettyRequestRecord.setTimeCompleted(Instant.now());
                                    BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
                                        reactorNettyRequestRecord.takeTimelineSnapshot());
                                }

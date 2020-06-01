@@ -7,7 +7,7 @@ import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HotelAddress {
-    @SimpleFieldProperty(isKey = true, isFacetable = true)
+    @SimpleFieldProperty(isFacetable = true)
     @JsonProperty(value = "StreetAddress")
     private String streetAddress;
 
@@ -19,7 +19,7 @@ public class HotelAddress {
     @JsonProperty(value = "StateProvince")
     private String stateProvince;
 
-    @SearchableFieldProperty(synonymMaps = {"America -> USA", "USA -> US"})
+    @SearchableFieldProperty(synonymMaps = {"fieldbuilder"})
     @JsonProperty(value = "Country")
     private String country;
 

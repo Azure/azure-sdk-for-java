@@ -21,11 +21,11 @@ public enum ConnectionMode {
     /**
      * Specifies that requests to server resources are made directly to the data nodes.
      * <p>
-     * In DIRECT mode, all requests to server resources within a collection, such as documents, stored procedures
+     * In DIRECT mode, all requests to server resources within a  container, such as items, stored procedures
      * and user-defined functions, etc., are made directly to the data nodes within the target Cosmos DB cluster
      * using either the HTTPS or TCP/SSL transport protocol.
      * </p><p>
-     * Certain operations on account or database level resources, such as databases, collections and users, etc.,
+     * Certain operations on account or database level resources, such as databases, containers and users, etc.,
      * are always routed through the gateway using HTTPS.
      * </p>
      */

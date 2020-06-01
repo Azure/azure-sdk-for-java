@@ -6,11 +6,11 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Sample to show the differences in output that arise when RecognizeCustomForms
@@ -36,10 +36,10 @@ public class AdvancedDiffLabeledUnlabeledData {
         File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "forms/Invoice_6.pdf");
 
-        IterableStream<RecognizedForm> formsWithLabeledModel =
+        List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), "{labeled_model_Id}",
                 analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null).getFinalResult();
-        IterableStream<RecognizedForm> formsWithUnlabeledModel =
+        List<RecognizedForm> formsWithUnlabeledModel =
             client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), "{unlabeled_model_Id}",
                 analyzeFile.length(), FormContentType.APPLICATION_PDF).getFinalResult();
 

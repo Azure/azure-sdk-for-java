@@ -178,11 +178,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
-        for (CustomFormModelInfo modelInfo : client.getModelInfos()) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
-                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        for (CustomFormModelInfo modelInfo : client.listCustomModels()) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
+                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 
@@ -191,11 +191,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getModelInfosWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void listCustomModelsWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
-        for (CustomFormModelInfo modelInfo : client.getModelInfos(Context.NONE)) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
-                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        for (CustomFormModelInfo modelInfo : client.listCustomModels(Context.NONE)) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
+                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 

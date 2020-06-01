@@ -5,6 +5,7 @@ package com.azure.management;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.management.appservice.AppServiceCertificateOrders;
 import com.azure.management.appservice.AppServiceCertificates;
 import com.azure.management.appservice.AppServiceDomains;
@@ -95,6 +96,8 @@ import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.Usages;
 import com.azure.management.storage.implementation.StorageManager;
+
+import java.util.Objects;
 
 /** The entry point for accessing resource management APIs in Azure. */
 public final class Azure {
@@ -243,22 +246,26 @@ public final class Azure {
     /** The implementation for the Authenticated interface. */
     private static final class AuthenticatedImpl implements Authenticated {
         private final HttpPipeline httpPipeline;
-        private final AzureProfile profile;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
         private final GraphRbacManager graphRbacManager;
         private SdkContext sdkContext;
+        private String tenantId;
+        private String subscriptionId;
+        private final AzureEnvironment environment;
 
         private AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
             this.graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile);
             this.httpPipeline = httpPipeline;
-            this.profile = profile;
+            this.tenantId = profile.tenantId();
+            this.subscriptionId = profile.subscriptionId();
+            this.environment = profile.environment();
             this.sdkContext = new SdkContext();
         }
 
         @Override
         public String tenantId() {
-            return profile.tenantId();
+            return this.tenantId;
         }
 
         @Override
@@ -314,22 +321,22 @@ public final class Azure {
 
         @Override
         public Authenticated withTenantId(String tenantId) {
-            profile.withTenantId(tenantId);
+            Objects.requireNonNull(tenantId);
+            this.tenantId = tenantId;
             return this;
         }
 
         @Override
         public Azure withSubscription(String subscriptionId) {
-            profile.withSubscriptionId(subscriptionId);
-            return new Azure(httpPipeline, profile, this);
+            return new Azure(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
 
         @Override
         public Azure withDefaultSubscription() {
-            if (profile.subscriptionId() == null) {
-                profile.withSubscriptionId(Utils.defaultSubscription(this.subscriptions().list()));
+            if (subscriptionId == null) {
+                subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
             }
-            return new Azure(httpPipeline, profile, this);
+            return new Azure(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
+ * Represents the indexing policy configuration for a container in the Azure Cosmos DB database service.
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
@@ -86,10 +86,10 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Gets whether automatic indexing is enabled for a collection.
+     * Gets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @return the automatic
      */
@@ -98,10 +98,10 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Sets whether automatic indexing is enabled for a collection.
+     * Sets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @param automatic the automatic
      * @return the Indexing Policy.

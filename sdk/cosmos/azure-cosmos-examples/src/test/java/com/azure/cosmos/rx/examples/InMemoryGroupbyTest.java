@@ -4,14 +4,13 @@ package com.azure.cosmos.rx.examples;
 
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
@@ -108,8 +107,8 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     public void groupByInMemory() {
         // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),
@@ -139,8 +138,8 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     public void groupByInMemory_MoreDetail() {
 
         int requestPageSize = 3;
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),
