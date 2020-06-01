@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -19,10 +20,18 @@ import java.util.stream.StreamSupport;
 public final class JacksonJsonArray implements JsonArray {
     private final ArrayNode arrayNode;
 
+    /**
+     * Constructs a {@link JsonArray} backed by an empty Jackson {@link ArrayNode}.
+     */
     public JacksonJsonArray() {
         this.arrayNode = JsonNodeFactory.instance.arrayNode();
     }
 
+    /**
+     * Constructs a {@link JsonArray} backed by the passed Jackson {@link ArrayNode}.
+     *
+     * @param arrayNode The backing Jackson {@link ArrayNode}.
+     */
     public JacksonJsonArray(ArrayNode arrayNode) {
         this.arrayNode = arrayNode;
     }
@@ -73,5 +82,23 @@ public final class JacksonJsonArray implements JsonArray {
     @Override
     public int size() {
         return arrayNode.size();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof JacksonJsonArray)) {
+            return false;
+        }
+
+        return Objects.equals(arrayNode, ((JacksonJsonArray) obj).arrayNode);
+    }
+
+    @Override
+    public int hashCode() {
+        return arrayNode.hashCode();
     }
 }

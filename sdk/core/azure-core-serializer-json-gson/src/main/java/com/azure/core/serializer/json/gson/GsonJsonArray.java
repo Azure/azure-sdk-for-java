@@ -7,6 +7,7 @@ import com.azure.core.util.serializer.JsonArray;
 import com.azure.core.util.serializer.JsonNode;
 import com.google.gson.JsonElement;
 
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -18,10 +19,18 @@ import java.util.stream.StreamSupport;
 public final class GsonJsonArray implements JsonArray {
     private final com.google.gson.JsonArray jsonArray;
 
+    /**
+     * Constructs a {@link JsonArray} backed by an empty GSON {@link com.google.gson.JsonArray}.
+     */
     public GsonJsonArray() {
         this.jsonArray = new com.google.gson.JsonArray();
     }
 
+    /**
+     * Constructs a {@link JsonArray} backed by the passed GSON {@link com.google.gson.JsonArray}.
+     *
+     * @param jsonArray The backing GSON {@link com.google.gson.JsonArray}.
+     */
     public GsonJsonArray(com.google.gson.JsonArray jsonArray) {
         this.jsonArray = jsonArray;
     }
@@ -80,5 +89,23 @@ public final class GsonJsonArray implements JsonArray {
     @Override
     public int size() {
         return jsonArray.size();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof GsonJsonArray)) {
+            return false;
+        }
+
+        return Objects.equals(jsonArray, ((GsonJsonArray) obj).jsonArray);
+    }
+
+    @Override
+    public int hashCode() {
+        return jsonArray.hashCode();
     }
 }

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -21,10 +22,18 @@ import java.util.stream.StreamSupport;
 public class JacksonJsonObject implements JsonObject {
     private final ObjectNode objectNode;
 
+    /**
+     * Constructs a {@link JsonObject} backed by an empty {@link ObjectNode}.
+     */
     public JacksonJsonObject() {
         this.objectNode = JsonNodeFactory.instance.objectNode();
     }
 
+    /**
+     * Constructs a {@link JsonObject} backed by the passed Jackson {@link ObjectNode}.
+     *
+     * @param objectNode The backing Jackson {@link ObjectNode}.
+     */
     public JacksonJsonObject(ObjectNode objectNode) {
         this.objectNode = objectNode;
     }
@@ -74,5 +83,23 @@ public class JacksonJsonObject implements JsonObject {
     @Override
     public JsonNode set(String name, JsonNode jsonNode) {
         return JsonNodeUtils.fromJacksonNode(objectNode.replace(name, JsonNodeUtils.toJacksonNode(jsonNode)));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof JacksonJsonObject)) {
+            return false;
+        }
+
+        return Objects.equals(objectNode, ((JacksonJsonObject) obj).objectNode);
+    }
+
+    @Override
+    public int hashCode() {
+        return objectNode.hashCode();
     }
 }

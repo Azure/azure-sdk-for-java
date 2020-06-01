@@ -10,6 +10,14 @@ import com.google.gson.JsonElement;
  * Helper methods for converting between Azure Core and GSON types.
  */
 final class JsonNodeUtils {
+
+    /**
+     * Converts an Azure Core {@link JsonNode} into a GSON {@link JsonElement}.
+     *
+     * @param jsonNode The Azure Core {@link JsonNode}.
+     * @return The corresponding GSON {@link JsonElement}.
+     * @throws IllegalArgumentException If the {@link JsonNode} cannot be converted to a {@link JsonElement}.
+     */
     public static JsonElement toGsonElement(JsonNode jsonNode) {
         if (jsonNode.isArray()) {
             if (jsonNode instanceof GsonJsonArray) {
@@ -40,6 +48,13 @@ final class JsonNodeUtils {
         throw new IllegalArgumentException("Unknown JsonNode type.");
     }
 
+    /**
+     * Converts an GSON {@link JsonElement} into an Azure Core {@link JsonNode}.
+     *
+     * @param jsonElement The GSON {@link JsonElement}.
+     * @return The corresponding Azure Core {@link JsonNode}.
+     * @throws IllegalArgumentException If the {@link JsonElement} cannot be converted to a {@link JsonNode}.
+     */
     public static JsonNode fromGsonElement(JsonElement jsonElement) {
         if (jsonElement.isJsonArray()) {
             return new GsonJsonArray(jsonElement.getAsJsonArray());

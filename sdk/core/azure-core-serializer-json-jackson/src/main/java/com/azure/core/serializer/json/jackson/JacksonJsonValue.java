@@ -13,40 +13,82 @@ import com.fasterxml.jackson.databind.node.ShortNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
 
+import java.util.Objects;
+
 /**
  * Jackson specific implementation of {@link JsonValue}.
  */
 public final class JacksonJsonValue implements JsonValue {
     private final ValueNode valueNode;
 
+    /**
+     * Constructs a {@link JsonValue} wrapping the passed boolean.
+     *
+     * @param value Boolean value to wrap.
+     */
     public JacksonJsonValue(boolean value) {
         this.valueNode = (value) ? BooleanNode.TRUE : BooleanNode.FALSE;
     }
 
+    /**
+     * Constructs a {@link JsonValue} wrapping the passed double.
+     *
+     * @param value Double value to wrap.
+     */
     public JacksonJsonValue(double value) {
         this.valueNode = new DoubleNode(value);
     }
 
+    /**
+     * Constructs a {@link JsonValue} wrapping the passed float.
+     *
+     * @param value Float value to wrap.
+     */
     public JacksonJsonValue(float value) {
         this.valueNode = new FloatNode(value);
     }
 
+    /**
+     * Constructs a {@link JsonValue} wrapping the passed int.
+     *
+     * @param value Int value to wrap.
+     */
     public JacksonJsonValue(int value) {
         this.valueNode = new IntNode(value);
     }
 
+    /**
+     * Constructs a {@link JsonValue} wrapping the passed long.
+     *
+     * @param value Long value to wrap.
+     */
     public JacksonJsonValue(long value) {
         this.valueNode = new LongNode(value);
     }
 
+    /**
+     * Constructs a {@link JsonValue} wrapping the passed short.
+     *
+     * @param value Short value to wrap.
+     */
     public JacksonJsonValue(short value) {
         this.valueNode = new ShortNode(value);
     }
 
+    /**
+     * Constructs a {@link JsonValue} wrapping the passed string.
+     *
+     * @param value String value to wrap.
+     */
     public JacksonJsonValue(String value) {
         this.valueNode = new TextNode(value);
     }
 
+    /**
+     * Constructs a {@link JsonValue} backed by the passed Jackson {@link ValueNode}.
+     *
+     * @param valueNode The backing Jackson {@link ValueNode}.
+     */
     public JacksonJsonValue(ValueNode valueNode) {
         this.valueNode = valueNode;
     }
@@ -103,5 +145,23 @@ public final class JacksonJsonValue implements JsonValue {
     @Override
     public String getString() {
         return valueNode.asText();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof JacksonJsonValue)) {
+            return false;
+        }
+
+        return Objects.equals(valueNode, ((JacksonJsonValue) obj).valueNode);
+    }
+
+    @Override
+    public int hashCode() {
+        return valueNode.hashCode();
     }
 }

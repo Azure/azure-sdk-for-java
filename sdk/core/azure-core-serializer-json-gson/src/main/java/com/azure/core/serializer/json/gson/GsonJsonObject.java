@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.JsonObject;
 
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -16,10 +17,18 @@ import java.util.stream.Stream;
 public final class GsonJsonObject implements JsonObject {
     private final com.google.gson.JsonObject jsonObject;
 
+    /**
+     * Constructs a {@link JsonObject} backed by an empty GSON {@link com.google.gson.JsonObject}.
+     */
     public GsonJsonObject() {
         this.jsonObject = new com.google.gson.JsonObject();
     }
 
+    /**
+     * Constructs a {@link JsonObject} backed by the passed GSON {@link com.google.gson.JsonObject}.
+     *
+     * @param jsonObject The backing GSON {@link com.google.gson.JsonObject}.
+     */
     public GsonJsonObject(com.google.gson.JsonObject jsonObject) {
         this.jsonObject = jsonObject;
     }
@@ -30,8 +39,8 @@ public final class GsonJsonObject implements JsonObject {
 
     @Override
     public Stream<Map.Entry<String, JsonNode>> fields() {
-        return jsonObject.entrySet().stream()
-            .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), JsonNodeUtils.fromGsonElement(entry.getValue())));
+        return jsonObject.entrySet().stream().map(entry ->
+            new AbstractMap.SimpleEntry<>(entry.getKey(), JsonNodeUtils.fromGsonElement(entry.getValue())));
     }
 
     @Override
@@ -65,5 +74,23 @@ public final class GsonJsonObject implements JsonObject {
         JsonNode oldValue = JsonNodeUtils.fromGsonElement(jsonObject.remove(name));
         jsonObject.add(name, JsonNodeUtils.toGsonElement(jsonNode));
         return oldValue;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof GsonJsonObject)) {
+            return false;
+        }
+
+        return Objects.equals(jsonObject, ((GsonJsonObject) obj).jsonObject);
+    }
+
+    @Override
+    public int hashCode() {
+        return jsonObject.hashCode();
     }
 }
