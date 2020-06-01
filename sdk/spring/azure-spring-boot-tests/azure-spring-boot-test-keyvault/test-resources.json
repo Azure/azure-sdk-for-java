@@ -428,6 +428,18 @@
     "APP_SERVICE_NAME": {
       "type": "string",
       "value": "[variables('appServiceName')]"
+    },
+    "VM_NAME": {
+      "type": "string",
+      "value": "[variables('vmName')]"
+    },
+    "VM_USER_USERNAME": {
+      "type": "string",
+      "value": "[variables('adminUsername')]"
+    },
+    "VM_USER_PASSWORD": {
+      "type": "string",
+      "value": "[variables('adminPassword')]"
     }
   }
 }
