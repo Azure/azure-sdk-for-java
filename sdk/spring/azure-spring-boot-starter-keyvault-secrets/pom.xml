@@ -132,7 +132,7 @@
         <executions>
           <execution>
             <id>attach-sources</id>
-            <phase>none</phase> <!-- This is lame, the skip configuration doesn't work like it does for javadoc -->
+            <phase>none</phase> <!-- The way to skip the sources attach is to set the phase to none, the skip config doesn't work for sources -->
           </execution>
         </executions>
       </plugin>
