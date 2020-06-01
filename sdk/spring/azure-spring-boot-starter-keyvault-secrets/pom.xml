@@ -124,6 +124,63 @@
         </executions>
       </plugin>
       <!-- END: Empty Java Doc -->
+      <!-- BEGIN: Empty Sources -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>none</phase> <!-- This is lame, the skip configuration doesn't work like it does for javadoc -->
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>empty-sources-jar-with-readme</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>sources</classifier>
+              <classesDirectory>${project.basedir}/sourceTemp</classesDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-readme-to-sourceTemp</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <target>
+                <echo>Deleting existing ${project.basedir}/sourceTemp</echo>
+                <delete includeEmptyDirs="true" quiet="true">
+                  <fileset dir="${project.basedir}/sourceTemp"/>
+                </delete>
+                <echo>Copying ${project.basedir}/README.md to
+                  ${project.basedir}/sourceTemp/README.md
+                </echo>
+                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/sourceTemp/README.md"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>      
+      <!-- END: Empty Sources -->
     </plugins>
   </build>
 </project>
