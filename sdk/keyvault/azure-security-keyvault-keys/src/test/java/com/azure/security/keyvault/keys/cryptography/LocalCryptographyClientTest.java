@@ -44,8 +44,7 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
     @Test
     public void encryptDecryptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
-            JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT))
-                .setId("testKey");
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
             LocalCryptographyClient cryptoClient = initializeCryptographyClient(key);
 
             List<EncryptionAlgorithm> algorithms = Arrays.asList(EncryptionAlgorithm.RSA1_5, EncryptionAlgorithm.RSA_OAEP);
@@ -65,8 +64,7 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
     @Test
     public void wrapUnwraptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
-            JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
-                .setId("testKey");
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
             LocalCryptographyClient cryptoClient = initializeCryptographyClient(key);
 
             List<KeyWrapAlgorithm> algorithms = Arrays.asList(KeyWrapAlgorithm.RSA1_5, KeyWrapAlgorithm.RSA_OAEP);
@@ -107,8 +105,7 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
             generator.initialize(gps);
             KeyPair keyPair = generator.generateKeyPair();
 
-            JsonWebKey key = JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY))
-                .setId("testKey");
+            JsonWebKey key = JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
             LocalCryptographyClient cryptoClient = initializeCryptographyClient(key);
 
             byte[] plainText = new byte[100];
