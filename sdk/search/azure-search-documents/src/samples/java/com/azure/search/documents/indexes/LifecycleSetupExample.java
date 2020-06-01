@@ -20,7 +20,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -167,7 +167,7 @@ public class LifecycleSetupExample {
                         .setKey(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
                         .setSortable(Boolean.FALSE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
                     new SearchField()
                         .setName("Description")
                         .setType(SearchFieldDataType.STRING)
@@ -176,7 +176,7 @@ public class LifecycleSetupExample {
                         .setHidden(Boolean.FALSE)
                         .setSortable(Boolean.FALSE)
                         .setFacetable(Boolean.FALSE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT),
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
                     new SearchField()
                         .setName("Tags")
                         .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
@@ -184,10 +184,10 @@ public class LifecycleSetupExample {
                         .setFilterable(Boolean.TRUE)
                         .setHidden(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
-                        .setAnalyzer(LexicalAnalyzerName.EN_MICROSOFT)));
+                        .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
-        index.setSuggesters(Collections.singletonList(new Suggester()
+        index.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
             .setName(SUGGESTER_NAME)
             .setSourceFields(Collections.singletonList("Tags"))));
 

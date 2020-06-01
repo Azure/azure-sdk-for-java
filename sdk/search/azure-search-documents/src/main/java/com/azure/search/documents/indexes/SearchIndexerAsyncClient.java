@@ -227,7 +227,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging.
      * @return a list of DataSources
      */
-    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnection(RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listDataSourceConnectionsWithResponse(null, requestOptions, context))

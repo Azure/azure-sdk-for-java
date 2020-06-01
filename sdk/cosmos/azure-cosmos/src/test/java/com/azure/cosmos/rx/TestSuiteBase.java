@@ -36,7 +36,7 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -45,7 +45,7 @@ import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
@@ -229,7 +229,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
         int maxItemCount = 100;
 
@@ -474,10 +474,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
-    public <T> Flux<CosmosAsyncItemResponse<T>> bulkInsert(CosmosAsyncContainer cosmosContainer,
-                                                    List<T> documentDefinitionList,
-                                                    int concurrencyLevel) {
-        List<Mono<CosmosAsyncItemResponse<T>>> result =
+    public <T> Flux<CosmosItemResponse<T>> bulkInsert(CosmosAsyncContainer cosmosContainer,
+                                                      List<T> documentDefinitionList,
+                                                      int concurrencyLevel) {
+        List<Mono<CosmosItemResponse<T>>> result =
             new ArrayList<>(documentDefinitionList.size());
         for (T docDef : documentDefinitionList) {
             result.add(cosmosContainer.createItem(docDef));
@@ -579,7 +579,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setPartitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
 
@@ -794,10 +794,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @SuppressWarnings("rawtypes")
-    public <T extends CosmosAsyncItemResponse> void validateItemSuccess(
+    public <T extends CosmosItemResponse> void validateItemSuccess(
         Mono<T> responseMono, CosmosItemResponseValidator validator) {
 
-        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<CosmosItemResponse> testSubscriber = new TestSubscriber<>();
         responseMono.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
@@ -807,9 +807,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @SuppressWarnings("rawtypes")
-    public <T extends CosmosAsyncItemResponse> void validateItemFailure(
+    public <T extends CosmosItemResponse> void validateItemFailure(
         Mono<T> responseMono, FailureValidator validator) {
-        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<CosmosItemResponse> testSubscriber = new TestSubscriber<>();
         responseMono.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNotComplete();

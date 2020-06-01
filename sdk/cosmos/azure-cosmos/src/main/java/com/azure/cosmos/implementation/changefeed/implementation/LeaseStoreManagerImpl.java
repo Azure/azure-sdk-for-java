@@ -200,7 +200,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseDocumentClient
             .deleteItem(lease.getId(), new PartitionKey(lease.getId()),
-                        this.requestOptionsFactory.createRequestOptions(lease))
+                        this.requestOptionsFactory.createItemRequestOptions(lease))
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
@@ -229,7 +229,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             lease,
             lease.getId(),
             new PartitionKey(lease.getId()),
-            this.requestOptionsFactory.createRequestOptions(lease),
+            this.requestOptionsFactory.createItemRequestOptions(lease),
             serverLease -> {
                 if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(oldOwner)) {
                     logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
@@ -250,7 +250,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseDocumentClient.readItem(lease.getId(),
                                                  new PartitionKey(lease.getId()),
-                                                 this.requestOptionsFactory.createRequestOptions(lease),
+                                                 this.requestOptionsFactory.createItemRequestOptions(lease),
                                                  CosmosItemProperties.class)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
@@ -268,7 +268,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 refreshedLease,
                 lease.getId(),
                 new PartitionKey(lease.getId()),
-                this.requestOptionsFactory.createRequestOptions(lease),
+                this.requestOptionsFactory.createItemRequestOptions(lease),
                 serverLease ->
                 {
                     if (serverLease.getOwner() != null) {
@@ -296,7 +296,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseDocumentClient.readItem(lease.getId(),
                                                  new PartitionKey(lease.getId()),
-                                                 this.requestOptionsFactory.createRequestOptions(lease),
+                                                 this.requestOptionsFactory.createItemRequestOptions(lease),
                                                  CosmosItemProperties.class)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
@@ -314,7 +314,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 refreshedLease,
                 lease.getId(),
                 new PartitionKey(lease.getId()),
-                this.requestOptionsFactory.createRequestOptions(lease),
+                this.requestOptionsFactory.createItemRequestOptions(lease),
                 serverLease ->
                 {
                     if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
@@ -342,7 +342,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             lease,
             lease.getId(),
             new PartitionKey(lease.getId()),
-            this.requestOptionsFactory.createRequestOptions(lease),
+            this.requestOptionsFactory.createItemRequestOptions(lease),
             serverLease -> {
                 if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
                     logger.info("Partition '{}' lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
@@ -365,13 +365,13 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseDocumentClient.readItem(lease.getId(),
                                                  new PartitionKey(lease.getId()),
-                                                 this.requestOptionsFactory.createRequestOptions(lease),
+                                                 this.requestOptionsFactory.createItemRequestOptions(lease),
                                                  CosmosItemProperties.class)
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(), new PartitionKey(lease.getId()),
-                this.requestOptionsFactory.createRequestOptions(lease),
+                this.requestOptionsFactory.createItemRequestOptions(lease),
                 serverLease -> {
                     if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
                         logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
@@ -422,7 +422,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         Flux<FeedResponse<CosmosItemProperties>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),
             querySpec,
-            this.requestOptionsFactory.createFeedOptions(),
+            this.requestOptionsFactory.createQueryRequestOptions(),
             CosmosItemProperties.class);
 
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))

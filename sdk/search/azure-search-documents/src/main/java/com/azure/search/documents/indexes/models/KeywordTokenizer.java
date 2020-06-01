@@ -13,34 +13,38 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * using Apache Lucene.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.KeywordTokenizer")
+@JsonTypeName("#Microsoft.Azure.Search.KeywordTokenizerV2")
 @Fluent
 public final class KeywordTokenizer extends LexicalTokenizer {
     /*
-     * The read buffer size in bytes. Default is 256.
+     * The maximum token length. Default is 256. Tokens longer than the maximum
+     * length are split. The maximum token length that can be used is 300
+     * characters.
      */
-    @JsonProperty(value = "bufferSize")
-    private Integer bufferSize;
+    @JsonProperty(value = "maxTokenLength")
+    private Integer maxTokenLength;
 
     /**
-     * Get the bufferSize property: The read buffer size in bytes. Default is
-     * 256.
+     * Get the maxTokenLength property: The maximum token length. Default is
+     * 256. Tokens longer than the maximum length are split. The maximum token
+     * length that can be used is 300 characters.
      *
-     * @return the bufferSize value.
+     * @return the maxTokenLength value.
      */
-    public Integer getBufferSize() {
-        return this.bufferSize;
+    public Integer getMaxTokenLength() {
+        return this.maxTokenLength;
     }
 
     /**
-     * Set the bufferSize property: The read buffer size in bytes. Default is
-     * 256.
+     * Set the maxTokenLength property: The maximum token length. Default is
+     * 256. Tokens longer than the maximum length are split. The maximum token
+     * length that can be used is 300 characters.
      *
-     * @param bufferSize the bufferSize value to set.
-     * @return the KeywordTokenizer object itself.
+     * @param maxTokenLength the maxTokenLength value to set.
+     * @return the KeywordTokenizerV2 object itself.
      */
-    public KeywordTokenizer setBufferSize(Integer bufferSize) {
-        this.bufferSize = bufferSize;
+    public KeywordTokenizer setMaxTokenLength(Integer maxTokenLength) {
+        this.maxTokenLength = maxTokenLength;
         return this;
     }
 }

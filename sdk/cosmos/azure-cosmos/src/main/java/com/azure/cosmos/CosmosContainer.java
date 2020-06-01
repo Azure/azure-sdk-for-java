@@ -3,14 +3,12 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -60,7 +58,7 @@ public class CosmosContainer {
      * @return the Cosmos container response with the read container.
      */
     public CosmosContainerResponse read() {
-        return database.mapContainerResponseAndBlock(this.asyncContainer.read());
+        return database.blockContainerResponse(this.asyncContainer.read());
     }
 
     /**
@@ -70,7 +68,7 @@ public class CosmosContainer {
      * @return the Cosmos container response.
      */
     public CosmosContainerResponse read(CosmosContainerRequestOptions options) {
-        return database.mapContainerResponseAndBlock(this.asyncContainer.read(options));
+        return database.blockContainerResponse(this.asyncContainer.read(options));
     }
 
     /**
@@ -80,7 +78,7 @@ public class CosmosContainer {
      * @return the cosmos container response.
      */
     public CosmosContainerResponse delete(CosmosContainerRequestOptions options) {
-        return database.mapContainerResponseAndBlock(this.asyncContainer.delete(options));
+        return database.blockContainerResponse(this.asyncContainer.delete(options));
     }
 
     /**
@@ -89,7 +87,7 @@ public class CosmosContainer {
      * @return the cosmos container response.
      */
     public CosmosContainerResponse delete() {
-        return database.mapContainerResponseAndBlock(this.asyncContainer.delete());
+        return database.blockContainerResponse(this.asyncContainer.delete());
     }
 
     /**
@@ -99,7 +97,7 @@ public class CosmosContainer {
      * @return the cosmos container response.
      */
     public CosmosContainerResponse replace(CosmosContainerProperties containerProperties) {
-        return database.mapContainerResponseAndBlock(this.asyncContainer.replace(containerProperties));
+        return database.blockContainerResponse(this.asyncContainer.replace(containerProperties));
     }
 
     /**
@@ -111,7 +109,7 @@ public class CosmosContainer {
      */
     public CosmosContainerResponse replace(CosmosContainerProperties containerProperties,
                                            CosmosContainerRequestOptions options) {
-        return database.mapContainerResponseAndBlock(this.asyncContainer.replace(containerProperties, options));
+        return database.blockContainerResponse(this.asyncContainer.replace(containerProperties, options));
     }
 
     /**
@@ -140,10 +138,10 @@ public class CosmosContainer {
      *
      * @param <T> the type parameter
      * @param item the item
-     * @return the Cosmos sync item response
+     * @return the Cosmos item response
      */
     public <T> CosmosItemResponse<T> createItem(T item) {
-        return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item));
+        return this.blockItemResponse(this.asyncContainer.createItem(item));
     }
 
     /**
@@ -154,12 +152,12 @@ public class CosmosContainer {
      * @param item the item.
      * @param partitionKey the partition key.
      * @param options the options.
-     * @return the Cosmos sync item response.
+     * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> createItem(T item,
                                                 PartitionKey partitionKey,
                                                 CosmosItemRequestOptions options) {
-        return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, partitionKey, options));
+        return this.blockItemResponse(this.asyncContainer.createItem(item, partitionKey, options));
     }
 
     /**
@@ -175,7 +173,7 @@ public class CosmosContainer {
      */
 
     public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) {
-        return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, options));
+        return this.blockItemResponse(this.asyncContainer.createItem(item, options));
     }
 
     /**
@@ -183,10 +181,10 @@ public class CosmosContainer {
      *
      * @param <T> the type parameter.
      * @param item the item.
-     * @return the Cosmos sync item response.
+     * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> upsertItem(T item) {
-        return this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item));
+        return this.blockItemResponse(this.asyncContainer.upsertItem(item));
     }
 
     /**
@@ -195,23 +193,21 @@ public class CosmosContainer {
      * @param <T> the type parameter.
      * @param item the item.
      * @param options the options.
-     * @return the Cosmos sync item response.
+     * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> upsertItem(T item, CosmosItemRequestOptions options) {
-        return this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
+        return this.blockItemResponse(this.asyncContainer.upsertItem(item, options));
     }
 
     /**
-     * Maps item response and block cosmos sync item response.
+     * Block cosmos item response.
      *
      * @param itemMono the item mono.
-     * @return the cosmos sync item response.
+     * @return the cosmos item response.
      */
-    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) {
+    <T> CosmosItemResponse<T> blockItemResponse(Mono<CosmosItemResponse<T>> itemMono) {
         try {
-            return itemMono
-                .map(this::convertResponse)
-                .block();
+            return itemMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -222,11 +218,9 @@ public class CosmosContainer {
         }
     }
 
-    private CosmosItemResponse<Object> mapDeleteItemResponseAndBlock(Mono<CosmosAsyncItemResponse<Object>> deleteItemMono) {
+    private CosmosItemResponse<Object> blockDeleteItemResponse(Mono<CosmosItemResponse<Object>> deleteItemMono) {
         try {
-            return deleteItemMono
-                       .map(this::convertResponse)
-                       .block();
+            return deleteItemMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -245,7 +239,7 @@ public class CosmosContainer {
      * @param classType the classType.
      * @return the {@link CosmosPagedIterable}.
      */
-    <T> CosmosPagedIterable<T> readAllItems(FeedOptions options, Class<T> classType) {
+    <T> CosmosPagedIterable<T> readAllItems(QueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.readAllItems(options, classType));
     }
 
@@ -258,7 +252,7 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    public <T> CosmosPagedIterable<T> queryItems(String query, FeedOptions options, Class<T> classType) {
+    public <T> CosmosPagedIterable<T> queryItems(String query, QueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.queryItems(query, options, classType));
     }
 
@@ -271,7 +265,7 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
+    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, QueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
     }
 
@@ -282,10 +276,10 @@ public class CosmosContainer {
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @param itemType the class type of item.
-     * @return the Cosmos sync item response.
+     * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
-        return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId,
+        return this.blockItemResponse(asyncContainer.readItem(itemId,
                                                                     partitionKey,
                                                                     new CosmosItemRequestOptions(),
                                                                     itemType));
@@ -299,12 +293,12 @@ public class CosmosContainer {
      * @param partitionKey the partition key.
      * @param options the options.
      * @param itemType the class type of item.
-     * @return the Cosmos sync item response.
+     * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> readItem(
         String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options, Class<T> itemType) {
-        return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId, partitionKey, options, itemType));
+        return this.blockItemResponse(asyncContainer.readItem(itemId, partitionKey, options, itemType));
     }
 
     /**
@@ -315,13 +309,13 @@ public class CosmosContainer {
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @param options the options.
-     * @return the Cosmos sync item response.
+     * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> replaceItem(T item,
-                                             String itemId,
-                                             PartitionKey partitionKey,
-                                             CosmosItemRequestOptions options) {
-        return this.mapItemResponseAndBlock(asyncContainer.replaceItem(item, itemId, partitionKey, options));
+                                                 String itemId,
+                                                 PartitionKey partitionKey,
+                                                 CosmosItemRequestOptions options) {
+        return this.blockItemResponse(asyncContainer.replaceItem(item, itemId, partitionKey, options));
     }
 
     /**
@@ -330,11 +324,11 @@ public class CosmosContainer {
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @param options the options.
-     * @return the Cosmos sync item response.
+     * @return the Cosmos item response.
      */
     public CosmosItemResponse<Object> deleteItem(String itemId, PartitionKey partitionKey,
-                                            CosmosItemRequestOptions options) {
-        return  this.mapDeleteItemResponseAndBlock(asyncContainer.deleteItem(itemId, partitionKey, options));
+                                                 CosmosItemRequestOptions options) {
+        return  this.blockDeleteItemResponse(asyncContainer.deleteItem(itemId, partitionKey, options));
     }
 
     /**
@@ -350,16 +344,6 @@ public class CosmosContainer {
     }
 
     // TODO: should make partitionkey public in CosmosAsyncItem and fix the below call
-
-    /**
-     * Convert a {@link CosmosAsyncItemResponse} to a Cosmos sync item response.
-     *
-     * @param response the Cosmos item response.
-     * @return the Cosmos sync item response.
-     */
-    private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse<T> response) {
-        return ModelBridgeInternal.<T>createCosmosItemResponse(response);
-    }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);

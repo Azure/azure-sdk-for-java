@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -44,7 +44,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         String filterId = createdTriggers.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 5;
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
@@ -71,7 +71,7 @@ public class TriggerQueryTest extends TestSuiteBase {
     public void query_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
@@ -88,7 +88,7 @@ public class TriggerQueryTest extends TestSuiteBase {
     public void queryAll() throws Exception {
 
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 3;
 
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
@@ -116,7 +116,7 @@ public class TriggerQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 

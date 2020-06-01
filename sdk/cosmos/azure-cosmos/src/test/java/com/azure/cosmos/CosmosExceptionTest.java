@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
@@ -22,6 +23,7 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
@@ -52,6 +54,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class CosmosExceptionTest {
+
+    @Test(groups = { "unit" })
+    public void sdkVersionPresent() {
+        CosmosException dce = BridgeInternal.createCosmosException(0);
+        assertThat(dce.toString()).contains("userAgent=" + Utils.getUserAgent());
+    }
 
     @Test(groups = { "unit" })
     public void headerNotNull1() {
@@ -110,6 +118,7 @@ public class CosmosExceptionTest {
             constructor.setAccessible(true);
             final CosmosException instance = constructor.newInstance("some-message", null, "some-uri");
             assertEquals(instance.getStatusCode(), expectedStatusCode);
+            assertThat(instance.toString()).contains("userAgent=" + Utils.getUserAgent());
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
             String message = lenientFormat("could not create instance of %s due to %s", type, error);
             throw new AssertionError(message, error);
