@@ -86,7 +86,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
             final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
             logger.info("namespace[{}] entityPath[{}]: Next AMQP channel received, updating {} current "
-                + "subscribers: {}", fullyQualifiedNamespace, entityPath, subscribers.size(), subscribers);
+                + "subscribers", fullyQualifiedNamespace, entityPath, subscribers.size());
 
             currentSubscribers.forEach(subscription -> subscription.onNext(amqpChannel));
 
@@ -232,7 +232,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
 
         subscribers.add(subscriber);
-        logger.info("Added a subscriber {} to AMQP channel processor. Total "
+        logger.verbose("Added a subscriber {} to AMQP channel processor. Total "
                 + "subscribers = {}", subscriber, subscribers.size());
 
         if (!isRetryPending.get()) {

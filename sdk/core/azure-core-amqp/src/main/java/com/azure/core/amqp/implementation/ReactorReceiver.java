@@ -188,4 +188,10 @@ public class ReactorReceiver implements AmqpReceiveLink {
         delivery.settle();
         return message;
     }
+
+    @Override
+    public String toString() {
+        return String.format("link name: [%s], entity path: [%s]", receiver.getName(), entityPath);
+
+    }
 }
