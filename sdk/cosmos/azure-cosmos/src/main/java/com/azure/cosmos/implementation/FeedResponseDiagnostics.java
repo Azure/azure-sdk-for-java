@@ -42,7 +42,7 @@ public final class FeedResponseDiagnostics {
         queryMetricsMap.forEach((key, value) -> stringBuilder.append(key)
                                                     .append("=")
                                                     .append(value.toString())
-                                                    .append("\n"));
+                                                    .append(System.lineSeparator()));
         return stringBuilder.toString();
     }
 }

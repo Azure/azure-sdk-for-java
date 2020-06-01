@@ -11,7 +11,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.CosmosResourceType;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -45,7 +45,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -353,7 +353,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
             expectedIds.add(rid2);
             String query = "SELECT * FROM r WHERE r._rid=\"" + rid1 + "\" or r._rid=\"" + rid2 + "\"";
 
-            FeedOptions options = new FeedOptions();
+            QueryRequestOptions options = new QueryRequestOptions();
 
             Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver.queryDocuments(createdCollection.getSelfLink(), query, options);
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
@@ -386,7 +386,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         BridgeInternal.setProperty(document2, partitionKey, partitionKeyValue);
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
-            OffsetDateTime befTime = OffsetDateTime.now();
+            Instant befTime = Instant.now();
             Thread.sleep(1500);
 
             document1 = asyncClientWithTokenResolver

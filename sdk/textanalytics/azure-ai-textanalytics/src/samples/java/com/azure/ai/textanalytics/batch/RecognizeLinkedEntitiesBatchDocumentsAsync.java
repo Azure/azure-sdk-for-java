@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -42,18 +43,23 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing linked entities for each document in a batch of documents
-        client.recognizeLinkedEntitiesBatch(documents, requestOptions).byPage().subscribe(
-            pagedResponse -> {
-                System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", pagedResponse.getModelVersion());
+        client.recognizeLinkedEntitiesBatchWithResponse(documents, requestOptions).subscribe(
+            linkedEntitiesBatchResultResponse -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", linkedEntitiesBatchResultResponse.getStatusCode());
+                RecognizeLinkedEntitiesResultCollection linkedEntitiesResultCollection = linkedEntitiesBatchResultResponse.getValue();
+
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", linkedEntitiesResultCollection.getModelVersion());
 
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = linkedEntitiesResultCollection.getStatistics();
                 System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Recognized linked entities from a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-                for (RecognizeLinkedEntitiesResult entitiesResult : pagedResponse.getElements()) {
+                for (RecognizeLinkedEntitiesResult entitiesResult : linkedEntitiesResultCollection) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (entitiesResult.isError()) {
                         // Erroneous document

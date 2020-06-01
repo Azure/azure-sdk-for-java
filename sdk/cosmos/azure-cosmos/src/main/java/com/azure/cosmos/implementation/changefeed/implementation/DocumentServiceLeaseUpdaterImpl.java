@@ -17,8 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT;
@@ -50,7 +49,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             return Mono.empty();
         }
 
-        localLease.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
+        localLease.setTimestamp(Instant.now());
 
         cachedLease.setServiceItemLease(localLease);
 
