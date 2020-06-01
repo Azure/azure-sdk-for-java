@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -38,7 +38,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -158,7 +159,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setFeedPollDelay(Duration.ofSeconds(1))
                     .setLeasePrefix("TEST")
                     .setMaxItemCount(10)
-                    .setStartTime(OffsetDateTime.now().minusDays(1))
+                    .setStartTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1).toInstant())
                     .setMinScaleCount(1)
                     .setMaxScaleCount(3)
                 )
@@ -345,9 +346,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         SqlQuerySpec querySpec = new SqlQuerySpec(
                             "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)", Collections.singletonList(param));
 
-                        FeedOptions feedOptions = new FeedOptions();
+                        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
 
-                        createdLeaseCollection.queryItems(querySpec, feedOptions, CosmosItemProperties.class).byPage()
+                        createdLeaseCollection.queryItems(querySpec, queryRequestOptions, CosmosItemProperties.class).byPage()
                             .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                             .flatMap(doc -> {
                                 ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);

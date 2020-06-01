@@ -66,9 +66,9 @@ public interface ChangeFeedProcessor {
     /**
      * Returns the current owner (host) and an approximation of the difference between the last processed item (defined
      *   by the state of the feed container) and the latest change in the container for each partition (lease
-     *   document).
+     *   item).
      * <p>
-     * An empty map will be returned if the processor was not started or no lease documents matching the current
+     * An empty map will be returned if the processor was not started or no lease items matching the current
      *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
      *
      * @return a map representing the current owner and lease token, the current LSN and latest LSN, and the estimated
@@ -111,7 +111,7 @@ public interface ChangeFeedProcessor {
         BuilderDefinition hostName(String hostName);
 
         /**
-         * Sets and existing {@link CosmosAsyncContainer} to be used to read from the monitored collection.
+         * Sets and existing {@link CosmosAsyncContainer} to be used to read from the monitored container.
          *
          * @param feedContainer the instance of {@link CosmosAsyncContainer} to be used.
          * @return current Builder.
@@ -152,7 +152,7 @@ public interface ChangeFeedProcessor {
         BuilderDefinition handleChanges(Consumer<List<JsonNode>> consumer);
 
         /**
-         * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases collection.
+         * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases container.
          *
          * @param leaseContainer the instance of {@link CosmosAsyncContainer} to use.
          * @return current Builder.

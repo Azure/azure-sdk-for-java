@@ -3,14 +3,13 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -44,7 +43,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -78,13 +77,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
-        return new CosmosAsyncItemResponse<>(response, classType);
+    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+        return new CosmosItemResponse<>(response, classType);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosAsyncItemResponse<>(response, Object.class);
+    public static CosmosItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
+        return new CosmosItemResponse<>(response, Object.class);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -113,9 +112,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
-                                                                              CosmosAsyncContainer container) {
-        return new CosmosAsyncTriggerResponse(response, container);
+    public static CosmosTriggerResponse createCosmosTriggerResponse(ResourceResponse<Trigger> response) {
+        return new CosmosTriggerResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -124,19 +122,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUserResponse createCosmosAsyncUserResponse(ResourceResponse<User> response) {
+    public static CosmosUserResponse createCosmosUserResponse(ResourceResponse<User> response) {
         return new CosmosUserResponse(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
-        return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosTriggerResponse createCosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
-                                        CosmosTrigger syncTrigger) {
-        return new CosmosTriggerResponse(asyncResponse, syncTrigger);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -157,11 +144,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosDatabaseProperties> getCosmosDatabasePropertiesFromV2Results(List<Database> results) {
         return CosmosDatabaseProperties.getFromV2Results(results);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -300,23 +282,23 @@ public final class ModelBridgeInternal {
     /**
      * Gets the partitionKeyRangeId.
      *
-     * @param options the feed options
+     * @param options the query request options
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String partitionKeyRangeIdInternal(FeedOptions options) {
+    public static String partitionKeyRangeIdInternal(QueryRequestOptions options) {
         return options.getPartitionKeyRangeIdInternal();
     }
 
     /**
      * Sets the PartitionKeyRangeId.
      *
-     * @param options the feed options
+     * @param options the query request options
      * @param partitionKeyRangeId the partition key range id
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
+    public static QueryRequestOptions partitionKeyRangeIdInternal(QueryRequestOptions options, String partitionKeyRangeId) {
         return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
     }
 
@@ -421,7 +403,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTimestamp(Resource resource, OffsetDateTime date) {
+    public static void setTimestamp(Resource resource, Instant date) {
         resource.setTimestamp(date);
     }
 
@@ -530,19 +512,19 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
-        feedOptions.setRequestContinuation(continuationToken);
-        feedOptions.setMaxItemCount(maxItemCount);
+    public static void setQueryRequestOptionsContinuationTokenAndMaxItemCount(QueryRequestOptions options, String continuationToken, Integer maxItemCount) {
+        options.setRequestContinuation(continuationToken);
+        options.setMaxItemCount(maxItemCount);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
-        feedOptions.setRequestContinuation(continuationToken);
+    public static void setQueryRequestOptionsContinuationToken(QueryRequestOptions queryRequestOptions, String continuationToken) {
+        queryRequestOptions.setRequestContinuation(continuationToken);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
-        feedOptions.setMaxItemCount(maxItemCount);
+    public static void setQueryRequestOptionsMaxItemCount(QueryRequestOptions queryRequestOptions, Integer maxItemCount) {
+        queryRequestOptions.setMaxItemCount(maxItemCount);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -568,8 +550,6 @@ public final class ModelBridgeInternal {
             ((CompositePath) t).populatePropertyBag();
         } else if (t instanceof ConflictResolutionPolicy) {
             ((ConflictResolutionPolicy) t).populatePropertyBag();
-        } else if (t instanceof DatabaseAccountLocation) {
-            ((DatabaseAccountLocation) t).populatePropertyBag();
         } else if (t instanceof ExcludedPath) {
             ((ExcludedPath) t).populatePropertyBag();
         } else if (t instanceof IncludedPath) {
@@ -603,8 +583,6 @@ public final class ModelBridgeInternal {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
-        } else if (t instanceof DatabaseAccountLocation) {
-            return ((DatabaseAccountLocation) t).getJsonSerializable();
         } else if (t instanceof ExcludedPath) {
             return ((ExcludedPath) t).getJsonSerializable();
         } else if (t instanceof IncludedPath) {
@@ -667,11 +645,48 @@ public final class ModelBridgeInternal {
         return new ThroughputResponse(offerResourceResponse);
     }
 
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void addQueryInfoToFeedResponse(FeedResponse<?> feedResponse, QueryInfo queryInfo){
         feedResponse.setQueryInfo(queryInfo);
     }
 
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {
         return response.getQueryInfo();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static QueryRequestOptions createQueryRequestOptions(QueryRequestOptions options) {
+        return new QueryRequestOptions(options);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Integer getMaxItemCountFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.getMaxItemCount();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getRequestContinuationFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.getRequestContinuation();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Map<String, Object> getPropertiesFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.getProperties();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static QueryRequestOptions setQueryRequestOptionsProperties(QueryRequestOptions options, Map<String, Object> properties) {
+        return options.setProperties(properties);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean getEmptyPagesAllowedFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.isEmptyPagesAllowed();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static QueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(QueryRequestOptions options, boolean emptyPageAllowed) {
+        return options.setEmptyPagesAllowed(emptyPageAllowed);
     }
 }

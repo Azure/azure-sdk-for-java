@@ -21,7 +21,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -48,7 +48,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -66,8 +65,9 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     private SearchIndexClient searchIndexClient;
 
     private String createDataSource() {
-        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
-        searchIndexerClient.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSourceConnection dataSource = createTestSqlDataSourceObject();
+        searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
+
         dataSourcesToDelete.add(dataSource.getName());
 
         return dataSource.getName();
@@ -121,7 +121,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         }
 
         for (String dataSource : dataSourcesToDelete) {
-            searchIndexerClient.deleteDataSource(dataSource);
+            searchIndexerClient.deleteDataSourceConnection(dataSource);
         }
 
         for (String indexer : indexersToDelete) {
@@ -190,15 +190,16 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         searchIndexerClient.createIndexer(indexer2);
         indexersToDelete.add(indexer2.getName());
 
-        Iterator<SearchIndexer> indexersRes = searchIndexerClient.listIndexers("name", generateRequestOptions(), Context.NONE).iterator();
+        Iterator<String> indexersRes = searchIndexerClient.listIndexerNames(generateRequestOptions(), Context.NONE)
+            .iterator();
 
-        SearchIndexer actualIndexer = indexersRes.next();
-        assertEquals(indexer1.getName(), actualIndexer.getName());
-        assertAllIndexerFieldsNullExceptName(actualIndexer);
+        String actualIndexer = indexersRes.next();
+        assertNotNull(actualIndexer);
+        assertEquals(indexer1.getName(), actualIndexer);
 
         actualIndexer = indexersRes.next();
-        assertEquals(indexer2.getName(), actualIndexer.getName());
-        assertAllIndexerFieldsNullExceptName(actualIndexer);
+        assertNotNull(actualIndexer);
+        assertEquals(indexer2.getName(), actualIndexer);
 
         assertFalse(indexersRes.hasNext());
     }
@@ -389,7 +390,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     @Test
     public void canUpdateIndexerBlobParams() {
         String indexName = createIndex();
-        String dataSourceName = searchIndexerClient.createDataSource(createBlobDataSource()).getName();
+        String dataSourceName = searchIndexerClient.createDataSourceConnection(createBlobDataSource()).getName();
         dataSourcesToDelete.add(dataSourceName);
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
@@ -409,10 +410,11 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     @Test
     public void canCreateIndexerWithBlobParams() {
         // Create the needed Azure blob resources and data source object
-        SearchIndexerDataSource blobDataSource = createBlobDataSource();
+        SearchIndexerDataSourceConnection blobDataSource = createBlobDataSource();
 
         // Create the data source within the search service
-        SearchIndexerDataSource dataSource = searchIndexerClient.createOrUpdateDataSource(blobDataSource);
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.createOrUpdateDataSourceConnection(blobDataSource);
+
         dataSourcesToDelete.add(dataSource.getName());
 
         // modify the indexer's blob params
@@ -645,7 +647,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
-                .setShouldDetectOrientation(true)
+                .shouldDetectOrientation(true)
                 .setName("myocr")
                 .setDescription("Tested OCR skill")
                 .setContext("/document")
@@ -811,18 +813,6 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         // There ought to be a start time in the response; We just can't know what it is because it would
         // make the test timing-dependent.
         expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
-    }
-
-    void assertAllIndexerFieldsNullExceptName(SearchIndexer indexer) {
-        assertNull(indexer.getParameters());
-        assertNull(indexer.getDataSourceName());
-        assertNull(indexer.getDescription());
-        assertNull(indexer.getETag());
-        assertNull(indexer.getFieldMappings());
-        assertNull(indexer.getOutputFieldMappings());
-        assertNull(indexer.getSchedule());
-        assertNull(indexer.getSkillsetName());
-        assertNull(indexer.getTargetIndexName());
     }
 
     void assertStartAndEndTimeValid(IndexerExecutionResult result) {

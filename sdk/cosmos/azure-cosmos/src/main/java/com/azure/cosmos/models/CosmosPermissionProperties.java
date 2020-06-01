@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Resource;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,21 +125,23 @@ public final class CosmosPermissionProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.permission.getResourceId();
     }
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.permission.getTimestamp();
     }
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

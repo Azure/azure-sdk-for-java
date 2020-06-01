@@ -13,7 +13,7 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -424,11 +424,11 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the read containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options {@link FeedOptions}
+     * @param options {@link QueryRequestOptions}
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read
      * containers or an error.
      */
-    public CosmosPagedFlux<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+    public CosmosPagedFlux<CosmosContainerProperties> readAllContainers(QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readCollections(getLink(), options)
@@ -449,7 +449,7 @@ public class CosmosAsyncDatabase {
      * containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> readAllContainers() {
-        return readAllContainers(new FeedOptions());
+        return readAllContainers(new QueryRequestOptions());
     }
 
     /**
@@ -475,11 +475,11 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
-    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query, QueryRequestOptions options) {
         return queryContainers(new SqlQuerySpec(query), options);
     }
 
@@ -495,7 +495,7 @@ public class CosmosAsyncDatabase {
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
-        return queryContainers(querySpec, new FeedOptions());
+        return queryContainers(querySpec, new QueryRequestOptions());
     }
 
     /**
@@ -506,11 +506,11 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
-    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec, QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
@@ -544,7 +544,7 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosUserResponse> createUser(CosmosUserProperties userProperties) {
         return getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
+                                    .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
 
@@ -561,7 +561,7 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosUserResponse> upsertUser(CosmosUserProperties userProperties) {
         return getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response)).single();
+                                    .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**
@@ -575,7 +575,7 @@ public class CosmosAsyncDatabase {
      * read cosmos users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> readAllUsers() {
-        return readAllUsers(new FeedOptions());
+        return readAllUsers(new QueryRequestOptions());
     }
 
     /**
@@ -585,11 +585,11 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the read cosmos users. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * read cosmos users or an error.
      */
-    CosmosPagedFlux<CosmosUserProperties> readAllUsers(FeedOptions options) {
+    CosmosPagedFlux<CosmosUserProperties> readAllUsers(QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readUsers(getLink(), options)
@@ -611,7 +611,7 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query) {
-        return queryUsers(query, new FeedOptions());
+        return queryUsers(query, new QueryRequestOptions());
     }
 
     /**
@@ -622,11 +622,11 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query query as string.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query, QueryRequestOptions options) {
         return queryUsers(new SqlQuerySpec(query), options);
     }
 
@@ -642,7 +642,7 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
-        return queryUsers(querySpec, new FeedOptions());
+        return queryUsers(querySpec, new QueryRequestOptions());
     }
 
     /**
@@ -653,11 +653,11 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, QueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
@@ -688,7 +688,7 @@ public class CosmosAsyncDatabase {
         return this.read()
                    .flatMap(response -> this.getDocClientWrapper()
                                             .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
-                                                         new FeedOptions())
+                                                         new QueryRequestOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
@@ -720,7 +720,7 @@ public class CosmosAsyncDatabase {
         return this.read()
                    .flatMap(response -> getDocClientWrapper()
                                             .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
-                                                         new FeedOptions())
+                                                         new QueryRequestOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {

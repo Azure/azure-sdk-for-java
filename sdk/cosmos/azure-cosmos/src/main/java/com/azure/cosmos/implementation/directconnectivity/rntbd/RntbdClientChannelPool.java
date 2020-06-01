@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Deque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -565,7 +565,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         if (logger.isDebugEnabled()) {
             logger.debug("{}, {}, {}, {}, {}, {}",
-                OffsetDateTime.now(),
+                Instant.now(),
                 this.remoteAddress(),
                 this.channels(),
                 this.channelsAcquired(),

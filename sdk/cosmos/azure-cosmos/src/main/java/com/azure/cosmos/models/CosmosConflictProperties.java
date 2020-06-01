@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.implementation.Resource;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,21 +80,23 @@ public final class CosmosConflictProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.conflict.getResourceId();
     }
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.conflict.getTimestamp();
     }
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

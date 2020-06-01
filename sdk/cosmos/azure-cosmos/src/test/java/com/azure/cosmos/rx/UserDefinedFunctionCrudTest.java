@@ -30,9 +30,10 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createUserDefinedFunction() throws Exception {
         // create udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
 
         Mono<CosmosUserDefinedFunctionResponse> createObservable = createdCollection.getScripts().createUserDefinedFunction(udf);
 
@@ -48,13 +49,14 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readUserDefinedFunction() throws Exception {
         // create a udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         createdCollection.getScripts().createUserDefinedFunction(udf).block();
         CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().getUserDefinedFunction(udf.getId());
 
-            // read udf
+        // read udf
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosUserDefinedFunctionResponse> readObservable = readBackUdf.read();
 
@@ -70,9 +72,10 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteUserDefinedFunction() throws Exception {
         // create a udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         createdCollection.getScripts().createUserDefinedFunction(udf).block();
         CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().getUserDefinedFunction(udf.getId());
 

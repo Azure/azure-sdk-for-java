@@ -7,10 +7,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
-import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
 import java.util.Collection;
@@ -54,8 +53,8 @@ public class DataSourceExample {
         /*
          * Get all existing data sources; list should include the ones we just created.
          * */
-        PagedIterable<SearchIndexerDataSource> dataSources = client.listDataSources();
-        for (SearchIndexerDataSource dataSource : dataSources) {
+        PagedIterable<SearchIndexerDataSourceConnection> dataSources = client.listDataSourceConnections();
+        for (SearchIndexerDataSourceConnection dataSource : dataSources) {
             if (names.contains(dataSource.getName())) {
                 System.out.println(String.format("Found data source %s of type %s", dataSource.getName(),
                     dataSource.getType().toString()));
@@ -72,20 +71,19 @@ public class DataSourceExample {
 
     private static void deleteDataSource(SearchIndexerClient client, String dataSourceName) {
         try {
-            client.deleteDataSource(dataSourceName);
+            client.deleteDataSourceConnection(dataSourceName);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }
     }
 
-    private static SearchIndexerDataSource createSampleDatasource(SearchIndexerDataSourceType type,
+    private static SearchIndexerDataSourceConnection createSampleDatasource(SearchIndexerDataSourceType type,
         String connectionString, SearchIndexerDataContainer container,
         DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        return new SearchIndexerDataSource()
+        return new SearchIndexerDataSourceConnection()
             .setName(generateDataSourceName())
             .setType(type)
-            .setCredentials(new DataSourceCredentials()
-                .setConnectionString(connectionString))
+            .setConnectionString(connectionString)
             .setContainer(container)
             .setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
     }
@@ -97,10 +95,10 @@ public class DataSourceExample {
         SearchIndexerDataContainer container,
         DataChangeDetectionPolicy dataChangeDetectionPolicy) {
 
-        SearchIndexerDataSource dataSource = createSampleDatasource(type, connectionString, container,
+        SearchIndexerDataSourceConnection dataSource = createSampleDatasource(type, connectionString, container,
             dataChangeDetectionPolicy);
         try {
-            client.createOrUpdateDataSource(dataSource);
+            client.createOrUpdateDataSourceConnection(dataSource);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }

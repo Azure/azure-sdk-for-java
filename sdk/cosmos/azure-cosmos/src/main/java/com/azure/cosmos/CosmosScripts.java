@@ -4,15 +4,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -43,10 +41,10 @@ public class CosmosScripts {
      * Create stored procedure
      *
      * @param properties the properties
-     * @return the cosmos sync stored procedure response
+     * @return the cosmos stored procedure response
      */
     public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties) {
-        return mapStoredProcedureResponseAndBlock(
+        return blockStoredProcedureResponse(
             asyncScripts.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions())
         );
     }
@@ -56,12 +54,12 @@ public class CosmosScripts {
      *
      * @param properties the properties
      * @param options the options
-     * @return the cosmos sync stored procedure response
+     * @return the cosmos stored procedure response
      */
     public CosmosStoredProcedureResponse createStoredProcedure(
         CosmosStoredProcedureProperties properties,
         CosmosStoredProcedureRequestOptions options) {
-        return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
+        return blockStoredProcedureResponse(asyncScripts.createStoredProcedure(properties,
                                                                                      options));
     }
 
@@ -71,7 +69,7 @@ public class CosmosScripts {
      * @return the {@link CosmosPagedIterable}
      */
     public CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures() {
-        return getCosmosPagedIterable(asyncScripts.readAllStoredProcedures(new FeedOptions()));
+        return getCosmosPagedIterable(asyncScripts.readAllStoredProcedures(new QueryRequestOptions()));
     }
 
     /**
@@ -80,7 +78,7 @@ public class CosmosScripts {
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
+    CosmosPagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures(QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllStoredProcedures(options));
     }
 
@@ -93,7 +91,7 @@ public class CosmosScripts {
      */
     public CosmosPagedIterable<CosmosStoredProcedureProperties> queryStoredProcedures(
         String query,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.queryStoredProcedures(query, options));
     }
 
@@ -106,7 +104,7 @@ public class CosmosScripts {
      */
     public CosmosPagedIterable<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.queryStoredProcedures(querySpec, options));
 
     }
@@ -133,7 +131,7 @@ public class CosmosScripts {
      * @return the cosmos user defined function response
      */
     public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties) {
-        return mapUDFResponseAndBlock(asyncScripts.createUserDefinedFunction(properties));
+        return blockUDFResponse(asyncScripts.createUserDefinedFunction(properties));
     }
 
     /**
@@ -142,7 +140,7 @@ public class CosmosScripts {
      * @return the {@link CosmosPagedIterable}
      */
     public CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions() {
-        return getCosmosPagedIterable(asyncScripts.readAllUserDefinedFunctions(new FeedOptions()));
+        return getCosmosPagedIterable(asyncScripts.readAllUserDefinedFunctions(new QueryRequestOptions()));
     }
 
     /**
@@ -152,7 +150,7 @@ public class CosmosScripts {
      * @return the {@link CosmosPagedIterable}
      */
     CosmosPagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllUserDefinedFunctions(options));
     }
 
@@ -165,7 +163,7 @@ public class CosmosScripts {
      */
     public CosmosPagedIterable<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         String query,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.queryUserDefinedFunctions(new SqlQuerySpec(query), options));
     }
 
@@ -178,7 +176,7 @@ public class CosmosScripts {
      */
     public CosmosPagedIterable<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.queryUserDefinedFunctions(querySpec, options));
     }
 
@@ -200,10 +198,10 @@ public class CosmosScripts {
      * Create trigger
      *
      * @param properties the properties
-     * @return the cosmos sync trigger response
+     * @return the cosmos trigger response
      */
     public CosmosTriggerResponse createTrigger(CosmosTriggerProperties properties) {
-        return mapTriggerResponseAndBlock(asyncScripts.createTrigger(properties));
+        return blockTriggerResponse(asyncScripts.createTrigger(properties));
     }
 
     /**
@@ -212,7 +210,7 @@ public class CosmosScripts {
      * @return the {@link CosmosPagedIterable}
      */
     public CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers() {
-        return getCosmosPagedIterable(asyncScripts.readAllTriggers(new FeedOptions()));
+        return getCosmosPagedIterable(asyncScripts.readAllTriggers(new QueryRequestOptions()));
     }
 
     /**
@@ -221,7 +219,7 @@ public class CosmosScripts {
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
+    CosmosPagedIterable<CosmosTriggerProperties> readAllTriggers(QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.readAllTriggers(options));
     }
 
@@ -232,7 +230,7 @@ public class CosmosScripts {
      * @param options the options
      * @return the {@link CosmosPagedIterable}
      */
-    public CosmosPagedIterable<CosmosTriggerProperties> queryTriggers(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosTriggerProperties> queryTriggers(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.queryTriggers(query, options));
     }
 
@@ -245,7 +243,7 @@ public class CosmosScripts {
      */
     public CosmosPagedIterable<CosmosTriggerProperties> queryTriggers(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncScripts.queryTriggers(querySpec, options));
     }
 
@@ -262,12 +260,12 @@ public class CosmosScripts {
     }
 
     /**
-     * Map stored procedure response and block cosmos sync stored procedure response.
+     * Block cosmos stored procedure response.
      *
      * @param storedProcedureResponseMono the stored procedure response mono
-     * @return the cosmos sync stored procedure response
+     * @return the cosmos stored procedure response
      */
-    CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(
+    CosmosStoredProcedureResponse blockStoredProcedureResponse(
         Mono<CosmosStoredProcedureResponse> storedProcedureResponseMono) {
         try {
             return storedProcedureResponseMono.block();
@@ -282,12 +280,12 @@ public class CosmosScripts {
     }
 
     /**
-     * Map udf response and block cosmos user defined function response.
+     * Block cosmos user defined function response.
      *
      * @param responseMono the response mono
      * @return the cosmos user defined function response
      */
-    CosmosUserDefinedFunctionResponse mapUDFResponseAndBlock(
+    CosmosUserDefinedFunctionResponse blockUDFResponse(
         Mono<CosmosUserDefinedFunctionResponse> responseMono) {
         try {
             return responseMono.block();
@@ -304,16 +302,14 @@ public class CosmosScripts {
     //Trigger
 
     /**
-     * Map trigger response and block cosmos sync trigger response.
+     * Block cosmos trigger response.
      *
      * @param responseMono the response mono
-     * @return the cosmos sync trigger response
+     * @return the cosmos trigger response
      */
-    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosAsyncTriggerResponse> responseMono) {
+    CosmosTriggerResponse blockTriggerResponse(Mono<CosmosTriggerResponse> responseMono) {
         try {
-            return responseMono
-                       .map(this::convertResponse)
-                       .block();
+            return responseMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -321,21 +317,6 @@ public class CosmosScripts {
             } else {
                 throw Exceptions.propagate(ex);
             }
-        }
-    }
-
-    /**
-     * Convert response cosmos sync trigger response.
-     *
-     * @param response the response
-     * @return the cosmos sync trigger response
-     */
-    CosmosTriggerResponse convertResponse(CosmosAsyncTriggerResponse response) {
-        if (response.getTrigger() != null) {
-            return ModelBridgeInternal.createCosmosTriggerResponse(response,
-                                             getTrigger(response.getTrigger().getId()));
-        } else {
-            return ModelBridgeInternal.createCosmosTriggerResponse(response, null);
         }
     }
 
