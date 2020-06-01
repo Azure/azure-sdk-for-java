@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -31,6 +32,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final boolean automaticAuthentication;
     private final String authorityHost;
+    private final ClientLogger logger = new ClientLogger(InteractiveBrowserCredential.class);
+
 
     /**
      * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
@@ -39,6 +42,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param clientId the client ID of the application
      * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
+     * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param identityClientOptions the options for configuring the identity client
      */
     InteractiveBrowserCredential(String clientId, String tenantId, int port, boolean automaticAuthentication,
@@ -68,9 +72,9 @@ public class InteractiveBrowserCredential implements TokenCredential {
             }
         }).switchIfEmpty(Mono.defer(() -> {
             if (!automaticAuthentication) {
-                return Mono.error(new AuthenticationRequiredException("Interactive authentication is needed to "
-                                  + "acquire token. Call Authenticate to initiate the "
-                                  + "interactive browser authentication."));
+                return Mono.error(logger.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                             + "authentication is needed to acquire token. Call Authenticate to initiate the device "
+                             + "code authentication.", request)));
             }
             return identityClient.authenticateWithBrowserInteraction(request, port);
         }))
@@ -108,8 +112,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(new AuthenticationRequiredException("Authenticating in this environment requires"
-                                                                          + " specifying a TokenRequestContext."));
+            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+                                                    + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }

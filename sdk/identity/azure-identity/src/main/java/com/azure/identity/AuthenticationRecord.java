@@ -16,7 +16,7 @@ import java.io.OutputStream;
  * Represents the account information relating to an authentication request
  */
 public class AuthenticationRecord {
-    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @JsonProperty("authority")
     private String authority;
@@ -34,7 +34,7 @@ public class AuthenticationRecord {
     AuthenticationRecord() { }
 
     AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId) {
-        authority = authenticationResult.environment();
+        authority = authenticationResult.account().environment();
         homeAccountId = authenticationResult.account().homeAccountId();
         username = authenticationResult.account().username();
         this.tenantId = tenantId;

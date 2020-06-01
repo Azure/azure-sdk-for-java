@@ -68,12 +68,12 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
-     * Disables the automatic authentication and prevents the {@link DeviceCodeCredential} from automatically
+     * Disables the automatic authentication and prevents the {@link InteractiveBrowserCredential} from automatically
      * prompting the user. If automatic authentication is disabled a {@link AuthenticationRequiredException}
-     * will be thrown from {@link DeviceCodeCredential#getToken(TokenRequestContext)} in the case that
+     * will be thrown from {@link InteractiveBrowserCredential#getToken(TokenRequestContext)} in the case that
      * user interaction is necessary. The application is responsible for handling this exception, and
-     * calling {@link DeviceCodeCredential#authenticate()} or
-     * {@link DeviceCodeCredential#authenticate(TokenRequestContext)} to authenticate the user interactively.
+     * calling {@link InteractiveBrowserCredential#authenticate()} or
+     * {@link InteractiveBrowserCredential#authenticate(TokenRequestContext)} to authenticate the user interactively.
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */

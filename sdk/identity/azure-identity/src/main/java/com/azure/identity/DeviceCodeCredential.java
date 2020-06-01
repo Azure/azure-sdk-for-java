@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -26,6 +27,8 @@ public class DeviceCodeCredential implements TokenCredential {
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final String authorityHost;
     private final boolean automaticAuthentication;
+    private final ClientLogger logger = new ClientLogger(DeviceCodeCredential.class);
+
 
     /**
      * Creates a DeviceCodeCredential with the given identity client options.
@@ -33,6 +36,7 @@ public class DeviceCodeCredential implements TokenCredential {
      * @param clientId the client ID of the application
      * @param tenantId the tenant ID of the application
      * @param challengeConsumer a method allowing the user to meet the device code challenge
+     * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param identityClientOptions the options for configuring the identity client
      */
     DeviceCodeCredential(String clientId, String tenantId, Consumer<DeviceCodeInfo> challengeConsumer,
@@ -63,8 +67,9 @@ public class DeviceCodeCredential implements TokenCredential {
         }).switchIfEmpty(
             Mono.defer(() -> {
                 if (!automaticAuthentication) {
-                    return Mono.error(new AuthenticationRequiredException("Interactive authentication is needed to "
-                              + "acquire token. Call Authenticate to initiate the device code authentication."));
+                    return Mono.error(logger.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                         + "authentication is needed to acquire token. Call Authenticate to initiate the device "
+                         + "code authentication.", request)));
                 }
                 return identityClient.authenticateWithDeviceCode(request, challengeConsumer);
             }))
@@ -78,7 +83,11 @@ public class DeviceCodeCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Authenticates a user via the device code flow.
+     *
+     * <p> The credential acquires a verification URL and code from the Azure Active Directory. The user must
+     * browse to the URL, enter the code, and authenticate with Azure Active Directory. If the user authenticates
+     * successfully, the credential receives an access token. </p>
      *
      * @param request The details of the authentication request.
      *
@@ -93,7 +102,11 @@ public class DeviceCodeCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Authenticates a user via the device code flow.
+     *
+     * <p> The credential acquires a verification URL and code from the Azure Active Directory. The user must
+     * browse to the URL, enter the code, and authenticate with Azure Active Directory. If the user authenticates
+     * successfully, the credential receives an access token. </p>
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
@@ -102,8 +115,8 @@ public class DeviceCodeCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(new AuthenticationRequiredException("Authenticating in this environment requires"
-                                                      + " specifying a TokenRequestContext."));
+            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+                                                    + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
