@@ -31,7 +31,6 @@ import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 import com.azure.search.documents.indexes.models.ShaperSkill;
 import com.azure.search.documents.indexes.models.SplitSkill;
 import com.azure.search.documents.indexes.models.SplitSkillLanguage;
-import com.azure.search.documents.indexes.models.TextExtractionAlgorithm;
 import com.azure.search.documents.indexes.models.TextSplitMode;
 import com.azure.search.documents.indexes.models.VisualFeature;
 import com.azure.search.documents.indexes.models.WebApiSkill;
@@ -118,7 +117,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrEntity() {
-        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrEntity(null, null);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrEntity(null);
         SearchIndexerSkillset actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
@@ -126,7 +125,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         List<EntityCategory> entityCategories = Arrays.asList(
             EntityCategory.LOCATION, EntityCategory.ORGANIZATION, EntityCategory.PERSON);
 
-        expectedSkillset = createTestSkillsetOcrEntity(TextExtractionAlgorithm.PRINTED, entityCategories);
+        expectedSkillset = createTestSkillsetOcrEntity(entityCategories);
         actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
@@ -135,19 +134,19 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrHandwritingSentiment() {
         SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.PT,
-            SentimentSkillLanguage.PT_PT, TextExtractionAlgorithm.PRINTED);
+            SentimentSkillLanguage.PT_PT);
         SearchIndexerSkillset actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.FI,
-            SentimentSkillLanguage.FI, TextExtractionAlgorithm.PRINTED);
+            SentimentSkillLanguage.FI);
         actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.EN,
-            SentimentSkillLanguage.EN, TextExtractionAlgorithm.HANDWRITTEN);
+            SentimentSkillLanguage.EN);
         actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
@@ -397,7 +396,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
-        SearchIndexerSkillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
+        SearchIndexerSkillset expected = createTestOcrSkillSet(1);
         SearchIndexerSkillset actual = client.createOrUpdateSkillset(expected);
         skillsetsToDelete.add(actual.getName());
 
@@ -406,7 +405,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse() {
-        SearchIndexerSkillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
+        SearchIndexerSkillset expected = createTestOcrSkillSet(1);
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected,
             false, generateRequestOptions(), Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
@@ -416,13 +415,13 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateUpdatesWhenSkillsetExists() {
-        SearchIndexerSkillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN);
+        SearchIndexerSkillset skillset = createTestOcrSkillSet(1);
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false,
             generateRequestOptions(), Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
 
-        skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED).setName(skillset.getName());
+        skillset = createTestOcrSkillSet(2).setName(skillset.getName());
         createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false, generateRequestOptions(),
             Context.NONE);
         assertEquals(HttpURLConnection.HTTP_OK, createOrUpdateResponse.getStatusCode());
@@ -614,8 +613,8 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .singletonList(createOutputFieldMappingEntry("description", "mydescription"));
 
         skills.add(new ImageAnalysisSkill()
-            .setVisualFeatures(Arrays.asList(VisualFeature.values()))
-            .setDetails(Arrays.asList(ImageDetail.values()))
+            .setVisualFeatures(new ArrayList<>(VisualFeature.values()))
+            .setDetails(new ArrayList<>((ImageDetail.values())))
             .setDefaultLanguageCode(ImageAnalysisSkillLanguage.EN)
             .setName("myimage")
             .setDescription("Tested image analysis skill")
@@ -695,7 +694,6 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .singletonList(createOutputFieldMappingEntry("text", "mytext"));
 
         skills.add(new OcrSkill()
-            .setTextExtractionAlgorithm(TextExtractionAlgorithm.PRINTED)
             .setDefaultLanguageCode(OcrSkillLanguage.EN)
             .setName("myocr")
             .setDescription("Tested OCR skill")
@@ -728,7 +726,6 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
-                .setTextExtractionAlgorithm(TextExtractionAlgorithm.PRINTED)
                 .setDefaultLanguageCode(OcrSkillLanguage.EN)
                 .setName("myocr")
                 .setDescription("Tested OCR skill")
@@ -781,7 +778,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         ));
     }
 
-    SearchIndexerSkillset createTestSkillsetOcrEntity(TextExtractionAlgorithm algorithm, List<EntityCategory> categories) {
+    SearchIndexerSkillset createTestSkillsetOcrEntity(List<EntityCategory> categories) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
@@ -791,7 +788,6 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .singletonList(createOutputFieldMappingEntry("text", "mytext"));
 
         skills.add(new OcrSkill()
-            .setTextExtractionAlgorithm(algorithm)
             .setDefaultLanguageCode(OcrSkillLanguage.EN)
             .setName("myocr")
             .setDescription("Tested OCR skill")
@@ -819,7 +815,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     }
 
     SearchIndexerSkillset createTestSkillsetOcrSentiment(OcrSkillLanguage ocrLanguageCode,
-        SentimentSkillLanguage sentimentLanguageCode, TextExtractionAlgorithm algorithm) {
+        SentimentSkillLanguage sentimentLanguageCode) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
@@ -828,7 +824,6 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("text", "mytext"));
         skills.add(new OcrSkill()
-            .setTextExtractionAlgorithm(algorithm)
             .setDefaultLanguageCode(ocrLanguageCode)
             .setName("myocr")
             .setDescription("Tested OCR skill")
@@ -862,7 +857,6 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .singletonList(createOutputFieldMappingEntry("text", "mytext"));
 
         skills.add(new OcrSkill()
-            .setTextExtractionAlgorithm(TextExtractionAlgorithm.PRINTED)
             .setDefaultLanguageCode(ocrLanguageCode)
             .setName("myocr")
             .setDescription("Tested OCR skill")
@@ -897,7 +891,6 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .singletonList(createOutputFieldMappingEntry("text", "mytext"));
 
         skills.add(new OcrSkill()
-            .setTextExtractionAlgorithm(TextExtractionAlgorithm.PRINTED)
             .setDefaultLanguageCode(ocrLanguageCode)
             .setName("myocr")
             .setDescription("Tested OCR skill")
@@ -922,7 +915,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .setSkills(skills);
     }
 
-    SearchIndexerSkillset createTestOcrSkillSet(int repeat, TextExtractionAlgorithm algorithm) {
+    SearchIndexerSkillset createTestOcrSkillSet(int repeat) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
 
         List<InputFieldMappingEntry> inputs = Arrays.asList(
@@ -935,8 +928,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
             skills.add(new OcrSkill()
                 .setDefaultLanguageCode(OcrSkillLanguage.EN)
-                .setTextExtractionAlgorithm(algorithm)
-                .setShouldDetectOrientation(false)
+                .shouldDetectOrientation(false)
                 .setName("myocr-" + i)
                 .setDescription("Tested OCR skill")
                 .setContext(CONTEXT_VALUE)
@@ -960,7 +952,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
-                .setShouldDetectOrientation(shouldDetectOrientation)
+                .shouldDetectOrientation(shouldDetectOrientation)
                 .setName("myocr")
                 .setDescription("Tested OCR skill")
                 .setContext(CONTEXT_VALUE)
