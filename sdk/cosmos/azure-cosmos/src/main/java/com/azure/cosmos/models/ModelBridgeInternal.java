@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -568,8 +569,6 @@ public final class ModelBridgeInternal {
             ((UniqueKey) t).populatePropertyBag();
         } else if (t instanceof UniqueKeyPolicy) {
             ((UniqueKeyPolicy) t).populatePropertyBag();
-        } else if (t instanceof Index) {
-            ((Index) t).populatePropertyBag();
         } else {
             throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
         }
@@ -601,8 +600,6 @@ public final class ModelBridgeInternal {
             return ((UniqueKey) t).getJsonSerializable();
         } else if (t instanceof UniqueKeyPolicy) {
             return ((UniqueKeyPolicy) t).getJsonSerializable();
-        } else if (t instanceof Index) {
-            return ((Index) t).getJsonSerializable();
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }
@@ -688,5 +685,15 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static QueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(QueryRequestOptions options, boolean emptyPageAllowed) {
         return options.setEmptyPagesAllowed(emptyPageAllowed);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static IncludedPath setIncludedPathIndexes(IncludedPath includedPath, List<Index> indexes) {
+        return includedPath.setIndexes(indexes);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static IndexingPolicy createIndexingPolicy(Index[] indexes) {
+        return new IndexingPolicy(indexes);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -55,7 +56,7 @@ public final class IndexingPolicy {
      * root path.
      * @throws IllegalArgumentException throws when defaultIndexOverrides is null
      */
-    public IndexingPolicy(Index[] defaultIndexOverrides) {
+    IndexingPolicy(Index[] defaultIndexOverrides) {
         this();
 
         if (defaultIndexOverrides == null) {

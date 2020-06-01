@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.DataType;
+import com.azure.cosmos.implementation.DataType;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -23,7 +22,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -310,7 +308,7 @@ public class WorkflowTest {
         List<Index> indexes = new ArrayList<>();
         indexes.add(Index.range(DataType.STRING, -1));
         indexes.add(Index.range(DataType.NUMBER, -1));
-        includedPath.setIndexes(indexes);
+        ModelBridgeInternal.setIncludedPathIndexes(includedPath, indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 

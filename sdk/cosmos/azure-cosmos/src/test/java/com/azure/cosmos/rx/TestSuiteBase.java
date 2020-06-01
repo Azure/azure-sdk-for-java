@@ -44,11 +44,11 @@ import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
-import com.azure.cosmos.models.DataType;
+import com.azure.cosmos.implementation.DataType;
 import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -548,7 +548,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         List<Index> indexes = new ArrayList<>();
         indexes.add(Index.range(DataType.STRING, -1));
         indexes.add(Index.range(DataType.NUMBER, -1));
-        includedPath.setIndexes(indexes);
+        ModelBridgeInternal.setIncludedPathIndexes(includedPath, indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 

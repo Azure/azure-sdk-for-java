@@ -14,10 +14,10 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.DataType;
+import com.azure.cosmos.implementation.DataType;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -75,11 +75,10 @@ public class UniqueIndexTest extends TestSuiteBase {
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
         IncludedPath includedPath1 = new IncludedPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
-        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        ModelBridgeInternal.setIncludedPathIndexes(includedPath1, Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
         IncludedPath includedPath2 = new IncludedPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        ModelBridgeInternal.setIncludedPathIndexes(includedPath2, Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
@@ -181,10 +180,10 @@ public class UniqueIndexTest extends TestSuiteBase {
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
         IncludedPath includedPath1 = new IncludedPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        ModelBridgeInternal.setIncludedPathIndexes(includedPath1, Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
         IncludedPath includedPath2 = new IncludedPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        ModelBridgeInternal.setIncludedPathIndexes(includedPath2, Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
