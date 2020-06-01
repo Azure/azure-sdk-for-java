@@ -459,8 +459,8 @@ public final class ConnectionPolicy {
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectionTimeout=" + connectionTimeout +
             ", idleEndpointTimeout=" + idleEndpointTimeout +
-            ", maxChannelsPerEndpoint=" + maxConnectionsPerEndpoint +
-            ", maxRequestsPerChannel=" + maxRequestsPerConnection +
+            ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
+            ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             '}';
     }
 }

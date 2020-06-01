@@ -227,6 +227,7 @@ public final class DirectConnectionConfig {
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", requestTimeout=" + requestTimeout +
             '}';
     }
 }
