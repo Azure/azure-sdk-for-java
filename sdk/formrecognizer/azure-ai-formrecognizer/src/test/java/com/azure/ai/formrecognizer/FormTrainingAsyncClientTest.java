@@ -278,18 +278,18 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
-            final CustomFormModel actualModel = syncPoller.getFinalResult();
+            CustomFormModel actualModel = syncPoller.getFinalResult();
 
             beginCopyRunner((resourceId, resourceRegion) -> {
-                final Mono<CopyAuthorization> target =
+                Mono<CopyAuthorization> target =
                     client.getCopyAuthorization(resourceId, resourceRegion);
-                final PollerFlux<OperationResult,
+                PollerFlux<OperationResult,
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target.block());
-                final CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
+                CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
                 assertEquals(target.block().getModelId(), copyModel.getModelId());
                 assertNotNull(actualModel.getRequestedOn());
                 assertNotNull(actualModel.getCompletedOn());
-                assertEquals(CustomFormModelStatus.fromString("succeeded"), copyModel.getStatus());
+                assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
             });
         });
     }

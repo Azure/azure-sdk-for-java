@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -35,17 +37,20 @@ public final class CopyAuthorization {
     /*
      * Resource Identifier.
      */
+    @JsonIgnore
     private String resourceId;
 
     /*
      * Region of the resource.
      */
+    @JsonIgnore
     private String region;
 
     /*
      * The time when the access token expires. The date is represented as the
      * number of seconds from 1970-01-01T0:0:0Z UTC until the expiration time.
      */
+    @JsonProperty("expirationDateTimeTicks")
     private long expiresOn;
 
     /**
@@ -69,7 +74,7 @@ public final class CopyAuthorization {
     /**
      * Get the modelId property.
      *
-     * @return the modelId value.
+     * @return the {@code modelId} value.
      */
     public String getModelId() {
         return this.modelId;
@@ -78,7 +83,7 @@ public final class CopyAuthorization {
     /**
      * Get the token claim used to authorize the request.
      *
-     * @return the accessToken value.
+     * @return the {@code accessToken} value.
      */
     public String getAccessToken() {
         return this.accessToken;
@@ -88,7 +93,7 @@ public final class CopyAuthorization {
      * Get the time when the access token expires. The date is represented as the
      * number of seconds from 1970-01-01T0:0:0Z UTC until the expiration time.
      *
-     * @return the expirationDateTimeTicks value.
+     * @return the {@code expiresOn} value.
      */
     public long getExpiresOn() {
         return this.expiresOn;
@@ -98,7 +103,7 @@ public final class CopyAuthorization {
      * Get the Azure Resource Id of the target Form Recognizer resource
      * where the model will be copied to.
      *
-     * @return the resourceId value.
+     * @return the {@code resourceId} value.
      */
     public String getResourceId() {
         return resourceId;
@@ -107,7 +112,7 @@ public final class CopyAuthorization {
     /**
      * Get the location of the target Form Recognizer resource.
      *
-     * @return the resourceRegion value.
+     * @return the {@code resourceRegion} value.
      */
     public String getRegion() {
         return region;

@@ -250,24 +250,24 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels);
             syncPoller.waitForCompletion();
-            final CustomFormModel actualModel = syncPoller.getFinalResult();
+            CustomFormModel actualModel = syncPoller.getFinalResult();
 
             beginCopyRunner((resourceId, resourceRegion) -> {
-                final CopyAuthorization target =
+                CopyAuthorization target =
                     client.getCopyAuthorization(resourceId, resourceRegion);
-                final SyncPoller<OperationResult,
+                SyncPoller<OperationResult,
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target);
-                final CustomFormModelInfo copyModel = copyPoller.getFinalResult();
+                CustomFormModelInfo copyModel = copyPoller.getFinalResult();
                 assertEquals(target.getModelId(), copyModel.getModelId());
                 assertNotNull(actualModel.getRequestedOn());
                 assertNotNull(actualModel.getCompletedOn());
-                assertEquals(CustomFormModelStatus.fromString("succeeded"), copyModel.getStatus());
+                assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
             });
         });
     }

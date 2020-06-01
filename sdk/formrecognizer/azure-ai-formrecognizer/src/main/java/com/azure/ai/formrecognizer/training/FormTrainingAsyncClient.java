@@ -115,15 +115,6 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FormRecognizerServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Create and train a custom model.
      * Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
