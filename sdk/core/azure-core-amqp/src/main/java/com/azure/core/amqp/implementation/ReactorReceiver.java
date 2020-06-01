@@ -192,6 +192,5 @@ public class ReactorReceiver implements AmqpReceiveLink {
     @Override
     public String toString() {
         return String.format("link name: [%s], entity path: [%s]", receiver.getName(), entityPath);
-
     }
 }
