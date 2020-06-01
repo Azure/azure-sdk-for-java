@@ -3,7 +3,9 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -11,7 +13,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
+import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
@@ -25,13 +29,11 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
-import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
-import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
@@ -151,6 +153,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
         return uploadDocumentsWithResponse(documents).map(Response::getValue);
     }
@@ -168,6 +171,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> uploadDocumentsWithResponse(documents, context));
     }
@@ -196,6 +200,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
         return mergeDocumentsWithResponse(documents).map(Response::getValue);
     }
@@ -220,6 +225,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> mergeDocumentsWithResponse(documents, context));
     }
@@ -249,6 +255,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
         return mergeOrUploadDocumentsWithResponse(documents).map(Response::getValue);
     }
@@ -274,6 +281,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
     }
@@ -295,6 +303,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
         return deleteDocumentsWithResponse(documents).map(Response::getValue);
     }
@@ -312,6 +321,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> deleteDocumentsWithResponse(documents, context));
     }
@@ -334,6 +344,7 @@ public final class SearchAsyncClient {
      *
      * @return the number of documents.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Long> getDocumentCount() {
         return this.getDocumentCountWithResponse().map(Response::getValue);
     }
@@ -343,6 +354,7 @@ public final class SearchAsyncClient {
      *
      * @return response containing the number of documents.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> getDocumentCountWithResponse() {
         return withContext(this::getDocumentCountWithResponse);
     }
@@ -416,6 +428,7 @@ public final class SearchAsyncClient {
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
     }
+
     /**
      * Retrieves a document from the Azure Cognitive Search index.
      * <p>
@@ -426,6 +439,7 @@ public final class SearchAsyncClient {
      * @return the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchDocument> getDocument(String key) {
         return getDocumentWithResponse(key, null, null).map(Response::getValue);
     }
@@ -444,6 +458,7 @@ public final class SearchAsyncClient {
      * @return a response containing the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
         return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
@@ -529,6 +544,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
         return indexDocumentsWithResponse(batch).map(Response::getValue);
     }
@@ -546,6 +562,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch) {
         return withContext(context -> indexDocumentsWithResponse(batch, context));
     }
@@ -626,7 +643,7 @@ public final class SearchAsyncClient {
                 .setFilter(searchOptions.getFilter())
                 .setHighlightPostTag(searchOptions.getHighlightPostTag())
                 .setHighlightPreTag(searchOptions.getHighlightPreTag())
-                .setIncludeTotalResultCount(searchOptions.isIncludeTotalResultCount())
+                .setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
                 .setMinimumCoverage(searchOptions.getMinimumCoverage())
                 .setQueryType(QueryTypeConverter.map(searchOptions.getQueryType()))
                 .setScoringParameters(scoringParameters)

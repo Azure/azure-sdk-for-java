@@ -115,7 +115,7 @@ public class SearchOptionsExample {
         // Get total search results count
         // Get count property from the first page in the response
         SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
+            new SearchOptions().setIncludeTotalCount(true), new RequestOptions(), Context.NONE);
 
         Iterable<SearchPagedResponse> searchPagedResponses = results.iterableByPage();
         searchPagedResponses.forEach(page ->
@@ -128,7 +128,7 @@ public class SearchOptionsExample {
         // Get total search results count by accessing the SearchPagedResponse
         // Access Count property when iterating by page
         SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
+            new SearchOptions().setIncludeTotalCount(true), new RequestOptions(), Context.NONE);
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
         searchPagedResponseStream.forEach(page ->

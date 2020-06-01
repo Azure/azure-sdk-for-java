@@ -61,7 +61,7 @@ These settings apply only when `--tag=package-2019-05-searchindex-preview` is sp
 ``` yaml $(tag) == 'package-2019-05-searchindex-preview'
 namespace: com.azure.search.documents
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.jsonS
+- https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
 title: SearchIndexRestClient
 models-subpackage: implementation.models
 custom-types-subpackage: models

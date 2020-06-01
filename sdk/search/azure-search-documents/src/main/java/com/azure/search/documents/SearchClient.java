@@ -3,7 +3,9 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -72,6 +74,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult uploadDocuments(Iterable<?> documents) {
         return uploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -90,6 +93,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.uploadDocumentsWithResponse(documents, context).block();
     }
@@ -114,6 +118,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeDocuments(Iterable<?> documents) {
         return mergeDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -139,6 +144,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, context).block();
     }
@@ -164,6 +170,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeOrUploadDocuments(Iterable<?> documents) {
         return mergeOrUploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -190,6 +197,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, context).block();
     }
@@ -207,6 +215,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult deleteDocuments(Iterable<?> documents) {
         return deleteDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -225,6 +234,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.deleteDocumentsWithResponse(documents, context).block();
     }
@@ -243,6 +253,7 @@ public final class SearchClient {
      *
      * @return the number of documents.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public long getDocumentCount() {
         return getDocumentCountWithResponse(Context.NONE).getValue();
     }
@@ -253,6 +264,7 @@ public final class SearchClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the number of documents.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
         return asyncClient.getDocumentCountWithResponse(context).block();
     }
@@ -306,6 +318,7 @@ public final class SearchClient {
      * @return document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchDocument getDocument(String key) {
         return getDocumentWithResponse(key, null, null, Context.NONE).getValue();
     }
@@ -325,6 +338,7 @@ public final class SearchClient {
      * @return response containing a document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchDocument> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         return asyncClient.getDocumentWithResponse(key, selectedFields, requestOptions, context).block();
@@ -377,6 +391,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult indexDocuments(IndexDocumentsBatch<?> batch) {
         return indexDocumentsWithResponse(batch, Context.NONE).getValue();
     }
@@ -395,6 +410,7 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
         return asyncClient.indexDocumentsWithResponse(batch, context).block();
     }

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -242,23 +241,6 @@ public enum MicrosoftStemmingTokenizerLanguage {
 
     MicrosoftStemmingTokenizerLanguage(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a MicrosoftStemmingTokenizerLanguage instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed MicrosoftStemmingTokenizerLanguage object, or null if unable to parse.
-     */
-    @JsonCreator
-    public static MicrosoftStemmingTokenizerLanguage fromString(String value) {
-        MicrosoftStemmingTokenizerLanguage[] items = MicrosoftStemmingTokenizerLanguage.values();
-        for (MicrosoftStemmingTokenizerLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @JsonValue
