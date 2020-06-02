@@ -53,7 +53,8 @@ public class TimeUtils {
         OffsetDateTime currentYear = convertPathToTime(year);
         OffsetDateTime startYear = roundDownToNearestYear(start);
         OffsetDateTime endYear = roundDownToNearestYear(end);
-        return validTimes(currentYear, startYear, endYear);
+        return ((currentYear.isEqual(startYear) || currentYear.isAfter(startYear))
+            && (currentYear.isEqual(endYear) || currentYear.isBefore(endYear)));
     }
 
     /**
@@ -70,7 +71,8 @@ public class TimeUtils {
         OffsetDateTime hour = convertPathToTime(segment);
         OffsetDateTime startHour = roundDownToNearestHour(start);
         OffsetDateTime endHour = roundUpToNearestHour(end);
-        return validTimes(hour, startHour, endHour);
+        return ((hour.isEqual(startHour) || hour.isAfter(startHour))
+            && hour.isBefore(endHour));
     }
 
     /**
@@ -107,16 +109,5 @@ public class TimeUtils {
             return null;
         }
         return OffsetDateTime.of(time.getYear(), 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-    }
-
-    /**
-     * Validates that start <= current <= end.
-     */
-    private static boolean validTimes(OffsetDateTime current, OffsetDateTime start, OffsetDateTime end) {
-        if (current == null || start == null || end == null) {
-            return false;
-        }
-        return ((current.isEqual(start) || current.isAfter(start))
-            && (current.isEqual(end) || current.isBefore(end)));
     }
 }

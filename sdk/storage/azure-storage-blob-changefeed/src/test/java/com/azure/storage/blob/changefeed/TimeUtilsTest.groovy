@@ -60,27 +60,6 @@ class TimeUtilsTest extends Specification {
         OffsetDateTime.of(2020, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC)   || OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
     }
 
-    def "validTime"() {
-        expect:
-        TimeUtils.validTimes(current, start, end) == valid
-
-        where:
-        start | current | end  || valid
-        /* Null checks. */
-        null | null  | null || false
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null | null  || false
-        null | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null  || false
-        null | null || OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) || false
-        /* All equal. */
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | true
-        /* Increasing. */
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | true
-        OffsetDateTime.of(2019, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC) | OffsetDateTime.of(2019, 6, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2019, 8, 10, 0, 0, 0, 0, ZoneOffset.UTC) | true
-        /* Decreasing. */
-        OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | false
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | false
-    }
-
     def "validSegment"() {
         expect:
         TimeUtils.validSegment(segment, start, end) == valid

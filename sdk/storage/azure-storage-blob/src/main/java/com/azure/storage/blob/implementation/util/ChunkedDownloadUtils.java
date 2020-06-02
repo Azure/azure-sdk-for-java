@@ -33,13 +33,13 @@ public class ChunkedDownloadUtils {
      */
     public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
         BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
-        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> chunkedDownload) {
+        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloader) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = range.getCount() != null
             && range.getCount() < parallelTransferOptions.getBlockSizeLong()
             ? range.getCount() : parallelTransferOptions.getBlockSizeLong();
 
-        return chunkedDownload.apply(new BlobRange(range.getOffset(), initialChunkSize))
+        return downloader.apply(new BlobRange(range.getOffset(), initialChunkSize))
             .subscribeOn(Schedulers.elastic())
             .flatMap(response -> {
                 /*
@@ -74,7 +74,7 @@ public class ChunkedDownloadUtils {
                     && extractTotalBlobLength(blobStorageException.getResponse()
                     .getHeaders().getValue("Content-Range")) == 0) {
 
-                    return chunkedDownload.apply(new BlobRange(0, 0L))
+                    return downloader.apply(new BlobRange(0, 0L))
                         .subscribeOn(Schedulers.elastic())
                         .flatMap(response -> {
                             /*
@@ -94,22 +94,22 @@ public class ChunkedDownloadUtils {
     }
 
     public static <T> Flux<T> downloadChunk(BlobAsyncClientBase client, Integer chunkNum,
-        BlobDownloadAsyncResponse initialResponse, BlobRange range, DownloadRetryOptions retryOptions,
-        ParallelTransferOptions options, BlobRequestConditions finalConditions, boolean getRangeContentMd5,
-        long newCount, Function<BlobDownloadAsyncResponse, Flux<T>> func) {
+        BlobDownloadAsyncResponse initialResponse, BlobRange finalRange, DownloadRetryOptions downloadRetryOptions,
+        ParallelTransferOptions finalParallelTransferOptions, BlobRequestConditions finalConditions,
+        boolean rangeGetContentMd5, long newCount, Function<BlobDownloadAsyncResponse, Flux<T>> func) {
         // The first chunk was retrieved during setup.
         if (chunkNum == 0) {
             return func.apply(initialResponse);
         }
 
         // Calculate whether we need a full chunk or something smaller because we are at the end.
-        long modifier = chunkNum.longValue() * options.getBlockSizeLong();
-        long chunkSizeActual = Math.min(options.getBlockSizeLong(),
+        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSizeLong();
+        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSizeLong(),
             newCount - modifier);
-        BlobRange chunkRange = new BlobRange(range.getOffset() + modifier, chunkSizeActual);
+        BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
 
         // Make the download call.
-        return client.downloadWithResponse(chunkRange, retryOptions, finalConditions, getRangeContentMd5)
+        return client.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions, rangeGetContentMd5)
             .subscribeOn(Schedulers.elastic())
             .flatMapMany(func);
     }
