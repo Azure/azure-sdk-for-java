@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 /**
  * Represents transaction.
@@ -26,5 +27,13 @@ public class AmqpTransaction {
      */
     public ByteBuffer getTransactionId() {
         return transactionId;
+    }
+
+    /**
+     * String representation of the transaction id.
+     * @return string representation of the transaction id.
+     */
+    public String toString() {
+        return new String(transactionId.array(), Charset.defaultCharset());
     }
 }

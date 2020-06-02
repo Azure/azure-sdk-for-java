@@ -33,11 +33,12 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -45,7 +46,6 @@ import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
@@ -160,8 +160,8 @@ class ReactorSender implements AmqpSendLink {
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
     public Mono<Void> completeTransaction(AmqpTransaction transaction, boolean isCommit) {
-        return Mono.defer(() -> {
-            Message message = Proton.message();
+        return Mono.fromCallable(() -> {
+            final Message message = Proton.message();
             Discharge discharge = new Discharge();
             discharge.setFail(!isCommit);
             discharge.setTxnId(new Binary(transaction.getTransactionId().array()));
@@ -173,14 +173,17 @@ class ReactorSender implements AmqpSendLink {
             final byte[] bytes = new byte[allocationSize];
 
             int encodedSize = message.encode(bytes, 0, allocationSize);
-            return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null);
-        }).map(state -> {
-            if (!(state instanceof Accepted)) {
-                AmqpException error = new AmqpException(false, state.toString(), getErrorContext());
-                throw logger.logExceptionAsError(Exceptions.propagate(error));
-            }
-            return state;
-        }).then();
+            Tuple2<byte[], Integer> tuple = Tuples.of(bytes, encodedSize);
+            return tuple;
+        })
+            .flatMap(tuple2 -> send(tuple2.getT1(), tuple2.getT2(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null))
+            .handle((state, sink) -> {
+                if (!(state instanceof Accepted)) {
+                    logger.error("Transaction [{}] could not be completed, Service Bus status [{}].",
+                        transaction, state.toString());
+                }
+                sink.complete();
+            });
     }
 
     /**
@@ -189,7 +192,7 @@ class ReactorSender implements AmqpSendLink {
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
     public Mono<AmqpTransaction> createTransaction() {
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
             Message message = Proton.message();
             Declare declare = new Declare();
             message.setBody(new AmqpValue(declare));
@@ -199,19 +202,22 @@ class ReactorSender implements AmqpSendLink {
             final byte[] bytes = new byte[allocationSize];
 
             int encodedSize = message.encode(bytes, 0, allocationSize);
-            return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null);
-        }).map(state -> {
-            if (state instanceof Declared) {
-                Binary txnId;
-                Declared declared = (Declared) state;
-                txnId = declared.getTxnId();
-                logger.verbose("Created new TX started: {}", txnId);
-                return new AmqpTransaction(txnId.asByteBuffer());
-            } else {
-                AmqpException error = new AmqpException(false, state.toString(), getErrorContext());
-                throw logger.logExceptionAsError(Exceptions.propagate(error));
-            }
-        });
+            Tuple2<byte[], Integer> tuple = Tuples.of(bytes, encodedSize);
+            return tuple;
+        })
+            .flatMap(tuple2 -> send(tuple2.getT1(), tuple2.getT2(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null))
+            .handle((state, sink) -> {
+                if (state instanceof Declared) {
+                    Binary txnId;
+                    Declared declared = (Declared) state;
+                    txnId = declared.getTxnId();
+                    logger.verbose("Created new TX started: {}", txnId);
+                    sink.next(new AmqpTransaction(txnId.asByteBuffer()));
+                } else {
+                    logger.error("Failed to create transaction, message broker status [{}].", state.toString());
+                    sink.complete();
+                }
+            });
     }
 
     @Override
@@ -523,7 +529,6 @@ class ReactorSender implements AmqpSendLink {
             }
 
             workItem.success(outcome);
-
         } else if (outcome instanceof Rejected
             || (outcome instanceof TransactionalState && ((TransactionalState) outcome)
             .getOutcome() instanceof  Rejected)) {

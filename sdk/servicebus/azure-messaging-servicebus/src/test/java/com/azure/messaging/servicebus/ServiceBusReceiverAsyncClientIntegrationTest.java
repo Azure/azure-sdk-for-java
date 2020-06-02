@@ -208,7 +208,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
-        StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
+        StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
             .verifyComplete();
     }
 
