@@ -75,7 +75,7 @@ public final class FormTrainingClient {
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a Shared Access
      * Signature Uri).
-     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a {@link CustomFormModel}.
@@ -101,7 +101,7 @@ public final class FormTrainingClient {
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
-     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.

@@ -129,7 +129,7 @@ public final class FormTrainingAsyncClient {
      *
      * @param trainingFilesUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
-     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a {@link CustomFormModel}.
@@ -145,8 +145,7 @@ public final class FormTrainingAsyncClient {
     /**
      * Create and train a custom model.
      * <p>Models are trained using documents that are of the following content type -
-     * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
-     * Other type of content is ignored.
+     * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.Other type of content is ignored.
      * </p>
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
@@ -156,7 +155,7 @@ public final class FormTrainingAsyncClient {
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
-     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
@@ -596,13 +595,13 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String fileSourceUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels) {
+        String trainingFilesUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels) {
         return (pollingContext) -> {
             try {
-                Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
+                Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
                 TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
                     .setPrefix(filePrefix);
-                TrainRequest serviceTrainRequest = new TrainRequest().setSource(fileSourceUrl).
+                TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl).
                     setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
                     .map(response ->
