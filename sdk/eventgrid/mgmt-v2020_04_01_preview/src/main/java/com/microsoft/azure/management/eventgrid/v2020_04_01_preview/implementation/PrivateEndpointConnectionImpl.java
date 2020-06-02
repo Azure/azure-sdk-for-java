@@ -38,7 +38,7 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
         this.privateEndpointConnectionName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
-        this.parentType = IdParsingUtils.getValueFromIdByName(inner.id(), "Microsoft.EventGrid");
+        this.parentType = String.fromString(IdParsingUtils.getValueFromIdByName(inner.id(), "Microsoft.EventGrid"));
         this.privateEndpointConnectionName = IdParsingUtils.getValueFromIdByName(inner.id(), "privateEndpointConnections");
         this.parentName = IdParsingUtils.getValueFromIdByPosition(inner.id(), 7);
         //
