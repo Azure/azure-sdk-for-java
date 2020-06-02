@@ -662,7 +662,7 @@ public final class FormTrainingAsyncClient {
             List<ErrorInformation> errorInformationList = customModel.getTrainResult().getErrors();
             if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
                 throw logger.logExceptionAsError(new HttpResponseException(
-                    String.format("Invalid model created with ID: %s ", customModel.getModelInfo().getModelId()),
+                    String.format("Invalid model created with ID: %s", customModel.getModelInfo().getModelId()),
                     null, errorInformationList));
             }
         }

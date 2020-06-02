@@ -27,6 +27,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -196,6 +197,9 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     // @Test
     // abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void beginTrainingInvalidModelStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
@@ -220,6 +224,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         testRunner.accept(getTargetResourceId(), "westus2");
     }
 
+    void beginTrainingInvalidModelStatusRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(INVALID_RECEIPT_URL, false);
+    }
+    
     /**
      * Get the string of API key value based on what running mode is on.
      *

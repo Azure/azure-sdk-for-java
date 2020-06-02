@@ -462,19 +462,18 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        invalidSourceUrlRunner((invalidSourceUrl) -> {
-            beginTrainingLabeledRunner((training, useTrainingLabels) -> {
-                SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                    getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels).getSyncPoller();
-                syncPoller.waitForCompletion();
-                CustomFormModel createdModel = syncPoller.getFinalResult();
-                HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                    () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl, createdModel.getModelId()).getSyncPoller().getFinalResult());
-                ErrorInformation errorInformation = (ErrorInformation) ((List) httpResponseException.getValue()).get(0);
-                assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
-                assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
-            });
-        });
+        invalidSourceUrlRunner((invalidSourceUrl) -> beginTrainingLabeledRunner((training, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl, createdModel.getModelId()).getSyncPoller().getFinalResult());
+            ErrorInformation errorInformation = (ErrorInformation) ((List) httpResponseException.getValue()).get(0);
+            assertEquals("Analyze operation failed.", httpResponseException.getMessage());
+            assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
+            assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
+        }));
     }
 
 }
