@@ -5,14 +5,18 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AzureStorageInfoValue;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The AzureStoragePropertyDictionaryResource model. */
 @Fluent
 public final class AzureStoragePropertyDictionaryResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStoragePropertyDictionaryResourceInner.class);
+
     /*
      * Azure storage accounts.
      */
@@ -37,5 +41,18 @@ public final class AzureStoragePropertyDictionaryResourceInner extends ProxyOnly
     public AzureStoragePropertyDictionaryResourceInner withProperties(Map<String, AzureStorageInfoValue> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (properties() != null) {
+            properties().values().forEach(e -> e.validate());
+        }
     }
 }

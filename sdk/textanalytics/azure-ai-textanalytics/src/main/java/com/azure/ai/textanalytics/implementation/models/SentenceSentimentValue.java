@@ -37,7 +37,7 @@ public enum SentenceSentimentValue {
 
     /**
      * Parses a serialized value to a SentenceSentimentValue instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SentenceSentimentValue object, or null if unable to parse.
      */

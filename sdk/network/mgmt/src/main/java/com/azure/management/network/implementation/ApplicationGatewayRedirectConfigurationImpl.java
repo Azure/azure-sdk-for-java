@@ -47,7 +47,7 @@ class ApplicationGatewayRedirectConfigurationImpl
             return null;
         }
 
-        String name = ResourceUtils.nameFromResourceId(ref.getId());
+        String name = ResourceUtils.nameFromResourceId(ref.id());
         return this.parent().listeners().get(name);
     }
 
@@ -61,7 +61,7 @@ class ApplicationGatewayRedirectConfigurationImpl
         Map<String, ApplicationGatewayRequestRoutingRule> rules = new TreeMap<>();
         if (null != this.inner().requestRoutingRules()) {
             for (SubResource ruleRef : this.inner().requestRoutingRules()) {
-                String ruleName = ResourceUtils.nameFromResourceId(ruleRef.getId());
+                String ruleName = ResourceUtils.nameFromResourceId(ruleRef.id());
                 ApplicationGatewayRequestRoutingRule rule = this.parent().requestRoutingRules().get(ruleName);
                 if (null != rule) {
                     rules.put(ruleName, rule);
@@ -104,7 +104,7 @@ class ApplicationGatewayRedirectConfigurationImpl
         if (name == null) {
             this.inner().withTargetListener(null);
         } else {
-            SubResource ref = new SubResource().setId(this.parent().futureResourceId() + "/httpListeners/" + name);
+            SubResource ref = new SubResource().withId(this.parent().futureResourceId() + "/httpListeners/" + name);
             this.inner().withTargetListener(ref).withTargetUrl(null);
         }
 

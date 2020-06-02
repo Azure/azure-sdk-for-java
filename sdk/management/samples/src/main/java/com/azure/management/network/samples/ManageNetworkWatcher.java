@@ -3,7 +3,10 @@
 
 package com.azure.management.network.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -22,6 +25,7 @@ import com.azure.management.network.Topology;
 import com.azure.management.network.VerificationIPFlow;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
@@ -30,8 +34,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
-
-import java.io.File;
 
 /**
  * Azure Network sample for managing network watcher.
@@ -185,7 +187,7 @@ public final class ManageNetworkWatcher {
             //============================================================
             // Verify IP flow – verify if traffic is allowed to or from a virtual machine
             // Get the IP address of a NIC on a virtual machine
-            String ipAddress = vm.getPrimaryNetworkInterface().primaryIPConfiguration().privateIPAddress();
+            String ipAddress = vm.getPrimaryNetworkInterface().primaryIPConfiguration().privateIpAddress();
             // Test IP flow on the NIC
             System.out.println("Verifying IP flow for VM ID " + vm.id() + "...");
             VerificationIPFlow verificationIPFlow = nw.verifyIPFlow()
@@ -203,8 +205,8 @@ public final class ManageNetworkWatcher {
             // Analyze next hop – get the next hop type and IP address for a virtual machine
             System.out.println("Calculating next hop...");
             NextHop nextHop = nw.nextHop().withTargetResourceId(vm.id())
-                    .withSourceIPAddress(ipAddress)
-                    .withDestinationIPAddress("8.8.8.8")
+                    .withSourceIpAddress(ipAddress)
+                    .withDestinationIpAddress("8.8.8.8")
                     .execute();
             Utils.print(nextHop);
 
@@ -255,7 +257,10 @@ public final class ManageNetworkWatcher {
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
                     storageAccount.name(), accountKey);
 
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(storageAccount.manager().httpPipeline().getHttpClient())
+                .buildClient();
             BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(packetCaptureStorageContainer);
             // iterate over subfolders structure to get the file
             BlobItem item = blobContainerClient.listBlobs().iterator().next();
@@ -320,12 +325,16 @@ public final class ManageNetworkWatcher {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

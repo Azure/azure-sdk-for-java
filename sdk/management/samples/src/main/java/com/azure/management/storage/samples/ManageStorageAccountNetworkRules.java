@@ -3,19 +3,21 @@
 
 package com.azure.management.storage.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.ServiceEndpointType;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
-
-import java.io.File;
 
 /**
  * Azure Storage sample for managing storage account network rules -
@@ -82,7 +84,7 @@ public final class ManageStorageAccountNetworkRules {
 
             System.out.println("Creating a Public IP address");
 
-            final PublicIPAddress publicIPAddress = azure.publicIPAddresses()
+            final PublicIpAddress publicIPAddress = azure.publicIpAddresses()
                     .define(publicIpName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
@@ -162,12 +164,16 @@ public final class ManageStorageAccountNetworkRules {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

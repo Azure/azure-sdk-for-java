@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RelayServiceConnectionEntity model. */
 @JsonFlatten
 @Fluent
 public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelayServiceConnectionEntityInner.class);
+
     /*
      * The entityName property.
      */
@@ -193,5 +197,15 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
     public RelayServiceConnectionEntityInner withBiztalkUri(String biztalkUri) {
         this.biztalkUri = biztalkUri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

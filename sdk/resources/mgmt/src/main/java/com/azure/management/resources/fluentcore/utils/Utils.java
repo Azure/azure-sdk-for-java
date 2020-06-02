@@ -7,22 +7,24 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
+import com.azure.management.resources.Subscription;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Defines a few utilities.
  */
 public final class Utils {
+    private Utils() {
+    }
+
     /**
      * Converts an object Boolean to a primitive boolean.
      *
@@ -125,34 +127,6 @@ public final class Utils {
         return response.flatMap(httpResponse -> httpResponse.getBodyAsByteArray());
     }
 
-//    /**
-//     * Converts the given list of a type to paged list of a different type.
-//     *
-//     * @param list   the list to convert to paged list
-//     * @param mapper the mapper to map type in input list to output list
-//     * @param <OutT> the type of items in output paged list
-//     * @param <InT>  the type of items in input paged list
-//     * @return the paged list
-//     */
-//    public static <OutT, InT> PagedIterable<OutT> toPagedList(List<InT> list, final Function<InT, OutT> mapper) {
-//        PageImpl<InT> page = new PageImpl<>();
-//        page.setItems(list);
-//        page.setNextPageLink(null);
-//        PagedIterable<InT> pagedList = new PagedIterable<InT>(page) {
-//            @Override
-//            public Page<InT> nextPage(String nextPageLink) {
-//                return null;
-//            }
-//        };
-//        PagedListConverter<InT, OutT> converter = new PagedListConverter<InT, OutT>() {
-//            @Override
-//            public Mono<OutT> typeConvertAsync(InT inner) {
-//                return Mono.just(mapper.apply(inner));
-//            }
-//        };
-//        return converter.convert(pagedList);
-//    }
-
     /**
      * Adds a value to the list if does not already exists.
      *
@@ -194,35 +168,6 @@ public final class Utils {
     }
 
     /**
-     * Try to extract the environment the client is authenticated to based
-     * on the information on the rest client.
-     *
-     * @param restClient the RestClient instance
-     * @return the non-null AzureEnvironment
-     */
-    public static AzureEnvironment extractAzureEnvironment(RestClient restClient) {
-        AzureEnvironment environment = null;
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            environment = ((AzureTokenCredential) restClient.getCredential()).getEnvironment();
-        } else {
-            String baseUrl = restClient.getBaseUrl().toString();
-            for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-                if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT)
-                        .contains(baseUrl.toLowerCase(Locale.ROOT))) {
-                    environment = env;
-                    break;
-                }
-            }
-            if (environment == null) {
-                ClientLogger logger = new ClientLogger(Utils.class);
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl));
-            }
-        }
-        return environment;
-    }
-
-    /**
      * @param id resource id
      * @return resource group id for the resource id provided
      */
@@ -233,23 +178,6 @@ public final class Utils {
                 resourceId.resourceGroupName());
     }
 
-//    /**
-//     * Get the response body as string.
-//     *
-//     * @param responseBody response body object
-//     * @return response body in string
-//     * @throws IOException throw IOException
-//     */
-//    public static String getResponseBodyInString(ResponseBody responseBody) throws IOException {
-//        if (responseBody == null) {
-//            return null;
-//        }
-//        BufferedSource source = responseBody.source();
-//        source.request(Long.MAX_VALUE); // Buffer the entire body.
-//        Buffer buffer = source.buffer();
-//        return buffer.clone().readUtf8();
-//    }
-
     /**
      * A Retrofit service used to download a file.
      */
@@ -258,6 +186,32 @@ public final class Utils {
         Mono<HttpResponse> download(@PathParam("url") String url);
     }
 
-    private Utils() {
+    /**
+     * Gets the only subscription as the default one in the tenant if applicable.
+     *
+     * @param subscriptions the list of subscriptions
+     * @throws IllegalStateException when no subscription or more than one subscription found
+     * @return the only subscription existing in the tenant
+     */
+    public static String defaultSubscription(PagedIterable<Subscription> subscriptions) {
+        List<Subscription> subscriptionList = new ArrayList<>();
+        subscriptions.forEach(subscription -> {
+            subscriptionList.add(subscription);
+        });
+        if (subscriptionList.size() == 0) {
+            throw new ClientLogger(Utils.class).logExceptionAsError(
+                new IllegalStateException("Please create a subscription before you start resource management. "
+                + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
+        } else if (subscriptionList.size() > 1) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("More than one subscription found in your tenant. "
+                + "Please specify which one below is desired for resource management.");
+            subscriptionList.forEach(subscription -> {
+                stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
+            });
+            throw new ClientLogger(Utils.class).logExceptionAsError(
+                new IllegalStateException(stringBuilder.toString()));
+        }
+        return subscriptionList.get(0).subscriptionId();
     }
 }

@@ -12,8 +12,9 @@ import org.junit.Test;
 public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
 
     private static final String DIRRECT_THROW_ERROR_MESSAGE = "Directly throwing an exception is disallowed. Must "
-        + "throw through 'ClientLogger' API, either of 'logger.logExceptionAsError' or 'logger.logExceptionAsWarning' "
-        + "where 'logger' is type of ClientLogger from Azure Core package.";
+        + "throw through 'ClientLogger' API, either of 'logger.logExceptionAsError', 'logger.logThrowableAsError', "
+        + "'logger.logExceptionAsWarning', or 'logger.logThrowableAsWarning' where 'logger' is type of ClientLogger "
+        + "from Azure Core package.";
 
     private Checker checker;
 

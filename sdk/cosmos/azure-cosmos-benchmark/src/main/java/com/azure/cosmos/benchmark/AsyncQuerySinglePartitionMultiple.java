@@ -4,7 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.BaseSubscriber;
@@ -13,12 +13,12 @@ import reactor.core.scheduler.Schedulers;
 class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
     private static final String SQL_QUERY = "Select * from c where c.pk = \"pk\"";
-    private FeedOptions options;
+    private QueryRequestOptions options;
     private int pageCount = 0;
 
     AsyncQuerySinglePartitionMultiple(Configuration cfg) {
         super(cfg);
-        options = new FeedOptions();
+        options = new QueryRequestOptions();
         options.setPartitionKey(new PartitionKey("pk"));
     }
 

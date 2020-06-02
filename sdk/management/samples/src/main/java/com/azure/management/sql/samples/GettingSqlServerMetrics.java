@@ -3,14 +3,12 @@
 package com.azure.management.sql.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.monitor.Metric;
 import com.azure.management.monitor.MetricCollection;
 import com.azure.management.monitor.MetricDefinition;
@@ -18,6 +16,7 @@ import com.azure.management.monitor.MetricValue;
 import com.azure.management.monitor.TimeSeriesElement;
 import com.azure.management.monitor.models.MetadataValueInner;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SampleName;
@@ -28,7 +27,6 @@ import com.azure.management.sql.SqlElasticPool;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlSubscriptionUsageMetric;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -256,7 +254,7 @@ public class GettingSqlServerMetrics {
                             }
                             System.out.println("\t\tData: ");
                             for (MetricValue data : timeElement.data()) {
-                                System.out.println("\t\t\t" + data.timeStamp()
+                                System.out.println("\t\t\t" + data.timestamp()
                                     + " : (Min) " + data.minimum()
                                     + " : (Max) " + data.maximum()
                                     + " : (Avg) " + data.average()
@@ -303,7 +301,7 @@ public class GettingSqlServerMetrics {
                             }
                             System.out.println("\t\tData: ");
                             for (MetricValue data : timeElement.data()) {
-                                System.out.println("\t\t\t" + data.timeStamp()
+                                System.out.println("\t\t\t" + data.timestamp()
                                     + " : (Min) " + data.minimum()
                                     + " : (Max) " + data.maximum()
                                     + " : (Avg) " + data.average()
@@ -341,17 +339,16 @@ public class GettingSqlServerMetrics {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
-            RestClient restClient = new RestClientBuilder()
-                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withReadTimeout(150, TimeUnit.SECONDS)
+            Azure azure = Azure
+                .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
-                .withCredential(credentials).buildClient();
-            Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

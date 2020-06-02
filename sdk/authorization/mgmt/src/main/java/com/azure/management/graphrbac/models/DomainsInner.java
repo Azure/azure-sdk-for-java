@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Domains. */
 public final class DomainsInner {
+    private final ClientLogger logger = new ClientLogger(DomainsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DomainsService service;
 
@@ -54,23 +57,23 @@ public final class DomainsInner {
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("/{tenantID}/domains")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DomainListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantID,
+            @PathParam("tenantID") String tenantId,
             Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("/{tenantID}/domains/{domainName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DomainInner>> get(
             @HostParam("$host") String host,
             @PathParam("domainName") String domainName,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantID,
+            @PathParam("tenantID") String tenantId,
             Context context);
     }
 
@@ -79,12 +82,22 @@ public final class DomainsInner {
      *
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -93,7 +106,7 @@ public final class DomainsInner {
                             this.client.getHost(),
                             filter,
                             this.client.getApiVersion(),
-                            this.client.getTenantID(),
+                            this.client.getTenantId(),
                             context))
             .<PagedResponse<DomainInner>>map(
                 res ->
@@ -106,8 +119,38 @@ public final class DomainsInner {
      * Gets a list of domains for the current tenant.
      *
      * @param filter The filter to apply to the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
+        return service
+            .list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Gets a list of domains for the current tenant.
+     *
+     * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of domains for the current tenant.
      */
@@ -119,7 +162,22 @@ public final class DomainsInner {
     /**
      * Gets a list of domains for the current tenant.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param filter The filter to apply to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DomainInner> listAsync(String filter, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, context));
+    }
+
+    /**
+     * Gets a list of domains for the current tenant.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of domains for the current tenant.
      */
@@ -135,7 +193,7 @@ public final class DomainsInner {
      *
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of domains for the current tenant.
      */
@@ -147,7 +205,7 @@ public final class DomainsInner {
     /**
      * Gets a list of domains for the current tenant.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of domains for the current tenant.
      */
@@ -163,12 +221,25 @@ public final class DomainsInner {
      *
      * @param domainName name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainInner>> getWithResponseAsync(String domainName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -177,7 +248,7 @@ public final class DomainsInner {
                             this.client.getHost(),
                             domainName,
                             this.client.getApiVersion(),
-                            this.client.getTenantID(),
+                            this.client.getTenantId(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -186,8 +257,37 @@ public final class DomainsInner {
      * Gets a specific domain in the current tenant.
      *
      * @param domainName name of the domain.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific domain in the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DomainInner>> getWithResponseAsync(String domainName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
+        return service
+            .get(this.client.getHost(), domainName, this.client.getApiVersion(), this.client.getTenantId(), context);
+    }
+
+    /**
+     * Gets a specific domain in the current tenant.
+     *
+     * @param domainName name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific domain in the current tenant.
      */
@@ -209,7 +309,7 @@ public final class DomainsInner {
      *
      * @param domainName name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific domain in the current tenant.
      */

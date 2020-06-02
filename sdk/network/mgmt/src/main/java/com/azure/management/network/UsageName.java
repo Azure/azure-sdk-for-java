@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UsageName model. */
 @Fluent
 public final class UsageName {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
+
     /*
      * A string describing the resource name.
      */
@@ -60,5 +64,13 @@ public final class UsageName {
     public UsageName withLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

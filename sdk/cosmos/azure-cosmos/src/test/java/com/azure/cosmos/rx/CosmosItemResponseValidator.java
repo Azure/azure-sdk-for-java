@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public interface CosmosItemResponseValidator {
     @SuppressWarnings("rawtypes")
-    void validate(CosmosAsyncItemResponse itemResponse);
+    void validate(CosmosItemResponse itemResponse);
 
     class Builder<T> {
         private List<CosmosItemResponseValidator> validators = new ArrayList<>();
@@ -23,7 +23,7 @@ public interface CosmosItemResponseValidator {
 
                 @Override
                 @SuppressWarnings("rawtypes")
-                public void validate(CosmosAsyncItemResponse itemResponse) {
+                public void validate(CosmosItemResponse itemResponse) {
                     assertThat(itemResponse.getItem()).isNotNull();
                     // This could be validated for potential improvement by remove fromObject
                     assertThat(CosmosItemProperties.fromObject(itemResponse.getItem())
@@ -38,7 +38,7 @@ public interface CosmosItemResponseValidator {
 
                 @Override
                 @SuppressWarnings("rawtypes")
-                public void validate(CosmosAsyncItemResponse itemResponse) {
+                public void validate(CosmosItemResponse itemResponse) {
                     assertThat(itemResponse.getItem()).isNotNull();
                     assertThat(ModelBridgeInternal
                         .getObjectFromJsonSerializable(CosmosItemProperties.fromObject(itemResponse.getItem()), propertyName))
@@ -53,7 +53,7 @@ public interface CosmosItemResponseValidator {
             return new CosmosItemResponseValidator() {
                 @Override
                 @SuppressWarnings("rawtypes")
-                public void validate(CosmosAsyncItemResponse itemResponse) {
+                public void validate(CosmosItemResponse itemResponse) {
                     for (CosmosItemResponseValidator validator : validators) {
                         validator.validate(itemResponse);
                     }
@@ -66,7 +66,7 @@ public interface CosmosItemResponseValidator {
 
                 @Override
                 @SuppressWarnings("rawtypes")
-                public void validate(CosmosAsyncItemResponse itemResponse) {
+                public void validate(CosmosItemResponse itemResponse) {
                     assertThat(itemResponse.getItem()).isNull();
                 }
             });

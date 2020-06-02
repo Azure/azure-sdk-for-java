@@ -16,7 +16,7 @@ class TransparentDataEncryptionActivityImpl extends WrapperImpl<TransparentDataE
 
     protected TransparentDataEncryptionActivityImpl(TransparentDataEncryptionActivityInner innerObject) {
         super(innerObject);
-        this.resourceId = ResourceId.fromString(this.inner().getId());
+        this.resourceId = ResourceId.fromString(this.inner().id());
     }
 
     @Override

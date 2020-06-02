@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerServiceLinuxProfile model. */
 @Fluent
 public final class ContainerServiceLinuxProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceLinuxProfile.class);
+
     /*
      * The administrator username to use for Linux VMs.
      */
@@ -60,5 +64,27 @@ public final class ContainerServiceLinuxProfile {
     public ContainerServiceLinuxProfile withSsh(ContainerServiceSshConfiguration ssh) {
         this.ssh = ssh;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (adminUsername() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
+        }
+        if (ssh() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ssh in model ContainerServiceLinuxProfile"));
+        } else {
+            ssh().validate();
+        }
     }
 }

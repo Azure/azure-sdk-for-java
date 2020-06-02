@@ -4,18 +4,22 @@
 package com.azure.management.network.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
 import org.apache.commons.lang.time.StopWatch;
@@ -108,7 +112,7 @@ public final class ManageApplicationGateway {
             // Create a public IP address for the Application Gateway
             System.out.println("Creating a public IP address for the application gateway ...");
 
-            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(pipName)
+            PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(pipName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .create();
@@ -151,7 +155,7 @@ public final class ManageApplicationGateway {
 
                     //=============================================================
                     // Create 1 public IP address creatable
-                    Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses()
+                    Creatable<PublicIpAddress> publicIPAddressCreatable = azure.publicIpAddresses()
                             .define(String.format("%s-%d", linuxVMNamePrefix, j))
                             .withRegion(regions[i])
                             .withExistingResourceGroup(resourceGroup)
@@ -205,7 +209,7 @@ public final class ManageApplicationGateway {
             System.out.println("IP Addresses in the backend pools are - ");
             for (int i = 0; i < backendPools; i++) {
                 for (int j = 0; j < vmCountInAPool; j++) {
-                    PublicIPAddress pip = (PublicIPAddress) virtualMachines
+                    PublicIpAddress pip = (PublicIpAddress) virtualMachines
                             .createdRelatedResource(publicIpCreatableKeys[i][j]);
                     pip.refresh();
                     ipAddresses[i][j] = pip.ipAddress();
@@ -255,7 +259,7 @@ public final class ManageApplicationGateway {
                     .toBackendIPAddress(ipAddresses[1][3])
                     .attach()
 
-                    .withExistingPublicIPAddress(publicIPAddress)
+                    .withExistingPublicIpAddress(publicIPAddress)
                     .create();
 
             stopwatch.stop();
@@ -284,7 +288,7 @@ public final class ManageApplicationGateway {
                     .toBackendIPAddress(ipAddresses[0][1])
                     .toBackendIPAddress(ipAddresses[0][2])
                     .toBackendIPAddress(ipAddresses[0][3])
-                    .withHostName("www.contoso.com")
+                    .withHostname("www.contoso.com")
                     .withCookieBasedAffinity()
                     .attach()
                     .apply();
@@ -324,12 +328,16 @@ public final class ManageApplicationGateway {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

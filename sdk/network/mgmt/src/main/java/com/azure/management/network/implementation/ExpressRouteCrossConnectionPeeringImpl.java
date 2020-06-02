@@ -68,8 +68,8 @@ class ExpressRouteCrossConnectionPeeringImpl
     }
 
     @Override
-    public ExpressRouteCrossConnectionPeeringImpl withPeerASN(long peerASN) {
-        inner().withPeerASN(peerASN);
+    public ExpressRouteCrossConnectionPeeringImpl withPeerAsn(long peerASN) {
+        inner().withPeerAsn(peerASN);
         return this;
     }
 
@@ -96,8 +96,8 @@ class ExpressRouteCrossConnectionPeeringImpl
     }
 
     @Override
-    public ExpressRouteCrossConnectionPeeringImpl withCustomerASN(int customerASN) {
-        ensureMicrosoftPeeringConfig().withCustomerASN(customerASN);
+    public ExpressRouteCrossConnectionPeeringImpl withCustomerAsn(int customerASN) {
+        ensureMicrosoftPeeringConfig().withCustomerAsn(customerASN);
         return this;
     }
 
@@ -120,7 +120,7 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -140,7 +140,7 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
@@ -164,13 +164,13 @@ class ExpressRouteCrossConnectionPeeringImpl
     }
 
     @Override
-    public int azureASN() {
-        return Utils.toPrimitiveInt(inner().azureASN());
+    public int azureAsn() {
+        return Utils.toPrimitiveInt(inner().azureAsn());
     }
 
     @Override
-    public long peerASN() {
-        return Utils.toPrimitiveLong(inner().peerASN());
+    public long peerAsn() {
+        return Utils.toPrimitiveLong(inner().peerAsn());
     }
 
     @Override

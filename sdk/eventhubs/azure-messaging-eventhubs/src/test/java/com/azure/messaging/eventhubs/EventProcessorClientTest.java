@@ -8,12 +8,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +45,7 @@ import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -142,7 +147,8 @@ public class EventProcessorClientTest {
 
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, null, false);
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
 
@@ -211,7 +217,8 @@ public class EventProcessorClientTest {
         properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
         when(eventData1.getProperties()).thenReturn(properties);
-        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class))).thenReturn(Flux.just(getEvent(eventData1)));
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1)));
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
@@ -231,8 +238,9 @@ public class EventProcessorClientTest {
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
         //Act
-        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, null, false);
 
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
@@ -263,8 +271,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
-        when(eventHubAsyncClient
-            .createConsumer(anyString(), anyInt()))
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1, consumer2, consumer3);
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
@@ -294,7 +301,8 @@ public class EventProcessorClientTest {
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
             "test-consumer",
-            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
+            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, null, false);
         eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessorClient.stop();
@@ -318,16 +326,183 @@ public class EventProcessorClientTest {
             }).verifyComplete();
     }
 
+
+    @Test
+    public void testBatchReceive() throws Exception {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt()))
+            .thenReturn(consumer1);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData3.getSequenceNumber()).thenReturn(3L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData3.getOffset()).thenReturn(150L);
+
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+        testPartitionProcessor.countDownLatch = countDownLatch;
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            2, Duration.ofSeconds(1), true);
+
+        // Act
+        eventProcessorClient.start();
+        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        eventProcessorClient.stop();
+
+        // Assert
+        assertTrue(completed);
+        assertIterableEquals(testPartitionProcessor.receivedEventsCount, Arrays.asList(2, 1));
+    }
+
+    @Test
+    public void testBatchReceiveHeartBeat() throws InterruptedException {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt()))
+            .thenReturn(consumer1);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)).delayElements(Duration.ofSeconds(3)));
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData3.getSequenceNumber()).thenReturn(3L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData3.getOffset()).thenReturn(150L);
+
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        testPartitionProcessor.countDownLatch = countDownLatch;
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            2, Duration.ofSeconds(1), true);
+
+        // Act
+        eventProcessorClient.start();
+        boolean completed = countDownLatch.await(20, TimeUnit.SECONDS);
+        eventProcessorClient.stop();
+
+        // Assert
+        assertTrue(completed);
+        assertTrue(testPartitionProcessor.receivedEventsCount.contains(0));
+        assertTrue(testPartitionProcessor.receivedEventsCount.contains(1));
+    }
+
+    @Test
+    public void testSingleEventReceiveHeartBeat() throws InterruptedException {
+        // Arrange
+        final Tracer tracer = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt()))
+            .thenReturn(consumer1);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)).delayElements(Duration.ofSeconds(3)));
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData1.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData2.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+
+        String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
+
+        when(eventData1.getProperties()).thenReturn(properties);
+        when(eventData2.getProperties()).thenReturn(properties);
+        when(tracer.extractContext(eq(diagnosticId), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
+            }
+        );
+        when(tracer.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
+                    return;
+                }).addData(PARENT_SPAN_KEY, "value2");
+            }
+        );
+
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        testPartitionProcessor.countDownLatch = countDownLatch;
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, Duration.ofSeconds(1), false);
+        eventProcessorClient.start();
+        boolean completed = countDownLatch.await(20, TimeUnit.SECONDS);
+        eventProcessorClient.stop();
+        assertTrue(completed);
+        assertTrue(testPartitionProcessor.receivedEventsCount.contains(0));
+        assertTrue(testPartitionProcessor.receivedEventsCount.contains(1));
+    }
+
     private PartitionEvent getEvent(EventData event) {
         PartitionContext context = new PartitionContext("test-ns", "foo", "bar", "baz");
         return new PartitionEvent(context, event, null);
     }
 
     private static final class TestPartitionProcessor extends PartitionProcessor {
+        List<Integer> receivedEventsCount = new ArrayList<>();
+        CountDownLatch countDownLatch;
 
         @Override
         public void processEvent(EventContext eventContext) {
-            eventContext.updateCheckpoint();
+            if (eventContext.getEventData() != null) {
+                receivedEventsCount.add(1);
+                if (countDownLatch != null) {
+                    countDownLatch.countDown();
+                    eventContext.updateCheckpoint();
+                }
+            } else {
+                receivedEventsCount.add(0);
+            }
+        }
+
+        @Override
+        public void processEventBatch(EventBatchContext eventBatchContext) {
+            receivedEventsCount.add(eventBatchContext.getEvents().size());
+            eventBatchContext.getEvents().forEach(eventContext -> {
+                if (countDownLatch != null) {
+                    countDownLatch.countDown();
+                }
+            });
+            eventBatchContext.updateCheckpoint();
         }
 
         @Override

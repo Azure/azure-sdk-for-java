@@ -4,6 +4,7 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.compute.models.VirtualMachineScaleSetVMInner;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
@@ -241,6 +242,9 @@ public interface VirtualMachineScaleSetVM
 
     /** @return the network interfaces associated with this virtual machine instance. */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
+
+    /** @return the network interfaces associated with this virtual machine instance. */
+    PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesAsync();
 
     /**
      * @return Get specifies whether the model applied to the virtual machine is the model of the virtual machine scale

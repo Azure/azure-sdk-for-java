@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 

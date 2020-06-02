@@ -3,18 +3,23 @@
 
 package com.azure.management.resources.fluentcore.arm.implementation;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.azure.management.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 
-import java.net.Proxy;
-import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The implementation for {@link AzureConfigurable} and the base class for
@@ -23,90 +28,104 @@ import java.util.concurrent.TimeUnit;
  * @param <T> the type of the configurable interface
  */
 public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
-        implements AzureConfigurable<T> {
-    protected RestClientBuilder restClientBuilder;
+    implements AzureConfigurable<T> {
+    private HttpClient httpClient;
+    private HttpLogOptions httpLogOptions;
+    private List<HttpPipelinePolicy> policies;
+    private List<String> scopes;
+    private RetryPolicy retryPolicy;
+    private Configuration configuration;
+    private List<TokenCredential> tokens;
 
     protected AzureConfigurableImpl() {
-        this.restClientBuilder = new RestClientBuilder()
-                .withSerializerAdapter(new AzureJacksonAdapter());
+        policies = new ArrayList<>();
+        scopes = new ArrayList<>();
+        tokens = new ArrayList<>();
+        retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
     }
 
     @Override
-    public T withLogOptions(HttpLogOptions level) {
-        this.restClientBuilder = this.restClientBuilder.withHttpLogOptions(level);
+    public T withLogOptions(HttpLogOptions httpLogOptions) {
+        Objects.requireNonNull(httpLogOptions);
+        this.httpLogOptions = httpLogOptions;
         return (T) this;
     }
 
     @Override
     public T withLogLevel(HttpLogDetailLevel logLevel) {
-        this.restClientBuilder = this.restClientBuilder.withLogLevel(logLevel);
+        Objects.requireNonNull(logLevel);
+        this.httpLogOptions = httpLogOptions.setLogLevel(logLevel);
         return (T) this;
     }
 
     @Override
     public T withPolicy(HttpPipelinePolicy policy) {
-        this.restClientBuilder = this.restClientBuilder.withPolicy(policy);
+        Objects.requireNonNull(policy);
+        policies.add(policy);
         return (T) this;
     }
 
     @Override
-    public T withAuxiliaryCredentials(AzureTokenCredential... tokens) {
-        return null;
-    }
-
-//    @Override
-//    public T withAuxiliaryCredentials(AzureTokenCredentials... tokens) {
-//        if (tokens != null) {
-//            if (tokens.length > 3) {
-//                throw new IllegalArgumentException("Only can hold up to three auxiliary tokens.");
-//            }
-//            AuxiliaryCredentialsInterceptor interceptor = new AuxiliaryCredentialsInterceptor(tokens);
-//            this.restClientBuilder = this.restClientBuilder.withInterceptor(interceptor);
-//        }
-//        return (T) this;
-//    }
-
-    @Override
-    public T withUserAgent(String userAgent) {
-        this.restClientBuilder = this.restClientBuilder.withUserAgent(userAgent);
+    public T withAuxiliaryCredential(TokenCredential token) {
+        Objects.requireNonNull(token);
+        this.tokens.add(token);
         return (T) this;
     }
 
     @Override
-    public T withReadTimeout(long timeout, TimeUnit unit) {
-        return null;
+    public T withAuxiliaryCredentials(List<TokenCredential> tokens) {
+        Objects.requireNonNull(tokens);
+        this.tokens.addAll(tokens);
+        return (T) this;
     }
 
     @Override
-    public T withConnectionTimeout(long timeout, TimeUnit unit) {
-        return null;
+    public T withRetryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy);
+        this.retryPolicy = retryPolicy;
+        return (T) this;
     }
 
     @Override
-    public T useHttpClientThreadPool(boolean useHttpClientThreadPool) {
-        return null;
+    public T withScope(String scope) {
+        Objects.requireNonNull(scope);
+        this.scopes.add(scope);
+        return (T) this;
     }
 
     @Override
-    public T withProxy(Proxy proxy) {
-        return null;
+    public T withScopes(List<String> scopes) {
+        Objects.requireNonNull(scopes);
+        this.scopes.addAll(scopes);
+        return (T) this;
     }
 
-    protected RestClient buildRestClient(AzureTokenCredential credential, AzureEnvironment.Endpoint endpoint) {
-        RestClient client = restClientBuilder
-                .withBaseUrl(credential.getEnvironment(), endpoint)
-                .withCredential(credential)
-//                .withPolicy(new ProviderRegistrationPolicy())
-//                .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient();
-        // TODO: Add proxy support
-//        if (client.httpClient().proxy() != null) {
-//            credentials.withProxy(client.httpClient().proxy());
-//        }
-        return client;
+    @Override
+    public T withHttpClient(HttpClient httpClient) {
+        Objects.requireNonNull(httpClient);
+        this.httpClient = httpClient;
+        return (T) this;
     }
 
-    protected RestClient buildRestClient(AzureTokenCredential credential) {
-        return buildRestClient(credential, AzureEnvironment.Endpoint.RESOURCE_MANAGER);
+    @Override
+    public T withConfiguration(Configuration configuration) {
+        Objects.requireNonNull(configuration);
+        this.configuration = configuration;
+        return (T) this;
+    }
+
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential);
+        if (!tokens.isEmpty()) {
+            policies.add(
+                new AuxiliaryAuthenticationPolicy(profile.environment(), tokens.toArray(new TokenCredential[0])));
+        }
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, scopes(), httpLogOptions, configuration,
+            retryPolicy, policies, httpClient);
+    }
+
+    private String[] scopes() {
+        return scopes.isEmpty() ? null : scopes.toArray(new String[0]);
     }
 }

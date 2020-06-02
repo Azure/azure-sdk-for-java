@@ -25,9 +25,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -35,6 +36,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnections. */
 public final class PrivateEndpointConnectionsInner {
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointConnectionsService service;
 
@@ -66,7 +69,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateEndpointConnectionInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -81,7 +84,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -97,7 +100,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -112,7 +115,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/privateEndpointConnections")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateEndpointConnectionListResultInner>> listByServer(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -126,7 +129,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateEndpointConnectionInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -142,7 +145,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -155,7 +158,7 @@ public final class PrivateEndpointConnectionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateEndpointConnectionListResultInner>> listByServerNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -168,13 +171,36 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String privateEndpointConnectionName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -198,8 +224,59 @@ public final class PrivateEndpointConnectionsInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                privateEndpointConnectionName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -225,7 +302,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -244,7 +321,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -254,6 +331,34 @@ public final class PrivateEndpointConnectionsInner {
         String serverName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -280,7 +385,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -312,7 +417,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -333,13 +438,36 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String serverName, String privateEndpointConnectionName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -364,7 +492,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -387,7 +515,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -402,13 +530,30 @@ public final class PrivateEndpointConnectionsInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoint connections on a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServerSinglePageAsync(
         String resourceGroupName, String serverName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -439,8 +584,60 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-01-preview";
+        return service
+            .listByServer(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoint connections on a server.
      */
@@ -457,8 +654,28 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PrivateEndpointConnectionInner> listByServerAsync(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedFlux<>(
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoint connections on a server.
      */
@@ -476,7 +693,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -486,6 +703,34 @@ public final class PrivateEndpointConnectionsInner {
         String serverName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -511,8 +756,70 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2018-06-01-preview";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                privateEndpointConnectionName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                parameters,
+                context);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
+     * @param parameters A private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -543,7 +850,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -565,13 +872,36 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
         String resourceGroupName, String serverName, String privateEndpointConnectionName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -595,8 +925,59 @@ public final class PrivateEndpointConnectionsInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String serverName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-01-preview";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                privateEndpointConnectionName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -615,7 +996,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -628,12 +1009,15 @@ public final class PrivateEndpointConnectionsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServerNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, context))
             .<PagedResponse<PrivateEndpointConnectionInner>>map(
@@ -646,5 +1030,34 @@ public final class PrivateEndpointConnectionsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServerNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByServerNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

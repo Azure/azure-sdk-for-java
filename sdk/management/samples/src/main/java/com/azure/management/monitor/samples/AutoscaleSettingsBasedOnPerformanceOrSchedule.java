@@ -3,7 +3,10 @@
 
 package com.azure.management.monitor.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.appservice.WebApp;
@@ -15,10 +18,10 @@ import com.azure.management.monitor.ScaleDirection;
 import com.azure.management.monitor.ScaleType;
 import com.azure.management.monitor.TimeAggregationType;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.time.Duration;
 
 /**
@@ -96,7 +99,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             System.out.println("Auto-scale Setting: " + scaleSettings.id());
 
-            String deployedWebAppUrl = "https://" + webapp.hostNames().iterator().next() + "/";
+            String deployedWebAppUrl = "https://" + webapp.hostnames().iterator().next() + "/";
 
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {
@@ -136,12 +139,16 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
     public static void main(String[] args) {
         try {
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

@@ -3,12 +3,14 @@
 
 package com.azure.management.resources.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
-
-import java.io.File;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 /**
  * Azure Resource sample for managing resource groups -
@@ -116,12 +118,16 @@ public final class ManageResourceGroup {
             //=================================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             runSample(azure);
         } catch (Exception e) {

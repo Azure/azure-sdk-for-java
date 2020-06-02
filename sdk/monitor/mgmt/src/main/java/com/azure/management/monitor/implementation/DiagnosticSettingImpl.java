@@ -161,7 +161,7 @@ class DiagnosticSettingImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -212,7 +212,7 @@ class DiagnosticSettingImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -241,11 +241,11 @@ class DiagnosticSettingImpl
         if (!isInCreateMode()) {
             this.resourceId =
                 inner
-                    .getId()
+                    .id()
                     .substring(
                         0,
-                        this.inner().getId().length()
-                            - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.inner().getName()).length());
+                        this.inner().id().length()
+                            - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.inner().name()).length());
             for (MetricSettings ms : this.inner().metrics()) {
                 this.metricSet.put(ms.category(), ms);
             }

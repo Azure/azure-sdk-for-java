@@ -4,44 +4,39 @@ parameters:
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true'
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
-      OSName: 'Linux'
       OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.8'
       RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
-      OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       RunTitle: 'macOS on Java 1.8'
     Windows - Java 8:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       RunTitle: 'Windows on Java 1.8'
     Linux - Java 11:
-      OSName: 'Linux'
       OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.11'
       RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
-      OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.11'
       RunTitle: 'macOS on Java 1.11'
     Windows - Java 11:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
     Windows From Source - Java 8:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       RunTitle: 'From Source: Windows on Java 1.8'
+      PLSkipOptions: '!com.azure:jacoco-test-coverage'
+      AdditionalOptions: '-amd'
       TestFromSource: true
 
 jobs:
@@ -103,7 +98,7 @@ jobs:
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
-        
+
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
@@ -135,11 +130,15 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      - name: OSVmImage
+        value: 'windows-2019'
 
     pool:
-      vmImage: 'windows-2019'
+      vmImage: $(OSVmImage)
 
     steps:
+      - template: ../steps/update-version-fix.yml
+
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"
@@ -211,9 +210,9 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - template: ../steps/verify-agent-os.yml
-        parameters:
-          OSName: $(OSName)
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+
+      - template: ../steps/update-version-fix.yml
 
       - template: ../steps/cache-maven-repository.yml
 
@@ -262,7 +261,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} -pl $(ProjectList) -am
+          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)

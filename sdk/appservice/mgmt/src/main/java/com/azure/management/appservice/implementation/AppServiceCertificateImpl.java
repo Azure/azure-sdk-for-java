@@ -119,7 +119,7 @@ class AppServiceCertificateImpl
         if (pfxFileUrl != null) {
             pfxBytes =
                 Utils
-                    .downloadFileAsync(pfxFileUrl, this.manager().restClient().getHttpPipeline())
+                    .downloadFileAsync(pfxFileUrl, this.manager().httpPipeline())
                     .map(
                         bytes -> {
                             inner().withPfxBlob(bytes);

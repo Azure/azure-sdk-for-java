@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ManagedServiceIdentity model. */
 @Fluent
 public final class ManagedServiceIdentity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedServiceIdentity.class);
+
     /*
      * The principal id of the system assigned identity. This property will
      * only be provided for a system assigned identity.
@@ -109,5 +113,16 @@ public final class ManagedServiceIdentity {
         Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities().values().forEach(e -> e.validate());
+        }
     }
 }

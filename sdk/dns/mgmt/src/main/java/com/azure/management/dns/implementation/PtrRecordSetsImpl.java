@@ -67,6 +67,6 @@ class PtrRecordSetsImpl extends DnsRecordSetsBaseImpl<PtrRecordSet, PtrRecordSet
         if (inner == null) {
             return null;
         }
-        return new PtrRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new PtrRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

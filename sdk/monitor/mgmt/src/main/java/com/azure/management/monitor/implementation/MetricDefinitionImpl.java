@@ -99,7 +99,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
     }
 
     public String id() {
-        return this.inner.getId();
+        return this.inner.id();
     }
 
     @Override

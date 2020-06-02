@@ -5,6 +5,7 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.BootDiagnosticsInstanceView;
 import com.azure.management.compute.DiskInstanceView;
 import com.azure.management.compute.InstanceViewStatus;
@@ -12,12 +13,15 @@ import com.azure.management.compute.MaintenanceRedeployStatus;
 import com.azure.management.compute.VirtualMachineAgentInstanceView;
 import com.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.azure.management.compute.VirtualMachineHealthStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetVMInstanceView model. */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceViewInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceViewInner.class);
+
     /*
      * The Update Domain count.
      */
@@ -303,5 +307,34 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     public VirtualMachineScaleSetVMInstanceViewInner withPlacementGroupId(String placementGroupId) {
         this.placementGroupId = placementGroupId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vmAgent() != null) {
+            vmAgent().validate();
+        }
+        if (maintenanceRedeployStatus() != null) {
+            maintenanceRedeployStatus().validate();
+        }
+        if (disks() != null) {
+            disks().forEach(e -> e.validate());
+        }
+        if (extensions() != null) {
+            extensions().forEach(e -> e.validate());
+        }
+        if (vmHealth() != null) {
+            vmHealth().validate();
+        }
+        if (bootDiagnostics() != null) {
+            bootDiagnostics().validate();
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 }

@@ -25,17 +25,19 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.management.cosmosdb.ErrorResponseException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnections. */
 public final class PrivateEndpointConnectionsInner {
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointConnectionsService service;
 
@@ -67,7 +69,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateEndpointConnectionListResultInner>> listByDatabaseAccount(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -81,7 +83,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateEndpointConnectionInner>> get(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -96,7 +98,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -112,7 +114,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -127,7 +129,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateEndpointConnectionInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -143,7 +145,7 @@ public final class PrivateEndpointConnectionsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -160,13 +162,30 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByDatabaseAccountSinglePageAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01-preview";
         return FluxUtil
             .withContext(
@@ -191,8 +210,54 @@ public final class PrivateEndpointConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByDatabaseAccountSinglePageAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01-preview";
+        return service
+            .listByDatabaseAccount(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accountName,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * List all private endpoint connections on a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections.
      */
@@ -207,8 +272,25 @@ public final class PrivateEndpointConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PrivateEndpointConnectionInner> listByDatabaseAccountAsync(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(() -> listByDatabaseAccountSinglePageAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
+     * List all private endpoint connections on a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections.
      */
@@ -225,13 +307,36 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01-preview";
         return FluxUtil
             .withContext(
@@ -254,8 +359,58 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accountName,
+                privateEndpointConnectionName,
+                context);
+    }
+
+    /**
+     * Gets a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -280,7 +435,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -298,7 +453,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -308,6 +463,34 @@ public final class PrivateEndpointConnectionsInner {
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-08-01-preview";
         return FluxUtil
             .withContext(
@@ -333,7 +516,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -364,7 +547,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -384,13 +567,36 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01-preview";
         return FluxUtil
             .withContext(
@@ -414,7 +620,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -436,7 +642,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -452,7 +658,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -462,6 +668,34 @@ public final class PrivateEndpointConnectionsInner {
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-08-01-preview";
         return FluxUtil
             .withContext(
@@ -486,8 +720,69 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-08-01-preview";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accountName,
+                privateEndpointConnectionName,
+                parameters,
+                context);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -517,7 +812,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
@@ -538,13 +833,36 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01-preview";
         return FluxUtil
             .withContext(
@@ -567,8 +885,58 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01-preview";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accountName,
+                privateEndpointConnectionName,
+                context);
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -586,7 +954,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -57,22 +57,12 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 # Download
 
-
-**7.0.0**
-
-If you are using released builds from 7.0.0, add the following to your POM file:
-
-[//]: # ({x-version-update-start;com.microsoft.azure:com.microsoft.azure;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-batch;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-batch</artifactId>
-    <version>7.0.0</version>
-</dependency>
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-client-runtime</artifactId>
-    <version>1.6.4</version>
+    <version>8.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

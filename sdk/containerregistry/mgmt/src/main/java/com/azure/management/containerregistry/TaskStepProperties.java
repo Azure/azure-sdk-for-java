@@ -5,6 +5,8 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,6 +27,8 @@ import java.util.List;
 })
 @Fluent
 public class TaskStepProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskStepProperties.class);
+
     /*
      * List of base image dependencies for a step.
      */
@@ -93,5 +97,16 @@ public class TaskStepProperties {
     public TaskStepProperties withContextAccessToken(String contextAccessToken) {
         this.contextAccessToken = contextAccessToken;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (baseImageDependencies() != null) {
+            baseImageDependencies().forEach(e -> e.validate());
+        }
     }
 }

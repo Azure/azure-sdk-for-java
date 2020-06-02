@@ -5,12 +5,16 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.DeploymentProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Deployment model. */
 @Fluent
 public final class DeploymentInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentInner.class);
+
     /*
      * The location to store the deployment data.
      */
@@ -61,5 +65,20 @@ public final class DeploymentInner {
     public DeploymentInner withProperties(DeploymentProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property properties in model DeploymentInner"));
+        } else {
+            properties().validate();
+        }
     }
 }

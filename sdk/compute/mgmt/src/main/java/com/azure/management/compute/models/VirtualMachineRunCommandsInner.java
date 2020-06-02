@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineRunCommands. */
 public final class VirtualMachineRunCommandsInner {
+    private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineRunCommandsService service;
 
@@ -57,7 +60,7 @@ public final class VirtualMachineRunCommandsInner {
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RunCommandListResultInner>> list(
             @HostParam("$host") String host,
             @PathParam("location") String location,
@@ -66,11 +69,9 @@ public final class VirtualMachineRunCommandsInner {
             Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands"
-                + "/{commandId}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands/{commandId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RunCommandDocumentInner>> get(
             @HostParam("$host") String host,
             @PathParam("location") String location,
@@ -82,7 +83,7 @@ public final class VirtualMachineRunCommandsInner {
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RunCommandListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -92,12 +93,25 @@ public final class VirtualMachineRunCommandsInner {
      *
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RunCommandDocumentBaseInner>> listSinglePageAsync(String location) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -119,8 +133,47 @@ public final class VirtualMachineRunCommandsInner {
      * Lists all available run commands for a subscription in a location.
      *
      * @param location The location upon which run commands is queried.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RunCommandDocumentBaseInner>> listSinglePageAsync(String location, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-03-01";
+        return service
+            .list(this.client.getHost(), location, apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all available run commands for a subscription in a location.
+     *
+     * @param location The location upon which run commands is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response.
      */
@@ -133,8 +186,24 @@ public final class VirtualMachineRunCommandsInner {
      * Lists all available run commands for a subscription in a location.
      *
      * @param location The location upon which run commands is queried.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RunCommandDocumentBaseInner> listAsync(String location, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all available run commands for a subscription in a location.
+     *
+     * @param location The location upon which run commands is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response.
      */
@@ -149,12 +218,28 @@ public final class VirtualMachineRunCommandsInner {
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RunCommandDocumentInner>> getWithResponseAsync(String location, String commandId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (commandId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -175,8 +260,43 @@ public final class VirtualMachineRunCommandsInner {
      *
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specific run command for a subscription in a location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RunCommandDocumentInner>> getWithResponseAsync(
+        String location, String commandId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (commandId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-03-01";
+        return service
+            .get(this.client.getHost(), location, commandId, apiVersion, this.client.getSubscriptionId(), context);
+    }
+
+    /**
+     * Gets specific run command for a subscription in a location.
+     *
+     * @param location The location upon which run commands is queried.
+     * @param commandId The command id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location.
      */
@@ -199,7 +319,7 @@ public final class VirtualMachineRunCommandsInner {
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location.
      */
@@ -213,12 +333,15 @@ public final class VirtualMachineRunCommandsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RunCommandDocumentBaseInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<RunCommandDocumentBaseInner>>map(
@@ -231,5 +354,33 @@ public final class VirtualMachineRunCommandsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RunCommandDocumentBaseInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

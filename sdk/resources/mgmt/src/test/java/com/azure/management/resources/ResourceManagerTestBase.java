@@ -3,8 +3,9 @@
 
 package com.azure.management.resources;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 
 /**
@@ -14,11 +15,12 @@ class ResourceManagerTestBase extends TestBase {
     protected ResourceManager resourceClient;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         resourceClient = ResourceManager
-                .authenticate(restClient)
+                .authenticate(httpPipeline, profile)
                 .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+                .withDefaultSubscription();
+
     }
 
     @Override

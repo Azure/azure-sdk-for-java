@@ -3,6 +3,9 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.JavaVersion;
@@ -11,11 +14,9 @@ import com.azure.management.appservice.RuntimeStack;
 import com.azure.management.appservice.WebApp;
 import com.azure.management.appservice.WebContainer;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-
-import java.io.File;
-
 
 /**
  * Azure App Service basic sample for managing web apps.
@@ -171,13 +172,16 @@ public final class ManageLinuxWebAppBasic {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

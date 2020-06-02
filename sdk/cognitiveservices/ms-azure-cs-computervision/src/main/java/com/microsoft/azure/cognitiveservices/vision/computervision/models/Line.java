@@ -16,22 +16,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Line {
     /**
+     * The BCP-47 language code of the recognized text line. Only provided
+     * where the language of the line differs from the page's.
+     */
+    @JsonProperty(value = "language")
+    private String language;
+
+    /**
      * Bounding box of a recognized line.
      */
-    @JsonProperty(value = "boundingBox")
+    @JsonProperty(value = "boundingBox", required = true)
     private List<Double> boundingBox;
 
     /**
      * The text content of the line.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /**
      * List of words in the text line.
      */
-    @JsonProperty(value = "words")
+    @JsonProperty(value = "words", required = true)
     private List<Word> words;
+
+    /**
+     * Get the language value.
+     *
+     * @return the language value
+     */
+    public String language() {
+        return this.language;
+    }
+
+    /**
+     * Set the language value.
+     *
+     * @param language the language value to set
+     * @return the Line object itself.
+     */
+    public Line withLanguage(String language) {
+        this.language = language;
+        return this;
+    }
 
     /**
      * Get the boundingBox value.

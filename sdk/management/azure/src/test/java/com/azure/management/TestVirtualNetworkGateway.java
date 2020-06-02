@@ -47,7 +47,7 @@ public class TestVirtualNetworkGateway {
     public class Basic extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
 
         public Basic(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.getSdkContext());
+            initializeResourceNames(networkManager.sdkContext());
         }
 
         @Override
@@ -95,7 +95,7 @@ public class TestVirtualNetworkGateway {
     /** Test Site-To-Site Virtual Network Gateway Connection. */
     public class SiteToSite extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
         public SiteToSite(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.getSdkContext());
+            initializeResourceNames(networkManager.sdkContext());
         }
 
         @Override
@@ -107,7 +107,7 @@ public class TestVirtualNetworkGateway {
         public VirtualNetworkGateway createResource(VirtualNetworkGateways gateways) throws Exception {
 
             // Create virtual network gateway
-            initializeResourceNames(gateways.manager().getSdkContext());
+            initializeResourceNames(gateways.manager().sdkContext());
             VirtualNetworkGateway vngw =
                 gateways
                     .define(gatewayName1)
@@ -184,7 +184,7 @@ public class TestVirtualNetworkGateway {
     public class VNetToVNet extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
 
         public VNetToVNet(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.getSdkContext());
+            initializeResourceNames(networkManager.sdkContext());
         }
 
         @Override
@@ -266,7 +266,7 @@ public class TestVirtualNetworkGateway {
     public class PointToSite extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
 
         public PointToSite(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.getSdkContext());
+            initializeResourceNames(networkManager.sdkContext());
         }
 
         @Override
@@ -278,7 +278,7 @@ public class TestVirtualNetworkGateway {
         public VirtualNetworkGateway createResource(final VirtualNetworkGateways gateways) throws Exception {
 
             // Create virtual network gateway
-            initializeResourceNames(gateways.manager().getSdkContext());
+            initializeResourceNames(gateways.manager().sdkContext());
 
             Network network =
                 gateways

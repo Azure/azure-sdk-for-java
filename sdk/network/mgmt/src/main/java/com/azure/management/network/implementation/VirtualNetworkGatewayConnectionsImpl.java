@@ -46,7 +46,7 @@ class VirtualNetworkGatewayConnectionsImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualNetworkGatewayConnectionImpl(inner.getName(), parent, inner);
+        return new VirtualNetworkGatewayConnectionImpl(inner.name(), parent, inner);
     }
 
     @Override
@@ -88,7 +88,7 @@ class VirtualNetworkGatewayConnectionsImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listAsync() {
         PagedIterable<ResourceGroup> resources =
-            new PagedIterable<>(this.manager().getResourceManager().resourceGroups().listAsync());
+            new PagedIterable<>(this.manager().resourceManager().resourceGroups().listAsync());
         Iterator<ResourceGroup> iterator = resources.iterator();
 
         Function<String, Mono<PagedResponse<VirtualNetworkGatewayConnectionInner>>> fetcher =

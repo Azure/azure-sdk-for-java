@@ -4,18 +4,20 @@
 package com.azure.management.cosmosdb.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.CloudException;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.VirtualNetworkRule;
 import com.azure.management.network.Network;
 import com.azure.management.network.ServiceEndpointType;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -31,10 +33,9 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
-     * @param clientId client id
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId) {
+    public static boolean runSample(Azure azure) {
         final String docDBName = azure.sdkContext().randomResourceName("cosmosdb", 15);
         final String rgName = azure.sdkContext().randomResourceName("rgcosmosdb", 24);
         final String vnetName = azure.sdkContext().randomResourceName("vnetcosmosdb", 20);
@@ -85,7 +86,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
 
             System.out.println("CosmosDB Virtual Network Rules:");
             for (VirtualNetworkRule vnetRule : vnetRules) {
-                System.out.println("\t" + vnetRule.getId());
+                System.out.println("\t" + vnetRule.id());
             }
 
 
@@ -104,7 +105,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
 
             System.out.println("CosmosDB Virtual Network Rules:");
             for (VirtualNetworkRule vnetRule : vnetRules) {
-                System.out.println("\t" + vnetRule.getId());
+                System.out.println("\t" + vnetRule.id());
             }
 
             cosmosDBAccount.update()
@@ -117,10 +118,10 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
             //============================================================
             // Delete CosmosDB
             System.out.println("Deleting the CosmosDB");
-            // work around CosmosDB service issue returning 404 CloudException on delete operation
+            // work around CosmosDB service issue returning 404 ManagementException on delete operation
             try {
                 azure.cosmosDBAccounts().deleteById(cosmosDBAccount.id());
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
             }
             System.out.println("Deleted the CosmosDB");
 
@@ -152,17 +153,21 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
+            Azure azure = Azure
+                .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
-                .authenticate(credFile)
+                .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            runSample(azure, ApplicationTokenCredential.fromFile(credFile).getClientId());
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

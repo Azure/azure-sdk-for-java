@@ -3,8 +3,9 @@
 
 package com.azure.management.resources;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +13,8 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
     private ResourceGroups resourceGroups;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        super.initializeClients(restClient, defaultSubscription, domain);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        super.initializeClients(httpPipeline, profile);
         resourceGroups = resourceClient.resourceGroups();
     }
 

@@ -5,19 +5,19 @@ package com.azure.management;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerPublicFrontend;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.NicIPConfiguration;
-import com.azure.management.network.PublicIPAddress;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.NicIpConfiguration;
+import com.azure.management.network.PublicIpAddress;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests public IPs. */
-public class TestPublicIPAddress extends TestTemplate<PublicIPAddress, PublicIPAddresses> {
+public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpAddresses> {
     @Override
-    public PublicIPAddress createResource(PublicIPAddresses pips) throws Exception {
-        final String newPipName = pips.manager().getSdkContext().randomResourceName("pip", 10);
+    public PublicIpAddress createResource(PublicIpAddresses pips) throws Exception {
+        final String newPipName = pips.manager().sdkContext().randomResourceName("pip", 10);
 
-        PublicIPAddress pip =
+        PublicIpAddress pip =
             pips
                 .define(newPipName)
                 .withRegion(Region.US_WEST)
@@ -30,7 +30,7 @@ public class TestPublicIPAddress extends TestTemplate<PublicIPAddress, PublicIPA
     }
 
     @Override
-    public PublicIPAddress updateResource(PublicIPAddress resource) throws Exception {
+    public PublicIpAddress updateResource(PublicIpAddress resource) throws Exception {
         final String updatedDnsName = resource.leafDomainLabel() + "xx";
         final int updatedIdleTimeout = 15;
         resource =
@@ -54,11 +54,11 @@ public class TestPublicIPAddress extends TestTemplate<PublicIPAddress, PublicIPA
     }
 
     @Override
-    public void print(PublicIPAddress pip) {
+    public void print(PublicIpAddress pip) {
         TestPublicIPAddress.printPIP(pip);
     }
 
-    public static void printPIP(PublicIPAddress resource) {
+    public static void printPIP(PublicIpAddress resource) {
         StringBuilder info =
             new StringBuilder()
                 .append("Public IP Address: ")
@@ -103,7 +103,7 @@ public class TestPublicIPAddress extends TestTemplate<PublicIPAddress, PublicIPA
         // Show the associated NIC if any
         info.append("\n\tNetwork interface association: ");
         if (resource.hasAssignedNetworkInterface()) {
-            final NicIPConfiguration nicIp = resource.getAssignedNetworkInterfaceIPConfiguration();
+            final NicIpConfiguration nicIp = resource.getAssignedNetworkInterfaceIPConfiguration();
             final NetworkInterface nic = nicIp.parent();
             info
                 .append("\n\t\tNetwork interface ID: ")

@@ -3,14 +3,11 @@
 
 package com.azure.management.samples;
 
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.management.keyvault.samples.ManageKeyVault;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
-
-import java.io.File;
-import java.io.IOException;
 
 public class KeyVaultSampleTests extends SamplesTestBase {
     @Test
@@ -18,12 +15,8 @@ public class KeyVaultSampleTests extends SamplesTestBase {
     public void testManageKeyVault() {
         String clientId = "";
         if (!isPlaybackMode()) {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-            try {
-                clientId = ApplicationTokenCredential.fromFile(credFile).getClientId();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            final Configuration configuration = Configuration.getGlobalConfiguration();
+            clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         }
         Assertions.assertTrue(ManageKeyVault.runSample(azure, clientId));
     }

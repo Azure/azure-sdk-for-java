@@ -7,9 +7,11 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.DataContainer;
 import com.azure.management.monitor.DataStatus;
 import com.azure.management.monitor.OnboardingStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VMInsightsOnboardingStatusInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMInsightsOnboardingStatusInner.class);
+
     /*
      * Azure Resource Manager identifier of the resource whose onboarding
      * status is being represented.
@@ -133,5 +137,16 @@ public class VMInsightsOnboardingStatusInner extends ProxyResource {
     public VMInsightsOnboardingStatusInner withData(List<DataContainer> data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (data() != null) {
+            data().forEach(e -> e.validate());
+        }
     }
 }

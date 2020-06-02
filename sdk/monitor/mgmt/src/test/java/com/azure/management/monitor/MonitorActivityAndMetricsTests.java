@@ -4,6 +4,7 @@
 package com.azure.management.monitor;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.resources.core.TestUtilities;
 import java.time.OffsetDateTime;
@@ -91,7 +92,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
                 .filterByResource(vm.id())
                 .filterAtTenantLevel()
                 .execute();
-        } catch (ErrorResponseException er) {
+        } catch (ManagementException er) {
             // should throw "The client '...' with object id '...' does not have authorization to perform action
             // 'microsoft.insights/eventtypes/values/read' over scope
             // '/providers/microsoft.insights/eventtypes/management'.

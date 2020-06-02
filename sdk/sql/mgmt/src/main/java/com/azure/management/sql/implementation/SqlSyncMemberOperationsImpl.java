@@ -230,7 +230,7 @@ public class SqlSyncMemberOperationsImpl
                 sqlSyncMembers
                     .add(
                         new SqlSyncMemberImpl(
-                            syncMemberInner.getName(), this.sqlSyncGroup, syncMemberInner, this.sqlServerManager));
+                            syncMemberInner.name(), this.sqlSyncGroup, syncMemberInner, this.sqlServerManager));
             }
         }
         return Collections.unmodifiableList(sqlSyncMembers);
@@ -251,7 +251,7 @@ public class SqlSyncMemberOperationsImpl
             .mapPage(
                 syncMemberInner ->
                     new SqlSyncMemberImpl(
-                        syncMemberInner.getName(), self.sqlSyncGroup, syncMemberInner, self.sqlServerManager));
+                        syncMemberInner.name(), self.sqlSyncGroup, syncMemberInner, self.sqlServerManager));
     }
 
     @Override

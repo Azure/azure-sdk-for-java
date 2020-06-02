@@ -48,7 +48,7 @@ public class InteractiveBrowserCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        when(identityClient.authenticateWithUserRefreshToken(any(), any()))
+        when(identityClient.authenticateWithMsalAccount(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {

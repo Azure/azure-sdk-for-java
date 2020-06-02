@@ -3,11 +3,13 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import java.util.Map;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 
@@ -19,14 +21,14 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
     private String slotName3 = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName1 = generateRandomResourceName("java-funcapp-", 20);
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         slotName1 = generateRandomResourceName("java-slot-", 20);
         slotName2 = generateRandomResourceName("java-slot-", 20);
         slotName3 = generateRandomResourceName("java-slot-", 20);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Disabled("Contains connection string in request payload")

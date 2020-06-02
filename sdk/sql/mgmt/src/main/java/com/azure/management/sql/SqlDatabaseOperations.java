@@ -412,6 +412,7 @@ public interface SqlDatabaseOperations
             /**
              * Sets a "Basic" edition for the SQL Database.
              *
+             * @param maxStorageCapacity the maximum storage capacity
              * @return The next stage of the definition
              */
             SqlDatabaseOperations.DefinitionStages.WithEditionDefaults withBasicEdition(

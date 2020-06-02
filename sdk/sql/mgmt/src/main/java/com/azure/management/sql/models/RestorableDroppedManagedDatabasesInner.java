@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableDroppedManagedDatabases. */
 public final class RestorableDroppedManagedDatabasesInner {
+    private final ClientLogger logger = new ClientLogger(RestorableDroppedManagedDatabasesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final RestorableDroppedManagedDatabasesService service;
 
@@ -61,7 +64,7 @@ public final class RestorableDroppedManagedDatabasesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RestorableDroppedManagedDatabaseListResultInner>> listByInstance(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -75,7 +78,7 @@ public final class RestorableDroppedManagedDatabasesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RestorableDroppedManagedDatabaseInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -88,7 +91,7 @@ public final class RestorableDroppedManagedDatabasesInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RestorableDroppedManagedDatabaseListResultInner>> listByInstanceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -100,13 +103,31 @@ public final class RestorableDroppedManagedDatabasesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of restorable dropped managed databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RestorableDroppedManagedDatabaseInner>> listByInstanceSinglePageAsync(
         String resourceGroupName, String managedInstanceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -137,8 +158,61 @@ public final class RestorableDroppedManagedDatabasesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of restorable dropped managed databases.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RestorableDroppedManagedDatabaseInner>> listByInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .listByInstance(
+                this.client.getHost(),
+                resourceGroupName,
+                managedInstanceName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a list of restorable dropped managed databases.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of restorable dropped managed databases.
      */
@@ -156,8 +230,28 @@ public final class RestorableDroppedManagedDatabasesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of restorable dropped managed databases.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RestorableDroppedManagedDatabaseInner> listByInstanceAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        return new PagedFlux<>(
+            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
+            nextLink -> listByInstanceNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of restorable dropped managed databases.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of restorable dropped managed databases.
      */
@@ -175,13 +269,37 @@ public final class RestorableDroppedManagedDatabasesInner {
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a restorable dropped managed database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RestorableDroppedManagedDatabaseInner>> getWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (restorableDroppedDatabaseId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -205,8 +323,60 @@ public final class RestorableDroppedManagedDatabasesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a restorable dropped managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RestorableDroppedManagedDatabaseInner>> getWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (restorableDroppedDatabaseId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                managedInstanceName,
+                restorableDroppedDatabaseId,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets a restorable dropped managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a restorable dropped managed database.
      */
@@ -232,7 +402,7 @@ public final class RestorableDroppedManagedDatabasesInner {
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a restorable dropped managed database.
      */
@@ -247,13 +417,16 @@ public final class RestorableDroppedManagedDatabasesInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of restorable dropped managed databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RestorableDroppedManagedDatabaseInner>> listByInstanceNextSinglePageAsync(
         String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByInstanceNext(nextLink, context))
             .<PagedResponse<RestorableDroppedManagedDatabaseInner>>map(
@@ -266,5 +439,34 @@ public final class RestorableDroppedManagedDatabasesInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of restorable dropped managed databases.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RestorableDroppedManagedDatabaseInner>> listByInstanceNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByInstanceNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

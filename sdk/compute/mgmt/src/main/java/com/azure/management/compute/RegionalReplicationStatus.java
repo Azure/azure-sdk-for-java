@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RegionalReplicationStatus model. */
 @Immutable
 public final class RegionalReplicationStatus {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionalReplicationStatus.class);
+
     /*
      * The region to which the gallery Image Version is being replicated to.
      */
@@ -68,5 +72,13 @@ public final class RegionalReplicationStatus {
      */
     public Integer progress() {
         return this.progress;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

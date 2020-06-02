@@ -58,7 +58,7 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override

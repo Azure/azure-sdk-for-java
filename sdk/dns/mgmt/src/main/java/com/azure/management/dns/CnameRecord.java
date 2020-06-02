@@ -5,11 +5,15 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CnameRecord model. */
 @Fluent
 public final class CnameRecord {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CnameRecord.class);
+
     /*
      * The canonical name for this CNAME record.
      */
@@ -34,5 +38,13 @@ public final class CnameRecord {
     public CnameRecord withCname(String cname) {
         this.cname = cname;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

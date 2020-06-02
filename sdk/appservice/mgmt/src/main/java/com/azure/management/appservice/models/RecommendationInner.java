@@ -6,10 +6,12 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.Channels;
 import com.azure.management.appservice.NotificationLevel;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.ResourceScopeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class RecommendationInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationInner.class);
+
     /*
      * Timestamp when this instance was created.
      */
@@ -618,5 +622,15 @@ public class RecommendationInner extends ProxyOnlyResource {
     public RecommendationInner withForwardLink(String forwardLink) {
         this.forwardLink = forwardLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -4,7 +4,7 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.keyvault.implementation.KeyVaultManager;
 import com.azure.management.keyvault.models.VaultInner;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -27,7 +27,7 @@ public interface Vault
     KeyAsyncClient keyClient();
 
     /** @return an authenticated Key Vault rest client */
-    RestClient vaultRestClient();
+    HttpPipeline vaultHttpPipeline();
 
     /** @return the Key Vault key API entry point */
     Keys keys();
@@ -206,6 +206,7 @@ public interface Vault
             /**
              * Get the virtualNetworkRules value.
              *
+             * @param virtualNetworkRules the virtual network rules
              * @return the next stage of key vault definition.
              */
             WithCreate withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules);

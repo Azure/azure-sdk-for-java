@@ -36,9 +36,6 @@ public class DeviceCodeCredential implements TokenCredential {
     DeviceCodeCredential(String clientId, String tenantId, Consumer<DeviceCodeInfo> challengeConsumer,
                          IdentityClientOptions identityClientOptions) {
         this.challengeConsumer = challengeConsumer;
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
@@ -51,7 +48,7 @@ public class DeviceCodeCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
+                return identityClient.authenticateWithMsalAccount(request, cachedToken.get().getAccount())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();

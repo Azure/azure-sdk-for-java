@@ -33,7 +33,7 @@ public class SqlDatabaseForElasticPoolImpl
         Objects.requireNonNull(sqlDatabase.inner());
         this.sqlElasticPool = sqlElasticPool;
         this.sqlDatabase = sqlDatabase;
-        this.sqlDatabase.inner().setLocation(sqlElasticPool.regionName());
+        this.sqlDatabase.inner().withLocation(sqlElasticPool.regionName());
         this.sqlDatabase.inner().withElasticPoolId(this.sqlElasticPool.id());
         this.sqlDatabase.inner().withSku(null);
     }

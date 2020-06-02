@@ -19,15 +19,18 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.CorsRules;
 import com.azure.management.storage.DeleteRetentionPolicy;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileServices. */
 public final class FileServicesInner {
+    private final ClientLogger logger = new ClientLogger(FileServicesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final FileServicesService service;
 
@@ -57,7 +60,7 @@ public final class FileServicesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/fileServices")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FileServiceItemsInner>> list(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -71,7 +74,7 @@ public final class FileServicesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/fileServices/{FileServicesName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FileServicePropertiesInner>> setServiceProperties(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -87,7 +90,7 @@ public final class FileServicesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/fileServices/{FileServicesName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FileServicePropertiesInner>> getServiceProperties(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -106,13 +109,30 @@ public final class FileServicesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServiceItemsInner>> listWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -134,8 +154,51 @@ public final class FileServicesInner {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FileServiceItemsInner>> listWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * List all file services in storage accounts.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -160,7 +223,7 @@ public final class FileServicesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -179,7 +242,7 @@ public final class FileServicesInner {
      * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
      * @param shareDeleteRetentionPolicy The service properties for soft delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of File services in storage account.
      */
@@ -189,6 +252,29 @@ public final class FileServicesInner {
         String accountName,
         CorsRules cors,
         DeleteRetentionPolicy shareDeleteRetentionPolicy) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cors != null) {
+            cors.validate();
+        }
+        if (shareDeleteRetentionPolicy != null) {
+            shareDeleteRetentionPolicy.validate();
+        }
         final String fileServicesName = "default";
         FileServicePropertiesInner parameters = new FileServicePropertiesInner();
         parameters.withCors(cors);
@@ -218,8 +304,69 @@ public final class FileServicesInner {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
      * @param shareDeleteRetentionPolicy The service properties for soft delete.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of File services in storage account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        CorsRules cors,
+        DeleteRetentionPolicy shareDeleteRetentionPolicy,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cors != null) {
+            cors.validate();
+        }
+        if (shareDeleteRetentionPolicy != null) {
+            shareDeleteRetentionPolicy.validate();
+        }
+        final String fileServicesName = "default";
+        FileServicePropertiesInner parameters = new FileServicePropertiesInner();
+        parameters.withCors(cors);
+        parameters.withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
+        return service
+            .setServiceProperties(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                fileServicesName,
+                parameters,
+                context);
+    }
+
+    /**
+     * Sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param shareDeleteRetentionPolicy The service properties for soft delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of File services in storage account.
      */
@@ -250,7 +397,7 @@ public final class FileServicesInner {
      * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
      * @param shareDeleteRetentionPolicy The service properties for soft delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of File services in storage account.
      */
@@ -271,7 +418,7 @@ public final class FileServicesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing)
      *     rules.
@@ -279,6 +426,23 @@ public final class FileServicesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String fileServicesName = "default";
         return FluxUtil
             .withContext(
@@ -302,8 +466,54 @@ public final class FileServicesInner {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing)
+     *     rules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String fileServicesName = "default";
+        return service
+            .getServiceProperties(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                fileServicesName,
+                context);
+    }
+
+    /**
+     * Gets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing)
      *     rules.
@@ -329,7 +539,7 @@ public final class FileServicesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing)
      *     rules.

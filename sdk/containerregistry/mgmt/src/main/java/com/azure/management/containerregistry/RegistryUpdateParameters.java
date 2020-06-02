@@ -6,6 +6,8 @@ package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -13,6 +15,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class RegistryUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryUpdateParameters.class);
+
     /*
      * The tags for the container registry.
      */
@@ -147,5 +151,22 @@ public class RegistryUpdateParameters {
     public RegistryUpdateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (storageAccount() != null) {
+            storageAccount().validate();
+        }
+        if (networkRuleSet() != null) {
+            networkRuleSet().validate();
+        }
     }
 }

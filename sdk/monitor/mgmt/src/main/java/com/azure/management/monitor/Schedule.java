@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Schedule model. */
 @Fluent
 public final class Schedule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Schedule.class);
+
     /*
      * frequency (in minutes) at which rule condition should be evaluated.
      */
@@ -63,5 +67,13 @@ public final class Schedule {
     public Schedule withTimeWindowInMinutes(int timeWindowInMinutes) {
         this.timeWindowInMinutes = timeWindowInMinutes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

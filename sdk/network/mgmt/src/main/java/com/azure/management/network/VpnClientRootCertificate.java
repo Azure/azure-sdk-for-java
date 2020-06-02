@@ -7,12 +7,16 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VpnClientRootCertificate model. */
 @JsonFlatten
 @Fluent
 public class VpnClientRootCertificate extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientRootCertificate.class);
+
     /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -109,5 +113,19 @@ public class VpnClientRootCertificate extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publicCertData() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property publicCertData in model VpnClientRootCertificate"));
+        }
     }
 }

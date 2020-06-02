@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.network.implementation.NetworkManager;
-import com.azure.management.network.models.HasPublicIPAddress;
+import com.azure.management.network.models.HasPublicIpAddress;
 import com.azure.management.network.models.UpdatableWithTags;
 import com.azure.management.network.models.VirtualNetworkGatewayInner;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -101,7 +101,7 @@ public interface VirtualNetworkGateway
     BgpSettings bgpSettings();
 
     /** @return IP configurations for virtual network gateway */
-    Collection<VirtualNetworkGatewayIPConfiguration> ipConfigurations();
+    Collection<VirtualNetworkGatewayIpConfiguration> ipConfigurations();
 
     /** The entirety of the virtual network gateway definition. */
     interface Definition
@@ -200,7 +200,7 @@ public interface VirtualNetworkGateway
          * The stage of virtual network gateway definition allowing to specify public IP address for IP configuration.
          */
         interface WithPublicIPAddress
-            extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
+            extends HasPublicIpAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
         }
 
         /**

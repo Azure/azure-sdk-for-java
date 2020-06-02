@@ -3,10 +3,11 @@
 
 package com.azure.management.containerservice;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.containerservice.implementation.ContainerServiceManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 
 public class ContainerServiceManagementTest extends TestBase {
@@ -15,12 +16,12 @@ public class ContainerServiceManagementTest extends TestBase {
     protected String rgName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javaacsrg", 15);
 
-        resourceManager = ResourceManager.authenticate(restClient).withSubscription(defaultSubscription);
+        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
 
-        containerServiceManager = ContainerServiceManager.authenticate(restClient, defaultSubscription);
+        containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile);
 
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
     }

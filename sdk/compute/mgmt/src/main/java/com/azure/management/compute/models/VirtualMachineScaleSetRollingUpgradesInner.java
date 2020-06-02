@@ -19,9 +19,10 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -29,6 +30,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineScaleSetRollingUpgrades. */
 public final class VirtualMachineScaleSetRollingUpgradesInner {
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetRollingUpgradesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineScaleSetRollingUpgradesService service;
 
@@ -62,7 +65,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/cancel")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> cancel(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -76,7 +79,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/osRollingUpgrade")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> startOSUpgrade(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -90,7 +93,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/extensionRollingUpgrade")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> startExtensionUpgrade(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -104,7 +107,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/latest")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RollingUpgradeStatusInfoInner>> getLatest(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -118,7 +121,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/cancel")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginCancel(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -132,7 +135,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/osRollingUpgrade")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginStartOSUpgrade(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -146,7 +149,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/extensionRollingUpgrade")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginStartExtensionUpgrade(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -162,13 +165,30 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> cancelWithResponseAsync(
         String resourceGroupName, String vmScaleSetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -190,7 +210,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -210,7 +230,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -225,13 +245,30 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> startOSUpgradeWithResponseAsync(
         String resourceGroupName, String vmScaleSetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -254,7 +291,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -276,7 +313,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -291,13 +328,30 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> startExtensionUpgradeWithResponseAsync(
         String resourceGroupName, String vmScaleSetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -320,7 +374,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -342,7 +396,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -356,13 +410,30 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the latest virtual machine scale set rolling upgrade.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(
         String resourceGroupName, String vmScaleSetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -383,8 +454,50 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the latest virtual machine scale set rolling upgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-03-01";
+        return service
+            .getLatest(
+                this.client.getHost(),
+                resourceGroupName,
+                vmScaleSetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets the status of the latest virtual machine scale set rolling upgrade.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the latest virtual machine scale set rolling upgrade.
      */
@@ -407,7 +520,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the latest virtual machine scale set rolling upgrade.
      */
@@ -422,12 +535,29 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginCancelWithResponseAsync(String resourceGroupName, String vmScaleSetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -448,8 +578,50 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginCancelWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-03-01";
+        return service
+            .beginCancel(
+                this.client.getHost(),
+                resourceGroupName,
+                vmScaleSetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Cancels the current virtual machine scale set rolling upgrade.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -465,7 +637,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -480,12 +652,29 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginStartOSUpgradeWithResponseAsync(String resourceGroupName, String vmScaleSetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -507,8 +696,51 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginStartOSUpgradeWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-03-01";
+        return service
+            .beginStartOSUpgrade(
+                this.client.getHost(),
+                resourceGroupName,
+                vmScaleSetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -525,7 +757,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -540,13 +772,30 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginStartExtensionUpgradeWithResponseAsync(
         String resourceGroupName, String vmScaleSetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-03-01";
         return FluxUtil
             .withContext(
@@ -568,8 +817,51 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginStartExtensionUpgradeWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-03-01";
+        return service
+            .beginStartExtensionUpgrade(
+                this.client.getHost(),
+                resourceGroupName,
+                vmScaleSetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -586,7 +878,7 @@ public final class VirtualMachineScaleSetRollingUpgradesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

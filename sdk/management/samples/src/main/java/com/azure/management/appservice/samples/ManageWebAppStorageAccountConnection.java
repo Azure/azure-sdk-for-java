@@ -3,6 +3,10 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.ConnectionStringType;
 import com.azure.management.appservice.JavaVersion;
@@ -10,6 +14,7 @@ import com.azure.management.appservice.PricingTier;
 import com.azure.management.appservice.WebApp;
 import com.azure.management.appservice.WebContainer;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
@@ -76,7 +81,7 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Uploading 2 blobs to container " + containerName + "...");
 
-            BlobContainerClient container = setUpStorageAccount(connectionString, containerName);
+            BlobContainerClient container = setUpStorageAccount(connectionString, containerName, storageAccount.manager().httpPipeline().getHttpClient());
             uploadFileToContainer(container, "helloworld.war", ManageWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
             uploadFileToContainer(container, "install_apache.sh", ManageWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
 
@@ -146,12 +151,16 @@ public final class ManageWebAppStorageAccountConnection {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
@@ -163,10 +172,11 @@ public final class ManageWebAppStorageAccountConnection {
         }
     }
 
-    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName) {
+    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName, HttpClient httpClient) {
         BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
                 .connectionString(connectionString)
                 .containerName(containerName)
+                .httpClient(httpClient)
                 .buildClient();
 
         blobContainerClient.create();

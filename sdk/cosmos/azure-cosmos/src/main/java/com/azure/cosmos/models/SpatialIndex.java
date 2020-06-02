@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.IndexKind;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a spatial index in the Azure Cosmos DB database service.
@@ -38,6 +39,18 @@ public final class SpatialIndex extends Index {
     }
 
     /**
+     * Initializes a new instance of the SpatialIndex class.
+     *
+     * @param objectNode the object node that represents the index.
+     */
+    SpatialIndex(ObjectNode objectNode) {
+        super(objectNode, IndexKind.SPATIAL);
+        if (this.getDataType() == null) {
+            throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
+        }
+    }
+
+    /**
      * Gets data type.
      *
      * @return the data type.
@@ -45,10 +58,10 @@ public final class SpatialIndex extends Index {
     public DataType getDataType() {
         DataType result = null;
         try {
-            result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
+            result = DataType.valueOf(StringUtils.upperCase(this.jsonSerializable.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warn("INVALID index dataType value {}.",
-                super.getString(Constants.Properties.DATA_TYPE));
+            this.jsonSerializable.getLogger().warn("INVALID index dataType value {}.",
+                this.jsonSerializable.getString(Constants.Properties.DATA_TYPE));
         }
         return result;
     }
@@ -60,7 +73,7 @@ public final class SpatialIndex extends Index {
      * @return the SpatialIndex.
      */
     public SpatialIndex setDataType(DataType dataType) {
-        super.set(Constants.Properties.DATA_TYPE, dataType.toString());
+        this.jsonSerializable.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
 }

@@ -3,20 +3,17 @@
 
 package com.azure.management.resources.fluentcore.policy;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.management.CloudError;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.resources.Provider;
-import com.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.implementation.ResourceManager;
 import reactor.core.publisher.Mono;
@@ -31,15 +28,18 @@ import java.util.regex.Pattern;
  */
 public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
     private static final String MISSING_SUBSCRIPTION_REGISTRATION = "MissingSubscriptionRegistration";
-    private final AzureTokenCredential credential;
+    private final TokenCredential credential;
+    private final AzureProfile profile;
 
     /**
      * Initialize a provider registration policy with a credential that's authorized
      * to register the provider.
      * @param credential the credential for provider registration
+     * @param profile the profile to use
      */
-    public ProviderRegistrationPolicy(AzureTokenCredential credential) {
+    public ProviderRegistrationPolicy(TokenCredential credential, AzureProfile profile) {
         this.credential = credential;
+        this.profile = profile;
     }
 
     private boolean isResponseSuccessful(HttpResponse response) {
@@ -48,7 +48,6 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final HttpRequest request = context.getHttpRequest();
         return next.process().flatMap(
             response -> {
                 if (!isResponseSuccessful(response)) {
@@ -58,25 +57,18 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                             String bodyStr = new String(body, StandardCharsets.UTF_8);
 
                             AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
-                            CloudError cloudError;
+                            ManagementError cloudError;
                             try {
                                 cloudError = jacksonAdapter.deserialize(
-                                    bodyStr, CloudError.class, SerializerEncoding.JSON);
+                                    bodyStr, ManagementError.class, SerializerEncoding.JSON);
                             } catch (IOException e) {
                                 return Mono.just(bufferedResponse);
                             }
 
                             if (cloudError != null && MISSING_SUBSCRIPTION_REGISTRATION.equals(cloudError.getCode())) {
-                                String subscriptionId = ResourceUtils.extractFromResourceId(
-                                    request.getUrl().getPath(), "subscriptions");
-                                RestClient restClient = new RestClientBuilder()
-                                        .withBaseUrl(String.format("%s://%s",
-                                            request.getUrl().getProtocol(), request.getUrl().getHost()))
-                                        .withCredential(credential)
-                                        .withSerializerAdapter(jacksonAdapter).buildClient();
                                 // TODO: add proxy in rest client
-                                ResourceManager resourceManager = ResourceManager.authenticate(restClient)
-                                        .withSubscription(subscriptionId);
+                                ResourceManager resourceManager = ResourceManager.authenticate(credential, profile)
+                                        .withDefaultSubscription();
                                 Pattern providerPattern = Pattern.compile(".*'(.*)'");
                                 Matcher providerMatcher = providerPattern.matcher(cloudError.getMessage());
                                 providerMatcher.find();

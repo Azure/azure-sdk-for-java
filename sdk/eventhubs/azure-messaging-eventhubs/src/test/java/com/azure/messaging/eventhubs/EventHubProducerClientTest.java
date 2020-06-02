@@ -256,6 +256,32 @@ public class EventHubProducerClientTest {
     }
 
     /**
+     * Verifies that sending an iterable of events that exceeds batch size throws exception.
+     */
+    @Test
+    public void sendEventsExceedsBatchSize() {
+        //Arrange
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(1024));
+        TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+
+        //Act & Assert
+        final Iterable<EventData> tooManyEvents = Flux.range(0, 1024).map(number -> {
+            final String contents = "event-data-" + number;
+            return new EventData(contents.getBytes(UTF_8));
+        }).toIterable();
+
+        AmqpException amqpException = Assertions.assertThrows(AmqpException.class, () -> producer.send(tooManyEvents));
+        Assertions.assertTrue(amqpException.getMessage().startsWith("EventData does not fit into maximum number of "
+            + "batches. '1'"));
+    }
+
+    /**
      * Verifies we can send multiple messages.
      */
     @Test

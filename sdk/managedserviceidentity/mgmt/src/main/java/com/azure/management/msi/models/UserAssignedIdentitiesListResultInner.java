@@ -5,12 +5,16 @@
 package com.azure.management.msi.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The UserAssignedIdentitiesListResult model. */
 @Fluent
 public final class UserAssignedIdentitiesListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentitiesListResultInner.class);
+
     /*
      * The collection of userAssignedIdentities returned by the listing
      * operation.
@@ -29,7 +33,7 @@ public final class UserAssignedIdentitiesListResultInner {
      *
      * @return the value value.
      */
-    public List<IdentityInner> getValue() {
+    public List<IdentityInner> value() {
         return this.value;
     }
 
@@ -39,7 +43,7 @@ public final class UserAssignedIdentitiesListResultInner {
      * @param value the value value to set.
      * @return the UserAssignedIdentitiesListResultInner object itself.
      */
-    public UserAssignedIdentitiesListResultInner setValue(List<IdentityInner> value) {
+    public UserAssignedIdentitiesListResultInner withValue(List<IdentityInner> value) {
         this.value = value;
         return this;
     }
@@ -49,7 +53,7 @@ public final class UserAssignedIdentitiesListResultInner {
      *
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 
@@ -59,8 +63,19 @@ public final class UserAssignedIdentitiesListResultInner {
      * @param nextLink the nextLink value to set.
      * @return the UserAssignedIdentitiesListResultInner object itself.
      */
-    public UserAssignedIdentitiesListResultInner setNextLink(String nextLink) {
+    public UserAssignedIdentitiesListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

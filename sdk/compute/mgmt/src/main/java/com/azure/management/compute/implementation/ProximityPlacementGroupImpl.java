@@ -43,7 +43,7 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
 
     @Override
     public String location() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -53,7 +53,7 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -68,7 +68,7 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
             stringList = new ArrayList<>();
             Iterator<SubResource> iter = subList.iterator();
             while (iter.hasNext()) {
-                stringList.add(iter.next().getId());
+                stringList.add(iter.next().id());
             }
         }
 

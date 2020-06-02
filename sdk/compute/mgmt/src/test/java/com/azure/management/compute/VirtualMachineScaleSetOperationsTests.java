@@ -5,13 +5,12 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
-import com.azure.management.ApplicationTokenCredential;
-import com.azure.management.RestClient;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.RoleAssignment;
 import com.azure.management.keyvault.Secret;
@@ -24,14 +23,15 @@ import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.LoadBalancingRule;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkSecurityGroup;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.SecurityRuleProtocol;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
+import com.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.StorageAccountKey;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -39,7 +39,6 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
@@ -55,9 +54,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     private final Region region = Region.US_WEST;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
@@ -210,7 +209,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String uname = "jvuser";
         final String password = "123OData!@#123";
         final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-libraries-for-net/master/Samples/Asset/install_apache.sh";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/blob/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -259,8 +258,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         checkVMInstances(virtualMachineScaleSet);
 
-        List<String> publicIPAddressIds = virtualMachineScaleSet.primaryPublicIPAddressIds();
-        PublicIPAddress publicIPAddress = this.networkManager.publicIPAddresses().getById(publicIPAddressIds.get(0));
+        List<String> publicIPAddressIds = virtualMachineScaleSet.primaryPublicIpAddressIds();
+        PublicIpAddress publicIPAddress = this.networkManager.publicIpAddresses().getById(publicIPAddressIds.get(0));
 
         String fqdn = publicIPAddress.fqdn();
         // Assert public load balancing connection
@@ -277,7 +276,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             PagedIterable<VirtualMachineScaleSetNetworkInterface> networkInterfaces = vm.listNetworkInterfaces();
             Assertions.assertEquals(TestUtilities.getSize(networkInterfaces), 1);
             VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.iterator().next();
-            VirtualMachineScaleSetNicIPConfiguration primaryIpConfig = null;
+            VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = null;
             primaryIpConfig = networkInterface.primaryIPConfiguration();
             Assertions.assertNotNull(primaryIpConfig);
             Integer sshFrontendPort = null;
@@ -343,7 +342,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withExistingApplicationSecurityGroup(asg)
                 .create();
 
-        VirtualMachineScaleSetPublicIPAddressConfiguration currentIpConfig =
+        VirtualMachineScaleSetPublicIpAddressConfiguration currentIpConfig =
             virtualMachineScaleSet.virtualMachinePublicIpConfig();
 
         Assertions.assertNotNull(currentIpConfig);
@@ -442,8 +441,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        ApplicationTokenCredential credentials =
-            ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
         Vault vault =
             this
                 .keyVaultManager
@@ -452,7 +449,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .defineAccessPolicy()
-                .forServicePrincipal(credentials.getClientId())
+                .forServicePrincipal(clientIdFromFile())
                 .allowSecretAllPermissions()
                 .attach()
                 .withDeploymentEnabled()
@@ -467,7 +464,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         group
             .add(
                 new VaultSecretGroup()
-                    .withSourceVault(new SubResource().setId(vault.id()))
+                    .withSourceVault(new SubResource().withId(vault.id()))
                     .withVaultCertificates(certs));
 
         VirtualMachineScaleSet virtualMachineScaleSet =
@@ -569,17 +566,17 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assertions.assertNotNull(nic.macAddress());
             Assertions.assertNotNull(nic.dnsServers());
             Assertions.assertNotNull(nic.appliedDnsServers());
-            Map<String, VirtualMachineScaleSetNicIPConfiguration> ipConfigs = nic.ipConfigurations();
+            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs = nic.ipConfigurations();
             Assertions.assertEquals(ipConfigs.size(), 1);
-            for (Map.Entry<String, VirtualMachineScaleSetNicIPConfiguration> entry : ipConfigs.entrySet()) {
-                VirtualMachineScaleSetNicIPConfiguration ipConfig = entry.getValue();
+            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry : ipConfigs.entrySet()) {
+                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
                 Assertions.assertNotNull(ipConfig);
                 Assertions.assertTrue(ipConfig.isPrimary());
                 Assertions.assertNotNull(ipConfig.subnetName());
                 Assertions.assertTrue(primaryNetwork.id().toLowerCase().equalsIgnoreCase(ipConfig.networkId()));
-                Assertions.assertNotNull(ipConfig.privateIPAddress());
-                Assertions.assertNotNull(ipConfig.privateIPAddressVersion());
-                Assertions.assertNotNull(ipConfig.privateIPAllocationMethod());
+                Assertions.assertNotNull(ipConfig.privateIpAddress());
+                Assertions.assertNotNull(ipConfig.privateIpAddressVersion());
+                Assertions.assertNotNull(ipConfig.privateIpAllocationMethod());
                 List<LoadBalancerBackend> lbBackends = ipConfig.listAssociatedLoadBalancerBackends();
                 // VMSS is created with a internet facing LB with two Backend pools so there will be two
                 // backends in ip-config as well
@@ -655,10 +652,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         nicCount = 0;
         for (VirtualMachineScaleSetNetworkInterface nic : nics) {
             nicCount++;
-            Map<String, VirtualMachineScaleSetNicIPConfiguration> ipConfigs = nic.ipConfigurations();
+            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs = nic.ipConfigurations();
             Assertions.assertEquals(ipConfigs.size(), 1);
-            for (Map.Entry<String, VirtualMachineScaleSetNicIPConfiguration> entry : ipConfigs.entrySet()) {
-                VirtualMachineScaleSetNicIPConfiguration ipConfig = entry.getValue();
+            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry : ipConfigs.entrySet()) {
+                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
                 Assertions.assertNotNull(ipConfig);
                 List<LoadBalancerBackend> lbBackends = ipConfig.listAssociatedLoadBalancerBackends();
                 Assertions.assertNotNull(lbBackends);

@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentWhatIf model. */
 @Fluent
 public final class DeploymentWhatIf {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentWhatIf.class);
+
     /*
      * The location to store the deployment data.
      */
@@ -60,5 +64,20 @@ public final class DeploymentWhatIf {
     public DeploymentWhatIf withProperties(DeploymentWhatIfProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property properties in model DeploymentWhatIf"));
+        } else {
+            properties().validate();
+        }
     }
 }

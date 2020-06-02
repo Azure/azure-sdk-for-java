@@ -7,9 +7,11 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.JobExecutionLifecycle;
 import com.azure.management.sql.JobExecutionTarget;
 import com.azure.management.sql.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -18,6 +20,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class JobExecutionInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobExecutionInner.class);
+
     /*
      * The job version number.
      */
@@ -222,5 +226,16 @@ public class JobExecutionInner extends ProxyResource {
      */
     public JobExecutionTarget target() {
         return this.target;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (target() != null) {
+            target().validate();
+        }
     }
 }

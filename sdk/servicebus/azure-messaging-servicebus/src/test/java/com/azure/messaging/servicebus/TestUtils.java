@@ -116,6 +116,25 @@ public class TestUtils {
      * @param messageId An identifier for the set of messages.
      * @return A list of messages.
      */
+    public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId, byte[] content) {
+        return IntStream.range(0, numberOfEvents)
+            .mapToObj(number -> {
+                final ServiceBusMessage message = getServiceBusMessage(content, messageId);
+                message.getProperties().put(MESSAGE_POSITION_ID, number);
+
+                return message;
+            })
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets a set of messages with {@link ServiceBusMessage#getMessageId()} as a unique identifier for that
+     * service bus message.
+     *
+     * @param numberOfEvents Number of events to create.
+     * @param messageId An identifier for the set of messages.
+     * @return A list of messages.
+     */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId) {
         return IntStream.range(0, numberOfEvents)
             .mapToObj(number -> {

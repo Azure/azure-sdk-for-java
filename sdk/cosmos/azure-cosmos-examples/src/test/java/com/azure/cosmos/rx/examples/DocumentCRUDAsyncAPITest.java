@@ -3,12 +3,12 @@
 package com.azure.cosmos.rx.examples;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -83,13 +83,14 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_DocumentCRUDAsyncAPITest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION);
+            .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true);
 
         this.client = this.clientBuilder().build();
 
@@ -292,7 +293,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
             createDocumentObservable.single() // Converts the observable to a single observable
                     .block(); // Blocks and gets the result
             Assert.fail("Document Already Exists. Document Creation must fail");
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             assertThat("Document already exists.", e.getStatusCode(),
                        equalTo(409));
         }
@@ -325,8 +326,8 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         waitForConditionOrTimeout(() -> errorList.size() == 1);
 
         assertThat(errorList, hasSize(1));
-        assertThat(errorList.get(0), is(instanceOf(CosmosClientException.class)));
-        assertThat(((CosmosClientException) errorList.get(0)).getStatusCode(), equalTo(409));
+        assertThat(errorList.get(0), is(instanceOf(CosmosException.class)));
+        assertThat(((CosmosException) errorList.get(0)).getStatusCode(), equalTo(409));
     }
 
     /**
@@ -415,7 +416,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         assertThat(capturedResponse, hasSize(1));
 
         // Assert document is deleted
-        FeedOptions queryOptions = new FeedOptions();
+        QueryRequestOptions queryOptions = new QueryRequestOptions();
         List<Document> listOfDocuments = client
                 .queryDocuments(getCollectionLink(), String.format("SELECT * FROM r where r.id = '%s'", createdDocument.getId()), queryOptions)
                 .map(FeedResponse::getResults) // Map page to its list of documents

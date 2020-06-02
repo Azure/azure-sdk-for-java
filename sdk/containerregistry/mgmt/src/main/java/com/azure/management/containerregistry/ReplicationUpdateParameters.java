@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ReplicationUpdateParameters model. */
 @Fluent
 public final class ReplicationUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationUpdateParameters.class);
+
     /*
      * The tags for the replication.
      */
@@ -35,5 +39,13 @@ public final class ReplicationUpdateParameters {
     public ReplicationUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

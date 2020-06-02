@@ -28,15 +28,18 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.LeaseContainerRequest;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BlobContainers. */
 public final class BlobContainersInner {
+    private final ClientLogger logger = new ClientLogger(BlobContainersInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final BlobContainersService service;
 
@@ -66,7 +69,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ListContainerItemsInner>> list(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -82,7 +85,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BlobContainerInner>> create(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -98,7 +101,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BlobContainerInner>> update(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -114,7 +117,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BlobContainerInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -129,7 +132,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -144,7 +147,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/setLegalHold")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<LegalHoldInner>> setLegalHold(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -160,7 +163,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/clearLegalHold")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<LegalHoldInner>> clearLegalHold(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -177,7 +180,7 @@ public final class BlobContainersInner {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
                 + "/immutabilityPolicies/{immutabilityPolicyName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersCreateOrUpdateImmutabilityPolicyResponse> createOrUpdateImmutabilityPolicy(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -196,7 +199,7 @@ public final class BlobContainersInner {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
                 + "/immutabilityPolicies/{immutabilityPolicyName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicy(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -214,7 +217,7 @@ public final class BlobContainersInner {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
                 + "/immutabilityPolicies/{immutabilityPolicyName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicy(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -232,7 +235,7 @@ public final class BlobContainersInner {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
                 + "/immutabilityPolicies/default/lock")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicy(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -249,7 +252,7 @@ public final class BlobContainersInner {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
                 + "/immutabilityPolicies/default/extend")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersExtendImmutabilityPolicyResponse> extendImmutabilityPolicy(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -266,7 +269,7 @@ public final class BlobContainersInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/lease")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<LeaseContainerResponseInner>> lease(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -280,7 +283,7 @@ public final class BlobContainersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ListContainerItemsInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -296,13 +299,30 @@ public final class BlobContainersInner {
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ListContainerItemInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, String maxpagesize, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -338,8 +358,65 @@ public final class BlobContainersInner {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ListContainerItemInner>> listSinglePageAsync(
+        String resourceGroupName, String accountName, String maxpagesize, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                maxpagesize,
+                filter,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
+     * token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response schema.
      */
@@ -359,8 +436,32 @@ public final class BlobContainersInner {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
+     * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response schema.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ListContainerItemInner> listAsync(
+        String resourceGroupName, String accountName, String maxpagesize, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
+     * token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response schema.
      */
@@ -385,7 +486,7 @@ public final class BlobContainersInner {
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response schema.
      */
@@ -404,7 +505,7 @@ public final class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response schema.
      */
@@ -429,13 +530,38 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobContainerInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (blobContainer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter blobContainer is required and cannot be null."));
+        } else {
+            blobContainer.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -464,8 +590,70 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<BlobContainerInner>> createWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String containerName,
+        BlobContainerInner blobContainer,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (blobContainer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter blobContainer is required and cannot be null."));
+        } else {
+            blobContainer.validate();
+        }
+        return service
+            .create(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                blobContainer,
+                context);
+    }
+
+    /**
+     * Creates a new container under the specified account as described by request body. The container resource includes
+     * metadata and properties for that container. It does not include a list of the blobs contained by the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
@@ -496,7 +684,7 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
@@ -519,13 +707,38 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobContainerInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (blobContainer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter blobContainer is required and cannot be null."));
+        } else {
+            blobContainer.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -554,8 +767,70 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<BlobContainerInner>> updateWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String containerName,
+        BlobContainerInner blobContainer,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (blobContainer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter blobContainer is required and cannot be null."));
+        } else {
+            blobContainer.validate();
+        }
+        return service
+            .update(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                blobContainer,
+                context);
+    }
+
+    /**
+     * Updates container properties as specified in request body. Properties not mentioned in the request will be
+     * unchanged. Update fails if the specified container doesn't already exist.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
@@ -586,7 +861,7 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
@@ -607,13 +882,33 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a specified container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobContainerInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String containerName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -639,8 +934,58 @@ public final class BlobContainersInner {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a specified container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<BlobContainerInner>> getWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets properties of a specified container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a specified container.
      */
@@ -668,7 +1013,7 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a specified container.
      */
@@ -688,13 +1033,33 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String containerName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -720,8 +1085,58 @@ public final class BlobContainersInner {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .delete(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes specified container under its account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -742,7 +1157,7 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -763,13 +1178,36 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LegalHoldInner>> setLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (tags == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        }
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
         return FluxUtil
@@ -800,8 +1238,66 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the LegalHold property of a blob container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<LegalHoldInner>> setLegalHoldWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (tags == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        }
+        LegalHoldInner legalHold = new LegalHoldInner();
+        legalHold.withTags(tags);
+        return service
+            .setLegalHold(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                legalHold,
+                context);
+    }
+
+    /**
+     * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
+     * pattern and does not clear out the existing tags that are not specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
@@ -832,7 +1328,7 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
@@ -855,13 +1351,36 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LegalHoldInner>> clearLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (tags == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        }
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
         return FluxUtil
@@ -892,8 +1411,66 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the LegalHold property of a blob container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<LegalHoldInner>> clearLegalHoldWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (tags == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        }
+        LegalHoldInner legalHold = new LegalHoldInner();
+        legalHold.withTags(tags);
+        return service
+            .clearLegalHold(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                legalHold,
+                context);
+    }
+
+    /**
+     * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
+     * clears out only the specified tags in the request.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
@@ -924,7 +1501,7 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
@@ -955,7 +1532,7 @@ public final class BlobContainersInner {
      *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      *     cannot be changed with ExtendImmutabilityPolicy API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -968,6 +1545,26 @@ public final class BlobContainersInner {
             String ifMatch,
             Integer immutabilityPeriodSinceCreationInDays,
             Boolean allowProtectedAppendWrites) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String immutabilityPolicyName = "default";
         ImmutabilityPolicyInner parametersInternal = null;
         if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
@@ -1014,8 +1611,86 @@ public final class BlobContainersInner {
      *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainersCreateOrUpdateImmutabilityPolicyResponse>
+        createOrUpdateImmutabilityPolicyWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String containerName,
+            String ifMatch,
+            Integer immutabilityPeriodSinceCreationInDays,
+            Boolean allowProtectedAppendWrites,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String immutabilityPolicyName = "default";
+        ImmutabilityPolicyInner parametersInternal = null;
+        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
+            parametersInternal = new ImmutabilityPolicyInner();
+            parametersInternal.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
+            parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
+        }
+        ImmutabilityPolicyInner parameters = parametersInternal;
+        return service
+            .createOrUpdateImmutabilityPolicy(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                immutabilityPolicyName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                ifMatch,
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
+     * this operation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
+     *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
+     *     be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
+     *     policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
+     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
+     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
+     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1065,7 +1740,7 @@ public final class BlobContainersInner {
      *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      *     cannot be changed with ExtendImmutabilityPolicy API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1101,13 +1776,33 @@ public final class BlobContainersInner {
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String immutabilityPolicyName = "default";
         return FluxUtil
             .withContext(
@@ -1139,8 +1834,64 @@ public final class BlobContainersInner {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the existing immutability policy along with the corresponding ETag in response headers and body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicyWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String immutabilityPolicyName = "default";
+        return service
+            .getImmutabilityPolicy(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                immutabilityPolicyName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                ifMatch,
+                context);
+    }
+
+    /**
+     * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
+     *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
+     *     be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
@@ -1169,7 +1920,7 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
@@ -1203,7 +1954,7 @@ public final class BlobContainersInner {
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
@@ -1224,7 +1975,7 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
@@ -1252,13 +2003,36 @@ public final class BlobContainersInner {
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (ifMatch == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
+        }
         final String immutabilityPolicyName = "default";
         return FluxUtil
             .withContext(
@@ -1292,8 +2066,69 @@ public final class BlobContainersInner {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (ifMatch == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
+        }
+        final String immutabilityPolicyName = "default";
+        return service
+            .deleteImmutabilityPolicy(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                immutabilityPolicyName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                ifMatch,
+                context);
+    }
+
+    /**
+     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
+     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
+     * way is to delete the container after deleting all blobs inside the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
+     *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
+     *     be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1327,7 +2162,7 @@ public final class BlobContainersInner {
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1352,13 +2187,36 @@ public final class BlobContainersInner {
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicyWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (ifMatch == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1389,8 +2247,66 @@ public final class BlobContainersInner {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicyWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (ifMatch == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
+        }
+        return service
+            .lockImmutabilityPolicy(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                ifMatch,
+                context);
+    }
+
+    /**
+     * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
+     * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
+     *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
+     *     be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1423,7 +2339,7 @@ public final class BlobContainersInner {
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1454,7 +2370,7 @@ public final class BlobContainersInner {
      *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      *     cannot be changed with ExtendImmutabilityPolicy API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1466,6 +2382,29 @@ public final class BlobContainersInner {
         String ifMatch,
         Integer immutabilityPeriodSinceCreationInDays,
         Boolean allowProtectedAppendWrites) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (ifMatch == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
+        }
         ImmutabilityPolicyInner parametersInternal = null;
         if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
             parametersInternal = new ImmutabilityPolicyInner();
@@ -1510,8 +2449,86 @@ public final class BlobContainersInner {
      *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainersExtendImmutabilityPolicyResponse> extendImmutabilityPolicyWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String containerName,
+        String ifMatch,
+        Integer immutabilityPeriodSinceCreationInDays,
+        Boolean allowProtectedAppendWrites,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (ifMatch == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
+        }
+        ImmutabilityPolicyInner parametersInternal = null;
+        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
+            parametersInternal = new ImmutabilityPolicyInner();
+            parametersInternal.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
+            parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
+        }
+        ImmutabilityPolicyInner parameters = parametersInternal;
+        return service
+            .extendImmutabilityPolicy(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                ifMatch,
+                parameters,
+                context);
+    }
+
+    /**
+     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
+     * Locked policy will be this action. ETag in If-Match is required for this operation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
+     *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
+     *     be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
+     *     policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
+     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
+     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
+     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1561,7 +2578,7 @@ public final class BlobContainersInner {
      *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      *     cannot be changed with ExtendImmutabilityPolicy API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
@@ -1596,13 +2613,36 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param parameters Lease Container request schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lease Container response schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<LeaseContainerResponseInner>> leaseWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1631,8 +2671,68 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param parameters Lease Container request schema.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lease Container response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<LeaseContainerResponseInner>> leaseWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String containerName,
+        LeaseContainerRequest parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
+        }
+        return service
+            .lease(
+                this.client.getHost(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
+     * duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param parameters Lease Container request schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lease Container response schema.
      */
@@ -1662,7 +2762,7 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lease Container response schema.
      */
@@ -1695,7 +2795,7 @@ public final class BlobContainersInner {
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @param parameters Lease Container request schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lease Container response schema.
      */
@@ -1717,7 +2817,7 @@ public final class BlobContainersInner {
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lease Container response schema.
      */
@@ -1733,12 +2833,15 @@ public final class BlobContainersInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ListContainerItemInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<ListContainerItemInner>>map(
@@ -1751,5 +2854,33 @@ public final class BlobContainersInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ListContainerItemInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

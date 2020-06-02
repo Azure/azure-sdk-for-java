@@ -17,8 +17,7 @@ public class TypeSerializationTests {
 
     @Test
     public void testDiscriminatorSerialization() throws Exception {
-        // Currently the issue is solved by OdataTypeDiscriminatorTypeResolver, without which JsonFlatten would flatten
-        // "odata.type".
+        // Currently solved by @JsonFlatten annotation and escape on "odata.type" (as "odata\\.type")
 
         SerializerAdapter adapter = new AzureJacksonAdapter();
 
@@ -26,6 +25,9 @@ public class TypeSerializationTests {
         metricAlertInner.withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria());
         String metricAlertInnerJson = adapter.serialize(metricAlertInner, SerializerEncoding.JSON);
         checkOdatatypeJson(metricAlertInnerJson);
+
+        MetricAlertResourceInner metricAlertInner2 = adapter.deserialize(metricAlertInnerJson, MetricAlertResourceInner.class, SerializerEncoding.JSON);
+        Assertions.assertTrue(metricAlertInner2.criteria() instanceof MetricAlertMultipleResourceMultipleMetricCriteria);
 
         AlertRuleResourceInner alertRuleInner = new AlertRuleResourceInner();
         alertRuleInner.withActions(Arrays.asList(new RuleEmailAction()));

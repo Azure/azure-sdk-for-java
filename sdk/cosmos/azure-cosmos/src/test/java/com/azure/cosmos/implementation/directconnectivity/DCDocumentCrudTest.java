@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -69,8 +69,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     static Builder createDCBuilder(Protocol protocol) {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
@@ -80,6 +79,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
             .withConfigs(configs)
             .withConnectionPolicy(connectionPolicy)
             .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY);
     }
 
@@ -220,9 +220,9 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 100);
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 

@@ -3,10 +3,12 @@
 
 package com.azure.management.storage;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.Region;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +16,10 @@ public class StorageBlobContainersTests extends StorageManagementTest {
     private String rgName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override

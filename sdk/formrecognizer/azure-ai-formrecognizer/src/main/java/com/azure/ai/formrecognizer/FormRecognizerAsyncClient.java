@@ -22,7 +22,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -75,25 +74,6 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
-     * uses the same request policy pipeline as the {@code FormRecognizerAsyncClient}.
-     *
-     * @return A new {@link FormTrainingAsyncClient} object.
-     */
-    public FormTrainingAsyncClient getFormTrainingAsyncClient() {
-        return new FormTrainingAsyncClient(this.service, this.serviceVersion);
-    }
-
-    /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FormRecognizerServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Recognizes and extracts form data from documents using optical character recognition (OCR) and a custom trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -106,10 +86,10 @@ public final class FormRecognizerAsyncClient {
      * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
+    public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId) {
         return beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
     }
@@ -130,14 +110,14 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
+    public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<RecognizedForm>>(
+        return new PollerFlux<OperationResult, List<RecognizedForm>>(
             interval,
             analyzeFormActivationOperation(fileSourceUrl, modelId, includeTextDetails),
             createAnalyzeFormPollOperation(modelId),
@@ -163,10 +143,10 @@ public final class FormRecognizerAsyncClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
+    public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType) {
         return beginRecognizeCustomForms(data, modelId, length, formContentType, false, null);
     }
@@ -192,14 +172,14 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
+    public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<RecognizedForm>>(
+        return new PollerFlux<OperationResult, List<RecognizedForm>>(
             interval,
             analyzeFormStreamActivationOperation(data, modelId, length, formContentType, includeTextDetails),
             createAnalyzeFormPollOperation(modelId),
@@ -219,10 +199,10 @@ public final class FormRecognizerAsyncClient {
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
+    public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
         return beginRecognizeContentFromUrl(fileSourceUrl, null);
     }
 
@@ -240,13 +220,13 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<FormPage>>
+    public PollerFlux<OperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(String sourceUrl, Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<FormPage>>(interval,
+        return new PollerFlux<OperationResult, List<FormPage>>(interval,
             contentAnalyzeActivationOperation(sourceUrl),
             extractContentPollOperation(),
             (activationResponse, context) -> monoError(logger,
@@ -271,10 +251,10 @@ public final class FormRecognizerAsyncClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContent(
+    public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         return beginRecognizeContent(data, length, formContentType, null);
     }
@@ -298,10 +278,10 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link FormPage}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContent(
+    public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, Duration pollInterval) {
         return new PollerFlux<>(
             pollInterval != null ? pollInterval : DEFAULT_DURATION,
@@ -324,10 +304,10 @@ public final class FormRecognizerAsyncClient {
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
+    public PollerFlux<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl) {
         return beginRecognizeReceiptsFromUrl(sourceUrl, false, null);
     }
@@ -347,13 +327,13 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
+    public PollerFlux<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
+        return new PollerFlux<OperationResult, List<RecognizedReceipt>>(interval,
             receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
             extractReceiptPollOperation(),
             (activationResponse, context) -> monoError(logger,
@@ -378,10 +358,10 @@ public final class FormRecognizerAsyncClient {
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
+    public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         return beginRecognizeReceipts(data, length, formContentType, false, null);
     }
@@ -406,10 +386,10 @@ public final class FormRecognizerAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
+    public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails,
         Duration pollInterval) {
 
@@ -476,7 +456,7 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<IterableStream<RecognizedReceipt>>>
+    private Function<PollingContext<OperationResult>, Mono<List<RecognizedReceipt>>>
         fetchExtractReceiptResult(boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
@@ -484,8 +464,7 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                        return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(),
-                            includeTextDetails);
+                        return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails);
                     });
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -546,7 +525,7 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<IterableStream<FormPage>>>
+    private Function<PollingContext<OperationResult>, Mono<List<FormPage>>>
         fetchExtractContentResult() {
         return (pollingContext) -> {
             try {
@@ -554,8 +533,7 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                        return new IterableStream<>(
-                            toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true));
+                        return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
                     });
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -563,7 +541,7 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<IterableStream<RecognizedForm>>>
+    private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
         fetchAnalyzeFormResultOperation(String modelId, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
@@ -573,8 +551,7 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                        return new IterableStream<>(toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
-                            includeTextDetails));
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails);
                     });
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);

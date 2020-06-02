@@ -21,7 +21,7 @@ public final class LanguageBatchInput {
 
     /**
      * Get the documents property: The documents property.
-     *
+     * 
      * @return the documents value.
      */
     public List<LanguageInput> getDocuments() {
@@ -30,7 +30,7 @@ public final class LanguageBatchInput {
 
     /**
      * Set the documents property: The documents property.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the LanguageBatchInput object itself.
      */

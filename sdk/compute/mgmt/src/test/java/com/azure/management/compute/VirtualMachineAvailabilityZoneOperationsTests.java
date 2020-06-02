@@ -3,14 +3,14 @@
 
 package com.azure.management.compute;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.LoadBalancerPublicFrontend;
 import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.LoadBalancingRule;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.PublicIPSkuType;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.TransportProtocol;
@@ -21,6 +21,8 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import java.util.Iterator;
 import java.util.Map;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -31,9 +33,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
     private final String vmName = "javavm";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Checks the zone assigned to the implicitly created public IP address.
         // Implicitly created PIP will be BASIC
         //
-        PublicIPAddress publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
+        PublicIpAddress publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
         Assertions.assertNotNull(publicIPAddress.availabilityZones());
         Assertions.assertFalse(publicIPAddress.availabilityZones().isEmpty());
         Assertions.assertTrue(publicIPAddress.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
@@ -112,9 +114,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Create zoned public IP for the virtual machine
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress =
+        PublicIpAddress publicIPAddress =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(pipDnsLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -207,9 +209,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Create zone resilient public IP for the virtual machine
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress =
+        PublicIpAddress publicIPAddress =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(pipDnsLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -332,9 +334,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Creates a public IP address for the internet-facing load-balancer
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress =
+        PublicIpAddress publicIPAddress =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(pipDnsLabel)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
@@ -363,7 +365,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withProbe("tcpProbe-1")
                 .attach()
                 .definePublicFrontend("front-end-1") // Define the frontend IP configuration used by the LB rule
-                .withExistingPublicIPAddress(publicIPAddress)
+                .withExistingPublicIpAddress(publicIPAddress)
                 .attach()
                 .defineTcpProbe("tcpProbe-1") // Define the Probe used by the LB rule
                 .withPort(25)
@@ -387,7 +389,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
         Assertions.assertTrue(frontend.isPublic());
         LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-        Assertions.assertTrue(publicIPAddress.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+        Assertions.assertTrue(publicIPAddress.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
         // Verify backends
         Assertions.assertEquals(1, lb.backends().size());
@@ -475,9 +477,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Creates a public IP address for the internet-facing load-balancer
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress =
+        PublicIpAddress publicIPAddress =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(pipDnsLabel)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
@@ -499,10 +501,10 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Sku of PublicIP and LoadBalancer must match
         //
 
-        PublicIPAddress lbPip =
+        PublicIpAddress lbPip =
             this
                 .networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(publicIPName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -538,7 +540,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .attach()
                 // Explicitly define the frontend
                 .definePublicFrontend(frontendName)
-                .withExistingPublicIPAddress(publicIPAddress) // Frontend with PIP means internet-facing load-balancer
+                .withExistingPublicIpAddress(publicIPAddress) // Frontend with PIP means internet-facing load-balancer
                 .attach()
 
                 // Add two probes one per rule

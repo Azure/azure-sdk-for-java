@@ -3,20 +3,24 @@
 
 package com.azure.management.resources.core;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.management.ApplicationTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -35,6 +39,9 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -42,6 +49,8 @@ public abstract class TestBase {
     private PrintStream out;
     private String baseUri;
     protected SdkContext sdkContext = new SdkContext();
+    private AuthFile authFile;
+    private AzureProfile profile;
 
     public String generateRandomResourceName(String prefix, int maxLen) {
         return sdkContext.randomResourceName(prefix, maxLen);
@@ -182,28 +191,41 @@ public abstract class TestBase {
         interceptorManager = InterceptorManager.create(testMothodName, testMode);
         sdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
 
-        ApplicationTokenCredential credentials;
-        RestClient restClient;
-        String defaultSubscription;
+        TokenCredential credential;
+        HttpPipeline httpPipeline;
 
         if (isPlaybackMode()) {
-            credentials = new AzureTestCredential(playbackUri, ZERO_TENANT, true);
-            restClient = buildRestClient(new RestClientBuilder()
-                    .withBaseUrl(playbackUri + "/")
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .withPolicy(interceptorManager.initInterceptor())
-                    .withPolicy(new HostPolicy(playbackUri + "/"))
-                    .withPolicy(new ResourceGroupTaggingPolicy())
-                    .withPolicy(new CookiePolicy()), true);
+            profile = new AzureProfile(
+                ZERO_TENANT, ZERO_SUBSCRIPTION,
+                new AzureEnvironment(
+                    new HashMap<String, String>() {
+                        {
+                            put("managementEndpointUrl", playbackUri);
+                            put("resourceManagerEndpointUrl", playbackUri);
+                            put("sqlManagementEndpointUrl", playbackUri);
+                            put("galleryEndpointUrl", playbackUri);
+                            put("activeDirectoryEndpointUrl", playbackUri);
+                            put("activeDirectoryResourceId", playbackUri);
+                            put("activeDirectoryGraphResourceId", playbackUri);
+                        }}));
 
-            defaultSubscription = ZERO_SUBSCRIPTION;
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            policies.add(interceptorManager.initInterceptor());
+            policies.add(new HostPolicy(playbackUri + "/"));
+            policies.add(new ResourceGroupTaggingPolicy());
+            policies.add(new CookiePolicy());
+            httpPipeline = HttpPipelineProvider.buildHttpPipeline(
+                null, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+                null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, null);
+
             interceptorManager.addTextReplacementRule(PLAYBACK_URI_BASE + "1234", playbackUri);
             System.out.println(playbackUri);
         } else {
             if (System.getenv("AZURE_AUTH_LOCATION") != null) { // Record mode
                 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-                credentials = ApplicationTokenCredential.fromFile(credFile);
+                AuthFile authFile = buildAuthFile(credFile);
+                credential = authFile.credential();
+                profile = new AzureProfile(authFile.tenantId(), authFile.subscriptionId(), authFile.environment());
             } else {
                 String clientId = System.getenv("AZURE_CLIENT_ID");
                 String tenantId = System.getenv("AZURE_TENANT_ID");
@@ -213,30 +235,33 @@ public abstract class TestBase {
                     throw new IllegalArgumentException("When running tests in record mode either 'AZURE_AUTH_LOCATION' or 'AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET and AZURE_SUBSCRIPTION_ID' needs to be set");
                 }
 
-                credentials = new ApplicationTokenCredential(clientId, tenantId, clientSecret, AzureEnvironment.AZURE);
-                credentials.defaultSubscriptionId(subscriptionId);
-            }
-            RestClientBuilder builder = new RestClientBuilder()
-                    .withBaseUrl(this.baseUri())
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withCredential(credentials)
-                    .withHttpClient(generateHttpClientWithProxy(null))
-                    .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .withPolicy(new ResourceGroupTaggingPolicy())
-                    .withPolicy(new TimeoutPolicy(Duration.ofMinutes(1)))
-                    .withPolicy(new CookiePolicy());
-            if (!interceptorManager.isNoneMode()) {
-                builder.withPolicy(interceptorManager.initInterceptor());
+                credential = new ClientSecretCredentialBuilder()
+                    .tenantId(tenantId)
+                    .clientId(clientId)
+                    .clientSecret(clientSecret)
+                    .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                    .build();
+                profile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
+
             }
 
-            restClient = buildRestClient(builder, false);
-            defaultSubscription = credentials.getDefaultSubscriptionId();
-            interceptorManager.addTextReplacementRule(defaultSubscription, ZERO_SUBSCRIPTION);
-            interceptorManager.addTextReplacementRule(credentials.getDomain(), ZERO_TENANT);
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            policies.add(new ResourceGroupTaggingPolicy());
+            policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
+            policies.add(new CookiePolicy());
+            if (!interceptorManager.isNoneMode()) {
+                policies.add(interceptorManager.initInterceptor());
+            }
+            httpPipeline = HttpPipelineProvider.buildHttpPipeline(
+                credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+                null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, generateHttpClientWithProxy(null));
+
+            interceptorManager.addTextReplacementRule(profile.subscriptionId(), ZERO_SUBSCRIPTION);
+            interceptorManager.addTextReplacementRule(profile.tenantId(), ZERO_TENANT);
             interceptorManager.addTextReplacementRule(baseUri(), playbackUri + "/");
             interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
         }
-        initializeClients(restClient, defaultSubscription, credentials.getDomain());
+        initializeClients(httpPipeline, profile);
     }
 
     @AfterEach
@@ -288,14 +313,6 @@ public abstract class TestBase {
         return clientBuilder.build();
     }
 
-    protected void addTextReplacementRule(String from, String to) {
-        interceptorManager.addTextReplacementRule(from, to);
-    }
-
-    protected void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
-    }
-
     protected String baseUri() {
         if (this.baseUri != null) {
             return this.baseUri;
@@ -304,11 +321,24 @@ public abstract class TestBase {
         }
     }
 
-    protected synchronized RestClient buildRestClient(RestClientBuilder builder, boolean isMocked) {
-        return builder.buildClient();
+    protected AuthFile buildAuthFile(File credFile) throws IOException {
+        this.authFile = AuthFile.parse(credFile);
+        return this.authFile;
     }
 
-    protected abstract void initializeClients(RestClient restClient, String defaultSubscription, String domain) throws IOException;
+    protected TokenCredential credentialFromFile() {
+        return this.authFile.credential();
+    }
+
+    protected String clientIdFromFile() {
+        return authFile.clientId();
+    }
+
+    protected AzureProfile profile() {
+        return this.profile;
+    }
+
+    protected abstract void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) throws IOException;
 
     protected abstract void cleanUpResources();
 }

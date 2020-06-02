@@ -102,6 +102,10 @@
     "source": "specification/datamigration/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "datashare/resource-manager": {
+    "source": "specification/datashare/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "devtestlabs/resource-manager" : {
     "source": "specification/devtestlabs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -322,6 +326,10 @@
     "fconfig": {
       "\"moduleName\"": "\"StreamAnalytics\""
     }
+  },
+  "subscription/resource-manager": {
+    "source": "specification/subscription/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "support/resource-manager": {
     "source": "specification/support/resource-manager/readme.md",

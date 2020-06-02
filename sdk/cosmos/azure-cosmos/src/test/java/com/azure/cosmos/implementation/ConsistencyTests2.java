@@ -4,11 +4,12 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -28,17 +29,16 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateReadSessionOnAsyncReplication() throws InterruptedException {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).block().getResource();
@@ -49,17 +49,16 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateWriteSessionOnAsyncReplication() throws InterruptedException {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).block().getResource();
@@ -156,18 +155,17 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, enabled = false, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateNoChargeOnFailedSessionRead() throws Exception {
         // DIRECT clients for read and write operations
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         // Client locked to replica for pause/resume
         RxDocumentClientImpl readSecondaryClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         try {
             // CREATE collection
@@ -182,11 +180,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
             String token = childResource.getSessionToken().split(":")[0] + ":" + ConsistencyTestsBase.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
 
-            FeedOptions feedOptions = new FeedOptions();
-            feedOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
-            feedOptions.setSessionToken(token);
+            QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+            queryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
+            queryRequestOptions.setSessionToken(token);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
-            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), feedOptions);
+            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), queryRequestOptions);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -216,12 +214,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             documents.add(documentDefinition);
         }
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         RxDocumentClientImpl client = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
 
         try {
@@ -236,11 +233,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
-                    FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.setEmptyPagesAllowed(true);
+                    QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+                    ModelBridgeInternal.setQueryRequestOptionsEmptyPagesAllowed(queryRequestOptions, true);
                     FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
                                                                                  "SELECT * FROM c WHERE c.Id = " +
-                                                                                         "'foo'", feedOptions)
+                                                                                         "'foo'", queryRequestOptions)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);
                     long lsn = Long.valueOf(lsnHeaderValue);
@@ -249,7 +246,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                     logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                     assertThat(lsn).isEqualTo(sessionToken.getLSN());
                 } catch (Exception ex) {
-                    CosmosClientException clientException = (CosmosClientException) ex.getCause();
+                    CosmosException clientException = (CosmosException) ex.getCause();
                     if (clientException.getStatusCode() != 0) {
                         if (clientException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
                             // ignore

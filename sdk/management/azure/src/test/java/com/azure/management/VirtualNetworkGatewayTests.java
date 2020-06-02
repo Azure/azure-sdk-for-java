@@ -3,6 +3,7 @@
 
 package com.azure.management;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.network.NetworkWatcher;
 import com.azure.management.network.Troubleshooting;
 import com.azure.management.network.VirtualNetworkGateway;
@@ -10,6 +11,7 @@ import com.azure.management.network.VirtualNetworkGatewayConnection;
 import com.azure.management.network.VirtualNetworkGatewaySkuName;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -20,10 +22,10 @@ public class VirtualNetworkGatewayTests extends TestBase {
     private Azure azure;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         Azure.Authenticated azureAuthed =
-            Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
-        azure = azureAuthed.withSubscription(defaultSubscription);
+            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azure = azureAuthed.withDefaultSubscription();
     }
 
     @Override

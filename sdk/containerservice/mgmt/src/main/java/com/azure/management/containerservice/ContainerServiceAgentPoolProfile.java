@@ -5,12 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ContainerServiceAgentPoolProfile model. */
 @Fluent
 public final class ContainerServiceAgentPoolProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceAgentPoolProfile.class);
+
     /*
      * Unique name of the agent pool profile in the context of the subscription
      * and resource group.
@@ -70,7 +74,7 @@ public final class ContainerServiceAgentPoolProfile {
      * VNet SubnetID specifies the VNet's subnet identifier.
      */
     @JsonProperty(value = "vnetSubnetID")
-    private String vnetSubnetID;
+    private String vnetSubnetId;
 
     /*
      * OsType to be used to specify os type. Choose from Linux and Windows.
@@ -239,22 +243,22 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @return the vnetSubnetID value.
+     * @return the vnetSubnetId value.
      */
-    public String vnetSubnetID() {
-        return this.vnetSubnetID;
+    public String vnetSubnetId() {
+        return this.vnetSubnetId;
     }
 
     /**
-     * Set the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @param vnetSubnetID the vnetSubnetID value to set.
+     * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
-    public ContainerServiceAgentPoolProfile withVnetSubnetID(String vnetSubnetID) {
-        this.vnetSubnetID = vnetSubnetID;
+    public ContainerServiceAgentPoolProfile withVnetSubnetId(String vnetSubnetId) {
+        this.vnetSubnetId = vnetSubnetId;
         return this;
     }
 
@@ -276,5 +280,25 @@ public final class ContainerServiceAgentPoolProfile {
     public ContainerServiceAgentPoolProfile withOsType(OSType osType) {
         this.osType = osType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model ContainerServiceAgentPoolProfile"));
+        }
+        if (vmSize() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property vmSize in model ContainerServiceAgentPoolProfile"));
+        }
     }
 }

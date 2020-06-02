@@ -74,6 +74,10 @@ public class FeaturesInner {
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/register")
         Observable<Response<ResponseBody>> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.features.v2015_12_01.Features unregister" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/unregister")
+        Observable<Response<ResponseBody>> unregister(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.features.v2015_12_01.Features listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -472,6 +476,92 @@ public class FeaturesInner {
     }
 
     private ServiceResponse<FeatureResultInner> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FeatureResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<FeatureResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FeatureResultInner object if successful.
+     */
+    public FeatureResultInner unregister(String resourceProviderNamespace, String featureName) {
+        return unregisterWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().body();
+    }
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(unregisterWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
+    }
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FeatureResultInner object
+     */
+    public Observable<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName) {
+        return unregisterWithServiceResponseAsync(resourceProviderNamespace, featureName).map(new Func1<ServiceResponse<FeatureResultInner>, FeatureResultInner>() {
+            @Override
+            public FeatureResultInner call(ServiceResponse<FeatureResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FeatureResultInner object
+     */
+    public Observable<ServiceResponse<FeatureResultInner>> unregisterWithServiceResponseAsync(String resourceProviderNamespace, String featureName) {
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (featureName == null) {
+            throw new IllegalArgumentException("Parameter featureName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.unregister(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FeatureResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<FeatureResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FeatureResultInner> clientResponse = unregisterDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<FeatureResultInner> unregisterDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<FeatureResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FeatureResultInner>() { }.getType())
                 .registerError(CloudException.class)

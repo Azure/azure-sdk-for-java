@@ -25,9 +25,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
@@ -41,6 +42,8 @@ public final class ContainerServicesInner
     implements InnerSupportsGet<ContainerServiceInner>,
         InnerSupportsListing<ContainerServiceInner>,
         InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(ContainerServicesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final ContainerServicesService service;
 
@@ -68,7 +71,7 @@ public final class ContainerServicesInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ContainerServiceListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -80,7 +83,7 @@ public final class ContainerServicesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -95,7 +98,7 @@ public final class ContainerServicesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ContainerServiceInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -109,7 +112,7 @@ public final class ContainerServicesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -123,7 +126,7 @@ public final class ContainerServicesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerService/containerServices")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ContainerServiceListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -136,7 +139,7 @@ public final class ContainerServicesInner
             "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}"
                 + "/orchestrators")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<OrchestratorVersionProfileListResultInner>> listOrchestrators(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -150,7 +153,7 @@ public final class ContainerServicesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ContainerServiceInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -165,7 +168,7 @@ public final class ContainerServicesInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -177,14 +180,14 @@ public final class ContainerServicesInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ContainerServiceListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ContainerServiceListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -193,12 +196,22 @@ public final class ContainerServicesInner
      * Gets a list of container services in the specified subscription. The operation returns properties of each
      * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
@@ -219,7 +232,43 @@ public final class ContainerServicesInner
      * Gets a list of container services in the specified subscription. The operation returns properties of each
      * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of container services in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ContainerServiceInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-07-01";
+        return service
+            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
      */
@@ -232,7 +281,22 @@ public final class ContainerServicesInner
      * Gets a list of container services in the specified subscription. The operation returns properties of each
      * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of container services in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ContainerServiceInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
      */
@@ -248,13 +312,36 @@ public final class ContainerServicesInner
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
@@ -278,7 +365,7 @@ public final class ContainerServicesInner
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container service.
      */
@@ -302,7 +389,7 @@ public final class ContainerServicesInner
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container service.
      */
@@ -320,13 +407,31 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container service in the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ContainerServiceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String containerServiceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
@@ -349,8 +454,53 @@ public final class ContainerServicesInner
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified container service in the specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ContainerServiceInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String containerServiceName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-07-01";
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                resourceGroupName,
+                containerServiceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container service in the specified subscription and resource group.
      */
@@ -375,7 +525,7 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container service in the specified subscription and resource group.
      */
@@ -393,13 +543,31 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String containerServiceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
@@ -424,7 +592,7 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -447,7 +615,7 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -462,12 +630,26 @@ public final class ContainerServicesInner
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
@@ -497,8 +679,52 @@ public final class ContainerServicesInner
      * masters and agents.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of container services in the specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ContainerServiceInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-07-01";
+        return service
+            .listByResourceGroup(
+                this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription and resource group.
      */
@@ -515,8 +741,27 @@ public final class ContainerServicesInner
      * masters and agents.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of container services in the specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ContainerServiceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription and resource group.
      */
@@ -532,13 +777,26 @@ public final class ContainerServicesInner
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of supported orchestrators in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(
         String location, String resourceType) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -560,8 +818,42 @@ public final class ContainerServicesInner
      *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported orchestrators in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(
+        String location, String resourceType, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listOrchestrators(
+                this.client.getHost(), apiVersion, this.client.getSubscriptionId(), location, resourceType, context);
+    }
+
+    /**
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
+     * @param location The name of a supported Azure region.
+     * @param resourceType resource type for which the list of orchestrators needs to be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of supported orchestrators in the specified subscription.
      */
@@ -585,7 +877,7 @@ public final class ContainerServicesInner
      *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of supported orchestrators in the specified subscription.
      */
@@ -611,7 +903,7 @@ public final class ContainerServicesInner
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of supported orchestrators in the specified subscription.
      */
@@ -626,7 +918,7 @@ public final class ContainerServicesInner
      *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of supported orchestrators in the specified subscription.
      */
@@ -644,13 +936,36 @@ public final class ContainerServicesInner
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ContainerServiceInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
@@ -673,8 +988,58 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ContainerServiceInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2017-07-01";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                containerServiceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param parameters Container service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container service.
      */
@@ -699,7 +1064,7 @@ public final class ContainerServicesInner
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container service.
      */
@@ -718,12 +1083,30 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String containerServiceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
@@ -747,8 +1130,54 @@ public final class ContainerServicesInner
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String containerServiceName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-07-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                resourceGroupName,
+                containerServiceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -767,7 +1196,7 @@ public final class ContainerServicesInner
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -780,12 +1209,15 @@ public final class ContainerServicesInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Container Services operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<ContainerServiceInner>>map(
@@ -804,13 +1236,44 @@ public final class ContainerServicesInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Container Services operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ContainerServiceInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Container Services operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByResourceGroupNext(nextLink, context))
             .<PagedResponse<ContainerServiceInner>>map(
@@ -823,5 +1286,34 @@ public final class ContainerServicesInner
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Container Services operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ContainerServiceInner>> listByResourceGroupNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }
