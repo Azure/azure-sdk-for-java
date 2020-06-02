@@ -19,7 +19,7 @@ public final class SearchOptions {
      * impact. Note that the count returned is an approximation.
      */
     @JsonProperty(value = "")
-    private Boolean includeTotalResultCount;
+    private Boolean includeTotalCount;
 
     /*
      * The list of facet expressions to apply to the search query. Each facet
@@ -155,8 +155,8 @@ public final class SearchOptions {
      *
      * @return the includeTotalResultCount value.
      */
-    public Boolean isIncludeTotalResultCount() {
-        return this.includeTotalResultCount;
+    public Boolean isTotalCountIncluded() {
+        return this.includeTotalCount;
     }
 
     /**
@@ -165,11 +165,11 @@ public final class SearchOptions {
      * value to true may have a performance impact. Note that the count
      * returned is an approximation.
      *
-     * @param includeTotalResultCount the includeTotalResultCount value to set.
+     * @param includeTotalCount the includeTotalResultCount value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setIncludeTotalResultCount(Boolean includeTotalResultCount) {
-        this.includeTotalResultCount = includeTotalResultCount;
+    public SearchOptions setIncludeTotalCount(Boolean includeTotalCount) {
+        this.includeTotalCount = includeTotalCount;
         return this;
     }
 
