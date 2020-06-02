@@ -6,10 +6,9 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
@@ -87,6 +86,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code fileSourceUrl}, {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -111,6 +113,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code fileSourceUrl}, {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -144,6 +149,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code data}, {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -173,6 +181,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code data}, {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -200,6 +211,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code fileSourceUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
@@ -221,6 +235,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code sourceUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>>
@@ -252,6 +269,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code data} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
@@ -279,6 +299,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code data} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
@@ -305,6 +328,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code sourceUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>>
@@ -328,6 +354,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code sourceUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>>
@@ -359,6 +388,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code data} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
@@ -387,6 +419,9 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code data} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
@@ -463,7 +498,7 @@ public final class FormRecognizerAsyncClient {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
                     .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails);
                     });
             } catch (RuntimeException ex) {
@@ -532,7 +567,7 @@ public final class FormRecognizerAsyncClient {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
                     .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
                     });
             } catch (RuntimeException ex) {
@@ -550,7 +585,7 @@ public final class FormRecognizerAsyncClient {
                 UUID modelUid = UUID.fromString(modelId);
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                     .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails);
                     });
             } catch (RuntimeException ex) {
@@ -563,15 +598,14 @@ public final class FormRecognizerAsyncClient {
      * Helper method that throws a {@link HttpResponseException} if {@link AnalyzeOperationResult#getStatus()} is
      * {@link OperationStatus#FAILED}.
      *
-     * @param modelSimpleResponse The response returned from the service.
+     * @param analyzeResponse The response returned from the service.
      */
-    private void throwIfAnalyzeStatusInvalid(SimpleResponse<AnalyzeOperationResult> modelSimpleResponse) {
-        if (modelSimpleResponse.getValue().getStatus().equals(OperationStatus.FAILED)) {
-            List<ErrorInformation> errorInformationList =
-                modelSimpleResponse.getValue().getAnalyzeResult().getErrors();
+    private void throwIfAnalyzeStatusInvalid(AnalyzeOperationResult analyzeResponse) {
+        if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
+            List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
             if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-                throw logger.logExceptionAsError(
-                    new ErrorResponseException(errorInformationList.get(0).getMessage(), null));
+                throw logger.logExceptionAsError(new HttpResponseException("Analyze operation failed.", null,
+                    errorInformationList));
             }
         }
     }

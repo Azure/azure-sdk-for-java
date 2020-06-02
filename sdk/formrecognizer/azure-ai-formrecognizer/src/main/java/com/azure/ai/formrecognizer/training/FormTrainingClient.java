@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.training;
 
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
+import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
@@ -14,6 +15,7 @@ import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -77,6 +79,8 @@ public final class FormTrainingClient {
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @throws HttpResponseException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -104,6 +108,8 @@ public final class FormTrainingClient {
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @throws HttpResponseException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -121,6 +127,7 @@ public final class FormTrainingClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomFormModel getCustomModel(String modelId) {
@@ -137,6 +144,7 @@ public final class FormTrainingClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The detailed information for the specified model.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomFormModel> getCustomModelWithResponse(String modelId, Context context) {
@@ -178,6 +186,7 @@ public final class FormTrainingClient {
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModel#string}
      *
      * @param modelId The UUID string format model identifier.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteModel(String modelId) {
@@ -194,6 +203,7 @@ public final class FormTrainingClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing containing status code and HTTP headers
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, Context context) {

@@ -2,6 +2,8 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 - Update FormField property `transactionTime` on `USReceipt` to return `LocalTime` instead of `String`
+- Raise `HttpResponseException` when a model with `ModelStatus.Invalid` is returned from the `beginTraining()` API's
+- Fix `HttpResponseException` to include the error object thrown on invalid analyze status for recognize API's
 - Rename model `PageRange` to `FormPageRange`
 - Rename property `startPageNumber` to `firstPageNumber` and `endPageNumber` to `lastPageNumber` in model `PageRange`
 - Rename `getCustomModelInfos` to `listCustomModels`

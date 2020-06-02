@@ -12,6 +12,8 @@ import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
+import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
@@ -130,7 +132,9 @@ public final class FormTrainingAsyncClient {
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @throws HttpResponseException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -158,7 +162,9 @@ public final class FormTrainingAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it
-     * has completed, has failed, or has been cancelled.
+     * has completed, has failed, or has been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @throws HttpResponseException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -184,6 +190,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomFormModel> getCustomModel(String modelId) {
@@ -199,6 +206,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Response} containing the requested {@link CustomFormModel model}.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId) {
@@ -261,6 +269,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return An empty Mono.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
@@ -276,6 +285,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Mono} containing containing status code and HTTP headers
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponse(String modelId) {
@@ -559,7 +569,10 @@ public final class FormTrainingAsyncClient {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true)
-                    .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()));
+                    .map(modelSimpleResponse -> {
+                        throwIfModelStatusInvalid(modelSimpleResponse.getValue());
+                        return toCustomFormModel(modelSimpleResponse.getValue());
+                    });
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -638,4 +651,20 @@ public final class FormTrainingAsyncClient {
         }
     }
 
+     /**
+      *  Helper method that throws a {@link HttpResponseException} if {@link ModelInfo#getStatus()} is
+      *  {@link com.azure.ai.formrecognizer.implementation.models.ModelStatus#INVALID}.
+      *
+      * @param customModel The response returned from the service.
+      */
+    private void throwIfModelStatusInvalid(Model customModel) {
+        if (ModelStatus.INVALID.equals(customModel.getModelInfo().getStatus())) {
+            List<ErrorInformation> errorInformationList = customModel.getTrainResult().getErrors();
+            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
+                throw logger.logExceptionAsError(new HttpResponseException(
+                    String.format("Invalid model created with ID: %s ", customModel.getModelInfo().getModelId()),
+                    null, errorInformationList));
+            }
+        }
+    }
 }
