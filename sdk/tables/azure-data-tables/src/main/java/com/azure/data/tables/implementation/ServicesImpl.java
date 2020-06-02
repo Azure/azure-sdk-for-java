@@ -18,11 +18,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.data.tables.models.ServicesGetPropertiesResponse;
-import com.azure.data.tables.models.ServicesGetStatisticsResponse;
-import com.azure.data.tables.models.ServicesSetPropertiesResponse;
-import com.azure.data.tables.models.TableServiceErrorException;
-import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.data.tables.implementation.models.ServicesGetStatisticsResponse;
+import com.azure.data.tables.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TableServiceProperties;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Services. */
