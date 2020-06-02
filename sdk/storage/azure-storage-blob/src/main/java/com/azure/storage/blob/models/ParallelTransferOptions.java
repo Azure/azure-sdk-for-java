@@ -102,6 +102,7 @@ public final class ParallelTransferOptions {
      * @return The number of buffers.
      * @deprecated Use {@link #getMaxConcurrency()}
      */
+    @Deprecated
     public Integer getNumBuffers() {
         return this.maxConcurrency;
     }
