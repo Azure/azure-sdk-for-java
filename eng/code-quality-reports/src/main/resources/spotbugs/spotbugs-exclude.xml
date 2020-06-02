@@ -1836,7 +1836,7 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
-  <!-- Serializing a null value should return null to allow client to handle null cases 
+  <!-- Serializing a null value should return null to allow client to handle null cases
     consistently instead of injecting null payload behavior from the payload. -->
   <Match>
     <Class name="com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer"/>
