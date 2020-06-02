@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -50,14 +50,14 @@ final public class ItemOperations {
                                                           Class<T> classType) {
 
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
-        return readManyInternal(container, itemKeyList, new FeedOptions(), classType);
+        return readManyInternal(container, itemKeyList, new QueryRequestOptions(), classType);
     }
 
     static <T> Mono<FeedResponse<T>> readManyInternal(CosmosAsyncContainer container,
                                                       List<Pair<String, PartitionKey>> itemKeyList,
-                                                      FeedOptions options,
+                                                      QueryRequestOptions options,
                                                       Class<T> classType) {
 
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())

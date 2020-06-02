@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition
  * specifies which
- * document property is used as the partition key in a collection that has multiple partitions.
+ * item property is used as the partition key in a container that has multiple partitions.
  */
 public final class PartitionKeyDefinition {
     private List<String> paths;
@@ -119,9 +119,9 @@ public final class PartitionKeyDefinition {
     }
 
     /**
-     * Gets the document property paths for the partition key.
+     * Gets the item property paths for the partition key.
      *
-     * @return the paths to the document properties that form the partition key.
+     * @return the paths to the item properties that form the partition key.
      */
     public List<String> getPaths() {
         if (this.paths == null) {
@@ -136,9 +136,9 @@ public final class PartitionKeyDefinition {
     }
 
     /**
-     * Sets the document property paths for the partition key.
+     * Sets the item property paths for the partition key.
      *
-     * @param paths the paths to document properties that form the partition key.
+     * @param paths the paths to item properties that form the partition key.
      * @return this PartitionKeyDefinition.
      * @throws IllegalArgumentException thrown if an error occurs
      */

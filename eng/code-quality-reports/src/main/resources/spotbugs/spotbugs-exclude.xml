@@ -711,26 +711,6 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-
-  <!-- Azure search has generated code mixed with hand-written in these packages -->
-  <Match>
-    <And>
-      <Package name="~com\.azure\.search\.documents\.models"/>
-      <Not>
-        <Or>
-          <!-- Hand-written classes should be specified here to be checked  -->
-          <Class name="com.azure.search.documents.models.CoordinateSystem"/>
-          <Class name="com.azure.search.documents.models.GeoPoint"/>
-          <Class name="com.azure.search.documents.models.IndexBatch"/>
-          <Class name="com.azure.search.documents.models.ValueFacetResult"/>
-          <Class name="com.azure.search.documents.models.RangeFacetResult"/>
-          <Class name="com.azure.search.documents.models.IndexBatchException"/>
-          <Class name="com.azure.search.documents.models.ScoringParameter"/>
-        </Or>
-      </Not>
-    </And>
-  </Match>
-
   <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
@@ -825,7 +805,7 @@
   <Match>
     <Or>
       <Class name="com.azure.cosmos.ClientSideRequestStatistics"/>
-      <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+      <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     </Or>
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
   </Match>
@@ -904,40 +884,6 @@
     <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
   </Match>
 
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosContainerProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncContainerResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosDatabaseProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncDatabaseResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosPermissionProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncPermissionResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosStoredProcedureProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosUserProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncUserResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
 
   <!-- Extra null check is for assertion -->
   <Match>
@@ -957,7 +903,7 @@
    Issue: https://github.com/Azure/azure-sdk-for-java/issues/9054
    -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     <Method name="getItem"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
@@ -1208,7 +1154,7 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9054 -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     <Field name="item"/>
     <Bug pattern="DC_DOUBLECHECK"/>
   </Match>
@@ -1606,13 +1552,6 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
     <Field name="gatewayAddressCache"/>
     <Bug pattern="UUF_UNUSED_FIELD"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncConflictResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->

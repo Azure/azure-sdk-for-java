@@ -5,6 +5,7 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.test.environment.models.Author;
@@ -45,19 +46,19 @@ public class SuggestSyncTests extends SearchTestBase {
 
     private final List<String> indexesToDelete = new ArrayList<>();
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 

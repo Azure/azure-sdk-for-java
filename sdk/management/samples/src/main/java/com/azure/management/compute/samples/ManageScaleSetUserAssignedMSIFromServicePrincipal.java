@@ -117,7 +117,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 .clientSecret("\"StrongPass!12\"")
                 .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
                 .build();
-            AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, false).withSubscriptionId(subscription);
+            AzureProfile profile = new AzureProfile(null, subscription, AzureEnvironment.AZURE);
             ComputeManager computeManager1 = ComputeManager.authenticate(credential, profile);
 
             VirtualMachineScaleSet vmss = computeManager1.virtualMachineScaleSets().getById(virtualMachineScaleSet1.id());
@@ -170,7 +170,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

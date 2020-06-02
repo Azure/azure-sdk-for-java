@@ -8,7 +8,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 
 /**
- * This example shows how to use the {@link SearchIndexClientBuilder} to create an index client
+ * This example shows how to use the {@link SearchClientBuilder} to create an index client
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See instructions here](https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
@@ -23,17 +23,17 @@ public class IndexClientConfigurationExample {
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
-        SearchIndexClient minimalClient = createMinimalClient();
-        SearchIndexAsyncClient advancedClient = createAdvancedClient();
+        SearchClient minimalClient = createMinimalClient();
+        SearchAsyncClient advancedClient = createAdvancedClient();
     }
 
     /**
-     * Builds a {@link SearchIndexClient} with the minimum required configuration
+     * Builds a {@link SearchClient} with the minimum required configuration
      *
      * @return an index client with all defaults
      */
-    private static SearchIndexClient createMinimalClient() {
-        return new SearchIndexClientBuilder()
+    private static SearchClient createMinimalClient() {
+        return new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels")
@@ -41,12 +41,12 @@ public class IndexClientConfigurationExample {
     }
 
     /**
-     * Builds a {@link SearchIndexAsyncClient} with additional configuration
+     * Builds a {@link SearchAsyncClient} with additional configuration
      *
      * @return a customized async index client
      */
-    private static SearchIndexAsyncClient createAdvancedClient() {
-        return new SearchIndexClientBuilder()
+    private static SearchAsyncClient createAdvancedClient() {
+        return new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels")

@@ -1,13 +1,23 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- Rename model `PageRange` to `FormPageRange`
+- Rename property `startPageNumber` to `firstPageNumber` and `endPageNumber` to `lastPageNumber` in model `PageRange`
+- Rename `getCustomModelInfos` to `listCustomModels`
+- Rename property `lastUpdatedOn` to `completedOn` and `createdOn` to `requestedOn` in `CustomFormModel` and
+`CustomFormModelInfo` model
+- Rename model `CustomFormSubModel` to `CustomFormSubmodel`
+- Rename `subModels` property on CustomFormModel to `submodels`
+- Add `pageNumber` property to `FormPage` and `FormTable` model
+- Remove `pageNumber` property from `FormField` model
+- Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
 - Fix bug in FormRecognizer API's to support multipage document recognition.
 - Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
 - Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`
 - Adopt the `training` namespace for Form Recognizer Training Clients
 - Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients
 - Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
-- Replace parameters `filePrefix` and `includeSubFolders` with `TrainModelOptions` model
+- Replace parameters `filePrefix` and `includeSubFolders` with `TrainingFileFilter` model
 - Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
 
 ## 1.0.0-beta.2 (2020-05-06)

@@ -5,7 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.BeforeClass;
@@ -83,7 +83,7 @@ public class QueryValidationTests extends TestSuiteBase {
         String requestContinuation = null;
 
         List<T> receivedDocuments = new ArrayList<>();
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
 
         do {

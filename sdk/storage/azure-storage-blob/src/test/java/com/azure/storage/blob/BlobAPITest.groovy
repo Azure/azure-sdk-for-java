@@ -101,6 +101,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Upload numBlocks"() {
         setup:
+        if (numBlocks > 0 && !liveMode()) {
+            return // skip multipart upload for playback/record as it uses randomly generated block ids
+        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
@@ -119,6 +122,11 @@ class BlobAPITest extends APISpec {
         Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
         Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
         3 * Constants.MB| Constants.MB  || 3
+    }
+
+    def "Upload return value"() {
+        expect:
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getValue().getETag() != null
     }
 
     @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.

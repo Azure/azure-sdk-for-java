@@ -11,12 +11,13 @@ import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -35,7 +36,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistic
 import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
-import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -57,55 +58,51 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link DetectLanguageResult}.
+     * Helper function for calling service with max overloaded parameters.
      *
      * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
+     * @return A mono {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
-        TextAnalyticsRequestOptions options) {
+    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatch(
+        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getDetectedLanguageResponseInPage(documents, options, context)).flux());
+            return withContext(context -> getDetectedLanguageResponse(documents, options, context));
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters with {@link Context} that a returns
-     * {@link TextAnalyticsPagedFlux} which is a paged flux that contains {@link DetectLanguageResult}.
+     * Helper function for calling service with max overloaded parameters with {@link Context}.
      *
      * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
+     * @return A mono {@link Response} which contains {@link DetectLanguageResultCollection}.
      */
-    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
+    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-                getDetectedLanguageResponseInPage(documents, options, context).flux());
+            return getDetectedLanguageResponse(documents, options, context);
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
     /**
-     * Helper method to convert the service response of {@link LanguageResult} to {@link TextAnalyticsPagedResponse}
-     * of {@link DetectLanguageResult}.
+     * Helper method to convert the service response of {@link LanguageResult} to {@link Response} that contains
+     * {@link DetectLanguageResultCollection}.
      *
      * @param response the {@link SimpleResponse} of {@link LanguageResult} returned by the service.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult} to be returned by the SDK.
+     * @return A {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    private TextAnalyticsPagedResponse<DetectLanguageResult> toTextAnalyticsPagedResponse(
+    private Response<DetectLanguageResultCollection> toTextAnalyticsResultDocumentResponse(
         SimpleResponse<LanguageResult> response) {
         final LanguageResult languageResult = response.getValue();
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
@@ -117,7 +114,8 @@ class DetectLanguageAsyncClient {
             final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
                 .map(warning -> {
                     final WarningCodeValue warningCodeValue = warning.getCode();
-                    return new TextAnalyticsWarning(warningCodeValue == null ? null : warningCodeValue.toString(),
+                    return new TextAnalyticsWarning(
+                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
                         warning.getMessage());
                 }).collect(Collectors.toList());
 
@@ -147,27 +145,22 @@ class DetectLanguageAsyncClient {
                 toTextAnalyticsError(documentError.getError()), null));
         }
 
-        return new TextAnalyticsPagedResponse<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            detectLanguageResults,
-            null,
-            languageResult.getModelVersion(),
-            languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics()));
+        return new SimpleResponse<>(response,
+            new DetectLanguageResultCollection(detectLanguageResults, languageResult.getModelVersion(),
+                languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
     }
 
     /**
-     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * Call the service with REST response, convert to a {@link Mono} of {@link Response} of
      * {@link DetectLanguageResult} from a {@link SimpleResponse} of {@link LanguageResult}.
      *
      * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult}.
+     * @return A mono {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
+    private Mono<Response<DetectLanguageResultCollection>> getDetectedLanguageResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.languagesWithResponseAsync(
                 new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
@@ -178,8 +171,7 @@ class DetectLanguageAsyncClient {
                 .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                     response.getValue()))
                 .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-                .map(this::toTextAnalyticsPagedResponse)
+                .map(this::toTextAnalyticsResultDocumentResponse)
                 .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
-
     }
 }
