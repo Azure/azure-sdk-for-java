@@ -1,5 +1,7 @@
 ﻿# Azure CosmosDB Client Library for Java
 
+[![Maven Central][cosmos_maven_svg]][cosmos_maven]
+
 Azure Cosmos DB is Microsoft’s globally distributed, multi-model database service for operational and analytics workloads. It offers multi-mastering feature by automatically scaling throughput, compute, and storage.
 This project provides SDK library in Java for interacting with [SQL API][sql_api_query] of [Azure Cosmos DB Database Service][cosmos_introduction].
 
@@ -18,6 +20,10 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+Refer to maven central for previous [releases][cosmos_maven]
+
+Refer to [javadocs][api_documentation] for more details on the package
 
 ### Prerequisites
 
@@ -284,6 +290,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
+[cosmos_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos
+[cosmos_maven_svg]: https://img.shields.io/maven-central/v/com.azure/azure-cosmos.svg
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
