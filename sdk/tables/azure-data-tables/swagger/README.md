@@ -4,7 +4,7 @@
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
+Fork and clone https://github.com/Azure/autorest.java
 git checkout v4
 git submodule update --init --recursive
 mvn package -Dlocal
@@ -24,12 +24,11 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/
 java: true
 output-folder: ..\
 generate-client-as-impl: true
-namespace: com.azure.cosmos.table
+namespace: com.azure.data.tables
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
-models-subpackage: implementation.models
-custom-types-subpackage: models
+models-subpackage: models
 context-client-method-parameter: true
 ```
