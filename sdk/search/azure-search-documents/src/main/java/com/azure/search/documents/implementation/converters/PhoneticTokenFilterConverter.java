@@ -24,7 +24,7 @@ public final class PhoneticTokenFilterConverter {
         String name = obj.getName();
         phoneticTokenFilter.setName(name);
 
-        Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
+        Boolean replaceOriginalTokens = obj.isOriginalTokensReplaced();
         phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
@@ -49,7 +49,7 @@ public final class PhoneticTokenFilterConverter {
         phoneticTokenFilter.setName(name);
 
         Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
-        phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
+        phoneticTokenFilter.setOriginalTokensReplaced(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
             com.azure.search.documents.indexes.implementation.models.PhoneticEncoder encoder =

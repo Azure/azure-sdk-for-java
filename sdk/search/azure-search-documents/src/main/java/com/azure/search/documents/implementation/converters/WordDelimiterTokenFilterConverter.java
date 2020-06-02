@@ -27,7 +27,7 @@ public final class WordDelimiterTokenFilterConverter {
         wordDelimiterTokenFilter.setName(name);
 
         Boolean catenateNumbers = obj.isCatenateNumbers();
-        wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
+        wordDelimiterTokenFilter.setNumbersCatenated(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
             List<String> protectedWords = new ArrayList<>(obj.getProtectedWords());
@@ -56,7 +56,7 @@ public final class WordDelimiterTokenFilterConverter {
         wordDelimiterTokenFilter.setCatenateAll(catenateAll);
 
         Boolean catenateWords = obj.isCatenateWords();
-        wordDelimiterTokenFilter.setCatenateWords(catenateWords);
+        wordDelimiterTokenFilter.setWordsCatenated(catenateWords);
         return wordDelimiterTokenFilter;
     }
 
@@ -74,7 +74,7 @@ public final class WordDelimiterTokenFilterConverter {
         String name = obj.getName();
         wordDelimiterTokenFilter.setName(name);
 
-        Boolean catenateNumbers = obj.isCatenateNumbers();
+        Boolean catenateNumbers = obj.isNumbersCatenated();
         wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
@@ -100,10 +100,10 @@ public final class WordDelimiterTokenFilterConverter {
         Boolean preserveOriginal = obj.isPreserveOriginal();
         wordDelimiterTokenFilter.setPreserveOriginal(preserveOriginal);
 
-        Boolean catenateAll = obj.isCatenateAll();
+        Boolean catenateAll = obj.catenateAll();
         wordDelimiterTokenFilter.setCatenateAll(catenateAll);
 
-        Boolean catenateWords = obj.isCatenateWords();
+        Boolean catenateWords = obj.isWordsCatenated();
         wordDelimiterTokenFilter.setCatenateWords(catenateWords);
         return wordDelimiterTokenFilter;
     }

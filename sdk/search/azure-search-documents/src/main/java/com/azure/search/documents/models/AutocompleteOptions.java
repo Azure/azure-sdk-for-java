@@ -5,7 +5,7 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Arrays;
+
 import java.util.List;
 
 /**
@@ -249,11 +249,11 @@ public final class AutocompleteOptions {
      * querying for auto-completed terms. Target fields must be included in the
      * specified suggester.
      *
-     * @param searchFields the searchFields value to set.
+     * @param searchFields the searchField names to set.
      * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteOptions setSearchFields(String... searchFields) {
-        this.searchFields = Arrays.asList(searchFields);
+    public AutocompleteOptions setSearchFields(List<String> searchFields) {
+        this.searchFields = searchFields;
         return this;
     }
 

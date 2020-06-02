@@ -38,7 +38,7 @@ public class SearchServiceSyncTests extends SearchTestBase {
     public void getServiceStatsReturnsRequestId() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
-        RequestOptions requestOptions = new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
+        RequestOptions requestOptions = new RequestOptions().setClientRequestId(UUID.randomUUID());
         Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
             Context.NONE);
 
