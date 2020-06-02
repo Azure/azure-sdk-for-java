@@ -31,11 +31,10 @@ public final class ParallelTransferOptions {
      * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
      * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
      * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,
-     * up to 5 for each of the upload operations. For buffered uploads only, this value is the maximum number of buffers
-     * to be allocated as part of the transfer. In those cases, memory will be allocated lazily as needed and this value
-     * must be at least two. The amount of memory consumed by methods which buffer may be up to
-     * blockSize * maxConcurrency. In general, upload methods which do not accept a length parameter must perform some
-     * buffering.
+     * up to 5 for each of the upload operations. For buffered uploads only, the maximum number of buffers to be
+     * allocated as part of the transfer will be {@code maxConcurrency + 1}. In those cases, memory will be allocated
+     * lazily as needed. The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
+     * In general, upload methods which do not accept a length parameter must perform some buffering.
      * @param progressReceiver {@link ProgressReceiver}
      * @param maxSingleUploadSize If the size of the data is less than or equal to this value, it will be uploaded in a
      * single put rather than broken up into chunks. If the data is uploaded in a single shot, the block size will be
@@ -55,7 +54,7 @@ public final class ParallelTransferOptions {
          */
         this.maxConcurrency = maxConcurrency;
         if (maxConcurrency != null) {
-            StorageImplUtils.assertInBounds("numBuffers", maxConcurrency, 1, Integer.MAX_VALUE);
+            StorageImplUtils.assertInBounds("maxConcurrency", maxConcurrency, 1, Integer.MAX_VALUE);
         }
         this.progressReceiver = progressReceiver;
         this.maxSingleUploadSize = maxSingleUploadSize;

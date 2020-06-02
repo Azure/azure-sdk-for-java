@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake.implementation.util;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.util.concurrent.Queues;
 
 /**
  * This class provides helper methods for common model patterns.

@@ -6,7 +6,6 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import reactor.util.concurrent.Queues;
 
 import java.net.MalformedURLException;
 import java.net.URL;
