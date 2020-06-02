@@ -148,11 +148,11 @@ public class CosmosAsyncStoredProcedure {
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
-     * @param storedProcedureSettings the stored procedure properties
+     * @param storedProcedureProperties the stored procedure properties
      * @return an {@link Mono} containing the single resource response with the replaced stored procedure or an error.
      */
-    public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings) {
-        return replace(storedProcedureSettings, null);
+    public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureProperties) {
+        return replace(storedProcedureProperties, null);
     }
 
     /**
@@ -163,11 +163,11 @@ public class CosmosAsyncStoredProcedure {
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
-     * @param storedProcedureSettings the stored procedure properties.
+     * @param storedProcedureProperties the stored procedure properties.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the replaced stored procedure or an error.
      */
-    public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings,
+    public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureProperties,
                                                        CosmosStoredProcedureRequestOptions options) {
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
@@ -175,7 +175,7 @@ public class CosmosAsyncStoredProcedure {
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
                    .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(
-                       ModelBridgeInternal.getResource(storedProcedureSettings))),
+                       ModelBridgeInternal.getResource(storedProcedureProperties))),
                        ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
                    .single();

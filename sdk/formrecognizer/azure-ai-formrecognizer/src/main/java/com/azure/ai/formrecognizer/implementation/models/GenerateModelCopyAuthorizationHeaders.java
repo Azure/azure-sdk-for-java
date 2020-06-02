@@ -7,9 +7,9 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TrainCustomModelAsyncHeaders model. */
+/** The GenerateModelCopyAuthorizationHeaders model. */
 @Fluent
-public final class TrainCustomModelAsyncHeaders {
+public final class GenerateModelCopyAuthorizationHeaders {
     /*
      * The Location property.
      */
@@ -29,9 +29,9 @@ public final class TrainCustomModelAsyncHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the TrainCustomModelAsyncHeaders object itself.
+     * @return the GenerateModelCopyAuthorizationHeaders object itself.
      */
-    public TrainCustomModelAsyncHeaders setLocation(String location) {
+    public GenerateModelCopyAuthorizationHeaders setLocation(String location) {
         this.location = location;
         return this;
     }
