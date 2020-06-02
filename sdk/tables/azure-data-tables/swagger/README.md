@@ -29,6 +29,6 @@ generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
-models-subpackage: models
+models-subpackage: implementation.models
 context-client-method-parameter: true
 ```
