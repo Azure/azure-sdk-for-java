@@ -56,7 +56,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
-     * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
+     * @param formUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
@@ -67,8 +67,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
+        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
+        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, false, null);
     }
 
     /**
@@ -80,7 +80,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
      *
-     * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
+     * @param formUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
@@ -94,9 +94,9 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
+        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
-        return client.beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails, pollInterval)
+        return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, includeTextDetails, pollInterval)
             .getSyncPoller();
     }
 
@@ -188,7 +188,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration}
      *
-     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
+     * @param formUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -200,8 +200,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
-        beginRecognizeContentFromUrl(String sourceUrl, Duration pollInterval) {
-        return client.beginRecognizeContentFromUrl(sourceUrl, pollInterval).getSyncPoller();
+        beginRecognizeContentFromUrl(String formUrl, Duration pollInterval) {
+        return client.beginRecognizeContentFromUrl(formUrl, pollInterval).getSyncPoller();
     }
 
     /**
@@ -266,7 +266,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
      *
-     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
+     * @param receiptUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -276,8 +276,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
-        beginRecognizeReceiptsFromUrl(String sourceUrl) {
-        return beginRecognizeReceiptsFromUrl(sourceUrl, false, null);
+        beginRecognizeReceiptsFromUrl(String receiptUrl) {
+        return beginRecognizeReceiptsFromUrl(receiptUrl, false, null);
     }
 
     /**
