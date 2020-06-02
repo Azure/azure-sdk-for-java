@@ -121,7 +121,7 @@ public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
 
         SchemaId schemaId;
         try {
-            schemaId = this.restService.createSchema(schemaGroup, schemaName, schemaString, schemaType);
+            schemaId = this.restService.createSchema(schemaGroup, schemaName, schemaType, schemaString);
         } catch (HttpResponseException e) {
             throw logger.logExceptionAsError(new SchemaRegistryClientException("Register operation failed.", e));
         }
