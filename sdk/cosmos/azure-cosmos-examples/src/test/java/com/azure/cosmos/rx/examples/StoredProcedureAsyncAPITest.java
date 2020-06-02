@@ -3,26 +3,21 @@
 
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
-import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.StoredProcedure;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -233,17 +228,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<IncludedPath>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        List<Index> indexes = new ArrayList<Index>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(stringIndex), "precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(numberIndex), "precision", -1);
-        indexes.add(numberIndex);
-        includedPath.setIndexes(indexes);
+        IncludedPath includedPath = new IncludedPath("/*");
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
         collectionDefinition.setIndexingPolicy(indexingPolicy);

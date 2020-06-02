@@ -8,13 +8,14 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.TakeContinuationToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -48,29 +49,29 @@ public class TopQueryTests extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
-        options.setPopulateQueryMetrics(qmEnabled);
+        options.setQueryMetricsEnabled(qmEnabled);
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
-            CosmosPagedFlux<CosmosItemProperties> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
+            CosmosPagedFlux<JsonNode> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
                 options,
-                CosmosItemProperties.class);
+                                                                                      JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator1 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator1 = new FeedResponseListValidator.Builder<JsonNode>()
                     .totalSize(0).build();
 
             validateQuerySuccess(queryObservable1.byPage(9), validator1, TIMEOUT);
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
+            CosmosPagedFlux<JsonNode> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
                 options,
-                CosmosItemProperties.class);
+                                                                                      JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator2 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator2 = new FeedResponseListValidator.Builder<JsonNode>()
                     .totalSize(1).build();
 
             validateQuerySuccess(queryObservable2.byPage(), validator2, TIMEOUT);
@@ -141,7 +142,7 @@ public class TopQueryTests extends TestSuiteBase {
         List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
 
         do {
-            FeedOptions options = new FeedOptions();
+            QueryRequestOptions options = new QueryRequestOptions();
             options.setMaxDegreeOfParallelism(2);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.<CosmosItemProperties>queryItems(query, options, CosmosItemProperties.class);
 

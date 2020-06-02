@@ -14,11 +14,12 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainModelOptions;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -55,11 +56,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization}
  *
- * @see FormRecognizerClientBuilder
- * @see FormRecognizerAsyncClient
+ * @see FormTrainingClientBuilder
+ * @see FormTrainingAsyncClient
  */
-@ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
-public class FormTrainingAsyncClient {
+@ServiceClient(builder = FormTrainingClientBuilder.class, isAsync = true)
+public final class FormTrainingAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
     private final FormRecognizerClientImpl service;
@@ -67,16 +68,42 @@ public class FormTrainingAsyncClient {
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
-     * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
+     * Each service call goes through the {@link FormTrainingClientBuilder#pipeline http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      */
-    // TODO (savaity): Should not be a public constructor, still deciding the best approach here,
-    //  to be redone in #10909
-    public FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
+    FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
+    }
+
+    /**
+     * Creates a new {@link FormRecognizerAsyncClient} object. The new {@link FormTrainingAsyncClient}
+     * uses the same request policy pipeline as the {@link FormTrainingAsyncClient}.
+     *
+     * @return A new {@link FormRecognizerAsyncClient} object.
+     */
+    public FormRecognizerAsyncClient getFormRecognizerAsyncClient() {
+        return new FormRecognizerClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline()).buildAsyncClient();
+    }
+
+    /**
+     * Gets the pipeline the client is using.
+     *
+     * @return the pipeline the client is using.
+     */
+    HttpPipeline getHttpPipeline() {
+        return service.getHttpPipeline();
+    }
+
+    /**
+     * Gets the endpoint the client is using.
+     *
+     * @return the endpoint the client is using.
+     */
+    String getEndpoint() {
+        return service.getEndpoint();
     }
 
     /**
@@ -122,12 +149,12 @@ public class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainModelOptions-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
-     * @param trainModelOptions Filter to apply to the documents in the source path for training.
+     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -136,13 +163,13 @@ public class FormTrainingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainModelOptions trainModelOptions, Duration pollInterval) {
+        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(trainingFilesUrl,
-                trainModelOptions != null ? trainModelOptions.isIncludeSubFolders() : false,
-                trainModelOptions != null ? trainModelOptions.getPrefix() : null,
+                trainingFileFilter != null ? trainingFileFilter.isIncludeSubFolders() : false,
+                trainingFileFilter != null ? trainingFileFilter.getPrefix() : null,
                 useTrainingLabels),
             createTrainingPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -271,12 +298,12 @@ public class FormTrainingAsyncClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getModelInfos}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels}
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomFormModelInfo> getModelInfos() {
+    public PagedFlux<CustomFormModelInfo> listCustomModels() {
         try {
             return new PagedFlux<>(() -> withContext(context -> listFirstPageModelInfo(context)),
                 continuationToken -> withContext(context -> listNextPageModelInfo(continuationToken, context)));
@@ -292,7 +319,7 @@ public class FormTrainingAsyncClient {
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
-    PagedFlux<CustomFormModelInfo> getModelInfos(Context context) {
+    PagedFlux<CustomFormModelInfo> listCustomModels(Context context) {
         return new PagedFlux<>(() -> listFirstPageModelInfo(context),
             continuationToken -> listNextPageModelInfo(continuationToken, context));
     }

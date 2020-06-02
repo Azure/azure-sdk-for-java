@@ -5,45 +5,62 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConflictTests {
-    private String conflictAsString;
+    private List<String> confList = new ArrayList<String>();
 
     @BeforeClass(groups = { "unit" })
     public void before_ConflictTests() throws Exception {
-        conflictAsString = IOUtils.toString(
+        String conflictAsString = IOUtils.toString(
                 getClass().getClassLoader().getResourceAsStream("sampleConflict.json"), "UTF-8");
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode valuesNode = mapper.readTree(conflictAsString).get("conflictList");
+        for (JsonNode node : valuesNode) {
+            confList.add(node.toString());
+        }
     }
 
     @Test(groups = { "unit" })
     public void getSourceResourceId() {
-        Conflict conf = new Conflict(conflictAsString);
+        Conflict conf = new Conflict(confList.get(0));
         assertThat(conf.getSourceResourceId()).isEqualTo("k6d9ALgBmD+ChB4AAAAAAA==");
     }
 
     @Test(groups = { "unit" })
     public void getOperationKind() {
-        Conflict conf = new Conflict(conflictAsString);
-        assertThat(conf.getOperationKind()).isEqualTo("create");
+        Conflict conf = new Conflict(confList.get(0));
+        assertThat(conf.getOperationKind().toString()).isEqualTo("create");
+        conf = new Conflict(confList.get(1));
+        assertThat(conf.getOperationKind().toString()).isEqualTo("update");
+        conf = new Conflict(confList.get(2));
+        assertThat(conf.getOperationKind().toString()).isEqualTo("delete");
+        conf = new Conflict(confList.get(3));
+        assertThat(conf.getOperationKind().toString()).isEqualTo("replace");
+        conf = new Conflict(confList.get(4));
+        assertThat(conf.getOperationKind().toString()).isEqualTo("unknown");
         conf.getSourceResourceId();
     }
 
     @Test(groups = { "unit" })
     public void getResourceType() {
-        Conflict conf = new Conflict(conflictAsString);
-        assertThat(conf.getResouceType()).isEqualTo("document");
+        Conflict conf = new Conflict(confList.get(0));
+        assertThat(conf.getResourceType()).isEqualTo("document");
         conf.getSourceResourceId();
     }
 
     @Test(groups = { "unit" })
     public void getResource() {
-        Conflict conf = new Conflict(conflictAsString);
+        Conflict conf = new Conflict(confList.get(0));
         Document doc = conf.getResource(Document.class);
         assertThat(doc.getId()).isEqualTo("0007312a-a1c5-4b54-9e39-35de2367fa33");
         assertThat(doc.getInt("regionId")).isEqualTo(2);

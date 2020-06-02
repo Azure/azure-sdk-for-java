@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -17,11 +15,9 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictExcept
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT;
@@ -53,7 +49,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             return Mono.empty();
         }
 
-        localLease.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
+        localLease.setTimestamp(Instant.now());
 
         cachedLease.setServiceItemLease(localLease);
 
@@ -72,8 +68,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                 // Partition lease update conflict. Reading the current version of lease.
                 return this.client.readItem(itemId, partitionKey, requestOptions, CosmosItemProperties.class)
                     .onErrorResume(throwable -> {
-                        if (throwable instanceof CosmosClientException) {
-                            CosmosClientException ex = (CosmosClientException) throwable;
+                        if (throwable instanceof CosmosException) {
+                            CosmosException ex = (CosmosException) throwable;
                             if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
                                 throw new LeaseLostException(cachedLease);
@@ -128,8 +124,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))
             .onErrorResume(re -> {
-                if (re instanceof CosmosClientException) {
-                    CosmosClientException ex = (CosmosClientException) re;
+                if (re instanceof CosmosException) {
+                    CosmosException ex = (CosmosException) re;
                     switch (ex.getStatusCode()) {
                         case HTTP_STATUS_CODE_PRECONDITION_FAILED: {
                             return Mono.empty();
@@ -150,12 +146,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     private CosmosItemRequestOptions getCreateIfMatchOptions(Lease lease) {
-        AccessCondition ifMatchCondition = new AccessCondition();
-        ifMatchCondition.setType(AccessConditionType.IF_MATCH);
-        ifMatchCondition.setCondition(lease.getConcurrencyToken());
-
         CosmosItemRequestOptions createIfMatchOptions = new CosmosItemRequestOptions();
-        createIfMatchOptions.setAccessCondition(ifMatchCondition);
+        createIfMatchOptions.setIfMatchETag(lease.getConcurrencyToken());
 
         return createIfMatchOptions;
     }

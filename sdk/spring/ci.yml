@@ -47,7 +47,24 @@ stages:
         - name: azure-active-directory-spring-boot-starter
           groupId: com.microsoft.azure
           safeName: azurespringbootstarteractivedirectory
-
+        - name: azure-active-directory-b2c-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarteractivedirectoryb2c
+        - name: azure-cosmosdb-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstartercosmosdb
+        - name: azure-data-gremlin-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarterdatagremlin
+        - name: azure-keyvault-secrets-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarterkeyvaultsecrets
+        - name: azure-spring-boot-metrics-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstartermetrics
+        - name: azure-servicebus-jms-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarterservicebusjms
 
 
 
