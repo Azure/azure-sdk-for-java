@@ -2,16 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.rx.proxy.HttpProxyServer;
 import org.apache.logging.log4j.Level;
 import org.testng.annotations.AfterClass;
@@ -70,7 +71,7 @@ public class ProxyHostTest extends TestSuiteBase {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-            gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT)));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .gatewayMode(gatewayConnectionConfig)
@@ -106,7 +107,7 @@ public class ProxyHostTest extends TestSuiteBase {
                 "ProxyStringAppender", consoleWriter);
 
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-            gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT)));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .gatewayMode(gatewayConnectionConfig)
@@ -154,5 +155,17 @@ public class ProxyHostTest extends TestSuiteBase {
                 + "}"
                 , uuid, uuid));
         return doc;
+    }
+
+    /**
+     * This test will try to create gateway connection policy via non http proxy.
+     *
+     */
+    @Test(groups = { "simple" }, timeOut = TIMEOUT,
+        expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "Proxy type is not supported .*")
+    public void createWithNonHttpProxy() {
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.SOCKS4, new InetSocketAddress(PROXY_HOST, PROXY_PORT)));
     }
 }

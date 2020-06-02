@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
-import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +37,7 @@ public final class ConnectionPolicy {
     private int maxConnectionPoolSize = DEFAULT_MAX_POOL_SIZE;
     private Duration requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     private Duration idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-    private InetSocketAddress inetSocketProxyAddress;
+    private ProxyOptions proxy;
 
     //  Direct connection config properties
     private Duration connectionTimeout;
@@ -54,7 +54,7 @@ public final class ConnectionPolicy {
         this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = gatewayConnectionConfig.getRequestTimeout();
-        this.inetSocketProxyAddress = gatewayConnectionConfig.getProxy();
+        this.proxy = gatewayConnectionConfig.getProxy();
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
@@ -350,12 +350,12 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the InetSocketAddress of proxy server.
+     * Gets the proxy options which contain the InetSocketAddress of proxy server.
      *
-     * @return the value of proxyHost.
+     * @return the proxy options.
      */
-    public InetSocketAddress getProxy() {
-        return this.inetSocketProxyAddress;
+    public ProxyOptions getProxy() {
+        return this.proxy;
     }
 
     /**
@@ -366,8 +366,8 @@ public final class ConnectionPolicy {
      * @return the ConnectionPolicy.
      */
 
-    public ConnectionPolicy setProxy(InetSocketAddress proxy) {
-        this.inetSocketProxyAddress = proxy;
+    public ConnectionPolicy setProxy(ProxyOptions proxy) {
+        this.proxy = proxy;
         return this;
     }
 
@@ -473,7 +473,8 @@ public final class ConnectionPolicy {
             ", endpointDiscoveryEnabled=" + endpointDiscoveryEnabled +
             ", preferredRegions=" + preferredRegions +
             ", multipleWriteRegionsEnabled=" + multipleWriteRegionsEnabled +
-            ", inetSocketProxyAddress=" + inetSocketProxyAddress +
+            ", proxyType=" + proxy.getType() +
+            ", inetSocketProxyAddress=" + proxy.getAddress() +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectionTimeout=" + connectionTimeout +
             ", idleChannelTimeout=" + idleChannelTimeout +
