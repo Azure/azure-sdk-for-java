@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * BoolEqualsAdvancedFilter, NumberInAdvancedFilter, StringEqualsAdvancedFilter
  * etc. depending on the type of the key based on which you want to filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType", defaultImpl = AdvancedFilter.class)
 @JsonTypeName("AdvancedFilter")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NumberIn", value = NumberInAdvancedFilter.class),

@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 /**
  * Information about the service bus destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = ServiceBusQueueEventSubscriptionDestination.class)
 @JsonTypeName("ServiceBusQueue")
 @JsonFlatten
 public class ServiceBusQueueEventSubscriptionDestination extends EventSubscriptionDestination {
