@@ -267,7 +267,9 @@ final class Transforms {
                 break;
             case TIME:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, LocalTime.parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss")),
+                    key, fieldValue.getValueTime() == null
+                    ? null
+                    : LocalTime.parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss")),
                     valueText);
                 break;
             case DATE:
