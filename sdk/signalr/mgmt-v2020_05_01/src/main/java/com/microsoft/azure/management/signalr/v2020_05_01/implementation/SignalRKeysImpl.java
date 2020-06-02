@@ -12,14 +12,14 @@ import com.microsoft.azure.management.signalr.v2020_05_01.SignalRKeys;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class SignalRKeysImpl extends WrapperImpl<SignalRKeysInner> implements SignalRKeys {
-    private final SignalRServiceManager manager;
-    SignalRKeysImpl(SignalRKeysInner inner, SignalRServiceManager manager) {
+    private final SignalRManager manager;
+    SignalRKeysImpl(SignalRKeysInner inner, SignalRManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public SignalRServiceManager manager() {
+    public SignalRManager manager() {
         return this.manager;
     }
 

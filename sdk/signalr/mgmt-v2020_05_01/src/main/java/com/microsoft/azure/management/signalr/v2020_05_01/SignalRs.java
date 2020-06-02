@@ -8,22 +8,21 @@
 
 package com.microsoft.azure.management.signalr.v2020_05_01;
 
+import com.microsoft.azure.arm.collection.SupportsCreating;
+import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
+import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
+import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import rx.Completable;
+import com.microsoft.azure.management.signalr.v2020_05_01.implementation.SignalRsInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing SignalRs.
  */
-public interface SignalRs {
-    /**
-     * Checks that the SignalR name is valid and is not already in use.
-     *
-     * @param location the region
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<NameAvailability> checkNameAvailabilityAsync(String location);
-
+public interface SignalRs extends SupportsCreating<SignalRResource.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<SignalRResource>, SupportsListingByResourceGroup<SignalRResource>, SupportsListing<SignalRResource>, HasInner<SignalRsInner> {
     /**
      * Get the access keys of the SignalR resource.
      *
@@ -45,46 +44,6 @@ public interface SignalRs {
     Observable<SignalRKeys> regenerateKeyAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Get the SignalR service and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the SignalR resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<SignalRResource> getByResourceGroupAsync(String resourceGroupName, String resourceName);
-
-    /**
-     * Create a new SignalR service and update an exiting SignalR service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the SignalR resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<SignalRResource> createOrUpdateAsync(String resourceGroupName, String resourceName);
-
-    /**
-     * Operation to delete a SignalR service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the SignalR resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteAsync(String resourceGroupName, String resourceName);
-
-    /**
-     * Operation to update an exiting SignalR service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the SignalR resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<SignalRResource> updateAsync(String resourceGroupName, String resourceName);
-
-    /**
      * Operation to restart a SignalR service.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
@@ -95,20 +54,12 @@ public interface SignalRs {
     Completable restartAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * Checks that the SignalR name is valid and is not already in use.
      *
+     * @param location the region
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SignalRResource> listAsync();
-
-    /**
-     * Handles requests to list all resources in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<SignalRResource> listByResourceGroupAsync(final String resourceGroupName);
+    Observable<NameAvailability> checkNameAvailabilityAsync(String location);
 
 }

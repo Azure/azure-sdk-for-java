@@ -14,14 +14,14 @@ import com.microsoft.azure.management.signalr.v2020_05_01.OperationDisplay;
 import com.microsoft.azure.management.signalr.v2020_05_01.OperationProperties;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
-    private final SignalRServiceManager manager;
-    OperationImpl(OperationInner inner, SignalRServiceManager manager) {
+    private final SignalRManager manager;
+    OperationImpl(OperationInner inner, SignalRManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public SignalRServiceManager manager() {
+    public SignalRManager manager() {
         return this.manager;
     }
 

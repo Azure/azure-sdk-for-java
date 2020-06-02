@@ -14,15 +14,15 @@ import rx.Observable;
 import com.microsoft.azure.management.signalr.v2020_05_01.SignalRUsageName;
 
 class SignalRUsageImpl extends WrapperImpl<SignalRUsageInner> implements SignalRUsage {
-    private final SignalRServiceManager manager;
+    private final SignalRManager manager;
 
-    SignalRUsageImpl(SignalRUsageInner inner,  SignalRServiceManager manager) {
+    SignalRUsageImpl(SignalRUsageInner inner,  SignalRManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public SignalRServiceManager manager() {
+    public SignalRManager manager() {
         return this.manager;
     }
 

@@ -12,14 +12,14 @@ import com.microsoft.azure.management.signalr.v2020_05_01.NameAvailability;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class NameAvailabilityImpl extends WrapperImpl<NameAvailabilityInner> implements NameAvailability {
-    private final SignalRServiceManager manager;
-    NameAvailabilityImpl(NameAvailabilityInner inner, SignalRServiceManager manager) {
+    private final SignalRManager manager;
+    NameAvailabilityImpl(NameAvailabilityInner inner, SignalRManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public SignalRServiceManager manager() {
+    public SignalRManager manager() {
         return this.manager;
     }
 

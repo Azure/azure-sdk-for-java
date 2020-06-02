@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.signalr.v2020_05_01.SignalRUsage;
 
 class UsagesImpl extends WrapperImpl<UsagesInner> implements Usages {
-    private final SignalRServiceManager manager;
+    private final SignalRManager manager;
 
-    UsagesImpl(SignalRServiceManager manager) {
+    UsagesImpl(SignalRManager manager) {
         super(manager.inner().usages());
         this.manager = manager;
     }
 
-    public SignalRServiceManager manager() {
+    public SignalRManager manager() {
         return this.manager;
     }
 

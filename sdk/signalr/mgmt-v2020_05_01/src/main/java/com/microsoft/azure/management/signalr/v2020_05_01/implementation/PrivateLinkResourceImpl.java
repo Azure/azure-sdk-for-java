@@ -10,19 +10,23 @@ package com.microsoft.azure.management.signalr.v2020_05_01.implementation;
 
 import com.microsoft.azure.management.signalr.v2020_05_01.PrivateLinkResource;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import java.util.List;
 
 class PrivateLinkResourceImpl extends WrapperImpl<PrivateLinkResourceInner> implements PrivateLinkResource {
-    private final SignalRServiceManager manager;
-    PrivateLinkResourceImpl(PrivateLinkResourceInner inner, SignalRServiceManager manager) {
+    private final SignalRManager manager;
+
+    PrivateLinkResourceImpl(PrivateLinkResourceInner inner,  SignalRManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public SignalRServiceManager manager() {
+    public SignalRManager manager() {
         return this.manager;
     }
+
+
 
     @Override
     public String groupId() {
