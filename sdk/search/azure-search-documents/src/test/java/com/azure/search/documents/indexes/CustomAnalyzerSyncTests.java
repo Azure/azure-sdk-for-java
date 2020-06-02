@@ -129,7 +129,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new SearchField()
                     .setName("message")
                     .setType(SearchFieldDataType.STRING)
-                    .setAnalyzer(customLexicalAnalyzerName)
+                    .setAnalyzerName(customLexicalAnalyzerName)
                     .setSearchable(true)
             ))
             .setAnalyzers(Collections.singletonList(
@@ -182,7 +182,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             new SearchField()
                 .setName("field")
                 .setType(SearchFieldDataType.STRING)
-                .setSearchAnalyzer(LexicalAnalyzerName.EN_LUCENE);
+                .setSearchAnalyzerName(LexicalAnalyzerName.EN_LUCENE);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
@@ -191,7 +191,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             new SearchField()
                 .setName("field")
                 .setType(SearchFieldDataType.STRING)
-                .setIndexAnalyzer(LexicalAnalyzerName.AR_MICROSOFT);
+                .setIndexAnalyzerName(LexicalAnalyzerName.AR_MICROSOFT);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
@@ -793,7 +793,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             fields.add(new SearchField()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
-                .setAnalyzer(allLexicalAnalyzerNames.get(i)));
+                .setAnalyzerName(allLexicalAnalyzerNames.get(i)));
         }
 
         List<LexicalAnalyzerName> searchAnalyzersAndIndexAnalyzers = getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
@@ -805,8 +805,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
                 .setSearchable(true)
-                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i))
-                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i)));
+                .setSearchAnalyzerName(searchAnalyzersAndIndexAnalyzers.get(i))
+                .setIndexAnalyzerName(searchAnalyzersAndIndexAnalyzers.get(i)));
         }
 
         fields.add(new SearchField()

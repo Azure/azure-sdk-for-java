@@ -10,7 +10,8 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -27,7 +28,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -223,12 +223,12 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return collectionObs.flatMap(coll -> {
 
-            FeedOptions feedOptions = new FeedOptions();
+            QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
             if (properties != null) {
-                feedOptions.setProperties(properties);
+                ModelBridgeInternal.setQueryRequestOptionsProperties(queryRequestOptions, properties);
             }
             Instant addressCallStartTime = Instant.now();
-            return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
+            return client.readPartitionKeyRanges(coll.getSelfLink(), queryRequestOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder
                     .flatMap(p -> {
                         if(metaDataDiagnosticsContext != null) {

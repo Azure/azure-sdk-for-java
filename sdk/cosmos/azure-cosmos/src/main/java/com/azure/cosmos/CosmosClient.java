@@ -7,7 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -37,7 +37,7 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
     }
 
     /**
@@ -51,7 +51,7 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     public CosmosDatabaseResponse createDatabaseIfNotExists(String id, ThroughputProperties throughputProperties) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id, throughputProperties));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabaseIfNotExists(id, throughputProperties));
     }
 
     /**
@@ -61,7 +61,7 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     public CosmosDatabaseResponse createDatabaseIfNotExists(String id) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabaseIfNotExists(id));
     }
 
     /**
@@ -73,7 +73,7 @@ public final class CosmosClient implements Closeable {
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  CosmosDatabaseRequestOptions options) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, options));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabase(databaseProperties, options));
     }
 
     /**
@@ -83,7 +83,7 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabase(databaseProperties));
     }
 
     /**
@@ -93,7 +93,7 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     public CosmosDatabaseResponse createDatabase(String id) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabase(id));
 
     }
 
@@ -108,7 +108,7 @@ public final class CosmosClient implements Closeable {
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  ThroughputProperties throughputProperties,
                                                  CosmosDatabaseRequestOptions options) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties, options));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties, options));
     }
 
     /**
@@ -120,7 +120,7 @@ public final class CosmosClient implements Closeable {
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  ThroughputProperties throughputProperties) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabase(databaseProperties, throughputProperties));
     }
 
     /**
@@ -131,10 +131,10 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
     public CosmosDatabaseResponse createDatabase(String id, ThroughputProperties throughputProperties) {
-        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughputProperties));
+        return blockDatabaseResponse(asyncClientWrapper.createDatabase(id, throughputProperties));
     }
 
-    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosDatabaseResponse> databaseMono) {
+    CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {
         try {
             return databaseMono.block();
         } catch (Exception ex) {
@@ -150,10 +150,10 @@ public final class CosmosClient implements Closeable {
     /**
      * Reads all Cosmos databases.
      *
-     * @param options {@link FeedOptions}the feed options.
+     * @param options {@link QueryRequestOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
-    CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+    CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases(QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncClientWrapper.readAllDatabases(options));
     }
 
@@ -170,10 +170,10 @@ public final class CosmosClient implements Closeable {
      * Query a Cosmos database.
      *
      * @param query the query.
-     * @param options {@link FeedOptions}the feed options.
+     * @param options {@link QueryRequestOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
-    public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncClientWrapper.queryDatabases(query, options));
     }
 
@@ -181,11 +181,11 @@ public final class CosmosClient implements Closeable {
      * Query a Cosmos database.
      *
      * @param querySpec {@link SqlQuerySpec} the query spec.
-     * @param options the query.
+     * @param options the query request options.
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
     public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec,
-                                                                        FeedOptions options) {
+                                                                        QueryRequestOptions options) {
         return getCosmosPagedIterable(asyncClientWrapper.queryDatabases(querySpec, options));
     }
 

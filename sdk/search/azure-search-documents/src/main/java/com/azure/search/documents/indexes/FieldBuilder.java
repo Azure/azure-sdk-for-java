@@ -200,20 +200,21 @@ public final class FieldBuilder {
                     "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
             }
             if (!searchableFieldPropertyAnnotation.analyzer().isEmpty()) {
-                searchField.setAnalyzer(LexicalAnalyzerName.fromString((searchableFieldPropertyAnnotation.analyzer())));
+                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                    searchableFieldPropertyAnnotation.analyzer()));
             }
             if (!searchableFieldPropertyAnnotation.searchAnalyzer().isEmpty()) {
-                searchField.setAnalyzer(LexicalAnalyzerName.fromString(
-                    (searchableFieldPropertyAnnotation.searchAnalyzer())));
+                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                    searchableFieldPropertyAnnotation.searchAnalyzer()));
             }
             if (!searchableFieldPropertyAnnotation.indexAnalyzer().isEmpty()) {
-                searchField.setAnalyzer(LexicalAnalyzerName.fromString(
-                    (searchableFieldPropertyAnnotation.indexAnalyzer())));
+                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                    searchableFieldPropertyAnnotation.indexAnalyzer()));
             }
             if (searchableFieldPropertyAnnotation.synonymMaps().length != 0) {
                 List<String> synonymMaps = Arrays.stream(searchableFieldPropertyAnnotation.synonymMaps())
                     .filter(synonym -> !synonym.trim().isEmpty()).collect(Collectors.toList());
-                searchField.setSynonymMaps(synonymMaps);
+                searchField.setSynonymMapNames(synonymMaps);
             }
         }
         return searchField;

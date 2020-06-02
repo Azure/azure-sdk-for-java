@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -77,13 +78,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
-        return new CosmosAsyncItemResponse<>(response, classType);
+    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+        return new CosmosItemResponse<>(response, classType);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosAsyncItemResponse<>(response, Object.class);
+    public static CosmosItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
+        return new CosmosItemResponse<>(response, Object.class);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -127,11 +128,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
-        return new CosmosItemResponse<>(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -152,18 +148,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.getProperties();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemProperties getCosmosItemProperties(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Permission getV2Permissions(CosmosPermissionProperties permissionSettings) {
-        return permissionSettings.getV2Permissions();
+    public static Permission getV2Permissions(CosmosPermissionProperties permissionProperties) {
+        return permissionProperties.getV2Permissions();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -292,23 +283,23 @@ public final class ModelBridgeInternal {
     /**
      * Gets the partitionKeyRangeId.
      *
-     * @param options the feed options
+     * @param options the query request options
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String partitionKeyRangeIdInternal(FeedOptions options) {
+    public static String partitionKeyRangeIdInternal(QueryRequestOptions options) {
         return options.getPartitionKeyRangeIdInternal();
     }
 
     /**
      * Sets the PartitionKeyRangeId.
      *
-     * @param options the feed options
+     * @param options the query request options
      * @param partitionKeyRangeId the partition key range id
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
+    public static QueryRequestOptions partitionKeyRangeIdInternal(QueryRequestOptions options, String partitionKeyRangeId) {
         return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
     }
 
@@ -522,19 +513,19 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
-        feedOptions.setRequestContinuation(continuationToken);
-        feedOptions.setMaxItemCount(maxItemCount);
+    public static void setQueryRequestOptionsContinuationTokenAndMaxItemCount(QueryRequestOptions options, String continuationToken, Integer maxItemCount) {
+        options.setRequestContinuation(continuationToken);
+        options.setMaxItemCount(maxItemCount);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
-        feedOptions.setRequestContinuation(continuationToken);
+    public static void setQueryRequestOptionsContinuationToken(QueryRequestOptions queryRequestOptions, String continuationToken) {
+        queryRequestOptions.setRequestContinuation(continuationToken);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
-        feedOptions.setMaxItemCount(maxItemCount);
+    public static void setQueryRequestOptionsMaxItemCount(QueryRequestOptions queryRequestOptions, Integer maxItemCount) {
+        queryRequestOptions.setMaxItemCount(maxItemCount);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -578,8 +569,6 @@ public final class ModelBridgeInternal {
             ((UniqueKey) t).populatePropertyBag();
         } else if (t instanceof UniqueKeyPolicy) {
             ((UniqueKeyPolicy) t).populatePropertyBag();
-        } else if (t instanceof Index) {
-            ((Index) t).populatePropertyBag();
         } else {
             throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
         }
@@ -611,8 +600,6 @@ public final class ModelBridgeInternal {
             return ((UniqueKey) t).getJsonSerializable();
         } else if (t instanceof UniqueKeyPolicy) {
             return ((UniqueKeyPolicy) t).getJsonSerializable();
-        } else if (t instanceof Index) {
-            return ((Index) t).getJsonSerializable();
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }
@@ -655,11 +642,53 @@ public final class ModelBridgeInternal {
         return new ThroughputResponse(offerResourceResponse);
     }
 
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void addQueryInfoToFeedResponse(FeedResponse<?> feedResponse, QueryInfo queryInfo){
         feedResponse.setQueryInfo(queryInfo);
     }
 
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {
         return response.getQueryInfo();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static QueryRequestOptions createQueryRequestOptions(QueryRequestOptions options) {
+        return new QueryRequestOptions(options);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Integer getMaxItemCountFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.getMaxItemCount();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getRequestContinuationFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.getRequestContinuation();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Map<String, Object> getPropertiesFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.getProperties();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static QueryRequestOptions setQueryRequestOptionsProperties(QueryRequestOptions options, Map<String, Object> properties) {
+        return options.setProperties(properties);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean getEmptyPagesAllowedFromQueryRequestOptions(QueryRequestOptions options) {
+        return options.isEmptyPagesAllowed();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static QueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(QueryRequestOptions options, boolean emptyPageAllowed) {
+        return options.setEmptyPagesAllowed(emptyPageAllowed);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static IndexingPolicy createIndexingPolicy(Index[] indexes) {
+        return new IndexingPolicy(indexes);
     }
 }

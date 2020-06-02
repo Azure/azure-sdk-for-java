@@ -131,7 +131,7 @@ abstract class AsyncBenchmark<T> {
         if (configuration.getOperationType() != Configuration.Operation.WriteLatency
                 && configuration.getOperationType() != Configuration.Operation.WriteThroughput
                 && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
-            logger.info("PRE-populating {} documents ....", cfg.getNumberOfOperations());
+            logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
@@ -144,7 +144,7 @@ abstract class AsyncBenchmark<T> {
                 }).flux();
                 createDocumentObservables.add(obs);
             }
-            logger.info("Finished pre-populating {} documents", cfg.getNumberOfOperations());
+            logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
         }
 
         docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();

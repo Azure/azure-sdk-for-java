@@ -6,52 +6,39 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for TextSplitMode.
  */
-public enum TextSplitMode {
+public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
     /**
-     * Enum value pages.
+     * Static value pages for TextSplitMode.
      */
-    PAGES("pages"),
+    public static final TextSplitMode PAGES = fromString("pages");
 
     /**
-     * Enum value sentences.
+     * Static value sentences for TextSplitMode.
      */
-    SENTENCES("sentences");
+    public static final TextSplitMode SENTENCES = fromString("sentences");
 
     /**
-     * The actual serialized value for a TextSplitMode instance.
-     */
-    private final String value;
-
-    TextSplitMode(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a TextSplitMode instance.
+     * Creates or finds a TextSplitMode from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TextSplitMode object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TextSplitMode.
      */
     @JsonCreator
-    public static TextSplitMode fromString(String value) {
-        TextSplitMode[] items = TextSplitMode.values();
-        for (TextSplitMode item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static TextSplitMode fromString(String name) {
+        return fromString(name, TextSplitMode.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known TextSplitMode values.
+     */
+    public static Collection<TextSplitMode> values() {
+        return values(TextSplitMode.class);
     }
 }

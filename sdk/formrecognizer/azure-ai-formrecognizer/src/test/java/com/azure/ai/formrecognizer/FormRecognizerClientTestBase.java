@@ -40,6 +40,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -192,7 +194,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     assertEquals(expectedFieldValue.getValueDate(), actualFormField.getFieldValue());
                     break;
                 case TIME:
-                    assertEquals(expectedFieldValue.getValueTime(), actualFormField.getFieldValue());
+                    assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
+                        DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getFieldValue());
                     break;
                 case STRING:
                     assertEquals(expectedFieldValue.getValueString(), actualFormField.getFieldValue());

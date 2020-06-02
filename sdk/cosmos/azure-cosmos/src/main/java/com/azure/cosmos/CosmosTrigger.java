@@ -39,29 +39,29 @@ public class CosmosTrigger {
     /**
      * Read cosmos trigger.
      *
-     * @return the cosmos sync trigger response
+     * @return the cosmos trigger response
      */
     public CosmosTriggerResponse read() {
-        return container.getScripts().mapTriggerResponseAndBlock(trigger.read());
+        return container.getScripts().blockTriggerResponse(trigger.read());
     }
 
     /**
      * Replace cosmos trigger.
      *
-     * @param triggerSettings the trigger settings
-     * @return the cosmos sync trigger response
+     * @param triggerProperties the trigger properties.
+     * @return the cosmos trigger response
      */
-    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerSettings) {
-        return container.getScripts().mapTriggerResponseAndBlock(trigger.replace(triggerSettings));
+    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerProperties) {
+        return container.getScripts().blockTriggerResponse(trigger.replace(triggerProperties));
     }
 
     /**
      * Delete cosmos trigger.
      *
-     * @return the cosmos sync response
+     * @return the cosmos response
      */
     public CosmosTriggerResponse delete() {
-        return container.getScripts().mapTriggerResponseAndBlock(trigger.delete());
+        return container.getScripts().blockTriggerResponse(trigger.delete());
     }
 
 }

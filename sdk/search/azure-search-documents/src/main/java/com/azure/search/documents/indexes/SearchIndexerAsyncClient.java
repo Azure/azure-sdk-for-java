@@ -3,6 +3,8 @@
 
 package com.azure.search.documents.indexes;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
@@ -86,15 +88,6 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Gets search service version.
-     *
-     * @return the search service version value.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.serviceVersion;
-    }
-
-    /**
      * Gets the endpoint for the Azure Cognitive Search service.
      *
      * @return the endpoint value.
@@ -109,6 +102,7 @@ public class SearchIndexerAsyncClient {
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @return the data source that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnection(
         SearchIndexerDataSourceConnection dataSource) {
         return createOrUpdateDataSourceConnectionWithResponse(dataSource, false, null).map(Response::getValue);
@@ -124,6 +118,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a data source response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
@@ -154,6 +149,7 @@ public class SearchIndexerAsyncClient {
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> createDataSourceConnection(
         SearchIndexerDataSourceConnection dataSource) {
         return createDataSourceConnectionWithResponse(dataSource, null).map(Response::getValue);
@@ -167,6 +163,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions) {
         return withContext(context -> this.createDataSourceConnectionWithResponse(dataSource, requestOptions, context));
@@ -191,6 +188,7 @@ public class SearchIndexerAsyncClient {
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return the DataSource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> getDataSourceConnection(String dataSourceName) {
         return getDataSourceConnectionWithResponse(dataSourceName, null).map(Response::getValue);
     }
@@ -203,11 +201,13 @@ public class SearchIndexerAsyncClient {
      * help with debugging.
      * @return a response containing the DataSource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(String dataSourceName,
         RequestOptions requestOptions) {
         return withContext(context -> getDataSourceConnectionWithResponse(dataSourceName, requestOptions, context));
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(String dataSourceName,
         RequestOptions requestOptions, Context context) {
         try {
@@ -225,6 +225,7 @@ public class SearchIndexerAsyncClient {
      *
      * @return a list of DataSources
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections() {
         return listDataSourceConnections(null, null);
     }
@@ -236,7 +237,8 @@ public class SearchIndexerAsyncClient {
      * help with debugging.
      * @return a list of DataSources
      */
-    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnection(RequestOptions requestOptions) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listDataSourceConnectionsWithResponse(null, requestOptions, context))
@@ -261,6 +263,7 @@ public class SearchIndexerAsyncClient {
      *
      * @return a list of DataSource names
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listDataSourceConnectionNames() {
         return listDataSourceConnectionNames(null, null);
     }
@@ -304,6 +307,7 @@ public class SearchIndexerAsyncClient {
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} for deletion
      * @return a void Mono
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataSourceConnection(String dataSourceName) {
         return withContext(context ->
             deleteDataSourceConnectionWithResponse(dataSourceName, null, null, context).flatMap(FluxUtil::toMono));
@@ -319,6 +323,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a mono response
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
@@ -349,6 +354,7 @@ public class SearchIndexerAsyncClient {
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createIndexer(SearchIndexer indexer) {
         return createIndexerWithResponse(indexer, null).map(Response::getValue);
     }
@@ -361,6 +367,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the created Indexer.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer,
         RequestOptions requestOptions) {
         return withContext(context -> createIndexerWithResponse(indexer, requestOptions, context));
@@ -385,6 +392,7 @@ public class SearchIndexerAsyncClient {
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createOrUpdateIndexer(SearchIndexer indexer) {
         return createOrUpdateIndexerWithResponse(indexer, false, null).map(Response::getValue);
     }
@@ -399,6 +407,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the created Indexer.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
@@ -428,6 +437,7 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> getIndexer(String indexerName) {
         return getIndexerWithResponse(indexerName, null).map(Response::getValue);
     }
@@ -440,6 +450,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the indexer.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> getIndexerWithResponse(indexerName, requestOptions, context));
     }
@@ -461,6 +472,7 @@ public class SearchIndexerAsyncClient {
      *
      * @return all Indexers from the Search service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexer> listIndexers() {
         return listIndexers(null);
     }
@@ -471,6 +483,7 @@ public class SearchIndexerAsyncClient {
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexer> listIndexers(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
@@ -495,6 +508,7 @@ public class SearchIndexerAsyncClient {
      *
      * @return all Indexer names from the Search service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listIndexerNames() {
         return listIndexerNames(null, null);
     }
@@ -505,6 +519,7 @@ public class SearchIndexerAsyncClient {
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listIndexerNames(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
@@ -537,6 +552,7 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer to delete
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIndexer(String indexerName) {
         return withContext(context -> deleteIndexerWithResponse(indexerName, null, null, context)
             .flatMap(FluxUtil::toMono));
@@ -552,6 +568,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(indexer, "'Indexer' cannot be null");
@@ -588,6 +605,7 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer to reset
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetIndexer(String indexerName) {
         return resetIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
     }
@@ -600,6 +618,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> resetIndexerWithResponse(indexerName, requestOptions, context));
     }
@@ -621,6 +640,7 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer to run
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> runIndexer(String indexerName) {
         return runIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
     }
@@ -633,6 +653,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> runIndexerWithResponse(indexerName, requestOptions, context));
     }
@@ -654,6 +675,7 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer for which to retrieve status
      * @return the indexer execution info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerStatus> getIndexerStatus(String indexerName) {
         return getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
     }
@@ -666,6 +688,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response with the indexer execution info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String indexerName,
         RequestOptions requestOptions) {
         return withContext(context -> getIndexerStatusWithResponse(indexerName, requestOptions, context));
@@ -683,12 +706,14 @@ public class SearchIndexerAsyncClient {
             return monoError(logger, ex);
         }
     }
+
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset) {
         return createSkillsetWithResponse(skillset, null).map(Response::getValue);
     }
@@ -701,6 +726,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the created Skillset.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
         return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
@@ -727,6 +753,7 @@ public class SearchIndexerAsyncClient {
      * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> getSkillset(String skillsetName) {
         return getSkillsetWithResponse(skillsetName, null).map(Response::getValue);
     }
@@ -739,6 +766,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the Skillset.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String skillsetName,
         RequestOptions requestOptions) {
         return withContext(context -> getSkillsetWithResponse(skillsetName, requestOptions, context));
@@ -761,6 +789,7 @@ public class SearchIndexerAsyncClient {
      *
      * @return a reactive response emitting the list of skillsets.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexerSkillset> listSkillsets() {
         return listSkillsets(null, null);
     }
@@ -772,6 +801,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
@@ -796,6 +826,7 @@ public class SearchIndexerAsyncClient {
      *
      * @return a reactive response emitting the list of skillset names.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSkillsetNames() {
         return listSkillsetNames(null, null);
     }
@@ -807,6 +838,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a reactive response emitting the list of skillset names.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSkillsetNames(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
@@ -840,6 +872,7 @@ public class SearchIndexerAsyncClient {
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createOrUpdateSkillset(SearchIndexerSkillset skillset) {
         return createOrUpdateSkillsetWithResponse(skillset, false, null).map(Response::getValue);
     }
@@ -854,6 +887,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the skillset that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
@@ -883,6 +917,7 @@ public class SearchIndexerAsyncClient {
      * @param skillsetName the name of the skillset to delete
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSkillset(String skillsetName) {
         return withContext(context -> deleteSkillsetWithResponse(skillsetName, null, null, context)
             .flatMap(FluxUtil::toMono));
@@ -898,6 +933,7 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");

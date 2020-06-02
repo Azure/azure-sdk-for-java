@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * service.
  *
  * Refer to: https://docs.microsoft.com/en-us/azure/cosmos-db/conflict-resolution-policies
- * 
+ *
  * <p>
  * A container with custom conflict resolution with no user-registered stored procedure.
  * <pre>{@code
@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  *      new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
  * containerProperties.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy());
  *
- * CosmosAsyncDatabase database = client.createDatabase(databaseSettings).block().getDatabase();
+ * CosmosAsyncDatabase database = client.createDatabase(databaseProperties).block().getDatabase();
  * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
  *
  * }
@@ -42,7 +42,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createCustomPolicy(conflictResolutionSprocName);
  * containerProperties.setConflictResolutionPolicy(policy);
  *
- * CosmosAsyncDatabase database = client.createDatabase(databaseSettings).block().getDatabase();
+ * CosmosAsyncDatabase database = client.createDatabase(databaseProperties).block().getDatabase();
  * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
  *
  * }
@@ -58,7 +58,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy("/path/for/conflict/resolution");
  * containerProperties.setConflictResolutionPolicy(policy);
  *
- * CosmosAsyncDatabase database = client.createDatabase(databaseSettings).block().getDatabase();
+ * CosmosAsyncDatabase database = client.createDatabase(databaseProperties).block().getDatabase();
  * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
  *
  * }

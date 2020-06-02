@@ -24,15 +24,18 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
-    private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
+    private static final String DEFAULT_PUBLIC_CACHE_FILE_NAME = "msal.cache";
+    private static final String DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME = "msal.confidential.cache";
     private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
             ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
             : Paths.get(System.getProperty("user.home"), ".IdentityService");
     private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
-    private static final String DEFAULT_KEYCHAIN_ACCOUNT = "MSALCache";
+    private static final String DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT = "MSALCache";
+    private static final String DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT = "MSALConfidentialCache";
     private static final String DEFAULT_KEYRING_NAME = "default";
     private static final String DEFAULT_KEYRING_SCHEMA = "msal.cache";
-    private static final String DEFAULT_KEYRING_ITEM_NAME = DEFAULT_KEYCHAIN_ACCOUNT;
+    private static final String DEFAULT_PUBLIC_KEYRING_ITEM_NAME = DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT;
+    private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
 
@@ -44,14 +47,6 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
-    private Path cacheFileDirectory;
-    private String cacheFileName;
-    private String keychainService;
-    private String keychainAccount;
-    private String keyringName;
-    private String keyringItemSchema;
-    private String keyringItemName;
-    private final String[] attributes; // preserve order
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
@@ -64,14 +59,6 @@ public final class IdentityClientOptions {
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, KnownAuthorityHosts.AZURE_CLOUD);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        cacheFileDirectory = DEFAULT_CACHE_FILE_PATH;
-        cacheFileName = DEFAULT_CACHE_FILE_NAME;
-        keychainService = DEFAULT_KEYCHAIN_SERVICE;
-        keychainAccount = DEFAULT_KEYCHAIN_ACCOUNT;
-        keyringName = DEFAULT_KEYRING_NAME;
-        keyringItemSchema = DEFAULT_KEYRING_SCHEMA;
-        keyringItemName = DEFAULT_KEYRING_ITEM_NAME;
-        attributes = new String[] { DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE };
         allowUnencryptedCache = false;
         sharedTokenCacheEnabled = false;
     }
@@ -231,13 +218,22 @@ public final class IdentityClientOptions {
         return this;
     }
 
-    PersistenceSettings getPersistenceSettings() {
-        return PersistenceSettings.builder(cacheFileName, cacheFileDirectory)
-                .setMacKeychain(keychainService, keychainAccount)
-                .setLinuxKeyring(keyringName, keyringItemSchema, keyringItemName,
-                        attributes[0], attributes[1], null, null)
-                .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
-                .build();
+    PersistenceSettings getPublicClientPersistenceSettings() {
+        return PersistenceSettings.builder(DEFAULT_PUBLIC_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH)
+            .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT)
+            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA, DEFAULT_PUBLIC_KEYRING_ITEM_NAME,
+                DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE, null, null)
+            .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
+            .build();
+    }
+
+    PersistenceSettings getConfidentialClientPersistenceSettings() {
+        return PersistenceSettings.builder(DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH)
+            .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT)
+            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA, DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME,
+                DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE, null, null)
+            .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
+            .build();
     }
 
     /**
