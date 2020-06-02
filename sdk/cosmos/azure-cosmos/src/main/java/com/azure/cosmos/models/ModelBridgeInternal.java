@@ -688,11 +688,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static IncludedPath setIncludedPathIndexes(IncludedPath includedPath, List<Index> indexes) {
-        return includedPath.setIndexes(indexes);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static IndexingPolicy createIndexingPolicy(Index[] indexes) {
         return new IndexingPolicy(indexes);
     }
