@@ -22,6 +22,7 @@ stages:
         parameters:
           DependsOn: Build
           ServiceDirectory: ${{parameters.ServiceDirectory}}
+          RunIntegrationStage: false
           SDKType: ${{parameters.SDKType}}
           Artifacts: ${{parameters.Artifacts}}
           ArtifactName: packages

@@ -80,7 +80,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         HttpClientConfig httpClientConfig = new HttpClientConfig(new Configs())
                 .withMaxIdleConnectionTimeout(connectionPolicy.getIdleConnectionTimeout())
                 .withPoolSize(connectionPolicy.getMaxConnectionPoolSize())
-                .withHttpProxy(connectionPolicy.getProxy())
+                .withProxy(connectionPolicy.getProxy())
                 .withRequestTimeout(connectionPolicy.getRequestTimeout());
 
         HttpClient httpClient = HttpClient.createFixed(httpClientConfig);

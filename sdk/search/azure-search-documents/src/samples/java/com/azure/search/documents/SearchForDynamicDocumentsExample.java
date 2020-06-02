@@ -74,7 +74,7 @@ public class SearchForDynamicDocumentsExample {
             .setFacets("Tags,sort:value")
             .setOrderBy("Rating")
             .setTop(5)
-            .setIncludeTotalResultCount(true);
+            .setIncludeTotalCount(true);
 
         // Perform a search and subscribe to the results and log additional information
         Flux<SearchResult> results = client.search("hotel", parameters, new RequestOptions())

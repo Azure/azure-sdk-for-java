@@ -25,8 +25,6 @@ import java.util.Objects;
  */
 @Immutable
 public class ClientSecretCredential implements TokenCredential {
-    /* The client secret value. */
-    private final String clientSecret;
     private final IdentityClient identityClient;
 
     /**
@@ -44,13 +42,15 @@ public class ClientSecretCredential implements TokenCredential {
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
+            .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions)
             .build();
-        this.clientSecret = clientSecret;
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return identityClient.authenticateWithClientSecret(clientSecret, request);
+        return identityClient.authenticateWithConfidentialClientCache(request)
+            .onErrorResume(t -> Mono.empty())
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)));
     }
 }

@@ -1,6 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- Update FormField property `transactionTime` on `USReceipt` to return `LocalTime` instead of `String`
 - Rename model `PageRange` to `FormPageRange`
 - Rename property `startPageNumber` to `firstPageNumber` and `endPageNumber` to `lastPageNumber` in model `PageRange`
 - Rename `getCustomModelInfos` to `listCustomModels`

@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.IndexKind;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -44,7 +42,7 @@ public final class RangeIndex extends Index {
      *
      * @param jsonString the json string that represents the index.
      */
-    RangeIndex(String jsonString) {
+    public RangeIndex(String jsonString) {
         super(jsonString, IndexKind.RANGE);
         if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
@@ -71,10 +69,9 @@ public final class RangeIndex extends Index {
     public DataType getDataType() {
         DataType result = null;
         try {
-            result = DataType.valueOf(StringUtils.upperCase(this.jsonSerializable.getString(Constants.Properties.DATA_TYPE)));
+            result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
-            this.jsonSerializable.getLogger().warn("INVALID index dataType value {}.",
-                this.jsonSerializable.getString(Constants.Properties.DATA_TYPE));
+            super.getLogger().warn("INVALID index dataType value {}.", super.getString(Constants.Properties.DATA_TYPE));
         }
         return result;
     }
@@ -86,7 +83,7 @@ public final class RangeIndex extends Index {
      * @return the RangeIndex.
      */
     public RangeIndex setDataType(DataType dataType) {
-        this.jsonSerializable.set(Constants.Properties.DATA_TYPE, dataType.toString());
+        super.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
 
@@ -96,7 +93,7 @@ public final class RangeIndex extends Index {
      * @return the precision.
      */
     public int getPrecision() {
-        return this.jsonSerializable.getInt(Constants.Properties.PRECISION);
+        return super.getInt(Constants.Properties.PRECISION);
     }
 
     /**
@@ -106,11 +103,11 @@ public final class RangeIndex extends Index {
      * @return the RangeIndex.
      */
     public RangeIndex setPrecision(int precision) {
-        this.jsonSerializable.set(Constants.Properties.PRECISION, precision);
+        super.set(Constants.Properties.PRECISION, precision);
         return this;
     }
 
     boolean hasPrecision() {
-        return this.jsonSerializable.has(Constants.Properties.PRECISION);
+        return super.has(Constants.Properties.PRECISION);
     }
 }
