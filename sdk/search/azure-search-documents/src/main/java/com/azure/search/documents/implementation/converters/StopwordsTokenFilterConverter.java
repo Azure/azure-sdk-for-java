@@ -59,7 +59,7 @@ public final class StopwordsTokenFilterConverter {
         String name = obj.getName();
         stopwordsTokenFilter.setName(name);
 
-        Boolean removeTrailingStopWords = obj.isTrailingStopWordsRemoved();
+        Boolean removeTrailingStopWords = obj.areTrailingStopWordsRemoved();
         stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
 
         Boolean ignoreCase = obj.isCaseIgnored();

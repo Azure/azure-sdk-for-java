@@ -144,7 +144,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateWords value.
      */
-    public Boolean isWordsCatenated() {
+    public Boolean areWordsCatenated() {
         return this.wordsCatenated;
     }
 
@@ -168,7 +168,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateNumbers value.
      */
-    public Boolean isNumbersCatenated() {
+    public Boolean areNumbersCatenated() {
         return this.numbersCatenated;
     }
 
@@ -216,7 +216,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the splitOnCaseChange value.
      */
-    public Boolean isSplitOnCaseChange() {
+    public Boolean splitOnCaseChange() {
         return this.splitOnCaseChange;
     }
 

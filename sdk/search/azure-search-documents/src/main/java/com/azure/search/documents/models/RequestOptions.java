@@ -15,7 +15,7 @@ public final class RequestOptions {
     /*
      * The tracking ID sent with the request to help with debugging.
      */
-    @JsonProperty(value = "")
+    @JsonProperty(value = "xMsClientRequestId")
     private UUID clientRequestId;
 
     /**

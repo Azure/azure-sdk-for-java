@@ -105,7 +105,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      *
      * @return the includeTypelessEntities value.
      */
-    public Boolean isTypelessEntitiesIncluded() {
+    public Boolean areTypelessEntitiesIncluded() {
         return this.typelessEntitiesIncluded;
     }
 

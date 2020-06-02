@@ -46,7 +46,7 @@ public final class LimitTokenFilterConverter {
         Integer maxTokenCount = obj.getMaxTokenCount();
         limitTokenFilter.setMaxTokenCount(maxTokenCount);
 
-        Boolean consumeAllTokens = obj.isAllTokensConsumed();
+        Boolean consumeAllTokens = obj.areAllTokensConsumed();
         limitTokenFilter.setConsumeAllTokens(consumeAllTokens);
         return limitTokenFilter;
     }

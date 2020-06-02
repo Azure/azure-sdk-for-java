@@ -134,7 +134,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the removeTrailingStopWords value.
      */
-    public Boolean isTrailingStopWordsRemoved() {
+    public Boolean areTrailingStopWordsRemoved() {
         return this.trailingStopWordsRemoved;
     }
 

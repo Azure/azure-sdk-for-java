@@ -58,7 +58,7 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @return the consumeAllTokens value.
      */
-    public Boolean isAllTokensConsumed() {
+    public Boolean areAllTokensConsumed() {
         return this.allTokensConsumed;
     }
 

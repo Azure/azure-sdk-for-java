@@ -74,7 +74,7 @@ public final class WordDelimiterTokenFilterConverter {
         String name = obj.getName();
         wordDelimiterTokenFilter.setName(name);
 
-        Boolean catenateNumbers = obj.isNumbersCatenated();
+        Boolean catenateNumbers = obj.areNumbersCatenated();
         wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
@@ -88,13 +88,13 @@ public final class WordDelimiterTokenFilterConverter {
         Boolean stemEnglishPossessive = obj.isStemEnglishPossessive();
         wordDelimiterTokenFilter.setStemEnglishPossessive(stemEnglishPossessive);
 
-        Boolean splitOnCaseChange = obj.isSplitOnCaseChange();
+        Boolean splitOnCaseChange = obj.splitOnCaseChange();
         wordDelimiterTokenFilter.setSplitOnCaseChange(splitOnCaseChange);
 
         Boolean generateWordParts = obj.generateWordParts();
         wordDelimiterTokenFilter.setGenerateWordParts(generateWordParts);
 
-        Boolean splitOnNumerics = obj.isSplitOnNumerics();
+        Boolean splitOnNumerics = obj.splitOnNumerics();
         wordDelimiterTokenFilter.setSplitOnNumerics(splitOnNumerics);
 
         Boolean preserveOriginal = obj.isPreserveOriginal();
@@ -103,7 +103,7 @@ public final class WordDelimiterTokenFilterConverter {
         Boolean catenateAll = obj.catenateAll();
         wordDelimiterTokenFilter.setCatenateAll(catenateAll);
 
-        Boolean catenateWords = obj.isWordsCatenated();
+        Boolean catenateWords = obj.areWordsCatenated();
         wordDelimiterTokenFilter.setCatenateWords(catenateWords);
         return wordDelimiterTokenFilter;
     }

@@ -743,7 +743,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             Arrays.stream(PhoneticEncoder.values())
                 .map(pe -> new PhoneticTokenFilter()
                     .setEncoder(pe)
-                    .setReplaceOriginalTokens(false)
+                    .setOriginalTokensReplaced(false)
                     .setName(generateName())
                 )
                 .collect(Collectors.toList())
@@ -1057,7 +1057,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateName()),
                 new PhoneticTokenFilter()
                     .setEncoder(PhoneticEncoder.SOUNDEX)
-                    .setReplaceOriginalTokens(false)
+                    .setOriginalTokensReplaced(false)
                     .setName(generateName()),
                 new ShingleTokenFilter()
                     .setMaxShingleSize(10)
@@ -1272,7 +1272,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateSimpleName(i++)),
                 new PhoneticTokenFilter()
                     .setEncoder(PhoneticEncoder.METAPHONE)
-                    .setReplaceOriginalTokens(true)
+                    .setOriginalTokensReplaced(true)
                     .setName(generateSimpleName(i++)),
                 new ShingleTokenFilter()
                     .setMaxShingleSize(2)

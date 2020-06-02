@@ -53,7 +53,7 @@ public final class SynonymTokenFilterConverter {
         String name = obj.getName();
         synonymTokenFilter.setName(name);
 
-        Boolean expand = obj.isExpand();
+        Boolean expand = obj.getExpand();
         synonymTokenFilter.setExpand(expand);
 
         if (obj.getSynonyms() != null) {
