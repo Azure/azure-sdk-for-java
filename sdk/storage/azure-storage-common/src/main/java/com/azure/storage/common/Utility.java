@@ -216,7 +216,6 @@ public final class Utility {
                 int offset = 0;
                 // Revise the casting if the max allowed network data transmission is over 2G.
                 int len = (int) count;
-                boolean firstRead = true;
                 while (numOfBytes != -1 && offset < count) {
                     numOfBytes = data.read(cache, offset, len);
                     offset += numOfBytes;
