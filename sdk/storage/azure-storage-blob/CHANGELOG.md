@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
-- Added a maxConcurrency option on ParallelTransferOptions that allows the customer to limit how many concurrent network requests will be outstanding at once. 
+- Added a maxConcurrency option on ParallelTransferOptions that allows the customer to limit how many concurrent network requests will be outstanding per api request at once. 
 - Fixed a bug that caused auth failures when constructing a client to a secondary endpoint using token auth.
 
 ## 12.6.1 (2020-05-06)
