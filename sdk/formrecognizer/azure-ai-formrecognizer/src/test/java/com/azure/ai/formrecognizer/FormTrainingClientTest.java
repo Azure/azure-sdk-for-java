@@ -211,7 +211,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.beginTraining(null, false));
-        assertTrue(exception.getMessage().equals(NULL_SOURCE_URL_ERROR));
+        assertEquals(exception.getMessage(), NULL_SOURCE_URL_ERROR);
     }
 
     /**

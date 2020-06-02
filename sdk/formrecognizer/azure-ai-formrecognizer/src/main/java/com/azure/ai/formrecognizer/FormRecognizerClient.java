@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt data from documents, recognizeing layout information and
+ * Operations allowed by the client are recognizing receipt data from documents, recognizing layout information and
  * analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
