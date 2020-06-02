@@ -71,7 +71,7 @@ public class CachedSchemaRegistryClientTest {
             client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
         verify(restService, times(1))
-            .createSchema(anyString(), anyString(), anyString(), anyString());
+            .createSchema(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
     }
 
     @Test
@@ -133,6 +133,6 @@ public class CachedSchemaRegistryClientTest {
             client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
         verify(restService, times(2))
-            .createSchema(anyString(), anyString(), anyString(), anyString());
+            .createSchema(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
     }
 }
