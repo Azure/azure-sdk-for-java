@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -28,24 +28,24 @@ public class FetcherTest {
     @DataProvider(name = "queryParams")
     public static Object[][] queryParamProvider() {
 
-        FeedOptions options1 = new FeedOptions();
+        QueryRequestOptions options1 = new QueryRequestOptions();
         // initial continuation token
-        ModelBridgeInternal.setFeedOptionsContinuationTokenAndMaxItemCount(options1,"cp-init",100);
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options1,"cp-init",100);
         int top1 = -1; // no top
 
         // no continuation token
-        FeedOptions options2 = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options2, 100);
+        QueryRequestOptions options2 = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options2, 100);
         int top2 = -1; // no top
 
         // top more than max item count
-        FeedOptions options3 = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options3, 100);
+        QueryRequestOptions options3 = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options3, 100);
         int top3 = 200;
 
         // top less than max item count
-        FeedOptions options4 = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options4, 100);
+        QueryRequestOptions options4 = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options4, 100);
         int top4 = 20;
 
         return new Object[][] {
@@ -56,7 +56,7 @@ public class FetcherTest {
     }
 
     @Test(groups = { "unit" }, dataProvider = "queryParams")
-    public void query(FeedOptions options, int top) {
+    public void query(QueryRequestOptions options, int top) {
 
         FeedResponse<Document> fp1 = FeedResponseBuilder.queryFeedResponseBuilder(Document.class)
                 .withContinuationToken("cp1")
@@ -78,7 +78,8 @@ public class FetcherTest {
             assertThat(maxItemCount).describedAs("max item count").isEqualTo(
                     getExpectedMaxItemCountInRequest(options, top, feedResponseList, requestIndex.get()));
             assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options.getRequestContinuation(), feedResponseList, requestIndex.get()));
+                    getExpectedContinuationTokenInRequest(
+                        ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), feedResponseList, requestIndex.get()));
             requestIndex.getAndIncrement();
 
             return mock(RxDocumentServiceRequest.class);
@@ -93,14 +94,14 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options.getRequestContinuation(), false, top,
-                        options.getMaxItemCount());
+                new Fetcher<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
+                        ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options));
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
 
     private void validateFetcher(Fetcher<Document> fetcher,
-                                 FeedOptions options,
+                                 QueryRequestOptions options,
                                  int top,
                                  List<FeedResponse<Document>> feedResponseList) {
 
@@ -196,17 +197,17 @@ public class FetcherTest {
         return feedResponseList.get(requestIndex - 1).getContinuationToken();
     }
 
-    private int getExpectedMaxItemCountInRequest(FeedOptions options,
+    private int getExpectedMaxItemCountInRequest(QueryRequestOptions options,
                                                  int top,
                                                  List<FeedResponse<Document>> feedResponseList,
                                                  int requestIndex) {
         if (top == -1) {
-            return options.getMaxItemCount();
+            return ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         }
 
         int numberOfReceivedItemsSoFar  =
                 feedResponseList.subList(0, requestIndex).stream().mapToInt(rsp -> rsp.getResults().size()).sum();
 
-        return Math.min(top - numberOfReceivedItemsSoFar, options.getMaxItemCount());
+        return Math.min(top - numberOfReceivedItemsSoFar, ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options));
     }
 }

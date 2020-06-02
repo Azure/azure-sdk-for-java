@@ -1,29 +1,88 @@
 ﻿# Azure CosmosDB Client Library for Java
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmos.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmos)
-[![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
+[![Maven Central][cosmos_maven_svg]][cosmos_maven]
 
-<!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmos-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
-![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
- -->
+Azure Cosmos DB is Microsoft’s globally distributed, multi-model database service for operational and analytics workloads. It offers multi-mastering feature by automatically scaling throughput, compute, and storage.
+This project provides SDK library in Java for interacting with [SQL API][sql_api_query] of [Azure Cosmos DB Database Service][cosmos_introduction].
 
-<!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][cosmos_docs] |
+[Samples][samples]
 
-- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#consuming-the-official-microsoft-azure-cosmos-db-java-sdk)
-- [Prerequisites](#prerequisites)
-- [API Documentation](#api-documentation)
-- [Usage Code Sample](#usage-code-sample)
-- [Guide for Prod](#guide-for-prod)
-- [FAQ](#faq)
-- [Release changes](#release-changes)
-- [Contribution and Feedback](#contribution-and-feedback)
-- [License](#license)
+## Getting started
+### Include the package
 
-<!-- /TOC -->
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmos;current})
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-cosmos</artifactId>
+  <version>4.0.1-beta.3</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
-## Example
+Refer to maven central for previous [releases][cosmos_maven]
 
-See the complete code for the above sample in [`HelloWorldDemo.java`](./microsoft-azure-cosmos-examples/src/main/java/com/azure/data/cosmos/examples/HelloWorldDemo.java)
+Refer to [javadocs][api_documentation] for more details on the package
+
+### Prerequisites
+
+- Java Development Kit 8
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- (Optional) SLF4J is a logging facade.
+- (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
+- (Optional) Maven
+
+SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
+
+The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/)
+
+### Authenticate the client
+
+In order to interact with the Azure CosmosDB service you'll need to create an instance of the Cosmos Client class. To make this possible you will need an url and key of the Azure CosmosDB service.
+
+The SDK provides two clients. 
+1. `CosmosAsyncClient` for operations using asynchronous APIs.
+2. `CosmosClient` for operations using synchronous (blocking) APIs.
+
+#### Create CosmosAsyncClient
+```java
+CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+.endpoint(serviceEndpoint)
+.key(key)
+.buildAsyncClient();
+```
+
+#### Create CosmosClient
+```java
+CosmosClient cosmosClient = new CosmosClientBuilder()
+.endpoint(serviceEndpoint)
+.key(key)
+.buildClient();
+```
+
+## Key Concepts
+
+Azure Cosmos DB Java SDK provides client-side logical representation to access the Azure Cosmos DB SQL API. 
+A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items. 
+You may read more about databases, containers and items [here](https://docs.microsoft.com/en-us/azure/cosmos-db/databases-containers-items). 
+A few important properties defined at the level of the container, among them are provisioned throughput and partition key.
+
+- Azure Cosmos DB is a globally distributed database service that's designed to provide low latency, elastic scalability of throughput, well-defined semantics for data consistency, and high availability. 
+In short, if your application needs guaranteed fast response time anywhere in the world, if it's required to be always online, and needs unlimited and elastic scalability of throughput and storage, you should build your application on Azure Cosmos DB.
+You may read more about global distribution [here](https://docs.microsoft.com/en-us/azure/cosmos-db/distribute-data-globally).
+- The provisioned throughput is measured in Request Units (RUs) which have a monetary price and are a substantial determining factor in the operating cost of the account. 
+Provisioned throughput can be selected at per-container granularity or per-database granularity, however container-level throughput specification is typically preferred. 
+You may read more about throughput provisioning [here](https://docs.microsoft.com/en-us/azure/cosmos-db/set-throughput).
+- As items are inserted into a Cosmos DB container, the database grows horizontally by adding more storage and compute to handle requests. 
+Storage and compute capacity are added in discrete units known as partitions, and you must choose one field in your documents to be the partition key which maps each document to a partition. 
+The way partitions are managed is that each partition is assigned a roughly equal slice out of the range of partition key values; therefore you are advised to choose a partition key which is relatively random or evenly-distributed. 
+Otherwise, some partitions will see substantially more requests (hot partition) while other partitions see substantially fewer requests (cold partition), and this is to be avoided. 
+You may learn more about partitioning [here](https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview).
+
+## Examples
+
+See the complete code in [`HelloWorldDemo.java`](../azure-cosmos-examples/src/main/java/com/azure/cosmos/examples/HelloWorldDemo.java)
 
 ```java
 import com.azure.cosmos.*;
@@ -33,101 +92,64 @@ import java.io.IOException;
 
 // ...
 
-    // Create a new CosmosClient via the builder
-    // It only requires endpoint and key, but other useful settings are available
-    CosmosClient client = CosmosClient.builder()
-        .endpoint("<YOUR ENDPOINT HERE>")
-        .key("<YOUR KEY HERE>")
-        .build();
-
-    // Get a reference to the container
-    // This will create (or read) a database and its container.
-    CosmosContainer container = client.createDatabaseIfNotExists("contoso-travel")
-        // TIP: Our APIs are Reactor Core based, so try to chain your calls
-        .flatMap(response -> response.database()
-                .createContainerIfNotExists("passengers", "/id"))
-        .flatMap(response -> Mono.just(response.container()))
-        .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
-
-    // Create an item
-    container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
-        .flatMap(response -> {
-            System.out.println("Created item: " + response.properties().toJson());
-            // Read that item
-            return response.item().read();
-        })
-        .flatMap(response -> {
-            System.out.println("Read item: " + response.properties().toJson());
-            // Replace that item
-            try {
-                Passenger p = response.properties().getObject(Passenger.class);
-                p.setDestination("SFO");
-                return response.item().replace(p);
-            } catch (IOException e) {
-                System.err.println(e);
-                return Mono.error(e);
-            }
-        })
-        // delete that item
-        .flatMap(response -> response.item().delete())
-        .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
+    // Create a new CosmosAsyncClient via the CosmosClientBuilder
+            // It only requires endpoint and key, but other useful settings are available
+            CosmosAsyncClient client = new CosmosClientBuilder()
+                .endpoint("<YOUR ENDPOINT HERE>")
+                .key("<YOUR KEY HERE>")
+                .buildAsyncClient();
+    
+            // Get a reference to the container
+            // This will create (or read) a database and its container.
+            CosmosAsyncContainer container = client.createDatabaseIfNotExists(DATABASE_NAME)
+                // TIP: Our APIs are Reactor Core based, so try to chain your calls
+                .flatMap(response -> client.getDatabase(DATABASE_NAME)
+                    .createContainerIfNotExists(CONTAINER_NAME, "/id"))
+                .flatMap(response -> Mono.just(client.getDatabase(DATABASE_NAME).getContainer(CONTAINER_NAME)))
+                .block();
+    
+            // Create an item
+            container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
+                .flatMap(response -> {
+                    System.out.println("Created item: " + response.getItem());
+                    // Read that item 👓
+                    return container.readItem(response.getItem().getId(),
+                                              new PartitionKey(response.getItem().getId()),
+                                              Passenger.class);
+                })
+                .flatMap(response -> {
+                    System.out.println("Read item: " + response.getItem());
+                    // Replace that item 🔁
+                    Passenger p = response.getItem();
+                    p.setDestination("SFO");
+                    return container.replaceItem(p,
+                                                 response.getItem().getId(),
+                                                 new PartitionKey(response.getItem().getId()));
+                })
+                // delete that item 💣
+                .flatMap(response -> container.deleteItem(response.getItem().getId(),
+                                                          new PartitionKey(response.getItem().getId())))
+                .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 // ...
 ```
 
-We have a get started sample app available [here](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started).
+We have a get started sample app available [here][getting_started].
 
-Also We have more examples in form of standalone unit tests in [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
+Also, we have more examples [examples project][samples].
 
-## Consuming the official Microsoft Azure Cosmos DB Java SDK
+## Troubleshooting
 
-This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
-Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
+### General 
 
-Jar dependency binary information for maven and gradle can be found here at [maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmos).
+General [troubleshooting guide][troubleshooting] can be found [here][troubleshooting]
 
-For example, using maven, you can add the following dependency to your maven pom file:
+#### Common Perf Tips
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmos;current})
-```xml
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-cosmos</artifactId>
-  <version>4.0.0-preview.1</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+There is a set of common perf tips written for our Java SDK. It is available [here][perf_guide].
 
-Useful links:
+To achieve better performance and higher throughput in production, there are a few more tips that are helpful to follow:
 
-- [Sample Get Started APP](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started)
-- [Introduction to Resource Model of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-resources)
-- [Introduction to SQL API of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query)
-- [Reactor Core JavaDoc API](https://projectreactor.io/docs/core/release/api/)
-- [SDK FAQ](faq/)
-
-## Prerequisites
-
-- Java Development Kit 8
-- An active Azure account. If you don't have one, you can sign up for a [free account](https://azure.microsoft.com/free/). Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates)
-- (Optional) SLF4J is a logging facade.
-- (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
-- (Optional) Maven
-
-SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
-
-<!-- TODO - update once JavaDoc is published
-## API Documentation
-
-Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/2.4.0/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html).
-
-The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/).
--->
-
-## Guide for Production
-
-To achieve better performance and higher throughput there are a few tips that are helpful to follow:
-
-### Use Appropriate Scheduler (Avoid stealing Eventloop IO Netty threads)
+#### Use Appropriate Scheduler (Avoid stealing Eventloop IO Netty threads)
 
 SDK uses [netty](https://netty.io/) for non-blocking IO. The SDK uses a fixed number of IO netty eventloop threads (as many CPU cores your machine has) for executing IO operations.
 
@@ -150,7 +172,7 @@ readItemMono
 
 ```
 
-After result is received if you want to do CPU intensive work on the result you should avoid doing so on eventloop IO netty thread. You can instead provide your own Scheduler to provide your own thread for running your work.
+After receiving result if you want to do CPU intensive work on the result you should avoid doing so on eventloop IO netty thread. You can instead provide your own Scheduler to provide your own thread for running your work.
 
 ```java
 
@@ -168,9 +190,9 @@ readItemMono
 ```
 
 Based on the type of your work you should use the appropriate existing RxJava Scheduler for your work. Please read here
-[`Schedulers`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html).
+[`Schedulers`][project_reactor_schedulers].
 
-### Disable netty's logging
+#### Disable netty's logging
 
 Netty library logging is very chatty and need to be turned off (suppressing log in the configuration may not be enough) to avoid additional CPU costs.
 If you are not in debugging mode disable netty's logging altogether. So if you are using log4j to remove the additional CPU costs incurred by `org.apache.log4j.Category.callAppenders()` from netty add the following line to your codebase:
@@ -179,7 +201,7 @@ If you are not in debugging mode disable netty's logging altogether. So if you a
 org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
 ```
 
-### OS Open files Resource Limit
+#### OS Open files Resource Limit
 
 Some Linux systems (like Redhat) have an upper limit on the number of open files and so the total number of connections. Run the following to view the current limits:
 
@@ -201,34 +223,7 @@ Add/modify the following lines:
 * - nofile 100000
 ```
 
-### Use native SSL implementation for netty
-
-Netty can use OpenSSL directly for SSL implementation stack to achieve better performance.
-In the absence of this configuration netty will fall back to Java's default SSL implementation.
-
-on Ubuntu:
-
-```bash
-sudo apt-get install openssl
-sudo apt-get install libapr1
-```
-
-and add the following dependency to your project maven dependencies:
-
-[//]: # ({x-version-update-start;io.netty:netty-tcnative;external_dependency})
-```xml
-<dependency>
-  <groupId>io.netty</groupId>
-  <artifactId>netty-tcnative</artifactId>
-  <version>2.0.26.Final</version>
-  <classifier>linux-x86_64</classifier>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-For other platforms (Redhat, Windows, Mac, etc) please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
-
-### Using system properties to modify default Direct TCP options
+#### Using system properties to modify default Direct TCP options
 
 We have added the ability to modify the default Direct TCP options utilized by the SDK. In priority order we will take default Direct TCP options from:
 
@@ -269,28 +264,46 @@ We have added the ability to modify the default Direct TCP options utilized by t
 
 Values that are in error are ignored.
 
-### Common Perf Tips
+## Next Steps
 
-There is a set of common perf tips written for our Java SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-async-java).
+- Samples are explained in detail [here][samples_readme]
+- Go through [quickstart][quickstart] - Building a java app to manage CosmosDB SQL API data
+- [Read more about Azure CosmosDB Service][cosmos_docs]
 
-## FAQ
+## Contributing
 
-We have a frequently asked questions which is maintained [here](faq/).
+This project welcomes contributions and suggestions. Most contributions require you to agree to a 
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights 
+to use your contribution.
 
-## Release changes
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate 
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to 
+do this once across all repos using our CLA.
 
-Release changelog is available [here](changelog/).
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] 
+or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
-## Contribution and Feedback
-
-This is an open source project and we welcome contributions. If you would like to become an active contributor to this project please follow the instructions provided in [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/). Instructions on how to fetch and build the code can be found in [dev.md](./dev.md). Our PRs have CI that will run after a contributor has reviewed your code. You can run those same tests locally via the instructions in [dev.md](./dev.md). 
-
-If you encounter any bugs with the SDK please file an [issue](https://github.com/Azure/azure-cosmosdb-java/issues) in the Issues section of the project.
-
-## License
-
-[MIT License](LICENSE)
-
-Copyright (c) 2018 Copyright (c) Microsoft Corporation
+<!-- LINKS -->
+[source_code]: src
+[cosmos_introduction]: https://docs.microsoft.com/en-us/azure/cosmos-db/
+[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/4.0.1-beta.3/index.html
+[cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
+[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[maven]: https://maven.apache.org/
+[cosmos_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos
+[cosmos_maven_svg]: https://img.shields.io/maven-central/v/com.azure/azure-cosmos.svg
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+[azure_subscription]: https://azure.microsoft.com/free/
+[samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
+[samples_readme]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples/blob/master/README.md
+[troubleshooting]: https://docs.microsoft.com/en-us/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
+[perf_guide]: https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
+[sql_api_query]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query
+[getting_started]: https://github.com/Azure-Samples/azure-cosmos-java-getting-started
+[quickstart]: https://docs.microsoft.com/en-us/azure/cosmos-db/create-sql-api-java?tabs=sync
+[project_reactor_schedulers]: https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2FREADME.png)

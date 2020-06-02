@@ -7,7 +7,6 @@ import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OcrSkillLanguage;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.TextExtractionAlgorithm;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,11 +45,6 @@ public final class OcrSkillConverter {
         String description = obj.getDescription();
         ocrSkill.setDescription(description);
 
-        if (obj.getTextExtractionAlgorithm() != null) {
-            TextExtractionAlgorithm textExtractionAlgorithm =
-                TextExtractionAlgorithmConverter.map(obj.getTextExtractionAlgorithm());
-            ocrSkill.setTextExtractionAlgorithm(textExtractionAlgorithm);
-        }
 
         if (obj.getDefaultLanguageCode() != null) {
             OcrSkillLanguage defaultLanguageCode = OcrSkillLanguageConverter.map(obj.getDefaultLanguageCode());
@@ -58,7 +52,7 @@ public final class OcrSkillConverter {
         }
 
         Boolean shouldDetectOrientation = obj.isShouldDetectOrientation();
-        ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
+        ocrSkill.shouldDetectOrientation(shouldDetectOrientation);
         return ocrSkill;
     }
 
@@ -92,12 +86,6 @@ public final class OcrSkillConverter {
 
         String description = obj.getDescription();
         ocrSkill.setDescription(description);
-
-        if (obj.getTextExtractionAlgorithm() != null) {
-            com.azure.search.documents.indexes.implementation.models.TextExtractionAlgorithm textExtractionAlgorithm =
-                TextExtractionAlgorithmConverter.map(obj.getTextExtractionAlgorithm());
-            ocrSkill.setTextExtractionAlgorithm(textExtractionAlgorithm);
-        }
 
         if (obj.getDefaultLanguageCode() != null) {
             com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage defaultLanguageCode =

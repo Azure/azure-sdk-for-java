@@ -6,52 +6,39 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for ImageDetail.
  */
-public enum ImageDetail {
+public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
     /**
-     * Enum value celebrities.
+     * Static value celebrities for ImageDetail.
      */
-    CELEBRITIES("celebrities"),
+    public static final ImageDetail CELEBRITIES = fromString("celebrities");
 
     /**
-     * Enum value landmarks.
+     * Static value landmarks for ImageDetail.
      */
-    LANDMARKS("landmarks");
+    public static final ImageDetail LANDMARKS = fromString("landmarks");
 
     /**
-     * The actual serialized value for a ImageDetail instance.
-     */
-    private final String value;
-
-    ImageDetail(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ImageDetail instance.
+     * Creates or finds a ImageDetail from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ImageDetail object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ImageDetail.
      */
     @JsonCreator
-    public static ImageDetail fromString(String value) {
-        ImageDetail[] items = ImageDetail.values();
-        for (ImageDetail item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ImageDetail fromString(String name) {
+        return fromString(name, ImageDetail.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known ImageDetail values.
+     */
+    public static Collection<ImageDetail> values() {
+        return values(ImageDetail.class);
     }
 }

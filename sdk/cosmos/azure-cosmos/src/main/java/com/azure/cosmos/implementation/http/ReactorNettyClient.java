@@ -70,7 +70,7 @@ class ReactorNettyClient implements HttpClient {
 
             if (this.httpClientConfig.getProxy() != null) {
                 tcpClient =
-                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy()));
+                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy().getAddress()));
             }
             tcpClient =
                 tcpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()));

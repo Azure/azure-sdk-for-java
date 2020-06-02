@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -168,10 +168,10 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
         container.getScripts().createStoredProcedure(storedProcedureDef);
 
-        FeedOptions feedOptions = new FeedOptions();
+        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
 
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
-                container.getScripts().readAllStoredProcedures(feedOptions);
+                container.getScripts().readAllStoredProcedures(queryRequestOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
     }
@@ -182,15 +182,15 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         container.getScripts().createStoredProcedure(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        FeedOptions feedOptions = new FeedOptions();
+        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
 
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
-                container.getScripts().queryStoredProcedures(query, feedOptions);
+                container.getScripts().queryStoredProcedures(query, queryRequestOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator2 =
-                container.getScripts().queryStoredProcedures(query, feedOptions);
+                container.getScripts().queryStoredProcedures(query, queryRequestOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
 

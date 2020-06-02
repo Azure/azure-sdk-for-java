@@ -49,7 +49,7 @@ public final class SearchIndex {
      * The suggesters for the index.
      */
     @JsonProperty(value = "suggesters")
-    private List<Suggester> suggesters;
+    private List<SearchSuggester> searchSuggesters;
 
     /*
      * The analyzers for the index.
@@ -97,7 +97,7 @@ public final class SearchIndex {
      * indexes. If null, the ClassicSimilarity algorithm is used.
      */
     @JsonProperty(value = "similarity")
-    private Similarity similarity;
+    private SimilarityAlgorithm similarityAlgorithm;
 
     /*
      * The ETag of the index.
@@ -218,18 +218,18 @@ public final class SearchIndex {
      *
      * @return the suggesters value.
      */
-    public List<Suggester> getSuggesters() {
-        return this.suggesters;
+    public List<SearchSuggester> getSearchSuggesters() {
+        return this.searchSuggesters;
     }
 
     /**
      * Set the suggesters property: The suggesters for the index.
      *
-     * @param suggesters the suggesters value to set.
+     * @param searchSuggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSuggesters(List<Suggester> suggesters) {
-        this.suggesters = suggesters;
+    public SearchIndex setSearchSuggesters(List<SearchSuggester> searchSuggesters) {
+        this.searchSuggesters = searchSuggesters;
         return this;
     }
 
@@ -362,8 +362,8 @@ public final class SearchIndex {
      *
      * @return the similarity value.
      */
-    public Similarity getSimilarity() {
-        return this.similarity;
+    public SimilarityAlgorithm getSimilarityAlgorithm() {
+        return this.similarityAlgorithm;
     }
 
     /**
@@ -373,11 +373,11 @@ public final class SearchIndex {
      * cannot be modified on existing indexes. If null, the ClassicSimilarity
      * algorithm is used.
      *
-     * @param similarity the similarity value to set.
+     * @param similarityAlgorithm the similarity value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSimilarity(Similarity similarity) {
-        this.similarity = similarity;
+    public SearchIndex setSimilarityAlgorithm(SimilarityAlgorithm similarityAlgorithm) {
+        this.similarityAlgorithm = similarityAlgorithm;
         return this;
     }
 

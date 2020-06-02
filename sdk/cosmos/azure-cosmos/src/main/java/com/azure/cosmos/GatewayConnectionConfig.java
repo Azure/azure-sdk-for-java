@@ -3,7 +3,8 @@
 
 package com.azure.cosmos;
 
-import java.net.InetSocketAddress;
+import com.azure.core.http.ProxyOptions;
+
 import java.time.Duration;
 
 /**
@@ -18,7 +19,7 @@ public final class GatewayConnectionConfig {
     private Duration requestTimeout;
     private int maxConnectionPoolSize;
     private Duration idleConnectionTimeout;
-    private InetSocketAddress inetSocketProxyAddress;
+    private ProxyOptions proxy;
 
     /**
      * Constructor.
@@ -103,12 +104,12 @@ public final class GatewayConnectionConfig {
     }
 
     /**
-     * Gets the InetSocketAddress of proxy server.
+     * Gets the proxy options which contain the InetSocketAddress of proxy server.
      *
-     * @return the value of proxyHost.
+     * @return the proxy options.
      */
-    public InetSocketAddress getProxy() {
-        return this.inetSocketProxyAddress;
+    public ProxyOptions getProxy() {
+        return this.proxy;
     }
 
     /**
@@ -119,18 +120,26 @@ public final class GatewayConnectionConfig {
      * @return the {@link GatewayConnectionConfig}.
      */
 
-    public GatewayConnectionConfig setProxy(InetSocketAddress proxy) {
-        this.inetSocketProxyAddress = proxy;
+    public GatewayConnectionConfig setProxy(ProxyOptions proxy) {
+        if (proxy.getType() != ProxyOptions.Type.HTTP) {
+            throw new IllegalArgumentException("Only http proxy type is supported.");
+        }
+
+        this.proxy = proxy;
         return this;
     }
 
     @Override
     public String toString() {
+        String proxyType = proxy != null ? proxy.getType().toString() : null;
+        String proxyAddress = proxy != null ? proxy.getAddress().toString() : null;
+
         return "GatewayConnectionConfig{" +
             "requestTimeout=" + requestTimeout +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
-            ", inetSocketProxyAddress=" + inetSocketProxyAddress +
+            ", proxyType=" + proxyType +
+            ", inetSocketProxyAddress=" + proxyAddress +
             '}';
     }
 }

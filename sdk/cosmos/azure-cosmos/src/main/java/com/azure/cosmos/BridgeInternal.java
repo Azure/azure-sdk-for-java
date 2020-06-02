@@ -27,7 +27,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -430,11 +429,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
         return ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

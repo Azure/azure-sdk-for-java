@@ -14,10 +14,8 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
-import java.time.Duration;
 import java.util.Deque;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -111,6 +109,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void onSubscribe(Subscription subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null");
+        logger.info("Setting new subscription for receive link processor");
 
         if (!Operators.setOnce(UPSTREAM, this, subscription)) {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot set upstream twice."));
@@ -176,7 +175,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     },
                     () -> {
                         if (parentConnection.isDisposed() || isTerminated()
-                            || upstream == Operators.cancelledSubscription()) {
+                            || UPSTREAM.get(this) == Operators.cancelledSubscription()) {
                             logger.info("Terminal state reached. Disposing of link processor.");
                             dispose();
                         } else {
@@ -187,7 +186,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             if (existing != null) {
                                 existing.dispose();
                             }
-
                             requestUpstream();
                         }
                     }),
@@ -258,6 +256,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void onError(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' is required.");
+        logger.info("Error on receive link {}", currentLink, throwable);
 
         if (isTerminated() || isCancelled) {
             logger.info("AmqpReceiveLinkProcessor is terminated. Cannot process another error.", throwable);
@@ -265,28 +264,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        final int attempt = retryAttempts.incrementAndGet();
-        final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
-
-        final AmqpReceiveLink link = currentLink;
-        final String linkName = link != null ? link.getLinkName() : "n/a";
-        final String entityPath = link != null ? link.getEntityPath() : "n/a";
-
-        if (retryInterval != null && !parentConnection.isDisposed() && upstream != Operators.cancelledSubscription()) {
-            logger.warning("linkName[{}] entityPath[{}]. Transient error occurred. Attempt: {}. Retrying after {} ms.",
-                linkName, entityPath, attempt, retryInterval.toMillis(), throwable);
-
-            retrySubscription = Mono.delay(retryInterval).subscribe(i -> requestUpstream());
-
-            return;
-        }
-
         if (parentConnection.isDisposed()) {
             logger.info("Parent connection is disposed. Not reopening on error.");
         }
-
-        logger.warning("linkName[{}] entityPath[{}]. Non-retryable error occurred in AMQP receive link.",
-            linkName, entityPath, throwable);
 
         lastError = throwable;
         isTerminated.set(true);
@@ -304,11 +284,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public void onComplete() {
-        this.upstream = Operators.cancelledSubscription();
+        logger.info("Receive link completed {}", currentLink);
+        UPSTREAM.set(this, Operators.cancelledSubscription());
     }
 
     @Override
     public void dispose() {
+        logger.info("Disposing receive link {}", currentLink);
         if (isTerminated.getAndSet(true)) {
             return;
         }
@@ -359,10 +341,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (isTerminated()) {
             logger.info("Processor is terminated. Not requesting another link.");
             return;
-        } else if (upstream == null) {
+        } else if (UPSTREAM.get(this) == null) {
             logger.info("There is no upstream. Not requesting another link.");
             return;
-        } else if (upstream == Operators.cancelledSubscription()) {
+        } else if (UPSTREAM.get(this) == Operators.cancelledSubscription()) {
             logger.info("Upstream is cancelled or complete. Not requesting another link.");
             return;
         }
@@ -375,7 +357,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         logger.info("Requesting a new AmqpReceiveLink from upstream.");
-        upstream.request(1L);
+        UPSTREAM.get(this).request(1L);
     }
 
     private void onDispose() {
