@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.avro.apache;
 
-import com.azure.core.serializer.AvroSerializer;
+import com.azure.core.serializer.SchemaSerializer;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
@@ -19,9 +19,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 /**
- * Apache based implementation of the {@link AvroSerializer} interface.
+ * Apache Avro based implementation of the {@link SchemaSerializer} interface.
  */
-public class ApacheAvroSerializer implements AvroSerializer {
+public class ApacheAvroSerializer implements SchemaSerializer {
     private final boolean validateSchema;
     private final boolean validateSchemaDefaults;
     private final DecoderFactory decoderFactory;

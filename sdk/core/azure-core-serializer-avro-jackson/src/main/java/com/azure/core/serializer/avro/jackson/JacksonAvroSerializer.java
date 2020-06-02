@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.avro.jackson;
 
-import com.azure.core.serializer.AvroSerializer;
+import com.azure.core.serializer.SchemaSerializer;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.publisher.Mono;
@@ -12,16 +12,11 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
- * Jackson based implementation of the {@link AvroSerializer} interface.
+ * Jackson Avro based implementation of the {@link SchemaSerializer} interface.
  */
-public final class JacksonAvroSerializer implements AvroSerializer {
+public final class JacksonAvroSerializer implements SchemaSerializer {
     private final AvroMapper avroMapper;
 
-    /**
-     * Constructs a {@link AvroSerializer} using the passed Jackson serializer.
-     *
-     * @param avroMapper Configured Jackson serializer.
-     */
     JacksonAvroSerializer(AvroMapper avroMapper) {
         this.avroMapper = avroMapper;
     }

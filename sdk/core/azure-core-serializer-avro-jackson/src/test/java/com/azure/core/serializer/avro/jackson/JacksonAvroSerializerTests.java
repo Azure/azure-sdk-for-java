@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.avro.jackson;
 
-import com.azure.core.serializer.AvroSerializer;
+import com.azure.core.serializer.SchemaSerializer;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.LongLinkedList;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JacksonAvroSerializerTests {
-    private static final AvroSerializer AVRO_SERIALIZER = new JacksonAvroSerializerBuilder().build();
+    private static final SchemaSerializer AVRO_SERIALIZER = new JacksonAvroSerializerBuilder().build();
 
     /*
      * This Avro schema specifies the Java string type that should be used to deserialize STRING. Without specifying
