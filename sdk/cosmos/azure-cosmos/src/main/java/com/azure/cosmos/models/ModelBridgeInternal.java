@@ -153,8 +153,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Permission getV2Permissions(CosmosPermissionProperties permissionSettings) {
-        return permissionSettings.getV2Permissions();
+    public static Permission getV2Permissions(CosmosPermissionProperties permissionProperties) {
+        return permissionProperties.getV2Permissions();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
