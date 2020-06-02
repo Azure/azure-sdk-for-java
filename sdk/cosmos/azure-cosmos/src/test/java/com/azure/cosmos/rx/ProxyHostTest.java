@@ -163,7 +163,7 @@ public class ProxyHostTest extends TestSuiteBase {
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT,
         expectedExceptions = IllegalArgumentException.class,
-        expectedExceptionsMessageRegExp = "Proxy type is not supported .*")
+        expectedExceptionsMessageRegExp = "Only http proxy type is supported.")
     public void createWithNonHttpProxy() {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.SOCKS4, new InetSocketAddress(PROXY_HOST, PROXY_PORT)));

@@ -122,7 +122,7 @@ public final class GatewayConnectionConfig {
 
     public GatewayConnectionConfig setProxy(ProxyOptions proxy) {
         if (proxy.getType() != ProxyOptions.Type.HTTP) {
-            throw new IllegalArgumentException("Proxy type is not supported " + proxy.getType());
+            throw new IllegalArgumentException("Only http proxy type is supported.");
         }
 
         this.proxy = proxy;
