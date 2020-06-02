@@ -34,6 +34,6 @@ class AzureCliCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request)
                 .onErrorResume(t -> Mono.error(new CredentialUnavailableException(
-                        "AzureCliCredential authentication unavailable." + t.getMessage(), t)));
+                        "AzureCliCredential authentication unavailable.", t)));
     }
 }

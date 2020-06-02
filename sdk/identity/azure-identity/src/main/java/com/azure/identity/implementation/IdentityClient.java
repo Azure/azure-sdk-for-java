@@ -302,10 +302,10 @@ public class IdentityClient {
                         throw logger.logExceptionAsError(
                             new CredentialUnavailableException("Please run 'az login' to set up account"));
                     }
-                    throw logger.logExceptionAsError(new CredentialUnavailableException(redactedOutput));
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
                     throw logger.logExceptionAsError(
-                        new CredentialUnavailableException("Failed to invoke Azure CLI "));
+                        new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
                 }
             }
             Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
@@ -813,10 +813,8 @@ public class IdentityClient {
                 connection.connect();
             } catch (ConnectException | SecurityException | SocketTimeoutException e) {
                 throw logger.logExceptionAsError(
-                        new CredentialUnavailableException(
-                                "ManagedIdentityCredential authentication unavailable. "
-                                 + "Connection to IMDS endpoint cannot be established, "
-                                 + e.getMessage() + ".", e));
+                    new CredentialUnavailableException("Connection to IMDS endpoint cannot be established. "
+                                                             + e.getMessage(), e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -824,7 +822,8 @@ public class IdentityClient {
             }
 
             return true;
-        });
+        }).onErrorResume(t -> Mono.error(new CredentialUnavailableException(
+            "ManagedIdentityCredential authentication unavailable." + t.getMessage(), t)));
     }
 
     private static void sleep(int millis) {
