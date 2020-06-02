@@ -3,14 +3,13 @@
 
 package com.azure.ai.formrecognizer.training;
 
-import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainModelOptions;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -30,23 +29,33 @@ import java.time.Duration;
  * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.initialization}
  *
- * @see FormRecognizerClientBuilder
- * @see FormRecognizerClient
+ * @see FormTrainingClientBuilder
+ * @see FormTrainingClient
  */
-@ServiceClient(builder = FormRecognizerClientBuilder.class)
-public class FormTrainingClient {
+@ServiceClient(builder = FormTrainingClientBuilder.class)
+public final class FormTrainingClient {
 
     private final FormTrainingAsyncClient client;
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
-     * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
+     * Each service call goes through the {@link FormTrainingClientBuilder#pipeline http pipeline}.
      *
-     * @param formTrainingAsyncClient The {@link FormRecognizerAsyncClient} that the client routes its request through.
+     * @param formTrainingAsyncClient The {@link FormTrainingAsyncClient} that the client routes its request through.
      */
-    // TODO (savaity): Still deciding the best approach here, to be redone in #10909
-    public FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
+    FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
         this.client = formTrainingAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link FormRecognizerClient} object. The new {@link FormTrainingClient}
+     * uses the same request policy pipeline as the {@link FormTrainingClient}.
+     *
+     * @return A new {@link FormRecognizerClient} object.
+     */
+    public FormRecognizerClient getFormRecognizerClient() {
+        return new FormRecognizerClientBuilder().endpoint(client.getEndpoint()).pipeline(client.getHttpPipeline())
+            .buildClient();
     }
 
     /**
@@ -66,7 +75,7 @@ public class FormTrainingClient {
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a {@link CustomFormModel}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -83,22 +92,22 @@ public class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainModelOptions-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
-     * @param trainModelOptions Filter to apply to the documents in the source path for training.
+     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} that polls the extract receipt operation until it
-     * has completed, has failed, or has been cancelled.
+     * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link CustomFormModel}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainModelOptions trainModelOptions, Duration pollInterval) {
-        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainModelOptions, pollInterval)
+        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval)
             .getSyncPoller();
     }
 
@@ -194,27 +203,27 @@ public class FormTrainingClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels}
      *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomFormModelInfo> getModelInfos() {
-        return new PagedIterable<>(client.getModelInfos(Context.NONE));
+    public PagedIterable<CustomFormModelInfo> listCustomModels() {
+        return new PagedIterable<>(client.listCustomModels(Context.NONE));
     }
 
     /**
      * List information for all models with taking {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos#Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomFormModelInfo> getModelInfos(Context context) {
-        return new PagedIterable<>(client.getModelInfos(context));
+    public PagedIterable<CustomFormModelInfo> listCustomModels(Context context) {
+        return new PagedIterable<>(client.listCustomModels(context));
     }
 }

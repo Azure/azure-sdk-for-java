@@ -44,7 +44,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -180,15 +180,74 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.0.1-beta.3</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.0.1-beta.4</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos-table</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-table;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-template</artifactId>
-      <version>1.0.4-beta.13</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+      <version>1.0.4-beta.20</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-schemaregistry</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-schemaregistry-avro</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-spring-boot</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-spring-boot-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-spring-boot-metrics-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-metrics-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-active-directory-b2c-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current} -->
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -212,6 +271,26 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <!-- This entire plugin configuration needs to be removed once Spring's groupId changes to com.azure -->
+      <!-- Normally com.microsoft.azure:* would not be OK to add to the plugin configuration since that groupdId
+           isn't limited to what we build as part of the data track. In this particular case it's OK since the only
+           jacoco dependencies are limited to libraries we build.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+                <include>com.microsoft.azure:*</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>

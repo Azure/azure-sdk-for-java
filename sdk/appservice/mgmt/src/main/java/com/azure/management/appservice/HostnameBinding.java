@@ -30,7 +30,7 @@ public interface HostnameBinding
     CustomHostnameDnsRecordType dnsRecordType();
 
     /** @return the host name type */
-    HostnameType hostNameType();
+    HostnameType hostnameType();
 
     /**
      * The entirety of a hostname binding definition.
@@ -102,10 +102,10 @@ public interface HostnameBinding
             /**
              * Specifies the DNS record type.
              *
-             * @param hostNameDnsRecordType the DNS record type
+             * @param hostnameDnsRecordType the DNS record type
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withDnsRecordType(CustomHostnameDnsRecordType hostNameDnsRecordType);
+            WithAttach<ParentT> withDnsRecordType(CustomHostnameDnsRecordType hostnameDnsRecordType);
         }
 
         /**
@@ -190,10 +190,10 @@ public interface HostnameBinding
             /**
              * Specifies the DNS record type.
              *
-             * @param hostNameDnsRecordType the DNS record type
+             * @param hostnameDnsRecordType the DNS record type
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withDnsRecordType(CustomHostnameDnsRecordType hostNameDnsRecordType);
+            WithAttach<ParentT> withDnsRecordType(CustomHostnameDnsRecordType hostnameDnsRecordType);
         }
 
         /**

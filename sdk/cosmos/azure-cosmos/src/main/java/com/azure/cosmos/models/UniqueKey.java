@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos
+ * Represents a unique key on that enforces uniqueness constraint on items in the container in the Azure Cosmos
  * DB service.
  * <p>
- * 1) For partitioned collections, the value of partition key is implicitly a part of each unique key.
+ * 1) For containers, the value of partition key is implicitly a part of each unique key.
+ * <p>
  * 2) Uniqueness constraint is also enforced for missing values.
+ * <p>
  * For instance, if unique key policy defines a unique key with single property path, there could be only one
- * document that has missing value for this property.
+ * item that has missing value for this property.
  *
  * @see UniqueKeyPolicy
  */
@@ -26,10 +28,12 @@ public final class UniqueKey {
     private JsonSerializable jsonSerializable;
 
     /**
-     * Instantiates a new Unique key.
+     * Instantiates a new Unique key with paths.
+     * @param paths the unique paths.
      */
-    public UniqueKey() {
+    public UniqueKey(List<String> paths) {
         this.jsonSerializable = new JsonSerializable();
+        this.paths = paths;
     }
 
     /**
@@ -51,9 +55,9 @@ public final class UniqueKey {
     }
 
     /**
-     * Gets the paths, a set of which must be unique for each document in the Azure Cosmos DB service.
+     * Gets the paths, a set of which must be unique for each item in the Azure Cosmos DB service.
      * <p>
-     * The paths to enforce uniqueness on. Each path is a rooted path of the unique property in the document,
+     * The paths to enforce uniqueness on. Each path is a rooted path of the unique property in the item,
      * such as "/name/first".
      *
      * @return the unique paths.
@@ -72,9 +76,9 @@ public final class UniqueKey {
 
 
     /**
-     * Sets the paths, a set of which must be unique for each document in the Azure Cosmos DB service.
+     * Sets the paths, a set of which must be unique for each item in the Azure Cosmos DB service.
      * <p>
-     * The paths to enforce uniqueness on. Each path is a rooted path of the unique property in the document,
+     * The paths to enforce uniqueness on. Each path is a rooted path of the unique property in the item,
      * such as "/name/first".
      *
      * @param paths the unique paths.

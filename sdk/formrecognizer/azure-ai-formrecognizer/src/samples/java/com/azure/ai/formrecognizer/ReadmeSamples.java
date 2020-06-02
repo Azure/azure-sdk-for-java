@@ -13,11 +13,12 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ReadmeSamples {
     private FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().buildClient();
-    private FormTrainingClient formTrainingClient = formRecognizerClient.getFormTrainingClient();
+    private FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().buildClient();
 
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
@@ -55,15 +56,16 @@ public class ReadmeSamples {
     }
 
     public void recognizeCustomForm() {
-        String analyzeFilePath = "{file_source_url}";
+        String formUrl = "{file_url}";
         String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-            formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
+        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
+            formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
 
-        IterableStream<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
+        List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
-        recognizedForms.forEach(form -> {
-            System.out.println("----------- Recognized Form -----------");
+        for (int i = 0; i < recognizedForms.size(); i++) {
+            RecognizedForm form = recognizedForms.get(i);
+            System.out.printf("----------- Recognized Form %s%n-----------", i);
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) -> {
                 System.out.printf("Field %s has value %s with confidence score of %d.%n", label,
@@ -71,19 +73,20 @@ public class ReadmeSamples {
                     formField.getConfidence());
             });
             System.out.print("-----------------------------------");
-        });
+        }
     }
 
     public void recognizeContent() {
-        String analyzeFilePath = "{file_source_url}";
-        SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
-            formRecognizerClient.beginRecognizeContentFromUrl(analyzeFilePath);
+        String contentFileUrl = "{file_url}";
+        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+            formRecognizerClient.beginRecognizeContentFromUrl(contentFileUrl);
 
-        IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+        List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
-        layoutPageResults.forEach(formPage -> {
+        for (int i = 0; i < contentPageResults.size(); i++) {
+            FormPage formPage = contentPageResults.get(i);
+            System.out.printf("----Recognizing content for page %s%n----", i);
             // Table information
-            System.out.println("----Recognizing content ----");
             System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
@@ -95,19 +98,20 @@ public class ReadmeSamples {
                 });
                 System.out.println();
             });
-        });
+        }
     }
 
     public void recognizeReceipt() {
-        String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-            formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
-        IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+        SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+            formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
+        List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
-        receiptPageResults.forEach(recognizedReceipt -> {
+        for (int i = 0; i < receiptPageResults.size(); i++) {
+            System.out.printf("----Recognizing receipt for page %s%n----", i);
+            RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
             System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
             System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
@@ -116,7 +120,7 @@ public class ReadmeSamples {
             System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
             System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
             System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
-        });
+        }
     }
 
     public void trainModel() {
@@ -129,15 +133,15 @@ public class ReadmeSamples {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model created on: %s%n", customFormModel.getCreatedOn());
-        System.out.printf("Model last updated: %s%n%n", customFormModel.getLastUpdatedOn());
+        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
+        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
 
         System.out.println("Recognized Fields:");
         // looping through the sub-models, which contains the fields they were trained on
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
-        customFormModel.getSubModels().forEach(customFormSubModel -> {
+        customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            customFormSubModel.getFieldMap().forEach((field, customFormModelField) ->
+            customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
                 System.out.printf("Field: %s Field Label: %s%n",
                     field, customFormModelField.getLabel()));
         });
@@ -151,7 +155,7 @@ public class ReadmeSamples {
             accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
         // Next, we get a paged list of all of our custom models
-        PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.getModelInfos();
+        PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.listCustomModels();
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
@@ -159,13 +163,13 @@ public class ReadmeSamples {
             modelId.set(customFormModelInfo.getModelId());
             CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
             System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-            System.out.printf("Created on: %s%n", customModel.getCreatedOn());
-            System.out.printf("Updated on: %s%n", customModel.getLastUpdatedOn());
-            customModel.getSubModels().forEach(customFormSubModel -> {
-                System.out.printf("Custom Model Form type: %s%n", customFormSubModel.getFormType());
-                System.out.printf("Custom Model Accuracy: %d%n", customFormSubModel.getAccuracy());
-                if (customFormSubModel.getFieldMap() != null) {
-                    customFormSubModel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+            System.out.printf("Created on: %s%n", customModel.getRequestedOn());
+            System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+            customModel.getSubmodels().forEach(customFormSubmodel -> {
+                System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
+                System.out.printf("Custom Model Accuracy: %d%n", customFormSubmodel.getAccuracy());
+                if (customFormSubmodel.getFieldMap() != null) {
+                    customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                         System.out.printf("Field Text: %s%n", fieldText);
                         System.out.printf("Field Accuracy: %d%n", customFormModelField.getAccuracy());
                     });

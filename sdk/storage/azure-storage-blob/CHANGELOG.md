@@ -2,7 +2,9 @@
 
 ## 12.7.0-beta.1 (Unreleased)
 - Fixed a bug that would cause empty data to be sent if a call to stage block, block blob upload, append block, or upload pages was automatically retried by the SDK.
+- Added an overload to BlobClient.upload which returns a BlockBlobItem containing the properties returned by the service upon blob creation.
 - Fixed a bug that caused auth failures when constructing a client to a secondary endpoint using token auth.
+- Modified client constructors to throw on invalid urls early to prevent SAS tokens from being logged in Exceptions.
 
 ## 12.6.1 (2020-05-06)
 - Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.

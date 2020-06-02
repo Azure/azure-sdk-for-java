@@ -8,23 +8,20 @@ import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
-import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -41,14 +38,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    static final String NAME = "name";
-    static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    static final String VERSION = "version";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    private final HttpLogOptions httpLogOptions = new HttpLogOptions();
-    private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
-    private final String clientName = properties.getOrDefault(NAME, "UnknownName");
-    private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
     private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
         List<TrainingDocumentInfo> actualTrainingDocuments) {
@@ -103,12 +93,12 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
             actualCustomModel.getModelStatus().toString());
         validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getCreatedOn());
-        assertNotNull(actualCustomModel.getLastUpdatedOn());
+        assertNotNull(actualCustomModel.getRequestedOn());
+        assertNotNull(actualCustomModel.getCompletedOn());
         validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
             actualCustomModel.getTrainingDocuments());
-        final List<CustomFormSubModel> subModelList =
-            actualCustomModel.getSubModels().stream().collect(Collectors.toList());
+        final List<CustomFormSubmodel> subModelList =
+            actualCustomModel.getSubmodels().stream().collect(Collectors.toList());
         if (isLabeled) {
             final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
             for (final FormFieldsReport expectedField : fields) {
@@ -174,7 +164,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     abstract void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
@@ -217,11 +207,5 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://isPlaybackmode"
             : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
-    }
-
-    private String getTestingSasUri() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://isPlaybackmode"
-            : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
     }
 }

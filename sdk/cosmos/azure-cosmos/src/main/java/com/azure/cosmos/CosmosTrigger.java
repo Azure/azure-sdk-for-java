@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerProperties;
 
 /**
  * The type Cosmos sync trigger.
@@ -39,32 +39,29 @@ public class CosmosTrigger {
     /**
      * Read cosmos trigger.
      *
-     * @return the cosmos sync trigger response
-     * @throws CosmosClientException the cosmos client exception
+     * @return the cosmos trigger response
      */
-    public CosmosTriggerResponse read() throws CosmosClientException {
-        return container.getScripts().mapTriggerResponseAndBlock(trigger.read());
+    public CosmosTriggerResponse read() {
+        return container.getScripts().blockTriggerResponse(trigger.read());
     }
 
     /**
      * Replace cosmos trigger.
      *
      * @param triggerSettings the trigger settings
-     * @return the cosmos sync trigger response
-     * @throws CosmosClientException the cosmos client exception
+     * @return the cosmos trigger response
      */
-    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerSettings) throws CosmosClientException {
-        return container.getScripts().mapTriggerResponseAndBlock(trigger.replace(triggerSettings));
+    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerSettings) {
+        return container.getScripts().blockTriggerResponse(trigger.replace(triggerSettings));
     }
 
     /**
      * Delete cosmos trigger.
      *
-     * @return the cosmos sync response
-     * @throws CosmosClientException the cosmos client exception
+     * @return the cosmos response
      */
-    public CosmosTriggerResponse delete() throws CosmosClientException {
-        return container.getScripts().mapTriggerResponseAndBlock(trigger.delete());
+    public CosmosTriggerResponse delete() {
+        return container.getScripts().blockTriggerResponse(trigger.delete());
     }
 
 }

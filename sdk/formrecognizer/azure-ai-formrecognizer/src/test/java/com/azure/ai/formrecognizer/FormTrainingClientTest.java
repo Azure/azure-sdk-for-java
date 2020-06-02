@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -37,7 +38,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
 
     private FormTrainingClient getFormTrainingClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
-        FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -46,7 +47,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK)
             ? new AzureKeyCredential(INVALID_KEY) : new AzureKeyCredential(getApiKey());
         builder.credential(credential);
-        return builder.buildClient().getFormTrainingClient();
+        return builder.buildClient();
     }
 
     /**
@@ -177,11 +178,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
-        for (CustomFormModelInfo modelInfo : client.getModelInfos()) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
-                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        for (CustomFormModelInfo modelInfo : client.listCustomModels()) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
+                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 
@@ -190,11 +191,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getModelInfosWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void listCustomModelsWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
-        for (CustomFormModelInfo modelInfo : client.getModelInfos(Context.NONE)) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
-                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        for (CustomFormModelInfo modelInfo : client.listCustomModels(Context.NONE)) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
+                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 

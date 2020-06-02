@@ -288,7 +288,7 @@ public final class ManageApplicationGateway {
                     .toBackendIPAddress(ipAddresses[0][1])
                     .toBackendIPAddress(ipAddresses[0][2])
                     .toBackendIPAddress(ipAddresses[0][3])
-                    .withHostName("www.contoso.com")
+                    .withHostname("www.contoso.com")
                     .withCookieBasedAffinity()
                     .attach()
                     .apply();
@@ -328,7 +328,7 @@ public final class ManageApplicationGateway {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

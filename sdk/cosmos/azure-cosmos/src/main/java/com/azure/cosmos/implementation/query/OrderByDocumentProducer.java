@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -33,7 +33,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             OrderbyRowComparer<T> consumeComparer,
             IDocumentQueryClient client,
             String collectionResourceId,
-            FeedOptions feedOptions,
+            QueryRequestOptions queryRequestOptions,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
@@ -45,7 +45,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             String initialContinuationToken,
             int top,
             Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
-        super(client, collectionResourceId, feedOptions, createRequestFunc, executeRequestFunc, targetRange, collectionLink,
+        super(client, collectionResourceId, queryRequestOptions, createRequestFunc, executeRequestFunc, targetRange, collectionLink,
                 createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize, initialContinuationToken, top);
         this.consumeComparer = consumeComparer;
         this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
@@ -77,7 +77,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
                 consumeComparer,
                 client,
                 collectionRid,
-                feedOptions,
+                queryRequestOptions,
                 createRequestFunc,
                 executeRequestFuncWithRetries,
                 targetRange,

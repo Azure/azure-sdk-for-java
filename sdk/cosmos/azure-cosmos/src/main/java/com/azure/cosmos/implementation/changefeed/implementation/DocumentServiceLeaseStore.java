@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -52,14 +50,14 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties doc = new CosmosItemProperties();
         doc.setId(markerDocId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
+        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
             .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
                         logger.info("Lease synchronization document not found");
                         return Mono.just(false);
@@ -79,8 +77,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map( item -> true)
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
                         logger.info("Lease synchronization document was created by a different instance");
                         return Mono.just(true);
@@ -108,8 +106,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
                 }
             })
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
                         logger.info("Lease synchronization document was acquired by a different instance");
                         return Mono.just(false);
@@ -126,17 +124,14 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties doc = new CosmosItemProperties();
         doc.setId(lockId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
+        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
         if (requestOptions == null) {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        AccessCondition accessCondition = new AccessCondition();
-        accessCondition.setType(AccessConditionType.IF_MATCH);
-        accessCondition.setCondition(this.lockETag);
-        requestOptions.setAccessCondition(accessCondition);
+        requestOptions.setIfMatchETag(this.lockETag);
 
         return this.client.deleteItem(lockId, new PartitionKey(lockId), requestOptions)
             .map(documentResourceResponse -> {
@@ -148,8 +143,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
                 }
             })
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
                         logger.info("Lease synchronization document was acquired by a different instance");
                         return Mono.just(false);
