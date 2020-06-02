@@ -8,42 +8,42 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.implementation;
 
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageOptionalParameter;
+import retrofit2.Retrofit;
+import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AreaOfInterestResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.BatchReadFileHeaders;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.BatchReadFileInStreamHeaders;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescriptionExclude;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.Details;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageAnalysis;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageDescription;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageUrl;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ListModelsResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrDetectionLanguage;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrLanguages;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadHeaders;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadInStreamHeaders;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadOperationResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextHeaders;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamHeaders;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
@@ -51,25 +51,24 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
-import rx.Observable;
+import retrofit2.Response;
 import rx.functions.Func1;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -97,29 +96,9 @@ public class ComputerVisionImpl implements ComputerVision {
      * used by Retrofit to perform actually REST calls.
      */
     interface ComputerVisionService {
-        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision batchReadFileInStream" })
-        @POST("read/core/asyncBatchAnalyze")
-        Observable<Response<ResponseBody>> batchReadFileInStream(@Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision recognizeTextInStream" })
-        @POST("recognizeText")
-        Observable<Response<ResponseBody>> recognizeTextInStream(@Body RequestBody image, @Query("mode") TextRecognitionMode mode, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision getReadOperationResult" })
-        @GET("read/operations/{operationId}")
-        Observable<Response<ResponseBody>> getReadOperationResult(@Path("operationId") String operationId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision batchReadFile" })
-        @POST("read/core/asyncBatchAnalyze")
-        Observable<Response<ResponseBody>> batchReadFile(@Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision getTextOperationResult" })
-        @GET("textOperations/{operationId}")
-        Observable<Response<ResponseBody>> getTextOperationResult(@Path("operationId") String operationId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision recognizeText" })
-        @POST("recognizeText")
-        Observable<Response<ResponseBody>> recognizeText(@Query("mode") TextRecognitionMode mode, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision readInStream" })
+        @POST("read/analyze")
+        Observable<Response<ResponseBody>> readInStream(@Query("language") OcrDetectionLanguage language, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision tagImageInStream" })
         @POST("tag")
@@ -152,7 +131,15 @@ public class ComputerVisionImpl implements ComputerVision {
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision analyzeImageInStream" })
         @POST("analyze")
-        Observable<Response<ResponseBody>> analyzeImageInStream(@Query("visualFeatures") String visualFeatures, @Query("details") String details1, @Query("language") String language, @Query("descriptionExclude") String descriptionExclude1, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> analyzeImageInStream(@Query("visualFeatures") String visualFeatures, @Query("details") String details, @Query("language") String language, @Query("descriptionExclude") String descriptionExclude1, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision getReadResult" })
+        @GET("read/analyzeResults/{operationId}")
+        Observable<Response<ResponseBody>> getReadResult(@Path("operationId") UUID operationId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision read" })
+        @POST("read/analyze")
+        Observable<Response<ResponseBody>> read(@Query("language") OcrDetectionLanguage language, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision getAreaOfInterest" })
         @POST("areaOfInterest")
@@ -189,58 +176,83 @@ public class ComputerVisionImpl implements ComputerVision {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision analyzeImage" })
         @POST("analyze")
-        Observable<Response<ResponseBody>> analyzeImage(@Query("visualFeatures") String visualFeatures, @Query("details") String details1, @Query("language") String language, @Query("descriptionExclude") String descriptionExclude1, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> analyzeImage(@Query("visualFeatures") String visualFeatures, @Query("details") String details, @Query("language") String language, @Query("descriptionExclude") String descriptionExclude1, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
+
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
      *
      * @param image An image stream.
+     * @param readInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void batchReadFileInStream(byte[] image) {
-        batchReadFileInStreamWithServiceResponseAsync(image).toBlocking().single().body();
+    public void readInStream(byte[] image, ReadInStreamOptionalParameter readInStreamOptionalParameter) {
+        readInStreamWithServiceResponseAsync(image, readInStreamOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
      *
      * @param image An image stream.
+     * @param readInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> batchReadFileInStreamAsync(byte[] image, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(batchReadFileInStreamWithServiceResponseAsync(image), serviceCallback);
+    public ServiceFuture<Void> readInStreamAsync(byte[] image, ReadInStreamOptionalParameter readInStreamOptionalParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(readInStreamWithServiceResponseAsync(image, readInStreamOptionalParameter), serviceCallback);
     }
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
      *
      * @param image An image stream.
+     * @param readInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> batchReadFileInStreamAsync(byte[] image) {
-        return batchReadFileInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>, Void>() {
+    public Observable<Void> readInStreamAsync(byte[] image, ReadInStreamOptionalParameter readInStreamOptionalParameter) {
+        return readInStreamWithServiceResponseAsync(image, readInStreamOptionalParameter).map(new Func1<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>, Void>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders> response) {
+            public Void call(ServiceResponseWithHeaders<Void, ReadInStreamHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
      *
      * @param image An image stream.
+     * @param readInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>> batchReadFileInStreamWithServiceResponseAsync(byte[] image) {
+    public Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>> readInStreamWithServiceResponseAsync(byte[] image, ReadInStreamOptionalParameter readInStreamOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (image == null) {
+            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
+        }
+        final OcrDetectionLanguage language = readInStreamOptionalParameter != null ? readInStreamOptionalParameter.language() : null;
+
+        return readInStreamWithServiceResponseAsync(image, language);
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. In future versions, when language parameter is not passed, language detection will be used to determine the language. However, in the current version, missing language parameter will cause English to be used. To ensure that your document is always parsed in English without the use of language detection in the future, pass “en” in the language parameter. Possible values include: 'en', 'es', 'fr', 'de', 'it', 'nl', 'pt'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>> readInStreamWithServiceResponseAsync(byte[] image, OcrDetectionLanguage language) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -249,12 +261,12 @@ public class ComputerVisionImpl implements ComputerVision {
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.batchReadFileInStream(imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>>>() {
+        return service.readInStream(language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders> clientResponse = batchReadFileInStreamDelegate(response);
+                        ServiceResponseWithHeaders<Void, ReadInStreamHeaders> clientResponse = readInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -263,412 +275,60 @@ public class ComputerVisionImpl implements ComputerVision {
             });
     }
 
-    private ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders> batchReadFileInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+    private ServiceResponseWithHeaders<Void, ReadInStreamHeaders> readInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
-                .buildWithHeaders(response, BatchReadFileInStreamHeaders.class);
+                .buildWithHeaders(response, ReadInStreamHeaders.class);
+    }
+
+    @Override
+    public ComputerVisionReadInStreamParameters readInStream() {
+        return new ComputerVisionReadInStreamParameters(this);
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * Internal class implementing ComputerVisionReadInStreamDefinition.
      */
-    public void recognizeTextInStream(byte[] image, TextRecognitionMode mode) {
-        recognizeTextInStreamWithServiceResponseAsync(image, mode).toBlocking().single().body();
-    }
+    class ComputerVisionReadInStreamParameters implements ComputerVisionReadInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private OcrDetectionLanguage language;
 
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> recognizeTextInStreamAsync(byte[] image, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(recognizeTextInStreamWithServiceResponseAsync(image, mode), serviceCallback);
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> recognizeTextInStreamAsync(byte[] image, TextRecognitionMode mode) {
-        return recognizeTextInStreamWithServiceResponseAsync(image, mode).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> recognizeTextInStreamWithServiceResponseAsync(byte[] image, TextRecognitionMode mode) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionReadInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
         }
-        if (image == null) {
-            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
+
+        @Override
+        public ComputerVisionReadInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
         }
-        if (mode == null) {
-            throw new IllegalArgumentException("Parameter mode is required and cannot be null.");
+
+        @Override
+        public ComputerVisionReadInStreamParameters withLanguage(OcrDetectionLanguage language) {
+            this.language = language;
+            return this;
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.recognizeTextInStream(imageConverted, mode, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>>>() {
+
+        @Override
+        public void execute() {
+        readInStreamWithServiceResponseAsync(image, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return readInStreamWithServiceResponseAsync(image, language).map(new Func1<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>, Void>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> clientResponse = recognizeTextInStreamDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Void call(ServiceResponseWithHeaders<Void, ReadInStreamHeaders> response) {
+                    return response.body();
                 }
             });
-    }
-
-    private ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> recognizeTextInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ComputerVisionErrorException.class)
-                .buildWithHeaders(response, RecognizeTextInStreamHeaders.class);
-    }
-
-    /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
-     *
-     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ReadOperationResult object if successful.
-     */
-    public ReadOperationResult getReadOperationResult(String operationId) {
-        return getReadOperationResultWithServiceResponseAsync(operationId).toBlocking().single().body();
-    }
-
-    /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
-     *
-     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ReadOperationResult> getReadOperationResultAsync(String operationId, final ServiceCallback<ReadOperationResult> serviceCallback) {
-        return ServiceFuture.fromResponse(getReadOperationResultWithServiceResponseAsync(operationId), serviceCallback);
-    }
-
-    /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
-     *
-     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ReadOperationResult object
-     */
-    public Observable<ReadOperationResult> getReadOperationResultAsync(String operationId) {
-        return getReadOperationResultWithServiceResponseAsync(operationId).map(new Func1<ServiceResponse<ReadOperationResult>, ReadOperationResult>() {
-            @Override
-            public ReadOperationResult call(ServiceResponse<ReadOperationResult> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
-     *
-     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ReadOperationResult object
-     */
-    public Observable<ServiceResponse<ReadOperationResult>> getReadOperationResultWithServiceResponseAsync(String operationId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (operationId == null) {
-            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getReadOperationResult(operationId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ReadOperationResult>>>() {
-                @Override
-                public Observable<ServiceResponse<ReadOperationResult>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ReadOperationResult> clientResponse = getReadOperationResultDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ReadOperationResult> getReadOperationResultDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ReadOperationResult, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ReadOperationResult>() { }.getType())
-                .registerError(ComputerVisionErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void batchReadFile(String url) {
-        batchReadFileWithServiceResponseAsync(url).toBlocking().single().body();
-    }
-
-    /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> batchReadFileAsync(String url, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(batchReadFileWithServiceResponseAsync(url), serviceCallback);
-    }
-
-    /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> batchReadFileAsync(String url) {
-        return batchReadFileWithServiceResponseAsync(url).map(new Func1<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, BatchReadFileHeaders> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>> batchReadFileWithServiceResponseAsync(String url) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (url == null) {
-            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
-        }
-        ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.batchReadFile(this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, BatchReadFileHeaders> clientResponse = batchReadFileDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponseWithHeaders<Void, BatchReadFileHeaders> batchReadFileDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ComputerVisionErrorException.class)
-                .buildWithHeaders(response, BatchReadFileHeaders.class);
-    }
-
-    /**
-     * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
-     *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TextOperationResult object if successful.
-     */
-    public TextOperationResult getTextOperationResult(String operationId) {
-        return getTextOperationResultWithServiceResponseAsync(operationId).toBlocking().single().body();
-    }
-
-    /**
-     * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
-     *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<TextOperationResult> getTextOperationResultAsync(String operationId, final ServiceCallback<TextOperationResult> serviceCallback) {
-        return ServiceFuture.fromResponse(getTextOperationResultWithServiceResponseAsync(operationId), serviceCallback);
-    }
-
-    /**
-     * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
-     *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TextOperationResult object
-     */
-    public Observable<TextOperationResult> getTextOperationResultAsync(String operationId) {
-        return getTextOperationResultWithServiceResponseAsync(operationId).map(new Func1<ServiceResponse<TextOperationResult>, TextOperationResult>() {
-            @Override
-            public TextOperationResult call(ServiceResponse<TextOperationResult> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
-     *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TextOperationResult object
-     */
-    public Observable<ServiceResponse<TextOperationResult>> getTextOperationResultWithServiceResponseAsync(String operationId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (operationId == null) {
-            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getTextOperationResult(operationId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TextOperationResult>>>() {
-                @Override
-                public Observable<ServiceResponse<TextOperationResult>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TextOperationResult> clientResponse = getTextOperationResultDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<TextOperationResult> getTextOperationResultDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TextOperationResult, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TextOperationResult>() { }.getType())
-                .registerError(ComputerVisionErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void recognizeText(String url, TextRecognitionMode mode) {
-        recognizeTextWithServiceResponseAsync(url, mode).toBlocking().single().body();
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> recognizeTextAsync(String url, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(recognizeTextWithServiceResponseAsync(url, mode), serviceCallback);
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> recognizeTextAsync(String url, TextRecognitionMode mode) {
-        return recognizeTextWithServiceResponseAsync(url, mode).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeaders> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
-     *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> recognizeTextWithServiceResponseAsync(String url, TextRecognitionMode mode) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (mode == null) {
-            throw new IllegalArgumentException("Parameter mode is required and cannot be null.");
-        }
-        if (url == null) {
-            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
-        }
-        ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.recognizeText(mode, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, RecognizeTextHeaders> clientResponse = recognizeTextDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponseWithHeaders<Void, RecognizeTextHeaders> recognizeTextDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ComputerVisionErrorException.class)
-                .buildWithHeaders(response, RecognizeTextHeaders.class);
     }
 
 
@@ -1921,6 +1581,235 @@ public class ComputerVisionImpl implements ComputerVision {
             return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language, descriptionExclude).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
                 @Override
                 public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Read interface.
+     *
+     * @param operationId Id of read operation returned in the response of the 'Read' interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ReadOperationResult object if successful.
+     */
+    public ReadOperationResult getReadResult(UUID operationId) {
+        return getReadResultWithServiceResponseAsync(operationId).toBlocking().single().body();
+    }
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Read interface.
+     *
+     * @param operationId Id of read operation returned in the response of the 'Read' interface.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ReadOperationResult> getReadResultAsync(UUID operationId, final ServiceCallback<ReadOperationResult> serviceCallback) {
+        return ServiceFuture.fromResponse(getReadResultWithServiceResponseAsync(operationId), serviceCallback);
+    }
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Read interface.
+     *
+     * @param operationId Id of read operation returned in the response of the 'Read' interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ReadOperationResult object
+     */
+    public Observable<ReadOperationResult> getReadResultAsync(UUID operationId) {
+        return getReadResultWithServiceResponseAsync(operationId).map(new Func1<ServiceResponse<ReadOperationResult>, ReadOperationResult>() {
+            @Override
+            public ReadOperationResult call(ServiceResponse<ReadOperationResult> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Read interface.
+     *
+     * @param operationId Id of read operation returned in the response of the 'Read' interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ReadOperationResult object
+     */
+    public Observable<ServiceResponse<ReadOperationResult>> getReadResultWithServiceResponseAsync(UUID operationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (operationId == null) {
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getReadResult(operationId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ReadOperationResult>>>() {
+                @Override
+                public Observable<ServiceResponse<ReadOperationResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ReadOperationResult> clientResponse = getReadResultDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ReadOperationResult> getReadResultDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ReadOperationResult, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ReadOperationResult>() { }.getType())
+                .registerError(ComputerVisionErrorException.class)
+                .build(response);
+    }
+
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param readOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void read(String url, ReadOptionalParameter readOptionalParameter) {
+        readWithServiceResponseAsync(url, readOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param readOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> readAsync(String url, ReadOptionalParameter readOptionalParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(readWithServiceResponseAsync(url, readOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param readOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> readAsync(String url, ReadOptionalParameter readOptionalParameter) {
+        return readWithServiceResponseAsync(url, readOptionalParameter).map(new Func1<ServiceResponseWithHeaders<Void, ReadHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ReadHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param readOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ReadHeaders>> readWithServiceResponseAsync(String url, ReadOptionalParameter readOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        final OcrDetectionLanguage language = readOptionalParameter != null ? readOptionalParameter.language() : null;
+
+        return readWithServiceResponseAsync(url, language);
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. In future versions, when language parameter is not passed, language detection will be used to determine the language. However, in the current version, missing language parameter will cause English to be used. To ensure that your document is always parsed in English without the use of language detection in the future, pass “en” in the language parameter. Possible values include: 'en', 'es', 'fr', 'de', 'it', 'nl', 'pt'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ReadHeaders>> readWithServiceResponseAsync(String url, OcrDetectionLanguage language) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.read(language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ReadHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ReadHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ReadHeaders> clientResponse = readDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<Void, ReadHeaders> readDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ComputerVisionErrorException.class)
+                .buildWithHeaders(response, ReadHeaders.class);
+    }
+
+    @Override
+    public ComputerVisionReadParameters read() {
+        return new ComputerVisionReadParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionReadDefinition.
+     */
+    class ComputerVisionReadParameters implements ComputerVisionReadDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private OcrDetectionLanguage language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionReadParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionReadParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionReadParameters withLanguage(OcrDetectionLanguage language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        readWithServiceResponseAsync(url, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return readWithServiceResponseAsync(url, language).map(new Func1<ServiceResponseWithHeaders<Void, ReadHeaders>, Void>() {
+                @Override
+                public Void call(ServiceResponseWithHeaders<Void, ReadHeaders> response) {
                     return response.body();
                 }
             });

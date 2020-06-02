@@ -8,9 +8,9 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -28,6 +28,7 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.models.ThroughputProperties;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -86,10 +87,10 @@ public class CollectionCrudTest extends TestSuiteBase {
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database
+        Mono<CosmosContainerResponse> createObservable = database
                 .createContainer(collectionDefinition);
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collectionDefinition.getId()).build();
 
         validateSuccess(createObservable, validator);
@@ -103,10 +104,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         Integer defaultTimeToLive = 300;
         collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database
+        Mono<CosmosContainerResponse> createObservable = database
             .createContainer(collectionDefinition);
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .withId(collectionDefinition.getId()).withDefaultTimeToLive(defaultTimeToLive).build();
 
         validateSuccess(createObservable, validator);
@@ -178,10 +179,10 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         collection.setIndexingPolicy(indexingPolicy);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database
+        Mono<CosmosContainerResponse> createObservable = database
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collection.getId())
                 .withCompositeIndexes(compositeIndexes)
                 .withSpatialIndexes(spatialIndexes)
@@ -195,12 +196,12 @@ public class CollectionCrudTest extends TestSuiteBase {
     public void readCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
 
-        Mono<CosmosAsyncContainerResponse> readObservable = collection.read();
+        Mono<CosmosContainerResponse> readObservable = collection.read();
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collection.getId()).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
@@ -213,12 +214,12 @@ public class CollectionCrudTest extends TestSuiteBase {
         Integer defaultTimeToLive = 200;
         collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
 
-        Mono<CosmosAsyncContainerResponse> readObservable = collection.read();
+        Mono<CosmosContainerResponse> readObservable = collection.read();
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .withId(collection.getId()).withDefaultTimeToLive(defaultTimeToLive).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
@@ -227,7 +228,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection_DoesntExist(String collectionName) throws Exception {
 
-        Mono<CosmosAsyncContainerResponse> readObservable = database
+        Mono<CosmosContainerResponse> readObservable = database
                 .getContainer("I don't exist").read();
 
         FailureValidator validator = new FailureValidator.Builder()
@@ -241,12 +242,12 @@ public class CollectionCrudTest extends TestSuiteBase {
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
 
-        Mono<CosmosAsyncContainerResponse> deleteObservable = collection.delete();
+        Mono<CosmosContainerResponse> deleteObservable = collection.delete();
 
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .nullResource().build();
         validateSuccess(deleteObservable, validator);
     }
@@ -255,8 +256,8 @@ public class CollectionCrudTest extends TestSuiteBase {
     public void replaceCollection(String collectionName) throws InterruptedException  {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
         CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
@@ -265,10 +266,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingMode);
-        Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
+        Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                         .indexingMode(IndexingMode.LAZY).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
@@ -280,8 +281,8 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         Integer defaultTimeToLive = 120;
         collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
         CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
@@ -292,10 +293,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         indexingMode.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingMode);
         collectionSettings.setDefaultTimeToLiveInSeconds(defaultTimeToLive * 2);
-        Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
+        Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
-        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .indexingMode(IndexingMode.LAZY).withDefaultTimeToLive(defaultTimeToLive * 2).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
@@ -329,15 +330,15 @@ public class CollectionCrudTest extends TestSuiteBase {
             BridgeInternal.setProperty(document, "mypk", "mypkValue");
             createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-            CosmosAsyncItemResponse<CosmosItemProperties> readDocumentResponse =
+            CosmosItemResponse<CosmosItemProperties> readDocumentResponse =
                 collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
-            CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
+            CosmosItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
+            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
 
             //  DELETE the existing collection
             deleteCollection(client2, dbId, collectionId);
@@ -356,8 +357,8 @@ public class CollectionCrudTest extends TestSuiteBase {
                                                  new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getDuration());
 
             CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
@@ -374,19 +375,25 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void replaceProvisionedThroughput(){
         final String databaseName = CosmosDatabaseForTest.generateId();
-        CosmosAsyncDatabase database = client.createDatabase(databaseName)
-                                           .block()
-                                           .getDatabase();
+        client.createDatabase(databaseName).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
+
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
-                                                                  new CosmosContainerRequestOptions())
-                                             .block()
-                                             .getContainer();
-        Integer throughput = container.readProvisionedThroughput().block();
+        database.createContainer(
+            containerProperties,
+            ThroughputProperties.createManualThroughput(1000),
+            new CosmosContainerRequestOptions()).block();
+
+        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
+        Integer throughput = container.readThroughput().block()
+            .getProperties().getManualThroughput();
 
         assertThat(throughput).isEqualTo(1000);
 
-        throughput = container.replaceProvisionedThroughput(2000).block();
+        throughput = container.replaceThroughput(ThroughputProperties.createManualThroughput(2000))
+            .block()
+            .getProperties()
+            .getManualThroughput();
         assertThat(throughput).isEqualTo(2000);
     }
 

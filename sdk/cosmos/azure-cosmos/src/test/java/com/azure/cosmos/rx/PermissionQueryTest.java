@@ -6,14 +6,13 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.AfterClass;
@@ -59,7 +58,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator.Builder<CosmosPermissionProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosPermissionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -95,9 +94,9 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosPermissionProperties>()
-                .exactlyContainsInAnyOrder(createdPermissions
+                .exactlyContainsIdsInAnyOrder(createdPermissions
                         .stream()
-                        .map(d -> d.getResourceId())
+                        .map(CosmosPermissionProperties::getId)
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosPermissionProperties>()
@@ -113,7 +112,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         CosmosPagedFlux<CosmosPermissionProperties> queryObservable = createdUser.queryPermissions(query);
 
         FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
+                .instanceOf(CosmosException.class)
                 .statusCode(400)
                 .notNullActivityId()
                 .build();

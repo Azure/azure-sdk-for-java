@@ -26,7 +26,7 @@ public class TestExpressRouteCircuit {
     public class Basic extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().getSdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =
@@ -78,7 +78,7 @@ public class TestExpressRouteCircuit {
     public class ExpressRouteCircuitPeering extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().getSdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =

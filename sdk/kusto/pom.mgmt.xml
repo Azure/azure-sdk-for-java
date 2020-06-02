@@ -13,5 +13,6 @@
     <module>mgmt-v2019_05_15</module>
     <module>mgmt-v2019_09_07</module>
     <module>mgmt-v2019_11_09</module>
+    <module>mgmt-v2020_02_15</module>
   </modules>
 </project>

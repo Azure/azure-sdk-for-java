@@ -105,7 +105,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerBackendImpl ensureUniqueBackend() {
-        String name = this.manager().getSdkContext().randomResourceName("backend", 20);
+        String name = this.manager().sdkContext().randomResourceName("backend", 20);
         LoadBalancerBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
@@ -126,7 +126,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerFrontendImpl ensureUniqueFrontend() {
-        String name = this.manager().getSdkContext().randomResourceName("frontend", 20);
+        String name = this.manager().sdkContext().randomResourceName("frontend", 20);
         LoadBalancerFrontendImpl frontend = this.defineFrontend(name);
         frontend.attach();
         return frontend;

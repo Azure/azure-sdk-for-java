@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchField;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

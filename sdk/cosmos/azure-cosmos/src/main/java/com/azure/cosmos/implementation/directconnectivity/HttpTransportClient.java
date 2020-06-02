@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
@@ -183,12 +183,10 @@ public class HttpTransportClient extends TransportClient {
                             // TODO: a possible solution for this is to add the ability to send a request to the server
                             // to check if the previous request was received or not and act accordingly.
                             ServiceUnavailableException serviceUnavailableException = new ServiceUnavailableException(
-                                    String.format(
-                                            RMResources.ExceptionMessage,
-                                            RMResources.ServiceUnavailable),
-                                    exception,
-                                    null,
-                                    physicalAddress.toString());
+                                exception.getMessage(),
+                                exception,
+                                null,
+                                physicalAddress.toString());
                             serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
                             serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH, "1");
                             return Mono.error(serviceUnavailableException);
@@ -724,7 +722,7 @@ public class HttpTransportClient extends TransportClient {
                         responsePartitionKeyRangeId = Lists.firstOrDefault(partitionKeyRangeIdValues, null);
                     }
 
-                    CosmosClientException exception;
+                    CosmosException exception;
 
                     switch (statusCode) {
                         case HttpConstants.StatusCodes.UNAUTHORIZED:
@@ -901,12 +899,7 @@ public class HttpTransportClient extends TransportClient {
                             break;
 
                         case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE:
-                            exception = new ServiceUnavailableException(
-                                    String.format(
-                                            RMResources.ExceptionMessage,
-                                            Strings.isNullOrEmpty(errorMessage) ? RMResources.ServiceUnavailable : errorMessage),
-                                    response.headers(),
-                                    request.uri());
+                            exception = new ServiceUnavailableException(errorMessage, response.headers(), request.uri());
                             break;
 
                         case HttpConstants.StatusCodes.REQUEST_TIMEOUT:

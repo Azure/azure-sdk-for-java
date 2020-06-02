@@ -163,7 +163,7 @@ public class VirtualMachineScaleSetImpl
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.namer = this.manager().getSdkContext().getResourceNamerFactory().createResourceNamer(this.name());
+        this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.name());
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         this.virtualMachineScaleSetMsiHandler = new VirtualMachineScaleSetMsiHandler(rbacManager, this);
         this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);

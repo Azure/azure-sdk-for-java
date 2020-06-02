@@ -45,7 +45,7 @@
     <Field name="defaultEncryptionAlgorithm"/>
     <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
-  
+
   <!-- Defines native api, doesn't follow java style.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.WindowsCredentialApi(.+)"/>
@@ -53,25 +53,25 @@
       UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
       NM_FIELD_NAMING_CONVENTION"/>
   </Match>
-  
+
   <!-- Exception needs to be caught here.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.VisualStudioCacheAccessor"/>
       <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
-  
+
   <!-- Exception needs to be caught here.-->
   <Match>
       <Class name="~com\.azure\.identity\.IntelliJCredential"/>
       <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
-  
+
   <!-- Accesses native api, doesn't follow java style.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.LinuxKeyRingAccessor(.+)"/>
       <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
-  
+
   <!-- Accesses native api, doesn't follow java style.-->
   <Match>
       <Class name="com.azure.identity.implementation.WindowsCredentialAccessor"/>
@@ -711,26 +711,6 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-
-  <!-- Azure search has generated code mixed with hand-written in these packages -->
-  <Match>
-    <And>
-      <Package name="~com\.azure\.search\.documents\.models"/>
-      <Not>
-        <Or>
-          <!-- Hand-written classes should be specified here to be checked  -->
-          <Class name="com.azure.search.documents.models.CoordinateSystem"/>
-          <Class name="com.azure.search.documents.models.GeoPoint"/>
-          <Class name="com.azure.search.documents.models.IndexBatch"/>
-          <Class name="com.azure.search.documents.models.ValueFacetResult"/>
-          <Class name="com.azure.search.documents.models.RangeFacetResult"/>
-          <Class name="com.azure.search.documents.models.IndexBatchException"/>
-          <Class name="com.azure.search.documents.models.ScoringParameter"/>
-        </Or>
-      </Not>
-    </And>
-  </Match>
-
   <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
@@ -825,7 +805,7 @@
   <Match>
     <Or>
       <Class name="com.azure.cosmos.ClientSideRequestStatistics"/>
-      <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+      <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     </Or>
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
   </Match>
@@ -904,40 +884,6 @@
     <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
   </Match>
 
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosContainerProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncContainerResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosDatabaseProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncDatabaseResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosPermissionProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncPermissionResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosStoredProcedureProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosUserProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncUserResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
 
   <!-- Extra null check is for assertion -->
   <Match>
@@ -957,7 +903,7 @@
    Issue: https://github.com/Azure/azure-sdk-for-java/issues/9054
    -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     <Method name="getItem"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
@@ -1208,35 +1154,35 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9054 -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     <Field name="item"/>
     <Bug pattern="DC_DOUBLECHECK"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="cosmosError"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
-    <Field name="cosmosResponseDiagnostics"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="cosmosDiagnostics"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestTimeline"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestUri"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
@@ -1610,13 +1556,6 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncConflictResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
-  <Match>
     <Class name="com.azure.cosmos.models.SqlParameterList"/>
     <Method name="listIterator"/>
     <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
@@ -1897,6 +1836,14 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <!-- Serializing a null value should return null to allow client to handle null cases
+    consistently instead of injecting null payload behavior from the payload. -->
+  <Match>
+    <Class name="com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer"/>
+    <Method name="serialize"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
   <!-- Exclude spotbug from non-shipping modules -->
   <Match>
     <Or>
@@ -2010,7 +1957,7 @@
     <Package name="~com\.azure\.management(\.[^.]+)*\.samples(\.[^.]+)*"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
-  
+
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
@@ -2022,14 +1969,14 @@
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
-  
-  
+
+
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
       <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
       <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
-  
+
   <!-- These fields use File Reader with default encoding, java 8 doesn't support passing in encoding type. -->
   <Match>
       <Class name="com.azure.identity.implementation.IntelliJCacheAccessor"/>

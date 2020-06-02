@@ -6,11 +6,12 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -70,16 +71,17 @@ public class AggregateQueryTests extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
-        FeedOptions options = new FeedOptions();
-        
-        options.setPopulateQueryMetrics(qmEnabled);
+        QueryRequestOptions options = new QueryRequestOptions();
+
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
+            CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryConfig.query, options,
+                                                                                     JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator = new FeedResponseListValidator.Builder<JsonNode>()
                 .withAggregateValue(queryConfig.expected)
                 .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)
@@ -196,7 +198,7 @@ public class AggregateQueryTests extends TestSuiteBase {
             truncateCollection(createdCollection);
         } catch (Throwable throwable) {
             throwable = Exceptions.unwrap(throwable);
-            if (!(throwable instanceof CosmosClientException)) {
+            if (!(throwable instanceof CosmosException)) {
                 throw new AssertionError(lenientFormat("stopping test due to collection %s truncation failure: ",
                     createdCollection,
                     throwable));

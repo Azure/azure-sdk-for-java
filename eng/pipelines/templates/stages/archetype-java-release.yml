@@ -1,6 +1,9 @@
 parameters:
   Artifacts: []
   ArtifactName: 'not-specified'
+  TargetDocRepoOwner: ''
+  TargetDocRepoName: ''
+  RunIntegrationStage: true
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -13,9 +16,10 @@ stages:
       - deployment: SignPackage
         environment: esrp
         timeoutInMinutes: 20
+        variables:
+          - template: ../variables/globals.yml
         pool:
           vmImage: ubuntu-18.04
-
         strategy:
           runOnce:
             deploy:
@@ -51,6 +55,8 @@ stages:
           - job: VerifyReleaseVersion
             displayName: "Verify release version"
             condition: ne(variables['Skip.VersionVerification'], 'true')
+            variables:
+              - template: ../variables/globals.yml
             pool:
               vmImage: ubuntu-18.04
 
@@ -76,23 +82,20 @@ stages:
             environment: github
             timeoutInMinutes: 5
             dependsOn: VerifyReleaseVersion
-
+            variables:
+              - template: ../variables/globals.yml
             pool:
               vmImage: vs2017-win2016
-
             strategy:
               runOnce:
                 deploy:
                   steps:
                     - checkout: self
-                    - pwsh: |
-                        Get-ChildItem $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                        New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                        Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        Get-ChildItem $(Pipeline.Workspace)/${{artifact.safeName}}
-                      workingDirectory: $(Pipeline.Workspace)
-                      displayName: Stage artifacts
-                      timeoutInMinutes: 5
+                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                      parameters:
+                        SourceFolder: ${{parameters.ArtifactName}}-signed
+                        TargetFolder: ${{artifact.safeName}}
+                        PackageName: ${{artifact.name}}
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
@@ -106,10 +109,10 @@ stages:
               condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
               environment: maven
               dependsOn: TagRepository
-
+              variables:
+                - template: ../variables/globals.yml
               pool:
-                vmImage: windows-2019
-
+                vmImage: vs2017-win2016
               strategy:
                 runOnce:
                   deploy:
@@ -140,27 +143,60 @@ stages:
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
-            - deployment: PublishDocs
-              displayName: Publish Docs to GitHubIO Blob Storage
+            - deployment: PublicDocsMs
+              displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-              environment: githubio
+              environment: github
+              timeoutInMinutes: 5
               dependsOn: PublishPackage
-
-
+              variables:
+                - template: ../variables/globals.yml
               pool:
-                vmImage: windows-2019
-
+                vmImage: vs2017-win2016
               strategy:
                 runOnce:
                   deploy:
                     steps:
                       - checkout: self
-                      - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)
-                          New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                          Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        workingDirectory: $(Pipeline.Workspace)
-                        displayName: Stage artifacts
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
+                      - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
+                        parameters:
+                          ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                          PackageRepository: Maven
+                          ReleaseSha: $(Build.SourceVersion)
+                          RepoId: Azure/azure-sdk-for-java
+                          WorkingDirectory: $(System.DefaultWorkingDirectory)
+                          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                          PRBranchName: 'smoke-test-rdme'
+                          ArtifactName: ${{parameters.ArtifactName}}
+                          Language: 'java'
+                          DocRepoDestinationPath: 'docs-ref-services/' 
+                          
+          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+            - deployment: PublishDocs
+              displayName: Publish Docs to GitHubIO Blob Storage
+              condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+              environment: githubio
+              dependsOn: PublishPackage
+              variables:
+                - template: ../variables/globals.yml
+              pool:
+                vmImage: windows-2019
+              strategy:
+                runOnce:
+                  deploy:
+                    steps:
+                      - checkout: self
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
                         workingDirectory: $(Pipeline.Workspace)
@@ -181,11 +217,10 @@ stages:
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
               environment: github
               dependsOn: PublishPackage
-
-
+              variables:
+                - template: ../variables/globals.yml
               pool:
                 vmImage: windows-2019
-
               strategy:
                 runOnce:
                   deploy:
@@ -214,34 +249,35 @@ stages:
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
 
-  - stage: Integration
-    dependsOn: Signing
-    jobs:
-    - job: PublishPackages
-      condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
-      displayName: Publish package to daily feed
-      pool:
-        vmImage: windows-2019
-      variables:
-        skipComponentGovernanceDetection: true
-      steps:
-      - checkout: self
-        path: azure-sdk-for-java
-      - checkout: azure-sdk-build-tools
-        path: azure-sdk-build-tools
+  - ${{ if (eq(parameters.RunIntegrationStage, 'true'))}}:
+    - stage: Integration
+      dependsOn: Signing
+      jobs:
+      - job: PublishPackages
+        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        displayName: Publish package to daily feed
+        variables:
+          - template: ../variables/globals.yml
+        pool:
+          vmImage: vs2017-win2016
+        steps:
+        - checkout: self
+          path: azure-sdk-for-java
+        - checkout: azure-sdk-build-tools
+          path: azure-sdk-build-tools
 
-      - download: current
-        artifact: ${{parameters.ArtifactName}}-signed
-        timeoutInMinutes: 5
+        - download: current
+          artifact: ${{parameters.ArtifactName}}-signed
+          timeoutInMinutes: 5
 
-      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+        - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
-      - ${{ each artifact in parameters.Artifacts }}:
-        - template: /eng/pipelines/templates/steps/java-publishing.yml
-          parameters:
-            ArtifactID: ${{artifact.name}}
-            GroupID: ${{artifact.groupId}}
-            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-            Target: JavaDevFeed
-            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+        - ${{ each artifact in parameters.Artifacts }}:
+          - template: /eng/pipelines/templates/steps/java-publishing.yml
+            parameters:
+              ArtifactID: ${{artifact.name}}
+              GroupID: ${{artifact.groupId}}
+              ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+              Target: JavaDevFeed
+              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
