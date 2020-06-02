@@ -24,17 +24,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.qpid.proton.Proton;
-//import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
-//import org.apache.qpid.proton.amqp.transaction.Declared;
-//import org.apache.qpid.proton.amqp.transport.DeliveryState;
-import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Record;
@@ -45,8 +39,6 @@ import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-//import org.mockito.ArgumentCaptor;
-//import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -128,52 +120,6 @@ public class ReactorSenderTest {
             .expectNext(1000)
             .verifyComplete();
         verify(sender, times(1)).getRemoteMaxMessageSize();
-    }
-
-    @Test
-    public void testCompleteTransaction() {
-        final String txnId = "1";
-        Declared transactionState = new Declared();
-        transactionState.setTxnId(Binary.create(ByteBuffer.wrap(txnId.getBytes())));
-
-        AmqpTransaction transaction = new AmqpTransaction(ByteBuffer.wrap("1".getBytes()));
-
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
-        ReactorSender spyReactorSender = spy(reactorSender);
-
-        doReturn(Mono.just(transactionState)).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
-
-        spyReactorSender.completeTransaction(transaction, true).subscribe();
-
-        verify(spyReactorSender, times(1)).send(any(byte[].class), anyInt(), anyInt(), isNull());
-    }
-
-    @Test
-    public void testCreateTransaction() {
-        final String txnId = "1";
-        Declared transactionState = new Declared();
-        transactionState.setTxnId(Binary.create(ByteBuffer.wrap(txnId.getBytes())));
-
-        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
-            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
-        ReactorSender spyReactorSender = spy(reactorSender);
-
-        doReturn(Mono.just(transactionState)).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
-
-        AtomicReference<AmqpTransaction> createdTransaction = new AtomicReference<>();
-
-        spyReactorSender.createTransaction()
-            .map(txn -> {
-                createdTransaction.set(txn);
-                return txn;
-            })
-            .subscribe();
-
-        Assertions.assertNotNull(createdTransaction.get(), "Should have got transaction id.");
-        Assertions.assertTrue(new String(createdTransaction.get().getTransactionId().array()).equals(txnId),
-            "Transaction id is not equal.");
-        verify(spyReactorSender, times(1)).send(any(byte[].class), anyInt(), anyInt(), isNull());
     }
 
     /**

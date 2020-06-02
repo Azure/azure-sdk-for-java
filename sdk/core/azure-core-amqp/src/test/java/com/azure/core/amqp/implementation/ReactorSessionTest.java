@@ -45,8 +45,6 @@ public class ReactorSessionTest {
     @Mock
     private Session session;
     @Mock
-    private Session sessionForRetryPolicy;
-    @Mock
     private Reactor reactor;
     @Mock
     private Selectable selectable;
@@ -74,12 +72,11 @@ public class ReactorSessionTest {
         MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
-        this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
-            Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
-
         this.retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
-        this.reactorSessionWithRetryPolicy = new ReactorSession(sessionForRetryPolicy, new SessionHandler(ID, HOST, ENTITY_PATH, dispatcher, Duration.ofSeconds(60)), NAME, reactorProvider, handlerProvider,
+        this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT, retryPolicy);
+
+
     }
 
     @AfterEach
@@ -89,8 +86,6 @@ public class ReactorSessionTest {
         selectable = null;
         event = null;
         cbsNode = null;
-        reactorSessionWithRetryPolicy = null;
-        sessionForRetryPolicy = null;
 
         Mockito.framework().clearInlineMocks();
     }
@@ -101,39 +96,9 @@ public class ReactorSessionTest {
         verify(session, times(1)).open();
 
         Assertions.assertSame(session, reactorSession.session());
+        Assertions.assertSame(retryPolicy, reactorSession.getRetryPolicy());
         Assertions.assertEquals(NAME, reactorSession.getSessionName());
         Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
-    }
-
-   /* @Test
-    public void createTransaction() {
-        String txnId = "1";
-        AmqpTransaction transaction = new AmqpTransaction(ByteBuffer.wrap(txnId.getBytes()));
-        when(sessionForRetryPolicy.getLocalState()).thenReturn(EndpointState.ACTIVE);
-
-        // Assert
-        when(event.getSession()).thenReturn(sessionForRetryPolicy);
-
-        //when(reactorSessionWithRetryPolicy.createTransaction()).thenReturn(Mono.just(transaction));
-        // when(sessionForRetryPolicy.sender(anyString())).thenReturn()
-        StepVerifier.create(reactorSessionWithRetryPolicy.createTransaction())
-            .then(() -> {
-                 handler.onSessionRemoteOpen(event);
-            })
-        .expectNext(transaction)
-        .verifyComplete();
-    }
-    */
-
-    @Test
-    public void verifyConstructorWithRetryPolicy() {
-
-        // Assert
-        verify(sessionForRetryPolicy, times(1)).open();
-        Assertions.assertSame(retryPolicy, reactorSessionWithRetryPolicy.getRetryPolicy());
-        Assertions.assertSame(sessionForRetryPolicy, reactorSessionWithRetryPolicy.session());
-        Assertions.assertEquals(NAME, reactorSessionWithRetryPolicy.getSessionName());
-        Assertions.assertEquals(TIMEOUT, reactorSessionWithRetryPolicy.getOperationTimeout());
     }
 
     @Test

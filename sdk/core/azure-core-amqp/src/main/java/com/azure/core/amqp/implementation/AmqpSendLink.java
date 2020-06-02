@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
@@ -56,6 +57,16 @@ public interface AmqpSendLink extends AmqpLink {
      * message.
      */
     Mono<Void> send(List<Message> messageBatch);
+
+    /**
+     * send the message and return {@link DeliveryState} of this delivery in message broker.
+     *
+     * @param bytes to send to message broker
+     * @param arrayOffset offset of the message.
+     * @param messageFormat to be set on the message.
+     * @return
+     */
+    Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat);
 
     /**
      * Gets the size of the send link. {@link Message Messages} sent on the link cannot exceed the size.

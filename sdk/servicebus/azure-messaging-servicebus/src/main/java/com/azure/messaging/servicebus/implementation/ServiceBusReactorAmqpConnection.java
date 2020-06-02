@@ -216,12 +216,12 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         return getReactorConnection().then(
             Mono.defer(() -> Mono.just(transactionManagers.compute(linkName, (key, current) -> {
                 if (current != null) {
-                    logger.info("A transaction coordinator channel exists already, returning it.");
+                    logger.info("A transaction manager exists already, returning it.");
 
                     return current;
                 }
 
-                logger.info("Creating transaction coordinator channel. linkName: [{}]",
+                logger.info("Creating transaction manager. linkName: [{}]",
                     linkName);
                 return  new TransactionManagerImpl(createSession(linkName), fullyQualifiedNamespace, linkName);
             }))));

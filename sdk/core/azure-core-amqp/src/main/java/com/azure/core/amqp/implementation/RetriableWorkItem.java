@@ -20,33 +20,33 @@ class RetriableWorkItem {
     private final byte[] amqpMessage;
     private final int messageFormat;
     private final int encodedMessageSize;
-    private final AmqpTransaction transactionId;
+    private final AmqpTransaction transaction;
 
     private boolean waitingForAck;
     private Exception lastKnownException;
 
     RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
-                      Duration timeout, AmqpTransaction transactionId) {
+                      Duration timeout, AmqpTransaction transaction) {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
-            false), transactionId);
+            false), transaction);
     }
 
     private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
-        monoSink, TimeoutTracker timeout, AmqpTransaction transactionId) {
+        monoSink, TimeoutTracker timeout, AmqpTransaction transaction) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
         this.monoSink = monoSink;
         this.timeoutTracker = timeout;
-        this.transactionId = transactionId;
+        this.transaction = transaction;
     }
 
     byte[] getMessage() {
         return amqpMessage;
     }
 
-    AmqpTransaction getTransactionId() {
-        return transactionId;
+    AmqpTransaction getTransaction() {
+        return transaction;
     }
 
     TimeoutTracker getTimeoutTracker() {

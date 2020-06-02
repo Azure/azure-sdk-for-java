@@ -16,14 +16,11 @@ import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedLong;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.Accepted;;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
-import org.apache.qpid.proton.amqp.transaction.Declare;
 import org.apache.qpid.proton.amqp.transaction.Declared;
-import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Delivery;
@@ -37,8 +34,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -148,76 +143,6 @@ class ReactorSender implements AmqpSendLink {
                     hasAuthorized.set(false);
                 }, () -> hasAuthorized.set(false)));
         }
-    }
-
-    /**
-     * Completes the transaction. All the work in this transaction will either rollback or committed as one unit of
-     * work.
-     *
-     * @param transaction that needs to be completed.
-     * @param isCommit true for commit and false to rollback this transaction.
-     *
-     * @return a completable {@link Mono} which represent {@link DeliveryState}.
-     */
-    public Mono<Void> completeTransaction(AmqpTransaction transaction, boolean isCommit) {
-        return Mono.fromCallable(() -> {
-            final Message message = Proton.message();
-            Discharge discharge = new Discharge();
-            discharge.setFail(!isCommit);
-            discharge.setTxnId(new Binary(transaction.getTransactionId().array()));
-            message.setBody(new AmqpValue(discharge));
-
-            final int payloadSize = messageSerializer.getSize(message);
-            final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
-
-            final byte[] bytes = new byte[allocationSize];
-
-            int encodedSize = message.encode(bytes, 0, allocationSize);
-            Tuple2<byte[], Integer> tuple = Tuples.of(bytes, encodedSize);
-            return tuple;
-        })
-            .flatMap(tuple2 -> send(tuple2.getT1(), tuple2.getT2(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null))
-            .handle((state, sink) -> {
-                if (!(state instanceof Accepted)) {
-                    logger.error("Transaction [{}] could not be completed, Service Bus status [{}].",
-                        transaction, state.toString());
-                }
-                sink.complete();
-            });
-    }
-
-    /**
-     * Creates the transaction in message broker.
-     *
-     * @return a completable {@link Mono} which represent {@link DeliveryState}.
-     */
-    public Mono<AmqpTransaction> createTransaction() {
-        return Mono.fromCallable(() -> {
-            Message message = Proton.message();
-            Declare declare = new Declare();
-            message.setBody(new AmqpValue(declare));
-            final int payloadSize = messageSerializer.getSize(message);
-            final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
-
-            final byte[] bytes = new byte[allocationSize];
-
-            int encodedSize = message.encode(bytes, 0, allocationSize);
-            Tuple2<byte[], Integer> tuple = Tuples.of(bytes, encodedSize);
-            return tuple;
-        })
-            .flatMap(tuple2 -> send(tuple2.getT1(), tuple2.getT2(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null))
-            .handle((state, sink) -> {
-                if (state instanceof Declared) {
-                    Binary txnId;
-                    Declared declared = (Declared) state;
-                    txnId = declared.getTxnId();
-                    logger.verbose("Created new TX started: {}", txnId);
-                    sink.next(new AmqpTransaction(txnId.asByteBuffer()));
-                } else {
-                    logger.error("Failed to create transaction, message broker status [{}].", state.toString());
-                    sink.complete();
-                }
-            });
     }
 
     @Override
@@ -379,10 +304,15 @@ class ReactorSender implements AmqpSendLink {
         tokenManager.close();
     }
 
-    Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, AmqpTransaction transactionId) {
+    @Override
+    public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat) {
+        return send(bytes, arrayOffset, messageFormat, null);
+    }
+
+    Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, AmqpTransaction transaction) {
         return validateEndpoint()
             .then(Mono.create(sink -> sendWork(new RetriableWorkItem(bytes,
-                arrayOffset, messageFormat, sink, timeout, transactionId)))
+                arrayOffset, messageFormat, sink, timeout, transaction)))
             );
     }
 
@@ -458,10 +388,10 @@ class ReactorSender implements AmqpSendLink {
                 delivery = sender.delivery(deliveryTag.getBytes(UTF_8));
                 delivery.setMessageFormat(workItem.getMessageFormat());
 
-                AmqpTransaction transactionId = workItem.getTransactionId();
-                if (transactionId != null) {
+                AmqpTransaction transaction = workItem.getTransaction();
+                if (transaction != null) {
                     TransactionalState transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    transactionalState.setTxnId(new Binary(transaction.getTransactionId().array()));
                     delivery.disposition(transactionalState);
                 }
                 sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
