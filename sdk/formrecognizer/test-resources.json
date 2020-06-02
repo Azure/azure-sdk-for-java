@@ -5,6 +5,15 @@
         "baseName": {
             "type": "String"
         },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "metadata": {
+                    "description": "The location of the resource. By default, this is the same as the resource group."
+                }
+            }
+        },
         "testApplicationOid": {
             "type": "string",
             "metadata": {
@@ -91,7 +100,7 @@
                 "name": "S0"
             },
             "kind": "FormRecognizer",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "properties": {
                 "customSubDomainName": "[variables('formRecognizerBaseName')]"
             }
@@ -117,6 +126,14 @@
         "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL": {
             "type": "string",
             "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('multiPageTestingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('multiPageTestingDataSasProperties')).serviceSasToken)]"
+        },
+        "FORM_RECOGNIZER_TARGET_RESOURCE_REGION": {
+            "type": "string",
+            "value": "[parameters('location')]"
+        },
+        "FORM_RECOGNIZER_TARGET_RESOURCE_ID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.CognitiveServices/accounts', variables('formRecognizerBaseName'))]"
         }
     }
 }
