@@ -53,10 +53,10 @@ stages:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
+      AdditionalModules:
         - name: azure-cosmos-table
           groupId: com.azure
           safeName: azurecosmostable
-      AdditionalModules:
         - name: azure-cosmos-examples
           groupId: com.azure
         - name: azure-cosmos-benchmark
