@@ -10,9 +10,11 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
@@ -20,7 +22,9 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -484,5 +488,10 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
         return ConsistencyLevel.fromServiceSerializedFormat(consistencyLevel);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosException createServiceUnavailableException(Exception innerException) {
+        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null);
     }
 }
