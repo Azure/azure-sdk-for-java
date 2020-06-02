@@ -131,12 +131,15 @@ public final class GatewayConnectionConfig {
 
     @Override
     public String toString() {
+        String proxyType = proxy != null ? proxy.getType().toString() : null;
+        String proxyAddress = proxy != null ? proxy.getAddress().toString() : null;
+
         return "GatewayConnectionConfig{" +
             "requestTimeout=" + requestTimeout +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
-            ", proxyType=" + proxy.getType() +
-            ", inetSocketProxyAddress=" + proxy.getAddress() +
+            ", proxyType=" + proxyType +
+            ", inetSocketProxyAddress=" + proxyAddress +
             '}';
     }
 }

@@ -1986,10 +1986,5 @@
       </Or>
       <Bug pattern="DM_DEFAULT_ENCODING"/>
   </Match>
-  <Match>
-    <Class name="com.azure.cosmos.com.azure.cosmos.GatewayConnectionConfig"/>
-    <Field name="proxy"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
 
 </FindBugsFilter>
