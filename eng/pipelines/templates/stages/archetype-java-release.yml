@@ -3,6 +3,7 @@ parameters:
   ArtifactName: 'not-specified'
   TargetDocRepoOwner: ''
   TargetDocRepoName: ''
+  RunIntegrationStage: true
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -248,34 +249,35 @@ stages:
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
 
-  - stage: Integration
-    dependsOn: Signing
-    jobs:
-    - job: PublishPackages
-      condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
-      displayName: Publish package to daily feed
-      variables:
-        - template: ../variables/globals.yml
-      pool:
-        vmImage: vs2017-win2016
-      steps:
-      - checkout: self
-        path: azure-sdk-for-java
-      - checkout: azure-sdk-build-tools
-        path: azure-sdk-build-tools
+  - ${{ if (eq(parameters.RunIntegrationStage, 'true'))}}:
+    - stage: Integration
+      dependsOn: Signing
+      jobs:
+      - job: PublishPackages
+        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        displayName: Publish package to daily feed
+        variables:
+          - template: ../variables/globals.yml
+        pool:
+          vmImage: vs2017-win2016
+        steps:
+        - checkout: self
+          path: azure-sdk-for-java
+        - checkout: azure-sdk-build-tools
+          path: azure-sdk-build-tools
 
-      - download: current
-        artifact: ${{parameters.ArtifactName}}-signed
-        timeoutInMinutes: 5
+        - download: current
+          artifact: ${{parameters.ArtifactName}}-signed
+          timeoutInMinutes: 5
 
-      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+        - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
-      - ${{ each artifact in parameters.Artifacts }}:
-        - template: /eng/pipelines/templates/steps/java-publishing.yml
-          parameters:
-            ArtifactID: ${{artifact.name}}
-            GroupID: ${{artifact.groupId}}
-            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-            Target: JavaDevFeed
-            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+        - ${{ each artifact in parameters.Artifacts }}:
+          - template: /eng/pipelines/templates/steps/java-publishing.yml
+            parameters:
+              ArtifactID: ${{artifact.name}}
+              GroupID: ${{artifact.groupId}}
+              ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+              Target: JavaDevFeed
+              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
