@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.eventgrid.v2020_01_01_preview;
 
-import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StorageBlobDeadLetterDestination;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
