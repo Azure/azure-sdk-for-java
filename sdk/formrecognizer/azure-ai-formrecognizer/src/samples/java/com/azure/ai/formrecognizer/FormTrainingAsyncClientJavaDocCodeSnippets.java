@@ -254,7 +254,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                     copyAuthorization.getAccessToken(),
                     copyAuthorization.getExpiresOn(),
                     copyAuthorization.getResourceId(),
-                    copyAuthorization.getRegion()
+                    copyAuthorization.getResourceRegion()
                 ));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string
     }
@@ -275,7 +275,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                 copyAuthorization.getValue().getAccessToken(),
                 copyAuthorization.getValue().getExpiresOn(),
                 copyAuthorization.getValue().getResourceId(),
-                copyAuthorization.getValue().getRegion()
+                copyAuthorization.getValue().getResourceRegion()
             ));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string
     }

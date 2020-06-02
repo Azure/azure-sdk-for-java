@@ -518,7 +518,7 @@ public final class FormTrainingAsyncClient {
                 Objects.requireNonNull(target, "'target' cannot be null.");
                 CopyRequest copyRequest = new CopyRequest()
                     .setTargetResourceId(target.getResourceId())
-                    .setTargetResourceRegion(target.getRegion())
+                    .setTargetResourceRegion(target.getResourceRegion())
                     .setCopyAuthorization(new CopyAuthorizationResult()
                         .setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())

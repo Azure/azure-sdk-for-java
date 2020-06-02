@@ -48,7 +48,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertNotNull(actualResult.getModelId());
         assertNotNull(actualResult.getAccessToken());
         assertNotNull(actualResult.getExpiresOn());
-        assertEquals(expectedResourceRegion, actualResult.getRegion());
+        assertEquals(expectedResourceRegion, actualResult.getResourceRegion());
         assertEquals(expectedResourceId, actualResult.getResourceId());
     }
 

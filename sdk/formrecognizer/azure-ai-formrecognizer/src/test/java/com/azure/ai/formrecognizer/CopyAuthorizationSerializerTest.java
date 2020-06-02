@@ -9,19 +9,19 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CopyAuthorizationSerializerTest {
 
     private static final String MODEL_ID = "97bf97bc-3210-4c84-a0ef-9472dec711a0";
     private static final String ACCESS_TOKEN = "769cd41c-9602-4373-ba38-a2531643e041";
-    private static final String RESOURCE_ID = "77bf97bc-3210-4c84-a0ef-9472dec712a0";
+    private static final String RESOURCE_ID = "77bf97bc-3210-4c84-a0ef-9462dec712a0";
     private static final String REGION = "westus2";
     private static final long EXPIRES_ON = 637258696186131476L;
     private static final String EXPECTED_JSON_STRING = "{\"modelId\":\"97bf97bc-3210-4c84-a0ef-9472dec711a0\","
-        + "\"accessToken\":\"769cd41c-9602-4373-ba38-a2531643e041\",\"expirationDateTimeTicks\":637258696186131476}";
+        + "\"accessToken\":\"769cd41c-9602-4373-ba38-a2531643e041\","
+        + "\"resourceId\":\"77bf97bc-3210-4c84-a0ef-9462dec712a0\",\"resourceRegion\":\"westus2\","
+        + "\"expirationDateTimeTicks\":637258696186131476}";
 
     /**
      * Test for {@link CopyAuthorization#fromJson(String)}.
@@ -34,14 +34,14 @@ public class CopyAuthorizationSerializerTest {
 
         assertTrue(copyAuthorizationString.contains(MODEL_ID));
         assertTrue(copyAuthorizationString.contains(ACCESS_TOKEN));
-        assertFalse(copyAuthorizationString.contains(RESOURCE_ID));
-        assertFalse(copyAuthorizationString.contains(REGION));
+        assertTrue(copyAuthorizationString.contains(RESOURCE_ID));
+        assertTrue(copyAuthorizationString.contains(REGION));
 
         CopyAuthorization generatedCopyAuthorization = CopyAuthorization.fromJson(copyAuthorizationString);
         assertEquals(copyAuthorization.getModelId(), generatedCopyAuthorization.getModelId());
         assertEquals(copyAuthorization.getAccessToken(), generatedCopyAuthorization.getAccessToken());
-        assertNull(generatedCopyAuthorization.getResourceId());
-        assertNull(generatedCopyAuthorization.getRegion());
+        assertEquals(copyAuthorization.getResourceId(), generatedCopyAuthorization.getResourceId());
+        assertEquals(copyAuthorization.getResourceRegion(), generatedCopyAuthorization.getResourceRegion());
         assertEquals(copyAuthorization.getExpiresOn(), generatedCopyAuthorization.getExpiresOn());
     }
 

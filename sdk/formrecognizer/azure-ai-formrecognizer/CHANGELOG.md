@@ -11,7 +11,6 @@
 - Add `pageNumber` property to `FormPage` and `FormTable` model
 - Remove `pageNumber` property from `FormField` model
 - Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
-- Support to copy a custom model from one Form Recognizer resource to another
 - Fix bug in FormRecognizer API's to support multipage document recognition.
 - Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
 - Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`
@@ -20,6 +19,9 @@
 - Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
 - Replace parameters `filePrefix` and `includeSubFolders` with `TrainingFileFilter` model
 - Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
+
+### New Features
+- Support to copy a custom model from one Form Recognizer resource to another
 
 ## 1.0.0-beta.2 (2020-05-06)
 - Fixed Receipt type bug to select the valueString field via fieldValue.

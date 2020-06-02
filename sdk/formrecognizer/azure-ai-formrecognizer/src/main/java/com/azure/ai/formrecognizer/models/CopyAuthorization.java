@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
@@ -37,14 +36,12 @@ public final class CopyAuthorization {
     /*
      * Resource Identifier.
      */
-    @JsonIgnore
     private String resourceId;
 
     /*
      * Region of the resource.
      */
-    @JsonIgnore
-    private String region;
+    private String resourceRegion;
 
     /*
      * The time when the access token expires. The date is represented as the
@@ -59,15 +56,15 @@ public final class CopyAuthorization {
      * @param modelId The model identifier
      * @param accessToken The token used to authorize the request
      * @param resourceId The resource identifier
-     * @param region The region of the resource
+     * @param resourceRegion The region of the resource
      * @param expiresOn The expiry time of the token
      */
     public CopyAuthorization(final String modelId, final String accessToken, final String resourceId,
-        final String region, final long expiresOn) {
+        final String resourceRegion, final long expiresOn) {
         this.modelId = modelId;
         this.accessToken = accessToken;
         this.resourceId = resourceId;
-        this.region = region;
+        this.resourceRegion = resourceRegion;
         this.expiresOn = expiresOn;
     }
 
@@ -114,8 +111,8 @@ public final class CopyAuthorization {
      *
      * @return the {@code resourceRegion} value.
      */
-    public String getRegion() {
-        return region;
+    public String getResourceRegion() {
+        return resourceRegion;
     }
 
     /**
@@ -179,12 +176,12 @@ public final class CopyAuthorization {
     /**
      * Set the region of the resource.
      *
-     * @param region the region value to set.
+     * @param resourceRegion the region value to set.
      *
      * @return the CopyAuthorization object itself.
      */
-    public CopyAuthorization setRegion(final String region) {
-        this.region = region;
+    public CopyAuthorization setResourceRegion(final String resourceRegion) {
+        this.resourceRegion = resourceRegion;
         return this;
     }
 

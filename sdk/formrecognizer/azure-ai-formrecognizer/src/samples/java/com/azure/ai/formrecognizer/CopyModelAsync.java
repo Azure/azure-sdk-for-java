@@ -40,6 +40,7 @@ public class CopyModelAsync {
         // Get authorization to copy the model to target resource
         targetClient.getCopyAuthorization(targetResourceId, targetResourceRegion)
             // Start copy operation from the source client
+            // The Id of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModel(copyModelId, copyAuthorization)
                 .subscribe(copyPoller -> copyPoller.getFinalResult()
                     .subscribe(customFormModelInfo -> {
