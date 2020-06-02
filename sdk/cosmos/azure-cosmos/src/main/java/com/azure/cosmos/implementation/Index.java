@@ -1,19 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.IndexKind;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents the index of a container in the Azure Cosmos DB database service.
  */
-public abstract class Index {
-    JsonSerializable jsonSerializable;
+public abstract class Index extends JsonSerializable {
 
     /**
      * Constructor.
@@ -21,7 +17,7 @@ public abstract class Index {
      * @param indexKind the kind of the index
      */
     Index(IndexKind indexKind) {
-        this.jsonSerializable = new JsonSerializable();
+        super();
         this.setKind(indexKind);
     }
 
@@ -32,7 +28,7 @@ public abstract class Index {
      * @param indexKind the kind of the index
      */
     Index(String jsonString, IndexKind indexKind) {
-        this.jsonSerializable = new JsonSerializable(jsonString);
+        super(jsonString);
         this.setKind(indexKind);
     }
 
@@ -43,7 +39,7 @@ public abstract class Index {
      * @param indexKind the kind of the index
      */
     Index(ObjectNode objectNode, IndexKind indexKind) {
-        this.jsonSerializable = new JsonSerializable(objectNode);
+        super(objectNode);
         this.setKind(indexKind);
     }
 
@@ -125,9 +121,9 @@ public abstract class Index {
     IndexKind getKind() {
         IndexKind result = null;
         try {
-            result = IndexKind.valueOf(StringUtils.upperCase(this.jsonSerializable.getString(Constants.Properties.INDEX_KIND)));
+            result = IndexKind.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEX_KIND)));
         } catch (IllegalArgumentException e) {
-            this.jsonSerializable.getLogger().warn("INVALID index kind value %s.", this.jsonSerializable.getString(Constants.Properties.INDEX_KIND));
+            super.getLogger().warn("INVALID index kind value %s.", super.getString(Constants.Properties.INDEX_KIND));
         }
 
         return result;
@@ -139,13 +135,7 @@ public abstract class Index {
      * @param indexKind the index kind.
      */
     private Index setKind(IndexKind indexKind) {
-        this.jsonSerializable.set(Constants.Properties.INDEX_KIND, indexKind.toString());
+        super.set(Constants.Properties.INDEX_KIND, indexKind.toString());
         return this;
     }
-
-    void populatePropertyBag() {
-        this.jsonSerializable.populatePropertyBag();
-    }
-
-    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

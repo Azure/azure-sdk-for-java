@@ -7,7 +7,6 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -692,7 +691,6 @@ public class JsonSerializable {
             || SqlParameter.class.equals(c)
             || SqlQuerySpec.class.equals(c)
             || UniqueKey.class.equals(c)
-            || UniqueKeyPolicy.class.equals(c)
-            || Index.class.isAssignableFrom(c);
+            || UniqueKeyPolicy.class.equals(c);
     }
 }
