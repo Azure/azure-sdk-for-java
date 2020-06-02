@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.USReceiptItem;
 import com.azure.ai.formrecognizer.models.USReceiptType;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public final class ReceiptExtensions {
         FormField<Float> tip = null;
         FormField<Float> total = null;
         FormField<LocalDate> transactionDate = null;
-        FormField<String> transactionTime = null;
+        FormField<LocalTime> transactionTime = null;
         List<USReceiptItem> receiptItems = null;
 
         for (Map.Entry<String, FormField<?>> entry : receipt.getRecognizedForm().getFields().entrySet()) {
@@ -83,7 +84,7 @@ public final class ReceiptExtensions {
                     transactionDate = (FormField<LocalDate>) fieldValue;
                     break;
                 case "TransactionTime":
-                    transactionTime = (FormField<String>) fieldValue;
+                    transactionTime = (FormField<LocalTime>) fieldValue;
                     break;
                 case "Items":
                     receiptItems = toReceiptItems(fieldValue);
