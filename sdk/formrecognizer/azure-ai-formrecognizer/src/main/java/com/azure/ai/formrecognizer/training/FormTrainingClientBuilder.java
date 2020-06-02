@@ -17,6 +17,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -96,7 +97,9 @@ public final class FormTrainingClientBuilder {
     private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
 
-    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+
     /**
      * The constructor with defaults.
      */
@@ -186,7 +189,10 @@ public final class FormTrainingClientBuilder {
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
         policies.add(new AddDatePolicy());
         // Authentications
-        if (credential != null) {
+        if (tokenCredential != null) {
+            // User token based policy
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+        } else if (credential != null) {
             policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
