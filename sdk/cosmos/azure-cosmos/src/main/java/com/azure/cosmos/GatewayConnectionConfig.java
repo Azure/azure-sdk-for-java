@@ -14,7 +14,7 @@ public final class GatewayConnectionConfig {
     //  Constants
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    private static final int DEFAULT_MAX_POOL_SIZE = 1000;
+    private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
     private Duration requestTimeout;
     private int maxConnectionPoolSize;
@@ -26,7 +26,7 @@ public final class GatewayConnectionConfig {
      */
     public GatewayConnectionConfig() {
         this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-        this.maxConnectionPoolSize = DEFAULT_MAX_POOL_SIZE;
+        this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     }
 
