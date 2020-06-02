@@ -141,128 +141,14 @@ Also, we have more examples [examples project][samples].
 
 ### General 
 
-General [troubleshooting guide][troubleshooting] can be found [here][troubleshooting]
+Azure Cosmos DB is a fast and flexible distributed database that scales seamlessly with guaranteed latency and throughput. 
+You do not have to make major architecture changes or write complex code to scale your database with Azure Cosmos DB. 
+Scaling up and down is as easy as making a single API call or SDK method call. 
+However, because Azure Cosmos DB is accessed via network calls there are client-side optimizations you can make to achieve peak performance when using Azure Cosmos DB Java SDK v4.
 
-#### Common Perf Tips
+- [Performance][perf_guide] guide covers these client-side optimizations.  
 
-There is a set of common perf tips written for our Java SDK. It is available [here][perf_guide].
-
-To achieve better performance and higher throughput in production, there are a few more tips that are helpful to follow:
-
-#### Use Appropriate Scheduler (Avoid stealing Eventloop IO Netty threads)
-
-SDK uses [netty](https://netty.io/) for non-blocking IO. The SDK uses a fixed number of IO netty eventloop threads (as many CPU cores your machine has) for executing IO operations.
-
-The Observable returned by API emits the result on one of the shared IO eventloop netty threads. So it is important to not block the shared IO eventloop netty threads. Doing CPU intensive work or blocking operation on the IO eventloop netty thread may cause deadlock or significantly reduce SDK throughput.
-
-For example the following code executes a cpu intensive work on the eventloop IO netty thread:
-
-```java
-Mono<CosmosItemResponse> readItemMono = item.read();
-
-readItemMono
-  .subscribe(
-  resourceResponse -> {
-    //this is executed on eventloop IO netty thread.
-    //the eventloop thread is shared and is meant to return back quickly.
-    //
-    // DON'T do this on eventloop IO netty thread.
-    veryCpuIntensiveWork();
-  });
-
-```
-
-After receiving result if you want to do CPU intensive work on the result you should avoid doing so on eventloop IO netty thread. You can instead provide your own Scheduler to provide your own thread for running your work.
-
-```java
-
-Mono<CosmosItemResponse> readItemMono = item.read();
-
-readItemMono
-  .subscribeOn(Schedulers.parallel())
-  .subscribe(
-  resourceResponse -> {
-    // this is executed on threads provided by Scheduler.parallel()
-    // Schedulers.parallel() should be used only when the work is cpu intensive and you are not doing blocking IO, thread sleep, etc. in this thread against other resources.
-    veryCpuIntensiveWork();
-  });
-
-```
-
-Based on the type of your work you should use the appropriate existing RxJava Scheduler for your work. Please read here
-[`Schedulers`][project_reactor_schedulers].
-
-#### Disable netty's logging
-
-Netty library logging is very chatty and need to be turned off (suppressing log in the configuration may not be enough) to avoid additional CPU costs.
-If you are not in debugging mode disable netty's logging altogether. So if you are using log4j to remove the additional CPU costs incurred by `org.apache.log4j.Category.callAppenders()` from netty add the following line to your codebase:
-
-```java
-org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
-```
-
-#### OS Open files Resource Limit
-
-Some Linux systems (like Redhat) have an upper limit on the number of open files and so the total number of connections. Run the following to view the current limits:
-
-```bash
-ulimit -a
-```
-
-The number of open files (nofile) need to be large enough to have enough room for your configured connection pool size and other open files by the OS. It can be modified to allow for a larger connection pool size.
-
-Open the limits.conf file:
-
-```bash
-vim /etc/security/limits.conf
-```
-
-Add/modify the following lines:
-
-```
-* - nofile 100000
-```
-
-#### Using system properties to modify default Direct TCP options
-
-We have added the ability to modify the default Direct TCP options utilized by the SDK. In priority order we will take default Direct TCP options from:
-
-1. The JSON value of system property `azure.cosmos.directTcp.defaultOptions`.
-   Example: 
-   ```bash
-   java -Dazure.cosmos.directTcp.defaultOptions={\"idleEndpointTimeout\":\"PT24H\"} -jar target/cosmosdb-sdk-testing-1.0-jar-with-dependencies.jar Direct 10 0 Read
-   ```
-
-2. The contents of the JSON file located by system property `azure.cosmos.directTcp.defaultOptionsFile`.
-   Example: 
-   ```
-   java -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file -jar Direct 10 0 Query
-   ```
-
-3. The contents of the JSON resource file named `azure.cosmos.directTcp.defaultOptions.json`.
-   Specifically, the resource file is read from this stream: 
-   ```java
-   RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")
-   ```
-   Example: Contents of resource file `azure.cosmos.directTcp.defaultOptions.json`.
-   ```json
-   {
-     "bufferPageSize": 8192,
-     "connectionTimeout": "PT1M",
-     "idleChannelTimeout": "PT0S",
-     "idleEndpointTimeout": "PT1M10S",
-     "maxBufferCapacity": 8388608,
-     "maxChannelsPerEndpoint": 10,
-     "maxRequestsPerChannel": 30,
-     "receiveHangDetectionTime": "PT1M5S",
-     "requestExpiryInterval": "PT5S",
-     "requestTimeout": "PT1M",
-     "requestTimerResolution": "PT0.5S",
-     "sendHangDetectionTime": "PT10S",
-     "shutdownTimeout": "PT15S"
-   }
-
-Values that are in error are ignored.
+- [Troubleshooting guide][troubleshooting] covers common issues, workarounds, diagnostic steps, and tools when you use Azure Cosmos DB Java SDK v4 with Azure Cosmos DB SQL API accounts. 
 
 ## Next Steps
 
