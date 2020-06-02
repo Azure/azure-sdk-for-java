@@ -7,9 +7,9 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -74,9 +74,9 @@ public class GroupByQueryTests extends TestSuiteBase {
         boolean qmEnabled = true;
 
         String query = "SELECT sum(c.age) as sum_age, c.city FROM c group by c.city";
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 35);
-        options.setPopulateQueryMetrics(qmEnabled);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 35);
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query,
                                                                                  options,

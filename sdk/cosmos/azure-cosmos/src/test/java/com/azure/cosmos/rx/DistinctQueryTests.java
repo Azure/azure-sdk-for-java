@@ -8,14 +8,13 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -207,16 +206,10 @@ public class DistinctQueryTests extends TestSuiteBase {
                                                                                                  options,
                                                                                      JsonNode.class);
 
-
-            Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.byPage().toIterable().iterator();
-            Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
             Iterator<FeedResponse<JsonNode>> iterator = queryObservable.byPage().toIterable().iterator();
-            Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+            Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
             UnorderedDistinctMap distinctMap = new UnorderedDistinctMap();
 
-            // Weakening validation in this PR as distinctMap has to be changed to accept types not extending from
-            // Resource. This will be enabled in a different PR which is already actively in wip
-            /*
             while (iterator.hasNext()) {
                 FeedResponse<JsonNode> next = iterator.next();
                 for (JsonNode document : next.getResults()) {
@@ -225,12 +218,9 @@ public class DistinctQueryTests extends TestSuiteBase {
                     }
                 }
             }
-            */
-
             CosmosPagedFlux<JsonNode> queryObservableWithDistinct = createdCollection
                                                                                     .queryItems(queryWithDistinct, options,
                                                                                                 JsonNode.class);
-
 
             iterator = queryObservableWithDistinct.byPage(5).toIterable().iterator();
 
@@ -239,12 +229,8 @@ public class DistinctQueryTests extends TestSuiteBase {
                 documentsFromWithDistinct.addAll(next.getResults());
             }
             assertThat(documentsFromWithDistinct.size()).isGreaterThanOrEqualTo(1);
-            // Weakening validation in this PR as distinctMap has to be changed to accept types not extending from
-            // Resource which important to build expected results. This will be enabled in a different PR which is
-            // already actively in wip
-//            assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
+            assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
         }
-
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")

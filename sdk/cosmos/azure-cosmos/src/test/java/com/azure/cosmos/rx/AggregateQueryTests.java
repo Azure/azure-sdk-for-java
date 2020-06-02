@@ -7,10 +7,11 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -228,9 +229,9 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     void queryDocumentsWithMultipleAggregates() {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
-        options.setPopulateQueryMetrics(false);
+        options.setQueryMetricsEnabled(false);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : multiAggregateQueryConfigs) {

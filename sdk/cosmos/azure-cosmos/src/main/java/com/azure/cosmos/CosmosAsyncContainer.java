@@ -397,7 +397,13 @@ public class CosmosAsyncContainer {
         if (queryInfo != null && queryInfo.hasSelectValue()) {
             List<T> transformedResults = response.getResults()
                                              .stream()
-                                             .map(d -> d.get(Constants.Properties.VALUE))
+                                             .map(d -> {
+                                                 if (d.has(Constants.Properties.VALUE)) {
+                                                     return d.get(Constants.Properties.VALUE);
+                                                 } else {
+                                                     return d;
+                                                 }
+                                             })
                                              .map(object -> transform(object, classType))
                                              .collect(Collectors.toList());
 

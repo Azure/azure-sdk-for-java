@@ -1138,7 +1138,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         SEATTLE
     }
 
-    public final class Pet extends JsonSerializable {
+    public final class Pet {
         @JsonProperty("name")
         public String name;
 
@@ -1151,7 +1151,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    public final class Person extends JsonSerializable {
+    public final class Person {
         @JsonProperty("name")
         public String name;
 
