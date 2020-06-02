@@ -113,10 +113,11 @@ public final class GatewayConnectionConfig {
     }
 
     /**
-     * This will create the InetSocketAddress for proxy server,
-     * all the requests to cosmoDB will route from this address.
+     * Sets the proxy options.
      *
-     * @param proxy The proxy server.
+     * Currently only support Http proxy type with just the routing address. Username and password will be ignored.
+     *
+     * @param proxy The proxy options.
      * @return the {@link GatewayConnectionConfig}.
      */
 
