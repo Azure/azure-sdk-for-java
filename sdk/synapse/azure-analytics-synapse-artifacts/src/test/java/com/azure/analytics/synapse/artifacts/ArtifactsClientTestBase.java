@@ -1,7 +1,6 @@
-package com.azure.analytics.synapse.spark;
+package com.azure.analytics.synapse.artifacts;
 
-import com.azure.analytics.synapse.spark.implementation.models.SparkBatchJob;
-import com.azure.analytics.synapse.spark.implementation.models.SparkSession;
+import com.azure.analytics.synapse.artifacts.implementation.models.NotebookResource;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -12,7 +11,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +20,11 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class SparkClientTestBase extends TestBase {
+public abstract class ArtifactsClientTestBase extends TestBase {
 
     static final String SYNAPSE_SCOPE = "https://dev.azuresynapse.net/.default";
     static final String NAME = "name";
-    static final String SYNAPSE_PROPERTIES = "azure-analytics-synapse-spark.properties";
+    static final String SYNAPSE_PROPERTIES = "azure-analytics-synapse-artifacts.properties";
     static final String VERSION = "version";
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(SYNAPSE_PROPERTIES);
@@ -104,21 +102,10 @@ public abstract class SparkClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
-    void validateSparkBatchJob(SparkBatchJob expectedSparkJob, SparkBatchJob actualSparkJob)
+    void validateNotebook(NotebookResource expectedNotebook, NotebookResource actualNotebook)
     {
-        assertEquals(expectedSparkJob.getName(), actualSparkJob.getName());
-        assertEquals(expectedSparkJob.getId(), actualSparkJob.getId());
-        assertEquals(expectedSparkJob.getAppId(), actualSparkJob.getAppId());
-        assertEquals(expectedSparkJob.getSubmitterId(), actualSparkJob.getSubmitterId());
-        assertEquals(expectedSparkJob.getArtifactId(), actualSparkJob.getArtifactId());
-    }
-
-    void validateSparkSession(SparkSession expectedSparkSession, SparkSession actualSparkSession)
-    {
-        assertEquals(expectedSparkSession.getName(), actualSparkSession.getName());
-        assertEquals(expectedSparkSession.getId(), actualSparkSession.getId());
-        assertEquals(expectedSparkSession.getAppId(), actualSparkSession.getAppId());
-        assertEquals(expectedSparkSession.getSubmitterId(), actualSparkSession.getSubmitterId());
-        assertEquals(expectedSparkSession.getArtifactId(), actualSparkSession.getArtifactId());
+        assertEquals(expectedNotebook.getName(), actualNotebook.getName());
+        assertEquals(expectedNotebook.getId(), actualNotebook.getId());
+        assertEquals(expectedNotebook.getProperties().getDescription(), actualNotebook.getProperties().getDescription());
     }
 }
