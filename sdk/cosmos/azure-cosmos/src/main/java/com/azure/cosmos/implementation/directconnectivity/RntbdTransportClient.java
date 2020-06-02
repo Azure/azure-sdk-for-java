@@ -176,7 +176,7 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration connectionAcquisitionTimeout;
 
         @JsonProperty()
-        private final Duration connectionTimeout;
+        private final Duration connectTimeout;
 
         @JsonProperty()
         private final Duration idleChannelTimeout;
@@ -239,15 +239,15 @@ public final class RntbdTransportClient extends TransportClient {
             this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
 
-            this.connectionTimeout = builder.connectionTimeout == null
+            this.connectTimeout = builder.connectTimeout == null
                 ? builder.requestTimeout
-                : builder.connectionTimeout;
+                : builder.connectTimeout;
         }
 
         private Options(final ConnectionPolicy connectionPolicy) {
             this.bufferPageSize = 8192;
             this.connectionAcquisitionTimeout = Duration.ZERO;
-            this.connectionTimeout = connectionPolicy.getConnectionTimeout();
+            this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
             this.idleEndpointTimeout = Duration.ofSeconds(70L);
             this.maxBufferCapacity = 8192 << 10;
@@ -275,8 +275,8 @@ public final class RntbdTransportClient extends TransportClient {
             return this.connectionAcquisitionTimeout;
         }
 
-        public Duration connectionTimeout() {
-            return this.connectionTimeout;
+        public Duration connectTimeout() {
+            return this.connectTimeout;
         }
 
         public Duration idleChannelTimeout() {
@@ -367,7 +367,7 @@ public final class RntbdTransportClient extends TransportClient {
          * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
          * <p>Example: <pre>{@code {
          *   "bufferPageSize": 8192,
-         *   "connectionTimeout": "PT1M",
+         *   "connectTimeout": "PT1M",
          *   "idleChannelTimeout": "PT0S",
          *   "idleEndpointTimeout": "PT1M10S",
          *   "maxBufferCapacity": 8388608,
@@ -454,7 +454,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             private int bufferPageSize;
             private Duration connectionAcquisitionTimeout;
-            private Duration connectionTimeout;
+            private Duration connectTimeout;
             private Duration idleChannelTimeout;
             private Duration idleEndpointTimeout;
             private int maxBufferCapacity;
@@ -477,7 +477,7 @@ public final class RntbdTransportClient extends TransportClient {
 
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
                 this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
-                this.connectionTimeout = connectionPolicy.getConnectionTimeout();
+                this.connectTimeout = connectionPolicy.getConnectTimeout();
                 this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
                 this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
@@ -515,7 +515,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             public Builder connectionAcquisitionTimeout(final Duration value) {
                 checkNotNull(value, "expected non-null value");
-                this.connectionTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
+                this.connectTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
                 return this;
             }
 
@@ -523,7 +523,7 @@ public final class RntbdTransportClient extends TransportClient {
                 checkArgument(value == null || value.compareTo(Duration.ZERO) > 0,
                     "expected positive value, not %s",
                     value);
-                this.connectionTimeout = value;
+                this.connectTimeout = value;
                 return this;
             }
 

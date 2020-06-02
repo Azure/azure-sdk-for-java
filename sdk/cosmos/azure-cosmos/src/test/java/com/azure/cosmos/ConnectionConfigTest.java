@@ -92,7 +92,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     @Test(groups = { "emulator" })
     public void buildClient_withCustomDirectConnectionConfig() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
-        directConnectionConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
+        directConnectionConfig.setConnectTimeout(CONNECTION_TIMEOUT);
         directConnectionConfig.setIdleConnectionTimeout(IDLE_CHANNEL_TIMEOUT);
         directConnectionConfig.setIdleEndpointTimeout(IDLE_ENDPOINT_TIMEOUT);
         directConnectionConfig.setMaxConnectionsPerEndpoint(100);
@@ -191,7 +191,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     }
 
     private void validateDirectConfig(ConnectionPolicy connectionPolicy, DirectConnectionConfig directConnectionConfig) {
-        assertThat(Objects.equals(connectionPolicy.getConnectionTimeout(), directConnectionConfig.getConnectionTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getConnectTimeout(), directConnectionConfig.getConnectTimeout()));
         assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), directConnectionConfig.getIdleConnectionTimeout()));
         assertThat(Objects.equals(connectionPolicy.getIdleEndpointTimeout(), directConnectionConfig.getIdleEndpointTimeout()));
         assertThat(Objects.equals(connectionPolicy.getMaxConnectionsPerEndpoint(), directConnectionConfig.getMaxConnectionsPerEndpoint()));
