@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -12,8 +10,7 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -34,11 +31,11 @@ public class CosmosDatabase {
     private final String id;
 
     /**
-     * Instantiates a new Cosmos sync database.
+     * Instantiates a new Cosmos database context client.
      *
-     * @param id the id
-     * @param client the client
-     * @param database the database
+     * @param id the id.
+     * @param client the client.
+     * @param database the database.
      */
     CosmosDatabase(String id, CosmosClient client, CosmosAsyncDatabase database) {
         this.id = id;
@@ -47,235 +44,252 @@ public class CosmosDatabase {
     }
 
     /**
-     * Get the id of the CosmosAsyncDatabase
+     * Get the id of the Cosmos database.
      *
-     * @return the id of the database
+     * @return the id of the database.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Reads a database
+     * Reads the current Cosmos database.
      *
-     * @return the {@link CosmosDatabaseResponse}
-     * @throws CosmosClientException the cosmos client exception
+     * @return the {@link CosmosDatabaseResponse}.
      */
-    public CosmosDatabaseResponse read() throws CosmosClientException {
-        return client.mapDatabaseResponseAndBlock((databaseWrapper.read()));
+    public CosmosDatabaseResponse read() {
+        return client.blockDatabaseResponse((databaseWrapper.read()));
     }
 
     /**
-     * Reads a database.
+     * Reads the current Cosmos database while specifying additional request options.
      *
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
      * @return the {@link CosmosDatabaseResponse}
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse read(CosmosDatabaseRequestOptions options) throws CosmosClientException {
-        return client.mapDatabaseResponseAndBlock(databaseWrapper.read(options));
+    public CosmosDatabaseResponse read(CosmosDatabaseRequestOptions options) {
+        return client.blockDatabaseResponse(databaseWrapper.read(options));
     }
 
     /**
-     * Delete a database.
+     * Deletes the current Cosmos database.
      *
-     * @return the {@link CosmosDatabaseResponse}
-     * @throws CosmosClientException the cosmos client exception
+     * @return the {@link CosmosDatabaseResponse}.
      */
-    public CosmosDatabaseResponse delete() throws CosmosClientException {
-        return client.mapDatabaseResponseAndBlock(databaseWrapper.delete());
+    public CosmosDatabaseResponse delete() {
+        return client.blockDatabaseResponse(databaseWrapper.delete());
     }
 
     /**
-     * Delete a database.
+     * Delete the current Cosmos database while specifying additional request options.
      *
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
-     * @return the {@link CosmosDatabaseResponse}
-     * @throws CosmosClientException the cosmos client exception
+     * @return the {@link CosmosDatabaseResponse}.
      */
-    public CosmosDatabaseResponse delete(CosmosDatabaseRequestOptions options) throws CosmosClientException {
-        return client.mapDatabaseResponseAndBlock(databaseWrapper.delete(options));
+    public CosmosDatabaseResponse delete(CosmosDatabaseRequestOptions options) {
+        return client.blockDatabaseResponse(databaseWrapper.delete(options));
     }
 
-    /* CosmosAsyncContainer operations */
+    /* Cosmos container operations */
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container.
      *
-     * @param containerProperties the {@link CosmosContainerProperties}
+     * @param containerProperties the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties) throws
-        CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties));
+    public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties) {
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties));
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container with custom throughput setting.
      *
-     * @param containerProperties the {@link CosmosContainerProperties}
-     * @param throughput the throughput
+     * @param containerProperties the {@link CosmosContainerProperties}.
+     * @param throughputProperties the throughput properties.
      * @return the {@link CosmosContainerResponse} with the created container.
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
-        int throughput) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, throughput));
+        ThroughputProperties throughputProperties) {
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties, throughputProperties));
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container while passing additional request options.
      *
-     * @param containerProperties the {@link CosmosContainerProperties}
-     * @param options the {@link CosmosContainerProperties}
+     * @param containerProperties the {@link CosmosContainerProperties}.
+     * @param options the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
-        CosmosContainerRequestOptions options) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, options));
+        CosmosContainerRequestOptions options) {
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties, options));
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container.
      *
-     * @param containerProperties the {@link CosmosContainerProperties}
-     * @param throughput the throughput
-     * @param options the {@link CosmosContainerProperties}
+     * @param containerProperties the {@link CosmosContainerProperties}.
+     * @param throughput the throughput.
+     * @param options the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(
+    CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
         int throughput,
-        CosmosContainerRequestOptions options) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties,
+        CosmosContainerRequestOptions options) {
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties,
                                                                                  throughput,
                                                                                  options));
     }
 
     /**
-     * Creates a cosmos container.
+     * Creates a Cosmos container.
      *
-     * @param containerProperties the container properties
-     * @param throughputProperties the throughput properties
-     * @param options the options
-     * @return the cosmos container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param containerProperties the container properties.
+     * @param throughputProperties the throughput properties.
+     * @param options the options.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties,
-        CosmosContainerRequestOptions options) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties,
+        CosmosContainerRequestOptions options) {
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties,
                                                                                  throughputProperties,
                                                                                  options));
     }
 
     /**
-     * Create container cosmos sync container response.
+     * Create a Cosmos container.
      *
-     * @param id the id
-     * @param partitionKeyPath the partition key path
-     * @return the cosmos sync container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param id the container id.
+     * @param partitionKeyPath the partition key path.
+     * @return the cosmos container response.
      */
-    public CosmosContainerResponse createContainer(String id, String partitionKeyPath) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath));
+    public CosmosContainerResponse createContainer(String id, String partitionKeyPath) {
+        return this.blockContainerResponse(databaseWrapper.createContainer(id, partitionKeyPath));
     }
 
     /**
-     * Create container cosmos sync container response.
+     * Create a Cosmos container.
      *
-     * @param id the id
-     * @param partitionKeyPath the partition key path
-     * @param throughput the throughput
-     * @return the cosmos sync container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param id the id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughputProperties the throughput properties.
+     * @return the cosmos container response.
      */
-    public CosmosContainerResponse createContainer(String id, String partitionKeyPath, int throughput) throws
-        CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath, throughput));
+    public CosmosContainerResponse createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
+        return this.blockContainerResponse(databaseWrapper.createContainer(id, partitionKeyPath, throughputProperties));
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if one matching the id in the properties object does not exist.
      *
-     * @param containerProperties the container properties
-     * @return the cosmos sync container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param containerProperties the container properties.
+     * @return the cosmos container response.
      */
-    public CosmosContainerResponse createContainerIfNotExists(CosmosContainerProperties containerProperties) throws
-        CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties));
+    public CosmosContainerResponse createContainerIfNotExists(CosmosContainerProperties containerProperties) {
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(containerProperties));
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Create container if one does not exist.
      *
-     * @param containerProperties the container properties
-     * @param throughput the throughput
-     * @return the cosmos sync container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param containerProperties the container properties.
+     * @param throughput the throughput.
+     * @return the cosmos container response.
+     */
+    CosmosContainerResponse createContainerIfNotExists(
+        CosmosContainerProperties containerProperties,
+        int throughput) {
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(containerProperties,
+            throughput));
+    }
+
+    /**
+     * Creates a Cosmos container if one matching the id in the properties object does not exist.
+     * <p>
+     * The throughput properties will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
+     * @param containerProperties the container properties.
+     * @param throughputProperties the throughput properties for the container.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
-        int throughput) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties,
-                                                                                            throughput));
+        ThroughputProperties throughputProperties) {
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(containerProperties,
+            throughputProperties));
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Creates a Cosmos container if one matching the id does not exist.
      *
-     * @param id the id
-     * @param partitionKeyPath the partition key path
-     * @return the cosmos sync container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param id the id.
+     * @param partitionKeyPath the partition key path.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         String id,
-        String partitionKeyPath) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id, partitionKeyPath));
+        String partitionKeyPath) {
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(id, partitionKeyPath));
     }
 
     /**
-     * Create container if not exists cosmos sync container response.
+     * Creates a Cosmos container if one matching the id does not exist.
+     * <p>
+     * The throughput settings will only be used if the specified container
+     * does not exist and therefor a new container will be created.
      *
-     * @param id the id
-     * @param partitionKeyPath the partition key path
-     * @param throughput the throughput
-     * @return the cosmos sync container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param id the id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughput the throughput.
+     * @return the cosmos container response.
+     */
+    CosmosContainerResponse createContainerIfNotExists(
+        String id, String partitionKeyPath,
+        int throughput) {
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(id,
+            partitionKeyPath,
+            throughput));
+    }
+
+    /**
+     * Creates a Cosmos container if one matching the id does not exist.
+     * <p>
+     * The throughput properties will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
+     * @param id the id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughputProperties the throughput properties for the container.
+     * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(
         String id, String partitionKeyPath,
-        int throughput) throws CosmosClientException {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id,
-                                                                                            partitionKeyPath,
-                                                                                            throughput));
+        ThroughputProperties throughputProperties) {
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(id,
+            partitionKeyPath,
+            throughputProperties));
     }
 
     /**
-     * Map container response and block cosmos sync container response.
+     * Block cosmos container response.
      *
-     * @param containerMono the container mono
-     * @return the cosmos sync container response
-     * @throws CosmosClientException the cosmos client exception
+     * @param containerMono the container mono.
+     * @return the cosmos container response.
      */
-    CosmosContainerResponse mapContainerResponseAndBlock(Mono<CosmosAsyncContainerResponse> containerMono) throws
-        CosmosClientException {
+    CosmosContainerResponse blockContainerResponse(Mono<CosmosContainerResponse> containerMono) {
         try {
-            return containerMono
-                       .map(this::convertResponse)
-                       .block();
+            return containerMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
             } else {
                 throw Exceptions.propagate(ex);
             }
@@ -283,29 +297,29 @@ public class CosmosDatabase {
     }
 
     /**
-     * Read all containers iterator.
+     * Read all containers in the current database.
      *
-     * @param options the options
-     * @return the {@link CosmosPagedIterable}
+     * @param options the options.
+     * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+    CosmosPagedIterable<CosmosContainerProperties> readAllContainers(QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllContainers(options));
     }
 
     /**
-     * Read all containers iterator.
+     * Read all containers in the current database.
      *
-     @return the {@link CosmosPagedIterable}
+     @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosContainerProperties> readAllContainers() {
         return getCosmosPagedIterable(databaseWrapper.readAllContainers());
     }
 
     /**
-     * Query containers iterator.
+     * Query containers in the current database.
      *
-     * @param query the query
-     * @return the {@link CosmosPagedIterable}
+     * @param query the query.
+     * @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(query));
@@ -314,217 +328,186 @@ public class CosmosDatabase {
     /**
      * Query containers iterator.
      *
-     * @param query the query
-     * @param options the options
-     * @return the {@link CosmosPagedIterable}
+     * @param query the query.
+     * @param options the options.
+     * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(query, options));
     }
 
     /**
-     * Query containers iterator.
+     * Query containers in the current database.
      *
-     * @param querySpec the query spec
-     * @return the {@link CosmosPagedIterable}
+     * @param querySpec the query spec.
+     * @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(querySpec));
     }
 
     /**
-     * Query containers iterator.
+     * Query containers in the current database.
      *
-     * @param querySpec the query spec
-     * @param options the options
-     * @return the {@link CosmosPagedIterable}
+     * @param querySpec the query spec.
+     * @param options the options.
+     * @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosContainerProperties> queryContainers(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(querySpec, options));
     }
 
     /**
-     * Gets a CosmosContainer object without making a service call
+     * Gets a Cosmos container instance without making a service call.
+     * <p>
+     * To get the actual object a read operation must be performed first.
      *
-     * @param id id of the container
-     * @return Cosmos Container
+     * @param id id of the container.
+     * @return Cosmos Container.
      */
     public CosmosContainer getContainer(String id) {
         return new CosmosContainer(id, this, databaseWrapper.getContainer(id));
     }
 
-    /**
-     * Convert response cosmos sync container response.
-     *
-     * @param response the response
-     * @return the cosmos sync container response
-     */
-    CosmosContainerResponse convertResponse(CosmosAsyncContainerResponse response) {
-        return ModelBridgeInternal.createCosmosContainerResponse(response, this, client);
-    }
-
     /* Users */
 
     /**
-     * Create user cosmos sync user response.
+     * Create Cosmos user instance without making a service call.
+     * <p>
+     * To get the actual object a read operation must be performed first.
      *
-     * @param userProperties the settings
-     * @return the cosmos sync user response
-     * @throws CosmosClientException the cosmos client exception
+     *
+     * @param userProperties the settings.
+     * @return the cosmos user response.
      */
-    public CosmosUserResponse createUser(CosmosUserProperties userProperties) throws CosmosClientException {
-        return mapUserResponseAndBlock(databaseWrapper.createUser(userProperties));
+    public CosmosUserResponse createUser(CosmosUserProperties userProperties) {
+        return blockUserResponse(databaseWrapper.createUser(userProperties));
     }
 
     /**
-     * Upsert user cosmos sync user response.
+     * Upserts a Cosmos user.
      *
-     * @param userProperties the settings
-     * @return the cosmos sync user response
-     * @throws CosmosClientException the cosmos client exception
+     * @param userProperties the settings.
+     * @return the cosmos user response.
      */
-    public CosmosUserResponse upsertUser(CosmosUserProperties userProperties) throws CosmosClientException {
-        return mapUserResponseAndBlock(databaseWrapper.upsertUser(userProperties));
+    public CosmosUserResponse upsertUser(CosmosUserProperties userProperties) {
+        return blockUserResponse(databaseWrapper.upsertUser(userProperties));
     }
 
     /**
-     * Read all users {@link CosmosPagedIterable}.
+     * Read all Cosmos users for the current database.
      *
-     * @return the {@link CosmosPagedIterable}
+     * @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosUserProperties> readAllUsers() {
         return getCosmosPagedIterable(databaseWrapper.readAllUsers());
     }
 
     /**
-     * Read all users {@link CosmosPagedIterable}.
+     * Read all Cosmos users for the current database.
      *
-     * @param options the options
-     * @return the {@link CosmosPagedIterable}
+     * @param options the options.
+     * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
+    CosmosPagedIterable<CosmosUserProperties> readAllUsers(QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllUsers(options));
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
-     * @param query the query
-     * @return the {@link CosmosPagedIterable}
+     * @param query the query.
+     * @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(query));
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
-     * @param query the query
-     * @param options the options
-     * @return the {@link CosmosPagedIterable}
+     * @param query the query.
+     * @param options the options.
+     * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(query, options));
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
-     * @param querySpec the query spec
-     * @return the {@link CosmosPagedIterable}
+     * @param querySpec the query spec.
+     * @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(querySpec));
     }
 
     /**
-     * Query users {@link CosmosPagedIterable}.
+     * Query all Cosmos users for the current database.
      *
-     * @param querySpec the query spec
-     * @param options the options
-     * @return the {@link CosmosPagedIterable}
+     * @param querySpec the query spec.
+     * @param options the options.
+     * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(querySpec, options));
     }
 
     /**
-     * Gets user.
+     * Gets a Cosmos user instance without making a service call.
+     * <p>
+     * To get the actual object a read operation must be performed first.
      *
-     * @param id the id
-     * @return the user
+     * @param id the id.
+     * @return the user.
      */
     public CosmosUser getUser(String id) {
         return new CosmosUser(databaseWrapper.getUser(id), this, id);
     }
 
-    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosAsyncUserResponse> containerMono) throws
-        CosmosClientException {
+    CosmosUserResponse blockUserResponse(Mono<CosmosUserResponse> containerMono) {
         try {
-            return containerMono.map(this::convertUserResponse).block();
+            return containerMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
             } else {
                 throw Exceptions.propagate(ex);
             }
         }
     }
 
-    private CosmosUserResponse convertUserResponse(CosmosAsyncUserResponse response) {
-        return ModelBridgeInternal.createCosmosUserResponse(response, this);
-    }
-
-    /**
-     * Read provisioned throughput integer.
-     *
-     * @return the integer. null response indicates database doesn't have any provisioned RUs
-     * @throws CosmosClientException the cosmos client exception
-     */
-    public Integer readProvisionedThroughput() throws CosmosClientException {
-        return throughputResponseToBlock(databaseWrapper.readProvisionedThroughput());
-    }
-
-    /**
-     * Replace provisioned throughput integer.
-     *
-     * @param requestUnitsPerSecond the request units per second
-     * @return the integer
-     * @throws CosmosClientException the cosmos client exception
-     */
-    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
-        return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
-    }
-
     /**
      * Sets the throughput.
      *
-     * @param throughputProperties the throughput properties
-     * @return the throughput response
+     * @param throughputProperties the throughput properties.
+     * @return the throughput response.
      */
     public ThroughputResponse replaceThroughput(ThroughputProperties throughputProperties) {
         return throughputResponseToBlock(databaseWrapper.replaceThroughput(throughputProperties));
     }
 
     /**
-     * Gets the throughput of the database
+     * Gets the throughput of the database.
      *
-     * @return the throughput response
+     * @return the throughput response.
      */
     public ThroughputResponse readThroughput() {
         return throughputResponseToBlock(databaseWrapper.readThroughput());
     }
 
-    <T> T throughputResponseToBlock(Mono<T> throughputResponse) throws CosmosClientException {
+    <T> T throughputResponseToBlock(Mono<T> throughputResponse) {
         try {
             return throughputResponse.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
             } else {
                 throw Exceptions.propagate(ex);
             }

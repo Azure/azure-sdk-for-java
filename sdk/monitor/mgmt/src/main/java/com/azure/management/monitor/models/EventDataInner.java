@@ -5,9 +5,11 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.EventLevel;
 import com.azure.management.monitor.HttpRequestInfo;
 import com.azure.management.monitor.SenderAuthorization;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.Map;
 /** The EventData model. */
 @Immutable
 public final class EventDataInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventDataInner.class);
+
     /*
      * The sender authorization information.
      */
@@ -410,5 +414,40 @@ public final class EventDataInner {
      */
     public String tenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (authorization() != null) {
+            authorization().validate();
+        }
+        if (eventName() != null) {
+            eventName().validate();
+        }
+        if (category() != null) {
+            category().validate();
+        }
+        if (httpRequest() != null) {
+            httpRequest().validate();
+        }
+        if (resourceProviderName() != null) {
+            resourceProviderName().validate();
+        }
+        if (resourceType() != null) {
+            resourceType().validate();
+        }
+        if (operationName() != null) {
+            operationName().validate();
+        }
+        if (status() != null) {
+            status().validate();
+        }
+        if (subStatus() != null) {
+            subStatus().validate();
+        }
     }
 }

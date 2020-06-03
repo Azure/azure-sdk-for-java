@@ -7,18 +7,22 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The User model. */
 @JsonFlatten
 @Fluent
 public class UserInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
+
     /*
      * Username used for publishing.
      */
     @JsonProperty(value = "properties.publishingUserName")
-    private String publishingUserName;
+    private String publishingUsername;
 
     /*
      * Password used for publishing.
@@ -45,22 +49,22 @@ public class UserInner extends ProxyOnlyResource {
     private String scmUri;
 
     /**
-     * Get the publishingUserName property: Username used for publishing.
+     * Get the publishingUsername property: Username used for publishing.
      *
-     * @return the publishingUserName value.
+     * @return the publishingUsername value.
      */
-    public String publishingUserName() {
-        return this.publishingUserName;
+    public String publishingUsername() {
+        return this.publishingUsername;
     }
 
     /**
-     * Set the publishingUserName property: Username used for publishing.
+     * Set the publishingUsername property: Username used for publishing.
      *
-     * @param publishingUserName the publishingUserName value to set.
+     * @param publishingUsername the publishingUsername value to set.
      * @return the UserInner object itself.
      */
-    public UserInner withPublishingUserName(String publishingUserName) {
-        this.publishingUserName = publishingUserName;
+    public UserInner withPublishingUsername(String publishingUsername) {
+        this.publishingUsername = publishingUsername;
         return this;
     }
 
@@ -142,5 +146,15 @@ public class UserInner extends ProxyOnlyResource {
     public UserInner withScmUri(String scmUri) {
         this.scmUri = scmUri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

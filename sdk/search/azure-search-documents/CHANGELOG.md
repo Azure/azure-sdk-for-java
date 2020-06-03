@@ -1,7 +1,28 @@
 # Release History
 
 ## 1.0.0-beta.4 (Unreleased)
-
+- Split `SearchServiceClient` into two clients `SearchIndexClient`, `SearchIndexerClient`.
+- Split `SearchServiceAsyncClient` into two clients `SearchIndexAsyncClient`, `SearchIndexerAsyncClient`.
+- Added `SearchIndexClientBuilder` to build sync client `SearchIndexClient` and async client `SearchIndexAsyncClient`.
+- Added `SearchIndexerClientBuilder` to build sync client `SearchIndexerClient` and async client `SearchIndexerAsyncClient`.
+- Removed `SearchServiceClientBuilder`.
+- Renamed `SearchIndexClient` to `SearchClient` and `SearchIndexAsyncClient` to `SearchAsyncClient`.
+- Put all models used `SearchIndexClient` and `SearchIndexerClient` (same for async clients) under `com.azure.search.documents.indexes`.
+- Removed `SearchIndexerDataSource` to `SearchIndexerDataSourceConnection`, 
+- Renamed methods on `SearchIndexerClient` and `SearchIndexerAsyncClient` idiomatically matching "DataSource" to "DataSourceConnection".
+- Removed `DataSourceCredential` and `AzureActiveDirectoryApplicationCredentials`, 
+and uplifted the properties to `SearchIndexerDataSourceConnection` and `SearchResourceEncryptionKey` respectively.
+- Removed `select` parameter from list service resource APIs.
+- Added list names APIs for each search service resource. (e.g. `listSearchIndexNames`, `listSearchIndexerNames`, `listDataSourceNames`, `listSkillsetNames`, `listSynonymMapNames`)
+- Removed deprecated versions and removed the V2 suffix. SDK is currently having `EdgeNGramTokenFilter`, `KeywordTokenizer`, `LuceneStandardTokenizer`,
+`NGramTokenFilter`, and `PathHierarchyTokenizer`.
+- Renamed `Similarity` to `SimilarityAlgorithm`.
+- Renamed `Suggester` to `SearchSuggester`.
+- Renamed fields `synonymMaps` to `synonymMapNames`, `analyzer` to `analyzerName`, 
+`searchAnalyzer` to `searchAnalyzerName` and `indexAnalyzer` to `indexAnalyzerName` 
+in `SearchField`, `SearchableField`.
+- Renamed `SimpleField` to `SimpleFieldBuilder`, `SearchableField` to `SearchableFieldBuilder`
+and `ComplexField` to `ComplexFieldBuilder`.
 
 ## 1.0.0-beta.3 (2020-05-05)
 - Replaced `isRetrievable` API with `isHidden`, parameter name changed from `retrievable` to `hidden`.

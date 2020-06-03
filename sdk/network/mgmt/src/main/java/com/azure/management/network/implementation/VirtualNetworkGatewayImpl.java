@@ -7,11 +7,11 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.BgpSettings;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.VirtualNetworkGateway;
 import com.azure.management.network.VirtualNetworkGatewayConnection;
 import com.azure.management.network.VirtualNetworkGatewayConnections;
-import com.azure.management.network.VirtualNetworkGatewayIPConfiguration;
+import com.azure.management.network.VirtualNetworkGatewayIpConfiguration;
 import com.azure.management.network.VirtualNetworkGatewaySku;
 import com.azure.management.network.VirtualNetworkGatewaySkuName;
 import com.azure.management.network.VirtualNetworkGatewaySkuTier;
@@ -21,7 +21,7 @@ import com.azure.management.network.VpnClientParameters;
 import com.azure.management.network.VpnType;
 import com.azure.management.network.models.GroupableParentResourceWithTagsImpl;
 import com.azure.management.network.models.VirtualNetworkGatewayConnectionListEntityInner;
-import com.azure.management.network.models.VirtualNetworkGatewayIPConfigurationInner;
+import com.azure.management.network.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.management.network.models.VirtualNetworkGatewayInner;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
@@ -45,10 +45,10 @@ class VirtualNetworkGatewayImpl
     private static final String GATEWAY_SUBNET = "GatewaySubnet";
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private Map<String, VirtualNetworkGatewayIPConfiguration> ipConfigs;
+    private Map<String, VirtualNetworkGatewayIpConfiguration> ipConfigs;
     private VirtualNetworkGatewayConnections connections;
     private Creatable<Network> creatableNetwork;
-    private Creatable<PublicIPAddress> creatablePip;
+    private Creatable<PublicIpAddress> creatablePip;
 
     VirtualNetworkGatewayImpl(
         String name, final VirtualNetworkGatewayInner innerModel, final NetworkManager networkManager) {
@@ -111,7 +111,7 @@ class VirtualNetworkGatewayImpl
     @Override
     public VirtualNetworkGatewayImpl withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
         withNewNetwork(
-            this.manager().getSdkContext().randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
+            this.manager().sdkContext().randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
         return this;
     }
 
@@ -122,30 +122,30 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
-        ensureDefaultIPConfig().withExistingPublicIPAddress(publicIPAddress);
+    public VirtualNetworkGatewayImpl withExistingPublicIpAddress(PublicIpAddress publicIPAddress) {
+        ensureDefaultIPConfig().withExistingPublicIpAddress(publicIPAddress);
         return this;
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withExistingPublicIPAddress(String resourceId) {
-        ensureDefaultIPConfig().withExistingPublicIPAddress(resourceId);
+    public VirtualNetworkGatewayImpl withExistingPublicIpAddress(String resourceId) {
+        ensureDefaultIPConfig().withExistingPublicIpAddress(resourceId);
         return this;
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+    public VirtualNetworkGatewayImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         this.creatablePip = creatable;
         return this;
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withNewPublicIPAddress() {
-        final String pipName = this.manager().getSdkContext().randomResourceName("pip", 9);
+    public VirtualNetworkGatewayImpl withNewPublicIpAddress() {
+        final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
         this.creatablePip =
             this
                 .manager()
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(pipName)
                 .withRegion(this.regionName())
                 .withExistingResourceGroup(this.resourceGroupName());
@@ -279,7 +279,7 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public Collection<VirtualNetworkGatewayIPConfiguration> ipConfigurations() {
+    public Collection<VirtualNetworkGatewayIpConfiguration> ipConfigurations() {
         return Collections.unmodifiableCollection(ipConfigs.values());
     }
 
@@ -313,31 +313,31 @@ class VirtualNetworkGatewayImpl
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
-    VirtualNetworkGatewayImpl withConfig(VirtualNetworkGatewayIPConfigurationImpl config) {
+    VirtualNetworkGatewayImpl withConfig(VirtualNetworkGatewayIpConfigurationImpl config) {
         if (config != null) {
             this.ipConfigs.put(config.name(), config);
         }
         return this;
     }
 
-    private VirtualNetworkGatewayIPConfigurationImpl defineIPConfiguration(String name) {
-        VirtualNetworkGatewayIPConfiguration ipConfig = this.ipConfigs.get(name);
+    private VirtualNetworkGatewayIpConfigurationImpl defineIPConfiguration(String name) {
+        VirtualNetworkGatewayIpConfiguration ipConfig = this.ipConfigs.get(name);
         if (ipConfig == null) {
-            VirtualNetworkGatewayIPConfigurationInner inner =
-                new VirtualNetworkGatewayIPConfigurationInner().withName(name);
-            return new VirtualNetworkGatewayIPConfigurationImpl(inner, this);
+            VirtualNetworkGatewayIpConfigurationInner inner =
+                new VirtualNetworkGatewayIpConfigurationInner().withName(name);
+            return new VirtualNetworkGatewayIpConfigurationImpl(inner, this);
         } else {
-            return (VirtualNetworkGatewayIPConfigurationImpl) ipConfig;
+            return (VirtualNetworkGatewayIpConfigurationImpl) ipConfig;
         }
     }
 
     private void initializeIPConfigsFromInner() {
         this.ipConfigs = new TreeMap<>();
-        List<VirtualNetworkGatewayIPConfigurationInner> inners = this.inner().ipConfigurations();
+        List<VirtualNetworkGatewayIpConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners != null) {
-            for (VirtualNetworkGatewayIPConfigurationInner inner : inners) {
-                VirtualNetworkGatewayIPConfigurationImpl config =
-                    new VirtualNetworkGatewayIPConfigurationImpl(inner, this);
+            for (VirtualNetworkGatewayIpConfigurationInner inner : inners) {
+                VirtualNetworkGatewayIpConfigurationImpl config =
+                    new VirtualNetworkGatewayIpConfigurationImpl(inner, this);
                 this.ipConfigs.put(inner.name(), config);
             }
         }
@@ -357,24 +357,24 @@ class VirtualNetworkGatewayImpl
         return inner().bgpSettings();
     }
 
-    private VirtualNetworkGatewayIPConfigurationImpl ensureDefaultIPConfig() {
-        VirtualNetworkGatewayIPConfigurationImpl ipConfig =
-            (VirtualNetworkGatewayIPConfigurationImpl) defaultIPConfiguration();
+    private VirtualNetworkGatewayIpConfigurationImpl ensureDefaultIPConfig() {
+        VirtualNetworkGatewayIpConfigurationImpl ipConfig =
+            (VirtualNetworkGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
-            String name = this.manager().getSdkContext().randomResourceName("ipcfg", 11);
+            String name = this.manager().sdkContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
         return ipConfig;
     }
 
-    private Creatable<PublicIPAddress> ensureDefaultPipDefinition() {
+    private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().getSdkContext().randomResourceName("pip", 9);
+            final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
             this.creatablePip =
                 this
                     .manager()
-                    .publicIPAddresses()
+                    .publicIpAddresses()
                     .define(pipName)
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName());
@@ -382,7 +382,7 @@ class VirtualNetworkGatewayImpl
         return this.creatablePip;
     }
 
-    VirtualNetworkGatewayIPConfiguration defaultIPConfiguration() {
+    VirtualNetworkGatewayIpConfiguration defaultIPConfiguration() {
         // Default means the only one
         if (this.ipConfigs.size() == 1) {
             return this.ipConfigs.values().iterator().next();
@@ -394,16 +394,16 @@ class VirtualNetworkGatewayImpl
     @Override
     protected Mono<VirtualNetworkGatewayInner> createInner() {
         // Determine if a default public frontend PIP should be created
-        final VirtualNetworkGatewayIPConfigurationImpl defaultIPConfig = ensureDefaultIPConfig();
+        final VirtualNetworkGatewayIpConfigurationImpl defaultIPConfig = ensureDefaultIPConfig();
         final Mono<Resource> pipObservable;
-        if (defaultIPConfig.publicIPAddressId() == null) {
+        if (defaultIPConfig.publicIpAddressId() == null) {
             // If public ip not specified, then create a default PIP
             pipObservable =
                 Utils
-                    .<PublicIPAddress>rootResource(ensureDefaultPipDefinition().createAsync().last())
+                    .<PublicIpAddress>rootResource(ensureDefaultPipDefinition().createAsync().last())
                     .map(
                         publicIPAddress -> {
-                            defaultIPConfig.withExistingPublicIPAddress(publicIPAddress);
+                            defaultIPConfig.withExistingPublicIpAddress(publicIPAddress);
                             return publicIPAddress;
                         });
         } else {

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualHubId model. */
 @Fluent
 public final class VirtualHubId {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubId.class);
+
     /*
      * The resource URI for the Virtual Hub where the ExpressRoute gateway is
      * or will be deployed. The Virtual Hub resource and the ExpressRoute
@@ -38,5 +42,13 @@ public final class VirtualHubId {
     public VirtualHubId withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

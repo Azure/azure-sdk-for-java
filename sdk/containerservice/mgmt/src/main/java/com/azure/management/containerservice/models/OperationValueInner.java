@@ -6,12 +6,16 @@ package com.azure.management.containerservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationValue model. */
 @JsonFlatten
 @Immutable
 public class OperationValueInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationValueInner.class);
+
     /*
      * The origin of the compute operation.
      */
@@ -100,5 +104,13 @@ public class OperationValueInner {
      */
     public String provider() {
         return this.provider;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

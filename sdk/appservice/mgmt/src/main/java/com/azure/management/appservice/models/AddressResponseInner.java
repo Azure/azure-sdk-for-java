@@ -6,8 +6,10 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
-import com.azure.management.appservice.VirtualIPMapping;
+import com.azure.management.appservice.VirtualIpMapping;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AddressResponseInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressResponseInner.class);
+
     /*
      * Main public virtual IP.
      */
@@ -38,7 +42,7 @@ public class AddressResponseInner extends ProxyOnlyResource {
      * Additional virtual IPs.
      */
     @JsonProperty(value = "properties.vipMappings")
-    private List<VirtualIPMapping> vipMappings;
+    private List<VirtualIpMapping> vipMappings;
 
     /**
      * Get the serviceIpAddress property: Main public virtual IP.
@@ -107,7 +111,7 @@ public class AddressResponseInner extends ProxyOnlyResource {
      *
      * @return the vipMappings value.
      */
-    public List<VirtualIPMapping> vipMappings() {
+    public List<VirtualIpMapping> vipMappings() {
         return this.vipMappings;
     }
 
@@ -117,8 +121,21 @@ public class AddressResponseInner extends ProxyOnlyResource {
      * @param vipMappings the vipMappings value to set.
      * @return the AddressResponseInner object itself.
      */
-    public AddressResponseInner withVipMappings(List<VirtualIPMapping> vipMappings) {
+    public AddressResponseInner withVipMappings(List<VirtualIpMapping> vipMappings) {
         this.vipMappings = vipMappings;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (vipMappings() != null) {
+            vipMappings().forEach(e -> e.validate());
+        }
     }
 }

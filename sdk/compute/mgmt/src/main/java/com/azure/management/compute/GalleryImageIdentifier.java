@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryImageIdentifier model. */
 @Fluent
 public final class GalleryImageIdentifier {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageIdentifier.class);
+
     /*
      * The name of the gallery Image Definition publisher.
      */
@@ -86,5 +90,29 @@ public final class GalleryImageIdentifier {
     public GalleryImageIdentifier withSku(String sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publisher() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property publisher in model GalleryImageIdentifier"));
+        }
+        if (offer() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property offer in model GalleryImageIdentifier"));
+        }
+        if (sku() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sku in model GalleryImageIdentifier"));
+        }
     }
 }

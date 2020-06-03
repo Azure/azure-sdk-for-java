@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DataTableResponseColumn model. */
 @Fluent
 public final class DataTableResponseColumn {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataTableResponseColumn.class);
+
     /*
      * Name of the column
      */
@@ -86,5 +90,13 @@ public final class DataTableResponseColumn {
     public DataTableResponseColumn withColumnType(String columnType) {
         this.columnType = columnType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

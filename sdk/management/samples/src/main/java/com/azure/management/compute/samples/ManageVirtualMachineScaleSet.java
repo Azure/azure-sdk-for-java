@@ -15,13 +15,13 @@ import com.azure.management.compute.StorageAccountTypes;
 import com.azure.management.compute.VirtualMachineScaleSetVM;
 import com.azure.management.network.LoadBalancerInboundNatRule;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.compute.VirtualMachineScaleSet;
 import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
+import com.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
@@ -97,7 +97,7 @@ public final class ManageVirtualMachineScaleSet {
             // Create a public IP address
             System.out.println("Creating a public IP address...");
 
-            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIpName)
+            PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIpName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName)
@@ -168,7 +168,7 @@ public final class ManageVirtualMachineScaleSet {
 
                     // Explicitly define the frontend
                     .definePublicFrontend(frontendName)
-                        .withExistingPublicIPAddress(publicIPAddress)
+                        .withExistingPublicIpAddress(publicIPAddress)
                         .attach()
 
                     // Add two probes one per rule
@@ -258,7 +258,7 @@ public final class ManageVirtualMachineScaleSet {
                 PagedIterable<VirtualMachineScaleSetNetworkInterface> networkInterfaces = instance.listNetworkInterfaces();
                 // Pick the first NIC
                 VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.iterator().next();
-                for (VirtualMachineScaleSetNicIPConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
+                for (VirtualMachineScaleSetNicIpConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
                     if (ipConfig.isPrimary()) {
                         List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
                         for (LoadBalancerInboundNatRule natRule : natRules) {
@@ -358,7 +358,7 @@ public final class ManageVirtualMachineScaleSet {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

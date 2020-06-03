@@ -6,7 +6,9 @@ package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.TimeSeriesBaseline;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class SingleMetricBaselineInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SingleMetricBaselineInner.class);
+
     /*
      * The metric baseline Id.
      */
@@ -208,5 +212,48 @@ public class SingleMetricBaselineInner {
     public SingleMetricBaselineInner withBaselines(List<TimeSeriesBaseline> baselines) {
         this.baselines = baselines;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model SingleMetricBaselineInner"));
+        }
+        if (type() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model SingleMetricBaselineInner"));
+        }
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model SingleMetricBaselineInner"));
+        }
+        if (timespan() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property timespan in model SingleMetricBaselineInner"));
+        }
+        if (interval() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property interval in model SingleMetricBaselineInner"));
+        }
+        if (baselines() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property baselines in model SingleMetricBaselineInner"));
+        } else {
+            baselines().forEach(e -> e.validate());
+        }
     }
 }

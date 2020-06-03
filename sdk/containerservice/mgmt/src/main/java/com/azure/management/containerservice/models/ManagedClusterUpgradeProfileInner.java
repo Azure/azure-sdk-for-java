@@ -6,7 +6,9 @@ package com.azure.management.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.ManagedClusterPoolUpgradeProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ManagedClusterUpgradeProfileInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterUpgradeProfileInner.class);
+
     /*
      * Id of upgrade profile.
      */
@@ -111,5 +115,29 @@ public class ManagedClusterUpgradeProfileInner {
         List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
         this.agentPoolProfiles = agentPoolProfiles;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (controlPlaneProfile() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property controlPlaneProfile in model ManagedClusterUpgradeProfileInner"));
+        } else {
+            controlPlaneProfile().validate();
+        }
+        if (agentPoolProfiles() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileInner"));
+        } else {
+            agentPoolProfiles().forEach(e -> e.validate());
+        }
     }
 }

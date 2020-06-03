@@ -12,7 +12,7 @@ import com.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
@@ -55,7 +55,7 @@ public final class ManageIPAddress {
 
             System.out.println("Creating a public IP address...");
 
-            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIPAddressName1)
+            PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIPAddressName1)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withLeafDomainLabel(publicIPAddressLeafDNS1)
@@ -104,7 +104,7 @@ public final class ManageIPAddress {
 
             // Define a new public IP address
 
-            PublicIPAddress publicIPAddress2 = azure.publicIPAddresses().define(publicIPAddressName2)
+            PublicIpAddress publicIpAddress2 = azure.publicIpAddresses().define(publicIPAddressName2)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withLeafDomainLabel(publicIPAddressLeafDNS2)
@@ -116,7 +116,7 @@ public final class ManageIPAddress {
 
             NetworkInterface primaryNetworkInterface = vm.getPrimaryNetworkInterface();
             primaryNetworkInterface.update()
-                    .withExistingPrimaryPublicIPAddress(publicIPAddress2)
+                    .withExistingPrimaryPublicIPAddress(publicIpAddress2)
                     .apply();
 
 
@@ -135,7 +135,7 @@ public final class ManageIPAddress {
             System.out.println("Removing public IP address associated with the VM");
             vm.refresh();
             primaryNetworkInterface = vm.getPrimaryNetworkInterface();
-            publicIPAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIPAddress();
+            publicIPAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIpAddress();
             primaryNetworkInterface.update()
                     .withoutPrimaryPublicIPAddress()
                     .apply();
@@ -146,7 +146,7 @@ public final class ManageIPAddress {
             //============================================================
             // Delete the public ip
             System.out.println("Deleting the public IP address");
-            azure.publicIPAddresses().deleteById(publicIPAddress.id());
+            azure.publicIpAddresses().deleteById(publicIPAddress.id());
             System.out.println("Deleted the public IP address");
             return true;
         } catch (Exception e) {
@@ -178,7 +178,7 @@ public final class ManageIPAddress {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

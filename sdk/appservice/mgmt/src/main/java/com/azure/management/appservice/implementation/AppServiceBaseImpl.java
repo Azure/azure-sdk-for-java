@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.CsmPublishingProfileOptions;
 import com.azure.management.appservice.CsmSlotEntity;
-import com.azure.management.appservice.HostNameBinding;
+import com.azure.management.appservice.HostnameBinding;
 import com.azure.management.appservice.MSDeploy;
 import com.azure.management.appservice.OperatingSystem;
 import com.azure.management.appservice.PricingTier;
@@ -96,8 +96,8 @@ abstract class AppServiceBaseImpl<
     }
 
     @Override
-    Mono<Void> deleteHostNameBinding(String hostname) {
-        return this.manager().inner().webApps().deleteHostNameBindingAsync(resourceGroupName(), name(), hostname);
+    Mono<Void> deleteHostnameBinding(String hostname) {
+        return this.manager().inner().webApps().deleteHostnameBindingAsync(resourceGroupName(), name(), hostname);
     }
 
     @Override
@@ -151,26 +151,26 @@ abstract class AppServiceBaseImpl<
     }
 
     @Override
-    public Map<String, HostNameBinding> getHostNameBindings() {
-        return getHostNameBindingsAsync().block();
+    public Map<String, HostnameBinding> getHostnameBindings() {
+        return getHostnameBindingsAsync().block();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Mono<Map<String, HostNameBinding>> getHostNameBindingsAsync() {
+    public Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync() {
         return this
             .manager()
             .inner()
             .webApps()
-            .listHostNameBindingsAsync(resourceGroupName(), name())
+            .listHostnameBindingsAsync(resourceGroupName(), name())
             .mapPage(
                 hostNameBindingInner ->
-                    new HostNameBindingImpl<>(hostNameBindingInner, (FluentImplT) AppServiceBaseImpl.this))
+                    new HostnameBindingImpl<>(hostNameBindingInner, (FluentImplT) AppServiceBaseImpl.this))
             .collectList()
             .map(
                 hostNameBindings ->
                     Collections
-                        .<String, HostNameBinding>unmodifiableMap(
+                        .<String, HostnameBinding>unmodifiableMap(
                             hostNameBindings
                                 .stream()
                                 .collect(
@@ -358,7 +358,7 @@ abstract class AppServiceBaseImpl<
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan() {
-        String planName = this.manager().getSdkContext().randomResourceName(name() + "plan", 32);
+        String planName = this.manager().sdkContext().randomResourceName(name() + "plan", 32);
         return newDefaultAppServicePlan(planName);
     }
 

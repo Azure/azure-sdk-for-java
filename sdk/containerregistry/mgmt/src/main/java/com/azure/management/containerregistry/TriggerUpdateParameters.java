@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TriggerUpdateParameters model. */
 @Fluent
 public final class TriggerUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerUpdateParameters.class);
+
     /*
      * The collection of triggers based on source code repository.
      */
@@ -61,5 +65,19 @@ public final class TriggerUpdateParameters {
     public TriggerUpdateParameters withBaseImageTrigger(BaseImageTriggerUpdateParameters baseImageTrigger) {
         this.baseImageTrigger = baseImageTrigger;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sourceTriggers() != null) {
+            sourceTriggers().forEach(e -> e.validate());
+        }
+        if (baseImageTrigger() != null) {
+            baseImageTrigger().validate();
+        }
     }
 }

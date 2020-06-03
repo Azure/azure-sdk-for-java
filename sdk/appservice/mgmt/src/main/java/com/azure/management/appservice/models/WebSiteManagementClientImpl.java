@@ -33,10 +33,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 import com.azure.management.appservice.CheckNameResourceTypes;
 import com.azure.management.appservice.CsmMoveResourceEnvelope;
-import com.azure.management.appservice.DefaultErrorResponseException;
+import com.azure.management.appservice.DefaultErrorResponseErrorException;
 import com.azure.management.appservice.ResourceNameAvailabilityRequest;
 import com.azure.management.appservice.SkuName;
 import com.azure.management.appservice.ValidateRequest;
@@ -45,6 +46,8 @@ import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the WebSiteManagementClientImpl type. */
 public final class WebSiteManagementClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(WebSiteManagementClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final WebSiteManagementClientService service;
 
@@ -363,14 +366,14 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Web/publishingUsers/web")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<UserInner>> getPublishingUser(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/providers/Microsoft.Web/publishingUsers/web")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<UserInner>> updatePublishingUser(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -380,14 +383,14 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Web/sourcecontrols")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<SourceControlCollectionInner>> listSourceControls(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<SourceControlInner>> getSourceControl(
             @HostParam("$host") String host,
             @PathParam("sourceControlType") String sourceControlType,
@@ -397,7 +400,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<SourceControlInner>> updateSourceControl(
             @HostParam("$host") String host,
             @PathParam("sourceControlType") String sourceControlType,
@@ -408,7 +411,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<BillingMeterCollectionInner>> list(
             @HostParam("$host") String host,
             @QueryParam("billingLocation") String billingLocation,
@@ -420,7 +423,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<ResourceNameAvailabilityInner>> checkNameAvailability(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -431,7 +434,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deploymentLocations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<DeploymentLocationsInner>> getSubscriptionDeploymentLocations(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -441,7 +444,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<GeoRegionCollectionInner>> listGeoRegions(
             @HostParam("$host") String host,
             @QueryParam("sku") SkuName sku,
@@ -455,8 +458,8 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
-        Mono<SimpleResponse<IdentifierCollectionInner>> listSiteIdentifiersAssignedToHostName(
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<SimpleResponse<IdentifierCollectionInner>> listSiteIdentifiersAssignedToHostname(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -466,7 +469,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<PremierAddOnOfferCollectionInner>> listPremierAddOnOffers(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -476,7 +479,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/skus")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<SkuInfosInner>> listSkus(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -486,7 +489,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/verifyHostingEnvironmentVnet")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<VnetValidationFailureDetailsInner>> verifyHostingEnvironmentVnet(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -497,7 +500,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> move(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -510,7 +513,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web" + "/validate")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<ValidateResponseInner>> validate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -522,7 +525,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/validateMoveResources")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> validateMove(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -534,35 +537,35 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<SourceControlCollectionInner>> listSourceControlsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<BillingMeterCollectionInner>> listBillingMetersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<GeoRegionCollectionInner>> listGeoRegionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
-        Mono<SimpleResponse<IdentifierCollectionInner>> listSiteIdentifiersAssignedToHostNameNext(
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<SimpleResponse<IdentifierCollectionInner>> listSiteIdentifiersAssignedToHostnameNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<PremierAddOnOfferCollectionInner>> listPremierAddOnOffersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -570,12 +573,15 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets publishing user.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<UserInner>> getPublishingUserWithResponseAsync() {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.getPublishingUser(this.getHost(), this.getApiVersion(), context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
@@ -584,7 +590,24 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets publishing user.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user credentials used for publishing activity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<UserInner>> getPublishingUserWithResponseAsync(Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        return service.getPublishingUser(this.getHost(), this.getApiVersion(), context);
+    }
+
+    /**
+     * Description for Gets publishing user.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
@@ -604,7 +627,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets publishing user.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
@@ -618,12 +641,20 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param userDetails User credentials used for publishing activity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<UserInner>> updatePublishingUserWithResponseAsync(UserInner userDetails) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (userDetails == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userDetails is required and cannot be null."));
+        } else {
+            userDetails.validate();
+        }
         return FluxUtil
             .withContext(
                 context -> service.updatePublishingUser(this.getHost(), this.getApiVersion(), userDetails, context))
@@ -634,8 +665,32 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Description for Updates publishing user.
      *
      * @param userDetails User credentials used for publishing activity.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user credentials used for publishing activity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<UserInner>> updatePublishingUserWithResponseAsync(
+        UserInner userDetails, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (userDetails == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userDetails is required and cannot be null."));
+        } else {
+            userDetails.validate();
+        }
+        return service.updatePublishingUser(this.getHost(), this.getApiVersion(), userDetails, context);
+    }
+
+    /**
+     * Description for Updates publishing user.
+     *
+     * @param userDetails User credentials used for publishing activity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
@@ -657,7 +712,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param userDetails User credentials used for publishing activity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
@@ -669,12 +724,15 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets the source controls available for Azure websites.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of source controls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SourceControlInner>> listSourceControlsSinglePageAsync() {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listSourceControls(this.getHost(), this.getApiVersion(), context))
             .<PagedResponse<SourceControlInner>>map(
@@ -692,7 +750,34 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets the source controls available for Azure websites.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of source controls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SourceControlInner>> listSourceControlsSinglePageAsync(Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        return service
+            .listSourceControls(this.getHost(), this.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Gets the source controls available for Azure websites.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of source controls.
      */
@@ -705,7 +790,23 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets the source controls available for Azure websites.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of source controls.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SourceControlInner> listSourceControlsAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listSourceControlsSinglePageAsync(context),
+            nextLink -> listSourceControlsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Gets the source controls available for Azure websites.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of source controls.
      */
@@ -719,12 +820,19 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param sourceControlType Type of source control.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source control OAuth token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SourceControlInner>> getSourceControlWithResponseAsync(String sourceControlType) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (sourceControlType == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context -> service.getSourceControl(this.getHost(), sourceControlType, this.getApiVersion(), context))
@@ -735,8 +843,31 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Description for Gets source control token.
      *
      * @param sourceControlType Type of source control.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source control OAuth token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SourceControlInner>> getSourceControlWithResponseAsync(
+        String sourceControlType, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (sourceControlType == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
+        }
+        return service.getSourceControl(this.getHost(), sourceControlType, this.getApiVersion(), context);
+    }
+
+    /**
+     * Description for Gets source control token.
+     *
+     * @param sourceControlType Type of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source control OAuth token.
      */
@@ -758,7 +889,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param sourceControlType Type of source control.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source control OAuth token.
      */
@@ -773,13 +904,25 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param sourceControlType Type of source control.
      * @param requestMessage The source control OAuth token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source control OAuth token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SourceControlInner>> updateSourceControlWithResponseAsync(
         String sourceControlType, SourceControlInner requestMessage) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (sourceControlType == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
+        }
+        if (requestMessage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter requestMessage is required and cannot be null."));
+        } else {
+            requestMessage.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -794,8 +937,38 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param sourceControlType Type of source control.
      * @param requestMessage The source control OAuth token.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source control OAuth token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SourceControlInner>> updateSourceControlWithResponseAsync(
+        String sourceControlType, SourceControlInner requestMessage, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (sourceControlType == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
+        }
+        if (requestMessage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter requestMessage is required and cannot be null."));
+        } else {
+            requestMessage.validate();
+        }
+        return service
+            .updateSourceControl(this.getHost(), sourceControlType, this.getApiVersion(), requestMessage, context);
+    }
+
+    /**
+     * Description for Updates source control token.
+     *
+     * @param sourceControlType Type of source control.
+     * @param requestMessage The source control OAuth token.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source control OAuth token.
      */
@@ -819,7 +992,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param sourceControlType Type of source control.
      * @param requestMessage The source control OAuth token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source control OAuth token.
      */
@@ -834,12 +1007,20 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Billing Meters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BillingMeterInner>> listSinglePageAsync(String billingLocation, String osType) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -868,8 +1049,43 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Billing Meters.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BillingMeterInner>> listSinglePageAsync(
+        String billingLocation, String osType, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(this.getHost(), billingLocation, osType, this.getSubscriptionId(), this.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Gets a list of meters for a given location.
+     *
+     * @param billingLocation Azure Location of billable resource.
+     * @param osType App Service OS type meters used for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Billing Meters.
      */
@@ -883,7 +1099,25 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets a list of meters for a given location.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param billingLocation Azure Location of billable resource.
+     * @param osType App Service OS type meters used for.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Billing Meters.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(billingLocation, osType, context),
+            nextLink -> listBillingMetersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Gets a list of meters for a given location.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Billing Meters.
      */
@@ -903,7 +1137,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Billing Meters.
      */
@@ -915,7 +1149,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets a list of meters for a given location.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Billing Meters.
      */
@@ -934,13 +1168,27 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param type Resource type used for verification.
      * @param isFqdn Is fully qualified domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
         String name, CheckNameResourceTypes type, Boolean isFqdn) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
         ResourceNameAvailabilityRequest request = new ResourceNameAvailabilityRequest();
         request.withName(name);
         request.withType(type);
@@ -960,8 +1208,45 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param name Resource name to verify.
      * @param type Resource type used for verification.
      * @param isFqdn Is fully qualified domain name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
+        String name, CheckNameResourceTypes type, Boolean isFqdn, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        ResourceNameAvailabilityRequest request = new ResourceNameAvailabilityRequest();
+        request.withName(name);
+        request.withType(type);
+        request.withIsFqdn(isFqdn);
+        return service
+            .checkNameAvailability(this.getHost(), this.getSubscriptionId(), this.getApiVersion(), request, context);
+    }
+
+    /**
+     * Description for Check if a resource name is available.
+     *
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification.
+     * @param isFqdn Is fully qualified domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource name.
      */
@@ -986,7 +1271,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param type Resource type used for verification.
      * @param isFqdn Is fully qualified domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource name.
      */
@@ -999,13 +1284,21 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets list of available geo regions plus ministamps.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available locations (regions or App Service Environments) for deployment of App Service
      *     resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentLocationsInner>> getSubscriptionDeploymentLocationsWithResponseAsync() {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1018,7 +1311,33 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets list of available geo regions plus ministamps.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of available locations (regions or App Service Environments) for deployment of App Service
+     *     resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DeploymentLocationsInner>> getSubscriptionDeploymentLocationsWithResponseAsync(
+        Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .getSubscriptionDeploymentLocations(
+                this.getHost(), this.getSubscriptionId(), this.getApiVersion(), context);
+    }
+
+    /**
+     * Description for Gets list of available geo regions plus ministamps.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available locations (regions or App Service Environments) for deployment of App Service
      *     resources.
@@ -1039,7 +1358,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Gets list of available geo regions plus ministamps.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available locations (regions or App Service Environments) for deployment of App Service
      *     resources.
@@ -1060,13 +1379,21 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      *     that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of geographical regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GeoRegionInner>> listGeoRegionsSinglePageAsync(
         SkuName sku, Boolean linuxWorkersEnabled, Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1102,8 +1429,60 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *     support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      *     that support Linux Consumption Workers.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of geographical regions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GeoRegionInner>> listGeoRegionsSinglePageAsync(
+        SkuName sku,
+        Boolean linuxWorkersEnabled,
+        Boolean xenonWorkersEnabled,
+        Boolean linuxDynamicWorkersEnabled,
+        Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listGeoRegions(
+                this.getHost(),
+                sku,
+                linuxWorkersEnabled,
+                xenonWorkersEnabled,
+                linuxDynamicWorkersEnabled,
+                this.getSubscriptionId(),
+                this.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get a list of available geographical regions.
+     *
+     * @param sku Name of SKU used to filter the regions.
+     * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     *     support Linux workers.
+     * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     *     support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
+     *     that support Linux Consumption Workers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of geographical regions.
      */
@@ -1120,7 +1499,37 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Get a list of available geographical regions.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param sku Name of SKU used to filter the regions.
+     * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     *     support Linux workers.
+     * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     *     support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
+     *     that support Linux Consumption Workers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of geographical regions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GeoRegionInner> listGeoRegionsAsync(
+        SkuName sku,
+        Boolean linuxWorkersEnabled,
+        Boolean xenonWorkersEnabled,
+        Boolean linuxDynamicWorkersEnabled,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listGeoRegionsSinglePageAsync(
+                    sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, context),
+            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get a list of available geographical regions.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of geographical regions.
      */
@@ -1149,7 +1558,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      *     that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of geographical regions.
      */
@@ -1163,7 +1572,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for Get a list of available geographical regions.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of geographical regions.
      */
@@ -1183,19 +1592,27 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param name Name of the object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostNameSinglePageAsync(String name) {
+    public Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameSinglePageAsync(String name) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
         NameIdentifierInner nameIdentifier = new NameIdentifierInner();
         nameIdentifier.withName(name);
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listSiteIdentifiersAssignedToHostName(
+                        .listSiteIdentifiersAssignedToHostname(
                             this.getHost(), this.getSubscriptionId(), this.getApiVersion(), nameIdentifier, context))
             .<PagedResponse<IdentifierInner>>map(
                 res ->
@@ -1213,16 +1630,37 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Description for List all apps that are assigned to a hostname.
      *
      * @param name Name of the object.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostNameAsync(String name) {
-        return new PagedFlux<>(
-            () -> listSiteIdentifiersAssignedToHostNameSinglePageAsync(name),
-            nextLink -> listSiteIdentifiersAssignedToHostNameNextSinglePageAsync(nextLink));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameSinglePageAsync(
+        String name, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
+        nameIdentifier.withName(name);
+        return service
+            .listSiteIdentifiersAssignedToHostname(
+                this.getHost(), this.getSubscriptionId(), this.getApiVersion(), nameIdentifier, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
@@ -1230,24 +1668,65 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param name Name of the object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostName(String name) {
-        return new PagedIterable<>(listSiteIdentifiersAssignedToHostNameAsync(name));
+    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(String name) {
+        return new PagedFlux<>(
+            () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(name),
+            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for List all apps that are assigned to a hostname.
+     *
+     * @param name Name of the object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(String name, Context context) {
+        return new PagedFlux<>(
+            () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(name, context),
+            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for List all apps that are assigned to a hostname.
+     *
+     * @param name Name of the object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(String name) {
+        return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(name));
     }
 
     /**
      * Description for List all premier add-on offers.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of premier add-on offers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PremierAddOnOfferInner>> listPremierAddOnOffersSinglePageAsync() {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1269,7 +1748,39 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for List all premier add-on offers.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of premier add-on offers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PremierAddOnOfferInner>> listPremierAddOnOffersSinglePageAsync(Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listPremierAddOnOffers(this.getHost(), this.getSubscriptionId(), this.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for List all premier add-on offers.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of premier add-on offers.
      */
@@ -1283,7 +1794,23 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for List all premier add-on offers.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of premier add-on offers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PremierAddOnOfferInner> listPremierAddOnOffersAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listPremierAddOnOffersSinglePageAsync(context),
+            nextLink -> listPremierAddOnOffersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for List all premier add-on offers.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of premier add-on offers.
      */
@@ -1295,12 +1822,20 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for List all SKUs.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SKU information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SkuInfosInner>> listSkusWithResponseAsync() {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context -> service.listSkus(this.getHost(), this.getSubscriptionId(), this.getApiVersion(), context))
@@ -1310,7 +1845,29 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for List all SKUs.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SKU information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SkuInfosInner>> listSkusWithResponseAsync(Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        return service.listSkus(this.getHost(), this.getSubscriptionId(), this.getApiVersion(), context);
+    }
+
+    /**
+     * Description for List all SKUs.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SKU information.
      */
@@ -1330,7 +1887,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /**
      * Description for List all SKUs.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SKU information.
      */
@@ -1345,13 +1902,26 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param parameters The required set of inputs to validate a VNET.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class that describes the reason for a validation failure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<VnetValidationFailureDetailsInner>> verifyHostingEnvironmentVnetWithResponseAsync(
         VnetParameters parameters) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1366,8 +1936,40 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Security Group rules.
      *
      * @param parameters The required set of inputs to validate a VNET.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class that describes the reason for a validation failure.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<VnetValidationFailureDetailsInner>> verifyHostingEnvironmentVnetWithResponseAsync(
+        VnetParameters parameters, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .verifyHostingEnvironmentVnet(
+                this.getHost(), this.getSubscriptionId(), this.getApiVersion(), parameters, context);
+    }
+
+    /**
+     * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
+     * Security Group rules.
+     *
+     * @param parameters The required set of inputs to validate a VNET.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class that describes the reason for a validation failure.
      */
@@ -1390,7 +1992,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param parameters The required set of inputs to validate a VNET.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class that describes the reason for a validation failure.
      */
@@ -1406,13 +2008,31 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
      *     should be moved to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> moveWithResponseAsync(
         String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (moveResourceEnvelope == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter moveResourceEnvelope is required and cannot be null."));
+        } else {
+            moveResourceEnvelope.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1433,8 +2053,51 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
      *     should be moved to.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> moveWithResponseAsync(
+        String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (moveResourceEnvelope == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter moveResourceEnvelope is required and cannot be null."));
+        } else {
+            moveResourceEnvelope.validate();
+        }
+        return service
+            .move(
+                this.getHost(),
+                resourceGroupName,
+                this.getSubscriptionId(),
+                this.getApiVersion(),
+                moveResourceEnvelope,
+                context);
+    }
+
+    /**
+     * Description for Move resources between resource groups.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
+     *     should be moved to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1451,7 +2114,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
      *     should be moved to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1465,13 +2128,31 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Resource validation request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of resource validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ValidateResponseInner>> validateWithResponseAsync(
         String resourceGroupName, ValidateRequest validateRequest) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (validateRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter validateRequest is required and cannot be null."));
+        } else {
+            validateRequest.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1491,8 +2172,50 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Resource validation request content.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the result of resource validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ValidateResponseInner>> validateWithResponseAsync(
+        String resourceGroupName, ValidateRequest validateRequest, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (validateRequest == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter validateRequest is required and cannot be null."));
+        } else {
+            validateRequest.validate();
+        }
+        return service
+            .validate(
+                this.getHost(),
+                resourceGroupName,
+                this.getSubscriptionId(),
+                this.getApiVersion(),
+                validateRequest,
+                context);
+    }
+
+    /**
+     * Description for Validate if a resource can be created.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param validateRequest Resource validation request content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of resource validation.
      */
@@ -1515,7 +2238,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Resource validation request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of resource validation.
      */
@@ -1531,13 +2254,31 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
      *     should be moved to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> validateMoveWithResponseAsync(
         String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (moveResourceEnvelope == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter moveResourceEnvelope is required and cannot be null."));
+        } else {
+            moveResourceEnvelope.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1558,8 +2299,51 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
      *     should be moved to.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> validateMoveWithResponseAsync(
+        String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (moveResourceEnvelope == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter moveResourceEnvelope is required and cannot be null."));
+        } else {
+            moveResourceEnvelope.validate();
+        }
+        return service
+            .validateMove(
+                this.getHost(),
+                resourceGroupName,
+                this.getSubscriptionId(),
+                this.getApiVersion(),
+                moveResourceEnvelope,
+                context);
+    }
+
+    /**
+     * Description for Validate whether a resource can be moved.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
+     *     should be moved to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1576,7 +2360,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
      *     should be moved to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1589,12 +2373,15 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of source controls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SourceControlInner>> listSourceControlsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listSourceControlsNext(nextLink, context))
             .<PagedResponse<SourceControlInner>>map(
@@ -1613,13 +2400,45 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of source controls.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SourceControlInner>> listSourceControlsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listSourceControlsNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Billing Meters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BillingMeterInner>> listBillingMetersNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listBillingMetersNext(nextLink, context))
             .<PagedResponse<BillingMeterInner>>map(
@@ -1638,13 +2457,45 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Billing Meters.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BillingMeterInner>> listBillingMetersNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listBillingMetersNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of geographical regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GeoRegionInner>> listGeoRegionsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listGeoRegionsNext(nextLink, context))
             .<PagedResponse<GeoRegionInner>>map(
@@ -1663,16 +2514,47 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of geographical regions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GeoRegionInner>> listGeoRegionsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listGeoRegionsNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostNameNextSinglePageAsync(
+    public Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(
         String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
-            .withContext(context -> service.listSiteIdentifiersAssignedToHostNameNext(nextLink, context))
+            .withContext(context -> service.listSiteIdentifiersAssignedToHostnameNext(nextLink, context))
             .<PagedResponse<IdentifierInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1689,13 +2571,45 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listSiteIdentifiersAssignedToHostnameNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of premier add-on offers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PremierAddOnOfferInner>> listPremierAddOnOffersNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listPremierAddOnOffersNext(nextLink, context))
             .<PagedResponse<PremierAddOnOfferInner>>map(
@@ -1708,5 +2622,34 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of premier add-on offers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PremierAddOnOfferInner>> listPremierAddOnOffersNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listPremierAddOnOffersNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

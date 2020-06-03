@@ -4,11 +4,11 @@
 package com.azure.management.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.network.IPAllocationMethod;
+import com.azure.management.network.IpAllocationMethod;
 import com.azure.management.network.NetworkSecurityGroup;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
-import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
+import com.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.management.network.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.management.network.models.NetworkInterfaceInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ResourceImpl;
@@ -48,7 +48,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public boolean isIPForwardingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableIPForwarding());
+        return Utils.toPrimitiveBoolean(this.inner().enableIpForwarding());
     }
 
     @Override
@@ -99,40 +99,40 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public String primaryPrivateIP() {
-        VirtualMachineScaleSetNicIPConfiguration primaryIPConfig = this.primaryIPConfiguration();
+        VirtualMachineScaleSetNicIpConfiguration primaryIPConfig = this.primaryIPConfiguration();
         if (primaryIPConfig == null) {
             return null;
         }
-        return primaryIPConfig.privateIPAddress();
+        return primaryIPConfig.privateIpAddress();
     }
 
     @Override
-    public IPAllocationMethod primaryPrivateIPAllocationMethod() {
-        VirtualMachineScaleSetNicIPConfiguration primaryIPConfig = this.primaryIPConfiguration();
+    public IpAllocationMethod primaryPrivateIpAllocationMethod() {
+        VirtualMachineScaleSetNicIpConfiguration primaryIPConfig = this.primaryIPConfiguration();
         if (primaryIPConfig == null) {
             return null;
         }
-        return primaryIPConfig.privateIPAllocationMethod();
+        return primaryIPConfig.privateIpAllocationMethod();
     }
 
     @Override
-    public Map<String, VirtualMachineScaleSetNicIPConfiguration> ipConfigurations() {
-        List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
+    public Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigurations() {
+        List<NetworkInterfaceIpConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners == null || inners.size() == 0) {
-            return Collections.unmodifiableMap(new TreeMap<String, VirtualMachineScaleSetNicIPConfiguration>());
+            return Collections.unmodifiableMap(new TreeMap<String, VirtualMachineScaleSetNicIpConfiguration>());
         }
-        Map<String, VirtualMachineScaleSetNicIPConfiguration> nicIPConfigurations = new TreeMap<>();
-        for (NetworkInterfaceIPConfigurationInner inner : inners) {
-            VirtualMachineScaleSetNicIPConfigurationImpl nicIPConfiguration =
-                new VirtualMachineScaleSetNicIPConfigurationImpl(inner, this, this.networkManager);
+        Map<String, VirtualMachineScaleSetNicIpConfiguration> nicIPConfigurations = new TreeMap<>();
+        for (NetworkInterfaceIpConfigurationInner inner : inners) {
+            VirtualMachineScaleSetNicIpConfigurationImpl nicIPConfiguration =
+                new VirtualMachineScaleSetNicIpConfigurationImpl(inner, this, this.networkManager);
             nicIPConfigurations.put(nicIPConfiguration.name(), nicIPConfiguration);
         }
         return Collections.unmodifiableMap(nicIPConfigurations);
     }
 
     @Override
-    public VirtualMachineScaleSetNicIPConfiguration primaryIPConfiguration() {
-        for (VirtualMachineScaleSetNicIPConfiguration ipConfiguration : this.ipConfigurations().values()) {
+    public VirtualMachineScaleSetNicIpConfiguration primaryIPConfiguration() {
+        for (VirtualMachineScaleSetNicIpConfiguration ipConfiguration : this.ipConfigurations().values()) {
             if (ipConfiguration.isPrimary()) {
                 return ipConfiguration;
             }

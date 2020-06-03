@@ -19,11 +19,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
-import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.validateAccountProperties;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
-import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -41,16 +42,6 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     }
 
     /**
-     * Test client with invalid API key but update to valid key and make call to server.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void clientBuilderWithRotateToValidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
-    }
-
-    /**
      * Test client with valid API key but update to invalid key and make call to server.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -61,13 +52,23 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     }
 
     /**
+     * Test client with invalid API key but update to valid key and make call to server.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void clientBuilderWithRotateToValidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
+            assertNotNull(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+    }
+
+    /**
      * Test for null service version, which would take take the default service version by default
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
+            assertNotNull(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
     }
 
     /**
@@ -77,7 +78,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
+            assertNotNull(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
     }
 
     // Client builder runner
@@ -86,7 +87,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         Function<FormRecognizerClientBuilder, BiConsumer<String, ErrorResponseException>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion, getEndpoint(),
             new AzureKeyCredential(INVALID_KEY));
-        testRunner.apply(clientBuilder).accept(VALID_URL, new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(FORM_JPG, new ErrorResponseException("", null));
     }
 
     void clientBuilderWithRotateToInvalidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -96,7 +97,13 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             getEndpoint(), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
-        testRunner.apply(clientBuilder).accept(VALID_URL, new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(FORM_JPG, new ErrorResponseException("", null));
+    }
+
+    String getEndpoint() {
+        return interceptorManager.isPlaybackMode()
+            ? "https://localhost:8080"
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
     void clientBuilderWithRotateToValidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -106,7 +113,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
-        testRunner.apply(clientBuilder).accept(VALID_URL);
+        testRunner.apply(clientBuilder).accept(getTestingSasUri(FORM_JPG));
     }
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -115,7 +122,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
-        testRunner.apply(clientBuilder).accept(VALID_URL);
+        testRunner.apply(clientBuilder).accept(getTestingSasUri(FORM_JPG));
     }
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -124,13 +131,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        testRunner.apply(clientBuilder).accept(VALID_URL);
-    }
-
-    String getEndpoint() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+        testRunner.apply(clientBuilder).accept(getTestingSasUri(FORM_JPG));
     }
 
     /**
@@ -164,5 +165,16 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     String getApiKey() {
         return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
+    }
+
+    private String getTestingSasUri(String fileName) {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode";
+        }
+
+        final String testingFileUrl =
+            Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
+        final String[] urlParts = testingFileUrl.split("\\?");
+        return urlParts[0] + "/" + fileName + "?" + urlParts[1];
     }
 }

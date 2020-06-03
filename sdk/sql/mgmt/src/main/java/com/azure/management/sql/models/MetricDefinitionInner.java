@@ -5,16 +5,20 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.MetricAvailability;
 import com.azure.management.sql.MetricName;
 import com.azure.management.sql.PrimaryAggregationType;
 import com.azure.management.sql.UnitDefinitionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MetricDefinition model. */
 @Immutable
 public final class MetricDefinitionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionInner.class);
+
     /*
      * The name information for the metric.
      */
@@ -88,5 +92,19 @@ public final class MetricDefinitionInner {
      */
     public List<MetricAvailability> metricAvailabilities() {
         return this.metricAvailabilities;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
+        if (metricAvailabilities() != null) {
+            metricAvailabilities().forEach(e -> e.validate());
+        }
     }
 }

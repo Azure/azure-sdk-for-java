@@ -29,6 +29,8 @@ trigger:
       - sdk/storage/mgmt-v2018_11_01
       - sdk/storage/mgmt-v2019_04_01
       - sdk/storage/mgmt-v2019_06_01
+      - sdk/storage/microsoft-azure-storage-blob
+      - sdk/storage/mgmt
 
 pr:
   branches:

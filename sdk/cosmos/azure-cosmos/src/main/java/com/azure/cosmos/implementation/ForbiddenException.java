@@ -4,12 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
 
 import java.net.URI;
 import java.util.Map;
@@ -17,7 +14,7 @@ import java.util.Map;
 /**
  * Forbidden exception
  */
-public class ForbiddenException extends CosmosClientException {
+public class ForbiddenException extends CosmosException {
     ForbiddenException() {
         this(RMResources.Forbidden);
     }

@@ -17,7 +17,7 @@ import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
@@ -129,7 +129,7 @@ public final class ManageInternetFacingLoadBalancer {
             // Create a public IP address
             System.out.println("Creating a public IP address...");
 
-            PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIpName1)
+            PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIpName1)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName1)
@@ -218,7 +218,7 @@ public final class ManageInternetFacingLoadBalancer {
 
                     // Explicitly define the frontend
                     .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
+                    .withExistingPublicIpAddress(publicIPAddress)
                     .attach()
 
                     // Add two probes one per rule
@@ -342,7 +342,7 @@ public final class ManageInternetFacingLoadBalancer {
             // Create another public IP address
             System.out.println("Creating another public IP address...");
 
-            PublicIPAddress publicIPAddress2 = azure.publicIPAddresses().define(publicIpName2)
+            PublicIpAddress publicIpAddress2 = azure.publicIpAddresses().define(publicIpName2)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName2)
@@ -350,7 +350,7 @@ public final class ManageInternetFacingLoadBalancer {
 
             System.out.println("Created another public IP address");
             // Print the virtual network details
-            Utils.print(publicIPAddress2);
+            Utils.print(publicIpAddress2);
 
 
             //=============================================================
@@ -431,7 +431,7 @@ public final class ManageInternetFacingLoadBalancer {
 
                     // Explicitly define the frontend
                     .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress2)
+                    .withExistingPublicIpAddress(publicIpAddress2)
                     .attach()
 
                     // Add two probes one per rule
@@ -502,7 +502,7 @@ public final class ManageInternetFacingLoadBalancer {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

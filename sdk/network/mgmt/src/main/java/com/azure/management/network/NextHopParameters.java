@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NextHopParameters model. */
 @Fluent
 public final class NextHopParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NextHopParameters.class);
+
     /*
      * The resource identifier of the target resource against which the action
      * is to be performed.
@@ -21,13 +25,13 @@ public final class NextHopParameters {
      * The source IP address.
      */
     @JsonProperty(value = "sourceIPAddress", required = true)
-    private String sourceIPAddress;
+    private String sourceIpAddress;
 
     /*
      * The destination IP address.
      */
     @JsonProperty(value = "destinationIPAddress", required = true)
-    private String destinationIPAddress;
+    private String destinationIpAddress;
 
     /*
      * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
@@ -59,42 +63,42 @@ public final class NextHopParameters {
     }
 
     /**
-     * Get the sourceIPAddress property: The source IP address.
+     * Get the sourceIpAddress property: The source IP address.
      *
-     * @return the sourceIPAddress value.
+     * @return the sourceIpAddress value.
      */
-    public String sourceIPAddress() {
-        return this.sourceIPAddress;
+    public String sourceIpAddress() {
+        return this.sourceIpAddress;
     }
 
     /**
-     * Set the sourceIPAddress property: The source IP address.
+     * Set the sourceIpAddress property: The source IP address.
      *
-     * @param sourceIPAddress the sourceIPAddress value to set.
+     * @param sourceIpAddress the sourceIpAddress value to set.
      * @return the NextHopParameters object itself.
      */
-    public NextHopParameters withSourceIPAddress(String sourceIPAddress) {
-        this.sourceIPAddress = sourceIPAddress;
+    public NextHopParameters withSourceIpAddress(String sourceIpAddress) {
+        this.sourceIpAddress = sourceIpAddress;
         return this;
     }
 
     /**
-     * Get the destinationIPAddress property: The destination IP address.
+     * Get the destinationIpAddress property: The destination IP address.
      *
-     * @return the destinationIPAddress value.
+     * @return the destinationIpAddress value.
      */
-    public String destinationIPAddress() {
-        return this.destinationIPAddress;
+    public String destinationIpAddress() {
+        return this.destinationIpAddress;
     }
 
     /**
-     * Set the destinationIPAddress property: The destination IP address.
+     * Set the destinationIpAddress property: The destination IP address.
      *
-     * @param destinationIPAddress the destinationIPAddress value to set.
+     * @param destinationIpAddress the destinationIpAddress value to set.
      * @return the NextHopParameters object itself.
      */
-    public NextHopParameters withDestinationIPAddress(String destinationIPAddress) {
-        this.destinationIPAddress = destinationIPAddress;
+    public NextHopParameters withDestinationIpAddress(String destinationIpAddress) {
+        this.destinationIpAddress = destinationIpAddress;
         return this;
     }
 
@@ -118,5 +122,31 @@ public final class NextHopParameters {
     public NextHopParameters withTargetNicResourceId(String targetNicResourceId) {
         this.targetNicResourceId = targetNicResourceId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetResourceId in model NextHopParameters"));
+        }
+        if (sourceIpAddress() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sourceIpAddress in model NextHopParameters"));
+        }
+        if (destinationIpAddress() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property destinationIpAddress in model NextHopParameters"));
+        }
     }
 }

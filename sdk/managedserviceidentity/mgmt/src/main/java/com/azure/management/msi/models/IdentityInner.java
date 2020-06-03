@@ -7,6 +7,8 @@ package com.azure.management.msi.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
@@ -14,6 +16,8 @@ import java.util.UUID;
 @JsonFlatten
 @Immutable
 public class IdentityInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityInner.class);
+
     /*
      * The id of the tenant which the identity belongs to.
      */
@@ -34,21 +38,12 @@ public class IdentityInner extends Resource {
     @JsonProperty(value = "properties.clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
 
-    /*
-     * The ManagedServiceIdentity DataPlane URL that can be queried to obtain
-     * the identity credentials. If identity is user assigned, then the
-     * clientSecretUrl will not be present in the response, otherwise it will
-     * be present.
-     */
-    @JsonProperty(value = "properties.clientSecretUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String clientSecretUrl;
-
     /**
      * Get the tenantId property: The id of the tenant which the identity belongs to.
      *
      * @return the tenantId value.
      */
-    public UUID getTenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -57,7 +52,7 @@ public class IdentityInner extends Resource {
      *
      * @return the principalId value.
      */
-    public UUID getPrincipalId() {
+    public UUID principalId() {
         return this.principalId;
     }
 
@@ -67,18 +62,15 @@ public class IdentityInner extends Resource {
      *
      * @return the clientId value.
      */
-    public UUID getClientId() {
+    public UUID clientId() {
         return this.clientId;
     }
 
     /**
-     * Get the clientSecretUrl property: The ManagedServiceIdentity DataPlane URL that can be queried to obtain the
-     * identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response,
-     * otherwise it will be present.
+     * Validates the instance.
      *
-     * @return the clientSecretUrl value.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public String getClientSecretUrl() {
-        return this.clientSecretUrl;
+    public void validate() {
     }
 }

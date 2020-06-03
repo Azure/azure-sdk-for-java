@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DiagnosticData model. */
 @Fluent
 public final class DiagnosticData {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticData.class);
+
     /*
      * Data in table form
      */
@@ -60,5 +64,19 @@ public final class DiagnosticData {
     public DiagnosticData withRenderingProperties(Rendering renderingProperties) {
         this.renderingProperties = renderingProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (table() != null) {
+            table().validate();
+        }
+        if (renderingProperties() != null) {
+            renderingProperties().validate();
+        }
     }
 }

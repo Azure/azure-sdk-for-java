@@ -7,8 +7,8 @@ import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.compute.VirtualMachines;
-import com.azure.management.network.PublicIPAddress;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddress;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.jcraft.jsch.ChannelExec;
@@ -22,16 +22,16 @@ import java.util.Base64;
 import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, VirtualMachines> {
-    final PublicIPAddresses pips;
+    final PublicIpAddresses pips;
 
-    public TestVirtualMachineCustomData(PublicIPAddresses pips) {
+    public TestVirtualMachineCustomData(PublicIpAddresses pips) {
         this.pips = pips;
     }
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
-        final String publicIpDnsLabel = virtualMachines.manager().getSdkContext().randomResourceName("abc", 16);
+        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String publicIpDnsLabel = virtualMachines.manager().sdkContext().randomResourceName("abc", 16);
 
         // Prepare the custom data
         //
@@ -41,7 +41,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
         byte[] cloudInitEncoded = Base64.getEncoder().encode(cloudInitAsBytes);
         String cloudInitEncodedString = new String(cloudInitEncoded);
 
-        PublicIPAddress pip =
+        PublicIpAddress pip =
             pips
                 .define(publicIpDnsLabel)
                 .withRegion(Region.US_EAST)

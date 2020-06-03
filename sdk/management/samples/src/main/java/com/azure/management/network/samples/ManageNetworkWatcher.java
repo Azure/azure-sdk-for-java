@@ -28,7 +28,7 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -187,7 +187,7 @@ public final class ManageNetworkWatcher {
             //============================================================
             // Verify IP flow – verify if traffic is allowed to or from a virtual machine
             // Get the IP address of a NIC on a virtual machine
-            String ipAddress = vm.getPrimaryNetworkInterface().primaryIPConfiguration().privateIPAddress();
+            String ipAddress = vm.getPrimaryNetworkInterface().primaryIPConfiguration().privateIpAddress();
             // Test IP flow on the NIC
             System.out.println("Verifying IP flow for VM ID " + vm.id() + "...");
             VerificationIPFlow verificationIPFlow = nw.verifyIPFlow()
@@ -205,8 +205,8 @@ public final class ManageNetworkWatcher {
             // Analyze next hop – get the next hop type and IP address for a virtual machine
             System.out.println("Calculating next hop...");
             NextHop nextHop = nw.nextHop().withTargetResourceId(vm.id())
-                    .withSourceIPAddress(ipAddress)
-                    .withDestinationIPAddress("8.8.8.8")
+                    .withSourceIpAddress(ipAddress)
+                    .withDestinationIpAddress("8.8.8.8")
                     .execute();
             Utils.print(nextHop);
 
@@ -325,7 +325,7 @@ public final class ManageNetworkWatcher {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

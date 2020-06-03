@@ -83,7 +83,7 @@ public final class ManageSimpleApplicationGateway {
                     .toBackendIPAddress("11.1.1.3")
                     .toBackendIPAddress("11.1.1.4")
                     .attach()
-                    .withNewPublicIPAddress()
+                    .withNewPublicIpAddress()
                     .create();
 
             long t2 = System.currentTimeMillis();
@@ -113,7 +113,7 @@ public final class ManageSimpleApplicationGateway {
                     .toBackendIPAddress("11.1.1.2")
                     .toBackendIPAddress("11.1.1.3")
                     .toBackendIPAddress("11.1.1.4")
-                    .withHostName("www.contoso.com")
+                    .withHostname("www.contoso.com")
                     .withCookieBasedAffinity()
                     .attach()
                     .apply();
@@ -154,7 +154,7 @@ public final class ManageSimpleApplicationGateway {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -50,7 +50,7 @@ public interface SqlSyncMember
     String memberDatabaseName();
 
     /** @return the user name of the member database in the sync member */
-    String userName();
+    String username();
 
     /** @return the sync direction of the sync member */
     SyncDirection syncDirection();

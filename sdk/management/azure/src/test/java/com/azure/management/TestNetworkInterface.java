@@ -7,7 +7,7 @@ import com.azure.management.network.LoadBalancerInboundNatRule;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkInterfaces;
-import com.azure.management.network.NicIPConfiguration;
+import com.azure.management.network.NicIpConfiguration;
 import com.azure.management.network.Subnet;
 import com.azure.management.resources.fluentcore.arm.Region;
 import java.util.Collection;
@@ -18,7 +18,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
 
-        String postfix = networkInterfaces.manager().getSdkContext().randomResourceName("", 8);
+        String postfix = networkInterfaces.manager().sdkContext().randomResourceName("", 8);
         final String nicName = "nic" + postfix;
         final String vnetName = "net" + postfix;
         final String pipName = "pip" + postfix;
@@ -54,18 +54,18 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         Assertions.assertTrue(nic.isIPForwardingEnabled());
 
         // Verify IP configs
-        NicIPConfiguration ipConfig = nic.primaryIPConfiguration();
+        NicIpConfiguration ipConfig = nic.primaryIPConfiguration();
         Assertions.assertNotNull(ipConfig);
         network = ipConfig.getNetwork();
         Assertions.assertNotNull(network);
         Subnet subnet = network.subnets().get(ipConfig.subnetName());
         Assertions.assertNotNull(subnet);
         Assertions.assertEquals(1, subnet.networkInterfaceIPConfigurationCount());
-        Collection<NicIPConfiguration> ipConfigs = subnet.listNetworkInterfaceIPConfigurations();
+        Collection<NicIpConfiguration> ipConfigs = subnet.listNetworkInterfaceIPConfigurations();
         Assertions.assertNotNull(ipConfigs);
         Assertions.assertEquals(1, ipConfigs.size());
-        NicIPConfiguration ipConfig2 = null;
-        for (NicIPConfiguration i : ipConfigs) {
+        NicIpConfiguration ipConfig2 = null;
+        for (NicIpConfiguration i : ipConfigs) {
             if (i.name().equalsIgnoreCase(ipConfig.name())) {
                 ipConfig2 = i;
                 break;
@@ -86,8 +86,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withoutAcceleratedNetworking()
                 .withSubnet("subnet2")
                 .updateIPConfiguration("primary") // Updating the primary IP configuration
-                .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
-                .withoutPublicIPAddress() // Equivalent to ..update().withoutPrimaryPublicIPAddress()
+                .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
+                .withoutPublicIpAddress() // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                 .parent()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -96,11 +96,11 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         // Verifications
         Assertions.assertFalse(resource.isAcceleratedNetworkingEnabled());
         Assertions.assertFalse(resource.isIPForwardingEnabled());
-        NicIPConfiguration primaryIpConfig = resource.primaryIPConfiguration();
+        NicIpConfiguration primaryIpConfig = resource.primaryIPConfiguration();
         Assertions.assertNotNull(primaryIpConfig);
         Assertions.assertTrue(primaryIpConfig.isPrimary());
         Assertions.assertTrue("subnet2".equalsIgnoreCase(primaryIpConfig.subnetName()));
-        Assertions.assertNull(primaryIpConfig.publicIPAddressId());
+        Assertions.assertNull(primaryIpConfig.publicIpAddressId());
         Assertions.assertTrue(resource.tags().containsKey("tag1"));
 
         Assertions.assertEquals(1, resource.ipConfigurations().size());
@@ -151,7 +151,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             .append("\n\tPrivate IP:")
             .append(resource.primaryPrivateIP())
             .append("\n\tPrivate allocation method:")
-            .append(resource.primaryPrivateIPAllocationMethod())
+            .append(resource.primaryPrivateIpAllocationMethod())
             .append("\n\tPrimary virtual network ID: ")
             .append(resource.primaryIPConfiguration().networkId())
             .append("\n\tPrimary subnet name: ")
@@ -159,18 +159,18 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             .append("\n\tIP configurations: ");
 
         // Output IP configs
-        for (NicIPConfiguration ipConfig : resource.ipConfigurations().values()) {
+        for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
             info
                 .append("\n\t\tName: ")
                 .append(ipConfig.name())
                 .append("\n\t\tPrivate IP: ")
-                .append(ipConfig.privateIPAddress())
+                .append(ipConfig.privateIpAddress())
                 .append("\n\t\tPrivate IP allocation method: ")
-                .append(ipConfig.privateIPAllocationMethod().toString())
+                .append(ipConfig.privateIpAllocationMethod().toString())
                 .append("\n\t\tPrivate IP version: ")
-                .append(ipConfig.privateIPAddressVersion().toString())
+                .append(ipConfig.privateIpAddressVersion().toString())
                 .append("\n\t\tPIP id: ")
-                .append(ipConfig.publicIPAddressId())
+                .append(ipConfig.publicIpAddressId())
                 .append("\n\t\tAssociated network ID: ")
                 .append(ipConfig.networkId())
                 .append("\n\t\tAssociated subnet name: ")

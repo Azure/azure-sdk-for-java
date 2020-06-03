@@ -21,7 +21,7 @@ public interface ApplicationGatewayBackendServerHealth
      *
      * @return a network interface IP configuration
      */
-    NicIPConfiguration getNetworkInterfaceIPConfiguration();
+    NicIpConfiguration getNetworkInterfaceIPConfiguration();
 
     /** @return the health status of the server */
     ApplicationGatewayBackendHealthStatus status();

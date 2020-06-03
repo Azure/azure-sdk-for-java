@@ -5,23 +5,27 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The ContainerInfo model. */
 @Fluent
 public final class ContainerInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerInfo.class);
+
     /*
      * The currentTimeStamp property.
      */
     @JsonProperty(value = "currentTimeStamp")
-    private OffsetDateTime currentTimeStamp;
+    private OffsetDateTime currentTimestamp;
 
     /*
      * The previousTimeStamp property.
      */
     @JsonProperty(value = "previousTimeStamp")
-    private OffsetDateTime previousTimeStamp;
+    private OffsetDateTime previousTimestamp;
 
     /*
      * The currentCpuStats property.
@@ -60,42 +64,42 @@ public final class ContainerInfo {
     private ContainerNetworkInterfaceStatistics eth0;
 
     /**
-     * Get the currentTimeStamp property: The currentTimeStamp property.
+     * Get the currentTimestamp property: The currentTimeStamp property.
      *
-     * @return the currentTimeStamp value.
+     * @return the currentTimestamp value.
      */
-    public OffsetDateTime currentTimeStamp() {
-        return this.currentTimeStamp;
+    public OffsetDateTime currentTimestamp() {
+        return this.currentTimestamp;
     }
 
     /**
-     * Set the currentTimeStamp property: The currentTimeStamp property.
+     * Set the currentTimestamp property: The currentTimeStamp property.
      *
-     * @param currentTimeStamp the currentTimeStamp value to set.
+     * @param currentTimestamp the currentTimestamp value to set.
      * @return the ContainerInfo object itself.
      */
-    public ContainerInfo withCurrentTimeStamp(OffsetDateTime currentTimeStamp) {
-        this.currentTimeStamp = currentTimeStamp;
+    public ContainerInfo withCurrentTimestamp(OffsetDateTime currentTimestamp) {
+        this.currentTimestamp = currentTimestamp;
         return this;
     }
 
     /**
-     * Get the previousTimeStamp property: The previousTimeStamp property.
+     * Get the previousTimestamp property: The previousTimeStamp property.
      *
-     * @return the previousTimeStamp value.
+     * @return the previousTimestamp value.
      */
-    public OffsetDateTime previousTimeStamp() {
-        return this.previousTimeStamp;
+    public OffsetDateTime previousTimestamp() {
+        return this.previousTimestamp;
     }
 
     /**
-     * Set the previousTimeStamp property: The previousTimeStamp property.
+     * Set the previousTimestamp property: The previousTimeStamp property.
      *
-     * @param previousTimeStamp the previousTimeStamp value to set.
+     * @param previousTimestamp the previousTimestamp value to set.
      * @return the ContainerInfo object itself.
      */
-    public ContainerInfo withPreviousTimeStamp(OffsetDateTime previousTimeStamp) {
-        this.previousTimeStamp = previousTimeStamp;
+    public ContainerInfo withPreviousTimestamp(OffsetDateTime previousTimestamp) {
+        this.previousTimestamp = previousTimestamp;
         return this;
     }
 
@@ -217,5 +221,25 @@ public final class ContainerInfo {
     public ContainerInfo withEth0(ContainerNetworkInterfaceStatistics eth0) {
         this.eth0 = eth0;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (currentCpuStats() != null) {
+            currentCpuStats().validate();
+        }
+        if (previousCpuStats() != null) {
+            previousCpuStats().validate();
+        }
+        if (memoryStats() != null) {
+            memoryStats().validate();
+        }
+        if (eth0() != null) {
+            eth0().validate();
+        }
     }
 }

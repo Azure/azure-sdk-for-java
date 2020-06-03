@@ -5,7 +5,6 @@ package com.azure.management.resources.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.Features;
 import com.azure.management.resources.GenericResources;
@@ -22,6 +21,7 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.resources.models.FeatureClientBuilder;
 import com.azure.management.resources.models.FeatureClientImpl;
 import com.azure.management.resources.models.PolicyClientBuilder;
@@ -30,6 +30,8 @@ import com.azure.management.resources.models.ResourceManagementClientBuilder;
 import com.azure.management.resources.models.ResourceManagementClientImpl;
 import com.azure.management.resources.models.SubscriptionClientBuilder;
 import com.azure.management.resources.models.SubscriptionClientImpl;
+
+import java.util.Objects;
 
 /**
  * Entry point to Azure resource management.
@@ -133,8 +135,10 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         ResourceManager withSubscription(String subscriptionId);
 
         /**
-         * Specifies to use subscription from Azure profile.
+         * Specifies to use subscription from {@link AzureProfile}. If no subscription provided, we will
+         * try to set the only subscription if applicable returned by {@link Authenticated#subscriptions()}.
          *
+         * @throws IllegalStateException when no subscription or more than one subscription found in the tenant.
          * @return the ResourceManager instance with entry points that work in a subscription
          */
         ResourceManager withDefaultSubscription();
@@ -144,7 +148,6 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * The implementation for Authenticated interface.
      */
     private static final class AuthenticatedImpl implements Authenticated {
-        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private HttpPipeline httpPipeline;
         private AzureProfile profile;
         private SdkContext sdkContext;
@@ -185,15 +188,16 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
 
         @Override
         public ResourceManager withSubscription(String subscriptionId) {
-            profile.withSubscriptionId(subscriptionId);
+            Objects.requireNonNull(subscriptionId);
+            profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
 
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+                String subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
+                profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }

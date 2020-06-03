@@ -5,12 +5,16 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGatewayBackendHealthServerHealth;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayBackendHealthServer model. */
 @Fluent
 public final class ApplicationGatewayBackendHealthServerInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthServerInner.class);
+
     /*
      * IP address or FQDN of backend server.
      */
@@ -21,7 +25,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
      * Reference of IP configuration of backend server.
      */
     @JsonProperty(value = "ipConfiguration")
-    private NetworkInterfaceIPConfigurationInner ipConfiguration;
+    private NetworkInterfaceIpConfigurationInner ipConfiguration;
 
     /*
      * Health of backend server.
@@ -60,7 +64,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
      *
      * @return the ipConfiguration value.
      */
-    public NetworkInterfaceIPConfigurationInner ipConfiguration() {
+    public NetworkInterfaceIpConfigurationInner ipConfiguration() {
         return this.ipConfiguration;
     }
 
@@ -71,7 +75,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
     public ApplicationGatewayBackendHealthServerInner withIpConfiguration(
-        NetworkInterfaceIPConfigurationInner ipConfiguration) {
+        NetworkInterfaceIpConfigurationInner ipConfiguration) {
         this.ipConfiguration = ipConfiguration;
         return this;
     }
@@ -114,5 +118,16 @@ public final class ApplicationGatewayBackendHealthServerInner {
     public ApplicationGatewayBackendHealthServerInner withHealthProbeLog(String healthProbeLog) {
         this.healthProbeLog = healthProbeLog;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ipConfiguration() != null) {
+            ipConfiguration().validate();
+        }
     }
 }

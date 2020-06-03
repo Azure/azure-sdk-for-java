@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BootDiagnostics model. */
 @Fluent
 public final class BootDiagnostics {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnostics.class);
+
     /*
      * Whether boot diagnostics should be enabled on the Virtual Machine.
      */
@@ -61,5 +65,13 @@ public final class BootDiagnostics {
     public BootDiagnostics withStorageUri(String storageUri) {
         this.storageUri = storageUri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

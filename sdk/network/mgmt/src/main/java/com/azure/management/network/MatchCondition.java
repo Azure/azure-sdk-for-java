@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MatchCondition model. */
 @Fluent
 public final class MatchCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchCondition.class);
+
     /*
      * List of match variables.
      */
@@ -139,5 +143,30 @@ public final class MatchCondition {
     public MatchCondition withTransforms(List<WebApplicationFirewallTransform> transforms) {
         this.transforms = transforms;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (matchVariables() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property matchVariables in model MatchCondition"));
+        } else {
+            matchVariables().forEach(e -> e.validate());
+        }
+        if (operator() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property operator in model MatchCondition"));
+        }
+        if (matchValues() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property matchValues in model MatchCondition"));
+        }
     }
 }

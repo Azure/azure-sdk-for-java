@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LocalizableString model. */
 @Fluent
 public final class LocalizableString {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalizableString.class);
+
     /*
      * Non-localized name.
      */
@@ -60,5 +64,13 @@ public final class LocalizableString {
     public LocalizableString withLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

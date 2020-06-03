@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerServiceMasterProfile model. */
 @Fluent
 public final class ContainerServiceMasterProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceMasterProfile.class);
+
     /*
      * Number of masters (VMs) in the container service cluster. Allowed values
      * are 1, 3, and 5. The default value is 1.
@@ -78,5 +82,19 @@ public final class ContainerServiceMasterProfile {
      */
     public String fqdn() {
         return this.fqdn;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dnsPrefix() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dnsPrefix in model ContainerServiceMasterProfile"));
+        }
     }
 }

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -13,13 +14,13 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMappe
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.azure.cosmos.implementation.guava25.base.Strings;
 import io.micrometer.core.instrument.Tag;
 import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
@@ -110,8 +111,6 @@ public final class RntbdTransportClient extends TransportClient {
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
 
-        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {})", addressUri, request);
-
         checkNotNull(addressUri, "expected non-null address");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
@@ -119,9 +118,6 @@ public final class RntbdTransportClient extends TransportClient {
         URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
-
-        requestArgs.traceOperation(logger, null, "invokeStoreAsync");
-
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
@@ -131,12 +127,13 @@ public final class RntbdTransportClient extends TransportClient {
 
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
-            if (request.requestContext.cosmosResponseDiagnostics == null) {
-                request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
             }
 
-            if(response != null) {
-                response.setRequestTimeline(record.takeTimelineSnapshot());
+            if (response != null) {
+                RequestTimeline timeline = record.takeTimelineSnapshot();
+                response.setRequestTimeline(timeline);
             }
         })).doOnCancel(() -> {
             logger.debug("REQUEST CANCELLED: {}", record);
@@ -176,7 +173,10 @@ public final class RntbdTransportClient extends TransportClient {
         private final int bufferPageSize;
 
         @JsonProperty()
-        private final Duration connectionTimeout;
+        private final Duration connectionAcquisitionTimeout;
+
+        @JsonProperty()
+        private final Duration connectTimeout;
 
         @JsonProperty()
         private final Duration idleChannelTimeout;
@@ -200,7 +200,6 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration requestExpiryInterval;
 
         @JsonProperty()
-        //  TODO: (DANOBLE) - should we expose it through com.azure.cosmos.DirectConnectionConfig ?
         private final Duration requestTimeout;
 
         @JsonProperty()
@@ -212,6 +211,9 @@ public final class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration shutdownTimeout;
 
+        @JsonProperty()
+        private final int threadCount;
+
         @JsonIgnore()
         private final UserAgentContainer userAgent;
 
@@ -219,26 +221,10 @@ public final class RntbdTransportClient extends TransportClient {
 
         // region Constructors
 
-        private Options() {
-            this.bufferPageSize = 8192;
-            this.connectionTimeout = null;
-            this.idleChannelTimeout = Duration.ZERO;
-            this.idleEndpointTimeout = Duration.ofSeconds(70L);
-            this.maxBufferCapacity = 8192 << 10;
-            this.maxChannelsPerEndpoint = 10;
-            this.maxRequestsPerChannel = 30;
-            this.receiveHangDetectionTime = Duration.ofSeconds(65L);
-            this.requestExpiryInterval = Duration.ofSeconds(5L);
-            this.requestTimeout = null;
-            this.requestTimerResolution = Duration.ofMillis(5L);
-            this.sendHangDetectionTime = Duration.ofSeconds(10L);
-            this.shutdownTimeout = Duration.ofSeconds(15L);
-            this.userAgent = new UserAgentContainer();
-        }
-
-        private Options(Builder builder) {
+        private Options(final Builder builder) {
 
             this.bufferPageSize = builder.bufferPageSize;
+            this.connectionAcquisitionTimeout = builder.connectionAcquisitionTimeout;
             this.idleChannelTimeout = builder.idleChannelTimeout;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
             this.maxBufferCapacity = builder.maxBufferCapacity;
@@ -250,11 +236,31 @@ public final class RntbdTransportClient extends TransportClient {
             this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
+            this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
 
-            this.connectionTimeout = builder.connectionTimeout == null
+            this.connectTimeout = builder.connectTimeout == null
                 ? builder.requestTimeout
-                : builder.connectionTimeout;
+                : builder.connectTimeout;
+        }
+
+        private Options(final ConnectionPolicy connectionPolicy) {
+            this.bufferPageSize = 8192;
+            this.connectionAcquisitionTimeout = Duration.ZERO;
+            this.connectTimeout = connectionPolicy.getConnectTimeout();
+            this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
+            this.idleEndpointTimeout = Duration.ofSeconds(70L);
+            this.maxBufferCapacity = 8192 << 10;
+            this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
+            this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+            this.receiveHangDetectionTime = Duration.ofSeconds(65L);
+            this.requestExpiryInterval = Duration.ofSeconds(5L);
+            this.requestTimeout = connectionPolicy.getRequestTimeout();
+            this.requestTimerResolution = Duration.ofMillis(100L);
+            this.sendHangDetectionTime = Duration.ofSeconds(10L);
+            this.shutdownTimeout = Duration.ofSeconds(15L);
+            this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
+            this.userAgent = new UserAgentContainer();
         }
 
         // endregion
@@ -265,8 +271,12 @@ public final class RntbdTransportClient extends TransportClient {
             return this.bufferPageSize;
         }
 
-        public Duration connectionTimeout() {
-            return this.connectionTimeout;
+        public Duration connectionAcquisitionTimeout() {
+            return this.connectionAcquisitionTimeout;
+        }
+
+        public Duration connectTimeout() {
+            return this.connectTimeout;
         }
 
         public Duration idleChannelTimeout() {
@@ -313,6 +323,10 @@ public final class RntbdTransportClient extends TransportClient {
             return this.shutdownTimeout;
         }
 
+        public int threadCount() {
+            return this.threadCount;
+        }
+
         public UserAgentContainer userAgent() {
             return this.userAgent;
         }
@@ -353,7 +367,7 @@ public final class RntbdTransportClient extends TransportClient {
          * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
          * <p>Example: <pre>{@code {
          *   "bufferPageSize": 8192,
-         *   "connectionTimeout": "PT1M",
+         *   "connectTimeout": "PT1M",
          *   "idleChannelTimeout": "PT0S",
          *   "idleEndpointTimeout": "PT1M10S",
          *   "maxBufferCapacity": 8388608,
@@ -364,7 +378,8 @@ public final class RntbdTransportClient extends TransportClient {
          *   "requestTimeout": "PT1M",
          *   "requestTimerResolution": "PT0.5S",
          *   "sendHangDetectionTime": "PT10S",
-         *   "shutdownTimeout": "PT15S"
+         *   "shutdownTimeout": "PT15S",
+         *   "threadCount": 16
          * }}</pre>
          * </li>
          * </ol>
@@ -427,7 +442,7 @@ public final class RntbdTransportClient extends TransportClient {
                     }
                 } finally {
                     if (options == null) {
-                        DEFAULT_OPTIONS = new Options();
+                        DEFAULT_OPTIONS = new Options(ConnectionPolicy.getDefaultPolicy());
                     } else {
                         logger.info("Updated default Direct TCP options from system property {}: {}",
                             DEFAULT_OPTIONS_PROPERTY_NAME,
@@ -438,7 +453,8 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             private int bufferPageSize;
-            private Duration connectionTimeout;
+            private Duration connectionAcquisitionTimeout;
+            private Duration connectTimeout;
             private Duration idleChannelTimeout;
             private Duration idleEndpointTimeout;
             private int maxBufferCapacity;
@@ -450,6 +466,7 @@ public final class RntbdTransportClient extends TransportClient {
             private Duration requestTimerResolution;
             private Duration sendHangDetectionTime;
             private Duration shutdownTimeout;
+            private int threadCount;
             private UserAgentContainer userAgent;
 
             // endregion
@@ -458,23 +475,21 @@ public final class RntbdTransportClient extends TransportClient {
 
             public Builder(ConnectionPolicy connectionPolicy) {
 
-                this.requestTimeout(connectionPolicy.getRequestTimeout());
-
-                //  TODO: (DANOBLE) - Figure out how to get values from connection policy
-                //  At the same time respect the DEFAULT_OPTIONS values - in case user passes some of them.
-
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
-                this.connectionTimeout = DEFAULT_OPTIONS.connectionTimeout;
-                this.idleChannelTimeout = DEFAULT_OPTIONS.idleChannelTimeout;
+                this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
+                this.connectTimeout = connectionPolicy.getConnectTimeout();
+                this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
                 this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
-                this.maxChannelsPerEndpoint = DEFAULT_OPTIONS.maxChannelsPerEndpoint;
-                this.maxRequestsPerChannel = DEFAULT_OPTIONS.maxRequestsPerChannel;
+                this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
+                this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
                 this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
+                this.requestTimeout = connectionPolicy.getRequestTimeout();
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
+                this.threadCount = DEFAULT_OPTIONS.threadCount;
                 this.userAgent = DEFAULT_OPTIONS.userAgent;
             }
 
@@ -498,11 +513,17 @@ public final class RntbdTransportClient extends TransportClient {
                 return new Options(this);
             }
 
+            public Builder connectionAcquisitionTimeout(final Duration value) {
+                checkNotNull(value, "expected non-null value");
+                this.connectTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
+                return this;
+            }
+
             public Builder connectionTimeout(final Duration value) {
                 checkArgument(value == null || value.compareTo(Duration.ZERO) > 0,
                     "expected positive value, not %s",
                     value);
-                this.connectionTimeout = value;
+                this.connectTimeout = value;
                 return this;
             }
 
@@ -585,6 +606,12 @@ public final class RntbdTransportClient extends TransportClient {
                     "expected positive value, not %s",
                     value);
                 this.shutdownTimeout = value;
+                return this;
+            }
+
+            public Builder threadCount(final int value) {
+                checkArgument(value > 0, "expected positive value, not %s", value);
+                this.threadCount = value;
                 return this;
             }
 

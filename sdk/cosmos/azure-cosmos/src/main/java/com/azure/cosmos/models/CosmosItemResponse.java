@@ -1,42 +1,102 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
+import com.azure.cosmos.implementation.Utils;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
- * The synchronous Cosmos item response. Contains methods to access the Item and other response methods
+ * The type Cosmos item response. This contains the item and response methods
  *
  * @param <T> the type parameter
  */
 public class CosmosItemResponse<T> {
-    private final CosmosAsyncItemResponse<T> responseWrapper;
+    private final Class<T> itemClassType;
+    private final byte[] responseBodyAsByteArray;
+    private T item;
+    private final ResourceResponse<Document> resourceResponse;
+    private CosmosItemProperties props;
 
-    CosmosItemResponse(CosmosAsyncItemResponse<T> response) {
-        this.responseWrapper = response;
+    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+        this.itemClassType = classType;
+        this.responseBodyAsByteArray = response.getBodyAsByteArray();
+        this.resourceResponse = response;
     }
 
     /**
-     * Gets resource.
+     * Gets the resource.
      *
      * @return the resource
      */
+    @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of CosmosItemProperties.
     public T getItem() {
-        return responseWrapper.getItem();
+        if (item != null) {
+            return item;
+        }
+
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
+        if (item == null && this.itemClassType == CosmosItemProperties.class) {
+            Instant serializationStartTime = Instant.now();
+            item =(T) getProperties();
+            Instant serializationEndTime = Instant.now();
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTime,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+            );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+            return item;
+        }
+
+        if (item == null) {
+            synchronized (this) {
+                if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
+                    Instant serializationStartTime = Instant.now();
+                    item = Utils.parse(responseBodyAsByteArray, itemClassType);
+                    Instant serializationEndTime = Instant.now();
+                    SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                        serializationStartTime,
+                        serializationEndTime,
+                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                    );
+                    serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                }
+            }
+        }
+
+        return item;
     }
 
     /**
-     * Gets the itemSettings
+     * Gets the itemProperties
      *
-     * @return the itemSettings
+     * @return the itemProperties
      */
     CosmosItemProperties getProperties() {
-        return responseWrapper.getProperties();
+        ensureCosmosItemPropertiesInitialized();
+        return props;
+    }
+
+    private void ensureCosmosItemPropertiesInitialized() {
+        synchronized (this) {
+            if (Utils.isEmpty(responseBodyAsByteArray)) {
+                props = null;
+            } else {
+                props = new CosmosItemProperties(responseBodyAsByteArray);
+            }
+
+        }
     }
 
     /**
@@ -46,7 +106,7 @@ public class CosmosItemResponse<T> {
      * @return the max resource quota.
      */
     public String getMaxResourceQuota() {
-        return responseWrapper.getMaxResourceQuota();
+        return resourceResponse.getMaxResourceQuota();
     }
 
     /**
@@ -55,7 +115,7 @@ public class CosmosItemResponse<T> {
      * @return the current resource quota usage.
      */
     public String getCurrentResourceQuotaUsage() {
-        return responseWrapper.getCurrentResourceQuotaUsage();
+        return resourceResponse.getCurrentResourceQuotaUsage();
     }
 
     /**
@@ -64,16 +124,19 @@ public class CosmosItemResponse<T> {
      * @return the activity getId.
      */
     public String getActivityId() {
-        return responseWrapper.getActivityId();
+        return resourceResponse.getActivityId();
     }
 
     /**
-     * Gets the number of index paths (terms) generated by the operation.
+     * Gets the request charge as request units (RU) consumed by the operation.
+     * <p>
+     * For more information about the RU and factors that can impact the effective charges please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
      *
      * @return the request charge.
      */
     public double getRequestCharge() {
-        return responseWrapper.getRequestCharge();
+        return resourceResponse.getRequestCharge();
     }
 
     /**
@@ -82,7 +145,7 @@ public class CosmosItemResponse<T> {
      * @return the status code.
      */
     public int getStatusCode() {
-        return responseWrapper.getStatusCode();
+        return resourceResponse.getStatusCode();
     }
 
     /**
@@ -91,7 +154,7 @@ public class CosmosItemResponse<T> {
      * @return the session token.
      */
     public String getSessionToken() {
-        return responseWrapper.getSessionToken();
+        return resourceResponse.getSessionToken();
     }
 
     /**
@@ -100,7 +163,7 @@ public class CosmosItemResponse<T> {
      * @return the response headers.
      */
     public Map<String, String> getResponseHeaders() {
-        return responseWrapper.getResponseHeaders();
+        return resourceResponse.getResponseHeaders();
     }
 
     /**
@@ -108,8 +171,8 @@ public class CosmosItemResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return responseWrapper.getResponseDiagnostics();
+    public CosmosDiagnostics getDiagnostics() {
+        return resourceResponse.getDiagnostics();
     }
 
     /**
@@ -117,18 +180,19 @@ public class CosmosItemResponse<T> {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    public Duration getRequestLatency() {
-        return responseWrapper.getRequestLatency();
+    public Duration getDuration() {
+        return resourceResponse.getDuration();
     }
 
     /**
      * Gets the ETag from the response headers.
+     * This is only relevant when getting response from the server.
      *
      * Null in case of delete operation.
      *
      * @return ETag
      */
     public String getETag() {
-        return responseWrapper.getETag();
+        return resourceResponse.getETag();
     }
 }

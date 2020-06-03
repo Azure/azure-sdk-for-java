@@ -6,7 +6,7 @@ import com.azure.management.compute.RunCommandInput;
 import com.azure.management.compute.RunCommandInputParameter;
 import com.azure.management.compute.RunCommandResult;
 import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetIPConfiguration;
+import com.azure.management.compute.VirtualMachineScaleSetIpConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetNetworkConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
 import com.azure.management.compute.VirtualMachineScaleSetOSDisk;
@@ -19,7 +19,7 @@ import com.azure.management.compute.models.VirtualMachineScaleSetsInner;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -195,10 +195,10 @@ public class VirtualMachineScaleSetsImpl
             new VirtualMachineScaleSetNetworkConfiguration()
                 .withPrimary(true)
                 .withName("primary-nic-cfg")
-                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIPConfiguration>());
+                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIpConfiguration>());
         primaryNetworkInterfaceConfiguration
             .ipConfigurations()
-            .add(new VirtualMachineScaleSetIPConfiguration().withName("primary-nic-ip-cfg"));
+            .add(new VirtualMachineScaleSetIpConfiguration().withName("primary-nic-ip-cfg"));
 
         inner
             .virtualMachineProfile()

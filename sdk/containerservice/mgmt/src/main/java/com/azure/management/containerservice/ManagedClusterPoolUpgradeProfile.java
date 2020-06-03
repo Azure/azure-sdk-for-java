@@ -5,12 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ManagedClusterPoolUpgradeProfile model. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
+
     /*
      * Kubernetes version (major, minor, patch).
      */
@@ -114,5 +118,28 @@ public final class ManagedClusterPoolUpgradeProfile {
     public ManagedClusterPoolUpgradeProfile withUpgrades(List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades) {
         this.upgrades = upgrades;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (kubernetesVersion() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
+        }
+        if (osType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
+        }
+        if (upgrades() != null) {
+            upgrades().forEach(e -> e.validate());
+        }
     }
 }

@@ -4,14 +4,14 @@
 package com.azure.management.sql;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -616,7 +616,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         try {
             storageAccount =
                 storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
             Assertions.assertEquals(404, e.getResponse().getStatusCode());
         }
         if (storageAccount == null) {
@@ -1494,7 +1494,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         try {
             Object result = fetchResource.get();
             Assertions.assertNull(result);
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
             Assertions.assertEquals(404, e.getResponse().getStatusCode());
         }
     }

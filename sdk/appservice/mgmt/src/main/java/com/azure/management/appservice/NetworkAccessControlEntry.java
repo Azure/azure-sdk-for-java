@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NetworkAccessControlEntry model. */
 @Fluent
 public final class NetworkAccessControlEntry {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkAccessControlEntry.class);
+
     /*
      * Action object.
      */
@@ -112,5 +116,13 @@ public final class NetworkAccessControlEntry {
     public NetworkAccessControlEntry withRemoteSubnet(String remoteSubnet) {
         this.remoteSubnet = remoteSubnet;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

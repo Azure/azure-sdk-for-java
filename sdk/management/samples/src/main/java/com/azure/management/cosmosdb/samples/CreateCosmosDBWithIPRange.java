@@ -6,7 +6,7 @@ package com.azure.management.cosmosdb.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.cosmosdb.CosmosDBAccount;
@@ -51,10 +51,10 @@ public final class CreateCosmosDBWithIPRange {
             //============================================================
             // Delete CosmosDB
             System.out.println("Deleting the CosmosDB");
-            // work around CosmosDB service issue returning 404 CloudException on delete operation
+            // work around CosmosDB service issue returning 404 ManagementException on delete operation
             try {
                 azure.cosmosDBAccounts().deleteById(cosmosDBAccount.id());
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
             }
             System.out.println("Deleted the CosmosDB");
 
@@ -86,7 +86,7 @@ public final class CreateCosmosDBWithIPRange {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

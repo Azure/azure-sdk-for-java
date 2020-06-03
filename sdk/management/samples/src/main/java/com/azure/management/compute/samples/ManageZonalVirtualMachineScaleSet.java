@@ -14,7 +14,7 @@ import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.PublicIPSkuType;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.resources.ResourceGroup;
@@ -68,7 +68,7 @@ public final class ManageZonalVirtualMachineScaleSet {
 
             System.out.println("Creating a zone resilient public ip address");
 
-            PublicIPAddress publicIPAddress = azure.publicIPAddresses()
+            PublicIpAddress publicIPAddress = azure.publicIpAddresses()
                     .define(publicIPName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup)
@@ -122,7 +122,7 @@ public final class ManageZonalVirtualMachineScaleSet {
                     .attach()
                     // Explicitly define the frontend
                     .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)   // Frontend with PIP means internet-facing load-balancer
+                    .withExistingPublicIpAddress(publicIPAddress)   // Frontend with PIP means internet-facing load-balancer
                     .attach()
                     // Add two probes one per rule
                     .defineHttpProbe("httpProbe")
@@ -240,7 +240,7 @@ public final class ManageZonalVirtualMachineScaleSet {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -16,9 +16,9 @@ import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerInboundNatRule;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.TransportProtocol;
-import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
+import com.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -95,14 +95,14 @@ public final class ManageVirtualMachineScaleSetAsync {
                                 .withAddressPrefix("172.16.1.0/24")
                                 .attach()
                             .createAsync(),
-                    azure.publicIPAddresses().define(publicIpName)
+                    azure.publicIpAddresses().define(publicIpName)
                             .withRegion(region)
                             .withExistingResourceGroup(rgName)
                             .withLeafDomainLabel(publicIpName)
                             .createAsync()
                             .flatMap(indexable -> {
-                                if (indexable instanceof PublicIPAddress) {
-                                    PublicIPAddress publicIp = (PublicIPAddress) indexable;
+                                if (indexable instanceof PublicIpAddress) {
+                                    PublicIpAddress publicIp = (PublicIpAddress) indexable;
                                     //=============================================================
                                     // Create an Internet facing load balancer with
                                     // One frontend IP address
@@ -165,7 +165,7 @@ public final class ManageVirtualMachineScaleSetAsync {
 
                                             // Explicitly define the frontend
                                             .definePublicFrontend(frontendName)
-                                            .withExistingPublicIPAddress(publicIp)
+                                            .withExistingPublicIpAddress(publicIp)
                                             .attach()
 
                                             // Add two probes one per rule
@@ -187,12 +187,12 @@ public final class ManageVirtualMachineScaleSetAsync {
             }).last().block();
 
             Network network = null;
-            PublicIPAddress publicIPAddress = null;
+            PublicIpAddress publicIPAddress = null;
             LoadBalancer loadBalancer1 = null;
 
             for (Indexable indexable : createdResources) {
-                if (indexable instanceof PublicIPAddress) {
-                    publicIPAddress = (PublicIPAddress) indexable;
+                if (indexable instanceof PublicIpAddress) {
+                    publicIPAddress = (PublicIpAddress) indexable;
                     System.out.println("Created a public IP address");
                     // Print the virtual network details
                     Utils.print(publicIPAddress);
@@ -273,7 +273,7 @@ public final class ManageVirtualMachineScaleSetAsync {
                         instance.listNetworkInterfacesAsync()
                             .single()
                             .map(networkInterface -> {
-                                for (VirtualMachineScaleSetNicIPConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
+                                for (VirtualMachineScaleSetNicIpConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
                                     if (ipConfig.isPrimary()) {
                                         List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
                                         for (LoadBalancerInboundNatRule natRule : natRules) {
@@ -345,7 +345,7 @@ public final class ManageVirtualMachineScaleSetAsync {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

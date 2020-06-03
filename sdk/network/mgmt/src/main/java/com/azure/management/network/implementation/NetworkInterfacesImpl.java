@@ -9,7 +9,7 @@ import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkInterfaceDnsSettings;
 import com.azure.management.network.NetworkInterfaces;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
+import com.azure.management.network.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.management.network.models.NetworkInterfaceInner;
 import com.azure.management.network.models.NetworkInterfacesInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -72,7 +72,7 @@ class NetworkInterfacesImpl
     @Override
     protected NetworkInterfaceImpl wrapModel(String name) {
         NetworkInterfaceInner inner = new NetworkInterfaceInner();
-        inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfigurationInner>());
+        inner.withIpConfigurations(new ArrayList<NetworkInterfaceIpConfigurationInner>());
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());
         return new NetworkInterfaceImpl(name, inner, super.manager());
     }

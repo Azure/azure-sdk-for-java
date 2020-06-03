@@ -5,17 +5,21 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RampUpRule model. */
 @Fluent
 public final class RampUpRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RampUpRule.class);
+
     /*
      * Hostname of a slot to which the traffic will be redirected if decided
      * to. E.g. myapp-stage.azurewebsites.net.
      */
     @JsonProperty(value = "actionHostName")
-    private String actionHostName;
+    private String actionHostname;
 
     /*
      * Percentage of the traffic which will be redirected to
@@ -72,24 +76,24 @@ public final class RampUpRule {
     private String name;
 
     /**
-     * Get the actionHostName property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
+     * Get the actionHostname property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
      * myapp-stage.azurewebsites.net.
      *
-     * @return the actionHostName value.
+     * @return the actionHostname value.
      */
-    public String actionHostName() {
-        return this.actionHostName;
+    public String actionHostname() {
+        return this.actionHostname;
     }
 
     /**
-     * Set the actionHostName property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
+     * Set the actionHostname property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
      * myapp-stage.azurewebsites.net.
      *
-     * @param actionHostName the actionHostName value to set.
+     * @param actionHostname the actionHostname value to set.
      * @return the RampUpRule object itself.
      */
-    public RampUpRule withActionHostName(String actionHostName) {
-        this.actionHostName = actionHostName;
+    public RampUpRule withActionHostname(String actionHostname) {
+        this.actionHostname = actionHostname;
         return this;
     }
 
@@ -247,5 +251,13 @@ public final class RampUpRule {
     public RampUpRule withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }
