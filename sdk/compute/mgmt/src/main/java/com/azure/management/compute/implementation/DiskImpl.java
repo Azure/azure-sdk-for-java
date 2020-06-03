@@ -3,18 +3,19 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.AccessLevel;
-import com.azure.management.compute.CreationData;
-import com.azure.management.compute.CreationSource;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.DiskCreateOption;
-import com.azure.management.compute.DiskSku;
-import com.azure.management.compute.DiskSkuTypes;
-import com.azure.management.compute.EncryptionSettingsCollection;
-import com.azure.management.compute.GrantAccessData;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.Snapshot;
-import com.azure.management.compute.models.DiskInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AccessLevel;
+import com.azure.management.compute.models.CreationData;
+import com.azure.management.compute.models.CreationSource;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskCreateOption;
+import com.azure.management.compute.models.DiskSku;
+import com.azure.management.compute.models.DiskSkuTypes;
+import com.azure.management.compute.models.EncryptionSettingsCollection;
+import com.azure.management.compute.models.GrantAccessData;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.Snapshot;
+import com.azure.management.compute.fluent.inner.DiskInner;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -103,7 +104,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         return this
             .manager()
             .inner()
-            .disks()
+            .getDisks()
             .grantAccessAsync(this.resourceGroupName(), this.name(), grantAccessDataInner)
             .onErrorResume(e -> Mono.empty())
             .map(accessUriInner -> accessUriInner.accessSas());
@@ -116,7 +117,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public Mono<Void> revokeAccessAsync() {
-        return this.manager().inner().disks().revokeAccessAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getDisks().revokeAccessAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -351,13 +352,13 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     public Mono<Disk> createResourceAsync() {
         return manager()
             .inner()
-            .disks()
+            .getDisks()
             .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiskInner> getInnerAsync() {
-        return this.manager().inner().disks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getDisks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 }

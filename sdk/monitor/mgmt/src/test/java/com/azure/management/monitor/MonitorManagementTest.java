@@ -5,7 +5,7 @@ package com.azure.management.monitor;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.management.appservice.implementation.AppServiceManager;
-import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.ComputeManager;
 // import com.azure.management.eventhub.implementation.EventHubManager;
 import com.azure.management.monitor.implementation.MonitorManager;
 import com.azure.management.resources.core.TestBase;

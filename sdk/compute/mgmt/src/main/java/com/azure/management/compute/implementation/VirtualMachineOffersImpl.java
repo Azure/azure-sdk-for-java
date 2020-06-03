@@ -4,11 +4,11 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.VirtualMachineOffer;
-import com.azure.management.compute.VirtualMachineOffers;
-import com.azure.management.compute.VirtualMachinePublisher;
-import com.azure.management.compute.models.VirtualMachineImageResourceInner;
-import com.azure.management.compute.models.VirtualMachineImagesInner;
+import com.azure.management.compute.models.VirtualMachineOffer;
+import com.azure.management.compute.models.VirtualMachineOffers;
+import com.azure.management.compute.models.VirtualMachinePublisher;
+import com.azure.management.compute.fluent.inner.VirtualMachineImageResourceInner;
+import com.azure.management.compute.fluent.VirtualMachineImagesClient;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 
@@ -17,10 +17,10 @@ class VirtualMachineOffersImpl
     extends ReadableWrappersImpl<VirtualMachineOffer, VirtualMachineOfferImpl, VirtualMachineImageResourceInner>
     implements VirtualMachineOffers {
 
-    private final VirtualMachineImagesInner innerCollection;
+    private final VirtualMachineImagesClient innerCollection;
     private final VirtualMachinePublisher publisher;
 
-    VirtualMachineOffersImpl(VirtualMachineImagesInner innerCollection, VirtualMachinePublisher publisher) {
+    VirtualMachineOffersImpl(VirtualMachineImagesClient innerCollection, VirtualMachinePublisher publisher) {
         this.innerCollection = innerCollection;
         this.publisher = publisher;
     }

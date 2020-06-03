@@ -4,12 +4,12 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.DiskEncryptionSettings;
-import com.azure.management.compute.DiskVolumeType;
-import com.azure.management.compute.KeyVaultKeyReference;
-import com.azure.management.compute.KeyVaultSecretReference;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.VirtualMachineEncryptionConfiguration;
+import com.azure.management.compute.models.DiskEncryptionSettings;
+import com.azure.management.compute.models.DiskVolumeType;
+import com.azure.management.compute.models.KeyVaultKeyReference;
+import com.azure.management.compute.models.KeyVaultSecretReference;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.VirtualMachineEncryptionConfiguration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;

@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachineOffer;
-import com.azure.management.compute.VirtualMachinePublisher;
-import com.azure.management.compute.VirtualMachineSkus;
-import com.azure.management.compute.models.VirtualMachineImagesInner;
+import com.azure.management.compute.models.VirtualMachineOffer;
+import com.azure.management.compute.models.VirtualMachinePublisher;
+import com.azure.management.compute.models.VirtualMachineSkus;
+import com.azure.management.compute.fluent.VirtualMachineImagesClient;
 import com.azure.management.resources.fluentcore.arm.Region;
 
 /** The implementation for {@link VirtualMachineOffer}. */
@@ -14,7 +14,7 @@ class VirtualMachineOfferImpl implements VirtualMachineOffer {
     private final String offerName;
     private final VirtualMachineSkusImpl skus;
 
-    VirtualMachineOfferImpl(VirtualMachinePublisher publisher, String offer, VirtualMachineImagesInner client) {
+    VirtualMachineOfferImpl(VirtualMachinePublisher publisher, String offer, VirtualMachineImagesClient client) {
         this.publisher = publisher;
         this.offerName = offer;
         this.skus = new VirtualMachineSkusImpl(this, client);

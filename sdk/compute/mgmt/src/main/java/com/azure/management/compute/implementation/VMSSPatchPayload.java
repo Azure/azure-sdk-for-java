@@ -4,18 +4,18 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetIpConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetNetworkConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetUpdate;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateIpConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateNetworkConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateNetworkProfile;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateOSDisk;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateOSProfile;
-import com.azure.management.compute.VirtualMachineScaleSetUpdatePublicIpAddressConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateStorageProfile;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateVMProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetIpConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetNetworkConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdate;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdateIpConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdateNetworkConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdateNetworkProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdateOSDisk;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdateOSProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdatePublicIpAddressConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdateStorageProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdateVMProfile;
 import java.util.ArrayList;
 
 class VMSSPatchPayload {
