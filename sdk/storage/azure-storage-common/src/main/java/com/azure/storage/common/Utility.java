@@ -249,7 +249,7 @@ public final class Utility {
                             throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                                 String.format("Request body emitted %d bytes, more than the expected %d bytes.",
                                     totalLength, length), totalLength, length));
-                        } else if(currentTotalLength[0] > length) {
+                        } else if (currentTotalLength[0] > length) {
                             throw LOGGER.logExceptionAsError(new IllegalStateException(
                                 String.format("Read more data than was requested. Size of data read: %d. Size of data"
                                     + " requested: %d", currentTotalLength[0], length)));
