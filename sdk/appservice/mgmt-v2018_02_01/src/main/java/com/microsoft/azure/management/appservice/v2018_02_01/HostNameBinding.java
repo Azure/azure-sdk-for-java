@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing HostNameBinding.
  */
-public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexable, Refreshable<HostNameBinding>, Updatable<HostNameBinding.Update>, HasManager<AppServiceManager> {
+public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexable, Refreshable<HostNameBinding>, Updatable<HostNameBinding.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the azureResourceName value.
      */

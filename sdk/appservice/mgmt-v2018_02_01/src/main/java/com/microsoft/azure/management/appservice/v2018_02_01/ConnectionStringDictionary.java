@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.ConnectionStringDictionaryInner;
 import java.util.Map;
 
 /**
  * Type representing ConnectionStringDictionary.
  */
-public interface ConnectionStringDictionary extends HasInner<ConnectionStringDictionaryInner>, HasManager<AppServiceManager> {
+public interface ConnectionStringDictionary extends HasInner<ConnectionStringDictionaryInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
