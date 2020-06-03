@@ -2,31 +2,30 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedProcessorBuilderImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Simple host for distributing change feed events across observers and thus allowing these observers scale.
- * It distributes the load across its instances and allows dynamic scaling:
- * - Partitions in partitioned collections are distributed across instances/observers.
- * - New instance takes leases from existing instances to make distribution equal.
- * - If an instance dies, the leases are distributed across remaining instances.
- * It's useful for scenario when partition count is high so that one host/VM is not capable of processing that many
- * change feed events.
- * Client application needs to implement {@link ChangeFeedObserver} and register processor implementation with
- * {@link ChangeFeedProcessor}.
+ * Simple host for distributing change feed events across observers, simplifying the process of reading the change feeds
+ *   and distributing the processing events across multiple consumers effectively.
  * <p>
- * It uses auxiliary document collection for managing leases for a partition.
- * Every EventProcessorHost instance is performing the following two tasks:
- * 1) Renew Leases: It keeps track of leases currently owned by the host and continuously keeps on renewing the leases.
- * 2) Acquire Leases: Each instance continuously polls all leases to check if there are any leases it should acquire
- * for the system to get into balanced state.
+ * There are four main components of implementing the change feed processor:
+ *  - The monitored container: the monitored container has the data from which the change feed is generated. Any inserts
+ *    and updates to the monitored container are reflected in the change feed of the container.
+ *  - The lease container: the lease container acts as a state storage and coordinates processing the change feed across
+ *    multiple workers. The lease container can be stored in the same account as the monitored container or in a
+ *    separate account.
+ *  - The host: a host is an application instance that uses the change feed processor to listen for changes. Multiple
+ *    instances with the same lease configuration can run in parallel, but each instance should have a different
+ *    instance name.
+ *  - The delegate: the delegate is the code that defines what you, the developer, want to do with each batch of
+ *    changes that the change feed processor reads.
  * <p>
  * {@code
  * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
@@ -34,8 +33,10 @@ import java.util.function.Consumer;
  *     .feedContainer(feedContainer)
  *     .leaseContainer(leaseContainer)
  *     .handleChanges(docs -> {
- *         // Implementation for handling and processing CosmosItemProperties list goes here
- *      })
+ *         for (JsonNode item : docs) {
+ *             // Implementation for handling and processing of each JsonNode item goes here
+ *         }
+ *     })
  *     .build();
  * }
  */
@@ -63,8 +64,20 @@ public interface ChangeFeedProcessor {
     boolean isStarted();
 
     /**
-     * Helper static method to buildAsyncClient {@link ChangeFeedProcessor} instances
-     * as logical representation of the Azure Cosmos DB database service.
+     * Returns the current owner (host) and an approximation of the difference between the last processed item (defined
+     *   by the state of the feed container) and the latest change in the container for each partition (lease
+     *   item).
+     * <p>
+     * An empty map will be returned if the processor was not started or no lease items matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a map representing the current owner and lease token, the current LSN and latest LSN, and the estimated
+     *         lag, asynchronously.
+     */
+    Mono<Map<String, Integer>> getEstimatedLag();
+
+    /**
+     * Helper static method to build a {@link ChangeFeedProcessor} instance.
      * <p>
      * {@code
      * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
@@ -72,8 +85,10 @@ public interface ChangeFeedProcessor {
      *     .feedContainer(feedContainer)
      *     .leaseContainer(leaseContainer)
      *     .handleChanges(docs -> {
-     *         // Implementation for handling and processing CosmosItemProperties list goes here
-     *      })
+     *         for (JsonNode item : docs) {
+     *             // Implementation for handling and processing of each JsonNode item goes here
+     *         }
+     *     })
      *     .build();
      * }
      * @return a changeFeedProcessorBuilder definition instance.
@@ -96,7 +111,7 @@ public interface ChangeFeedProcessor {
         BuilderDefinition hostName(String hostName);
 
         /**
-         * Sets and existing {@link CosmosAsyncContainer} to be used to read from the monitored collection.
+         * Sets and existing {@link CosmosAsyncContainer} to be used to read from the monitored container.
          *
          * @param feedContainer the instance of {@link CosmosAsyncContainer} to be used.
          * @return current Builder.
@@ -121,14 +136,23 @@ public interface ChangeFeedProcessor {
 
         /**
          * Sets a consumer function which will be called to process changes.
+         * <p>
+         * {@code
+         * An example for how this will look like:
+         *     .handleChanges(docs -> {
+         *         for (JsonNode item : docs) {
+         *             // Implementation for handling and processing of each JsonNode item goes here
+         *         }
+         *     })
+         *  }
          *
-         * @param consumer the consumer of {@link ChangeFeedObserver} to call for handling the feeds.
+         * @param consumer the {@link Consumer} to call for handling the feeds.
          * @return current Builder.
          */
         BuilderDefinition handleChanges(Consumer<List<JsonNode>> consumer);
 
         /**
-         * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases collection.
+         * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases container.
          *
          * @param leaseContainer the instance of {@link CosmosAsyncContainer} to use.
          * @return current Builder.
@@ -136,7 +160,7 @@ public interface ChangeFeedProcessor {
         BuilderDefinition leaseContainer(CosmosAsyncContainer leaseContainer);
 
         /**
-         * Builds a new instance of the {@link ChangeFeedProcessor} with the specified configuration asynchronously.
+         * Builds a new instance of the {@link ChangeFeedProcessor} with the specified configuration.
          *
          * @return an instance of {@link ChangeFeedProcessor}.
          */

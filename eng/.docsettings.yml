@@ -120,6 +120,7 @@ known_content_issues:
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-table/swagger/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']

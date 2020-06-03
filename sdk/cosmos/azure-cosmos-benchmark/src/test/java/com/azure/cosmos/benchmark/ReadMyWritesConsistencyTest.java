@@ -3,18 +3,14 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
-import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.beust.jcommander.JCommander;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +25,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -167,10 +162,6 @@ public class ReadMyWritesConsistencyTest {
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath("/*");
-        List<Index> indexes = new ArrayList<>();
-        indexes.add(Index.range(DataType.STRING, -1));
-        indexes.add(Index.range(DataType.NUMBER, -1));
-        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 

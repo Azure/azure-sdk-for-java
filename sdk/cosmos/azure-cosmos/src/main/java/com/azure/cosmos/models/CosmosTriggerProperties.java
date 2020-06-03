@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Trigger;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,8 +18,20 @@ public final class CosmosTriggerProperties {
     /**
      * Constructor
      */
-    public CosmosTriggerProperties() {
+    CosmosTriggerProperties() {
         this.trigger = new Trigger();
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param id the id of the Cosmos trigger.
+     * @param body the body of the Cosmos trigger.
+     */
+    public CosmosTriggerProperties(String id, String body) {
+        this.trigger = new Trigger();
+        trigger.setId(id);
+        trigger.setBody(body);
     }
 
     /**
@@ -120,21 +132,23 @@ public final class CosmosTriggerProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.trigger.getResourceId();
     }
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.trigger.getTimestamp();
     }
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

@@ -66,9 +66,9 @@ public final class SpatialSpec {
     }
 
     /**
-     * Gets the collection of spatial types.
+     * Gets the container of spatial types.
      *
-     * @return the collection of spatial types.
+     * @return the container of spatial types.
      */
     public List<SpatialType> getSpatialTypes() {
         if (this.spatialTypes == null) {
@@ -83,9 +83,9 @@ public final class SpatialSpec {
     }
 
     /**
-     * Sets the collection of spatial types.
+     * Sets the container of spatial types.
      *
-     * @param spatialTypes the collection of spatial types.
+     * @param spatialTypes the container of spatial types.
      * @return the SpatialSpec.
      */
     public SpatialSpec setSpatialTypes(List<SpatialType> spatialTypes) {

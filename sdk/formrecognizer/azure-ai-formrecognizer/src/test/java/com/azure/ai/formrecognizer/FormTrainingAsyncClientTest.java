@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
+    static final String EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION = "Status code 400, \"{\"error\":{\"code\":\"1002\",\"message\":\"Copy request is invalid. Field 'TargetResourceRegion' must be a valid Azure region name.\"}}\"";
     private FormTrainingAsyncClient client;
 
     @BeforeAll
@@ -181,9 +182,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((storageSASUrl, useTrainingLabels) -> {
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useTrainingLabels).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
@@ -194,7 +195,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable ->
-                    throwable.getMessage().contains(HttpResponseStatus.NOT_FOUND.toString()));
+                    assertTrue(throwable.getMessage().contains("404")));
         });
     }
 
@@ -203,12 +204,12 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+     public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getModelInfos())
+        StepVerifier.create(client.listCustomModels())
             .thenConsumeWhile(customFormModelInfo ->
-                customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
-                    && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
+                customFormModelInfo.getModelId() != null && customFormModelInfo.getRequestedOn() != null
+                    && customFormModelInfo.getCompletedOn() != null && customFormModelInfo.getStatus() != null)
             .verifyComplete();
     }
 
@@ -233,9 +234,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void beginTrainingLabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((storageSASUrl, useTrainingLabels) -> {
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useTrainingLabels).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             validateCustomModelData(syncPoller.getFinalResult(), true);
         });
@@ -248,11 +249,106 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingUnlabeledRunner((storageSASUrl, useTrainingLabels) -> {
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useTrainingLabels).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             validateCustomModelData(syncPoller.getFinalResult(), false);
         });
     }
+
+    /**
+     * Verifies the result of the copy operation for valid parameters.
+     */
+    // Fix with https://github.com/Azure/azure-sdk-for-java/issues/11637
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    // void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    //     client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+    //     beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+    //         SyncPoller<OperationResult, CustomFormModel> syncPoller =
+    //             client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
+    //         syncPoller.waitForCompletion();
+    //         CustomFormModel actualModel = syncPoller.getFinalResult();
+    //
+    //         beginCopyRunner((resourceId, resourceRegion) -> {
+    //             Mono<CopyAuthorization> target =
+    //                 client.getCopyAuthorization(resourceId, resourceRegion);
+    //             PollerFlux<OperationResult,
+    //                 CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target.block());
+    //             CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
+    //             assertEquals(target.block().getModelId(), copyModel.getModelId());
+    //             assertNotNull(actualModel.getRequestedOn());
+    //             assertNotNull(actualModel.getCompletedOn());
+    //             assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
+    //         });
+    //     });
+    // }
+    //
+    // /**
+    //  * Verifies the Invalid region ErrorResponseException is thrown for invalid region input to copy operation.
+    //  */
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    // void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    //     client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+    //     beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+    //         SyncPoller<OperationResult, CustomFormModel> syncPoller =
+    //             client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
+    //         syncPoller.waitForCompletion();
+    //         CustomFormModel actualModel = syncPoller.getFinalResult();
+    //
+    //         beginCopyInvalidRegionRunner((resourceId, resourceRegion) -> {
+    //             Mono<CopyAuthorization> target =
+    //                 client.getCopyAuthorization(resourceId, resourceRegion);
+    //             PollerFlux<OperationResult,
+    //                 CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target.block());
+    //
+    //             Exception thrown = assertThrows(ErrorResponseException.class,
+    //                 () -> copyPoller.getSyncPoller().getFinalResult());
+    //             assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
+    //         });
+    //     });
+    // }
+    //
+    // /**
+    //  * Verifies HttpResponseException is thrown for invalid region input to copy operation.
+    //  */
+    // @SuppressWarnings("unchecked")
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    // void beginCopyIncorrectRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    //     client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+    //     beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+    //         SyncPoller<OperationResult, CustomFormModel> syncPoller =
+    //             client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
+    //         syncPoller.waitForCompletion();
+    //         CustomFormModel actualModel = syncPoller.getFinalResult();
+    //
+    //         beginCopyIncorrectRegionRunner((resourceId, resourceRegion) -> {
+    //             Mono<CopyAuthorization> target = client.getCopyAuthorization(resourceId, resourceRegion);
+    //             HttpResponseException thrown = assertThrows(HttpResponseException.class,
+    //                 () -> client.beginCopyModel(actualModel.getModelId(), target.block())
+    //                     .getSyncPoller().getFinalResult());
+    //             List<ErrorInformation> errorInformationList = (List<ErrorInformation>) thrown.getValue();
+    //             assertEquals("ResourceResolverError", errorInformationList.get(0).getCode());
+    //             assertEquals("Copy operation returned with a failed status", thrown.getMessage());
+    //         });
+    //     });
+    // }
+    //
+    // /**
+    //  * Verifies the result of the copy authorization for valid parameters.
+    //  */
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    // void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    //     client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+    //     beginCopyRunner((resourceId, resourceRegion) ->
+    //         StepVerifier.create(client.getCopyAuthorization(resourceId, resourceRegion))
+    //             .assertNext(copyAuthorization ->
+    //                 validateCopyAuthorizationResult(resourceId, resourceRegion, copyAuthorization))
+    //             .verifyComplete()
+    //     );
+    // }
 }

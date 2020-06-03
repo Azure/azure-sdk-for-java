@@ -6,10 +6,11 @@ package com.azure.ai.formrecognizer.training;
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainModelOptions;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -48,10 +49,10 @@ public final class FormTrainingClient {
     }
 
     /**
-     * Creates a new {@link FormRecognizerClient} object. The new {@code FormTrainingClient}
-     * uses the same request policy pipeline as the {@code FormTrainingClient}.
+     * Creates a new {@link FormRecognizerClient} object. The new {@link FormTrainingClient}
+     * uses the same request policy pipeline as the {@link FormTrainingClient}.
      *
-     * @return A new {@code FormRecognizerClient} object.
+     * @return A new {@link FormRecognizerClient} object.
      */
     public FormRecognizerClient getFormRecognizerClient() {
         return new FormRecognizerClientBuilder().endpoint(client.getEndpoint()).pipeline(client.getHttpPipeline())
@@ -75,7 +76,7 @@ public final class FormTrainingClient {
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a {@link CustomFormModel}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -92,22 +93,22 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainModelOptions-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
-     * @param trainModelOptions Filter to apply to the documents in the source path for training.
+     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} that polls the extract receipt operation until it
-     * has completed, has failed, or has been cancelled.
+     * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link CustomFormModel}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainModelOptions trainModelOptions, Duration pollInterval) {
-        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainModelOptions, pollInterval)
+        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval)
             .getSyncPoller();
     }
 
@@ -203,27 +204,121 @@ public final class FormTrainingClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels}
      *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomFormModelInfo> getModelInfos() {
-        return new PagedIterable<>(client.getModelInfos(Context.NONE));
+    public PagedIterable<CustomFormModelInfo> listCustomModels() {
+        return new PagedIterable<>(client.listCustomModels(Context.NONE));
     }
 
     /**
      * List information for all models with taking {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos#Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomFormModelInfo> getModelInfos(Context context) {
-        return new PagedIterable<>(client.getModelInfos(context));
+    public PagedIterable<CustomFormModelInfo> listCustomModels(Context context) {
+        return new PagedIterable<>(client.listCustomModels(context));
+    }
+
+    /**
+     * Copy a custom model stored in this resource (the source) to the user specified target Form Recognizer resource.
+     *
+     * <p>This should be called with the source Form Recognizer resource (with the model that is intended to be copied).
+     * The target parameter should be supplied from the target resource's output from
+     * {@link FormTrainingAsyncClient#getCopyAuthorization(String, String)} method.
+     * </p>
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization}
+     *
+     * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
+     * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
+     * generated from the target resource's call to {@link FormTrainingClient#getCopyAuthorization(String, String)}
+     *
+     * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
+     * or has been cancelled.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+        CopyAuthorization target) {
+        return beginCopyModel(modelId, target, null);
+    }
+
+    /**
+     * Copy a custom model stored in this resource (the source) to the user specified target Form Recognizer resource.
+     *
+     * <p>This should be called with the source Form Recognizer resource (with the model that is intended to be copied).
+     * The target parameter should be supplied from the target resource's output from
+     * {@link FormTrainingClient#getCopyAuthorization(String, String)} method.
+     * </p>
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration}
+     *
+     * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
+     * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
+     * generated from the target resource's call to {@link FormTrainingClient#getCopyAuthorization(String, String)}
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
+     *
+     * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
+     * or has been cancelled.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+        CopyAuthorization target, Duration pollInterval) {
+        return client.beginCopyModel(modelId, target, pollInterval).getSyncPoller();
+    }
+
+    /**
+     * Generate authorization for copying a custom model into the target Form Recognizer resource.
+     *
+     * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
+     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure region name supported
+     * by Cognitive Services.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorization#string-string}
+     *
+     * @return The {@link CopyAuthorization}
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CopyAuthorization getCopyAuthorization(String resourceId, String resourceRegion) {
+        return getCopyAuthorizationWithResponse(resourceId, resourceRegion, Context.NONE).getValue();
+    }
+
+    /**
+     * Generate authorization for copying a custom model into the target Form Recognizer resource.
+     * This should be called by the target resource (where the model will be copied to) and the output can be passed as
+     * the target parameter into {@link FormTrainingAsyncClient#beginCopyModel(String, CopyAuthorization)}.
+     *
+     * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
+     * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure region name supported by
+     * Cognitive Services.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorizationWithResponse#string-string-Context}
+     *
+     * @return A {@link Response} containing the {@link CopyAuthorization}
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CopyAuthorization> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
+        Context context) {
+        return client.getCopyAuthorizationWithResponse(resourceId, resourceRegion, context).block();
     }
 }

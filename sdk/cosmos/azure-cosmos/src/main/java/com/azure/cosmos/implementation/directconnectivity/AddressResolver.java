@@ -651,7 +651,7 @@ public class AddressResolver implements IAddressResolver {
             throw new InternalServerErrorException(String.format("partition key is null"));
         }
 
-        if (partitionKey.equals(PartitionKeyInternal.Empty) || partitionKey.getComponents().size() == collection.getPartitionKey().getPaths().size()) {
+        if (partitionKey.equals(PartitionKeyInternal.Empty) || Utils.getCollectionSize(partitionKey.getComponents()) == collection.getPartitionKey().getPaths().size()) {
             // Although we can compute effective partition getKey here, in general case this GATEWAY can have outdated
             // partition getKey definition cached - like if collection with same getName but with RANGE partitioning is created.
             // In this case server will not pass x-ms-documentdb-collection-rid check and will return back InvalidPartitionException.
@@ -685,7 +685,7 @@ public class AddressResolver implements IAddressResolver {
             logger.debug(
                 "Cannot compute effective partition getKey. Definition has '{}' getPaths, values supplied has '{}' getPaths. Will refresh cache and retry.",
                 collection.getPartitionKey().getPaths().size(),
-                partitionKey.getComponents().size());
+                Utils.getCollectionSize(partitionKey.getComponents()));
         }
 
         return null;

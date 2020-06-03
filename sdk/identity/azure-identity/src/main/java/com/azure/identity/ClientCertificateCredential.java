@@ -51,6 +51,6 @@ public class ClientCertificateCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
-            .switchIfEmpty(identityClient.authenticateWithConfidentialClient(request));
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)));
     }
 }
