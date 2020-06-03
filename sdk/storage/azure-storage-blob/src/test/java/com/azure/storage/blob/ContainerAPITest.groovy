@@ -961,7 +961,7 @@ class ContainerAPITest extends APISpec {
             i++
         }
 
-        /* No ors metadata on the dest blobs. Why? */
+        /* Service specifies no ors metadata on the dest blobs. */
         for (def blob : destBlobs) {
             assert blob.getObjectReplicationSourcePolicies() == null
         }
