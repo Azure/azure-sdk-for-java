@@ -15,8 +15,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -60,8 +60,8 @@ public final class PrivateLinkResourcesClient {
                 + "/storageAccounts/{accountName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByStorageAccount(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateLinkResourceListResultInner>> listByStorageAccount(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -82,7 +82,7 @@ public final class PrivateLinkResourcesClient {
      * @return the private link resources that need to be created for a storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
+    public Mono<Response<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
         String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -131,7 +131,7 @@ public final class PrivateLinkResourcesClient {
      * @return the private link resources that need to be created for a storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
+    public Mono<Response<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -179,7 +179,7 @@ public final class PrivateLinkResourcesClient {
         String resourceGroupName, String accountName) {
         return listByStorageAccountWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (SimpleResponse<PrivateLinkResourceListResultInner> res) -> {
+                (Response<PrivateLinkResourceListResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -206,7 +206,7 @@ public final class PrivateLinkResourcesClient {
         String resourceGroupName, String accountName, Context context) {
         return listByStorageAccountWithResponseAsync(resourceGroupName, accountName, context)
             .flatMap(
-                (SimpleResponse<PrivateLinkResourceListResultInner> res) -> {
+                (Response<PrivateLinkResourceListResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

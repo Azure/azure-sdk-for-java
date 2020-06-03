@@ -26,7 +26,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -74,8 +73,8 @@ public final class FileSharesClient {
                 + "/storageAccounts/{accountName}/fileServices/default/shares")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileShareItemsInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<FileShareItemsInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -91,8 +90,8 @@ public final class FileSharesClient {
                 + "/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileShareInner>> create(
-            @HostParam("$host") String host,
+        Mono<Response<FileShareInner>> create(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("shareName") String shareName,
@@ -107,8 +106,8 @@ public final class FileSharesClient {
                 + "/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileShareInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<FileShareInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("shareName") String shareName,
@@ -123,8 +122,8 @@ public final class FileSharesClient {
                 + "/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileShareInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<FileShareInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("shareName") String shareName,
@@ -140,7 +139,7 @@ public final class FileSharesClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("shareName") String shareName,
@@ -155,7 +154,7 @@ public final class FileSharesClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> restore(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("shareName") String shareName,
@@ -168,7 +167,7 @@ public final class FileSharesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileShareItemsInner>> listNext(
+        Mono<Response<FileShareItemsInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -462,7 +461,7 @@ public final class FileSharesClient {
      * @return properties of the file share, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileShareInner>> createWithResponseAsync(
+    public Mono<Response<FileShareInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -526,7 +525,7 @@ public final class FileSharesClient {
      * @return properties of the file share, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileShareInner>> createWithResponseAsync(
+    public Mono<Response<FileShareInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -589,7 +588,7 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         return createWithResponseAsync(resourceGroupName, accountName, shareName, fileShare)
             .flatMap(
-                (SimpleResponse<FileShareInner> res) -> {
+                (Response<FileShareInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -621,7 +620,7 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, shareName, fileShare, context)
             .flatMap(
-                (SimpleResponse<FileShareInner> res) -> {
+                (Response<FileShareInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -695,7 +694,7 @@ public final class FileSharesClient {
      * @return properties of the file share, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileShareInner>> updateWithResponseAsync(
+    public Mono<Response<FileShareInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -759,7 +758,7 @@ public final class FileSharesClient {
      * @return properties of the file share, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileShareInner>> updateWithResponseAsync(
+    public Mono<Response<FileShareInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -822,7 +821,7 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         return updateWithResponseAsync(resourceGroupName, accountName, shareName, fileShare)
             .flatMap(
-                (SimpleResponse<FileShareInner> res) -> {
+                (Response<FileShareInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -854,7 +853,7 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, shareName, fileShare, context)
             .flatMap(
-                (SimpleResponse<FileShareInner> res) -> {
+                (Response<FileShareInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -927,7 +926,7 @@ public final class FileSharesClient {
      * @return properties of a specified share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileShareInner>> getWithResponseAsync(
+    public Mono<Response<FileShareInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -985,7 +984,7 @@ public final class FileSharesClient {
      * @return properties of a specified share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileShareInner>> getWithResponseAsync(
+    public Mono<Response<FileShareInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1042,7 +1041,7 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand) {
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand)
             .flatMap(
-                (SimpleResponse<FileShareInner> res) -> {
+                (Response<FileShareInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1073,7 +1072,7 @@ public final class FileSharesClient {
         String resourceGroupName, String accountName, String shareName, GetShareExpand expand, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand, context)
             .flatMap(
-                (SimpleResponse<FileShareInner> res) -> {
+                (Response<FileShareInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1103,7 +1102,7 @@ public final class FileSharesClient {
         final Context context = null;
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand)
             .flatMap(
-                (SimpleResponse<FileShareInner> res) -> {
+                (Response<FileShareInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

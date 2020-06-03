@@ -18,8 +18,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -61,8 +61,8 @@ public final class OperationsClient {
         @Get("/providers/Microsoft.Storage/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<OperationListResultInner>> list(
-            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<OperationListResultInner>> list(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
     }
 
     /**

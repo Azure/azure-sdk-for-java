@@ -6,6 +6,10 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
@@ -284,16 +288,37 @@ public final class StorageManagementClient extends AzureServiceClient {
         return this.tables;
     }
 
+    /** Initializes an instance of StorageManagementClient client. */
+    StorageManagementClient(String subscriptionId, String endpoint) {
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE,
+            subscriptionId,
+            endpoint);
+    }
+
+    /**
+     * Initializes an instance of StorageManagementClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     */
+    StorageManagementClient(HttpPipeline httpPipeline, String subscriptionId, String endpoint) {
+        this(httpPipeline, AzureEnvironment.AZURE, subscriptionId, endpoint);
+    }
+
     /**
      * Initializes an instance of StorageManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    StorageManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment,
-                            String endpoint, String apiVersion, String subscriptionId) {
+    StorageManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.apiVersion = "2019-06-01";
         this.operations = new OperationsClient(this);
         this.skus = new SkusClient(this);
         this.storageAccounts = new StorageAccountsClient(this);
@@ -311,8 +336,5 @@ public final class StorageManagementClient extends AzureServiceClient {
         this.queues = new QueuesClient(this);
         this.tableServices = new TableServicesClient(this);
         this.tables = new TablesClient(this);
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.subscriptionId = subscriptionId;
     }
 }

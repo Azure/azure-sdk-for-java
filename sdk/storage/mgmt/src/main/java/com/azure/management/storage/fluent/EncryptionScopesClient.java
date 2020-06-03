@@ -22,8 +22,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -67,8 +67,8 @@ public final class EncryptionScopesClient {
                 + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<EncryptionScopeInner>> put(
-            @HostParam("$host") String host,
+        Mono<Response<EncryptionScopeInner>> put(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -83,8 +83,8 @@ public final class EncryptionScopesClient {
                 + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<EncryptionScopeInner>> patch(
-            @HostParam("$host") String host,
+        Mono<Response<EncryptionScopeInner>> patch(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -99,8 +99,8 @@ public final class EncryptionScopesClient {
                 + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<EncryptionScopeInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<EncryptionScopeInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -114,8 +114,8 @@ public final class EncryptionScopesClient {
                 + "/storageAccounts/{accountName}/encryptionScopes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<EncryptionScopeListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<EncryptionScopeListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -126,7 +126,7 @@ public final class EncryptionScopesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<EncryptionScopeListResultInner>> listNext(
+        Mono<Response<EncryptionScopeListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -149,7 +149,7 @@ public final class EncryptionScopesClient {
      * @return the Encryption Scope resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EncryptionScopeInner>> putWithResponseAsync(
+    public Mono<Response<EncryptionScopeInner>> putWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String encryptionScopeName,
@@ -219,7 +219,7 @@ public final class EncryptionScopesClient {
      * @return the Encryption Scope resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EncryptionScopeInner>> putWithResponseAsync(
+    public Mono<Response<EncryptionScopeInner>> putWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String encryptionScopeName,
@@ -292,7 +292,7 @@ public final class EncryptionScopesClient {
         EncryptionScopeInner encryptionScope) {
         return putWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope)
             .flatMap(
-                (SimpleResponse<EncryptionScopeInner> res) -> {
+                (Response<EncryptionScopeInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -329,7 +329,7 @@ public final class EncryptionScopesClient {
         Context context) {
         return putWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope, context)
             .flatMap(
-                (SimpleResponse<EncryptionScopeInner> res) -> {
+                (Response<EncryptionScopeInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -412,7 +412,7 @@ public final class EncryptionScopesClient {
      * @return the Encryption Scope resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EncryptionScopeInner>> patchWithResponseAsync(
+    public Mono<Response<EncryptionScopeInner>> patchWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String encryptionScopeName,
@@ -481,7 +481,7 @@ public final class EncryptionScopesClient {
      * @return the Encryption Scope resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EncryptionScopeInner>> patchWithResponseAsync(
+    public Mono<Response<EncryptionScopeInner>> patchWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String encryptionScopeName,
@@ -553,7 +553,7 @@ public final class EncryptionScopesClient {
         EncryptionScopeInner encryptionScope) {
         return patchWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope)
             .flatMap(
-                (SimpleResponse<EncryptionScopeInner> res) -> {
+                (Response<EncryptionScopeInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -589,7 +589,7 @@ public final class EncryptionScopesClient {
         Context context) {
         return patchWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope, context)
             .flatMap(
-                (SimpleResponse<EncryptionScopeInner> res) -> {
+                (Response<EncryptionScopeInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -668,7 +668,7 @@ public final class EncryptionScopesClient {
      * @return the Encryption Scope resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EncryptionScopeInner>> getWithResponseAsync(
+    public Mono<Response<EncryptionScopeInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String encryptionScopeName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -725,7 +725,7 @@ public final class EncryptionScopesClient {
      * @return the Encryption Scope resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EncryptionScopeInner>> getWithResponseAsync(
+    public Mono<Response<EncryptionScopeInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String encryptionScopeName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -781,7 +781,7 @@ public final class EncryptionScopesClient {
         String resourceGroupName, String accountName, String encryptionScopeName) {
         return getWithResponseAsync(resourceGroupName, accountName, encryptionScopeName)
             .flatMap(
-                (SimpleResponse<EncryptionScopeInner> res) -> {
+                (Response<EncryptionScopeInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -811,7 +811,7 @@ public final class EncryptionScopesClient {
         String resourceGroupName, String accountName, String encryptionScopeName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, context)
             .flatMap(
-                (SimpleResponse<EncryptionScopeInner> res) -> {
+                (Response<EncryptionScopeInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

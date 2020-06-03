@@ -25,7 +25,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -70,8 +69,8 @@ public final class QueuesClient {
                 + "/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageQueueInner>> create(
-            @HostParam("$host") String host,
+        Mono<Response<StorageQueueInner>> create(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -86,8 +85,8 @@ public final class QueuesClient {
                 + "/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageQueueInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<StorageQueueInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -102,8 +101,8 @@ public final class QueuesClient {
                 + "/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageQueueInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<StorageQueueInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -118,7 +117,7 @@ public final class QueuesClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -132,8 +131,8 @@ public final class QueuesClient {
                 + "/storageAccounts/{accountName}/queueServices/default/queues")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ListQueueResourceInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ListQueueResourceInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -146,7 +145,7 @@ public final class QueuesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ListQueueResourceInner>> listNext(
+        Mono<Response<ListQueueResourceInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -167,7 +166,7 @@ public final class QueuesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageQueueInner>> createWithResponseAsync(
+    public Mono<Response<StorageQueueInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -227,7 +226,7 @@ public final class QueuesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageQueueInner>> createWithResponseAsync(
+    public Mono<Response<StorageQueueInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -286,7 +285,7 @@ public final class QueuesClient {
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
         return createWithResponseAsync(resourceGroupName, accountName, queueName, metadata)
             .flatMap(
-                (SimpleResponse<StorageQueueInner> res) -> {
+                (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -317,7 +316,7 @@ public final class QueuesClient {
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, queueName, metadata, context)
             .flatMap(
-                (SimpleResponse<StorageQueueInner> res) -> {
+                (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -388,7 +387,7 @@ public final class QueuesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageQueueInner>> updateWithResponseAsync(
+    public Mono<Response<StorageQueueInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -448,7 +447,7 @@ public final class QueuesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageQueueInner>> updateWithResponseAsync(
+    public Mono<Response<StorageQueueInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -507,7 +506,7 @@ public final class QueuesClient {
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
         return updateWithResponseAsync(resourceGroupName, accountName, queueName, metadata)
             .flatMap(
-                (SimpleResponse<StorageQueueInner> res) -> {
+                (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -538,7 +537,7 @@ public final class QueuesClient {
         String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, queueName, metadata, context)
             .flatMap(
-                (SimpleResponse<StorageQueueInner> res) -> {
+                (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -608,7 +607,7 @@ public final class QueuesClient {
      * @return the queue with the specified queue name, under the specified account if it exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageQueueInner>> getWithResponseAsync(
+    public Mono<Response<StorageQueueInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String queueName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -664,7 +663,7 @@ public final class QueuesClient {
      * @return the queue with the specified queue name, under the specified account if it exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageQueueInner>> getWithResponseAsync(
+    public Mono<Response<StorageQueueInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String queueName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -718,7 +717,7 @@ public final class QueuesClient {
     public Mono<StorageQueueInner> getAsync(String resourceGroupName, String accountName, String queueName) {
         return getWithResponseAsync(resourceGroupName, accountName, queueName)
             .flatMap(
-                (SimpleResponse<StorageQueueInner> res) -> {
+                (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -748,7 +747,7 @@ public final class QueuesClient {
         String resourceGroupName, String accountName, String queueName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, queueName, context)
             .flatMap(
-                (SimpleResponse<StorageQueueInner> res) -> {
+                (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

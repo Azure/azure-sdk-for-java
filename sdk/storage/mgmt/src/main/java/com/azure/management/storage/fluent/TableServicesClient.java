@@ -17,8 +17,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -63,8 +63,8 @@ public final class TableServicesClient {
                 + "/storageAccounts/{accountName}/tableServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ListTableServicesInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ListTableServicesInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -77,8 +77,8 @@ public final class TableServicesClient {
                 + "/storageAccounts/{accountName}/tableServices/{tableServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TableServicePropertiesInner>> setServiceProperties(
-            @HostParam("$host") String host,
+        Mono<Response<TableServicePropertiesInner>> setServiceProperties(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -93,8 +93,8 @@ public final class TableServicesClient {
                 + "/storageAccounts/{accountName}/tableServices/{tableServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TableServicePropertiesInner>> getServiceProperties(
-            @HostParam("$host") String host,
+        Mono<Response<TableServicePropertiesInner>> getServiceProperties(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -116,8 +116,7 @@ public final class TableServicesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListTableServicesInner>> listWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    public Mono<Response<ListTableServicesInner>> listWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -165,7 +164,7 @@ public final class TableServicesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListTableServicesInner>> listWithResponseAsync(
+    public Mono<Response<ListTableServicesInner>> listWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -212,7 +211,7 @@ public final class TableServicesClient {
     public Mono<ListTableServicesInner> listAsync(String resourceGroupName, String accountName) {
         return listWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (SimpleResponse<ListTableServicesInner> res) -> {
+                (Response<ListTableServicesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -238,7 +237,7 @@ public final class TableServicesClient {
     public Mono<ListTableServicesInner> listAsync(String resourceGroupName, String accountName, Context context) {
         return listWithResponseAsync(resourceGroupName, accountName, context)
             .flatMap(
-                (SimpleResponse<ListTableServicesInner> res) -> {
+                (Response<ListTableServicesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -297,7 +296,7 @@ public final class TableServicesClient {
      * @return the properties of a storage account’s Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableServicePropertiesInner>> setServicePropertiesWithResponseAsync(
+    public Mono<Response<TableServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, CorsRules cors) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -356,7 +355,7 @@ public final class TableServicesClient {
      * @return the properties of a storage account’s Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableServicePropertiesInner>> setServicePropertiesWithResponseAsync(
+    public Mono<Response<TableServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, CorsRules cors, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -414,7 +413,7 @@ public final class TableServicesClient {
         String resourceGroupName, String accountName, CorsRules cors) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors)
             .flatMap(
-                (SimpleResponse<TableServicePropertiesInner> res) -> {
+                (Response<TableServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -443,7 +442,7 @@ public final class TableServicesClient {
         String resourceGroupName, String accountName, CorsRules cors, Context context) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors, context)
             .flatMap(
-                (SimpleResponse<TableServicePropertiesInner> res) -> {
+                (Response<TableServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -508,7 +507,7 @@ public final class TableServicesClient {
      *     (Cross-Origin Resource Sharing) rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableServicePropertiesInner>> getServicePropertiesWithResponseAsync(
+    public Mono<Response<TableServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -561,7 +560,7 @@ public final class TableServicesClient {
      *     (Cross-Origin Resource Sharing) rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableServicePropertiesInner>> getServicePropertiesWithResponseAsync(
+    public Mono<Response<TableServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -612,7 +611,7 @@ public final class TableServicesClient {
     public Mono<TableServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (SimpleResponse<TableServicePropertiesInner> res) -> {
+                (Response<TableServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -641,7 +640,7 @@ public final class TableServicesClient {
         String resourceGroupName, String accountName, Context context) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName, context)
             .flatMap(
-                (SimpleResponse<TableServicePropertiesInner> res) -> {
+                (Response<TableServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

@@ -21,8 +21,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -66,8 +66,8 @@ public final class BlobServicesClient {
                 + "/storageAccounts/{accountName}/blobServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BlobServiceItemsInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<BlobServiceItemsInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -80,8 +80,8 @@ public final class BlobServicesClient {
                 + "/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BlobServicePropertiesInner>> setServiceProperties(
-            @HostParam("$host") String host,
+        Mono<Response<BlobServicePropertiesInner>> setServiceProperties(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -96,8 +96,8 @@ public final class BlobServicesClient {
                 + "/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BlobServicePropertiesInner>> getServiceProperties(
-            @HostParam("$host") String host,
+        Mono<Response<BlobServicePropertiesInner>> getServiceProperties(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -294,7 +294,7 @@ public final class BlobServicesClient {
      * @return the properties of a storage account’s Blob service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(
+    public Mono<Response<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -353,7 +353,7 @@ public final class BlobServicesClient {
      * @return the properties of a storage account’s Blob service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(
+    public Mono<Response<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -411,7 +411,7 @@ public final class BlobServicesClient {
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
-                (SimpleResponse<BlobServicePropertiesInner> res) -> {
+                (Response<BlobServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -440,7 +440,7 @@ public final class BlobServicesClient {
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters, Context context) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters, context)
             .flatMap(
-                (SimpleResponse<BlobServicePropertiesInner> res) -> {
+                (Response<BlobServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -505,7 +505,7 @@ public final class BlobServicesClient {
      *     (Cross-Origin Resource Sharing) rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(
+    public Mono<Response<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -558,7 +558,7 @@ public final class BlobServicesClient {
      *     (Cross-Origin Resource Sharing) rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(
+    public Mono<Response<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -609,7 +609,7 @@ public final class BlobServicesClient {
     public Mono<BlobServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (SimpleResponse<BlobServicePropertiesInner> res) -> {
+                (Response<BlobServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -638,7 +638,7 @@ public final class BlobServicesClient {
         String resourceGroupName, String accountName, Context context) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName, context)
             .flatMap(
-                (SimpleResponse<BlobServicePropertiesInner> res) -> {
+                (Response<BlobServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

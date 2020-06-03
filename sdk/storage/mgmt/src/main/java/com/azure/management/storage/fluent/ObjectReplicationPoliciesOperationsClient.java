@@ -24,7 +24,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -72,8 +71,8 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 + "/storageAccounts/{accountName}/objectReplicationPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ObjectReplicationPoliciesInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ObjectReplicationPoliciesInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -86,8 +85,8 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ObjectReplicationPolicyInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<ObjectReplicationPolicyInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -101,8 +100,8 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ObjectReplicationPolicyInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<ObjectReplicationPolicyInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -118,7 +117,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -314,7 +313,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ObjectReplicationPolicyInner>> getWithResponseAsync(
+    public Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -371,7 +370,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ObjectReplicationPolicyInner>> getWithResponseAsync(
+    public Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -427,7 +426,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
             .flatMap(
-                (SimpleResponse<ObjectReplicationPolicyInner> res) -> {
+                (Response<ObjectReplicationPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -455,7 +454,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, context)
             .flatMap(
-                (SimpleResponse<ObjectReplicationPolicyInner> res) -> {
+                (Response<ObjectReplicationPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -519,7 +518,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String objectReplicationPolicyId,
@@ -587,7 +586,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String objectReplicationPolicyId,
@@ -658,7 +657,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         ObjectReplicationPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties)
             .flatMap(
-                (SimpleResponse<ObjectReplicationPolicyInner> res) -> {
+                (Response<ObjectReplicationPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -693,7 +692,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, accountName, objectReplicationPolicyId, properties, context)
             .flatMap(
-                (SimpleResponse<ObjectReplicationPolicyInner> res) -> {
+                (Response<ObjectReplicationPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

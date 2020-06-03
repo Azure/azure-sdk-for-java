@@ -48,11 +48,6 @@ public final class StorageManagementClientBuilder {
     }
 
     /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /*
      * The environment to connect to
      */
     private AzureEnvironment environment;
@@ -93,9 +88,6 @@ public final class StorageManagementClientBuilder {
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }
-        if (apiVersion == null) {
-            this.apiVersion = "2019-06-01";
-        }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         }
@@ -105,8 +97,7 @@ public final class StorageManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        StorageManagementClient client = new StorageManagementClient(pipeline, environment,
-            endpoint, apiVersion, subscriptionId);
+        StorageManagementClient client = new StorageManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

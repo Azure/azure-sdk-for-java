@@ -20,7 +20,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -65,8 +64,8 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                 + "/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ManagementPolicyInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<ManagementPolicyInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -80,8 +79,8 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                 + "/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<ManagementPolicyInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -97,7 +96,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -119,8 +118,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagementPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -170,7 +168,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagementPolicyInner>> getWithResponseAsync(
+    public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -219,7 +217,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
     public Mono<ManagementPolicyInner> getAsync(String resourceGroupName, String accountName) {
         return getWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (SimpleResponse<ManagementPolicyInner> res) -> {
+                (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -245,7 +243,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
     public Mono<ManagementPolicyInner> getAsync(String resourceGroupName, String accountName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, context)
             .flatMap(
-                (SimpleResponse<ManagementPolicyInner> res) -> {
+                (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -304,7 +302,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      * @return the Get Storage Account ManagementPolicies operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, ManagementPolicySchema policy) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -363,7 +361,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      * @return the Get Storage Account ManagementPolicies operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, ManagementPolicySchema policy, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -421,7 +419,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
         String resourceGroupName, String accountName, ManagementPolicySchema policy) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, policy)
             .flatMap(
-                (SimpleResponse<ManagementPolicyInner> res) -> {
+                (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -450,7 +448,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
         String resourceGroupName, String accountName, ManagementPolicySchema policy, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, policy, context)
             .flatMap(
-                (SimpleResponse<ManagementPolicyInner> res) -> {
+                (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

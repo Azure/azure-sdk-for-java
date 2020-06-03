@@ -24,7 +24,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -72,8 +71,8 @@ public final class PrivateEndpointConnectionsClient {
                 + "/storageAccounts/{accountName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateEndpointConnectionListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -86,8 +85,8 @@ public final class PrivateEndpointConnectionsClient {
                 + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateEndpointConnectionInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -101,8 +100,8 @@ public final class PrivateEndpointConnectionsClient {
                 + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> put(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateEndpointConnectionInner>> put(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -118,7 +117,7 @@ public final class PrivateEndpointConnectionsClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -315,7 +314,7 @@ public final class PrivateEndpointConnectionsClient {
      * @return the specified private endpoint connection associated with the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -373,7 +372,7 @@ public final class PrivateEndpointConnectionsClient {
      * @return the specified private endpoint connection associated with the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -430,7 +429,7 @@ public final class PrivateEndpointConnectionsClient {
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
         return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -459,7 +458,7 @@ public final class PrivateEndpointConnectionsClient {
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, context)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -527,7 +526,7 @@ public final class PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> putWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> putWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
@@ -602,7 +601,7 @@ public final class PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> putWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> putWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
@@ -686,7 +685,7 @@ public final class PrivateEndpointConnectionsClient {
                 privateEndpoint,
                 privateLinkServiceConnectionState)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -729,7 +728,7 @@ public final class PrivateEndpointConnectionsClient {
                 privateLinkServiceConnectionState,
                 context)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

@@ -26,7 +26,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -96,8 +95,8 @@ public final class StorageAccountsClient
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String host,
+        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") StorageAccountCheckNameAvailabilityParameters accountName,
@@ -109,8 +108,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -125,7 +124,7 @@ public final class StorageAccountsClient
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -138,8 +137,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<StorageAccountInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -153,8 +152,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<StorageAccountInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -166,8 +165,8 @@ public final class StorageAccountsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<StorageAccountListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -178,8 +177,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountListResultInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<StorageAccountListResultInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -191,8 +190,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountListKeysResultInner>> listKeys(
-            @HostParam("$host") String host,
+        Mono<Response<StorageAccountListKeysResultInner>> listKeys(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -206,8 +205,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountListKeysResultInner>> regenerateKey(
-            @HostParam("$host") String host,
+        Mono<Response<StorageAccountListKeysResultInner>> regenerateKey(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -221,8 +220,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}/ListAccountSas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ListAccountSasResponseInner>> listAccountSas(
-            @HostParam("$host") String host,
+        Mono<Response<ListAccountSasResponseInner>> listAccountSas(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -236,8 +235,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}/ListServiceSas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ListServiceSasResponseInner>> listServiceSas(
-            @HostParam("$host") String host,
+        Mono<Response<ListServiceSasResponseInner>> listServiceSas(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -251,8 +250,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> failover(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> failover(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -265,8 +264,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}/restoreBlobRanges")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> restoreBlobRanges(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> restoreBlobRanges(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -281,7 +280,7 @@ public final class StorageAccountsClient
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> revokeUserDelegationKeys(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -294,8 +293,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountInner>> beginCreateWithoutPolling(
-            @HostParam("$host") String host,
+        Mono<Response<StorageAccountInner>> beginCreateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -310,7 +309,7 @@ public final class StorageAccountsClient
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginFailoverWithoutPolling(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -323,8 +322,8 @@ public final class StorageAccountsClient
                 + "/storageAccounts/{accountName}/restoreBlobRanges")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPolling(
-            @HostParam("$host") String host,
+        Mono<Response<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -336,7 +335,7 @@ public final class StorageAccountsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<StorageAccountListResultInner>> listNext(
+        Mono<Response<StorageAccountListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -350,7 +349,7 @@ public final class StorageAccountsClient
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -392,7 +391,7 @@ public final class StorageAccountsClient
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -433,7 +432,7 @@ public final class StorageAccountsClient
     public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name) {
         return checkNameAvailabilityWithResponseAsync(name)
             .flatMap(
-                (SimpleResponse<CheckNameAvailabilityResultInner> res) -> {
+                (Response<CheckNameAvailabilityResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -456,7 +455,7 @@ public final class StorageAccountsClient
     public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name, Context context) {
         return checkNameAvailabilityWithResponseAsync(name, context)
             .flatMap(
-                (SimpleResponse<CheckNameAvailabilityResultInner> res) -> {
+                (Response<CheckNameAvailabilityResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -511,7 +510,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -570,7 +569,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -626,8 +625,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, parameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
         return this
             .client
             .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
@@ -654,7 +652,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, accountName, parameters, context);
         return this
             .client
@@ -681,8 +679,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> createAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, parameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
         return this
             .client
             .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
@@ -711,7 +708,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> createAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, accountName, parameters, context);
         return this
             .client
@@ -942,7 +939,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<StorageAccountInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountExpand expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -995,7 +992,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<StorageAccountInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountExpand expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1047,7 +1044,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountExpand expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, expand)
             .flatMap(
-                (SimpleResponse<StorageAccountInner> res) -> {
+                (Response<StorageAccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1077,7 +1074,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountExpand expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, expand, context)
             .flatMap(
-                (SimpleResponse<StorageAccountInner> res) -> {
+                (Response<StorageAccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1105,7 +1102,7 @@ public final class StorageAccountsClient
         final Context context = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, expand)
             .flatMap(
-                (SimpleResponse<StorageAccountInner> res) -> {
+                (Response<StorageAccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1196,7 +1193,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountInner>> updateWithResponseAsync(
+    public Mono<Response<StorageAccountInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1257,7 +1254,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountInner>> updateWithResponseAsync(
+    public Mono<Response<StorageAccountInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1317,7 +1314,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
-                (SimpleResponse<StorageAccountInner> res) -> {
+                (Response<StorageAccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1350,7 +1347,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, parameters, context)
             .flatMap(
-                (SimpleResponse<StorageAccountInner> res) -> {
+                (Response<StorageAccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1714,7 +1711,7 @@ public final class StorageAccountsClient
      * @return the response from the ListKeys operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
+    public Mono<Response<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
         String resourceGroupName, String accountName, ListKeyExpand expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1765,7 +1762,7 @@ public final class StorageAccountsClient
      * @return the response from the ListKeys operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
+    public Mono<Response<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
         String resourceGroupName, String accountName, ListKeyExpand expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1815,7 +1812,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, ListKeyExpand expand) {
         return listKeysWithResponseAsync(resourceGroupName, accountName, expand)
             .flatMap(
-                (SimpleResponse<StorageAccountListKeysResultInner> res) -> {
+                (Response<StorageAccountListKeysResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1843,7 +1840,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, ListKeyExpand expand, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, accountName, expand, context)
             .flatMap(
-                (SimpleResponse<StorageAccountListKeysResultInner> res) -> {
+                (Response<StorageAccountListKeysResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1870,7 +1867,7 @@ public final class StorageAccountsClient
         final Context context = null;
         return listKeysWithResponseAsync(resourceGroupName, accountName, expand)
             .flatMap(
-                (SimpleResponse<StorageAccountListKeysResultInner> res) -> {
+                (Response<StorageAccountListKeysResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1952,7 +1949,7 @@ public final class StorageAccountsClient
      * @return the response from the ListKeys operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
+    public Mono<Response<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, String keyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2009,7 +2006,7 @@ public final class StorageAccountsClient
      * @return the response from the ListKeys operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
+    public Mono<Response<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, String keyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2065,7 +2062,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, String keyName) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, keyName)
             .flatMap(
-                (SimpleResponse<StorageAccountListKeysResultInner> res) -> {
+                (Response<StorageAccountListKeysResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2094,7 +2091,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, String keyName, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, keyName, context)
             .flatMap(
-                (SimpleResponse<StorageAccountListKeysResultInner> res) -> {
+                (Response<StorageAccountListKeysResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2158,7 +2155,7 @@ public final class StorageAccountsClient
      * @return the List SAS credentials operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
+    public Mono<Response<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
         String resourceGroupName, String accountName, AccountSasParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2214,7 +2211,7 @@ public final class StorageAccountsClient
      * @return the List SAS credentials operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
+    public Mono<Response<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
         String resourceGroupName, String accountName, AccountSasParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2269,7 +2266,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, AccountSasParameters parameters) {
         return listAccountSasWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
-                (SimpleResponse<ListAccountSasResponseInner> res) -> {
+                (Response<ListAccountSasResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2297,7 +2294,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, AccountSasParameters parameters, Context context) {
         return listAccountSasWithResponseAsync(resourceGroupName, accountName, parameters, context)
             .flatMap(
-                (SimpleResponse<ListAccountSasResponseInner> res) -> {
+                (Response<ListAccountSasResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2359,7 +2356,7 @@ public final class StorageAccountsClient
      * @return the List service SAS credentials operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
+    public Mono<Response<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
         String resourceGroupName, String accountName, ServiceSasParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2415,7 +2412,7 @@ public final class StorageAccountsClient
      * @return the List service SAS credentials operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
+    public Mono<Response<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
         String resourceGroupName, String accountName, ServiceSasParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2470,7 +2467,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, ServiceSasParameters parameters) {
         return listServiceSasWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
-                (SimpleResponse<ListServiceSasResponseInner> res) -> {
+                (Response<ListServiceSasResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2498,7 +2495,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, ServiceSasParameters parameters, Context context) {
         return listServiceSasWithResponseAsync(resourceGroupName, accountName, parameters, context)
             .flatMap(
-                (SimpleResponse<ListServiceSasResponseInner> res) -> {
+                (Response<ListServiceSasResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2561,8 +2558,7 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2612,7 +2608,7 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> failoverWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2659,7 +2655,7 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
+        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
@@ -2681,8 +2677,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String accountName, Context context) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, accountName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
@@ -2702,7 +2697,7 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
+        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -2727,8 +2722,7 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName, Context context) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, accountName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -2788,7 +2782,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2851,7 +2845,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
         String resourceGroupName,
         String accountName,
         OffsetDateTime timeToRestore,
@@ -2915,7 +2909,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
         return this
             .client
@@ -2945,7 +2939,7 @@ public final class StorageAccountsClient
         OffsetDateTime timeToRestore,
         List<BlobRestoreRange> blobRanges,
         Context context) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context);
         return this
             .client
@@ -2970,7 +2964,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
         return this
             .client
@@ -3002,7 +2996,7 @@ public final class StorageAccountsClient
         OffsetDateTime timeToRestore,
         List<BlobRestoreRange> blobRanges,
         Context context) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context);
         return this
             .client
@@ -3237,7 +3231,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
+    public Mono<Response<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3296,7 +3290,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
+    public Mono<Response<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3354,7 +3348,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         return beginCreateWithoutPollingWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
-                (SimpleResponse<StorageAccountInner> res) -> {
+                (Response<StorageAccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3385,7 +3379,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         return beginCreateWithoutPollingWithResponseAsync(resourceGroupName, accountName, parameters, context)
             .flatMap(
-                (SimpleResponse<StorageAccountInner> res) -> {
+                (Response<StorageAccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3629,7 +3623,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPollingWithResponseAsync(
+    public Mono<Response<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3692,7 +3686,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPollingWithResponseAsync(
+    public Mono<Response<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         OffsetDateTime timeToRestore,
@@ -3759,7 +3753,7 @@ public final class StorageAccountsClient
         return beginRestoreBlobRangesWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, timeToRestore, blobRanges)
             .flatMap(
-                (SimpleResponse<BlobRestoreStatusInner> res) -> {
+                (Response<BlobRestoreStatusInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3793,7 +3787,7 @@ public final class StorageAccountsClient
         return beginRestoreBlobRangesWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, timeToRestore, blobRanges, context)
             .flatMap(
-                (SimpleResponse<BlobRestoreStatusInner> res) -> {
+                (Response<BlobRestoreStatusInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

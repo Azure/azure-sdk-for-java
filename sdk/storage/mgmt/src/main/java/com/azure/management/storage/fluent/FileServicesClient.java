@@ -17,8 +17,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -64,8 +64,8 @@ public final class FileServicesClient {
                 + "/storageAccounts/{accountName}/fileServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileServiceItemsInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<FileServiceItemsInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -78,8 +78,8 @@ public final class FileServicesClient {
                 + "/storageAccounts/{accountName}/fileServices/{FileServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileServicePropertiesInner>> setServiceProperties(
-            @HostParam("$host") String host,
+        Mono<Response<FileServicePropertiesInner>> setServiceProperties(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -94,8 +94,8 @@ public final class FileServicesClient {
                 + "/storageAccounts/{accountName}/fileServices/{FileServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<FileServicePropertiesInner>> getServiceProperties(
-            @HostParam("$host") String host,
+        Mono<Response<FileServicePropertiesInner>> getServiceProperties(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -117,8 +117,7 @@ public final class FileServicesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileServiceItemsInner>> listWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    public Mono<Response<FileServiceItemsInner>> listWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -166,7 +165,7 @@ public final class FileServicesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileServiceItemsInner>> listWithResponseAsync(
+    public Mono<Response<FileServiceItemsInner>> listWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -213,7 +212,7 @@ public final class FileServicesClient {
     public Mono<FileServiceItemsInner> listAsync(String resourceGroupName, String accountName) {
         return listWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (SimpleResponse<FileServiceItemsInner> res) -> {
+                (Response<FileServiceItemsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -239,7 +238,7 @@ public final class FileServicesClient {
     public Mono<FileServiceItemsInner> listAsync(String resourceGroupName, String accountName, Context context) {
         return listWithResponseAsync(resourceGroupName, accountName, context)
             .flatMap(
-                (SimpleResponse<FileServiceItemsInner> res) -> {
+                (Response<FileServiceItemsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -298,7 +297,7 @@ public final class FileServicesClient {
      * @return the properties of File services in storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
+    public Mono<Response<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName,
         String accountName,
         CorsRules cors,
@@ -364,7 +363,7 @@ public final class FileServicesClient {
      * @return the properties of File services in storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
+    public Mono<Response<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
         String resourceGroupName,
         String accountName,
         CorsRules cors,
@@ -433,7 +432,7 @@ public final class FileServicesClient {
         DeleteRetentionPolicy shareDeleteRetentionPolicy) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors, shareDeleteRetentionPolicy)
             .flatMap(
-                (SimpleResponse<FileServicePropertiesInner> res) -> {
+                (Response<FileServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -467,7 +466,7 @@ public final class FileServicesClient {
         return setServicePropertiesWithResponseAsync(
                 resourceGroupName, accountName, cors, shareDeleteRetentionPolicy, context)
             .flatMap(
-                (SimpleResponse<FileServicePropertiesInner> res) -> {
+                (Response<FileServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -539,7 +538,7 @@ public final class FileServicesClient {
      *     rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
+    public Mono<Response<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -591,7 +590,7 @@ public final class FileServicesClient {
      *     rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
+    public Mono<Response<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -641,7 +640,7 @@ public final class FileServicesClient {
     public Mono<FileServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (SimpleResponse<FileServicePropertiesInner> res) -> {
+                (Response<FileServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -669,7 +668,7 @@ public final class FileServicesClient {
         String resourceGroupName, String accountName, Context context) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName, context)
             .flatMap(
-                (SimpleResponse<FileServicePropertiesInner> res) -> {
+                (Response<FileServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

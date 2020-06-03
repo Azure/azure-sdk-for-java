@@ -19,8 +19,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -61,8 +61,8 @@ public final class UsagesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<UsageListResultInner>> listByLocation(
-            @HostParam("$host") String host,
+        Mono<Response<UsageListResultInner>> listByLocation(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,

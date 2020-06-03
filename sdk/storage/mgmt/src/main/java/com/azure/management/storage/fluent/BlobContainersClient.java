@@ -27,7 +27,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -83,8 +82,8 @@ public final class BlobContainersClient {
                 + "/storageAccounts/{accountName}/blobServices/default/containers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ListContainerItemsInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ListContainerItemsInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
@@ -100,8 +99,8 @@ public final class BlobContainersClient {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BlobContainerInner>> create(
-            @HostParam("$host") String host,
+        Mono<Response<BlobContainerInner>> create(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -116,8 +115,8 @@ public final class BlobContainersClient {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BlobContainerInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<BlobContainerInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -132,8 +131,8 @@ public final class BlobContainersClient {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BlobContainerInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<BlobContainerInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -148,7 +147,7 @@ public final class BlobContainersClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -162,8 +161,8 @@ public final class BlobContainersClient {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/setLegalHold")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LegalHoldInner>> setLegalHold(
-            @HostParam("$host") String host,
+        Mono<Response<LegalHoldInner>> setLegalHold(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -178,8 +177,8 @@ public final class BlobContainersClient {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/clearLegalHold")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LegalHoldInner>> clearLegalHold(
-            @HostParam("$host") String host,
+        Mono<Response<LegalHoldInner>> clearLegalHold(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -196,7 +195,7 @@ public final class BlobContainersClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersCreateOrUpdateImmutabilityPolicyResponse> createOrUpdateImmutabilityPolicy(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -215,7 +214,7 @@ public final class BlobContainersClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicy(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -233,7 +232,7 @@ public final class BlobContainersClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicy(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -251,7 +250,7 @@ public final class BlobContainersClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicy(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -268,7 +267,7 @@ public final class BlobContainersClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<BlobContainersExtendImmutabilityPolicyResponse> extendImmutabilityPolicy(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -284,8 +283,8 @@ public final class BlobContainersClient {
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/lease")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LeaseContainerResponseInner>> lease(
-            @HostParam("$host") String host,
+        Mono<Response<LeaseContainerResponseInner>> lease(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("containerName") String containerName,
@@ -298,7 +297,7 @@ public final class BlobContainersClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ListContainerItemsInner>> listNext(
+        Mono<Response<ListContainerItemsInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -600,7 +599,7 @@ public final class BlobContainersClient {
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobContainerInner>> createWithResponseAsync(
+    public Mono<Response<BlobContainerInner>> createWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -664,7 +663,7 @@ public final class BlobContainersClient {
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobContainerInner>> createWithResponseAsync(
+    public Mono<Response<BlobContainerInner>> createWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -731,7 +730,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         return createWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer)
             .flatMap(
-                (SimpleResponse<BlobContainerInner> res) -> {
+                (Response<BlobContainerInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -767,7 +766,7 @@ public final class BlobContainersClient {
         Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer, context)
             .flatMap(
-                (SimpleResponse<BlobContainerInner> res) -> {
+                (Response<BlobContainerInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -845,7 +844,7 @@ public final class BlobContainersClient {
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobContainerInner>> updateWithResponseAsync(
+    public Mono<Response<BlobContainerInner>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -909,7 +908,7 @@ public final class BlobContainersClient {
      * @return properties of the blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobContainerInner>> updateWithResponseAsync(
+    public Mono<Response<BlobContainerInner>> updateWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -976,7 +975,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         return updateWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer)
             .flatMap(
-                (SimpleResponse<BlobContainerInner> res) -> {
+                (Response<BlobContainerInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1012,7 +1011,7 @@ public final class BlobContainersClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer, context)
             .flatMap(
-                (SimpleResponse<BlobContainerInner> res) -> {
+                (Response<BlobContainerInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1088,7 +1087,7 @@ public final class BlobContainersClient {
      * @return properties of a specified container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobContainerInner>> getWithResponseAsync(
+    public Mono<Response<BlobContainerInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String containerName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1144,7 +1143,7 @@ public final class BlobContainersClient {
      * @return properties of a specified container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BlobContainerInner>> getWithResponseAsync(
+    public Mono<Response<BlobContainerInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1198,7 +1197,7 @@ public final class BlobContainersClient {
     public Mono<BlobContainerInner> getAsync(String resourceGroupName, String accountName, String containerName) {
         return getWithResponseAsync(resourceGroupName, accountName, containerName)
             .flatMap(
-                (SimpleResponse<BlobContainerInner> res) -> {
+                (Response<BlobContainerInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1228,7 +1227,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, containerName, context)
             .flatMap(
-                (SimpleResponse<BlobContainerInner> res) -> {
+                (Response<BlobContainerInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1485,7 +1484,7 @@ public final class BlobContainersClient {
      * @return the LegalHold property of a blob container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LegalHoldInner>> setLegalHoldWithResponseAsync(
+    public Mono<Response<LegalHoldInner>> setLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1549,7 +1548,7 @@ public final class BlobContainersClient {
      * @return the LegalHold property of a blob container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LegalHoldInner>> setLegalHoldWithResponseAsync(
+    public Mono<Response<LegalHoldInner>> setLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1612,7 +1611,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags)
             .flatMap(
-                (SimpleResponse<LegalHoldInner> res) -> {
+                (Response<LegalHoldInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1644,7 +1643,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
         return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags, context)
             .flatMap(
-                (SimpleResponse<LegalHoldInner> res) -> {
+                (Response<LegalHoldInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1718,7 +1717,7 @@ public final class BlobContainersClient {
      * @return the LegalHold property of a blob container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LegalHoldInner>> clearLegalHoldWithResponseAsync(
+    public Mono<Response<LegalHoldInner>> clearLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1782,7 +1781,7 @@ public final class BlobContainersClient {
      * @return the LegalHold property of a blob container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LegalHoldInner>> clearLegalHoldWithResponseAsync(
+    public Mono<Response<LegalHoldInner>> clearLegalHoldWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1845,7 +1844,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         return clearLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags)
             .flatMap(
-                (SimpleResponse<LegalHoldInner> res) -> {
+                (Response<LegalHoldInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1877,7 +1876,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
         return clearLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags, context)
             .flatMap(
-                (SimpleResponse<LegalHoldInner> res) -> {
+                (Response<LegalHoldInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3439,7 +3438,7 @@ public final class BlobContainersClient {
      * @return lease Container response schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LeaseContainerResponseInner>> leaseWithResponseAsync(
+    public Mono<Response<LeaseContainerResponseInner>> leaseWithResponseAsync(
         String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3501,7 +3500,7 @@ public final class BlobContainersClient {
      * @return lease Container response schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LeaseContainerResponseInner>> leaseWithResponseAsync(
+    public Mono<Response<LeaseContainerResponseInner>> leaseWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -3566,7 +3565,7 @@ public final class BlobContainersClient {
         String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
         return leaseWithResponseAsync(resourceGroupName, accountName, containerName, parameters)
             .flatMap(
-                (SimpleResponse<LeaseContainerResponseInner> res) -> {
+                (Response<LeaseContainerResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3602,7 +3601,7 @@ public final class BlobContainersClient {
         Context context) {
         return leaseWithResponseAsync(resourceGroupName, accountName, containerName, parameters, context)
             .flatMap(
-                (SimpleResponse<LeaseContainerResponseInner> res) -> {
+                (Response<LeaseContainerResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3634,7 +3633,7 @@ public final class BlobContainersClient {
         final Context context = null;
         return leaseWithResponseAsync(resourceGroupName, accountName, containerName, parameters)
             .flatMap(
-                (SimpleResponse<LeaseContainerResponseInner> res) -> {
+                (Response<LeaseContainerResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {

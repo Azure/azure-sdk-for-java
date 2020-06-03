@@ -28,6 +28,13 @@ public final class Encryption {
     private KeySource keySource;
 
     /*
+     * A boolean indicating whether or not the service applies a secondary
+     * layer of encryption with platform managed keys for data at rest.
+     */
+    @JsonProperty(value = "requireInfrastructureEncryption")
+    private Boolean requireInfrastructureEncryption;
+
+    /*
      * Properties provided by key vault.
      */
     @JsonProperty(value = "keyvaultproperties")
@@ -72,6 +79,28 @@ public final class Encryption {
      */
     public Encryption withKeySource(KeySource keySource) {
         this.keySource = keySource;
+        return this;
+    }
+
+    /**
+     * Get the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
+     * secondary layer of encryption with platform managed keys for data at rest.
+     *
+     * @return the requireInfrastructureEncryption value.
+     */
+    public Boolean requireInfrastructureEncryption() {
+        return this.requireInfrastructureEncryption;
+    }
+
+    /**
+     * Set the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
+     * secondary layer of encryption with platform managed keys for data at rest.
+     *
+     * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
+     * @return the Encryption object itself.
+     */
+    public Encryption withRequireInfrastructureEncryption(Boolean requireInfrastructureEncryption) {
+        this.requireInfrastructureEncryption = requireInfrastructureEncryption;
         return this;
     }
 
