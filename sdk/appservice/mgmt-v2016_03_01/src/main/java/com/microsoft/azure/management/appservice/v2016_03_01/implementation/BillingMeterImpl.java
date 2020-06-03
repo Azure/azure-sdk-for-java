@@ -14,15 +14,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class BillingMeterImpl extends WrapperImpl<BillingMeterInner> implements BillingMeter {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    BillingMeterImpl(BillingMeterInner inner,  AppServiceManager manager) {
+    BillingMeterImpl(BillingMeterInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
