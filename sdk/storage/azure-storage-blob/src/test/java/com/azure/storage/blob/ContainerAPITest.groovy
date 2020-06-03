@@ -26,6 +26,7 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -932,6 +933,38 @@ class ContainerAPITest extends APISpec {
         pagedResponse1.getValue().size() == PAGE_SIZE
         pagedResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
         pagedResponse2.getContinuationToken() == null
+    }
+
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+     */
+    @Requires( {playbackMode()})
+    def "List blobs flat ORS"() {
+        setup:
+        def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
+        def destContainer = alternateBlobServiceClient.getBlobContainerClient("test2")
+
+        when:
+        def sourceBlobs = sourceContainer.listBlobs().stream().collect(Collectors.toList())
+        def destBlobs = destContainer.listBlobs().stream().collect(Collectors.toList())
+
+        then:
+        int i = 0
+        for (def blob : sourceBlobs) {
+            if (i == 1) {
+                assert blob.getObjectReplicationSourcePolicies() == null /* Why? */
+            } else {
+                assert blob.getObjectReplicationSourcePolicies().get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
+                    .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
+            }
+            i++
+        }
+
+        /* No ors metadata on the dest blobs. Why? */
+        for (def blob : destBlobs) {
+            assert blob.getObjectReplicationSourcePolicies() == null
+        }
     }
 
     def "List blobs flat error"() {

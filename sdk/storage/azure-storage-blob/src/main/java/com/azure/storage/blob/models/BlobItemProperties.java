@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -64,25 +65,6 @@ public final class BlobItemProperties {
         this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
         this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
         this.tagCount = blobItemPropertiesInternal.getTagCount();
-
-        // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
-        /*this.objectReplicationSourcePolicies = new HashMap<>();
-        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
-        if (objectReplicationDestinationPolicyId == null) {
-            for (String str : objectReplicationStatus.keySet()) {
-                String[] split = str.split("_");
-                String policyId = split[0];
-                String ruleId = split[1];
-                if (objectReplicationSourcePolicies.containsKey(policyId)) {
-                    objectReplicationSourcePolicies.get(policyId)
-                        .putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
-                } else {
-                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
-                    objectReplicationSourcePolicies.put(policyId, policy);
-                }
-            }
-        }*/
     }
 
     /*
@@ -279,13 +261,6 @@ public final class BlobItemProperties {
      */
     @JsonProperty(value = "AccessTierChangeTime")
     private OffsetDateTime accessTierChangeTime;
-
-    // TODO: (rickle-msft) uncomment when these are returned on lists.
-    /*
-    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
-
-    private String objectReplicationDestinationPolicyId;
-    */
 
     /*
      * The tagCount property.

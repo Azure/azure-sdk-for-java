@@ -25,6 +25,7 @@ public final class BlobItem {
      */
     public BlobItem() {
         tags = null;
+        objectReplicationSourcePolicies = null;
     }
 
     /**
@@ -46,6 +47,24 @@ public final class BlobItem {
         if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
             for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
                 this.tags.put(tag.getKey(), tag.getValue());
+            }
+        }
+        this.objectReplicationSourcePolicies = null;
+        if (blobItemInternal.getObjectReplicationMetadata() != null) {
+            this.objectReplicationSourcePolicies = new HashMap<>();
+            for (String orString : blobItemInternal.getObjectReplicationMetadata().keySet()) {
+                String str = orString.startsWith("or-") ? orString.substring(3) : orString;
+                String[] split = str.split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                if (objectReplicationSourcePolicies.containsKey(policyId)) {
+                    objectReplicationSourcePolicies.get(policyId)
+                        .putRuleAndStatus(ruleId, blobItemInternal.getObjectReplicationMetadata().get(orString));
+                } else {
+                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                    policy.putRuleAndStatus(ruleId, blobItemInternal.getObjectReplicationMetadata().get(orString));
+                    objectReplicationSourcePolicies.put(policyId, policy);
+                }
             }
         }
     }
@@ -90,17 +109,10 @@ public final class BlobItem {
 
     private Boolean isCurrentVersion;
 
-    /*
-     * The objectReplicationPolicyId property.
+     /*
+     * The objectReplicationSourcePolicies property.
      */
-    @JsonProperty(value = "ObjectReplicationPolicyId")
-    private String objectReplicationPolicyId;
-
-    /*
-     * The objectReplicationRuleStatus property.
-     */
-    @JsonProperty(value = "BlobObjectReplicationRuleStatus")
-    private Map<String, String> objectReplicationRuleStatus;
+    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /*
      * The isPrefix property.
@@ -258,48 +270,26 @@ public final class BlobItem {
     }
 
     /**
-     * Get the objectReplicationPolicyId property: The
-     * objectReplicationPolicyId property.
+     * Get the objectReplicationSourcePolicies property: The
+     * objectReplicationSourcePolicies property.
      *
-     * @return the objectReplicationPolicyId value.
+     * @return the objectReplicationSourcePolicies value.
      */
-    public String getObjectReplicationPolicyId() {
-        return this.objectReplicationPolicyId;
+    public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return this.objectReplicationSourcePolicies;
     }
 
     /**
-     * Set the objectReplicationPolicyId property: The
-     * objectReplicationPolicyId property.
+     * Set the objectReplicationSourcePolicies property: The
+     * objectReplicationSourcePolicies property.
      *
-     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
-     * set.
-     * @return the BlobItem object itself.
-     */
-    public BlobItem setObjectReplicationPolicyId(String objectReplicationPolicyId) {
-        this.objectReplicationPolicyId = objectReplicationPolicyId;
-        return this;
-    }
-
-    /**
-     * Get the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
-     *
-     * @return the objectReplicationRuleStatus value.
-     */
-    public Map<String, String> getObjectReplicationRuleStatus() {
-        return this.objectReplicationRuleStatus;
-    }
-
-    /**
-     * Set the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
-     *
-     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * @param objectReplicationSourcePolicies the objectReplicationSourcePolicies value
      * to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
-        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
+    public BlobItem setObjectReplicationSourcePolicies(
+        Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         return this;
     }
 
