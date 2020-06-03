@@ -126,7 +126,7 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --track1-naming --generate-client-as-impl --implementation-subpackage=fluent --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
+                        ' --track1-naming --implementation-subpackage=fluent --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +
