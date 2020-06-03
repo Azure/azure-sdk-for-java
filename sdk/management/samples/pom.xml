@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.0.1-beta.1</version>
+            <version>4.0.1-beta.3</version>
         </dependency>
         <dependency>
             <groupId>io.fabric8</groupId>
