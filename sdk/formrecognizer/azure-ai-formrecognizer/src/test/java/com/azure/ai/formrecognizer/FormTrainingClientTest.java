@@ -303,7 +303,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getCode());
             assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
-            assertEquals(EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE, formRecognizerException.getMessage());
+            assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE));
         });
     }
 }

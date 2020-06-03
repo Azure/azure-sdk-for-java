@@ -51,8 +51,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID: cae9d062-71e0-44a3-8630-70b32ae94f4d";
     static final String EXPECTED_INVALID_MODEL_ERROR = "Unable to list blobs on the Azure blob storage account.";
     static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
-    static final String EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE =
-        EXPECTED_INVALID_MODEL_STATUS_MESSAGE + ", errorCode: [" + EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE + "], "
+    static final String EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE = ", errorCode: [" + EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE + "], "
             + "message: " + EXPECTED_INVALID_MODEL_ERROR;
 
     private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
