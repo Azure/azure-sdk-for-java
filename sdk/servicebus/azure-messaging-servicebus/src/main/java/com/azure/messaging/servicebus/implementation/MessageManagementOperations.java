@@ -20,7 +20,7 @@ public interface MessageManagementOperations {
      *
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId);
+    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transaction);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on

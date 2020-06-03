@@ -39,7 +39,6 @@ public class ReactorSessionTest {
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
-    private ReactorSession reactorSessionWithRetryPolicy;
     private AmqpRetryPolicy retryPolicy;
 
     @Mock

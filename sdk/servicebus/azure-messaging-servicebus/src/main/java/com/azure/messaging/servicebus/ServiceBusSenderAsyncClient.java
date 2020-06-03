@@ -19,7 +19,10 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -293,11 +296,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
      * Sends a message batch to the Azure Service Bus entity this sender is connected to.
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
-     * @param transactionId to be set on batch message before sending to Service Bus.
+     * @param transaction to be set on batch message before sending to Service Bus.
      *
      * @return A {@link Mono} the finishes this operation on service bus resource.
      */
-    private Mono<Void> sendInternal(ServiceBusMessageBatch batch, AmqpTransaction transactionId) {
+    private Mono<Void> sendInternal(ServiceBusMessageBatch batch, AmqpTransaction transaction) {
         if (Objects.isNull(batch)) {
             return monoError(logger, new NullPointerException("'batch' cannot be null."));
         }
@@ -346,9 +349,16 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     parentContext.set(tracerProvider.startSpan(
                         entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
                 }
+
+                TransactionalState deliveryState = null;
+                if (transaction != null && transaction.getTransactionId() != null) {
+                    deliveryState = new TransactionalState();
+                    deliveryState.setTxnId(new Binary(transaction.getTransactionId().array()));
+                }
+
                 return messages.size() == 1
-                    ? link.send(messages.get(0), transactionId)
-                    : link.send(messages, transactionId);
+                    ? link.send(messages.get(0), deliveryState)
+                    : link.send(messages, deliveryState);
 
             })
                 .doOnEach(signal -> {

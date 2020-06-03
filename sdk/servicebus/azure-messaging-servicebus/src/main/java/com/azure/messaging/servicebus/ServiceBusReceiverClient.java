@@ -336,7 +336,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         asyncClient.defer(lockToken, propertiesToModify, sessionId, transactionContext).block(operationTimeout);
-
     }
 
     /**
@@ -405,7 +404,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
         asyncClient.deadLetter(lockToken, deadLetterOptions, transactionContext).block(operationTimeout);
-
     }
 
     /**
@@ -443,7 +441,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         asyncClient.deadLetter(lockToken, deadLetterOptions, sessionId, transactionContext).block(operationTimeout);
-
     }
 
     /**

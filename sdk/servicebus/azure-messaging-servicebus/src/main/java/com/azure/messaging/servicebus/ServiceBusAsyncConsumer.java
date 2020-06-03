@@ -70,16 +70,16 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, AmqpTransaction transactionId) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, AmqpTransaction transaction) {
 
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-            deadLetterErrorDescription, propertiesToModify, transactionId);
+            deadLetterErrorDescription, propertiesToModify, transaction);
 
         if (deliveryState == null) {
             return monoError(logger,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-        return linkProcessor.updateDisposition(lockToken, deliveryState, transactionId);
+        return linkProcessor.updateDisposition(lockToken, deliveryState, transaction);
     }
 
     /**
@@ -105,8 +105,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
 
         @Override
         public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState,
-            AmqpTransaction transactionId) {
-            return link.updateDisposition(lockToken, deliveryState, transactionId);
+            AmqpTransaction transaction) {
+            return link.updateDisposition(lockToken, deliveryState, transaction);
         }
 
         @Override

@@ -1100,7 +1100,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String sessionId, AmqpTransaction transactionId) {
+        String sessionId, AmqpTransaction transaction) {
 
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
@@ -1143,7 +1143,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final Mono<Void> performOnManagement = connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionId))
+                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transaction))
             .then(Mono.fromRunnable(() -> {
                 logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
@@ -1153,7 +1153,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         if (unnamedSessionManager != null) {
             return unnamedSessionManager.updateDisposition(message, sessionId, dispositionStatus, propertiesToModify,
-                deadLetterReason, deadLetterErrorDescription, transactionId)
+                deadLetterReason, deadLetterErrorDescription, transaction)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
                         return Mono.empty();
@@ -1169,7 +1169,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return performOnManagement;
         } else {
             return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, transactionId)
+                deadLetterErrorDescription, propertiesToModify, transaction)
                 .then(Mono.fromRunnable(() -> logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken)));
         }

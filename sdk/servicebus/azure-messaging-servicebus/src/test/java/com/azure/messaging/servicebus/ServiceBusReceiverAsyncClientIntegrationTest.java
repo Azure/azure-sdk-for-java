@@ -10,7 +10,6 @@ import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -368,6 +367,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message2, transaction.get()))
             .verifyComplete();
+
         Date start = new Date();
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
@@ -412,7 +412,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
         }
-        end = new Date();
+
     }
 
     /**

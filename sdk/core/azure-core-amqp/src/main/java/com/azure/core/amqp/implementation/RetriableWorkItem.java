@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.AmqpTransaction;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.MonoSink;
 
@@ -20,33 +19,37 @@ class RetriableWorkItem {
     private final byte[] amqpMessage;
     private final int messageFormat;
     private final int encodedMessageSize;
-    private final AmqpTransaction transaction;
+    private final DeliveryState deliveryState;
 
     private boolean waitingForAck;
     private Exception lastKnownException;
 
     RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
-                      Duration timeout, AmqpTransaction transaction) {
+                      Duration timeout, DeliveryState deliveryState) {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
-            false), transaction);
+            false), deliveryState);
     }
 
     private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
-        monoSink, TimeoutTracker timeout, AmqpTransaction transaction) {
+        monoSink, TimeoutTracker timeout, DeliveryState deliveryState) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
         this.monoSink = monoSink;
         this.timeoutTracker = timeout;
-        this.transaction = transaction;
+        this.deliveryState = deliveryState;
     }
 
     byte[] getMessage() {
         return amqpMessage;
     }
 
-    AmqpTransaction getTransaction() {
-        return transaction;
+    DeliveryState getDeliveryState() {
+        return deliveryState;
+    }
+
+    boolean updatedDeliveryState() {
+        return deliveryState != null;
     }
 
     TimeoutTracker getTimeoutTracker() {

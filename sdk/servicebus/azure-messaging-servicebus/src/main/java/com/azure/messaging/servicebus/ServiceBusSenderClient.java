@@ -114,7 +114,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
     public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
-                                ServiceBusTransactionContext transactionContext) {
+        ServiceBusTransactionContext transactionContext) {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime, transactionContext).block(tryTimeout);
     }
 

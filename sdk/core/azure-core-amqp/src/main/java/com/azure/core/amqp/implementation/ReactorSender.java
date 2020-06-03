@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -21,7 +20,6 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.Declared;
-import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -156,7 +154,7 @@ class ReactorSender implements AmqpSendLink {
     }
 
     @Override
-    public Mono<Void> send(Message message, AmqpTransaction transaction) {
+    public Mono<Void> send(Message message, DeliveryState deliveryState) {
         return getLinkSize()
             .flatMap(maxMessageSize -> {
                 final int payloadSize = messageSerializer.getSize(message);
@@ -176,7 +174,7 @@ class ReactorSender implements AmqpSendLink {
                         errorMessage, exception, handler.getErrorContext(sender));
                     return Mono.error(error);
                 }
-                return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, transaction);
+                return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, deliveryState);
             }).then();
     }
 
@@ -186,9 +184,9 @@ class ReactorSender implements AmqpSendLink {
     }
 
     @Override
-    public Mono<Void> send(List<Message> messageBatch, AmqpTransaction transaction) {
+    public Mono<Void> send(List<Message> messageBatch, DeliveryState deliveryState) {
         if (messageBatch.size() == 1) {
-            return send(messageBatch.get(0), transaction);
+            return send(messageBatch.get(0), deliveryState);
         }
 
         return getLinkSize()
@@ -236,7 +234,7 @@ class ReactorSender implements AmqpSendLink {
                     byteArrayOffset = byteArrayOffset + encodedSize;
                 }
 
-                return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, transaction);
+                return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, deliveryState);
             }).then();
 
     }
@@ -305,16 +303,19 @@ class ReactorSender implements AmqpSendLink {
     }
 
     @Override
-    public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat) {
-        return send(bytes, arrayOffset, messageFormat, null);
-    }
-
-    Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, AmqpTransaction transaction) {
+    public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
         return validateEndpoint()
             .then(Mono.create(sink -> sendWork(new RetriableWorkItem(bytes,
-                arrayOffset, messageFormat, sink, timeout, transaction)))
+                arrayOffset, messageFormat, sink, timeout, deliveryState)))
             );
     }
+
+    /*Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
+        return validateEndpoint()
+            .then(Mono.create(sink -> sendWork(new RetriableWorkItem(bytes,
+                arrayOffset, messageFormat, sink, timeout, deliveryState)))
+            );
+    }*/
 
     private Mono<Void> validateEndpoint() {
         return Mono.defer(() -> {
@@ -388,11 +389,8 @@ class ReactorSender implements AmqpSendLink {
                 delivery = sender.delivery(deliveryTag.getBytes(UTF_8));
                 delivery.setMessageFormat(workItem.getMessageFormat());
 
-                AmqpTransaction transaction = workItem.getTransaction();
-                if (transaction != null) {
-                    TransactionalState transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transaction.getTransactionId().array()));
-                    delivery.disposition(transactionalState);
+                if (workItem.updatedDeliveryState()) {
+                    delivery.disposition(workItem.getDeliveryState());
                 }
                 sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
                 assert sentMsgSize == workItem.getEncodedMessageSize()
@@ -447,11 +445,12 @@ class ReactorSender implements AmqpSendLink {
             logger.verbose("clientId[{}]. path[{}], linkName[{}], delivery[{}] - mismatch (or send timed out)",
                 handler.getConnectionId(), entityPath, getLinkName(), deliveryTag);
             return;
+        } else if (workItem.updatedDeliveryState()) {
+            workItem.success(outcome);
+            return;
         }
 
-        if (outcome instanceof Accepted
-            || (outcome instanceof TransactionalState && ((TransactionalState) outcome)
-            .getOutcome() instanceof  Accepted)) {
+        if (outcome instanceof Accepted) {
             synchronized (errorConditionLock) {
                 lastKnownLinkError = null;
                 lastKnownErrorReportedAt = null;
@@ -459,9 +458,7 @@ class ReactorSender implements AmqpSendLink {
             }
 
             workItem.success(outcome);
-        } else if (outcome instanceof Rejected
-            || (outcome instanceof TransactionalState && ((TransactionalState) outcome)
-            .getOutcome() instanceof  Rejected)) {
+        } else if (outcome instanceof Rejected) {
             final Rejected rejected = (Rejected) outcome;
             final org.apache.qpid.proton.amqp.transport.ErrorCondition error = rejected.getError();
             final Exception exception = ExceptionUtil.toException(error.getCondition().toString(),

@@ -379,7 +379,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static Stream<Arguments> messagingEntityTxnWithSessions() {
         return Stream.of(
             // The data corresponds to :entityType, isSessionEnabled, commit, dispositionStatus
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.COMPLETED),
+           /*Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.SUSPENDED),
             Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.DEFERRED),
@@ -398,8 +398,8 @@ public abstract class IntegrationTestBase extends TestBase {
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.SUSPENDED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.COMPLETED),
+*/
+            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.COMPLETED)/*,
             Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.SUSPENDED),
             Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.DEFERRED),
@@ -418,7 +418,7 @@ public abstract class IntegrationTestBase extends TestBase {
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.DEFERRED)
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.DEFERRED)*/
         );
     }
 

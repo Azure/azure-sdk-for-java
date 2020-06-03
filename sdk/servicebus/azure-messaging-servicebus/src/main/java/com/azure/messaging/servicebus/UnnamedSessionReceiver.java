@@ -275,8 +275,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
         @Override
         public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState,
-            AmqpTransaction transactionId) {
-            return link.updateDisposition(lockToken, deliveryState, transactionId);
+            AmqpTransaction transaction) {
+            return link.updateDisposition(lockToken, deliveryState, transaction);
         }
 
         @Override

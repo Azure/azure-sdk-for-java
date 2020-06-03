@@ -14,7 +14,6 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -133,6 +132,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             return monoError(logger, Exceptions.propagate(new IllegalArgumentException(
                 "Delivery not on receive link.")));
         }
+
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
         final Mono<Void> result = Mono.create(sink -> {
             workItem.start(sink);
@@ -224,7 +224,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             // This occurs in the case of receive and delete.
             if (isSettled) {
                 delivery.disposition(Accepted.getInstance());
-
                 delivery.settle();
             } else {
                 unsettledDeliveries.putIfAbsent(lockToken.toString(), delivery);
@@ -275,7 +274,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
         // If the statuses match, then we settle the delivery and move on.
         if (remoteState.getType() == workItem.getDeliveryState().getType()) {
-            completeWorkItem(lockToken, delivery, workItem.getSink(), null, workItem);
+            completeWorkItem(lockToken, delivery, workItem.getSink(), null);
             return;
         }
 
@@ -291,7 +290,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 final Duration retry = retryPolicy.calculateRetryDelay(exception, workItem.incrementRetry());
                 if (retry == null) {
                     logger.info("deliveryTag[{}], state[{}]. Retry attempts exhausted.", lockToken, exception);
-                    completeWorkItem(lockToken, delivery, workItem.getSink(), exception, workItem);
+                    completeWorkItem(lockToken, delivery, workItem.getSink(), exception);
                 } else {
                     workItem.setLastException(exception);
                     workItem.resetStartTime();
@@ -302,7 +301,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                             "linkName[%s], deliveryTag[%s]. Retrying updateDisposition failed to dispatch to Reactor.",
                             error, handler.getErrorContext(receiver)));
 
-                        completeWorkItem(lockToken, delivery, workItem.getSink(), amqpException, workItem);
+                        completeWorkItem(lockToken, delivery, workItem.getSink(), amqpException);
                     }
                 }
 
@@ -314,7 +313,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 logger.info("deliveryTag[{}], state[{}]. Completing pending updateState operation with exception.",
                     lockToken, remoteState.getType(), cancelled);
 
-                completeWorkItem(lockToken, delivery, workItem.getSink(), cancelled, workItem);
+                completeWorkItem(lockToken, delivery, workItem.getSink(), cancelled);
                 break;
             default:
                 final AmqpException error = new AmqpException(false, remoteOutcome.toString(),
@@ -323,7 +322,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 logger.info("deliveryTag[{}], state[{}] Completing pending updateState operation with exception.",
                     lockToken, remoteState.getType(), error);
 
-                completeWorkItem(lockToken, delivery, workItem.getSink(), error, workItem);
+                completeWorkItem(lockToken, delivery, workItem.getSink(), error);
                 break;
         }
     }
@@ -341,18 +340,16 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 : new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR, "Update disposition request timed out.",
                 handler.getErrorContext(receiver));
 
-            completeWorkItem(key, null, value.getSink(), error, value);
+            completeWorkItem(key, null, value.getSink(), error);
         });
     }
 
-    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error,
-        UpdateDispositionWorkItem workItem) {
-
+    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error) {
         boolean isSettled = delivery != null && delivery.remotelySettled();
         /*if (workItem.getDeliveryState() instanceof  TransactionalState){
-            //isSettled = delivery.getRemoteState().getType() == workItem.getDeliveryState().getType();
-        }
-        */
+            workCompleted = delivery.getRemoteState().getType() == workItem.getDeliveryState().getType();
+        }*/
+
         if (isSettled) {
             delivery.settle();
         }
@@ -370,6 +367,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             pendingUpdates.remove(lockToken);
             unsettledDeliveries.remove(lockToken);
         }
+
     }
 
     private static final class UpdateDispositionWorkItem {

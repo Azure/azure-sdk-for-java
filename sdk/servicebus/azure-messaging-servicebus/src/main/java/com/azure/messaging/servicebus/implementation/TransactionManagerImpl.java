@@ -39,12 +39,12 @@ public class TransactionManagerImpl implements TransactionManager {
     @Override
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         return session.flatMap(session ->
-            session.commitTransaction(new AmqpTransaction(transactionContext.getTransactionId()))).then();
+            session.commitTransaction(new AmqpTransaction(transactionContext.getTransactionId())));
     }
 
     @Override
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         return session.flatMap(session ->
-            session.rollbackTransaction(new AmqpTransaction(transactionContext.getTransactionId()))).then();
+            session.rollbackTransaction(new AmqpTransaction(transactionContext.getTransactionId())));
     }
 }

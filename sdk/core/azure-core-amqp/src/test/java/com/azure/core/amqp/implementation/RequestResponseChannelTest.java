@@ -260,11 +260,9 @@ class RequestResponseChannelTest {
         doNothing().when(deliveryToSend).disposition(any(TransactionalState.class));
         when(sender.delivery(any(byte[].class))).thenReturn(deliveryToSend);
 
-
         // Creating a received message because we decodeDelivery calls implementation details for proton-j.
         final Delivery delivery = mock(Delivery.class);
         when(delivery.pending()).thenReturn(messageBytes.length);
-
 
         when(receiver.recv(any(), eq(0), eq(messageBytes.length))).thenAnswer(invocation -> {
             final byte[] buffer = invocation.getArgument(0);
