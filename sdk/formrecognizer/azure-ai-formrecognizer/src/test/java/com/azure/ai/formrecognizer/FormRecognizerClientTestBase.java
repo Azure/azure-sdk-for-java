@@ -68,6 +68,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond, WA";
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
+    static final String OCR_EXTRACTION_INVALID_URL_ERROR = "OCR extraction error: [Wrong response code: InvalidImageURL. Message: Image URL is badly formatted..]";
+    static final String EXPECTED_INVALID_URL_ERROR_CODE = "3003";
 
     private static void validateReferenceElementsData(List<String> expectedElements,
         List<FormContent> actualFormContentList, List<ReadResult> readResults) {
@@ -311,6 +313,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     void validateUSReceiptData(USReceipt actualRecognizedReceipt, boolean includeTextDetails) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
