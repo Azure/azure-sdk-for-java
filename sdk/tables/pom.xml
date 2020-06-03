@@ -5,13 +5,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-cosomos-service</artifactId>
+  <artifactId>azure-tables-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>azure-cosmos</module>
-    <module>azure-cosmos-benchmark</module>
-    <module>azure-cosmos-examples</module>
+    <module>azure-data-tables</module>
   </modules>
-
 </project>
