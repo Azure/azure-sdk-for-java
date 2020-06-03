@@ -17,14 +17,14 @@ import com.microsoft.azure.management.postgresql.v2017_12_01_preview.NameAvailab
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.NameAvailabilityRequest;
 
 class CheckNameAvailabilitysImpl extends WrapperImpl<CheckNameAvailabilitysInner> implements CheckNameAvailabilitys {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    CheckNameAvailabilitysImpl(PostgreSQLManager manager) {
+    CheckNameAvailabilitysImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().checkNameAvailabilitys());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
