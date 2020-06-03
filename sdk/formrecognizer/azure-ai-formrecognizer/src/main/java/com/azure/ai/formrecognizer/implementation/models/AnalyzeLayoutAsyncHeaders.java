@@ -7,9 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AnalyzeLayoutAsyncHeaders model.
- */
+/** The AnalyzeLayoutAsyncHeaders model. */
 @Fluent
 public final class AnalyzeLayoutAsyncHeaders {
     /*
@@ -20,7 +18,7 @@ public final class AnalyzeLayoutAsyncHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -29,7 +27,7 @@ public final class AnalyzeLayoutAsyncHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @param operationLocation the operationLocation value to set.
      * @return the AnalyzeLayoutAsyncHeaders object itself.
      */

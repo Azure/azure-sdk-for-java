@@ -52,7 +52,7 @@ public final class CjkBigramTokenFilterConverter {
         String name = obj.getName();
         cjkBigramTokenFilter.setName(name);
 
-        Boolean outputUnigrams = obj.isOutputUnigrams();
+        Boolean outputUnigrams = obj.areOutputUnigrams();
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
 
         if (obj.getIgnoreScripts() != null) {

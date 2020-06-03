@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
@@ -13,6 +14,7 @@ import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -350,6 +352,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             validateContentResultData(syncPoller.getFinalResult(), false);
         });
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
@@ -417,6 +420,25 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 client.beginRecognizeContentFromUrl(fileUrl);
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        invalidSourceUrlRunner((invalidSourceUrl) -> {
+            beginTrainingLabeledRunner((training, useTrainingLabels) -> {
+                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels);
+                syncPoller.waitForCompletion();
+                CustomFormModel createdModel = syncPoller.getFinalResult();
+                HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                    () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl, createdModel.getModelId()).getFinalResult());
+                ErrorInformation errorInformation = (ErrorInformation) ((List) httpResponseException.getValue()).get(0);
+                assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
+                assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
+            });
         });
     }
 }

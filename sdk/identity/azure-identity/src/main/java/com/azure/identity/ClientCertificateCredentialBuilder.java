@@ -20,7 +20,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * Sets the client certificate for authenticating to AAD.
      *
      * @param certificatePath the PEM file containing the certificate
-     * @return the ClientCertificateCredentialBuilder itself
+     * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pemCertificate(String certificatePath) {
         this.clientCertificate = certificatePath;
@@ -32,11 +32,23 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      *
      * @param certificatePath the password protected PFX file containing the certificate
      * @param clientCertificatePassword the password protecting the PFX file
-     * @return the ClientCertificateCredentialBuilder itself
+     * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
+        return this;
+    }
+
+    /**
+     * Sets whether to enable using the shared token cache. This is disabled by default.
+     *
+     * @param enabled indicates whether to enable using the shared token cache.
+     *
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder enablePersistentCache(boolean enabled) {
+        this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }
 

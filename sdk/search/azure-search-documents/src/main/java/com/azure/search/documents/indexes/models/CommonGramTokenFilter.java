@@ -29,7 +29,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * insensitive. Default is false.
      */
     @JsonProperty(value = "ignoreCase")
-    private Boolean ignoreCase;
+    private Boolean caseIgnored;
 
     /*
      * A value that indicates whether the token filter is in query mode. When
@@ -38,7 +38,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * false.
      */
     @JsonProperty(value = "queryMode")
-    private Boolean useQueryMode;
+    private Boolean queryModeUsed;
 
     /**
      * Get the commonWords property: The set of common words.
@@ -66,19 +66,19 @@ public final class CommonGramTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean isIgnoreCase() {
-        return this.ignoreCase;
+    public Boolean isCaseIgnored() {
+        return this.caseIgnored;
     }
 
     /**
      * Set the ignoreCase property: A value indicating whether common words
      * matching will be case insensitive. Default is false.
      *
-     * @param ignoreCase the ignoreCase value to set.
+     * @param caseIgnored the ignoreCase value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    public CommonGramTokenFilter setIgnoreCase(Boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
+    public CommonGramTokenFilter setCaseIgnored(Boolean caseIgnored) {
+        this.caseIgnored = caseIgnored;
         return this;
     }
 
@@ -90,8 +90,8 @@ public final class CommonGramTokenFilter extends TokenFilter {
      *
      * @return the useQueryMode value.
      */
-    public Boolean isUseQueryMode() {
-        return this.useQueryMode;
+    public Boolean isQueryModeUsed() {
+        return this.queryModeUsed;
     }
 
     /**
@@ -100,11 +100,11 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * bigrams and then removes common words and single terms followed by a
      * common word. Default is false.
      *
-     * @param useQueryMode the useQueryMode value to set.
+     * @param queryModeUsed the useQueryMode value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    public CommonGramTokenFilter setUseQueryMode(Boolean useQueryMode) {
-        this.useQueryMode = useQueryMode;
+    public CommonGramTokenFilter setQueryModeUsed(Boolean queryModeUsed) {
+        this.queryModeUsed = queryModeUsed;
         return this;
     }
 }

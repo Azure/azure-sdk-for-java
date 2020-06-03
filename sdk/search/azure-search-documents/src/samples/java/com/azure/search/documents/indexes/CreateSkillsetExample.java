@@ -60,7 +60,7 @@ public class CreateSkillsetExample {
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
-                .shouldDetectOrientation(true)
+                .setShouldDetectOrientation(true)
                 .setDefaultLanguageCode(null)
                 .setName("myocr")
                 .setDescription("Extracts text (plain and structured) from image.")

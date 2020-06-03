@@ -18,14 +18,13 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
+import org.apache.commons.lang.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure compute sample for creating multiple virtual machines in parallel.

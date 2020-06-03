@@ -99,26 +99,26 @@ public class CosmosStoredProcedure {
     /**
      * Replace cosmos sync stored procedure.
      *
-     * @param storedProcedureSettings the stored procedure settings
+     * @param storedProcedureProperties the stored procedure settings
      * @return the cosmos stored procedure response
      */
-    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings) {
+    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureProperties) {
         return container.getScripts()
-                   .blockStoredProcedureResponse(storedProcedure.replace(storedProcedureSettings));
+                   .blockStoredProcedureResponse(storedProcedure.replace(storedProcedureProperties));
     }
 
     /**
      * Replace cosmos sync stored procedure.
      *
-     * @param storedProcedureSettings the stored procedure settings
+     * @param storedProcedureProperties the stored procedure settings
      * @param options the options
      * @return the cosmos stored procedure response
      */
     public CosmosStoredProcedureResponse replace(
-        CosmosStoredProcedureProperties storedProcedureSettings,
+        CosmosStoredProcedureProperties storedProcedureProperties,
         CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
-                   .blockStoredProcedureResponse(storedProcedure.replace(storedProcedureSettings, options));
+                   .blockStoredProcedureResponse(storedProcedure.replace(storedProcedureProperties, options));
 
     }
 }
