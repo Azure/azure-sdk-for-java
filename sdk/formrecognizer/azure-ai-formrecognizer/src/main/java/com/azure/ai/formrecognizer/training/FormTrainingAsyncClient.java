@@ -352,7 +352,7 @@ public final class FormTrainingAsyncClient {
      * generated from the target resource's call to {@link FormTrainingAsyncClient#getCopyAuthorization(String, String)}
      *
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns teh copied model {@link CustomFormModelInfo}.
+     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModelInfo}.
      * @throws FormRecognizerException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code modelId}, {@code target} is {@code null}.
      */
@@ -383,7 +383,7 @@ public final class FormTrainingAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns teh copied model {@link CustomFormModelInfo}.
+     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModelInfo}.
      * @throws FormRecognizerException If copy operation fails and model with {@link OperationStatus#FAILED}
      * is created.
      * @throws NullPointerException If {@code modelId}, {@code target} is {@code null}.

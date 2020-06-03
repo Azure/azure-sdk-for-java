@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class FormRecognizerException extends AzureException {
     private final List<ErrorInformation> errorInformationList;
+    private final String errorInformationMessage;
 
     /**
      * Initializes a new instance of {@link FormRecognizerException} class
@@ -23,20 +24,20 @@ public class FormRecognizerException extends AzureException {
      */
     public FormRecognizerException(final String message, final List<ErrorInformation> errorInformationList) {
         super(message);
+        StringBuilder errorInformationStringBuilder = new StringBuilder().append(message);
+        if (errorInformationList.size() > 0) {
+            for (ErrorInformation errorInformation : errorInformationList) {
+                errorInformationStringBuilder.append(", " + "errorCode" + ": [" + errorInformation.getCode()
+                    + "], " + "message" + ": " + errorInformation.getMessage());
+            }
+        }
+        this.errorInformationMessage = errorInformationStringBuilder.toString();
         this.errorInformationList = errorInformationList;
     }
 
     @Override
     public String getMessage() {
-        final String baseMessage = super.getMessage();
-        StringBuilder errorInformationMessage = new StringBuilder().append(baseMessage);
-        if (errorInformationList.size() > 0) {
-            for (ErrorInformation errorInformation : errorInformationList) {
-                errorInformationMessage.append(", " + "errorCode" + ": [" + errorInformation.getCode()
-                    + "], " + "message" + ": " + errorInformation.getMessage());
-            }
-        }
-        return errorInformationMessage.toString();
+        return this.errorInformationMessage;
     }
 
     /**
