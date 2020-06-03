@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -494,11 +493,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .block();
     }
 
-    public void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                       List<CosmosItemProperties> documentDefinitionList) {
+    public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
+                                       List<T> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> BridgeInternal.getProperties(itemResponse))
             .then()
             .block();
     }
@@ -1129,89 +1127,5 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosClientBuilder copyCosmosClientBuilder(CosmosClientBuilder builder) {
         return CosmosBridgeInternal.cloneCosmosClientBuilder(builder);
-    }
-
-
-    public enum City {
-        NEW_YORK,
-        LOS_ANGELES,
-        SEATTLE
-    }
-
-    public final class Pet {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("age")
-        public int age;
-
-        public Pet(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-    }
-
-    public final class Person {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("id")
-        public String id;
-
-        @JsonProperty("city")
-        public City city;
-
-        @JsonProperty("income")
-        public double income;
-
-        @JsonProperty("children")
-        public List<Person> children;
-
-        @JsonProperty("age")
-        public int age;
-
-        @JsonProperty("pet")
-        public Pet pet;
-
-        @JsonProperty("guid")
-        public UUID guid;
-
-        public Person(String name, City city, double income, List<Person> children, int age, Pet pet, UUID guid) {
-            this.name = name;
-            this.city = city;
-            this.income = income;
-            this.children = children;
-            this.age = age;
-            this.pet = pet;
-            this.guid = guid;
-            this.id = UUID.randomUUID().toString();
-        }
-
-        /**
-         * Getter for property 'name'.
-         *
-         * @return Value for property 'name'.
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * Getter for property 'city'.
-         *
-         * @return Value for property 'city'.
-         */
-        public City getCity() {
-            return city;
-        }
-
-        /**
-         * Getter for property 'age'.
-         *
-         * @return Value for property 'age'.
-         */
-        public int getAge() {
-            return age;
-        }
     }
 }

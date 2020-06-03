@@ -14,8 +14,10 @@ import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.rx.pojos.City;
+import com.azure.cosmos.rx.pojos.Person;
+import com.azure.cosmos.rx.pojos.Pet;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.AfterClass;
@@ -37,7 +39,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     private final int TIMEOUT_160 = 160000;
     private final String FIELD = "name";
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<CosmosItemProperties> docs = new ArrayList<>();
+    private ArrayList<Person> docs = new ArrayList<>();
 
     private CosmosAsyncClient client;
 
@@ -86,7 +88,7 @@ public class DistinctQueryTests extends TestSuiteBase {
                                          options,
                                          CosmosItemProperties.class);
         List<Object> nameList = docs.stream()
-                                    .map(d -> ModelBridgeInternal.getObjectFromJsonSerializable(d, FIELD))
+                                    .map(d -> d.getName())
                                     .collect(Collectors.toList());
         List<Object> distinctNameList = nameList.stream().distinct().collect(Collectors.toList());
 
@@ -203,7 +205,7 @@ public class DistinctQueryTests extends TestSuiteBase {
             final String queryWithoutDistinct = String.format(query, "");
 
             CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryWithoutDistinct,
-                                                                                                 options,
+                                                                                     options,
                                                                                      JsonNode.class);
 
             Iterator<FeedResponse<JsonNode>> iterator = queryObservable.byPage().toIterable().iterator();
@@ -219,8 +221,8 @@ public class DistinctQueryTests extends TestSuiteBase {
                 }
             }
             CosmosPagedFlux<JsonNode> queryObservableWithDistinct = createdCollection
-                                                                                    .queryItems(queryWithDistinct, options,
-                                                                                                JsonNode.class);
+                                                                        .queryItems(queryWithDistinct, options,
+                                                                                    JsonNode.class);
 
             iterator = queryObservableWithDistinct.byPage(5).toIterable().iterator();
 
@@ -256,7 +258,7 @@ public class DistinctQueryTests extends TestSuiteBase {
                                        .map(cosmosItemProperties ->
                                                 ModelBridgeInternal.getObjectFromJsonSerializable(
                                                     cosmosItemProperties, "intprop"))
-                                   .collect(Collectors.toList());
+                                       .collect(Collectors.toList());
         // We insert two documents witn intprop as 5.0 and 5. Distinct should consider them as one
         assertThat(intpropList).containsExactlyInAnyOrder(null, 5);
 
@@ -273,19 +275,17 @@ public class DistinctQueryTests extends TestSuiteBase {
         ObjectMapper mapper = new ObjectMapper();
         for (int i = 0; i < 40; i++) {
             Person person = getRandomPerson(rand);
-            try {
-                docs.add(new CosmosItemProperties(mapper.writeValueAsString(person)));
-            } catch (JsonProcessingException e) {
-                logger.error(e.getMessage());
-            }
+            docs.add(person);
         }
         String resourceJson = String.format("{ " + "\"id\": \"%s\", \"intprop\": %d }", UUID.randomUUID().toString(),
                                             5);
         String resourceJson2 = String.format("{ " + "\"id\": \"%s\", \"intprop\": %f }", UUID.randomUUID().toString(),
                                              5.0f);
 
-        docs.add(new CosmosItemProperties(resourceJson));
-        docs.add(new CosmosItemProperties(resourceJson2));
+        List<CosmosItemProperties> propDocs = new ArrayList<>();
+        propDocs.add(new CosmosItemProperties(resourceJson));
+        propDocs.add(new CosmosItemProperties(resourceJson2));
+        voidBulkInsertBlocking(createdCollection, propDocs);
 
     }
 
