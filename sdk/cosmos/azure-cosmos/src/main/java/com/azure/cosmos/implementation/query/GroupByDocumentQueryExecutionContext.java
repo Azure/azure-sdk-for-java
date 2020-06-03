@@ -24,12 +24,10 @@ import java.util.function.Function;
 public class GroupByDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
 
     public static final String CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY = "Continuation token is not supported " +
-                                                                                    "for " +
-                                                                                    "queries " +
-                                                                                    "with GROUP BY. Do not use " +
-                                                                                    "FeedResponse#" +
-                                                                                    "responseContinuation or remove " +
-                                                                                    "the GROUP BY " +
+                                                                                    "for queries with GROUP BY." +
+                                                                                    "Do not use FeedResponse#" +
+                                                                                    "responseContinuation" +
+                                                                                    " or remove the GROUP BY " +
                                                                                     "from the query.";
     private final IDocumentQueryExecutionComponent<T> component;
     private final GroupingTable groupingTable;
@@ -98,15 +96,19 @@ public class GroupByDocumentQueryExecutionContext<T extends Resource> implements
         }
     }
 
-    /// <summary>
-    /// When a group by query gets rewritten the projection looks like:
-    ///
-    /// SELECT
-    ///     [{"item": c.age}, {"item": c.name}] AS groupByItems,
-    ///     {"age": c.age, "name": c.name} AS payload
-    ///
-    /// This struct just lets us easily access the "groupByItems" and "payload" property.
-    /// </summary>
+    IDocumentQueryExecutionComponent<T> getComponent() {
+        return this.component;
+    }
+
+    /**
+     * When a group by query gets rewritten the projection looks like:
+     * <p>
+     * SELECT
+     * [{"item": c.age}, {"item": c.name}] AS groupByItems,
+     * {"age": c.age, "name": c.name} AS payload
+     * <p>
+     * This class just lets us easily access the "groupByItems" and "payload" property.
+     */
     public class RewrittenGroupByProjection extends JsonSerializable {
         private static final String GroupByItemsPropertyName = "groupByItems";
         private static final String PayloadPropertyName = "payload";

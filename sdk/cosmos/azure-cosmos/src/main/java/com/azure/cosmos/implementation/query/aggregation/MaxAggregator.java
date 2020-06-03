@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation.query.aggregation;
 
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.query.ItemComparator;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
-import com.fasterxml.jackson.databind.node.DoubleNode;
-import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.NullNode;
+import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
@@ -17,6 +17,21 @@ public class MaxAggregator implements Aggregator {
 
     public MaxAggregator() {
         this.value = Undefined.value();
+    }
+
+    static Object getValue(Object value) {
+
+        if (value instanceof TextNode) {
+            return ((JsonNode) value).asText();
+        } else if (value instanceof NumericNode) {
+            return ((JsonNode) value).numberValue();
+        } else if (value instanceof BooleanNode) {
+            return ((JsonNode) value).asBoolean();
+        } else if (value instanceof NullNode) {
+            return null;
+        } else {
+            return value;
+        }
     }
 
     @Override
@@ -51,22 +66,6 @@ public class MaxAggregator implements Aggregator {
             this.value = item;
         }
 
-    }
-
-    static Object getValue(Object value) {
-        if (value instanceof TextNode) {
-            return ((TextNode) value).asText();
-        } else if (value instanceof DoubleNode) {
-            return ((DoubleNode) value).asDouble();
-        } else if (value instanceof IntNode) {
-            return ((IntNode) value).intValue();
-        } else if (value instanceof BooleanNode) {
-            return ((BooleanNode) value).asBoolean();
-        } else if (value instanceof NullNode) {
-            return null;
-        } else {
-            return value;
-        }
     }
 
     @Override

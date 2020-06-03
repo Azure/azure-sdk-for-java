@@ -31,7 +31,6 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
     private SingleGroupAggregator singleGroupAggregator;
 
     //QueryInfo class used in PipelinedDocumentQueryExecutionContext returns a Collection of AggregateOperators
-    //while Multiple aggregates are allowed in queries targeted at a single partition, only a single aggregate is allowed in x-partition queries (currently)
     public AggregateDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component,
                                                   List<AggregateOperator> aggregateOperators,
                                                   Map<String, AggregateOperator> groupByAliasToAggregateType,
@@ -47,30 +46,6 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                                                                                    orderedAliases,
                                                                                    hasSelectValue,
                                                                                    continuationToken);
-        /*
-
-        AggregateOperator aggregateOperator = AggregateOperator.Max;
-
-        switch (aggregateOperator) {
-            case Average:
-                this.aggregator = new AverageAggregator();
-                break;
-            case Count:
-                this.aggregator = new CountAggregator();
-                break;
-            case Max:
-                this.aggregator = new MaxAggregator();
-                break;
-            case Min:
-                this.aggregator = new MinAggregator();
-                break;
-            case Sum:
-                this.aggregator = new SumAggregator();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + aggregateOperator.toString());
-        }
-        */
     }
 
     @SuppressWarnings("unchecked")
@@ -98,7 +73,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                         for (T d : page.getResults()) {
                             RewrittenAggregateProjections rewrittenAggregateProjections =
                                 new RewrittenAggregateProjections(this.isValueAggregateQuery,
-                                                                  (Document)d);
+                                                                  (Document)d); //d is always a Document
                             this.singleGroupAggregator.addValues(rewrittenAggregateProjections.getPayload());
                         }
 

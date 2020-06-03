@@ -41,7 +41,8 @@ public class DistinctMapTest {
 
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void stringValue(DistinctQueryType queryType) {
-        String resourceString = String.format("{ " + "\"id\": \"a\" }");        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
+        String resourceString = String.format("{ " + "\"id\": \"a\" }");
+        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
 
         Document resource = new Document(resourceString);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
@@ -53,8 +54,7 @@ public class DistinctMapTest {
         resource = new Document(String.format("{ " + "\"id\": \"b\" }"));
         boolean add3 = distinctMap.add(resource, outHash);
         assertThat(add3).as("different value should be added again").isTrue();
-
-     }
+    }
 
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void objectValue(DistinctQueryType queryType) {

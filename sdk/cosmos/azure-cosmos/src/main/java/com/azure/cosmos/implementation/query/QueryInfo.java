@@ -154,7 +154,5 @@ public final class QueryInfo extends JsonSerializable {
     public List<String> getGroupByAliases() {
         return super.getList("groupByAliases", String.class);
     }
-
-
 }
 

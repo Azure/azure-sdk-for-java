@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/// <summary>
-/// Aggregates all the projections for a single grouping.
-/// </summary>
+/**
+ * Aggregates all the projections for a single grouping.
+ */
 public abstract class SingleGroupAggregator {
 
     public static SingleGroupAggregator create(List<AggregateOperator> aggregates,
@@ -65,23 +65,24 @@ public abstract class SingleGroupAggregator {
         return singleGroupAggregator;
     }
 
-    /// <summary>
-    /// Adds the payload for group by values
-    /// </summary>
-    /// <param name="values"></param>
+    /**
+     * Adds the payload for group by values
+     * @param values
+     */
     public abstract void addValues(Document values);
 
-    /// <summary>
-    /// Forms the final result of the grouping.
-    /// </summary>
+    /**
+     * Forms the final result of the grouping.
+     * @return Document
+     */
     public abstract Document getResult();
 
     public abstract Resource getDocumentContinuationToken();
 
-    /// <summary>
-    /// For SELECT VALUE queries there is only one value for each grouping.
-    /// This class just helps maintain that and captures the first value across all continuations.
-    /// </summary>
+    /**
+     * For SELECT VALUE queries there is only one value for each grouping.
+     * This class just helps maintain that and captures the first value across all continuations.
+     */
     public static class SelectValueAggregateValues extends SingleGroupAggregator {
         private final AggregateValue aggregateValue;
 
@@ -107,12 +108,12 @@ public abstract class SingleGroupAggregator {
             if (result instanceof Document) {
                 document = (Document) aggregateValue.getResult();
             } else {
-                // This is for value queries.Need to append value property for scalar values (non key value pairs)
-                // to make them a key value pair document
                 document = new Document();
                 if (result instanceof Undefined) {
                     result = null;
                 }
+                // This is for value queries.Need to append value property for scalar values (non key value pairs)
+                // to make them a key value pair document as our impl is based on Document.
                 document.set(Constants.Properties.VALUE, result);
             }
             return document;
@@ -124,11 +125,11 @@ public abstract class SingleGroupAggregator {
         }
     }
 
-    /// <summary>
-    /// For select list queries we need to create a dictionary of alias to group by value.
-    /// For each grouping drained from the backend we merge it with the results here.
-    /// At the end this class will form a JSON object with the correct aliases and grouping result.
-    /// </summary>
+    /**
+     * For select list queries we need to create a dictionary of alias to group by value.
+     * For each grouping drained from the backend we merge it with the results here.
+     * At the end this class will form a JSON object with the correct aliases and grouping result.
+     */
     public static class SelectListAggregateValues extends SingleGroupAggregator {
         Map<String, AggregateValue> aliasToValue;
         List<String> orderedAliases;
@@ -136,7 +137,6 @@ public abstract class SingleGroupAggregator {
         private SelectListAggregateValues(
             Map<String, AggregateValue> aliasToValue,
             List<String> orderedAliases) {
-            // TODO: null checks with argumentnullexception
             this.aliasToValue = aliasToValue;
             this.orderedAliases = orderedAliases;
         }
@@ -196,11 +196,11 @@ public abstract class SingleGroupAggregator {
         }
     }
 
-    /// <summary>
-    /// With a group by value we need to encapsulate the fact that we have:
-    /// 1) aggregate group by values
-    /// 2) scalar group by values.
-    /// </summary>
+    /**
+     * With a group by value we need to encapsulate the fact that we have:
+     * 1) aggregate group by values
+     * 2) scalar group by values.
+     */
     private abstract static class AggregateValue {
         public static AggregateValue create(AggregateOperator aggregateOperator, String continuationToken) {
             AggregateValue value;
@@ -282,8 +282,8 @@ public abstract class SingleGroupAggregator {
         }
 
         public static ScalarAggregateValue create(String continuationToken) {
-            // Intialize these values using continuationToken when its support added.
             /*
+            Intialize these values using continuationToken when its support added.
             Document value = null;
             boolean initialized = false;
             */

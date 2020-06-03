@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.Undefined;
-import com.fasterxml.jackson.databind.node.TextNode;
 
 public final class ItemTypeHelper {
     public static ItemType getOrderByItemType(Object obj) {
@@ -24,7 +23,7 @@ public final class ItemTypeHelper {
             return ItemType.Number;
         }
 
-        if (obj instanceof String ) {
+        if (obj instanceof String) {
             return ItemType.String;
         }
 

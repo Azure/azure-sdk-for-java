@@ -15,7 +15,6 @@ public class UnorderedDistinctMap extends DistinctMap {
     // This is intended to be used as a concurrent hash set only
     private final Set<UInt128> resultSet;
 
-
     public UnorderedDistinctMap() {
         resultSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }

@@ -39,7 +39,7 @@ public class GroupingTable {
                                                                      this.groupByAliasToAggregateType,
                                                                      this.orderedAliases,
                                                                      this.hasSelectValue,
-                                                                      null);
+                                                                      /*continuationtoken*/ null);
                 this.table.put(groupByKeysHash, singleGroupAggregator);
             } else {
                 singleGroupAggregator = table.get(groupByKeysHash);

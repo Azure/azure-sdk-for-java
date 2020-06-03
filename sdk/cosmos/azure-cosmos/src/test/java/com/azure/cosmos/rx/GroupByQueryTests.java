@@ -32,9 +32,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GroupByQueryTests extends TestSuiteBase {
+    List<Person> personList;
     private CosmosAsyncContainer createdCollection;
     private ArrayList<CosmosItemProperties> docs = new ArrayList<>();
-    List<Person> personList;
     private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -48,7 +48,6 @@ public class GroupByQueryTests extends TestSuiteBase {
 
         return stringBuilder.toString();
     }
-
 
     private static City getRandomCity(Random rand) {
         int index = rand.nextInt(3);
@@ -85,8 +84,8 @@ public class GroupByQueryTests extends TestSuiteBase {
                                                                                  options,
                                                                                  JsonNode.class);
         Map<City, Integer> resultMap = personList.stream()
-                                         .collect(Collectors.groupingBy(Person::getCity,
-                                                                        Collectors.summingInt(Person::getAge)));
+                                           .collect(Collectors.groupingBy(Person::getCity,
+                                                                          Collectors.summingInt(Person::getAge)));
 
         List<Document> expectedDocumentsList = new ArrayList<>();
         resultMap.forEach((city, sum) ->
@@ -151,8 +150,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         int age = getRandomAge(rand);
         Pet pet = getRandomPet(rand);
         UUID guid = UUID.randomUUID();
-        Person p = new Person(name, city, income, people, age, pet, guid);
-        return p;
+        return new Person(name, city, income, people, age, pet, guid);
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -165,9 +163,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
-
         bulkInsert();
-
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 

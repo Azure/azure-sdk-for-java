@@ -40,6 +40,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     private final String FIELD = "name";
     private CosmosAsyncContainer createdCollection;
     private ArrayList<Person> docs = new ArrayList<>();
+    private ArrayList<CosmosItemProperties> propertiesDocs = new ArrayList<>();
 
     private CosmosAsyncClient client;
 
@@ -90,6 +91,9 @@ public class DistinctQueryTests extends TestSuiteBase {
         List<Object> nameList = docs.stream()
                                     .map(d -> d.getName())
                                     .collect(Collectors.toList());
+        List<Object> collect = propertiesDocs.stream().map(d -> d.get(FIELD)).collect(Collectors.toList());
+        nameList.add(collect);
+
         List<Object> distinctNameList = nameList.stream().distinct().collect(Collectors.toList());
 
         FeedResponseListValidator<CosmosItemProperties> validator =
@@ -267,6 +271,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     public void bulkInsert() {
         generateTestData();
         voidBulkInsertBlocking(createdCollection, docs);
+        voidBulkInsertBlocking(createdCollection, propertiesDocs);
     }
 
     public void generateTestData() {
@@ -283,10 +288,8 @@ public class DistinctQueryTests extends TestSuiteBase {
                                              5.0f);
 
         List<CosmosItemProperties> propDocs = new ArrayList<>();
-        propDocs.add(new CosmosItemProperties(resourceJson));
-        propDocs.add(new CosmosItemProperties(resourceJson2));
-        voidBulkInsertBlocking(createdCollection, propDocs);
-
+        propertiesDocs.add(new CosmosItemProperties(resourceJson));
+        propertiesDocs.add(new CosmosItemProperties(resourceJson2));
     }
 
     private Pet getRandomPet(Random rand) {

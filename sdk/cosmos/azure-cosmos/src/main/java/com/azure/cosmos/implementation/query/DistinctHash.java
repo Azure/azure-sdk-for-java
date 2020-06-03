@@ -28,7 +28,7 @@ public class DistinctHash {
     public static UInt128 getHash(Object resource) throws IOException {
 
         if (resource instanceof List) {
-            return hashList((List<Object>) resource);
+            return getHashFromList((List<Object>) resource);
         }
 
         if (resource instanceof JsonSerializable) {
@@ -46,7 +46,7 @@ public class DistinctHash {
         return MurmurHash3_128.hash128(bytes, bytes.length);
     }
 
-    private static UInt128 hashList(List<Object> resource) {
+    private static UInt128 getHashFromList(List<Object> resource) {
         UInt128 hash = ArrayHashSeed;
         for (Object obj : resource) {
             if (obj instanceof JsonSerializable) {
