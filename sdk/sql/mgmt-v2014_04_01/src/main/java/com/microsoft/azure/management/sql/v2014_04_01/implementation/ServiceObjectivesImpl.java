@@ -54,10 +54,14 @@ class ServiceObjectivesImpl extends WrapperImpl<ServiceObjectivesInner> implemen
     public Observable<ServiceObjective> getAsync(String resourceGroupName, String serverName, String serviceObjectiveName) {
         ServiceObjectivesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, serviceObjectiveName)
-        .map(new Func1<ServiceObjectiveInner, ServiceObjective>() {
+        .flatMap(new Func1<ServiceObjectiveInner, Observable<ServiceObjective>>() {
             @Override
-            public ServiceObjective call(ServiceObjectiveInner inner) {
-                return wrapModel(inner);
+            public Observable<ServiceObjective> call(ServiceObjectiveInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServiceObjective)wrapModel(inner));
+                }
             }
        });
     }
