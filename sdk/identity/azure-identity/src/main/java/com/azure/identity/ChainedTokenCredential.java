@@ -12,7 +12,9 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -38,7 +40,7 @@ public class ChainedTokenCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        StringBuilder message = new StringBuilder();
+        List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
                    .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
                        if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
@@ -46,12 +48,18 @@ public class ChainedTokenCredential implements TokenCredential {
                                    unavailableError + p.getClass().getSimpleName() + " authentication failed.",
                                    t));
                        }
-                       message.append(t.getMessage()).append(" "); 
+                       exceptions.add(t);
                        return Mono.empty();
                    }), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {
-                       return Mono.error(new CredentialUnavailableException(message.toString()));
-                   }));
+                    // Chain Exceptions.
+                    CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                    for (int z = exceptions.size() - 2; z >= 0; z--) {
+                        CredentialUnavailableException current = exceptions.get(z);
+                        last = new CredentialUnavailableException(current.getMessage() +" " + last.getMessage(), last.getCause());
+                    }
+                    return Mono.error(last);
+                }));
     }
 }
