@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
+import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.ChangeFeedProcessor;
 import com.azure.data.cosmos.ChangeFeedProcessorOptions;
 import com.azure.data.cosmos.CosmosContainer;
@@ -21,6 +22,9 @@ import com.azure.data.cosmos.internal.changefeed.PartitionProcessor;
 import com.azure.data.cosmos.internal.changefeed.PartitionProcessorFactory;
 import com.azure.data.cosmos.internal.changefeed.PartitionSupervisorFactory;
 import com.azure.data.cosmos.internal.changefeed.RequestOptionsFactory;
+import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -28,7 +32,11 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+
+import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 
 /**
  * Helper class to build {@link ChangeFeedProcessor} instances
@@ -49,6 +57,7 @@ import java.util.function.Consumer;
  * </pre>
  */
 public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.BuilderDefinition, ChangeFeedProcessor, AutoCloseable {
+    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
     private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
@@ -105,6 +114,92 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             throw new IllegalStateException("The ChangeFeedProcessor instance has not fully started");
         }
         return this.partitionManager.stop();
+    }
+
+    /**
+     * Returns the state of the change feed processor.
+     *
+     * @return true if the change feed processor is currently active and running.
+     */
+    public boolean isStarted() {
+        return this.partitionManager != null && this.partitionManager.isRunning();
+    }
+
+    /**
+     * Returns the current owner (host) and an approximation of the difference between the last processed item (defined
+     *   by the state of the feed container) and the latest change in the container for each partition (lease
+     *   document).
+     * <p>
+     * An empty map will be returned if the processor was not started or no lease documents matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a map representing the current owner and lease token, the current LSN and latest LSN, and the estimated
+     *         lag, asynchronously.
+     */
+    @Override
+    public Mono<Map<String, Integer>> getEstimatedLag() {
+        Map<String, Integer> earlyResult = new ConcurrentHashMap<>();
+
+        if (this.leaseStoreManager == null || this.feedContextClient == null) {
+            return Mono.just(earlyResult);
+        }
+
+        return this.leaseStoreManager.getAllLeases()
+            .flatMap(lease -> {
+                ChangeFeedOptions options = new ChangeFeedOptions()
+                    .maxItemCount(1)
+                    .startFromBeginning(true)
+                    .requestContinuation(lease.getContinuationToken());
+                partitionKeyRangeIdInternal(options, lease.getLeaseToken());
+
+                return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                    .take(1)
+                    .map(feedResponse -> {
+                        final String pkRangeIdSeparator = ":";
+                        final String segmentSeparator = "#";
+                        final String lsnPropertyName = "_lsn";
+                        String ownerValue = lease.getOwner();
+                        String sessionTokenLsn = feedResponse.sessionToken();
+                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(pkRangeIdSeparator));
+                        String[] segments = parsedSessionToken.split(segmentSeparator);
+                        String latestLsn = segments[0];
+
+                        if (segments.length >= 2) {
+                            // default to Global LSN
+                            latestLsn = segments[1];
+                        }
+
+                        if (ownerValue == null) {
+                            ownerValue = "";
+                        }
+
+                        // An empty list of documents returned means that we are current (zero lag)
+                        if (feedResponse.results() == null || feedResponse.results().size() == 0) {
+                            return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0);
+                        }
+
+                        Integer currentLsn = 0;
+                        Integer estimatedLag = 0;
+
+                        try {
+                            currentLsn = Integer.valueOf(feedResponse.results().get(0).get(lsnPropertyName).toString());
+                            estimatedLag = Integer.valueOf(latestLsn) - currentLsn + 1;
+                        } catch (NumberFormatException ex) {
+                            logger.warn("Unexpected Cosmos LSN value", ex);
+                            estimatedLag = -1;
+                        }
+
+                        return Pair.of(ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn, estimatedLag);
+                    });
+            })
+            .collectList()
+            .map(valueList -> {
+                Map<String, Integer> result = new ConcurrentHashMap<>();
+                for (Pair<String, Integer> pair : valueList) {
+                    result.put(pair.getKey(), pair.getValue());
+                }
+                return result;
+            });
     }
 
     /**
