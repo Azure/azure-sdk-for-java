@@ -928,7 +928,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
             skills.add(new OcrSkill()
                 .setDefaultLanguageCode(OcrSkillLanguage.EN)
-                .shouldDetectOrientation(false)
+                .setShouldDetectOrientation(false)
                 .setName("myocr-" + i)
                 .setDescription("Tested OCR skill")
                 .setContext(CONTEXT_VALUE)
@@ -952,7 +952,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
-                .shouldDetectOrientation(shouldDetectOrientation)
+                .setShouldDetectOrientation(shouldDetectOrientation)
                 .setName("myocr")
                 .setDescription("Tested OCR skill")
                 .setContext(CONTEXT_VALUE)

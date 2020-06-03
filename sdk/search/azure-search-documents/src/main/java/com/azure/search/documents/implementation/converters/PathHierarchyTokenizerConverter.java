@@ -30,7 +30,7 @@ public final class PathHierarchyTokenizerConverter {
         pathHierarchyTokenizer.setDelimiter(delimiter);
 
         Boolean reverseTokenOrder = obj.isReverseTokenOrder();
-        pathHierarchyTokenizer.setReverseTokenOrder(reverseTokenOrder);
+        pathHierarchyTokenizer.setTokenOrderReversed(reverseTokenOrder);
 
         Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
         pathHierarchyTokenizer.setNumberOfTokensToSkip(numberOfTokensToSkip);
@@ -60,7 +60,7 @@ public final class PathHierarchyTokenizerConverter {
         String delimiter = obj.getDelimiter();
         pathHierarchyTokenizerV2.setDelimiter(delimiter);
 
-        Boolean reverseTokenOrder = obj.isReverseTokenOrder();
+        Boolean reverseTokenOrder = obj.isTokenOrderReversed();
         pathHierarchyTokenizerV2.setReverseTokenOrder(reverseTokenOrder);
 
         Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();

@@ -49,7 +49,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @return the lowerCaseTerms value.
      */
-    public Boolean isLowerCaseTerms() {
+    public Boolean areLowerCaseTerms() {
         return this.lowerCaseTerms;
     }
 
