@@ -248,7 +248,7 @@ stages:
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
 
-  - ${{if ne(parameters.PublishDevPackages, 'false')}}:
+  - ${{if ne(parameters.PublishDevPackages, false)}}:
     - stage: Integration
       dependsOn: Signing
       jobs:
