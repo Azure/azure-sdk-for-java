@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DistinctQueryTests extends TestSuiteBase {
-    private final int TIMEOUT_160 = 160000;
+    private final int TIMEOUT_LONG = 240000;
     private final String FIELD = "name";
     private CosmosAsyncContainer createdCollection;
     private ArrayList<Person> docs = new ArrayList<>();
@@ -108,7 +108,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT_160)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT_LONG)
     public void queryDistinctDocuments() {
 
         List<String> queries = Arrays.asList(

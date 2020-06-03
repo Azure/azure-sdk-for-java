@@ -226,17 +226,17 @@ public class AggregateQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
-    void queryDocumentsWithMultipleAggregates() {
+    public void queryDocumentsWithMultipleAggregates() {
         QueryRequestOptions options = new QueryRequestOptions();
 
         options.setQueryMetricsEnabled(false);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : multiAggregateQueryConfigs) {
-            CosmosPagedFlux<CosmosItemProperties> queryFlux = createdCollection
+            CosmosPagedFlux<JsonNode> queryFlux = createdCollection
                                                                         .queryItems(queryConfig.query, options,
-                                                                                    CosmosItemProperties.class);
-            FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+                                                                                    JsonNode.class);
+            FeedResponseListValidator<JsonNode> validator = new FeedResponseListValidator.Builder<JsonNode>()
                                                                             .withAggregateValue(queryConfig.expected)
                                                                             .numberOfPages(1)
                                                                             .build();
