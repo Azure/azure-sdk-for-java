@@ -68,7 +68,7 @@ public class AuthenticationRecord {
     }
 
     /**
-     * Get the user principal or service principal name of the account.
+     * Get the user principal name of the account.
      *
      * @return the username.
      */

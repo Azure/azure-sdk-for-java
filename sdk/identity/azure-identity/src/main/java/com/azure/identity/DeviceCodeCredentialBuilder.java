@@ -19,8 +19,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     private boolean automaticAuthentication = true;
 
     /**
-     * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
-     * registered as a valid reply URL on the application.
+     * Sets the consumer to meet the device code challenge.
      *
      * @param challengeConsumer A method allowing the user to meet the device code challenge.
      * @return the InteractiveBrowserCredentialBuilder itself

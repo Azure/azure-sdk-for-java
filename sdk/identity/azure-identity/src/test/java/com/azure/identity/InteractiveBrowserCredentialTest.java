@@ -78,14 +78,6 @@ public class InteractiveBrowserCredentialTest {
     public void testValidAuthenticate() throws Exception {
         Random random = new Random();
 
-
-//        String authRecordJson = "{\"authority\":\"login.microsoftonline.com\"," +
-//            "\"homeAccountId\":\"homeTestId.testId\"," +
-//                                        "\"tenantId\":\"organizations\",\"username\":\"user@test.com\"}";
-//
-//        InputStream inputStream = new ByteArrayInputStream(authRecordJson.getBytes());
-//        AuthenticationRecord authenticationRecord = AuthenticationRecord.deserialize(inputStream).block();
-
         // setup
         String token1 = "token1";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
