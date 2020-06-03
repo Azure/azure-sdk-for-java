@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2016_08_01.implementation.Proc
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 
 /**
  * Type representing ProcessModuleInfo.
  */
-public interface ProcessModuleInfo extends HasInner<ProcessModuleInfoInner>, Indexable, Refreshable<ProcessModuleInfo>, HasManager<AppServiceManager> {
+public interface ProcessModuleInfo extends HasInner<ProcessModuleInfoInner>, Indexable, Refreshable<ProcessModuleInfo>, HasManager<WebManager> {
     /**
      * @return the baseAddress value.
      */

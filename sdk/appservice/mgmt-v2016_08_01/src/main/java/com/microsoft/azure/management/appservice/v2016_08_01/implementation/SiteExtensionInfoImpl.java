@@ -16,12 +16,12 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2016_08_01.SiteExtensionType;
 
 class SiteExtensionInfoImpl extends CreatableUpdatableImpl<SiteExtensionInfo, SiteExtensionInfoInner, SiteExtensionInfoImpl> implements SiteExtensionInfo, SiteExtensionInfo.Definition, SiteExtensionInfo.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String siteExtensionId;
 
-    SiteExtensionInfoImpl(String name, AppServiceManager manager) {
+    SiteExtensionInfoImpl(String name, WebManager manager) {
         super(name, new SiteExtensionInfoInner());
         this.manager = manager;
         // Set resource name
@@ -29,7 +29,7 @@ class SiteExtensionInfoImpl extends CreatableUpdatableImpl<SiteExtensionInfo, Si
         //
     }
 
-    SiteExtensionInfoImpl(SiteExtensionInfoInner inner, AppServiceManager manager) {
+    SiteExtensionInfoImpl(SiteExtensionInfoInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -42,7 +42,7 @@ class SiteExtensionInfoImpl extends CreatableUpdatableImpl<SiteExtensionInfo, Si
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
