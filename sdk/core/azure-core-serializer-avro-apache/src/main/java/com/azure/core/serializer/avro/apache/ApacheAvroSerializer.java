@@ -38,7 +38,7 @@ public class ApacheAvroSerializer implements SchemaSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(byte[] input, String schema) {
+    public <T> Mono<T> deserialize(byte[] input, String schema, Class<T> clazz) {
         return Mono.fromCallable(() -> {
             Objects.requireNonNull(schema, "'schema' cannot be null.");
 
@@ -49,7 +49,7 @@ public class ApacheAvroSerializer implements SchemaSerializer {
             Schema avroSchema = getParser(validateSchema, validateSchemaDefaults).parse(schema);
             DatumReader<T> reader = new SpecificDatumReader<>(avroSchema, avroSchema, specificData);
 
-            return reader.read(null, decoderFactory.binaryDecoder(input, null));
+            return clazz.cast(reader.read(null, decoderFactory.binaryDecoder(input, null)));
         });
     }
 

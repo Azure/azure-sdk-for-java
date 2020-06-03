@@ -8,7 +8,6 @@ import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
@@ -22,7 +21,7 @@ public final class JacksonAvroSerializer implements SchemaSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(byte[] input, String schema) {
+    public <T> Mono<T> deserialize(byte[] input, String schema, Class<T> clazz) {
         return Mono.fromCallable(() -> {
             Objects.requireNonNull(schema, "'schema' cannot be null.");
 
@@ -35,9 +34,7 @@ public final class JacksonAvroSerializer implements SchemaSerializer {
                 return null;
             }
 
-            return avroMapper.readerFor(getReaderClass(avroSchema.getAvroSchema().getFullName()))
-                .with(avroSchema)
-                .readValue(input);
+            return avroMapper.readerFor(clazz).with(avroSchema).readValue(input);
         });
     }
 
@@ -48,9 +45,5 @@ public final class JacksonAvroSerializer implements SchemaSerializer {
 
             return avroMapper.writer().with(avroMapper.schemaFrom(schema)).writeValueAsBytes(value);
         });
-    }
-
-    private static Class<?> getReaderClass(String typeFullName) {
-        return typeFullName.equalsIgnoreCase("bytes") ? ByteBuffer.class : Object.class;
     }
 }

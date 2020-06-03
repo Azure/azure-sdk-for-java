@@ -14,10 +14,11 @@ public interface SchemaSerializer {
      *
      * @param input Incoming byte stream.
      * @param schema String representing the schema.
+     * @param clazz The {@link Class} representing the object.
      * @param <T> Type of the object.
      * @return The object representing the byte stream based on the schema.
      */
-    <T> Mono<T> deserialize(byte[] input, String schema);
+    <T> Mono<T> deserialize(byte[] input, String schema, Class<T> clazz);
 
     /**
      * Writes the object into its byte stream.
