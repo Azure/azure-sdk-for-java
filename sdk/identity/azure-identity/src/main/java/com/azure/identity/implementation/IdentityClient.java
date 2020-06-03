@@ -813,8 +813,10 @@ public class IdentityClient {
                 connection.connect();
             } catch (ConnectException | SecurityException | SocketTimeoutException e) {
                 throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("Connection to IMDS endpoint cannot be established. "
-                                                             + e.getMessage(), e));
+                    new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                 + "Connection to IMDS endpoint cannot be established, "
+                                 + e.getMessage() + ".", e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -822,8 +824,7 @@ public class IdentityClient {
             }
 
             return true;
-        }).onErrorResume(t -> Mono.error(new CredentialUnavailableException(
-            "ManagedIdentityCredential authentication unavailable." + t.getMessage(), t)));
+        });
     }
 
     private static void sleep(int millis) {

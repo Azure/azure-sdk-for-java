@@ -71,13 +71,13 @@ public class AzureCliCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAzureCli(request))
-                .thenReturn(Mono.error(new Exception("Azure  not Login")));
+                .thenReturn(Mono.error(new Exception("Azure not Login")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof CredentialUnavailableException && e.getMessage().contains("Azure  not Login"))
+            .expectErrorMatches(e -> e instanceof CredentialUnavailableException && e.getMessage().contains("Azure not Login"))
             .verify();
     }
     
