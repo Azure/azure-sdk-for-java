@@ -65,7 +65,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the shouldDetectOrientation value.
      */
-    public Boolean shouldDetectOrientation() {
+    public Boolean setShouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }
 
@@ -76,7 +76,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param shouldDetectOrientation the shouldDetectOrientation value to set.
      * @return the OcrSkill object itself.
      */
-    public OcrSkill shouldDetectOrientation(Boolean shouldDetectOrientation) {
+    public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
         return this;
     }

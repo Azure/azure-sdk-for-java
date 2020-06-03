@@ -647,7 +647,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
-                .shouldDetectOrientation(true)
+                .setShouldDetectOrientation(true)
                 .setName("myocr")
                 .setDescription("Tested OCR skill")
                 .setContext("/document")

@@ -49,7 +49,7 @@ public final class EntityRecognitionSkillConverter {
         entityRecognitionSkill.setDescription(description);
 
         Boolean includeTypelessEntities = obj.isIncludeTypelessEntities();
-        entityRecognitionSkill.setIncludeTypelessEntities(includeTypelessEntities);
+        entityRecognitionSkill.setTypelessEntitiesIncluded(includeTypelessEntities);
 
         if (obj.getDefaultLanguageCode() != null) {
             EntityRecognitionSkillLanguage defaultLanguageCode =
@@ -100,7 +100,7 @@ public final class EntityRecognitionSkillConverter {
         String description = obj.getDescription();
         entityRecognitionSkill.setDescription(description);
 
-        Boolean includeTypelessEntities = obj.isIncludeTypelessEntities();
+        Boolean includeTypelessEntities = obj.areTypelessEntitiesIncluded();
         entityRecognitionSkill.setIncludeTypelessEntities(includeTypelessEntities);
 
         if (obj.getDefaultLanguageCode() != null) {
