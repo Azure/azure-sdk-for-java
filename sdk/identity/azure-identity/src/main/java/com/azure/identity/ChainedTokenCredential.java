@@ -41,7 +41,7 @@ public class ChainedTokenCredential implements TokenCredential {
         return Flux.fromIterable(credentials)
                    .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
                        if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
-                        return Mono.error(new CredentialUnavailableException(
+                           return Mono.error(new CredentialUnavailableException(
                                    unavailableError + p.getClass().getSimpleName() + " authentication failed.",
                                    t));
                        }
@@ -50,13 +50,14 @@ public class ChainedTokenCredential implements TokenCredential {
                    }), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {
-                    // Chain Exceptions.
-                    CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
-                    for (int z = exceptions.size() - 2; z >= 0; z--) {
-                        CredentialUnavailableException current = exceptions.get(z);
-                        last = new CredentialUnavailableException(current.getMessage() +" " + last.getMessage(), last.getCause());
-                    }
-                    return Mono.error(last);
+                       // Chain Exceptions.
+                       CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                       for (int z = exceptions.size() - 2; z >= 0; z--) {
+                           CredentialUnavailableException current = exceptions.get(z);
+                           last = new CredentialUnavailableException(current.getMessage() + " " + last.getMessage(),
+                                last.getCause());
+                       }
+                       return Mono.error(last);
                 }));
     }
 }

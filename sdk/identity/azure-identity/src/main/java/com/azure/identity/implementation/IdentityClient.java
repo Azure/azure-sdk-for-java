@@ -302,7 +302,8 @@ public class IdentityClient {
                     if (redactedOutput.contains("az login") || redactedOutput.contains("az account set")) {
                         throw logger.logExceptionAsError(
                                 new CredentialUnavailableException(
-                                        "AzureCliCredential authentication unavailable. Please run 'az login' to set up account"));
+                                        "AzureCliCredential authentication unavailable."
+                                                + " Please run 'az login' to set up account"));
                     }
                     throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
