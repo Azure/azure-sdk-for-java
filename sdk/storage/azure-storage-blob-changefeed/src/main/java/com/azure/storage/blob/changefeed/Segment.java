@@ -40,6 +40,7 @@ class Segment {
     private static final String CHUNK_FILE_PATHS = "chunkFilePaths";
     private static final String STATUS = "status";
     private static final String FINALIZED = "Finalized";
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String segmentPath; /* Segment manifest location. */
@@ -75,9 +76,8 @@ class Segment {
     }
 
     private Mono<JsonNode> parseJson(byte[] json) {
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            JsonNode jsonNode = objectMapper.readTree(json);
+            JsonNode jsonNode = mapper.reader().readTree(json);
             return Mono.just(jsonNode);
         } catch (IOException e) {
             return FluxUtil.monoError(logger, new UncheckedIOException(e));
@@ -85,7 +85,6 @@ class Segment {
     }
 
     private Flux<Shard> getShards(JsonNode node) {
-
         /* Determine if the segment is finalized.
            If the segment is not finalized, do not return events for this segment. */
         JsonNode status = node.get(STATUS);
