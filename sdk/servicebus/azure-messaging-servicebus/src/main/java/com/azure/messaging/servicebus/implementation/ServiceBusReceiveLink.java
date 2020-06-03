@@ -33,8 +33,8 @@ public interface ServiceBusReceiveLink extends AmqpReceiveLink {
      *
      * @param lockToken Lock token of message.
      * @param deliveryState Delivery state of message.
-     * @param transactionId of the transaction in which this operation is taking part.
+     * @param transaction of the transaction in which this operation is taking part.
      * @return A Mono that completes when the state is successfully updated and acknowledged by message broker.
      */
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transactionId);
+    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transaction);
 }

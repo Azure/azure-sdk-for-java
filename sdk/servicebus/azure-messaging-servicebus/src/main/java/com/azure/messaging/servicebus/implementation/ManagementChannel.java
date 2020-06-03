@@ -426,8 +426,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message,
-        AmqpTransaction transactionId) {
-        return channel.sendWithAck(message, transactionId)
+        AmqpTransaction transaction) {
+        return channel.sendWithAck(message, transaction)
             .handle((Message response, SynchronousSink<Message> sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.next(response);

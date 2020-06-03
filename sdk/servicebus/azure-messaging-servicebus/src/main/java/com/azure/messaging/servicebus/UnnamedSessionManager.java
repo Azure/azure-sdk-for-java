@@ -185,7 +185,7 @@ class UnnamedSessionManager implements AutoCloseable {
      */
     Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
-        String deadLetterDescription, AmqpTransaction transactionId) {
+        String deadLetterDescription, AmqpTransaction transaction) {
 
         final String operation = "updateDisposition";
         return Mono.when(
@@ -200,9 +200,9 @@ class UnnamedSessionManager implements AutoCloseable {
                 }
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-                    deadLetterDescription, propertiesToModify, transactionId);
+                    deadLetterDescription, propertiesToModify, transaction);
 
-                return receiver.updateDisposition(lock, deliveryState, transactionId).thenReturn(true);
+                return receiver.updateDisposition(lock, deliveryState, transaction).thenReturn(true);
             }));
     }
 

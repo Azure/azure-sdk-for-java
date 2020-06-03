@@ -111,13 +111,13 @@ public final class MessageUtils {
      * @return The corresponding DeliveryState, or null if the disposition status is unknown.
      */
     public static DeliveryState getDeliveryState(DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, AmqpTransaction transactionId) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, AmqpTransaction transaction) {
         final DeliveryState state;
         switch (dispositionStatus) {
             case COMPLETED:
-                if (transactionId != null && transactionId.getTransactionId() != null) {
+                if (transaction != null && transaction.getTransactionId() != null) {
                     TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    tState.setTxnId(new Binary(transaction.getTransactionId().array()));
                     tState.setOutcome(Accepted.getInstance());
                     state = tState;
                 } else {
@@ -140,9 +140,9 @@ public final class MessageUtils {
                 error.setInfo(errorInfo);
                 rejected.setError(error);
 
-                if (transactionId != null && transactionId.getTransactionId() != null) {
+                if (transaction != null && transaction.getTransactionId() != null) {
                     TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    tState.setTxnId(new Binary(transaction.getTransactionId().array()));
                     tState.setOutcome(rejected);
                     state = tState;
                 } else {
@@ -155,9 +155,9 @@ public final class MessageUtils {
                     outcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                if (transactionId != null && transactionId.getTransactionId() != null) {
+                if (transaction != null && transaction.getTransactionId() != null) {
                     TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    tState.setTxnId(new Binary(transaction.getTransactionId().array()));
                     tState.setOutcome(outcome);
                     state = tState;
                 } else {
@@ -171,9 +171,9 @@ public final class MessageUtils {
                     deferredOutcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                if (transactionId != null && transactionId.getTransactionId() != null) {
+                if (transaction != null && transaction.getTransactionId() != null) {
                     TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionId.getTransactionId().array()));
+                    tState.setTxnId(new Binary(transaction.getTransactionId().array()));
                     tState.setOutcome(deferredOutcome);
                     state = tState;
                 } else {

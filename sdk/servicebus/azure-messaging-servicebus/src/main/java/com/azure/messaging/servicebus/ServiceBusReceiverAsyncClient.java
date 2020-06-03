@@ -1295,8 +1295,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.commitTransaction(transactionContext))
-            .then();
+            .flatMap(transactionManager -> transactionManager.commitTransaction(transactionContext));
     }
 
     /**
@@ -1313,7 +1312,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.rollbackTransaction(transactionContext))
-            .then();
+            .flatMap(transactionManager -> transactionManager.rollbackTransaction(transactionContext));
     }
 }

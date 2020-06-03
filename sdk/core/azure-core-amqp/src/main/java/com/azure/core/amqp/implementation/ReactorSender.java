@@ -310,13 +310,6 @@ class ReactorSender implements AmqpSendLink {
             );
     }
 
-    /*Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
-        return validateEndpoint()
-            .then(Mono.create(sink -> sendWork(new RetriableWorkItem(bytes,
-                arrayOffset, messageFormat, sink, timeout, deliveryState)))
-            );
-    }*/
-
     private Mono<Void> validateEndpoint() {
         return Mono.defer(() -> {
             if (hasConnected.get()) {

@@ -47,7 +47,6 @@ public class ReactorSession implements AmqpSession {
 
     private final ConcurrentMap<String, LinkSubscription<AmqpSendLink>> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, LinkSubscription<AmqpReceiveLink>> openReceiveLinks = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, TransactionCoordinator> transactionCoordinator = new ConcurrentHashMap<>();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ReactorSession.class);
@@ -68,8 +67,10 @@ public class ReactorSession implements AmqpSession {
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
     private final AtomicReference<LinkSubscription<AmqpSendLink>> coordinator = new AtomicReference<>();
+    private final Object coordinatorLock = new Object();
 
     private AmqpRetryPolicy retryPolicy;
+    private TransactionCoordinator transactionCoordinator;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -189,27 +190,20 @@ public class ReactorSession implements AmqpSession {
                 "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
         }
 
-        final TransactionCoordinator existing = transactionCoordinator.get(TRANSACTION_LINK_NAME);
-        if (existing != null) {
+        if (transactionCoordinator != null) {
             logger.verbose("Coordinator[{}]: Returning existing transaction coordinator.", TRANSACTION_LINK_NAME);
-            return Mono.just(existing);
+            return Mono.just(transactionCoordinator);
         }
 
-        return createCoordinatorSendLink(TRANSACTION_LINK_NAME, openTimeout, retryPolicy)
-            .handle((amqpLink, sink) -> {
-                transactionCoordinator.compute(TRANSACTION_LINK_NAME, (key, current) -> {
-                    if (current != null) {
-                        logger.info("A transaction coordinator exists already, returning it.");
-                        return current;
-                    }
-
-                    logger.info("Creating transaction coordinator. Name : [{}]", TRANSACTION_LINK_NAME);
-                    TransactionCoordinator transactionCoordinator = new TransactionCoordinator(amqpLink,
+        synchronized (coordinatorLock) {
+            return createCoordinatorSendLink(TRANSACTION_LINK_NAME, openTimeout, retryPolicy)
+                .handle((amqpLink, sink) -> {
+                    logger.info("Coordinator[{}]: Creating transaction coordinator.", TRANSACTION_LINK_NAME);
+                    final TransactionCoordinator transactionCoordinator = new TransactionCoordinator(amqpLink,
                         messageSerializer);
-                    return transactionCoordinator;
+                    sink.next(transactionCoordinator);
                 });
-                sink.next(transactionCoordinator.get(TRANSACTION_LINK_NAME));
-            });
+        }
     }
 
     private Mono<AmqpSendLink> createCoordinatorSendLink(String linkName, Duration timeout, AmqpRetryPolicy retry) {

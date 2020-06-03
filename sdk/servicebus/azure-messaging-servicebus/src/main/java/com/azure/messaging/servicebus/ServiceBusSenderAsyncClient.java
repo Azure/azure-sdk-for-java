@@ -204,14 +204,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return sendIterable(messages, null);
     }
 
-    private Mono<Void> sendIterable(Iterable<ServiceBusMessage> messages, AmqpTransaction transactionId) {
+    private Mono<Void> sendIterable(Iterable<ServiceBusMessage> messages, AmqpTransaction transaction) {
         if (Objects.isNull(messages)) {
             return monoError(logger, new NullPointerException("'messages' cannot be null."));
         }
 
         return createBatch().flatMap(messageBatch -> {
             messages.forEach(message -> messageBatch.tryAdd(message));
-            return sendInternal(messageBatch, transactionId);
+            return sendInternal(messageBatch, transaction);
         });
     }
 
@@ -416,7 +416,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, Instant scheduledEnqueueTime,
-        AmqpTransaction transactionId) {
+        AmqpTransaction transaction) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
@@ -434,7 +434,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                     .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
-                        link.getLinkName(), transactionId));
+                        link.getLinkName(), transaction));
             }));
     }
 
@@ -470,7 +470,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         onClientClose.run();
     }
 
-    private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages, AmqpTransaction transactionId) {
+    private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages, AmqpTransaction transaction) {
         return getSendLink()
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
@@ -480,12 +480,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
                         link::getErrorContext, tracerProvider, messageSerializer));
                 })
-                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionId)));
+                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transaction)));
     }
 
-    private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches, AmqpTransaction transactionId) {
+    private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches, AmqpTransaction transaction) {
         return eventBatches
-            .flatMap(messageBatch -> sendInternal(messageBatch, transactionId))
+            .flatMap(messageBatch -> sendInternal(messageBatch, transaction))
             .then()
             .doOnError(error -> logger.error("Error sending batch.", error));
     }
@@ -606,8 +606,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(channel -> channel.commitTransaction(transactionContext))
-            .then();
+            .flatMap(transactionManager -> transactionManager.commitTransaction(transactionContext));
     }
 
     /**
@@ -624,7 +623,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(channel -> channel.rollbackTransaction(transactionContext))
-            .then();
+            .flatMap(transactionManager -> transactionManager.rollbackTransaction(transactionContext));
     }
 }
