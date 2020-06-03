@@ -1,6 +1,10 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- Rename parameters data and sourceUrl parameters found on methods for FormRecognizerClient to form and formUrl, respectively.
+- Rename parameters for receipt API methods to receipt and receiptUrl.
+- Raise `HttpResponseException` when a model with `ModelStatus.Invalid` is returned from the `beginTraining()` API's
+- Fix `HttpResponseException` to include the error object thrown on invalid analyze status for recognize API's
 - Update FormField property `transactionTime` on `USReceipt` to return `LocalTime` instead of `String`
 - Rename model `PageRange` to `FormPageRange`
 - Rename property `startPageNumber` to `firstPageNumber` and `endPageNumber` to `lastPageNumber` in model `PageRange`

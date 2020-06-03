@@ -27,6 +27,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,6 +41,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
+    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID: cae9d062-71e0-44a3-8630-70b32ae94f4d";
+    static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
+    static final String EXPECTED_INVALID_STATUS_ERROR_INFORMATION = "Unable to list blobs on the Azure blob storage account.";
+
     private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
 
@@ -196,6 +201,9 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     // @Test
     // abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void beginTrainingInvalidModelStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
@@ -218,6 +226,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void beginCopyIncorrectRegionRunner(BiConsumer<String, String> testRunner) {
         testRunner.accept(getTargetResourceId(), "westus2");
+    }
+
+    void beginTrainingInvalidModelStatusRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(INVALID_RECEIPT_URL, false);
     }
 
     /**

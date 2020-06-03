@@ -19,7 +19,7 @@ import com.azure.management.compute.models.VirtualMachineScaleSetsInner;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Mono;

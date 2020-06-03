@@ -28,7 +28,7 @@ from form documents. It includes the following main functionalities:
 ```
 [//]: # ({x-version-update-end})
 
-### Create a Form Recognizer resource
+#### Create a Form Recognizer resource
 Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Form Recognizer access only,
 create a Form Recognizer resource.

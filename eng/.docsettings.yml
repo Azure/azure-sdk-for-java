@@ -120,7 +120,6 @@ known_content_issues:
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
-  - ['sdk/cosmos/azure-cosmos-table/swagger/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
@@ -143,8 +142,9 @@ known_content_issues:
   - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
-  - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
+  - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
+  - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
