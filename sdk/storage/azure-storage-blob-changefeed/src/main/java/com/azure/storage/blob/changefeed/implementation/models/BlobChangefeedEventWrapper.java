@@ -8,7 +8,8 @@ import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 /**
  * FOR INTERNAL USE ONLY.
  * Represents a wrapper to store a BlobChangefeedEvent along with the BlobChangefeedCursor associated with it.
- * This wrapper is required since the paging functionality does not have any information about where the
+ * This wrapper is required since the paging functionality does not have the ability to determine where to
+ * start to get the next page.
  */
 public class BlobChangefeedEventWrapper {
 

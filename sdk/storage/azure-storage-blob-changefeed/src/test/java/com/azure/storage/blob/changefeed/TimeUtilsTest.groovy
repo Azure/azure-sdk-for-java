@@ -65,20 +65,20 @@ class TimeUtilsTest extends Specification {
         TimeUtils.validSegment(segment, start, end) == valid
 
         where:
-        start | segment | end  || valid
+        start                                                           | segment                                   | end                                                        || valid
         /* Null checks. */
-        null | null  | null || false
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null | null  || false
-        null | "idx/segments/2019/11/02/1700/meta.json" | null  || false
-        null | null || OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) || false
+        null                                                            | null                                      | null                                                       || false
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | null                                      | null                                                       || false
+        null                                                            | "idx/segments/2019/11/02/1700/meta.json"  | null                                                       || false
+        null                                                            | null                                      | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || false
         /* All equal. */
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2019/01/01/0000/meta.json" | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | true
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2019/01/01/0000/meta.json"  | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || true
         /* Increasing. */
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2019/01/01/0000/meta.json" | OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | true
-        OffsetDateTime.of(2019, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC) | "idx/segments/2019/06/01/0000/meta.json" | OffsetDateTime.of(2019, 8, 10, 0, 0, 0, 0, ZoneOffset.UTC) | true
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2019/01/01/0000/meta.json"  | OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || true
+        OffsetDateTime.of(2019, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC)   | "idx/segments/2019/06/01/0000/meta.json"  | OffsetDateTime.of(2019, 8, 10, 0, 0, 0, 0, ZoneOffset.UTC) || true
         /* Decreasing. */
-        OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2020/01/01/0000/meta.json" | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | false
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2020/01/01/0000/meta.json" | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | false
+        OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2020/01/01/0000/meta.json"  | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || false
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2020/01/01/0000/meta.json"  | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || false
     }
 
     def "validYear"() {
@@ -86,20 +86,20 @@ class TimeUtilsTest extends Specification {
         TimeUtils.validYear(year, start, end) == valid
 
         where:
-        start | year | end  || valid
+        start                                                           | year                  | end                                                        || valid
         /* Null checks. */
-        null | null  | null || false
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null | null  || false
-        null | "idx/segments/2019" | null  || false
-        null | null || OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) || false
+        null                                                            | null                  | null                                                       || false
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | null                  | null                                                       || false
+        null                                                            | "idx/segments/2019"   | null                                                       || false
+        null                                                            | null                  | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || false
         /* All equal. */
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2019" | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | true
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2019"   | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || true
         /* Increasing. */
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2020" | OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | true
-        OffsetDateTime.of(2019, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC) | "idx/segments/2019" | OffsetDateTime.of(2019, 8, 10, 0, 0, 0, 0, ZoneOffset.UTC) | true
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2020"   | OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || true
+        OffsetDateTime.of(2019, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC)   | "idx/segments/2019"   | OffsetDateTime.of(2019, 8, 10, 0, 0, 0, 0, ZoneOffset.UTC) || true
         /* Decreasing. */
-        OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2020" | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | false
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "idx/segments/2020" | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | false
+        OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2020"   | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || false
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       | "idx/segments/2020"   | OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  || false
     }
 
 }
