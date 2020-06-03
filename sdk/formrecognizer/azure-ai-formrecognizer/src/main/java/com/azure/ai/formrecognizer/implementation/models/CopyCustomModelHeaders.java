@@ -7,9 +7,9 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AnalyzeWithCustomModelHeaders model. */
+/** The CopyCustomModelHeaders model. */
 @Fluent
-public final class AnalyzeWithCustomModelHeaders {
+public final class CopyCustomModelHeaders {
     /*
      * The Operation-Location property.
      */
@@ -29,9 +29,9 @@ public final class AnalyzeWithCustomModelHeaders {
      * Set the operationLocation property: The Operation-Location property.
      *
      * @param operationLocation the operationLocation value to set.
-     * @return the AnalyzeWithCustomModelHeaders object itself.
+     * @return the CopyCustomModelHeaders object itself.
      */
-    public AnalyzeWithCustomModelHeaders setOperationLocation(String operationLocation) {
+    public CopyCustomModelHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
     }

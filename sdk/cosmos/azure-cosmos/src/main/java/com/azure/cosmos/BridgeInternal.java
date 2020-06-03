@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -485,6 +486,11 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
         return ConsistencyLevel.fromServiceSerializedFormat(consistencyLevel);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosException createServiceUnavailableException(Exception innerException) {
+        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

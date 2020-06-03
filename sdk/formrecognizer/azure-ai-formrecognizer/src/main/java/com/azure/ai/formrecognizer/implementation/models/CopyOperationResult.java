@@ -7,25 +7,18 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
-/** The ModelInfo model. */
+/** The CopyOperationResult model. */
 @Fluent
-public final class ModelInfo {
+public final class CopyOperationResult {
     /*
-     * Model identifier.
-     */
-    @JsonProperty(value = "modelId", required = true)
-    private UUID modelId;
-
-    /*
-     * Status of the model.
+     * Operation status.
      */
     @JsonProperty(value = "status", required = true)
-    private ModelStatus status;
+    private OperationStatus status;
 
     /*
-     * Date and time (UTC) when the model was created.
+     * Date and time (UTC) when the copy operation was submitted.
      */
     @JsonProperty(value = "createdDateTime", required = true)
     private OffsetDateTime createdDateTime;
@@ -36,48 +29,34 @@ public final class ModelInfo {
     @JsonProperty(value = "lastUpdatedDateTime", required = true)
     private OffsetDateTime lastUpdatedDateTime;
 
-    /**
-     * Get the modelId property: Model identifier.
-     *
-     * @return the modelId value.
+    /*
+     * Results of the copy operation.
      */
-    public UUID getModelId() {
-        return this.modelId;
-    }
+    @JsonProperty(value = "copyResult")
+    private CopyResult copyResult;
 
     /**
-     * Set the modelId property: Model identifier.
-     *
-     * @param modelId the modelId value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setModelId(UUID modelId) {
-        this.modelId = modelId;
-        return this;
-    }
-
-    /**
-     * Get the status property: Status of the model.
+     * Get the status property: Operation status.
      *
      * @return the status value.
      */
-    public ModelStatus getStatus() {
+    public OperationStatus getStatus() {
         return this.status;
     }
 
     /**
-     * Set the status property: Status of the model.
+     * Set the status property: Operation status.
      *
      * @param status the status value to set.
-     * @return the ModelInfo object itself.
+     * @return the CopyOperationResult object itself.
      */
-    public ModelInfo setStatus(ModelStatus status) {
+    public CopyOperationResult setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the model was created.
+     * Get the createdDateTime property: Date and time (UTC) when the copy operation was submitted.
      *
      * @return the createdDateTime value.
      */
@@ -86,12 +65,12 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the createdDateTime property: Date and time (UTC) when the model was created.
+     * Set the createdDateTime property: Date and time (UTC) when the copy operation was submitted.
      *
      * @param createdDateTime the createdDateTime value to set.
-     * @return the ModelInfo object itself.
+     * @return the CopyOperationResult object itself.
      */
-    public ModelInfo setCreatedDateTime(OffsetDateTime createdDateTime) {
+    public CopyOperationResult setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
     }
@@ -109,10 +88,30 @@ public final class ModelInfo {
      * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
      *
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
-     * @return the ModelInfo object itself.
+     * @return the CopyOperationResult object itself.
      */
-    public ModelInfo setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
+    public CopyOperationResult setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
+        return this;
+    }
+
+    /**
+     * Get the copyResult property: Results of the copy operation.
+     *
+     * @return the copyResult value.
+     */
+    public CopyResult getCopyResult() {
+        return this.copyResult;
+    }
+
+    /**
+     * Set the copyResult property: Results of the copy operation.
+     *
+     * @param copyResult the copyResult value to set.
+     * @return the CopyOperationResult object itself.
+     */
+    public CopyOperationResult setCopyResult(CopyResult copyResult) {
+        this.copyResult = copyResult;
         return this;
     }
 }
