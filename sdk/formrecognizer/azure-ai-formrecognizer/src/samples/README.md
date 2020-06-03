@@ -35,7 +35,7 @@ The following sections provide code samples covering common scenario operations 
 - Manage the custom models in your account
   - [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]
 - Copy custom model between Form Recognizer resources
-  - [CopyModel](copy_model) and [CopyModelAsync](copy_model_async)
+  - [CopyModel][copy_model] and [CopyModelAsync][copy_model_async]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].

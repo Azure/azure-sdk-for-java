@@ -368,8 +368,8 @@ The async versions of the samples show asynchronous operations with Form Recogni
 * Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms] ([async][recognize_custom_forms_async])
 * Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model] ([async][train_unlabeled_model_async])
 * Train a model with labels: [TrainModelWithLabels][train_labeled_model] ([async][train_labeled_model_async])
-* Manage custom models: [ManageCustomModels][manage_custom_models] ([async_version][manage_custom_models_async])
-* Copy a model between Form Recognizer resources: [CopyModel][copy_model] ([async_version][copy_model_async])
+* Manage custom models: [ManageCustomModels][manage_custom_models] ([async][manage_custom_models_async])
+* Copy a model between Form Recognizer resources: [CopyModel][copy_model] ([async][copy_model_async])
 
 ### Additional documentation
 
