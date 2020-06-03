@@ -9,9 +9,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TrainResult model.
- */
+/** The TrainResult model. */
 @Fluent
 public final class TrainResult {
     /*
@@ -41,9 +39,9 @@ public final class TrainResult {
     private List<ErrorInformation> errors;
 
     /**
-     * Get the trainingDocuments property: List of the documents used to train
-     * the model and any errors reported in each document.
-     * 
+     * Get the trainingDocuments property: List of the documents used to train the model and any errors reported in each
+     * document.
+     *
      * @return the trainingDocuments value.
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
@@ -51,9 +49,9 @@ public final class TrainResult {
     }
 
     /**
-     * Set the trainingDocuments property: List of the documents used to train
-     * the model and any errors reported in each document.
-     * 
+     * Set the trainingDocuments property: List of the documents used to train the model and any errors reported in each
+     * document.
+     *
      * @param trainingDocuments the trainingDocuments value to set.
      * @return the TrainResult object itself.
      */
@@ -63,9 +61,8 @@ public final class TrainResult {
     }
 
     /**
-     * Get the fields property: List of fields used to train the model and the
-     * train operation error reported by each.
-     * 
+     * Get the fields property: List of fields used to train the model and the train operation error reported by each.
+     *
      * @return the fields value.
      */
     public List<FormFieldsReport> getFields() {
@@ -73,9 +70,8 @@ public final class TrainResult {
     }
 
     /**
-     * Set the fields property: List of fields used to train the model and the
-     * train operation error reported by each.
-     * 
+     * Set the fields property: List of fields used to train the model and the train operation error reported by each.
+     *
      * @param fields the fields value to set.
      * @return the TrainResult object itself.
      */
@@ -86,7 +82,7 @@ public final class TrainResult {
 
     /**
      * Get the averageModelAccuracy property: Average accuracy.
-     * 
+     *
      * @return the averageModelAccuracy value.
      */
     public Float getAverageModelAccuracy() {
@@ -95,7 +91,7 @@ public final class TrainResult {
 
     /**
      * Set the averageModelAccuracy property: Average accuracy.
-     * 
+     *
      * @param averageModelAccuracy the averageModelAccuracy value to set.
      * @return the TrainResult object itself.
      */
@@ -106,7 +102,7 @@ public final class TrainResult {
 
     /**
      * Get the errors property: Errors returned during the training operation.
-     * 
+     *
      * @return the errors value.
      */
     public List<ErrorInformation> getErrors() {
@@ -115,7 +111,7 @@ public final class TrainResult {
 
     /**
      * Set the errors property: Errors returned during the training operation.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the TrainResult object itself.
      */

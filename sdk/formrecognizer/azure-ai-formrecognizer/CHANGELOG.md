@@ -21,6 +21,9 @@
 - Replace parameters `filePrefix` and `includeSubFolders` with `TrainingFileFilter` model
 - Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
 
+### New Features
+- Support to copy a custom model from one Form Recognizer resource to another
+
 ## 1.0.0-beta.2 (2020-05-06)
 - Fixed Receipt type bug to select the valueString field via fieldValue.
 - Rename `apiKey()` to `credential()` on FormRecognizerClientBuilder.
