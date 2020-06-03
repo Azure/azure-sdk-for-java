@@ -158,6 +158,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @return The information of the append blob operation.
@@ -178,6 +179,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during

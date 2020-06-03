@@ -181,7 +181,8 @@ public final class PageBlobClient extends BlobClientBase {
      * are 0-511, 512-1023, etc.
      * @param body The data to upload. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream(PageRange)} and writing to the returned
-     * OutputStream.
+     * OutputStream. Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
+     * mark support.
      * @return The information of the uploaded pages.
      */
     public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
@@ -204,7 +205,8 @@ public final class PageBlobClient extends BlobClientBase {
      * are 0-511, 512-1023, etc.
      * @param body The data to upload. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream(PageRange)} and writing to the returned
-     * OutputStream.
+     * OutputStream. Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
+     * mark support.
      * @param contentMd5 An MD5 hash of the page content. This hash is used to verify the integrity of the page during
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
