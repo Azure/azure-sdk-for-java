@@ -52,17 +52,18 @@ public final class BlobItem {
         this.objectReplicationSourcePolicies = null;
         if (blobItemInternal.getObjectReplicationMetadata() != null) {
             this.objectReplicationSourcePolicies = new HashMap<>();
-            for (String orString : blobItemInternal.getObjectReplicationMetadata().keySet()) {
+            for (Map.Entry<String, String> p : blobItemInternal.getObjectReplicationMetadata().entrySet()) {
+                String orString = p.getKey();
                 String str = orString.startsWith("or-") ? orString.substring(3) : orString;
                 String[] split = str.split("_");
                 String policyId = split[0];
                 String ruleId = split[1];
                 if (objectReplicationSourcePolicies.containsKey(policyId)) {
                     objectReplicationSourcePolicies.get(policyId)
-                        .putRuleAndStatus(ruleId, blobItemInternal.getObjectReplicationMetadata().get(orString));
+                        .putRuleAndStatus(ruleId, p.getValue());
                 } else {
                     ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRuleAndStatus(ruleId, blobItemInternal.getObjectReplicationMetadata().get(orString));
+                    policy.putRuleAndStatus(ruleId, p.getValue());
                     objectReplicationSourcePolicies.put(policyId, policy);
                 }
             }
