@@ -49,10 +49,15 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final String STATUS_CODE = "StatusCode";
     private static final String BODY = "Body";
     private static final String SIG = "sig";
+    private static final String USER_DELEGATION_KEY = "UserDelegationKey";
+    private static final String ACCESS_TOKEN = "accessToken";
+    private static final String REDACTED_UTF_8 =  Base64.getEncoder().encodeToString("REDACTED".getBytes(StandardCharsets.UTF_8));
+    private static final String[] BLACK_LIST = {USER_DELEGATION_KEY, ACCESS_TOKEN};
 
     private static final Pattern DELEGATIONKEY_KEY_PATTERN = Pattern.compile("(?:<Value>)(.*)(?:</Value>)");
     private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN = Pattern.compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
     private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
+    private static final Pattern DELEGATIONKEY_ACCESS_TOKEN_PATTERN = Pattern.compile("(?:\"accessToken\":\")(.*?)(?:\",|\"})");
 
     private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
@@ -177,7 +182,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
             return response.getBodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
-                responseData.put(BODY, redactUserDelegationKey(content));
+                responseData.put(BODY, redactSensitiveContent(content));
                 return responseData;
             });
         } else {
@@ -217,15 +222,35 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private String redactUserDelegationKey(String content) {
-        if (!content.contains("UserDelegationKey")) {
-            return content;
+    private String redactSensitiveContent(String content) {
+        // replace all sensitive string key in the black list
+        for (String blackString : BLACK_LIST) {
+            if (content.contains(blackString)) {
+                switch (blackString) {
+                    case USER_DELEGATION_KEY:
+                        content = redactUserDelegationKey(content);
+                        break;
+                    case ACCESS_TOKEN:
+                        content = redactAccessToken(content);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
-        content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), Base64.getEncoder().encodeToString("REDACTED".getBytes(StandardCharsets.UTF_8)));
+        return content;
+    }
+
+    private String redactAccessToken(String content) {
+        content = redactionReplacement(content, DELEGATIONKEY_ACCESS_TOKEN_PATTERN.matcher(content), REDACTED_UTF_8);
+        return content;
+    }
+
+    private String redactUserDelegationKey(String content) {
+        content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), REDACTED_UTF_8);
         content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), UUID.randomUUID().toString());
         content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), UUID.randomUUID().toString());
-
         return content;
     }
 
