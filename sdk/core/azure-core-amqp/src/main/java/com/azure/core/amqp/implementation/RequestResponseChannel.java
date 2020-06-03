@@ -240,9 +240,9 @@ public class RequestResponseChannel implements Disposable {
                             Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
                                 .replace("-", "").getBytes(UTF_8));
 
-                            delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
                             if (deliveryState != null) {
                                 logger.verbose("Setting delivery state as [{}].", deliveryState);
+                                delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
                                 delivery.disposition(deliveryState);
                             }
 

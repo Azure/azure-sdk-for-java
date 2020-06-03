@@ -5,22 +5,28 @@ package com.azure.core.amqp.implementation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.azure.core.amqp.AmqpTransaction;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.stream.Stream;
 
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transaction.Declared;
+import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -37,24 +43,56 @@ public class TransactionCoordinatorTest {
     private AmqpSendLink sendLink;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void testCompleteTransaction() {
-        Accepted outcome = Accepted.getInstance();
+    @MethodSource("commitParams")
+    @ParameterizedTest
+    public void testCompleteTransactionRejected(boolean isCommit) {
+        final Rejected outcome = new Rejected();
 
-        AmqpTransaction transaction = new AmqpTransaction(ByteBuffer.wrap("1".getBytes()));
+        final AmqpTransaction transaction = new AmqpTransaction(ByteBuffer.wrap("1".getBytes()));
 
         TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
         doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), anyInt(), isNull());
 
-        StepVerifier.create(transactionCoordinator.completeTransaction(transaction, true))
+        StepVerifier.create(transactionCoordinator.completeTransaction(transaction, isCommit))
+            .verifyError(IllegalArgumentException.class);
+
+        verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+    }
+
+    @MethodSource("commitParams")
+    @ParameterizedTest
+    public void testCompleteTransaction(boolean isCommit) {
+        final Accepted outcome = Accepted.getInstance();
+
+        final AmqpTransaction transaction = new AmqpTransaction(ByteBuffer.wrap("1".getBytes()));
+
+        TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
+
+        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), anyInt(), isNull());
+
+        StepVerifier.create(transactionCoordinator.completeTransaction(transaction, isCommit))
             .verifyComplete();
 
-        verify(sendLink, times(1)).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+    }
+
+    @Test
+    public void testCreateTransactionRejected() {
+        Rejected outcome = new Rejected();
+
+        final TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
+
+        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), anyInt(), isNull());
+
+        StepVerifier.create(transactionCoordinator.createTransaction())
+            .verifyError(IllegalArgumentException.class);
+
+        verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
     }
 
     @Test
@@ -72,6 +110,13 @@ public class TransactionCoordinatorTest {
 
         Assertions.assertNotNull(actual);
         Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());
-        verify(sendLink, times(1)).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+    }
+
+    protected static Stream<Arguments> commitParams() {
+        return Stream.of(
+            Arguments.of(true),
+            Arguments.of(false)
+        );
     }
 }

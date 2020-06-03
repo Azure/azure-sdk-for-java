@@ -48,7 +48,7 @@ class RetriableWorkItem {
         return deliveryState;
     }
 
-    boolean isDeliveryStateUpdated() {
+    boolean isDeliveryStateProvided() {
         return deliveryState != null;
     }
 

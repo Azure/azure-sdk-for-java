@@ -261,7 +261,6 @@ class RequestResponseChannelTest {
         // Creating a received message because we decodeDelivery calls implementation details for proton-j.
         final Delivery delivery = mock(Delivery.class);
         when(delivery.pending()).thenReturn(messageBytes.length);
-
         when(receiver.recv(any(), eq(0), eq(messageBytes.length))).thenAnswer(invocation -> {
             final byte[] buffer = invocation.getArgument(0);
             System.arraycopy(messageBytes, 0, buffer, 0, messageBytes.length);
@@ -321,7 +320,6 @@ class RequestResponseChannelTest {
         // Creating a received message because we decodeDelivery calls implementation details for proton-j.
         final Delivery delivery = mock(Delivery.class);
         when(delivery.pending()).thenReturn(messageBytes.length);
-
         when(receiver.recv(any(), eq(0), eq(messageBytes.length))).thenAnswer(invocation -> {
             final byte[] buffer = invocation.getArgument(0);
             System.arraycopy(messageBytes, 0, buffer, 0, messageBytes.length);
