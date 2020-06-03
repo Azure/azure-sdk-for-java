@@ -29,8 +29,7 @@ and includes six main functions:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-### Authenticate the client
-#### Create a Cognitive Services or Text Analytics resource
+### Create a Cognitive Services or Text Analytics resource
 Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Text Analytics access only,
 create a Text Analytics resource.
@@ -59,13 +58,15 @@ az cognitiveservices account create \
     --location westus2 \
     --yes
 ```
+
+## Authenticate the client
 In order to interact with the Text Analytics service, you will need to create an instance of the Text Analytics client,
 both the asynchronous and synchronous clients can be created by using `TextAnalyticsClientBuilder` invoking `buildClient()`
 creates a synchronous client while `buildAsyncClient()` creates its asynchronous counterpart.
 
 You will need an **endpoint** and either a **key** or **AAD TokenCredential** to instantiate a client object. 
 
-##### Looking up the endpoint
+### Looking up the endpoint
 You can find the **endpoint** for your Text Analytics resource in the [Azure Portal][azure_portal] under the "Keys and Endpoint",
 or [Azure CLI][azure_cli_endpoint].
 ```bash
@@ -73,7 +74,7 @@ or [Azure CLI][azure_cli_endpoint].
 az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "endpoint"
 ```
 
-##### Create a Text Analytics client with key credential
+### Create a Text Analytics client with key credential
 Once you have the value for the [key][key], provide it as a string to the [AzureKeyCredential][azure_key_credential].
 This can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Text Analytics
 resource or by running the following Azure CLI command:
@@ -102,7 +103,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 
 credential.update("{new_key}");
 ```
-##### Create a Text Analytics client with Azure Active Directory credential
+### Create a Text Analytics client with Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform. 
 
@@ -176,38 +177,6 @@ version of the operation and statistics of the batch documents.
 
 **Note**: It is recommended to use the batch methods when working on production environments as they allow you to send one 
 request with multiple documents. This is more performant than sending a request per each document.
-
-The following are types of text analysis that the service offers:
-
-1. [Sentiment Analysis][sentiment_analysis]
-    
-    Use sentiment analysis to find out what customers think of your brand or topic by analyzing raw text for clues about positive or negative sentiment.
-    The returned scores represent the model's confidence that the text is either positive, negative, or neutral. Higher values signify higher confidence.
-    Sentiment analysis returns scores and labels at a document and sentence level.
-
-2. [Named Entity Recognition][named_entity_recognition]
-    
-    Use named entity recognition (NER) to identify different entities in text and categorize them into pre-defined classes, or types.
-    Entity recognition in the client library provides three different methods depending on what you are interested in.
-    * `recognizeEntities()` can be used to identify and categorize entities in your text as people, places, organizations, date/time, quantities, percentages, currencies, and more.
-    * `recognizeLinkedEntities()` can be used to identify and disambiguate the identity of an entity found in text (For example, determining whether
-    "Mars" is being used as the planet or as the Roman god of war). This process uses Wikipedia as the knowledge base to which recognized entities are linked.
-    
-    See a full list of [Named Entity Recognition Types][named_entity_recognition_types].
-
-3. [Language Detection][language_detection]
-    
-    Detect the language of the document and report a single language code for every document submitted on the request. 
-    The language code is paired with a score indicating the strength of the score.
-    A wide range of languages, variants, dialects, and some regional/cultural languages are supported -
-    see [supported languages][supported_languages] for full details.
-
-4. [Key Phrase Extraction][key_phrase_extraction]
-    
-    Extract key phrases to quickly identify the main points in text. 
-    For example, for the document "The food was delicious and there were wonderful staff", the main talking points returned: "food" and "wonderful staff".
-
-See [Language and regional support][language_regional_support] for what is currently available for each operation.
 
 ## Examples
 The following sections provide several code snippets covering some of the most common text analytics tasks, including:
