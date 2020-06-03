@@ -103,6 +103,7 @@ public class TransactionCoordinator {
                         sink.next(new AmqpTransaction(txnId.asByteBuffer()));
                         break;
                     default:
+                        logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
     }

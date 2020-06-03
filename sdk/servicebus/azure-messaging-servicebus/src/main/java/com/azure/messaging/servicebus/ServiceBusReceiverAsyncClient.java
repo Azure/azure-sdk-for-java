@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -289,7 +288,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
-            propertiesToModify, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
+            propertiesToModify, sessionId, transactionContext);
     }
 
     /**
@@ -376,7 +375,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-            null, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
+            null, sessionId, transactionContext);
     }
 
     /**
@@ -502,7 +501,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
-            propertiesToModify, sessionId, new AmqpTransaction(transactionContext.getTransactionId()));
+            propertiesToModify, sessionId, transactionContext);
     }
 
     /**
@@ -652,7 +651,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId,
-            new AmqpTransaction(transactionContext.getTransactionId()));
+            transactionContext);
 
     }
 
@@ -1100,7 +1099,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String sessionId, AmqpTransaction transaction) {
+        String sessionId, ServiceBusTransactionContext transactionContext) {
 
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
@@ -1143,7 +1142,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final Mono<Void> performOnManagement = connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transaction))
+                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
             .then(Mono.fromRunnable(() -> {
                 logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
@@ -1153,7 +1152,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         if (unnamedSessionManager != null) {
             return unnamedSessionManager.updateDisposition(message, sessionId, dispositionStatus, propertiesToModify,
-                deadLetterReason, deadLetterErrorDescription, transaction)
+                deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
                         return Mono.empty();
@@ -1169,7 +1168,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return performOnManagement;
         } else {
             return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, transaction)
+                deadLetterErrorDescription, propertiesToModify, transactionContext)
                 .then(Mono.fromRunnable(() -> logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken)));
         }

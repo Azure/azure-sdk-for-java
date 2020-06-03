@@ -337,7 +337,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.ABANDONED,
                     null, null, null, null);
 
-                managementOperations.updateDisposition(lockToken, deliveryState, null)
+                managementOperations.updateDisposition(lockToken, deliveryState)
                     .onErrorContinue((error, item) -> {
                         logger.warning("Could not abandon message with lock: {}", lockToken, error);
                         setInternalError(error);
@@ -363,7 +363,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.COMPLETED,
                 null, null, null, null);
 
-            managementOperations.updateDisposition(lockToken, deliveryState, null)
+            managementOperations.updateDisposition(lockToken, deliveryState)
                 .onErrorResume(error -> {
                     logger.warning("Could not complete message with lock: {}", lockToken, error);
                     setInternalError(error);

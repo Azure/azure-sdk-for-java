@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -70,16 +69,17 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, AmqpTransaction transaction) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
 
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-            deadLetterErrorDescription, propertiesToModify, transaction);
+            deadLetterErrorDescription, propertiesToModify, transactionContext);
 
         if (deliveryState == null) {
             return monoError(logger,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-        return linkProcessor.updateDisposition(lockToken, deliveryState, transaction);
+        return linkProcessor.updateDisposition(lockToken, deliveryState);
     }
 
     /**
@@ -104,9 +104,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         }
 
         @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState,
-            AmqpTransaction transaction) {
-            return link.updateDisposition(lockToken, deliveryState, transaction);
+        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+            return link.updateDisposition(lockToken, deliveryState);
         }
 
         @Override

@@ -99,7 +99,7 @@ class ServiceBusAsyncConsumerTest {
             new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link.updateDisposition(anyString(), any(DeliveryState.class), same(null))).thenReturn(Mono.empty());
+        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -143,7 +143,7 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1, receivedMessage2)
             .verifyComplete();
 
-        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()), isNull());
+        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()));
     }
 
     /**
@@ -178,7 +178,7 @@ class ServiceBusAsyncConsumerTest {
             .thenCancel()
             .verify();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), isNull());
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
 
     /**
@@ -189,7 +189,7 @@ class ServiceBusAsyncConsumerTest {
         // Arrange
         final boolean isAutoComplete = false;
         final String lockToken = UUID.randomUUID().toString();
-        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance(), null))
+        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance()))
             .thenReturn(Mono.error(new IllegalArgumentException("Should not have called complete.")));
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor,
@@ -211,6 +211,6 @@ class ServiceBusAsyncConsumerTest {
             .then(() -> consumer.close())
             .verifyComplete();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), isNull());
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
 }

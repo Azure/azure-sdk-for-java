@@ -4,11 +4,11 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -37,7 +37,6 @@ import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,10 +46,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -237,9 +236,8 @@ class RequestResponseChannelTest {
     void sendMessageWithTransaction() throws IOException {
         // Arrange
         // This message was copied from one that was received.
-        ByteBuffer txnId = ByteBuffer.wrap("1".getBytes());
-        AmqpTransaction transaction = mock(AmqpTransaction.class);
-        when(transaction.getTransactionId()).thenReturn(txnId);
+        TransactionalState transactionalState = new TransactionalState();
+        transactionalState.setTxnId(new Binary("1".getBytes()));
 
         final byte[] messageBytes = new byte[]{0, 83, 115, -64, 15, 13, 64, 64, 64, 64, 64, 83, 1, 64, 64, 64, 64, 64,
             64, 64, 0, 83, 116, -63, 49, 4, -95, 11, 115, 116, 97, 116, 117, 115, 45, 99, 111, 100, 101, 113, 0, 0, 0,
@@ -271,7 +269,7 @@ class RequestResponseChannelTest {
         });
 
         // Act
-        StepVerifier.create(channel.sendWithAck(message, transaction))
+        StepVerifier.create(channel.sendWithAck(message, transactionalState))
             .then(() -> deliverySink.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
@@ -287,9 +285,7 @@ class RequestResponseChannelTest {
         verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
         verify(message).setReplyTo(argThat(path -> path != null && path.startsWith(ENTITY_PATH)));
 
-        // Ensure that TransactionSate is set on deliverytoSend
-        verify(transaction, times(2)).getTransactionId();
-        verify(deliveryToSend).disposition(any(TransactionalState.class));
+        verify(deliveryToSend).disposition(same(transactionalState));
 
         verify(receiver).flow(1);
         verify(sender).delivery(any());
@@ -374,4 +370,5 @@ class RequestResponseChannelTest {
         // Assert
         assertTrue(channel.isDisposed());
     }
+
 }

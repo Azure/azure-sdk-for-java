@@ -6,18 +6,16 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
-import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -202,11 +200,11 @@ public class RequestResponseChannel implements Disposable {
      * Sends a message to the message broker using the {@code dispatcher} and gets the response.
      *
      * @param message AMQP message to send.
-     * @param transaction Transaction id to be sent to service bus with message.
+     * @param deliveryState Delivery state to be sent to service bus with message.
      *
      * @return An AMQP message representing the service's response to the message.
      */
-    public Mono<Message> sendWithAck(final Message message, AmqpTransaction transaction) {
+    public Mono<Message> sendWithAck(final Message message, DeliveryState deliveryState) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(
                 "Cannot send a message when request response channel is disposed."));
@@ -243,11 +241,9 @@ public class RequestResponseChannel implements Disposable {
                                 .replace("-", "").getBytes(UTF_8));
 
                             delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
-                            if (transaction != null && transaction.getTransactionId() != null) {
-                                logger.verbose("Setting transaction id on the delivery.");
-                                TransactionalState transactionalState = new TransactionalState();
-                                transactionalState.setTxnId(new Binary(transaction.getTransactionId().array()));
-                                delivery.disposition(transactionalState);
+                            if (deliveryState != null) {
+                                logger.verbose("Setting delivery state as [{}].", deliveryState);
+                                delivery.disposition(deliveryState);
                             }
 
                             final int payloadSize = messageSerializer.getSize(message)

@@ -24,6 +24,8 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -97,7 +99,7 @@ class ServiceBusSenderAsyncClientTest {
     @Captor
     private ArgumentCaptor<Message> singleMessageCaptor;
     @Captor
-    private ArgumentCaptor<AmqpTransaction> amqpTransactionCaptor;
+    private ArgumentCaptor<DeliveryState> amqpDeliveryStateCaptor;
     @Captor
     private ArgumentCaptor<List<Message>> messagesCaptor;
     @Captor
@@ -282,21 +284,25 @@ class ServiceBusSenderAsyncClientTest {
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(any(Message.class), any(AmqpTransaction.class))).thenReturn(Mono.empty());
-        when(sendLink.send(anyList(), any(AmqpTransaction.class))).thenReturn(Mono.empty());
+        when(sendLink.send(any(Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
+        when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(sender.send(batch, transactionContext))
             .verifyComplete();
 
         // Assert
-        verify(sendLink).send(messagesCaptor.capture(), amqpTransactionCaptor.capture());
+        verify(sendLink).send(messagesCaptor.capture(), amqpDeliveryStateCaptor.capture());
 
         final List<org.apache.qpid.proton.message.Message> messagesSent = messagesCaptor.getValue();
         Assertions.assertEquals(count, messagesSent.size());
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
-        Assertions.assertEquals(TXN_ID_STRING, new String(amqpTransactionCaptor.getValue().getTransactionId().array()));
+
+        final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
+        Assertions.assertNotNull(delivery);
+        Assertions.assertTrue(delivery instanceof TransactionalState);
+        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState)delivery).getTxnId().toString());
     }
 
     /**
@@ -344,24 +350,25 @@ class ServiceBusSenderAsyncClientTest {
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(any(Message.class), any(AmqpTransaction.class))).thenReturn(Mono.empty());
-        when(sendLink.send(anyList(), any(AmqpTransaction.class))).thenReturn(Mono.empty());
+        when(sendLink.send(any(Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
+        when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(sender.send(messages, transactionContext))
             .verifyComplete();
 
         // Assert
-        verify(sendLink).send(messagesCaptor.capture(), amqpTransactionCaptor.capture());
+        verify(sendLink).send(messagesCaptor.capture(), amqpDeliveryStateCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
         Assertions.assertEquals(count, messagesSent.size());
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
 
-        final AmqpTransaction actualTransaction = amqpTransactionCaptor.getValue();
-        Assertions.assertNotNull(actualTransaction.getTransactionId());
-        Assertions.assertEquals(TXN_ID_STRING, new String(amqpTransactionCaptor.getValue().getTransactionId().array()));
+        final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
+        Assertions.assertNotNull(delivery);
+        Assertions.assertTrue(delivery instanceof TransactionalState);
+        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState)delivery).getTxnId().toString());
     }
 
     /**
@@ -417,7 +424,7 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending a single message will result in calling sender.send(Message, transaction).
      */
-    @Test
+   @Test
     void sendSingleMessageWithTransaction() {
         // Arrange
         final ServiceBusMessage testData =
@@ -428,21 +435,25 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(sendLink.send(any(org.apache.qpid.proton.message.Message.class), any(AmqpTransaction.class))).thenReturn(Mono.empty());
+        when(sendLink.send(any(org.apache.qpid.proton.message.Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(sender.send(testData, transactionContext))
             .verifyComplete();
 
         // Assert
-        verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class), any(AmqpTransaction.class));
-        verify(sendLink).send(singleMessageCaptor.capture(), amqpTransactionCaptor.capture());
+        verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class), any(DeliveryState.class));
+        verify(sendLink).send(singleMessageCaptor.capture(), amqpDeliveryStateCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();
         Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
 
-        Assertions.assertEquals(TXN_ID_STRING, new String(amqpTransactionCaptor.getValue().getTransactionId().array()));
+       final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
+       Assertions.assertNotNull(delivery);
+       Assertions.assertTrue(delivery instanceof TransactionalState);
+       Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState)delivery).getTxnId().toString());
     }
+
 
     /**
      * Verifies that sending a single message will result in calling sender.send(Message).
@@ -500,11 +511,12 @@ class ServiceBusSenderAsyncClientTest {
         ArgumentCaptor<Instant> instantCapture = ArgumentCaptor.forClass(Instant.class);
         ArgumentCaptor<Integer> lengthCapture = ArgumentCaptor.forClass(Integer.class);
         ArgumentCaptor<String> linkNameCapture = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<ServiceBusTransactionContext> transactionCapture = ArgumentCaptor.forClass(ServiceBusTransactionContext.class);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), any(AmqpTransaction.class)))
+        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), any(ServiceBusTransactionContext.class)))
             .thenReturn(just(sequenceNumberReturned));
 
         // Act & Assert
@@ -512,15 +524,15 @@ class ServiceBusSenderAsyncClientTest {
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(singleSBMessageCaptor.capture(), instantCapture.capture(), lengthCapture.capture(), linkNameCapture.capture(), amqpTransactionCaptor.capture());
+        verify(managementNode).schedule(singleSBMessageCaptor.capture(), instantCapture.capture(), lengthCapture.capture(), linkNameCapture.capture(), transactionCapture.capture());
 
         Assertions.assertEquals(message, singleSBMessageCaptor.getValue());
         Assertions.assertEquals(instant, instantCapture.getValue());
         Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, lengthCapture.getValue());
         Assertions.assertEquals(LINK_NAME, linkNameCapture.getValue());
-        Assertions.assertEquals(TXN_ID_STRING, new String(amqpTransactionCaptor.getValue().getTransactionId().array()));
-
+        Assertions.assertSame(transactionContext, transactionCapture.getValue());
     }
+
 
     @Test
     void cancelScheduleMessage() {

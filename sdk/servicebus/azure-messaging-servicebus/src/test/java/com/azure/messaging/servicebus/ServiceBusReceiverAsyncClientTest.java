@@ -468,7 +468,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
-        when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == DeliveryStateType.Rejected), isNull())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == DeliveryStateType.Rejected))).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(receiver.receive()
@@ -478,7 +478,7 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNext()
             .verifyComplete();
 
-        verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class), isNull());
+        verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class));
     }
 
     /**

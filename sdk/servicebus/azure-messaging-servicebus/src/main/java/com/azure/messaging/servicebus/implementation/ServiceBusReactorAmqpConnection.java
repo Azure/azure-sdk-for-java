@@ -223,7 +223,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
                 logger.info("Creating transaction manager. linkName: [{}]",
                     linkName);
-                return  new TransactionManagerImpl(createSession(linkName), fullyQualifiedNamespace, linkName);
+                return  new TransactionManager(createSession(linkName), fullyQualifiedNamespace, linkName);
             }))));
     }
 

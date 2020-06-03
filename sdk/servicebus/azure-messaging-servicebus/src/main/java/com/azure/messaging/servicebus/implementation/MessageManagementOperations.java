@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -20,7 +19,7 @@ public interface MessageManagementOperations {
      *
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, AmqpTransaction transaction);
+    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on

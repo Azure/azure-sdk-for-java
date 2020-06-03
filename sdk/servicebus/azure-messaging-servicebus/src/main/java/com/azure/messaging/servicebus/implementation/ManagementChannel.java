@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -17,6 +16,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -24,6 +24,8 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Exceptions;
@@ -285,7 +287,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
-        String associatedLinkName, AmqpTransaction transaction) {
+        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
         message.setScheduledEnqueueTime(scheduledEnqueueTime);
 
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).then(createChannel.flatMap(channel -> {
@@ -339,7 +341,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
 
-            return sendWithVerify(channel, requestMessage, transaction);
+            TransactionalState transactionalState = null;
+            if (transactionContext != null && transactionContext.getTransactionId() != null) {
+                transactionalState = new TransactionalState();
+                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+            }
+
+            return sendWithVerify(channel, requestMessage, transactionalState);
         }).handle((response, sink) -> {
             final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
 
@@ -377,7 +385,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-        String associatedLinkName, AmqpTransaction transaction) {
+        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
         final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
@@ -408,7 +416,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             message.setBody(new AmqpValue(requestBody));
 
-            return sendWithVerify(channel, message, transaction);
+            TransactionalState transactionalState = null;
+            if (transactionContext != null && transactionContext.getTransactionId() != null) {
+                transactionalState = new TransactionalState();
+                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+            }
+
+            return sendWithVerify(channel, message, transactionalState);
         })).then();
     }
 
@@ -426,8 +440,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message,
-        AmqpTransaction transaction) {
-        return channel.sendWithAck(message, transaction)
+        DeliveryState deliveryState) {
+        return channel.sendWithAck(message, deliveryState)
             .handle((Message response, SynchronousSink<Message> sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.next(response);

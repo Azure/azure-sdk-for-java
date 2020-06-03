@@ -382,7 +382,7 @@ class ReactorSender implements AmqpSendLink {
                 delivery = sender.delivery(deliveryTag.getBytes(UTF_8));
                 delivery.setMessageFormat(workItem.getMessageFormat());
 
-                if (workItem.updatedDeliveryState()) {
+                if (workItem.isDeliveryStateUpdated()) {
                     delivery.disposition(workItem.getDeliveryState());
                 }
                 sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
@@ -438,7 +438,7 @@ class ReactorSender implements AmqpSendLink {
             logger.verbose("clientId[{}]. path[{}], linkName[{}], delivery[{}] - mismatch (or send timed out)",
                 handler.getConnectionId(), entityPath, getLinkName(), deliveryTag);
             return;
-        } else if (workItem.updatedDeliveryState()) {
+        } else if (workItem.isDeliveryStateUpdated()) {
             workItem.success(outcome);
             return;
         }
