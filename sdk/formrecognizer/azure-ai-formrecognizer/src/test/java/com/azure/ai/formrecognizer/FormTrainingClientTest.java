@@ -301,7 +301,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) ((List) httpResponseException.getValue()).get(0);
-            assertEquals(EXPECTED_INVALID_MODEL_STATUS_MESSAGE, httpResponseException.getMessage());
+            assertTrue(httpResponseException.getMessage().contains(EXPECTED_INVALID_MODEL_STATUS_MESSAGE));
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getCode());
             assertEquals(EXPECTED_INVALID_STATUS_ERROR_INFORMATION, errorInformation.getMessage());
         });

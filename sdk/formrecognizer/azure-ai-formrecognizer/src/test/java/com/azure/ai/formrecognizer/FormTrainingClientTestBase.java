@@ -48,7 +48,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID: cae9d062-71e0-44a3-8630-70b32ae94f4d";
+    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID";
     static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
     static final String EXPECTED_INVALID_STATUS_ERROR_INFORMATION = "Unable to list blobs on the Azure blob storage account.";
 
