@@ -302,7 +302,7 @@ class ServiceBusSenderAsyncClientTest {
         final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
         Assertions.assertNotNull(delivery);
         Assertions.assertTrue(delivery instanceof TransactionalState);
-        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState)delivery).getTxnId().toString());
+        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState) delivery).getTxnId().toString());
     }
 
     /**
@@ -368,7 +368,7 @@ class ServiceBusSenderAsyncClientTest {
         final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
         Assertions.assertNotNull(delivery);
         Assertions.assertTrue(delivery instanceof TransactionalState);
-        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState)delivery).getTxnId().toString());
+        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState) delivery).getTxnId().toString());
     }
 
     /**
@@ -424,11 +424,10 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending a single message will result in calling sender.send(Message, transaction).
      */
-   @Test
+    @Test
     void sendSingleMessageWithTransaction() {
         // Arrange
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
@@ -448,10 +447,10 @@ class ServiceBusSenderAsyncClientTest {
         final Message message = singleMessageCaptor.getValue();
         Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
 
-       final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
-       Assertions.assertNotNull(delivery);
-       Assertions.assertTrue(delivery instanceof TransactionalState);
-       Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState)delivery).getTxnId().toString());
+        final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
+        Assertions.assertNotNull(delivery);
+        Assertions.assertTrue(delivery instanceof TransactionalState);
+        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState) delivery).getTxnId().toString());
     }
 
 

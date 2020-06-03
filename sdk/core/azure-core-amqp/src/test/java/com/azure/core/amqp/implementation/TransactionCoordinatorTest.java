@@ -56,7 +56,7 @@ public class TransactionCoordinatorTest {
 
         TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
         StepVerifier.create(transactionCoordinator.completeTransaction(transaction, isCommit))
             .verifyError(IllegalArgumentException.class);
@@ -73,7 +73,7 @@ public class TransactionCoordinatorTest {
 
         TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
         StepVerifier.create(transactionCoordinator.completeTransaction(transaction, isCommit))
             .verifyComplete();
@@ -87,7 +87,7 @@ public class TransactionCoordinatorTest {
 
         final TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
         StepVerifier.create(transactionCoordinator.createTransaction())
             .verifyError(IllegalArgumentException.class);

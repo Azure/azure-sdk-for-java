@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * */
 public class AmqpTransactionTest {
 
-    final private byte[] TRANSACTION_ID = "1".getBytes();
+    private static final byte[] TRANSACTION_ID = "1".getBytes();
 
     @Test
     public void nullTransactionId() {

@@ -3,17 +3,14 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.amqp.implementation.TransactionCoordinator;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * Represents transaction in message broker. {@link TransactionCoordinator} uses this to perform many message broker
- * operation as unit of work.
+ * Represents transaction in message broker. It does not do any network operation on its own. It contains meta data
+ * about transaction such as transaction id.
  *
- * @see TransactionCoordinator
  */
 public class AmqpTransaction {
 
@@ -22,20 +19,18 @@ public class AmqpTransaction {
     /**
      * Creates {@link AmqpTransaction} given {@code transactionId}.
      *
-     * @param transactionId for this transaction
+     * @param transactionId The id for this transaction.
      *
      * @throws NullPointerException if {@code transactionId} is null.
      */
     public AmqpTransaction(ByteBuffer transactionId) {
-        Objects.requireNonNull(transactionId, "'transactionId' cannot be null.");
-
-        this.transactionId = transactionId;
+        this.transactionId = Objects.requireNonNull(transactionId, "'transactionId' cannot be null.");
     }
 
     /**
-     * Get {@code transactionId} for this transaction.
+     * Gets the id for this transaction.
      *
-     * @return transactionId.
+     * @return The id for this transaction.
      */
     public ByteBuffer getTransactionId() {
         return transactionId;

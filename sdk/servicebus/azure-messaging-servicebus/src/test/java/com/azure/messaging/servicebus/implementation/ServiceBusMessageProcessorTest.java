@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.messaging.servicebus.TestUtils.createMessageSink;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;

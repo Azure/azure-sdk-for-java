@@ -58,9 +58,14 @@ public class TransactionCoordinator {
 
         return sendLink.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null)
             .handle((outcome, sink) -> {
-                if (!(outcome instanceof Accepted)) {
-                    sink.error(new IllegalArgumentException("Expected a Accepted, received: " + outcome));
-                    return;
+                final DeliveryState.DeliveryStateType stateType = outcome.getType();
+                switch (stateType) {
+                    case Accepted:
+                        sink.complete();
+                        break;
+                    default:
+                        sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
+                        logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
     }
@@ -83,26 +88,16 @@ public class TransactionCoordinator {
 
         return sendLink.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null)
             .handle((outcome, sink) -> {
-                if (!(outcome instanceof Declared)) {
-                    sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
-                    return;
-                }
-
-                final Declared state = (Declared) outcome;
-                final DeliveryState.DeliveryStateType stateType = state.getType();
+                final DeliveryState.DeliveryStateType stateType = outcome.getType();
                 switch (stateType) {
-                    case Accepted:
-                        break;
-                    case Rejected:
-                        break;
                     case Declared:
-                        Binary txnId;
+                        Binary transactionId;
                         Declared declared = (Declared) outcome;
-                        txnId = declared.getTxnId();
-                        logger.verbose("Created new TX started: {}", txnId);
-                        sink.next(new AmqpTransaction(txnId.asByteBuffer()));
+                        transactionId = declared.getTxnId();
+                        sink.next(new AmqpTransaction(transactionId.asByteBuffer()));
                         break;
                     default:
+                        sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
                         logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });

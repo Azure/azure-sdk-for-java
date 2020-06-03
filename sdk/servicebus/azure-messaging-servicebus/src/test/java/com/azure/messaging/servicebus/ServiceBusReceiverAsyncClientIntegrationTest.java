@@ -19,7 +19,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -364,14 +363,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
         assertNotNull(transaction.get());
+
         // Assert & Act
         StepVerifier.create(sender.send(message2, transaction.get()))
             .verifyComplete();
 
-        Date start = new Date();
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
-        Date end = new Date();
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
@@ -399,12 +397,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
-        start = new Date();
         StepVerifier.create(operation)
             .verifyComplete();
-        end = new Date();
 
-        start = new Date();
         if (commitTxn) {
             StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();

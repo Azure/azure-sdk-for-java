@@ -196,7 +196,7 @@ public class ReactorSession implements AmqpSession {
         }
 
         synchronized (coordinatorLock) {
-            return createCoordinatorSendLink(TRANSACTION_LINK_NAME, openTimeout, retryPolicy)
+            return createCoordinatorSendLink(openTimeout, retryPolicy)
                 .handle((amqpLink, sink) -> {
                     logger.info("Coordinator[{}]: Creating transaction coordinator.", TRANSACTION_LINK_NAME);
                     final TransactionCoordinator transactionCoordinator = new TransactionCoordinator(amqpLink,
@@ -206,15 +206,15 @@ public class ReactorSession implements AmqpSession {
         }
     }
 
-    private Mono<AmqpSendLink> createCoordinatorSendLink(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+    private Mono<AmqpSendLink> createCoordinatorSendLink(Duration timeout, AmqpRetryPolicy retry) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create coordinator send link '%s' from a closed session.", linkName))));
+                "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
         }
 
         final LinkSubscription<AmqpSendLink> existing = coordinator.get();
         if (existing != null) {
-            logger.verbose("linkName[{}]: Returning existing coordinator send link.", linkName);
+            logger.verbose("linkName[{}]: Returning existing coordinator send link.", TRANSACTION_LINK_NAME);
             return Mono.just(existing.getLink());
         }
 
@@ -226,13 +226,14 @@ public class ReactorSession implements AmqpSession {
                     // We have to invoke this in the same thread or else proton-j will not properly link up the created
                     // sender because the link names are not unique. Link name == entity path.
                     provider.getReactorDispatcher().invoke(() -> {
-                        LinkSubscription<AmqpSendLink> linkLinkSubscription = getCoordinator(linkName, timeout, retry);
+                        LinkSubscription<AmqpSendLink> linkLinkSubscription = getCoordinator(TRANSACTION_LINK_NAME,
+                            timeout, retry);
 
                         if (coordinator.compareAndSet(null, linkLinkSubscription)) {
-                            logger.info("linkName[{}]: coordinator send link created.", linkName);
+                            logger.info("linkName[{}]: coordinator send link created.", TRANSACTION_LINK_NAME);
                         } else {
                             logger.info("linkName[{}]: Another coordinator send link exists. Disposing of new one.",
-                                linkName);
+                                TRANSACTION_LINK_NAME);
                             linkLinkSubscription.dispose();
                         }
 
