@@ -265,7 +265,7 @@ public class IdentityClient {
                     return Mono.fromFuture(application.acquireToken(
                         ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                             .build()))
-                               .map(ar -> new MsalToken(ar, options));
+                               .map(MsalToken::new);
                 } catch (MalformedURLException e) {
                     return Mono.error(e);
                 }
@@ -279,7 +279,7 @@ public class IdentityClient {
                                                         .build();
 
                 return Mono.defer(() -> Mono.fromFuture(getPublicClientApplication(false).acquireToken(parameters))
-                                    .map(ar -> new MsalToken(ar, options)));
+                                    .map(MsalToken::new));
 
             } else {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
@@ -377,7 +377,7 @@ public class IdentityClient {
             OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                                            .atZone(ZoneId.systemDefault())
                                            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
+            token = new IdentityToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
@@ -403,7 +403,7 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
         return Mono.fromFuture(() -> getConfidentialClientApplication().acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build()))
-            .map(ar -> new MsalToken(ar, options));
+            .map(MsalToken::new);
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
@@ -431,7 +431,7 @@ public class IdentityClient {
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
             .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and password",
-                null, t)).map(ar -> new MsalToken(ar, options));
+                null, t)).map(MsalToken::new);
     }
 
     /**
@@ -454,7 +454,7 @@ public class IdentityClient {
             } catch (MalformedURLException e) {
                 return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
             }
-        }).map(ar -> new MsalToken(ar, options))
+        }).map(MsalToken::new)
             .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(options.getTokenRefreshOffset())))
             .switchIfEmpty(Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
@@ -467,7 +467,7 @@ public class IdentityClient {
                 } catch (MalformedURLException e) {
                     return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
                 }
-            }).map(result -> new MsalToken(result, options)));
+            }).map(MsalToken::new));
     }
 
     /**
@@ -485,7 +485,7 @@ public class IdentityClient {
             } catch (MalformedURLException e) {
                 return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
             }
-        }).map(ar -> (AccessToken) new MsalToken(ar, options))
+        }).map(ar -> (AccessToken) new MsalToken(ar))
             .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(options.getTokenRefreshOffset())));
     }
 
@@ -507,7 +507,7 @@ public class IdentityClient {
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return getPublicClientApplication(false).acquireToken(parameters);
         }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
-            .map(ar -> new MsalToken(ar, options));
+            .map(MsalToken::new);
     }
 
     /**
@@ -527,7 +527,7 @@ public class IdentityClient {
                                                 .build();
 
         return Mono.defer(() -> Mono.fromFuture(getPublicClientApplication(false).acquireToken(parameters))
-                                    .map(ar -> new MsalToken(ar, options)));
+                                    .map(MsalToken::new));
     }
 
     /**
@@ -545,7 +545,7 @@ public class IdentityClient {
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
             .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with authorization code",
-                null, t)).map(ar -> new MsalToken(ar, options));
+                null, t)).map(MsalToken::new);
     }
 
     /**
@@ -680,8 +680,7 @@ public class IdentityClient {
                         .useDelimiter("\\A");
                 String result = s.hasNext() ? s.next() : "";
 
-                MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-                return new AccessToken(msiToken.getToken(), msiToken.getExpiresAt());
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -733,9 +732,8 @@ public class IdentityClient {
                             .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
 
-                    MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result,
+                    return SERIALIZER_ADAPTER.deserialize(result,
                             MSIToken.class, SerializerEncoding.JSON);
-                    return new AccessToken(msiToken.getToken(), msiToken.getExpiresAt());
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(

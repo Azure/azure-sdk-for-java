@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -21,7 +22,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String BEARER = "Bearer";
 
     private final TokenCredential credential;
-    private final TokenRequestContext tokenRequestContext;
+    private final String[] scopes;
+    private final SimpleTokenCache cache;
 
     /**
      * Creates BearerTokenAuthenticationPolicy.
@@ -34,7 +36,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         Objects.requireNonNull(scopes);
         assert scopes.length > 0;
         this.credential = credential;
-        this.tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+        this.scopes = scopes;
+        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequestContext().addScopes(scopes)));
     }
 
     @Override
@@ -42,7 +45,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
-        return credential.getToken(tokenRequestContext)
+        return cache.getToken()
             .flatMap(token -> {
                 context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
                 return next.process();
