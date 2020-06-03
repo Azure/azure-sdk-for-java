@@ -1,26 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsdeletequeueerror218429927a27d392a4",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsdeletequeueerror344938a4ada9db3c24",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "99ba9b8f-4ee1-4644-b97e-72f4238b5b3e"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "14d69891-172e-4a78-a42c-ba768ee2628f"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "QueueNotFound",
+      "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "217",
-      "StatusCode" : "404",
-      "x-ms-request-id" : "d25b81f7-f003-0012-6271-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b81f7-f003-0012-6271-e0e9eb000000\nTime:2020-02-11T00:24:32.1532729Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:31 GMT",
-      "x-ms-client-request-id" : "99ba9b8f-4ee1-4644-b97e-72f4238b5b3e",
+      "Content-Length" : "328",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "ceb8203b-a003-006d-7500-3a426a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb8203b-a003-006d-7500-3a426a000000\nTime:2020-06-03T23:38:20.0051182Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
+      "Date" : "Wed, 03 Jun 2020 23:38:19 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsdeletequeueerror218429927a27d392a4" ]
+  "variables" : [ "queueapitestsdeletequeueerror344938a4ada9db3c24" ]
 }

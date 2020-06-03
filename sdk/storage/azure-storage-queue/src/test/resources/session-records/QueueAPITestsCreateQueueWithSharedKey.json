@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestscreatequeuewithsharedkey820261f7575ece",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestscreatequeuewithsharedkey1362634296ae46",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "58f64da7-29d8-4d16-8cb5-6f8099f0e7a1"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9b256d17-1273-4233-abca-f8ef99e8a885"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "201",
-      "x-ms-request-id" : "d25b81f0-f003-0012-5f71-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:30 GMT",
-      "x-ms-client-request-id" : "58f64da7-29d8-4d16-8cb5-6f8099f0e7a1"
+      "Content-Length" : "328",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "ceb82032-a003-006d-6d00-3a426a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb82032-a003-006d-6d00-3a426a000000\nTime:2020-06-03T23:38:19.4355762Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
+      "Date" : "Wed, 03 Jun 2020 23:38:18 GMT",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestscreatequeuewithsharedkey820261f7575ece" ]
+  "variables" : [ "queueapitestscreatequeuewithsharedkey1362634296ae46" ]
 }

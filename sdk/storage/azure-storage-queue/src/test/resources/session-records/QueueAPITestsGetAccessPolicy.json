@@ -1,45 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsgetaccesspolicy03192596386c20d964",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetaccesspolicy40682518507b371634",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "76093e49-5080-4d4e-b0fc-0a2c5d5a42a2"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1ee78c89-9fcf-48d4-8370-2288099e446a"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "201",
-      "x-ms-request-id" : "d25b8224-f003-0012-0171-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:35 GMT",
-      "x-ms-client-request-id" : "76093e49-5080-4d4e-b0fc-0a2c5d5a42a2"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsgetaccesspolicy03192596386c20d964?comp=acl",
-    "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "160f9473-65e1-4462-8b79-bf514fb5eb37"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
-      "Cache-Control" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "d25b8226-f003-0012-0271-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers />",
-      "Date" : "Tue, 11 Feb 2020 00:24:35 GMT",
-      "x-ms-client-request-id" : "160f9473-65e1-4462-8b79-bf514fb5eb37",
+      "Content-Length" : "328",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "ceb82078-a003-006d-2c00-3a426a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb82078-a003-006d-2c00-3a426a000000\nTime:2020-06-03T23:38:22.4074062Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
+      "Date" : "Wed, 03 Jun 2020 23:38:21 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetaccesspolicy03192596386c20d964" ]
+  "variables" : [ "queueapitestsgetaccesspolicy40682518507b371634" ]
 }

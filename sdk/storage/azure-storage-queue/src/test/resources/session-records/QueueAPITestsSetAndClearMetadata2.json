@@ -1,85 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssetandclearmetadata218479c2a64a7c8d4",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetandclearmetadata20956835dc5b327c4",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "f968a540-77e3-4c10-b150-ad1649674f88"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "bb0cf636-f606-4cdd-a507-8876fd2987e1"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "201",
-      "x-ms-request-id" : "d25b8208-f003-0012-6e71-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:32 GMT",
-      "x-ms-client-request-id" : "f968a540-77e3-4c10-b150-ad1649674f88"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssetandclearmetadata218479c2a64a7c8d4?comp=metadata",
-    "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "320c35ea-f2f2-4a5b-a3cb-9930e621cfaa"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
-      "Cache-Control" : "no-cache",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "x-ms-approximate-messages-count" : "0",
-      "x-ms-meta-metadata1" : "value",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "d25b820a-f003-0012-6f71-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:33 GMT",
-      "x-ms-client-request-id" : "320c35ea-f2f2-4a5b-a3cb-9930e621cfaa"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssetandclearmetadata218479c2a64a7c8d4?comp=metadata",
-    "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "706af1e4-05f0-40f2-833d-8ff5b08ad956"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "204",
-      "x-ms-request-id" : "d25b820b-f003-0012-7071-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:33 GMT",
-      "x-ms-client-request-id" : "706af1e4-05f0-40f2-833d-8ff5b08ad956"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssetandclearmetadata218479c2a64a7c8d4?comp=metadata",
-    "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "93f143ba-9a7d-47e7-9f79-9c14a32ae1a7"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
-      "Cache-Control" : "no-cache",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "x-ms-approximate-messages-count" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "d25b820c-f003-0012-7171-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:33 GMT",
-      "x-ms-client-request-id" : "93f143ba-9a7d-47e7-9f79-9c14a32ae1a7"
+      "Content-Length" : "328",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "ceb82051-a003-006d-0a00-3a426a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb82051-a003-006d-0a00-3a426a000000\nTime:2020-06-03T23:38:21.1442037Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
+      "Date" : "Wed, 03 Jun 2020 23:38:20 GMT",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetandclearmetadata218479c2a64a7c8d4" ]
+  "variables" : [ "queueapitestssetandclearmetadata20956835dc5b327c4" ]
 }
