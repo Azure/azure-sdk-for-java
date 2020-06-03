@@ -110,8 +110,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public int connectionTimeoutInMillis() {
-            final long value = this.options.connectionTimeout().toMillis();
+        public int connectTimeoutInMillis() {
+            final long value = this.options.connectTimeout().toMillis();
             assert value <= Integer.MAX_VALUE;
             return (int)value;
         }

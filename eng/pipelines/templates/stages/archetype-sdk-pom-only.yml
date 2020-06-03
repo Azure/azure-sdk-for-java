@@ -27,4 +27,6 @@ stages:
           Artifacts: ${{parameters.Artifacts}}
           ArtifactName: packages
           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-          TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+          EnableIntegrationStage: false
+

@@ -52,7 +52,7 @@ public final class OcrSkillConverter {
         }
 
         Boolean shouldDetectOrientation = obj.isShouldDetectOrientation();
-        ocrSkill.shouldDetectOrientation(shouldDetectOrientation);
+        ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
         return ocrSkill;
     }
 
@@ -93,7 +93,7 @@ public final class OcrSkillConverter {
             ocrSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
 
-        Boolean shouldDetectOrientation = obj.shouldDetectOrientation();
+        Boolean shouldDetectOrientation = obj.setShouldDetectOrientation();
         ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
         return ocrSkill;
     }

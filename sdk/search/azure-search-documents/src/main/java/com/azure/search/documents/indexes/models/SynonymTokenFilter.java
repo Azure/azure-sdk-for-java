@@ -32,7 +32,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * false.
      */
     @JsonProperty(value = "ignoreCase")
-    private Boolean ignoreCase;
+    private Boolean caseIgnored;
 
     /*
      * A value indicating whether all words in the list of synonyms (if =>
@@ -84,19 +84,19 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean isIgnoreCase() {
-        return this.ignoreCase;
+    public Boolean isCaseIgnored() {
+        return this.caseIgnored;
     }
 
     /**
      * Set the ignoreCase property: A value indicating whether to case-fold
      * input for matching. Default is false.
      *
-     * @param ignoreCase the ignoreCase value to set.
+     * @param caseIgnored the ignoreCase value to set.
      * @return the SynonymTokenFilter object itself.
      */
-    public SynonymTokenFilter setIgnoreCase(Boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
+    public SynonymTokenFilter setCaseIgnored(Boolean caseIgnored) {
+        this.caseIgnored = caseIgnored;
         return this;
     }
 
@@ -113,7 +113,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the expand value.
      */
-    public Boolean isExpand() {
+    public Boolean getExpand() {
         return this.expand;
     }
 

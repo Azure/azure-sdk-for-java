@@ -41,14 +41,14 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * converted to lower case first. Default is false.
      */
     @JsonProperty(value = "ignoreCase")
-    private Boolean ignoreCase;
+    private Boolean caseIgnored;
 
     /*
      * A value indicating whether to ignore the last search term if it's a stop
      * word. Default is true.
      */
     @JsonProperty(value = "removeTrailing")
-    private Boolean removeTrailingStopWords;
+    private Boolean trailingStopWordsRemoved;
 
     /**
      * Get the stopwords property: The list of stopwords. This property and the
@@ -112,19 +112,19 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean isIgnoreCase() {
-        return this.ignoreCase;
+    public Boolean isCaseIgnored() {
+        return this.caseIgnored;
     }
 
     /**
      * Set the ignoreCase property: A value indicating whether to ignore case.
      * If true, all words are converted to lower case first. Default is false.
      *
-     * @param ignoreCase the ignoreCase value to set.
+     * @param caseIgnored the ignoreCase value to set.
      * @return the StopwordsTokenFilter object itself.
      */
-    public StopwordsTokenFilter setIgnoreCase(Boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
+    public StopwordsTokenFilter setCaseIgnored(Boolean caseIgnored) {
+        this.caseIgnored = caseIgnored;
         return this;
     }
 
@@ -134,19 +134,19 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the removeTrailingStopWords value.
      */
-    public Boolean isRemoveTrailingStopWords() {
-        return this.removeTrailingStopWords;
+    public Boolean areTrailingStopWordsRemoved() {
+        return this.trailingStopWordsRemoved;
     }
 
     /**
      * Set the removeTrailingStopWords property: A value indicating whether to
      * ignore the last search term if it's a stop word. Default is true.
      *
-     * @param removeTrailingStopWords the removeTrailingStopWords value to set.
+     * @param trailingStopWordsRemoved the removeTrailingStopWords value to set.
      * @return the StopwordsTokenFilter object itself.
      */
-    public StopwordsTokenFilter setRemoveTrailingStopWords(Boolean removeTrailingStopWords) {
-        this.removeTrailingStopWords = removeTrailingStopWords;
+    public StopwordsTokenFilter setTrailingStopWordsRemoved(Boolean trailingStopWordsRemoved) {
+        this.trailingStopWordsRemoved = trailingStopWordsRemoved;
         return this;
     }
 }

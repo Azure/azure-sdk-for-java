@@ -64,12 +64,12 @@ public class CosmosAsyncUser {
     /**
      * Replace a cosmos user
      *
-     * @param userSettings the user properties to use
+     * @param userProperties the user properties to use
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
      */
-    public Mono<CosmosUserResponse> replace(CosmosUserProperties userSettings) {
+    public Mono<CosmosUserResponse> replace(CosmosUserProperties userProperties) {
         return this.database.getDocClientWrapper()
-                            .replaceUser(ModelBridgeInternal.getV2User(userSettings), null)
+                            .replaceUser(ModelBridgeInternal.getV2User(userProperties), null)
                             .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
@@ -91,17 +91,17 @@ public class CosmosAsyncUser {
      * The {@link Mono} upon successful completion will contain a single resource response with the created permission.
      * In case of failure the {@link Mono} will error.
      *
-     * @param permissionSettings the permission properties to create.
+     * @param permissionProperties the permission properties to create.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the created permission or an error.
      */
     public Mono<CosmosPermissionResponse> createPermission(
-        CosmosPermissionProperties permissionSettings,
+        CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionSettings);
+        Permission permission = ModelBridgeInternal.getV2Permissions(permissionProperties);
         return database.getDocClientWrapper()
                    .createPermission(getLink(), permission, ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
@@ -115,14 +115,14 @@ public class CosmosAsyncUser {
      * The {@link Mono} upon successful completion will contain a single resource response with the upserted permission.
      * In case of failure the {@link Mono} will error.
      *
-     * @param permissionSettings the permission properties to upsert.
+     * @param permissionProperties the permission properties to upsert.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the upserted permission or an error.
      */
     public Mono<CosmosPermissionResponse> upsertPermission(
-        CosmosPermissionProperties permissionSettings,
+        CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionSettings);
+        Permission permission = ModelBridgeInternal.getV2Permissions(permissionProperties);
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }

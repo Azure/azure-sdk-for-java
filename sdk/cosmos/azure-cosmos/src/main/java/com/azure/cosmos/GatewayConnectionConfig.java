@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public final class GatewayConnectionConfig {
     //  Constants
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
@@ -44,18 +44,18 @@ public final class GatewayConnectionConfig {
      *
      * @return the request timeout duration.
      */
-    public Duration getRequestTimeout() {
+    Duration getRequestTimeout() {
         return this.requestTimeout;
     }
 
     /**
      * Sets the request timeout (time to wait for response from network peer).
-     * The default is 60 seconds.
+     * The default is 5 seconds.
      *
      * @param requestTimeout the request timeout duration.
      * @return the {@link GatewayConnectionConfig}.
      */
-    public GatewayConnectionConfig setRequestTimeout(Duration requestTimeout) {
+    GatewayConnectionConfig setRequestTimeout(Duration requestTimeout) {
         this.requestTimeout = requestTimeout;
         return this;
     }
@@ -136,7 +136,6 @@ public final class GatewayConnectionConfig {
         String proxyAddress = proxy != null ? proxy.getAddress().toString() : null;
 
         return "GatewayConnectionConfig{" +
-            "requestTimeout=" + requestTimeout +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
             ", proxyType=" + proxyType +

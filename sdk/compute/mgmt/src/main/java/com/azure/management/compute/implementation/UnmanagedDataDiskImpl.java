@@ -12,7 +12,7 @@ import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
