@@ -97,7 +97,7 @@ class Changefeed {
      */
     private Mono<OffsetDateTime> populateLastConsumable() {
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
-        return DownloadUtils.downloadToString(this.client, METADATA_SEGMENT_PATH)
+        return DownloadUtils.downloadToByteArray(this.client, METADATA_SEGMENT_PATH)
             /* Parse JSON for last consumable. */
             .flatMap(json -> {
                 try {

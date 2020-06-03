@@ -66,7 +66,7 @@ class Segment {
     Flux<BlobChangefeedEventWrapper> getEvents() {
         /* Download JSON manifest file. */
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
-        return DownloadUtils.downloadToString(client, segmentPath)
+        return DownloadUtils.downloadToByteArray(client, segmentPath)
             .flatMap(this::parseJson)
             /* Parse the JSON for shards. */
             .flatMapMany(this::getShards)
@@ -74,7 +74,7 @@ class Segment {
             .concatMap(Shard::getEvents);
     }
 
-    private Mono<JsonNode> parseJson(String json) {
+    private Mono<JsonNode> parseJson(byte[] json) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode jsonNode = objectMapper.readTree(json);
@@ -89,7 +89,7 @@ class Segment {
         /* Determine if the segment is finalized.
            If the segment is not finalized, do not return events for this segment. */
         JsonNode status = node.get(STATUS);
-        if (!status.asText().equals(FINALIZED)) {
+        if (!FINALIZED.equals(status.asText())) {
             return Flux.empty();
         }
 
