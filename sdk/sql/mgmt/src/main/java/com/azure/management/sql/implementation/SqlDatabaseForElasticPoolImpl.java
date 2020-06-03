@@ -8,7 +8,7 @@ import com.azure.management.sql.RestorePoint;
 import com.azure.management.sql.SampleName;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlElasticPoolOperations;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 

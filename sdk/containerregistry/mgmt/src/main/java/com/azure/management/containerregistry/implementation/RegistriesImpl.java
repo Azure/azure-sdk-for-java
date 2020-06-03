@@ -18,7 +18,7 @@ import com.azure.management.containerregistry.models.RegistryInner;
 import com.azure.management.containerregistry.models.RegistryUsageListResultInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

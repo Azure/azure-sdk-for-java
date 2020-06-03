@@ -52,7 +52,7 @@ import com.azure.management.sql.models.ReplicationLinkInner;
 import com.azure.management.sql.models.RestorePointInner;
 import com.azure.management.sql.models.ServiceTierAdvisorInner;
 import com.azure.management.sql.models.TransparentDataEncryptionInner;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

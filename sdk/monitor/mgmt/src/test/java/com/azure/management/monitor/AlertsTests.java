@@ -10,7 +10,7 @@ import com.azure.management.compute.VirtualMachine;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;

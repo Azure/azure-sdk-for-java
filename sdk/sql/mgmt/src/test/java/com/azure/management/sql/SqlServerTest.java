@@ -9,7 +9,7 @@ import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.implementation.SqlServerManager;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 
 public abstract class SqlServerTest extends TestBase {
     protected ResourceManager resourceManager;
