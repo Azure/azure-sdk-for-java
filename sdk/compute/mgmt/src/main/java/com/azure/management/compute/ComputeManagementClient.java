@@ -423,24 +423,6 @@ public final class ComputeManagementClient extends AzureServiceClient {
         return this.containerServices;
     }
 
-    /** Initializes an instance of ComputeManagementClient client. */
-    ComputeManagementClient(String subscriptionId, String endpoint) {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE,
-            subscriptionId,
-            endpoint);
-    }
-
-    /**
-     * Initializes an instance of ComputeManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    ComputeManagementClient(HttpPipeline httpPipeline, String subscriptionId, String endpoint) {
-        this(httpPipeline, AzureEnvironment.AZURE, subscriptionId, endpoint);
-    }
-
     /**
      * Initializes an instance of ComputeManagementClient client.
      *
