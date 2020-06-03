@@ -30,8 +30,8 @@ public final class ParallelTransferOptions {
      * that each buffer uses when buffering is required and consequently amount of memory consumed by such methods may
      * be up to blockSize * numBuffers.
      * @param maxConcurrency For buffered upload only, the number of buffers is the maximum number of buffers this
-     * method should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
-     * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
+     * method should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger
+     * the number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
      * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
      * @param progressReceiver {@link ProgressReceiver}
      */
