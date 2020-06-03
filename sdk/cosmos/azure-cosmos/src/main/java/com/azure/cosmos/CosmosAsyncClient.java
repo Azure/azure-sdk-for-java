@@ -205,12 +205,12 @@ public final class CosmosAsyncClient implements Closeable {
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the created or
      * existing database.
      *
-     * @param databaseSettings CosmosDatabaseProperties.
+     * @param databaseProperties CosmosDatabaseProperties.
      * @return a {@link Mono} containing the cosmos database response with the created or existing database or
      * an error.
      */
-    Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
-        return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.getId()));
+    Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
+        return createDatabaseIfNotExistsInternal(getDatabase(databaseProperties.getId()));
     }
 
     /**
@@ -276,17 +276,17 @@ public final class CosmosAsyncClient implements Closeable {
      * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
      * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
-     * @param databaseSettings {@link CosmosDatabaseProperties}.
+     * @param databaseProperties {@link CosmosDatabaseProperties}.
      * @param options {@link CosmosDatabaseRequestOptions}.
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseProperties,
                                                        CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
         Database wrappedDatabase = new Database();
-        wrappedDatabase.setId(databaseSettings.getId());
+        wrappedDatabase.setId(databaseProperties.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
                    .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
                    .single();
@@ -298,11 +298,11 @@ public final class CosmosAsyncClient implements Closeable {
      * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
      * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
-     * @param databaseSettings {@link CosmosDatabaseProperties}.
+     * @param databaseProperties {@link CosmosDatabaseProperties}.
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings) {
-        return createDatabase(databaseSettings, new CosmosDatabaseRequestOptions());
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseProperties) {
+        return createDatabase(databaseProperties, new CosmosDatabaseRequestOptions());
     }
 
     /**
@@ -324,12 +324,12 @@ public final class CosmosAsyncClient implements Closeable {
      * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
      * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
-     * @param databaseSettings {@link CosmosDatabaseProperties}.
+     * @param databaseProperties {@link CosmosDatabaseProperties}.
      * @param throughputProperties the throughput properties for the database.
      * @param options {@link CosmosDatabaseRequestOptions}.
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseProperties,
                                                        ThroughputProperties throughputProperties,
                                                        CosmosDatabaseRequestOptions options) {
         if (options == null) {
@@ -337,7 +337,7 @@ public final class CosmosAsyncClient implements Closeable {
         }
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         Database wrappedDatabase = new Database();
-        wrappedDatabase.setId(databaseSettings.getId());
+        wrappedDatabase.setId(databaseProperties.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
                    .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
                    .single();
@@ -349,14 +349,14 @@ public final class CosmosAsyncClient implements Closeable {
      * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
      * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
-     * @param databaseSettings {@link CosmosDatabaseProperties}.
+     * @param databaseProperties {@link CosmosDatabaseProperties}.
      * @param throughputProperties the throughput properties for the database.
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, ThroughputProperties throughputProperties) {
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseProperties, ThroughputProperties throughputProperties) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
-        return createDatabase(databaseSettings, options);
+        return createDatabase(databaseProperties, options);
     }
 
     /**

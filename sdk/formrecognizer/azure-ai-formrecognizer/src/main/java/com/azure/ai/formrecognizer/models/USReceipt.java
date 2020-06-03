@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -67,12 +68,11 @@ public final class USReceipt extends RecognizedReceipt {
     /**
      * Recognized field transaction time.
      */
-    private final FormField<String> transactionTime;
+    private final FormField<LocalTime> transactionTime;
 
     /**
      * Constructs a USReceipt object.
-     *
-     * @param receiptLocale The locale information for the recognized Receipt.
+     *  @param receiptLocale The locale information for the recognized Receipt.
      * @param recognizedForm The recognized form.
      * @param receiptItems List of recognized field items.
      * @param receiptType Recognized receipt type information.
@@ -94,7 +94,7 @@ public final class USReceipt extends RecognizedReceipt {
         final FormField<Float> tax,
         final FormField<Float> tip, final FormField<Float> total,
         final FormField<LocalDate> transactionDate,
-        final FormField<String> transactionTime) {
+        final FormField<LocalTime> transactionTime) {
         super(receiptLocale, recognizedForm);
         this.receiptItems = receiptItems;
         this.receiptType = receiptType;
@@ -220,7 +220,7 @@ public final class USReceipt extends RecognizedReceipt {
      *
      * @return the transactionTime value.
      */
-    public FormField<String> getTransactionTime() {
+    public FormField<LocalTime> getTransactionTime() {
         return this.transactionTime;
     }
 }

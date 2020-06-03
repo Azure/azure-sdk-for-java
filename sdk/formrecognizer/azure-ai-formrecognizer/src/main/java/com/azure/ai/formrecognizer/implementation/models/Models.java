@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Models model.
- */
+/** The Models model. */
 @Fluent
 public final class Models {
     /*
@@ -33,7 +31,7 @@ public final class Models {
 
     /**
      * Get the summary property: Summary of all trained custom models.
-     * 
+     *
      * @return the summary value.
      */
     public ModelsSummary getSummary() {
@@ -42,7 +40,7 @@ public final class Models {
 
     /**
      * Set the summary property: Summary of all trained custom models.
-     * 
+     *
      * @param summary the summary value to set.
      * @return the Models object itself.
      */
@@ -53,7 +51,7 @@ public final class Models {
 
     /**
      * Get the modelList property: Collection of trained custom models.
-     * 
+     *
      * @return the modelList value.
      */
     public List<ModelInfo> getModelList() {
@@ -62,7 +60,7 @@ public final class Models {
 
     /**
      * Set the modelList property: Collection of trained custom models.
-     * 
+     *
      * @param modelList the modelList value to set.
      * @return the Models object itself.
      */
@@ -73,7 +71,7 @@ public final class Models {
 
     /**
      * Get the nextLink property: Link to the next page of custom models.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -82,7 +80,7 @@ public final class Models {
 
     /**
      * Set the nextLink property: Link to the next page of custom models.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the Models object itself.
      */

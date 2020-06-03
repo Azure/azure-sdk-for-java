@@ -8,12 +8,10 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -475,10 +473,6 @@ public class TestSuiteBase extends DocumentClientTest {
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath("/*");
-        List<Index> indexes = new ArrayList<>();
-        indexes.add(Index.range(DataType.STRING, -1));
-        indexes.add(Index.range(DataType.NUMBER, -1));
-        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 

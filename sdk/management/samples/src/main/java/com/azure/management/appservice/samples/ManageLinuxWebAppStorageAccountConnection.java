@@ -16,7 +16,7 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;

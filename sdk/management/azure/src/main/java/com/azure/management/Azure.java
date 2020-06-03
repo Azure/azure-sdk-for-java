@@ -89,13 +89,13 @@ import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.SqlServers;
 import com.azure.management.sql.implementation.SqlServerManager;
-import com.azure.management.storage.BlobContainers;
-import com.azure.management.storage.BlobServices;
-import com.azure.management.storage.ManagementPolicies;
-import com.azure.management.storage.StorageAccounts;
-import com.azure.management.storage.StorageSkus;
-import com.azure.management.storage.Usages;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.models.BlobContainers;
+import com.azure.management.storage.models.BlobServices;
+import com.azure.management.storage.models.ManagementPolicies;
+import com.azure.management.storage.models.StorageAccounts;
+import com.azure.management.storage.models.StorageSkus;
+import com.azure.management.storage.models.Usages;
+import com.azure.management.storage.StorageManager;
 
 import java.util.Objects;
 

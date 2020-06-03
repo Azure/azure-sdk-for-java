@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -172,23 +171,6 @@ public enum StopwordsList {
 
     StopwordsList(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a StopwordsList instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed StopwordsList object, or null if unable to parse.
-     */
-    @JsonCreator
-    public static StopwordsList fromString(String value) {
-        StopwordsList[] items = StopwordsList.values();
-        for (StopwordsList item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @JsonValue

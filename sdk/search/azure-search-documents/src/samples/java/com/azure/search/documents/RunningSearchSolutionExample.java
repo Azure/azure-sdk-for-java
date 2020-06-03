@@ -104,7 +104,7 @@ public class RunningSearchSolutionExample {
 
         // search=Resort&searchfields=HotelName&$count=true
         SearchOptions searchOptions = new SearchOptions()
-            .setIncludeTotalResultCount(true)
+            .setIncludeTotalCount(true)
             .setSearchFields("HotelName");
         SearchPagedIterable searchResults = client.search("Resort", searchOptions, new RequestOptions(), Context.NONE);
 

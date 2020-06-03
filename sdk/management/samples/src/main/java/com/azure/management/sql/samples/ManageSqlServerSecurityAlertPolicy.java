@@ -15,7 +15,7 @@ import com.azure.management.sql.SecurityAlertPolicyState;
 import com.azure.management.sql.SqlDatabaseStandardServiceObjective;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlServerSecurityAlertPolicy;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 
 /**
  * Azure SQL sample for managing SQL Server Security Alert Policy

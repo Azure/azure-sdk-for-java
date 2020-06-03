@@ -14,7 +14,7 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.StorageAccountSkuType;
+import com.azure.management.storage.models.StorageAccountSkuType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.apache.commons.lang.time.StopWatch;
 

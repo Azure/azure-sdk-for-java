@@ -7,7 +7,7 @@ import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Executable;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 
 /** An immutable client-side representation of an Azure SQL Database export operation request. */
 @Fluent

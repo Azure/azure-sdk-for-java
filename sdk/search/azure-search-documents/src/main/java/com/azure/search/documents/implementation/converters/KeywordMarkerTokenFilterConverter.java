@@ -32,7 +32,7 @@ public final class KeywordMarkerTokenFilterConverter {
         }
 
         Boolean ignoreCase = obj.isIgnoreCase();
-        keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
+        keywordMarkerTokenFilter.setCaseIgnored(ignoreCase);
         return keywordMarkerTokenFilter;
     }
 
@@ -55,7 +55,7 @@ public final class KeywordMarkerTokenFilterConverter {
             keywordMarkerTokenFilter.setKeywords(keywords);
         }
 
-        Boolean ignoreCase = obj.isIgnoreCase();
+        Boolean ignoreCase = obj.isCaseIgnored();
         keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
         return keywordMarkerTokenFilter;
     }
