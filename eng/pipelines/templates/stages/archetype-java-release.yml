@@ -3,6 +3,7 @@ parameters:
   ArtifactName: 'not-specified'
   TargetDocRepoOwner: ''
   TargetDocRepoName: ''
+  EnableIntegrationStage: true
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -248,7 +249,7 @@ stages:
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
 
-  - ${{if ne(parameters.PublishDevPackages, false)}}:
+  - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration
       dependsOn: Signing
       jobs:

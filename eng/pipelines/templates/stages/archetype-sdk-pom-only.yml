@@ -28,5 +28,5 @@ stages:
           ArtifactName: packages
           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-          PublishDevPackages: false
+          EnableIntegrationStage: false
 
