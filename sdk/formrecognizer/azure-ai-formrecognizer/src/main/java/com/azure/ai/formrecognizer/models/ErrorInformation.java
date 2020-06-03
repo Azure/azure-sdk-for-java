@@ -7,9 +7,13 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 /** The ErrorInformation model. */
 @Fluent
-public final class ErrorInformation {
+public final class ErrorInformation implements Serializable {
+    private static final long serialVersionUID = -5217525992938366429L;
+
     /*
      * The code property.
      */
