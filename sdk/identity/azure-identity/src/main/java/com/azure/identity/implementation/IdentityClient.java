@@ -30,12 +30,13 @@ import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -57,6 +58,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -72,6 +74,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -93,9 +96,13 @@ public class IdentityClient {
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
+    private ConfidentialClientApplication confidentialClientApplication;
     private PublicClientApplication publicClientApplication;
     private final String tenantId;
     private final String clientId;
+    private final String clientSecret;
+    private final String certificatePath;
+    private final String certificatePassword;
     private HttpPipelineAdapter httpPipelineAdapter;
 
     /**
@@ -103,9 +110,14 @@ public class IdentityClient {
      *
      * @param tenantId the tenant ID of the application.
      * @param clientId the client ID of the application.
+     * @param clientSecret the client secret of the application.
+     * @param certificatePath the path to the PKCS12 or PEM certificate of the application.
+     * @param certificatePassword the password protecting the PFX certificate.
      * @param options the options configuring the client.
      */
-    IdentityClient(String tenantId, String clientId, IdentityClientOptions options) {
+    IdentityClient(String tenantId, String clientId, String clientSecret,
+                   String certificatePath, String certificatePassword,
+                   IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
         }
@@ -114,7 +126,71 @@ public class IdentityClient {
         }
         this.tenantId = tenantId;
         this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.certificatePath = certificatePath;
+        this.certificatePassword = certificatePassword;
         this.options = options;
+    }
+
+    private ConfidentialClientApplication getConfidentialClientApplication() {
+        if (confidentialClientApplication != null) {
+            return confidentialClientApplication;
+        } else if (clientId == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "A non-null value for client ID must be provided for user authentication."));
+        }
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        IClientCredential credential;
+        if (clientSecret != null) {
+            credential = ClientCredentialFactory.createFromSecret(clientSecret);
+        } else if (certificatePath != null) {
+            try {
+                if (certificatePassword == null) {
+                    byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(certificatePath));
+                    credential = ClientCredentialFactory.createFromCertificate(
+                        CertificateUtil.privateKeyFromPem(pemCertificateBytes),
+                        CertificateUtil.publicKeyFromPem(pemCertificateBytes));
+                } else {
+                    credential = ClientCredentialFactory.createFromCertificate(
+                        new FileInputStream(certificatePath), certificatePassword);
+                }
+            } catch (IOException | GeneralSecurityException e) {
+                throw logger.logExceptionAsError(new RuntimeException(
+                    "Failed to parse the certificate for the credential: " + e.getMessage(), e));
+            }
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Must provide client secret or client certificate path"));
+        }
+        ConfidentialClientApplication.Builder applicationBuilder =
+            ConfidentialClientApplication.builder(clientId, credential);
+        try {
+            applicationBuilder = applicationBuilder.authority(authorityUrl);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsWarning(new IllegalStateException(e));
+        }
+
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            applicationBuilder.httpClient(httpPipelineAdapter);
+        } else {
+            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            applicationBuilder.executorService(options.getExecutorService());
+        }
+        if (options.isSharedTokenCacheEnabled()) {
+            try {
+                applicationBuilder.setTokenCacheAccessAspect(
+                    new PersistenceTokenCacheAccessAspect(options.getConfidentialClientPersistenceSettings()));
+            } catch (Throwable t) {
+                throw logger.logExceptionAsError(new ClientAuthenticationException(
+                    "Shared token cache is unavailable in this environment.", null, t));
+            }
+        }
+        this.confidentialClientApplication = applicationBuilder.build();
+        return this.confidentialClientApplication;
     }
 
     private PublicClientApplication getPublicClientApplication(boolean sharedTokenCacheCredential) {
@@ -123,57 +199,41 @@ public class IdentityClient {
         } else if (clientId == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "A non-null value for client ID must be provided for user authentication."));
-        } else {
-            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-            PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-            try {
-                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
-            } catch (MalformedURLException e) {
-                throw logger.logExceptionAsWarning(new IllegalStateException(e));
-            }
-
-            // If user supplies the pipeline, then it should override all other properties
-            // as they should directly be set on the pipeline.
-            HttpPipeline httpPipeline = options.getHttpPipeline();
-            if (httpPipeline != null) {
-                httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline);
-                publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
-            } else {
-                // If http client is set on the credential, then it should override the proxy options if any configured.
-                HttpClient httpClient = options.getHttpClient();
-                if (httpClient != null) {
-                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
-                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
-                } else if (options.getProxyOptions() != null) {
-                    publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-                } else {
-                    //Http Client is null, proxy options are not set, use the default client and build the pipeline.
-                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
-                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
-                }
-            }
-
-            if (options.getExecutorService() != null) {
-                publicClientApplicationBuilder.executorService(options.getExecutorService());
-            }
-            if (options.isSharedTokenCacheEnabled()) {
-                try {
-                    publicClientApplicationBuilder.setTokenCacheAccessAspect(
-                            new PersistenceTokenCacheAccessAspect(options.getPersistenceSettings()));
-                } catch (Throwable t) {
-                    String message = "Shared token cache is unavailable in this environment.";
-                    if (sharedTokenCacheCredential) {
-                        throw logger.logExceptionAsError(new CredentialUnavailableException(message, t));
-                    } else {
-                        throw logger.logExceptionAsError(new ClientAuthenticationException(message, null, t));
-                    }
-                }
-            }
-            this.publicClientApplication = publicClientApplicationBuilder.build();
-            return this.publicClientApplication;
         }
-    }
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
+        try {
+            publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsWarning(new IllegalStateException(e));
+        }
 
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+        } else {
+            publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            publicClientApplicationBuilder.executorService(options.getExecutorService());
+        }
+        if (options.isSharedTokenCacheEnabled()) {
+            try {
+                publicClientApplicationBuilder.setTokenCacheAccessAspect(
+                        new PersistenceTokenCacheAccessAspect(options.getPublicClientPersistenceSettings()));
+            } catch (Throwable t) {
+                String message = "Shared token cache is unavailable in this environment.";
+                if (sharedTokenCacheCredential) {
+                    throw logger.logExceptionAsError(new CredentialUnavailableException(message, t));
+                } else {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(message, null, t));
+                }
+            }
+        }
+        this.publicClientApplication = publicClientApplicationBuilder.build();
+        return this.publicClientApplication;
+    }
 
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
@@ -337,36 +397,13 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *
-     * @param clientSecret the client secret of the application
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequestContext request) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        try {
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
-                    .authority(authorityUrl);
-
-            // If http pipeline is available, then it should override the proxy options if any configured.
-            if (httpPipelineAdapter != null) {
-                applicationBuilder.httpClient(httpPipelineAdapter);
-            } else if (options.getProxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-
-            if (options.getExecutorService() != null) {
-                applicationBuilder.executorService(options.getExecutorService());
-            }
-
-            ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono.fromFuture(application.acquireToken(
-                ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                    .build()))
-                .map(ar -> new MsalToken(ar, options));
-        } catch (MalformedURLException e) {
-            return Mono.error(e);
-        }
+    public Mono<AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
+        return Mono.fromFuture(() -> getConfidentialClientApplication().acquireToken(
+                ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build()))
+            .map(ar -> new MsalToken(ar, options));
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
@@ -378,78 +415,6 @@ public class IdentityClient {
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         return new HttpPipelineBuilder().httpClient(httpClient)
                    .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
-    }
-
-    /**
-     * Asynchronously acquire a token from Active Directory with a PKCS12 certificate.
-     *
-     * @param pfxCertificatePath the path to the PKCS12 certificate of the application
-     * @param pfxCertificatePassword the password protecting the PFX certificate
-     * @param request the details of the token request
-     * @return a Publisher that emits an AccessToken
-     */
-    public Mono<AccessToken> authenticateWithPfxCertificate(String pfxCertificatePath, String pfxCertificatePassword,
-                                                            TokenRequestContext request) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        return Mono.fromCallable(() -> {
-            ConfidentialClientApplication.Builder applicationBuilder =
-                    ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
-                                new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
-                            .authority(authorityUrl);
-
-            // If http pipeline is available, then it should override the proxy options if any configured.
-            if (httpPipelineAdapter != null) {
-                applicationBuilder.httpClient(httpPipelineAdapter);
-            } else if (options.getProxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-
-            if (options.getExecutorService() != null) {
-                applicationBuilder.executorService(options.getExecutorService());
-            }
-
-            return applicationBuilder.build();
-        }).flatMap(application -> Mono.fromFuture(application.acquireToken(
-                ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
-        .map(ar -> new MsalToken(ar, options));
-    }
-
-    /**
-     * Asynchronously acquire a token from Active Directory with a PEM certificate.
-     *
-     * @param pemCertificatePath the path to the PEM certificate of the application
-     * @param request the details of the token request
-     * @return a Publisher that emits an AccessToken
-     */
-    public Mono<AccessToken> authenticateWithPemCertificate(String pemCertificatePath, TokenRequestContext request) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        try {
-            byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
-                            CertificateUtil.privateKeyFromPem(pemCertificateBytes),
-                            CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
-                        .authority(authorityUrl);
-
-            // If http pipeline is available, then it should override the proxy options if any configured.
-            if (httpPipelineAdapter != null) {
-                applicationBuilder.httpClient(httpPipelineAdapter);
-            } else if (options.getProxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-
-            if (options.getExecutorService() != null) {
-                applicationBuilder.executorService(options.getExecutorService());
-            }
-
-            ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono.fromFuture(application.acquireToken(
-                ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                    .build()))
-                .map(ar -> new MsalToken(ar, options));
-        } catch (IOException e) {
-            return Mono.error(e);
-        }
     }
 
     /**
@@ -476,8 +441,8 @@ public class IdentityClient {
      * @param account the account used to login to acquire the last token
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithMsalAccount(TokenRequestContext request, IAccount account) {
-        return Mono.defer(() -> Mono.fromFuture(() -> {
+    public Mono<MsalToken> authenticateWithPublicClientCache(TokenRequestContext request, IAccount account) {
+        return Mono.fromFuture(() -> {
             SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                 new HashSet<>(request.getScopes()));
             if (account != null) {
@@ -487,22 +452,41 @@ public class IdentityClient {
                 return getPublicClientApplication(false)
                     .acquireTokenSilently(parametersBuilder.build());
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
             }
         }).map(ar -> new MsalToken(ar, options))
-        .filter(t -> !t.isExpired())
-        .switchIfEmpty(Mono.fromFuture(() -> {
-            SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
-                new HashSet<>(request.getScopes())).forceRefresh(true);
-            if (account != null) {
-                forceParametersBuilder = forceParametersBuilder.account(account);
-            }
+            .filter(t -> !t.isExpired())
+            .switchIfEmpty(Mono.fromFuture(() -> {
+                SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
+                    new HashSet<>(request.getScopes())).forceRefresh(true);
+                if (account != null) {
+                    forceParametersBuilder = forceParametersBuilder.account(account);
+                }
+                try {
+                    return getPublicClientApplication(false).acquireTokenSilently(forceParametersBuilder.build());
+                } catch (MalformedURLException e) {
+                    return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
+                }
+            }).map(result -> new MsalToken(result, options)));
+    }
+
+    /**
+     * Asynchronously acquire a token from the currently logged in client.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request) {
+        return Mono.fromFuture(() -> {
+            SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
+                new HashSet<>(request.getScopes()));
             try {
-                return getPublicClientApplication(false).acquireTokenSilently(forceParametersBuilder.build());
+                return getConfidentialClientApplication().acquireTokenSilently(parametersBuilder.build());
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
             }
-        }).map(result -> new MsalToken(result, options))));
+        }).map(ar -> (AccessToken) new MsalToken(ar, options))
+            .filter(t -> !t.isExpired());
     }
 
     /**
@@ -653,7 +637,7 @@ public class IdentityClient {
                     }
 
 
-                    return authenticateWithMsalAccount(request, requestedAccount);
+                    return authenticateWithPublicClientCache(request, requestedAccount);
                 });
     }
 
@@ -875,6 +859,30 @@ public class IdentityClient {
             rt.exec("xdg-open " + url);
         } else {
             logger.error("Browser could not be opened - please open {} in a browser on this device.", url);
+        }
+    }
+
+    private CompletableFuture<IAuthenticationResult> getFailedCompletableFuture(Exception e) {
+        CompletableFuture<IAuthenticationResult> completableFuture = new CompletableFuture<>();
+        completableFuture.completeExceptionally(e);
+        return completableFuture;
+    }
+
+    private void initializeHttpPipelineAdapter() {
+        // If user supplies the pipeline, then it should override all other properties
+        // as they should directly be set on the pipeline.
+        HttpPipeline httpPipeline = options.getHttpPipeline();
+        if (httpPipeline != null) {
+            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline);
+        } else {
+            // If http client is set on the credential, then it should override the proxy options if any configured.
+            HttpClient httpClient = options.getHttpClient();
+            if (httpClient != null) {
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+            } else if (options.getProxyOptions() == null) {
+                //Http Client is null, proxy options are not set, use the default client and build the pipeline.
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-      
+
 trigger:
   branches:
     include:
@@ -54,6 +54,9 @@ stages:
           groupId: com.azure
           safeName: azurecosmos
       AdditionalModules:
+        - name: azure-cosmos-table
+          groupId: com.azure
+          safeName: azurecosmostable
         - name: azure-cosmos-examples
           groupId: com.azure
         - name: azure-cosmos-benchmark

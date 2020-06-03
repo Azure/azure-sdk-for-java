@@ -7,10 +7,9 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -46,7 +45,7 @@ public class CollectionQueryTest extends TestSuiteBase {
         String filterCollectionId = createdCollections.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterCollectionId);
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 2;
         CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
@@ -73,7 +72,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from c";
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 2;
         CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
@@ -98,7 +97,7 @@ public class CollectionQueryTest extends TestSuiteBase {
     public void queryCollections_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()

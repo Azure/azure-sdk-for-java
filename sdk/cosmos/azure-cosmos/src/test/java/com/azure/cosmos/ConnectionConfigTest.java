@@ -184,7 +184,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     }
 
     private void validateGatewayConfig(ConnectionPolicy connectionPolicy, GatewayConnectionConfig gatewayConnectionConfig) {
-        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), gatewayConnectionConfig.getIdleConnectionTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), gatewayConnectionConfig.getIdleConnectionTimeout()));
         assertThat(Objects.equals(connectionPolicy.getMaxConnectionPoolSize(), gatewayConnectionConfig.getMaxConnectionPoolSize()));
         assertThat(Objects.equals(connectionPolicy.getRequestTimeout(), gatewayConnectionConfig.getRequestTimeout()));
         assertThat(Objects.equals(connectionPolicy.getProxy(), gatewayConnectionConfig.getProxy()));
@@ -192,10 +192,9 @@ public class ConnectionConfigTest extends TestSuiteBase {
 
     private void validateDirectConfig(ConnectionPolicy connectionPolicy, DirectConnectionConfig directConnectionConfig) {
         assertThat(Objects.equals(connectionPolicy.getConnectionTimeout(), directConnectionConfig.getConnectionTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), directConnectionConfig.getIdleConnectionTimeout()));
         assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), directConnectionConfig.getIdleConnectionTimeout()));
         assertThat(Objects.equals(connectionPolicy.getIdleEndpointTimeout(), directConnectionConfig.getIdleEndpointTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getMaxChannelsPerEndpoint(), directConnectionConfig.getMaxConnectionsPerEndpoint()));
-        assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerChannel(), directConnectionConfig.getMaxRequestsPerConnection()));
+        assertThat(Objects.equals(connectionPolicy.getMaxConnectionsPerEndpoint(), directConnectionConfig.getMaxConnectionsPerEndpoint()));
+        assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerConnection(), directConnectionConfig.getMaxRequestsPerConnection()));
     }
 }

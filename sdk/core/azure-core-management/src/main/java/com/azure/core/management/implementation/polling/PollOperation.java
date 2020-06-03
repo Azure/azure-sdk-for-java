@@ -120,7 +120,7 @@ public final class PollOperation {
                     U result = deserialize(serializerAdapter, value, finalResultType);
                     return result != null ? Mono.just(result) : Mono.empty();
                 } else {
-                    return pipeline.send(new HttpRequest(HttpMethod.GET, finalResult.getResultUri()))
+                    return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, finalResult.getResultUri())))
                         .flatMap((Function<HttpResponse, Mono<String>>) response -> response.getBodyAsString())
                         .flatMap(body -> {
                             U result = deserialize(serializerAdapter, body, finalResultType);
@@ -173,7 +173,7 @@ public final class PollOperation {
      * @return a Mono emitting PollingState updated from the poll operation response
      */
     private static Mono<PollingState> doSinglePoll(HttpPipeline pipeline, PollingState pollingState) {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl()))
+        return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())))
             .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
                 .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body))
                 .switchIfEmpty(Mono.defer(() -> {
@@ -181,6 +181,16 @@ public final class PollOperation {
                         response.getHeaders(),
                         null));
                 })));
+    }
+
+    /**
+     * Decorate the request.
+     *
+     * @param httpRequest the HttpRequest
+     * @return the HttpRequest with decoration.
+     */
+    private static HttpRequest decorateRequest(HttpRequest httpRequest) {
+        return httpRequest.setHeader("Accept", "application/json");
     }
 
     /**

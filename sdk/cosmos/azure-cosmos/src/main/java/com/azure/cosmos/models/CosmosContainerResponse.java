@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
@@ -26,9 +27,9 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
             super.setProperties(null);
         } else {
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
-            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationStartTime = Instant.now();
             CosmosContainerProperties props =  new CosmosContainerProperties(bodyAsString);
-            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            Instant serializationEndTime = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,
                 serializationEndTime,

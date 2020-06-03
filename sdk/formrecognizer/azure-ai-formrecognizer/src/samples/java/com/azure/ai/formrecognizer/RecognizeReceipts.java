@@ -49,7 +49,6 @@ public class RecognizeReceipts {
             final RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             System.out.printf("----------- Recognized Receipt page %s -----------", i);
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(),
                 usReceipt.getMerchantName().getConfidence());
             System.out.printf("Merchant Address: %s, confidence: %.2f%n", usReceipt.getMerchantAddress().getName(),
@@ -58,6 +57,10 @@ public class RecognizeReceipts {
                 usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
             System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getName(),
                 usReceipt.getTotal().getConfidence());
+            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                usReceipt.getTransactionDate().getFieldValue(), usReceipt.getTransactionDate().getConfidence());
+            System.out.printf("Transaction Time: %s, confidence: %.2f%n",
+                usReceipt.getTransactionTime().getName(), usReceipt.getTransactionTime().getConfidence());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
                 if (receiptItem.getName() != null) {

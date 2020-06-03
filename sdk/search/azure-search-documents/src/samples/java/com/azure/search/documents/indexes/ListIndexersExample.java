@@ -35,8 +35,8 @@ public class ListIndexersExample {
     }
 
     private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient) {
-        PagedResponse<SearchIndexer> response = indexerAsyncClient.listIndexers("*",
-            new RequestOptions()).byPage().blockFirst();
+        PagedResponse<SearchIndexer> response = indexerAsyncClient.listIndexers(new RequestOptions(), null)
+            .byPage().blockFirst();
 
         if (response != null) {
             System.out.println(String.format("Response code: %s", response.getStatusCode()));

@@ -5,10 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -43,8 +41,8 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())
-                .exactlyContainsInAnyOrder(
-                        createdTriggers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(
+                        createdTriggers.stream().map(CosmosTriggerProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -71,11 +69,13 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     }
 
     public CosmosTriggerProperties createTriggers(CosmosAsyncContainer cosmosContainer) {
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
+
         return cosmosContainer.getScripts().createTrigger(trigger).block().getProperties();
     }
 }

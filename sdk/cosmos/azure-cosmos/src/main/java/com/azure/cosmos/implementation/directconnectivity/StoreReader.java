@@ -543,7 +543,7 @@ public class StoreReader {
                 }
         ).onErrorResume(t -> {
             Throwable unwrappedException = Exceptions.unwrap(t);
-            logger.debug("Exception {} is thrown while doing READ Primary", unwrappedException);
+            logger.debug("Exception is thrown while doing READ Primary", unwrappedException);
 
             Exception storeTaskException = Utils.as(unwrappedException, Exception.class);
             if (storeTaskException == null) {

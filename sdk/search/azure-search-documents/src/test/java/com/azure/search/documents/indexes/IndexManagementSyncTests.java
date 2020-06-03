@@ -19,8 +19,9 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -259,8 +260,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
         List<SearchIndex> result = actual.stream().collect(Collectors.toList());
 
         assertEquals(2, result.size());
-        assertEquals(index1.getName(), result.get(0).getName());
-        assertEquals(index2.getName(), result.get(1).getName());
+        assertObjectEquals(index1, result.get(0), true);
+        assertObjectEquals(index2, result.get(1), true);
     }
 
     @Test
@@ -275,26 +276,14 @@ public class IndexManagementSyncTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
-        PagedIterable<SearchIndex> selectedFieldListResponse = client.listIndexes("name",
-            generateRequestOptions(), Context.NONE);
-        List<SearchIndex> result = selectedFieldListResponse.stream().collect(Collectors.toList());
+        PagedIterable<String> selectedFieldListResponse = client.listIndexNames(generateRequestOptions(), Context.NONE);
+        List<String> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
-        result.forEach(res -> {
-            assertNotNull(res.getName());
-            assertNull(res.getFields());
-            assertNull(res.getDefaultScoringProfile());
-            assertNull(res.getCorsOptions());
-            assertNull(res.getScoringProfiles());
-            assertNull(res.getSuggesters());
-            assertNull(res.getAnalyzers());
-            assertNull(res.getTokenizers());
-            assertNull(res.getTokenFilters());
-            assertNull(res.getCharFilters());
-        });
+        result.forEach(Assertions::assertNotNull);
 
         assertEquals(2, result.size());
-        assertEquals(result.get(0).getName(), index1.getName());
-        assertEquals(result.get(1).getName(), index2.getName());
+        assertEquals(result.get(0), index1.getName());
+        assertEquals(result.get(1), index2.getName());
     }
 
     @Test
@@ -314,14 +303,14 @@ public class IndexManagementSyncTests extends SearchTestBase {
                 new SearchField()
                     .setName("HotelName")
                     .setType(SearchFieldDataType.STRING)
-                    .setSynonymMaps(Collections.singletonList(synonymMapName))
+                    .setSynonymMapNames(Collections.singletonList(synonymMapName))
             ));
 
         SearchIndex createdIndex = client.createIndex(index);
         indexesToDelete.add(createdIndex.getName());
 
-        List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
-        List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
+        List<String> actualSynonym = index.getFields().get(1).getSynonymMapNames();
+        List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMapNames();
         assertEquals(actualSynonym, expectedSynonym);
     }
 
@@ -338,14 +327,14 @@ public class IndexManagementSyncTests extends SearchTestBase {
         // Create an index
         SearchIndex index = createTestIndex();
         SearchField hotelNameField = getFieldByName(index, "HotelName");
-        hotelNameField.setSynonymMaps(Collections.singletonList(synonymMapName));
+        hotelNameField.setSynonymMapNames(Collections.singletonList(synonymMapName));
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
         // Update an existing index
         SearchIndex existingIndex = client.getIndex(index.getName());
         hotelNameField = getFieldByName(existingIndex, "HotelName");
-        hotelNameField.setSynonymMaps(Collections.emptyList());
+        hotelNameField.setSynonymMapNames(Collections.emptyList());
 
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, false, generateRequestOptions(), Context.NONE).getValue();
@@ -389,8 +378,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
         SearchField tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setHidden(true)
-            .setSearchAnalyzer(LexicalAnalyzerName.WHITESPACE)
-            .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
+            .setSearchAnalyzerName(LexicalAnalyzerName.WHITESPACE)
+            .setSynonymMapNames(Collections.singletonList(synonymMap.getName()));
 
         SearchField hotelWebSiteField = new SearchField()
             .setName("HotelWebsite")
@@ -423,7 +412,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
             new SearchField()
                 .setName("HotelRewards")
                 .setType(SearchFieldDataType.STRING)));
-        existingIndex.setSuggesters(Collections.singletonList(new Suggester()
+        existingIndex.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
             .setName("Suggestion")
             .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
         ));
@@ -441,7 +430,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
         SearchIndex existingIndex = client.getIndex(index.getName());
         String existingFieldName = "Category";
-        existingIndex.setSuggesters(Collections.singletonList(new Suggester()
+        existingIndex.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
             .setName("Suggestion")
             .setSourceFields(Collections.singletonList(existingFieldName))
         ));

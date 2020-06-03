@@ -18,16 +18,18 @@ import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormPageRange;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
-import com.azure.ai.formrecognizer.models.PageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -69,12 +71,12 @@ final class Transforms {
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
             extractedFormList = new ArrayList<>();
             for (DocumentResult documentResultItem : documentResults) {
-                PageRange pageRange;
+                FormPageRange formPageRange;
                 List<Integer> documentPageRange = documentResultItem.getPageRange();
                 if (documentPageRange.size() == 2) {
-                    pageRange = new PageRange(documentPageRange.get(0), documentPageRange.get(1));
+                    formPageRange = new FormPageRange(documentPageRange.get(0), documentPageRange.get(1));
                 } else {
-                    pageRange = new PageRange(1, 1);
+                    formPageRange = new FormPageRange(1, 1);
                 }
 
                 Map<String, FormField<?>> extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults,
@@ -82,8 +84,8 @@ final class Transforms {
                 extractedFormList.add(new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
-                    pageRange,
-                    formPages.subList(pageRange.getStartPageNumber() - 1, pageRange.getEndPageNumber())));
+                    formPageRange,
+                    formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber())));
             }
         } else {
             extractedFormList = new ArrayList<>();
@@ -100,7 +102,7 @@ final class Transforms {
                 extractedFormList.add(new RecognizedForm(
                     extractedFieldMap,
                     formType.toString(),
-                    new PageRange(pageNumber, pageNumber),
+                    new FormPageRange(pageNumber, pageNumber),
                     Collections.singletonList(formPages.get(index))));
             }));
         }
@@ -180,7 +182,7 @@ final class Transforms {
                             dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
                             dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
                             pageNumber, setReferenceElements(dataTableCell.getElements(), readResults, pageNumber)))
-                        .collect(Collectors.toList())))
+                        .collect(Collectors.toList()), pageNumber))
             .collect(Collectors.toList());
     }
 
@@ -231,7 +233,7 @@ final class Transforms {
                 } else {
                     FieldText labelText = new FieldText(key, null, null, null);
                     extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
-                        key, null, null, null));
+                        key, null, null));
                 }
             });
         }
@@ -257,36 +259,39 @@ final class Transforms {
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValuePhoneNumber(), valueText, pageNumber);
+                    key, fieldValue.getValuePhoneNumber(), valueText);
                 break;
             case STRING:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueString(), valueText, pageNumber);
+                    key, fieldValue.getValueString(), valueText);
                 break;
             case TIME:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueTime(), valueText, pageNumber);
+                    key, fieldValue.getValueTime() == null
+                    ? null
+                    : LocalTime.parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss")),
+                    valueText);
                 break;
             case DATE:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueDate(), valueText, pageNumber);
+                    key, fieldValue.getValueDate(), valueText);
                 break;
             case INTEGER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueInteger(), valueText, pageNumber);
+                    key, fieldValue.getValueInteger(), valueText);
                 break;
             case NUMBER:
                 value = new FormField<Number>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueNumber(), valueText, pageNumber);
+                    key, fieldValue.getValueNumber(), valueText);
                 break;
             case ARRAY:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), null, key,
-                    toFormFieldArray(fieldValue.getValueArray(), readResults), null, pageNumber);
+                    toFormFieldArray(fieldValue.getValueArray(), readResults), null);
                 break;
             case OBJECT:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText,
-                    pageNumber);
+                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText
+                );
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
@@ -360,8 +365,8 @@ final class Transforms {
             DimensionUnit.fromString(readResultItem.getUnit().toString()),
             readResultItem.getWidth(),
             perPageLineList,
-            perPageTableList
-        );
+            perPageTableList,
+            readResultItem.getPage());
     }
 
     /**
@@ -395,7 +400,7 @@ final class Transforms {
 
             String fieldName = "field-" + index;
             FormField<String> formField = new FormField<>(setDefaultConfidenceValue(keyValuePair.getConfidence()),
-                labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText, pageNumber);
+                labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText);
             formFieldMap.put(fieldName, formField);
         }));
         return formFieldMap;

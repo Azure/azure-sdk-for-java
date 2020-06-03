@@ -3,77 +3,64 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for EntityCategory.
  */
-public enum EntityCategory {
+public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     /**
-     * Enum value location.
+     * Static value location for EntityCategory.
      */
-    LOCATION("location"),
+    public static final EntityCategory LOCATION = fromString("location");
 
     /**
-     * Enum value organization.
+     * Static value organization for EntityCategory.
      */
-    ORGANIZATION("organization"),
+    public static final EntityCategory ORGANIZATION = fromString("organization");
 
     /**
-     * Enum value person.
+     * Static value person for EntityCategory.
      */
-    PERSON("person"),
+    public static final EntityCategory PERSON = fromString("person");
 
     /**
-     * Enum value quantity.
+     * Static value quantity for EntityCategory.
      */
-    QUANTITY("quantity"),
+    public static final EntityCategory QUANTITY = fromString("quantity");
 
     /**
-     * Enum value datetime.
+     * Static value datetime for EntityCategory.
      */
-    DATETIME("datetime"),
+    public static final EntityCategory DATETIME = fromString("datetime");
 
     /**
-     * Enum value url.
+     * Static value url for EntityCategory.
      */
-    URL("url"),
+    public static final EntityCategory URL = fromString("url");
 
     /**
-     * Enum value email.
+     * Static value email for EntityCategory.
      */
-    EMAIL("email");
+    public static final EntityCategory EMAIL = fromString("email");
 
     /**
-     * The actual serialized value for a EntityCategory instance.
-     */
-    private final String value;
-
-    EntityCategory(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a EntityCategory instance.
+     * Creates or finds a EntityCategory from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed EntityCategory object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding EntityCategory.
      */
     @JsonCreator
-    public static EntityCategory fromString(String value) {
-        EntityCategory[] items = EntityCategory.values();
-        for (EntityCategory item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static EntityCategory fromString(String name) {
+        return fromString(name, EntityCategory.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known EntityCategory values.
+     */
+    public static Collection<EntityCategory> values() {
+        return values(EntityCategory.class);
     }
 }

@@ -581,7 +581,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalResultCount(true),
+        SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalCount(true),
             generateRequestOptions(), Context.NONE);
         assertNotNull(results);
         Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
@@ -763,7 +763,7 @@ public class SearchSyncTests extends SearchTestBase {
         SearchIndex hotelsIndex = searchIndexClient.getIndex(client.getIndexName());
         hotelsIndex.getFields().stream()
             .filter(f -> fieldName.equals(f.getName()))
-            .findFirst().get().setSynonymMaps(Collections.singletonList(synonymMapToDelete));
+            .findFirst().get().setSynonymMapNames(Collections.singletonList(synonymMapToDelete));
 
         // Update the index with the SynonymMap
         searchIndexClient.createOrUpdateIndex(hotelsIndex);

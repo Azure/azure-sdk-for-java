@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -37,23 +36,6 @@ public enum ScoringFunctionInterpolation {
 
     ScoringFunctionInterpolation(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ScoringFunctionInterpolation instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ScoringFunctionInterpolation object, or null if unable to parse.
-     */
-    @JsonCreator
-    public static ScoringFunctionInterpolation fromString(String value) {
-        ScoringFunctionInterpolation[] items = ScoringFunctionInterpolation.values();
-        for (ScoringFunctionInterpolation item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @JsonValue

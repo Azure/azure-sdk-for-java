@@ -11,8 +11,8 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
-import com.azure.search.documents.indexes.models.Similarity;
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TokenFilter;
 
 import java.util.List;
@@ -38,9 +38,9 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getSuggesters() != null) {
-            List<Suggester> suggesters =
+            List<SearchSuggester> searchSuggesters =
                 obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
-            searchIndex.setSuggesters(suggesters);
+            searchIndex.setSearchSuggesters(searchSuggesters);
         }
 
         if (obj.getCharFilters() != null) {
@@ -71,8 +71,8 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getSimilarity() != null) {
-            Similarity similarity = SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarity(similarity);
+            SimilarityAlgorithm similarityAlgorithm = SimilarityConverter.map(obj.getSimilarity());
+            searchIndex.setSimilarityAlgorithm(similarityAlgorithm);
         }
 
         String name = obj.getName();
@@ -116,9 +116,9 @@ public final class SearchIndexConverter {
             searchIndex.setTokenizers(tokenizers);
         }
 
-        if (obj.getSuggesters() != null) {
+        if (obj.getSearchSuggesters() != null) {
             List<com.azure.search.documents.indexes.implementation.models.Suggester> suggesters =
-                obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
+                obj.getSearchSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
             searchIndex.setSuggesters(suggesters);
         }
 
@@ -149,9 +149,9 @@ public final class SearchIndexConverter {
             searchIndex.setAnalyzers(analyzers);
         }
 
-        if (obj.getSimilarity() != null) {
+        if (obj.getSimilarityAlgorithm() != null) {
             com.azure.search.documents.indexes.implementation.models.Similarity similarity =
-                SimilarityConverter.map(obj.getSimilarity());
+                SimilarityConverter.map(obj.getSimilarityAlgorithm());
             searchIndex.setSimilarity(similarity);
         }
 
