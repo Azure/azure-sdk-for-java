@@ -7,8 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.logging.ClientLogger;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +23,6 @@ import java.util.List;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    private final ClientLogger logger = new ClientLogger(ChainedTokenCredential.class);
     private final Deque<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
