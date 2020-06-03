@@ -3,15 +3,15 @@
 
 package com.azure.management.storage.implementation;
 
-import com.azure.management.storage.Action;
-import com.azure.management.storage.Bypass;
-import com.azure.management.storage.DefaultAction;
-import com.azure.management.storage.IpRule;
-import com.azure.management.storage.NetworkRuleSet;
-import com.azure.management.storage.StorageAccountCreateParameters;
-import com.azure.management.storage.StorageAccountUpdateParameters;
-import com.azure.management.storage.VirtualNetworkRule;
-import com.azure.management.storage.models.StorageAccountInner;
+import com.azure.management.storage.models.Action;
+import com.azure.management.storage.models.Bypass;
+import com.azure.management.storage.models.DefaultAction;
+import com.azure.management.storage.models.IpRule;
+import com.azure.management.storage.models.NetworkRuleSet;
+import com.azure.management.storage.models.StorageAccountCreateParameters;
+import com.azure.management.storage.models.StorageAccountUpdateParameters;
+import com.azure.management.storage.models.VirtualNetworkRule;
+import com.azure.management.storage.fluent.inner.StorageAccountInner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

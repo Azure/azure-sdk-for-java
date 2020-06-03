@@ -10,7 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-      
+
 trigger:
   branches:
     include:

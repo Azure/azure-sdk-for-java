@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -48,12 +48,13 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = FEED_TIMEOUT)
     public void readOffers() throws Exception {
 
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 2);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
 
         Flux<FeedResponse<Offer>> feedObservable = client.readOffers(options);
 
-        int expectedPageSize = (allOffers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+        int maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+        int expectedPageSize = (allOffers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(allOffers.size())

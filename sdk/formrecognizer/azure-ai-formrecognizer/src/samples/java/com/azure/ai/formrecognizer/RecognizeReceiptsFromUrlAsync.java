@@ -61,6 +61,10 @@ public class RecognizeReceiptsFromUrlAsync {
                     usReceipt.getMerchantPhoneNumber().getConfidence());
                 System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getName(),
                     usReceipt.getTotal().getConfidence());
+                System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                    usReceipt.getTransactionDate().getFieldValue(), usReceipt.getTransactionDate().getConfidence());
+                System.out.printf("Transaction Time: %s, confidence: %.2f%n",
+                    usReceipt.getTransactionTime().getName(), usReceipt.getTransactionTime().getConfidence());
                 System.out.printf("Receipt Items: %n");
                 usReceipt.getReceiptItems().forEach(receiptItem -> {
                     if (receiptItem.getName() != null) {

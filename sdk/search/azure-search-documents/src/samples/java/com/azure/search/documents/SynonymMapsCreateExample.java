@@ -66,7 +66,7 @@ public class SynonymMapsCreateExample {
                 new SearchField()
                     .setName("HotelName")
                     .setType(SearchFieldDataType.STRING)
-                    .setSynonymMaps(Collections.singletonList(synonymMapName))
+                    .setSynonymMapNames(Collections.singletonList(synonymMapName))
             ));
     }
 }

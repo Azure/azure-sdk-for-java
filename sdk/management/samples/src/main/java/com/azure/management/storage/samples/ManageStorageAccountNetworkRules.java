@@ -17,7 +17,7 @@ import com.azure.management.network.ServiceEndpointType;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 
 /**
  * Azure Storage sample for managing storage account network rules -

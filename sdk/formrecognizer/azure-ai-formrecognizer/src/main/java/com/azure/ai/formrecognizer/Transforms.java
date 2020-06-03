@@ -18,16 +18,18 @@ import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormPageRange;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
-import com.azure.ai.formrecognizer.models.FormPageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -265,7 +267,10 @@ final class Transforms {
                 break;
             case TIME:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueTime(), valueText);
+                    key, fieldValue.getValueTime() == null
+                    ? null
+                    : LocalTime.parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss")),
+                    valueText);
                 break;
             case DATE:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,

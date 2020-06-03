@@ -28,14 +28,14 @@ from form documents. It includes the following main functionalities:
 ```
 [//]: # ({x-version-update-end})
 
-### Create a Form Recognizer resource
-Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's 
+#### Create a Form Recognizer resource
+Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Form Recognizer access only,
 create a Form Recognizer resource.
 
-You can create either resource using the 
+You can create either resource using the
 
-**Option 1:** [Azure Portal][create_new_resource] 
+**Option 1:** [Azure Portal][create_new_resource]
 
 **Option 2:** [Azure CLI][azure_cli]
 
@@ -159,6 +159,7 @@ The [FormTrainingClient][form_training_sync_client] and
 A `CustomFormModel` is returned indicating the fields the model will extract, as well as the estimated accuracy for
 each field. See the [service's documents][fr_train_with_labels] for a more detailed explanation.
 - Managing models created in your account.
+- Copying a custom model from one Form Recognizer resource to another.
 
 Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
 
@@ -367,7 +368,8 @@ The async versions of the samples show asynchronous operations with Form Recogni
 * Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms] ([async][recognize_custom_forms_async])
 * Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model] ([async][train_unlabeled_model_async])
 * Train a model with labels: [TrainModelWithLabels][train_labeled_model] ([async][train_labeled_model_async])
-* Manage custom models: [ManageCustomModels][manage_custom_models] ([async][manage_custom_models_async])
+* Manage custom models: [ManageCustomModels][manage_custom_models] ([async_version][manage_custom_models_async])
+* Copy a model between Form Recognizer resources: [CopyModel][copy_model] ([async_version][copy_model_async])
 
 ### Additional documentation
 
@@ -431,6 +433,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabelsAsync.java
 [train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabels.java
 [train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabelsAsync.java
+[copy_model]: src/samples/java/com/azure/ai/formrecognizer/CopyModel.java
+[copy_model_async]: src/samples/java/com/azure/ai/formrecognizer/CopyModelAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_doc_train_unlabeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [service_doc_train_labeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels

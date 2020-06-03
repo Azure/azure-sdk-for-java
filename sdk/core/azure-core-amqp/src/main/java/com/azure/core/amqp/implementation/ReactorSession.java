@@ -266,7 +266,7 @@ public class ReactorSession implements AmqpSession {
 
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+                "Cannot create receive link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
         }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);

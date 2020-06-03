@@ -31,14 +31,34 @@ public final class NGramTokenFilterConverter {
     }
 
     /**
-     * Maps from {@link NGramTokenFilter} to {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilter}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2} to {@link NGramTokenFilter}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.NGramTokenFilter map(NGramTokenFilter obj) {
+    public static NGramTokenFilter map(com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.NGramTokenFilter nGramTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.NGramTokenFilter();
+        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
+
+        String name = obj.getName();
+        nGramTokenFilter.setName(name);
+
+        Integer maxGram = obj.getMaxGram();
+        nGramTokenFilter.setMaxGram(maxGram);
+
+        Integer minGram = obj.getMinGram();
+        nGramTokenFilter.setMinGram(minGram);
+        return nGramTokenFilter;
+    }
+
+    /**
+     * Maps from {@link NGramTokenFilter} to {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2}.
+     */
+    public static com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 map(NGramTokenFilter obj) {
+        if (obj == null) {
+            return null;
+        }
+        com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 nGramTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2();
 
         String name = obj.getName();
         nGramTokenFilter.setName(name);

@@ -12,7 +12,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -57,7 +57,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from c where c.prop = 99";
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 5;
 
         options.setQueryMetricsEnabled(queryMetricsEnabled);
@@ -86,7 +86,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         List<SqlParameter> params = Lists.newArrayList(new SqlParameter("@param1", 3), new SqlParameter("@param2", 4));
         SqlQuerySpec sqs = new SqlQuerySpec(query, params);
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 5;
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
@@ -112,7 +112,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop = @param";
         SqlQuerySpec sqs = new SqlQuerySpec(query, Collections.singletonList(new SqlParameter("@param", 3)));
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 5;
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
@@ -137,7 +137,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void queryDocuments_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -154,7 +154,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void queryDocumentsWithPageSize() throws Exception {
 
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 3;
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -180,7 +180,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void queryOrderBy() throws Exception {
 
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         int maxItemCount = 3;
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -204,7 +204,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT * 1000)
     public void continuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         int maxItemCount = 3;
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -244,7 +244,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 

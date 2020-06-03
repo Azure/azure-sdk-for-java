@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Deque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -408,7 +408,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         anotherPromise.addListener((FutureListener<Void>) future -> {
 
-            this.ensureValidRunState();
+            this.ensureInEventLoop();
 
             if (this.isClosed()) {
                 // We have no choice but to close the channel
@@ -476,7 +476,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void acquireChannel(final Promise<Channel> promise) {
 
-        this.ensureValidRunState();
+        this.ensureInEventLoop();
 
         if (this.isClosed()) {
             promise.setFailure(POOL_CLOSED_ON_ACQUIRE);
@@ -561,11 +561,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void addTaskToPendingAcquisitionQueue(Promise<Channel> promise) {
 
-        this.ensureValidRunState();
+        this.ensureInEventLoop();
 
         if (logger.isDebugEnabled()) {
             logger.debug("{}, {}, {}, {}, {}, {}",
-                OffsetDateTime.now(),
+                Instant.now(),
                 this.remoteAddress(),
                 this.channels(),
                 this.channelsAcquired(),
@@ -601,7 +601,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void closeChannel(final Channel channel) {
 
-        this.ensureValidRunState();
+        this.ensureInEventLoop();
 
         this.acquiredChannels.remove(channel);
         channel.attr(POOL_KEY).set(null);
@@ -609,7 +609,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     private void closeChannelAndFail(final Channel channel, final Throwable cause, final Promise<?> promise) {
-        this.ensureValidRunState();
+        this.ensureInEventLoop();
         this.closeChannel(channel);
         promise.tryFailure(cause);
     }
@@ -764,29 +764,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     /**
-     * Checks that the state of this {@link RntbdClientChannelPool pool} is a valid run state and returns the {@link
-     * #availableChannels} available channel count.
-     * <p>
-     * This method reports an issue to be addressed if the state is invalid. It does not throw.
-     */
-    private void ensureValidRunState() {
-
-        this.ensureInEventLoop();
-// TODO (DANOBLE) remove or restore this code:
-//        final int channelsAvailable = this.channelsAvailable();
-//        final int channelsAcquired = this.channelsAcquired();
-//        final int channelCount = this.channels();
-//
-//        reportIssueUnless(logger, 0 <= channelCount && channelCount <= this.maxChannels, this,
-//            "expected channelCount in range [0, {}], not {}",
-//            this.maxChannels,
-//            channelCount,
-//            channelsAcquired);
-//
-//        return channelsAvailable;
-    }
-
-    /**
      * {@code true} if the given {@link Channel channel} is serviceable; {@code false} otherwise.
      * <p>
      * A serviceable channel is one that is open, has an {@link RntbdContext RNTBD context}, and has fewer than {@link
@@ -937,7 +914,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @return {@code true}, if the {@link Channel} could be added to internal storage; otherwise {@code false}.
      */
     private boolean offerChannel(final Channel channel) {
-        this.ensureValidRunState();
+        this.ensureInEventLoop();
         return this.availableChannels.offer(channel);
     }
 
@@ -995,7 +972,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * closed.
      */
     private void releaseAndOfferChannel(final Channel channel, final Promise<Void> promise) {
-        this.ensureValidRunState();
+        this.ensureInEventLoop();
         try {
             if (this.offerChannel(channel)) {
                 this.poolHandler.channelReleased(channel);
@@ -1106,7 +1083,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void runTasksInPendingAcquisitionQueue() {
 
-        this.ensureValidRunState();
+        this.ensureInEventLoop();
         int channelsAvailable = this.availableChannels.size();
 
         while (--channelsAvailable >= 0) {

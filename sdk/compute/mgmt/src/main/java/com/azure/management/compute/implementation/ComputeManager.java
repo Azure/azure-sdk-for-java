@@ -28,7 +28,7 @@ import com.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 
 /** Entry point to Azure compute resource management. */
 public final class ComputeManager extends Manager<ComputeManager, ComputeManagementClientImpl> {

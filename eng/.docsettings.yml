@@ -142,8 +142,9 @@ known_content_issues:
   - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
-  - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
+  - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
+  - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

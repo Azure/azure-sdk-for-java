@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.models.FormFieldsReport;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
@@ -33,6 +34,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,6 +48,21 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
+    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID: cae9d062-71e0-44a3-8630-70b32ae94f4d";
+    static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
+    static final String EXPECTED_INVALID_STATUS_ERROR_INFORMATION = "Unable to list blobs on the Azure blob storage account.";
+
+    private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
+    private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
+
+    void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
+        CopyAuthorization actualResult) {
+        assertNotNull(actualResult.getModelId());
+        assertNotNull(actualResult.getAccessToken());
+        assertNotNull(actualResult.getExpiresOn());
+        assertEquals(expectedResourceRegion, actualResult.getResourceRegion());
+        assertEquals(expectedResourceId, actualResult.getResourceId());
+    }
 
     FormTrainingClientBuilder getFormTrainingClientBuilder(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
@@ -92,9 +109,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    static void validateAccountProperties(AccountProperties expectedAccountProperties,
-        AccountProperties actualAccountProperties) {
-        assertEquals(expectedAccountProperties.getCustomModelLimit(), actualAccountProperties.getCustomModelLimit());
+    static void validateAccountProperties(AccountProperties actualAccountProperties) {
+        assertNotNull(actualAccountProperties.getCustomModelLimit());
         assertNotNull(actualAccountProperties.getCustomModelCount());
     }
 
@@ -199,6 +215,18 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
+    // @Test
+    // abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    //
+    // @Test
+    // abstract void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    //
+    // @Test
+    // abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingInvalidModelStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
@@ -209,6 +237,53 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getTrainingSasUri(), false);
+    }
+
+    void beginCopyRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(getTargetResourceId(), getTargetResourceRegion());
+    }
+
+    void beginCopyInvalidRegionRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(getTargetResourceId(), "RESOURCE_REGION");
+    }
+
+    void beginCopyIncorrectRegionRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(getTargetResourceId(), "westus2");
+    }
+
+    void beginTrainingInvalidModelStatusRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(INVALID_RECEIPT_URL, false);
+    }
+
+    /**
+     * Get the string of API key value based on what running mode is on.
+     *
+     * @return the API key string
+     */
+    String getApiKey() {
+        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
+    }
+
+    /**
+     * Get the target resource Identifier based on the test running mode.
+     *
+     * @return the target resource Identifier
+     */
+    String getTargetResourceId() {
+        return interceptorManager.isPlaybackMode() ? "resourceIdInPlayback"
+            : Configuration.getGlobalConfiguration().get(RESOURCE_ID);
+    }
+
+
+    /**
+     * Get the target resource region based on the test running mode.
+     *
+     * @return the target resource region
+     */
+    String getTargetResourceRegion() {
+        return interceptorManager.isPlaybackMode() ? "resourceRegionInPlayback"
+            : Configuration.getGlobalConfiguration().get(RESOURCE_REGION);
     }
 
     String getEndpoint() {

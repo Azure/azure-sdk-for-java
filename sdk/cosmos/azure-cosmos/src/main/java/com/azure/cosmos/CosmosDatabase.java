@@ -10,7 +10,7 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -58,7 +58,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}.
      */
     public CosmosDatabaseResponse read() {
-        return client.mapDatabaseResponseAndBlock((databaseWrapper.read()));
+        return client.blockDatabaseResponse((databaseWrapper.read()));
     }
 
     /**
@@ -68,7 +68,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}
      */
     public CosmosDatabaseResponse read(CosmosDatabaseRequestOptions options) {
-        return client.mapDatabaseResponseAndBlock(databaseWrapper.read(options));
+        return client.blockDatabaseResponse(databaseWrapper.read(options));
     }
 
     /**
@@ -77,7 +77,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}.
      */
     public CosmosDatabaseResponse delete() {
-        return client.mapDatabaseResponseAndBlock(databaseWrapper.delete());
+        return client.blockDatabaseResponse(databaseWrapper.delete());
     }
 
     /**
@@ -87,7 +87,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}.
      */
     public CosmosDatabaseResponse delete(CosmosDatabaseRequestOptions options) {
-        return client.mapDatabaseResponseAndBlock(databaseWrapper.delete(options));
+        return client.blockDatabaseResponse(databaseWrapper.delete(options));
     }
 
     /* Cosmos container operations */
@@ -99,7 +99,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosContainerResponse} with the created container.
      */
     public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties));
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties));
     }
 
     /**
@@ -112,7 +112,7 @@ public class CosmosDatabase {
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, throughputProperties));
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties, throughputProperties));
     }
 
     /**
@@ -125,7 +125,7 @@ public class CosmosDatabase {
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, options));
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties, options));
     }
 
     /**
@@ -140,7 +140,7 @@ public class CosmosDatabase {
         CosmosContainerProperties containerProperties,
         int throughput,
         CosmosContainerRequestOptions options) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties,
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties,
                                                                                  throughput,
                                                                                  options));
     }
@@ -157,7 +157,7 @@ public class CosmosDatabase {
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties,
         CosmosContainerRequestOptions options) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties,
+        return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties,
                                                                                  throughputProperties,
                                                                                  options));
     }
@@ -170,7 +170,7 @@ public class CosmosDatabase {
      * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainer(String id, String partitionKeyPath) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath));
+        return this.blockContainerResponse(databaseWrapper.createContainer(id, partitionKeyPath));
     }
 
     /**
@@ -182,7 +182,7 @@ public class CosmosDatabase {
      * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath, throughputProperties));
+        return this.blockContainerResponse(databaseWrapper.createContainer(id, partitionKeyPath, throughputProperties));
     }
 
     /**
@@ -192,7 +192,7 @@ public class CosmosDatabase {
      * @return the cosmos container response.
      */
     public CosmosContainerResponse createContainerIfNotExists(CosmosContainerProperties containerProperties) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties));
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(containerProperties));
     }
 
     /**
@@ -205,7 +205,7 @@ public class CosmosDatabase {
     CosmosContainerResponse createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
         int throughput) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties,
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(containerProperties,
             throughput));
     }
 
@@ -222,7 +222,7 @@ public class CosmosDatabase {
     public CosmosContainerResponse createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties,
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(containerProperties,
             throughputProperties));
     }
 
@@ -236,7 +236,7 @@ public class CosmosDatabase {
     public CosmosContainerResponse createContainerIfNotExists(
         String id,
         String partitionKeyPath) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id, partitionKeyPath));
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(id, partitionKeyPath));
     }
 
     /**
@@ -253,7 +253,7 @@ public class CosmosDatabase {
     CosmosContainerResponse createContainerIfNotExists(
         String id, String partitionKeyPath,
         int throughput) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id,
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(id,
             partitionKeyPath,
             throughput));
     }
@@ -272,18 +272,18 @@ public class CosmosDatabase {
     public CosmosContainerResponse createContainerIfNotExists(
         String id, String partitionKeyPath,
         ThroughputProperties throughputProperties) {
-        return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id,
+        return this.blockContainerResponse(databaseWrapper.createContainerIfNotExists(id,
             partitionKeyPath,
             throughputProperties));
     }
 
     /**
-     * Map container response and block cosmos container response.
+     * Block cosmos container response.
      *
      * @param containerMono the container mono.
      * @return the cosmos container response.
      */
-    CosmosContainerResponse mapContainerResponseAndBlock(Mono<CosmosContainerResponse> containerMono) {
+    CosmosContainerResponse blockContainerResponse(Mono<CosmosContainerResponse> containerMono) {
         try {
             return containerMono.block();
         } catch (Exception ex) {
@@ -302,7 +302,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    CosmosPagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+    CosmosPagedIterable<CosmosContainerProperties> readAllContainers(QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllContainers(options));
     }
 
@@ -332,7 +332,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(query, options));
     }
 
@@ -355,7 +355,7 @@ public class CosmosDatabase {
      */
     public CosmosPagedIterable<CosmosContainerProperties> queryContainers(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryContainers(querySpec, options));
     }
 
@@ -380,20 +380,20 @@ public class CosmosDatabase {
      *
      *
      * @param userProperties the settings.
-     * @return the cosmos sync user response.
+     * @return the cosmos user response.
      */
     public CosmosUserResponse createUser(CosmosUserProperties userProperties) {
-        return mapUserResponseAndBlock(databaseWrapper.createUser(userProperties));
+        return blockUserResponse(databaseWrapper.createUser(userProperties));
     }
 
     /**
      * Upserts a Cosmos user.
      *
      * @param userProperties the settings.
-     * @return the cosmos sync user response.
+     * @return the cosmos user response.
      */
     public CosmosUserResponse upsertUser(CosmosUserProperties userProperties) {
-        return mapUserResponseAndBlock(databaseWrapper.upsertUser(userProperties));
+        return blockUserResponse(databaseWrapper.upsertUser(userProperties));
     }
 
     /**
@@ -411,7 +411,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    CosmosPagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
+    CosmosPagedIterable<CosmosUserProperties> readAllUsers(QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.readAllUsers(options));
     }
 
@@ -432,7 +432,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(query, options));
     }
 
@@ -453,7 +453,7 @@ public class CosmosDatabase {
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
-    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, QueryRequestOptions options) {
         return getCosmosPagedIterable(databaseWrapper.queryUsers(querySpec, options));
     }
 
@@ -469,7 +469,7 @@ public class CosmosDatabase {
         return new CosmosUser(databaseWrapper.getUser(id), this, id);
     }
 
-    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosUserResponse> containerMono) {
+    CosmosUserResponse blockUserResponse(Mono<CosmosUserResponse> containerMono) {
         try {
             return containerMono.block();
         } catch (Exception ex) {

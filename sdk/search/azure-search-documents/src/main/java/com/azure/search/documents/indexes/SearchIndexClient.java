@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.indexes.models.AnalyzeRequest;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.ServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.RequestOptions;
 
 /**
  * Synchronous Client to manage and query indexes, as well as manage Synonym Map, on a Cognitive Search service
@@ -35,15 +36,6 @@ public final class SearchIndexClient {
      */
     HttpPipeline getHttpPipeline() {
         return this.asyncClient.getHttpPipeline();
-    }
-
-    /**
-     * Gets search service version.
-     *
-     * @return the search service version value.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.asyncClient.getServiceVersion();
     }
 
     /**
@@ -72,6 +64,7 @@ public final class SearchIndexClient {
      * @param index definition of the index to create
      * @return the created Index.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex createIndex(SearchIndex index) {
         return createIndexWithResponse(index, null, Context.NONE).getValue();
     }
@@ -85,6 +78,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Index.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions,
         Context context) {
         return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
@@ -96,6 +90,7 @@ public final class SearchIndexClient {
      * @param indexName the name of the index to retrieve
      * @return the Index.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex getIndex(String indexName) {
         return getIndexWithResponse(indexName, null, Context.NONE).getValue();
     }
@@ -109,6 +104,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> getIndexWithResponse(String indexName, RequestOptions requestOptions,
         Context context) {
         return asyncClient.getIndexWithResponse(indexName, requestOptions, context).block();
@@ -120,6 +116,7 @@ public final class SearchIndexClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public GetIndexStatisticsResult getIndexStatistics(String indexName) {
         return getIndexStatisticsWithResponse(indexName, null, Context.NONE).getValue();
     }
@@ -133,6 +130,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the index statistics result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String indexName,
         RequestOptions requestOptions, Context context) {
         return asyncClient.getIndexStatisticsWithResponse(indexName, requestOptions, context).block();
@@ -143,6 +141,7 @@ public final class SearchIndexClient {
      *
      * @return the list of indexes.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndex> listIndexes() {
         return listIndexes(null, Context.NONE);
     }
@@ -155,6 +154,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndex> listIndexes(RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listIndexes(requestOptions, context));
     }
@@ -164,6 +164,7 @@ public final class SearchIndexClient {
      *
      * @return the list of index names.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexNames() {
         return listIndexNames(null, Context.NONE);
     }
@@ -176,6 +177,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of index names.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexNames(RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listIndexNames(requestOptions, context));
     }
@@ -186,6 +188,7 @@ public final class SearchIndexClient {
      * @param index the definition of the index to create or update
      * @return the index that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex createOrUpdateIndex(SearchIndex index) {
         return createOrUpdateIndexWithResponse(index, false, false, null, Context.NONE).getValue();
     }
@@ -205,6 +208,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions,
@@ -216,6 +220,7 @@ public final class SearchIndexClient {
      *
      * @param indexName the name of the index to delete
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
         deleteIndexWithResponse(new SearchIndex().setName(indexName), false, null, Context.NONE);
     }
@@ -231,6 +236,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? index.getETag() : null;
@@ -244,6 +250,7 @@ public final class SearchIndexClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
         return analyzeText(indexName, analyzeRequest, null, Context.NONE);
     }
@@ -258,6 +265,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
         RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeRequest, requestOptions, context));
@@ -269,6 +277,7 @@ public final class SearchIndexClient {
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap createSynonymMap(SynonymMap synonymMap) {
         return createSynonymMapWithResponse(synonymMap, null, Context.NONE).getValue();
     }
@@ -282,6 +291,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created SynonymMap.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
         Context context) {
         return asyncClient.createSynonymMapWithResponse(synonymMap, requestOptions, context).block();
@@ -293,6 +303,7 @@ public final class SearchIndexClient {
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap getSynonymMap(String synonymMapName) {
         return getSynonymMapWithResponse(synonymMapName, null, Context.NONE).getValue();
     }
@@ -306,6 +317,7 @@ public final class SearchIndexClient {
      * @param context a context that is passed through the HTTP pipeline during the service call
      * @return a response containing the SynonymMap.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions,
         Context context) {
         return asyncClient.getSynonymMapWithResponse(synonymMapName, requestOptions, context).block();
@@ -316,6 +328,7 @@ public final class SearchIndexClient {
      *
      * @return the list of synonym maps.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps() {
         return listSynonymMaps(null, Context.NONE);
     }
@@ -328,6 +341,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps(RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listSynonymMaps(requestOptions, context));
     }
@@ -337,6 +351,7 @@ public final class SearchIndexClient {
      *
      * @return the list of synonym maps.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSynonymMapNames() {
         return listSynonymMapNames(null, Context.NONE);
     }
@@ -349,6 +364,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSynonymMapNames(RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listSynonymMapNames(requestOptions, context));
     }
@@ -359,6 +375,7 @@ public final class SearchIndexClient {
      * @param synonymMap the definition of the synonym map to create or update
      * @return the synonym map that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
         return createOrUpdateSynonymMapWithResponse(synonymMap, false, null, Context.NONE).getValue();
     }
@@ -374,6 +391,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the synonym map that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context)
@@ -385,6 +403,7 @@ public final class SearchIndexClient {
      *
      * @param synonymMapName the name of the synonym map to delete
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
         deleteSynonymMapWithResponse(new SynonymMap().setName(synonymMapName), false, null, Context.NONE);
     }
@@ -400,6 +419,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
@@ -412,6 +432,7 @@ public final class SearchIndexClient {
      *
      * @return the search service statistics result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceStatistics getServiceStatistics() {
         return getServiceStatisticsWithResponse(null, Context.NONE).getValue();
     }
@@ -424,6 +445,7 @@ public final class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the search service statistics result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
         Context context) {
         return asyncClient.getServiceStatisticsWithResponse(requestOptions, context).block();
