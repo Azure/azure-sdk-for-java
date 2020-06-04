@@ -153,6 +153,7 @@ public final class ManageNetworkWatcher {
             StorageAccount storageAccount = azure.storageAccounts().define(saName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
+                    .withGeneralPurposeAccountKindV2()
                     .create();
 
             // Start a packet capture
