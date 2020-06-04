@@ -4,7 +4,6 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.keyvault.implementation.KeyVaultManager;
 import com.azure.management.network.LoadBalancer;

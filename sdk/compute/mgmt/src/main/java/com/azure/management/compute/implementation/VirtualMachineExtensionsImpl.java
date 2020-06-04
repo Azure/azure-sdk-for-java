@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineExtension;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
-import com.azure.management.compute.models.VirtualMachineExtensionsInner;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineExtension;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.management.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ class VirtualMachineExtensionsImpl
         VirtualMachineExtensionInner,
         VirtualMachineImpl,
         VirtualMachine> {
-    private final VirtualMachineExtensionsInner client;
+    private final VirtualMachineExtensionsClient client;
 
     /**
      * Creates new VirtualMachineExtensionsImpl.
@@ -32,7 +32,7 @@ class VirtualMachineExtensionsImpl
      * @param client the client to perform REST calls on extensions
      * @param parent the parent virtual machine of the extensions
      */
-    VirtualMachineExtensionsImpl(VirtualMachineExtensionsInner client, VirtualMachineImpl parent) {
+    VirtualMachineExtensionsImpl(VirtualMachineExtensionsClient client, VirtualMachineImpl parent) {
         super(parent, parent.taskGroup(), "VirtualMachineExtension");
         this.client = client;
         this.cacheCollection();

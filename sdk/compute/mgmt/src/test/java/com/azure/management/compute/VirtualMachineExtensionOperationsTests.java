@@ -5,6 +5,10 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineExtension;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.storage.models.StorageAccount;

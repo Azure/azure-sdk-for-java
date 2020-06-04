@@ -4,6 +4,13 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.ProximityPlacementGroupType;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.LoadBalancerPublicFrontend;

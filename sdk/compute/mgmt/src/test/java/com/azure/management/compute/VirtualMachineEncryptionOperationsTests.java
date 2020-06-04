@@ -4,6 +4,11 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DiskVolumeEncryptionMonitor;
+import com.azure.management.compute.models.EncryptionStatus;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;

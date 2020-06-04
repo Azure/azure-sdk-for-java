@@ -4,8 +4,8 @@ package com.azure.management;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayBackend;
 import com.azure.management.network.ApplicationGatewayBackendHealth;

@@ -4,7 +4,10 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.management.compute.models.VirtualMachineScaleSetInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.Network;

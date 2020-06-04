@@ -3,20 +3,21 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.compute.HardwareProfile;
-import com.azure.management.compute.NetworkProfile;
-import com.azure.management.compute.OSDisk;
-import com.azure.management.compute.OSProfile;
-import com.azure.management.compute.RunCommandInput;
-import com.azure.management.compute.RunCommandInputParameter;
-import com.azure.management.compute.RunCommandResult;
-import com.azure.management.compute.StorageProfile;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineCaptureParameters;
-import com.azure.management.compute.VirtualMachineSizes;
-import com.azure.management.compute.VirtualMachines;
-import com.azure.management.compute.models.VirtualMachineInner;
-import com.azure.management.compute.models.VirtualMachinesInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.HardwareProfile;
+import com.azure.management.compute.models.NetworkProfile;
+import com.azure.management.compute.models.OSDisk;
+import com.azure.management.compute.models.OSProfile;
+import com.azure.management.compute.models.RunCommandInput;
+import com.azure.management.compute.models.RunCommandInputParameter;
+import com.azure.management.compute.models.RunCommandResult;
+import com.azure.management.compute.models.StorageProfile;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineCaptureParameters;
+import com.azure.management.compute.models.VirtualMachineSizes;
+import com.azure.management.compute.models.VirtualMachines;
+import com.azure.management.compute.fluent.inner.VirtualMachineInner;
+import com.azure.management.compute.fluent.VirtualMachinesClient;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -29,9 +30,9 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachines. */
-class VirtualMachinesImpl
+public class VirtualMachinesImpl
     extends TopLevelModifiableResourcesImpl<
-        VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesInner, ComputeManager>
+        VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesClient, ComputeManager>
     implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -39,16 +40,16 @@ class VirtualMachinesImpl
     private final VirtualMachineSizesImpl vmSizes;
     private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
 
-    VirtualMachinesImpl(
+    public VirtualMachinesImpl(
         ComputeManager computeManager,
         StorageManager storageManager,
         NetworkManager networkManager,
         GraphRbacManager rbacManager) {
-        super(computeManager.inner().virtualMachines(), computeManager);
+        super(computeManager.inner().getVirtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.rbacManager = rbacManager;
-        this.vmSizes = new VirtualMachineSizesImpl(computeManager.inner().virtualMachineSizes());
+        this.vmSizes = new VirtualMachineSizesImpl(computeManager.inner().getVirtualMachineSizes());
     }
 
     // Actions

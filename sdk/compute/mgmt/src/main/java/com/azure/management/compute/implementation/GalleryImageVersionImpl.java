@@ -3,14 +3,15 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.GalleryArtifactVersionSource;
-import com.azure.management.compute.GalleryImageVersion;
-import com.azure.management.compute.GalleryImageVersionPublishingProfile;
-import com.azure.management.compute.GalleryImageVersionStorageProfile;
-import com.azure.management.compute.ReplicationStatus;
-import com.azure.management.compute.TargetRegion;
-import com.azure.management.compute.VirtualMachineCustomImage;
-import com.azure.management.compute.models.GalleryImageVersionInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.GalleryArtifactVersionSource;
+import com.azure.management.compute.models.GalleryImageVersion;
+import com.azure.management.compute.models.GalleryImageVersionPublishingProfile;
+import com.azure.management.compute.models.GalleryImageVersionStorageProfile;
+import com.azure.management.compute.models.ReplicationStatus;
+import com.azure.management.compute.models.TargetRegion;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.fluent.inner.GalleryImageVersionInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
@@ -63,7 +64,7 @@ class GalleryImageVersionImpl
     public Mono<GalleryImageVersion> createResourceAsync() {
         return manager()
             .inner()
-            .galleryImageVersions()
+            .getGalleryImageVersions()
             .createOrUpdateAsync(
                 this.resourceGroupName,
                 this.galleryName,
@@ -77,7 +78,7 @@ class GalleryImageVersionImpl
     public Mono<GalleryImageVersion> updateResourceAsync() {
         return manager()
             .inner()
-            .galleryImageVersions()
+            .getGalleryImageVersions()
             .createOrUpdateAsync(
                 this.resourceGroupName,
                 this.galleryName,
@@ -91,7 +92,7 @@ class GalleryImageVersionImpl
     protected Mono<GalleryImageVersionInner> getInnerAsync() {
         return manager()
             .inner()
-            .galleryImageVersions()
+            .getGalleryImageVersions()
             .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageVersionName);
     }
 

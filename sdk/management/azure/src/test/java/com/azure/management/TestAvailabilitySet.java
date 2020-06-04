@@ -3,9 +3,9 @@
 package com.azure.management;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.AvailabilitySet;
-import com.azure.management.compute.AvailabilitySets;
-import com.azure.management.compute.VirtualMachineSize;
+import com.azure.management.compute.models.AvailabilitySet;
+import com.azure.management.compute.models.AvailabilitySets;
+import com.azure.management.compute.models.VirtualMachineSize;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;

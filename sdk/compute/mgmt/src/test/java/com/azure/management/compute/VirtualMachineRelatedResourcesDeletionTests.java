@@ -5,6 +5,10 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.management.compute.models.AvailabilitySet;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.PublicIpAddress;
