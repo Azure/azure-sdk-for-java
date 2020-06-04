@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
@@ -15,7 +15,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
 
-class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
+class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
 
     private final String uuid;
     private final String dataFieldValue;
@@ -23,9 +23,9 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
     class LatencySubscriber<T> extends BaseSubscriber<T> {
 
         Timer.Context context;
-        BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber;
+        BaseSubscriber<CosmosItemResponse> baseSubscriber;
 
-        LatencySubscriber(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber) {
+        LatencySubscriber(BaseSubscriber<CosmosItemResponse> baseSubscriber) {
             this.baseSubscriber = baseSubscriber;
         }
 
@@ -59,9 +59,9 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
         String partitionKey = uuid + i;
-        Mono<CosmosAsyncItemResponse<PojoizedJson>> obs;
+        Mono<CosmosItemResponse<PojoizedJson>> obs;
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
             obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue));
@@ -77,7 +77,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
         if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
-            LatencySubscriber<CosmosAsyncItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
+            LatencySubscriber<CosmosItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
             latencySubscriber.context = latency.time();
             obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
         }

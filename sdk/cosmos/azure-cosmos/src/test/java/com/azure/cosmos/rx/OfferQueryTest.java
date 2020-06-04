@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.Database;
@@ -16,6 +12,10 @@ import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.QueryRequestOptions;
 import org.assertj.core.util.Strings;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -54,8 +54,8 @@ public class OfferQueryTest extends TestSuiteBase {
         String collectionResourceId = createdCollections.get(0).getResourceId();
         String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
 
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 2);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
 
         List<Offer> allOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
@@ -63,7 +63,8 @@ public class OfferQueryTest extends TestSuiteBase {
 
         assertThat(expectedOffers).isNotEmpty();
 
-        int expectedPageSize = (expectedOffers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+        int expectedPageSize = (expectedOffers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(expectedOffers.size())
@@ -83,8 +84,8 @@ public class OfferQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.offerResourceId in (%s)",
                 Strings.join(collectionResourceIds.stream().map(s -> "'" + s + "'").collect(Collectors.toList())).with(","));
 
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 1);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 1);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, options);
 
         List<Offer> expectedOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults()))
@@ -95,7 +96,8 @@ public class OfferQueryTest extends TestSuiteBase {
 
         assertThat(expectedOffers).hasSize(createdCollections.size());
 
-        int expectedPageSize = (expectedOffers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+        int expectedPageSize = (expectedOffers.size() + maxItemCount- 1) / maxItemCount;
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(expectedOffers.size())
@@ -112,7 +114,7 @@ public class OfferQueryTest extends TestSuiteBase {
     public void queryCollections_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, options);
 
         FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()

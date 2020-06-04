@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineExtension;
-import com.azure.management.compute.VirtualMachineExtensionImage;
-import com.azure.management.compute.VirtualMachineExtensionInstanceView;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
-import com.azure.management.compute.models.VirtualMachineExtensionsInner;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineExtension;
+import com.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.azure.management.compute.models.VirtualMachineExtensionInstanceView;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.management.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import java.util.Collections;
@@ -25,7 +25,7 @@ class VirtualMachineExtensionImpl
         VirtualMachineExtension.Definition<VirtualMachine.DefinitionStages.WithCreate>,
         VirtualMachineExtension.UpdateDefinition<VirtualMachine.Update>,
         VirtualMachineExtension.Update {
-    private final VirtualMachineExtensionsInner client;
+    private final VirtualMachineExtensionsClient client;
     private HashMap<String, Object> publicSettings;
     private HashMap<String, Object> protectedSettings;
 
@@ -33,14 +33,14 @@ class VirtualMachineExtensionImpl
         String name,
         VirtualMachineImpl parent,
         VirtualMachineExtensionInner inner,
-        VirtualMachineExtensionsInner client) {
+        VirtualMachineExtensionsClient client) {
         super(name, parent, inner);
         this.client = client;
         initializeSettings();
     }
 
     protected static VirtualMachineExtensionImpl newVirtualMachineExtension(
-        String name, VirtualMachineImpl parent, VirtualMachineExtensionsInner client) {
+        String name, VirtualMachineImpl parent, VirtualMachineExtensionsClient client) {
         VirtualMachineExtensionInner inner = new VirtualMachineExtensionInner();
         inner.withLocation(parent.regionName());
         VirtualMachineExtensionImpl extension = new VirtualMachineExtensionImpl(name, parent, inner, client);

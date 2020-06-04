@@ -5,11 +5,10 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -43,7 +42,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String filterId = createdStoredProcs.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 5;
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
                                                                                             .queryStoredProcedures(query, options);
@@ -56,7 +55,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosStoredProcedureProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -69,7 +68,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     public void query_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
                                                                                             .queryStoredProcedures(query, options);
@@ -86,7 +85,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     public void queryAll() throws Exception {
 
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 3;
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
@@ -97,7 +96,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosStoredProcedureProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -109,12 +108,12 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
                                                                                             .queryStoredProcedures(query, options);
 
-        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
+        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosException.class)
                 .statusCode(400).notNullActivityId().build();
         validateQueryFailure(queryObservable.byPage(), validator);
     }
@@ -143,9 +142,11 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     }
 
     private static CosmosStoredProcedureProperties getStoredProcedureDef() {
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return storedProcedureDef;
     }
 }

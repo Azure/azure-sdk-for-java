@@ -5,19 +5,20 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.GalleryImageVersion;
-import com.azure.management.compute.GalleryImageVersions;
-import com.azure.management.compute.models.GalleryImageVersionInner;
-import com.azure.management.compute.models.GalleryImageVersionsInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.GalleryImageVersion;
+import com.azure.management.compute.models.GalleryImageVersions;
+import com.azure.management.compute.fluent.inner.GalleryImageVersionInner;
+import com.azure.management.compute.fluent.GalleryImageVersionsClient;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for GalleryImageVersions. */
-class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsInner> implements GalleryImageVersions {
+public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsClient> implements GalleryImageVersions {
     private final ComputeManager manager;
 
-    GalleryImageVersionsImpl(ComputeManager manager) {
-        super(manager.inner().galleryImageVersions());
+    public GalleryImageVersionsImpl(ComputeManager manager) {
+        super(manager.inner().getGalleryImageVersions());
         this.manager = manager;
     }
 

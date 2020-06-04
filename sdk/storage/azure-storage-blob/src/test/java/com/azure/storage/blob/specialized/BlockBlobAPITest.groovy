@@ -1380,7 +1380,7 @@ class BlockBlobAPITest extends APISpec {
         bufferSize                                          | numBuffs
         0                                                   | 5
         BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES_LONG + 1 | 5
-        5                                                   | 1
+        5                                                   | 0
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.

@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -56,7 +56,7 @@ public class DocumentQueryExecutionContextFactory {
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec query,
-            FeedOptions feedOptions,
+            QueryRequestOptions queryRequestOptions,
             String resourceLink,
             boolean isContinuationExpected,
             UUID correlatedActivityId) {
@@ -73,7 +73,7 @@ public class DocumentQueryExecutionContextFactory {
             resourceTypeEnum,
             resourceType,
             query,
-            feedOptions,
+                queryRequestOptions,
             resourceLink,
             correlatedActivityId,
             isContinuationExpected);
@@ -95,22 +95,22 @@ public class DocumentQueryExecutionContextFactory {
                           // The partitionKeyRangeIdInternal is no more a public API on
                           // FeedOptions, but have the below condition
                           // for handling ParallelDocumentQueryTest#partitionKeyRangeId
-                          if (feedOptions != null && !StringUtils
+                          if (queryRequestOptions != null && !StringUtils
                                                           .isEmpty(ModelBridgeInternal
-                                                                       .partitionKeyRangeIdInternal(feedOptions))) {
+                                                                       .partitionKeyRangeIdInternal(queryRequestOptions))) {
                               partitionKeyRanges = queryExecutionContext
                                                        .getTargetPartitionKeyRangesById(collectionValueHolder.v
                                                                                             .getResourceId(),
-                                                           ModelBridgeInternal.partitionKeyRangeIdInternal(feedOptions));
+                                                           ModelBridgeInternal.partitionKeyRangeIdInternal(queryRequestOptions));
                           } else {
                               List<Range<String>> queryRanges =
                                   partitionedQueryExecutionInfo.getQueryRanges();
 
-                              if (feedOptions != null
-                                      && feedOptions.getPartitionKey() != null
-                                      && feedOptions.getPartitionKey() != PartitionKey.NONE) {
+                              if (queryRequestOptions != null
+                                      && queryRequestOptions.getPartitionKey() != null
+                                      && queryRequestOptions.getPartitionKey() != PartitionKey.NONE) {
                                   PartitionKeyInternal internalPartitionKey =
-                                      BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
+                                      BridgeInternal.getPartitionKeyInternal(queryRequestOptions.getPartitionKey());
                                   Range<String> range = Range
                                                             .getPointRange(internalPartitionKey
                                                                                .getEffectivePartitionKeyString(internalPartitionKey,
@@ -127,7 +127,7 @@ public class DocumentQueryExecutionContextFactory {
                                                                                                               resourceTypeEnum,
                                                                                                               resourceType,
                                                                                                               query,
-                                                                                                              feedOptions,
+                                                                                                              queryRequestOptions,
                                                                                                               resourceLink,
                                                                                                               isContinuationExpected,
                                                                                                               partitionedQueryExecutionInfo,
@@ -145,7 +145,7 @@ public class DocumentQueryExecutionContextFactory {
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec query,
-            FeedOptions feedOptions,
+            QueryRequestOptions queryRequestOptions,
             String resourceLink,
             boolean isContinuationExpected,
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
@@ -153,7 +153,7 @@ public class DocumentQueryExecutionContextFactory {
             String collectionRid,
             UUID correlatedActivityId) {
 
-        int initialPageSize = Utils.getValueOrDefault(feedOptions.getMaxItemCount(), ParallelQueryConfig.ClientInternalPageSize);
+        int initialPageSize = Utils.getValueOrDefault(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(queryRequestOptions), ParallelQueryConfig.ClientInternalPageSize);
 
         BadRequestException validationError = Utils.checkRequestOrReturnException
                 (initialPageSize > 0 || initialPageSize == -1, "MaxItemCount", "Invalid MaxItemCount %s",
@@ -200,7 +200,7 @@ public class DocumentQueryExecutionContextFactory {
                 resourceTypeEnum,
                 resourceType,
                 query,
-                feedOptions,
+                queryRequestOptions,
                 resourceLink,
                 collectionRid,
                 partitionedQueryExecutionInfo,
@@ -213,13 +213,13 @@ public class DocumentQueryExecutionContextFactory {
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(
         IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
-        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, FeedOptions feedOptions,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, QueryRequestOptions queryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
 
         return PipelinedDocumentQueryExecutionContext.createReadManyAsync(queryClient,
                                                                    collectionResourceId, sqlQuery, rangeQueryMap,
-                                                                   feedOptions, resourceId, collectionLink,
+                                                                   queryRequestOptions, resourceId, collectionLink,
                                                                    activityId, klass, resourceTypeEnum );
     }
 }

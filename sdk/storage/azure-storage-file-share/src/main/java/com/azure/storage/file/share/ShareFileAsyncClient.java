@@ -20,6 +20,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -427,11 +428,13 @@ public class ShareFileAsyncClient {
             .setIgnoreReadOnly(ignoreReadOnly)
             .setSetArchiveAttribute(setArchiveAttribute);
 
+        final String copySource = Utility.encodeUrlPath(sourceUrl);
+
         return new PollerFlux<>(interval,
             (pollingContext) -> {
                 try {
                     return withContext(context -> azureFileStorageClient.files()
-                            .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
+                            .startCopyWithRestResponseAsync(shareName, filePath, copySource, null,
                                 metadata, filePermission, tempSmbProperties.getFilePermissionKey(),
                                 finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
                             .map(response -> {
@@ -1382,8 +1385,10 @@ public class ShareFileAsyncClient {
         ShareFileRange sourceRange = new ShareFileRange(sourceOffset, sourceOffset + length - 1);
         context = context == null ? Context.NONE : context;
 
+        final String copySource = Utility.encodeUrlPath(sourceUrl);
+
         return azureFileStorageClient.files()
-            .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(), sourceUrl, 0,
+            .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
                 null, sourceRange.toString(), null, destinationRequestConditions.getLeaseId(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::uploadRangeFromUrlResponse);

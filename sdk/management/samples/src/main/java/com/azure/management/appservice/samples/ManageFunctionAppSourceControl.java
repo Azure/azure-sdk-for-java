@@ -78,9 +78,9 @@ public final class ManageFunctionAppSourceControl {
 
             System.out.println("Deploying a function app to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToFunctionApp(app1.getPublishingProfile(), "host.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/host.json"));
-            Utils.uploadFileToFunctionApp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
-            Utils.uploadFileToFunctionApp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
+            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "host.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/host.json"));
+            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
+            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
 
             // sync triggers
             app1.syncTriggers();
@@ -269,7 +269,7 @@ public final class ManageFunctionAppSourceControl {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -3,6 +3,9 @@ parameters:
   AdditionalModules: []
   SDKType: client
   ServiceDirectory: not-specified
+  TargetDocRepoOwner: 'Azure'
+  TargetDocRepoName: 'azure-docs-sdk-java'
+  
   
 stages:
   - stage: Build
@@ -23,3 +26,6 @@ stages:
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
+        TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+

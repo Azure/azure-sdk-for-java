@@ -2,20 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.DataType;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -48,7 +44,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -174,10 +169,10 @@ public class TestSuiteBase extends DocumentClientTest {
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
 
-            FeedOptions options = new FeedOptions();
+            QueryRequestOptions options = new QueryRequestOptions();
             options.setMaxDegreeOfParallelism(-1);
 
-            ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 100);
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 
@@ -477,17 +472,7 @@ public class TestSuiteBase extends DocumentClientTest {
         partitionKeyDef.setPaths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(stringIndex), "precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(numberIndex), "precision", -1);
-        indexes.add(numberIndex);
-        includedPath.setIndexes(indexes);
+        IncludedPath includedPath = new IncludedPath("/*");
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
@@ -513,7 +498,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         options.setPartitionKey(new PartitionKey(docId));
         List<Document> res = client
                 .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
@@ -528,7 +513,7 @@ public class TestSuiteBase extends DocumentClientTest {
             try {
                 client.deleteDocument(documentLink, options).single().block();
             } catch (Exception e) {
-                CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+                CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
                     throw e;
                 }

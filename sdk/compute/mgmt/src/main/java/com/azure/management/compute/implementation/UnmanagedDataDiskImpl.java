@@ -4,15 +4,15 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.DataDisk;
-import com.azure.management.compute.DiskCreateOptionTypes;
-import com.azure.management.compute.VirtualHardDisk;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DataDisk;
+import com.azure.management.compute.models.DiskCreateOptionTypes;
+import com.azure.management.compute.models.VirtualHardDisk;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

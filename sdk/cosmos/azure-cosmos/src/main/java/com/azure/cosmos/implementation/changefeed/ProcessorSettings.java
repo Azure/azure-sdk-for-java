@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.changefeed;
 import com.azure.cosmos.CosmosAsyncContainer;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Implementation for the partition processor properties.
@@ -16,7 +16,7 @@ public class ProcessorSettings {
     private Integer maxItemCount;
     private Duration feedPollDelay;
     private String startContinuation;
-    private OffsetDateTime startTime;
+    private Instant startTime;
 //    private STRING sessionToken;
 
     public CosmosAsyncContainer getCollectionSelfLink() {
@@ -75,11 +75,11 @@ public class ProcessorSettings {
         return this;
     }
 
-    public OffsetDateTime getStartTime() {
+    public Instant getStartTime() {
         return this.startTime;
     }
 
-    public ProcessorSettings withStartTime(OffsetDateTime startTime) {
+    public ProcessorSettings withStartTime(Instant startTime) {
         this.startTime = startTime;
         return this;
     }

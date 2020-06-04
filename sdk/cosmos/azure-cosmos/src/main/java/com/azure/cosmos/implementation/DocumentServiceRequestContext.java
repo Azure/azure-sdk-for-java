@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
@@ -36,7 +36,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile List<String> storeResponses;
     public volatile StoreResult quorumSelectedStoreResponse;
     public volatile PartitionKeyInternal effectivePartitionKey;
-    public volatile CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    public volatile CosmosDiagnostics cosmosDiagnostics;
     public RetryContext retryContext;
 
     public DocumentServiceRequestContext() {
@@ -144,7 +144,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
-        context.cosmosResponseDiagnostics = this.cosmosResponseDiagnostics;
+        context.cosmosDiagnostics = this.cosmosDiagnostics;
         context.retryContext = new RetryContext(this.retryContext);
 
         return context;

@@ -4,6 +4,19 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.management.compute.models.AvailabilitySet;
+import com.azure.management.compute.models.AvailabilitySetSkuTypes;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.ImageDataDisk;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.OperatingSystemStateTypes;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.StorageAccountTypes;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;

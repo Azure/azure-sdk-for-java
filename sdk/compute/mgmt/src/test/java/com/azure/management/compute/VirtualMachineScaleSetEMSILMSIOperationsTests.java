@@ -5,7 +5,10 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.ResourceIdentityType;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.RoleAssignment;
 import com.azure.management.msi.Identity;

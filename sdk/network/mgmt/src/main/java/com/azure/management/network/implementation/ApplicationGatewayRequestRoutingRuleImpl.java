@@ -217,7 +217,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayBackendHttpConfigurationImpl ensureBackendHttpConfig() {
         ApplicationGatewayBackendHttpConfigurationImpl config = this.backendHttpConfiguration();
         if (config == null) {
-            final String name = this.parent().manager().getSdkContext().randomResourceName("bckcfg", 11);
+            final String name = this.parent().manager().sdkContext().randomResourceName("bckcfg", 11);
             config = this.parent().defineBackendHttpConfiguration(name);
             config.attach();
             this.toBackendHttpConfiguration(name);
@@ -227,7 +227,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpPort(int portNumber) {
-        String name = this.parent().manager().getSdkContext().randomResourceName("backcfg", 12);
+        String name = this.parent().manager().sdkContext().randomResourceName("backcfg", 12);
         this.parent().defineBackendHttpConfiguration(name).withPort(portNumber).attach();
         return this.toBackendHttpConfiguration(name);
     }
@@ -268,7 +268,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
         if (needToCreate == ApplicationGatewayImpl.CreationState.NeedToCreate) {
             // If no listener exists for the requested port number yet and the name, create one
             if (name == null) {
-                name = this.parent().manager().getSdkContext().randomResourceName("listener", 13);
+                name = this.parent().manager().sdkContext().randomResourceName("listener", 13);
             }
 
             listenerByPort = this.parent().defineListener(name).withFrontendPort(portNumber);
@@ -300,7 +300,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayListenerImpl ensureListener() {
         ApplicationGatewayListenerImpl listener = this.listener();
         if (listener == null) {
-            final String name = this.parent().manager().getSdkContext().randomResourceName("listener", 13);
+            final String name = this.parent().manager().sdkContext().randomResourceName("listener", 13);
             listener = this.parent().defineListener(name);
             listener.attach();
             this.fromListener(name);

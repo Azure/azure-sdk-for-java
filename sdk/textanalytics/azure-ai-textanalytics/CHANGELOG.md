@@ -1,6 +1,9 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
+
+
+## 1.0.0-beta.5 (2020-05-27)
 **New features**
 - Added Text property and `getText()` to `SentenceSentiment`.
 - `Warnings` property added to each document-level response object returned from the endpoints. It is a list of `TextAnalyticsWarnings`.
@@ -9,6 +12,8 @@
 - Text analytics SDK update the service to version `v3.0` from `v3.0-preview.1`.
 
 **Breaking changes**
+- Removed pagination feature, which removed `TextAnalyticsPagedIterable`, `TextAnalyticsPagedFlux` and `TextAnalyticsPagedResponse`
+- Removed overload methods for API that takes a list of String, only keep max-overload API that has a list of String, language or country hint, and `TextAnalyticsRequestOption`.
 - Renamed `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
 - Removed `getGraphemeLength()` and `getGraphemeOffset()` from `CategorizedEntity`, `SentenceSentiment`, and `LinkedEntityMatch`.
 - `getGraphemeCount()` in `TextDocumentStatistics` has been renamed to `getCharacterCount()`.

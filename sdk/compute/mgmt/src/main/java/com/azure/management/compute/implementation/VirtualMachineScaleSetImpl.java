@@ -7,56 +7,58 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.compute.AdditionalCapabilities;
-import com.azure.management.compute.ApiEntityReference;
-import com.azure.management.compute.BillingProfile;
-import com.azure.management.compute.BootDiagnostics;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.DiagnosticsProfile;
-import com.azure.management.compute.DiskCreateOptionTypes;
-import com.azure.management.compute.ImageReference;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.LinuxConfiguration;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.ProximityPlacementGroup;
-import com.azure.management.compute.ProximityPlacementGroupType;
-import com.azure.management.compute.ResourceIdentityType;
-import com.azure.management.compute.RunCommandInput;
-import com.azure.management.compute.RunCommandInputParameter;
-import com.azure.management.compute.RunCommandResult;
-import com.azure.management.compute.SshConfiguration;
-import com.azure.management.compute.SshPublicKey;
-import com.azure.management.compute.StorageAccountTypes;
-import com.azure.management.compute.UpgradeMode;
-import com.azure.management.compute.UpgradePolicy;
-import com.azure.management.compute.VaultSecretGroup;
-import com.azure.management.compute.VirtualHardDisk;
-import com.azure.management.compute.VirtualMachineEvictionPolicyTypes;
-import com.azure.management.compute.VirtualMachinePriorityTypes;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetDataDisk;
-import com.azure.management.compute.VirtualMachineScaleSetExtension;
-import com.azure.management.compute.VirtualMachineScaleSetExtensionProfile;
-import com.azure.management.compute.VirtualMachineScaleSetIpConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetManagedDiskParameters;
-import com.azure.management.compute.VirtualMachineScaleSetNetworkConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
-import com.azure.management.compute.VirtualMachineScaleSetOSDisk;
-import com.azure.management.compute.VirtualMachineScaleSetOSProfile;
-import com.azure.management.compute.VirtualMachineScaleSetPublicIpAddressConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
-import com.azure.management.compute.VirtualMachineScaleSetSku;
-import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.azure.management.compute.VirtualMachineScaleSetStorageProfile;
-import com.azure.management.compute.VirtualMachineScaleSetUpdate;
-import com.azure.management.compute.VirtualMachineScaleSetVMs;
-import com.azure.management.compute.WinRMConfiguration;
-import com.azure.management.compute.WinRMListener;
-import com.azure.management.compute.WindowsConfiguration;
-import com.azure.management.compute.models.ProximityPlacementGroupInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetExtensionInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AdditionalCapabilities;
+import com.azure.management.compute.models.ApiEntityReference;
+import com.azure.management.compute.models.BillingProfile;
+import com.azure.management.compute.models.BootDiagnostics;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DiagnosticsProfile;
+import com.azure.management.compute.models.DiskCreateOptionTypes;
+import com.azure.management.compute.models.ImageReference;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.LinuxConfiguration;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.ProximityPlacementGroup;
+import com.azure.management.compute.models.ProximityPlacementGroupType;
+import com.azure.management.compute.models.ResourceIdentityType;
+import com.azure.management.compute.models.RunCommandInput;
+import com.azure.management.compute.models.RunCommandInputParameter;
+import com.azure.management.compute.models.RunCommandResult;
+import com.azure.management.compute.models.SshConfiguration;
+import com.azure.management.compute.models.SshPublicKey;
+import com.azure.management.compute.models.StorageAccountTypes;
+import com.azure.management.compute.models.UpgradeMode;
+import com.azure.management.compute.models.UpgradePolicy;
+import com.azure.management.compute.models.VaultSecretGroup;
+import com.azure.management.compute.models.VirtualHardDisk;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineEvictionPolicyTypes;
+import com.azure.management.compute.models.VirtualMachinePriorityTypes;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetDataDisk;
+import com.azure.management.compute.models.VirtualMachineScaleSetExtension;
+import com.azure.management.compute.models.VirtualMachineScaleSetExtensionProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetIpConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetManagedDiskParameters;
+import com.azure.management.compute.models.VirtualMachineScaleSetNetworkConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetNetworkProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetOSDisk;
+import com.azure.management.compute.models.VirtualMachineScaleSetOSProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetPublicIpAddressConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
+import com.azure.management.compute.models.VirtualMachineScaleSetSku;
+import com.azure.management.compute.models.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.compute.models.VirtualMachineScaleSetStorageProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetUpdate;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMs;
+import com.azure.management.compute.models.WinRMConfiguration;
+import com.azure.management.compute.models.WinRMListener;
+import com.azure.management.compute.models.WindowsConfiguration;
+import com.azure.management.compute.fluent.inner.ProximityPlacementGroupInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetInner;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
@@ -77,8 +79,8 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Group
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.StorageManager;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -163,7 +165,7 @@ public class VirtualMachineScaleSetImpl
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.namer = this.manager().getSdkContext().getResourceNamerFactory().createResourceNamer(this.name());
+        this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.name());
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         this.virtualMachineScaleSetMsiHandler = new VirtualMachineScaleSetMsiHandler(rbacManager, this);
         this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);
@@ -187,7 +189,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetVMs virtualMachines() {
         return new VirtualMachineScaleSetVMsImpl(
-            this, this.manager().inner().virtualMachineScaleSetVMs(), this.myManager);
+            this, this.manager().inner().getVirtualMachineScaleSetVMs(), this.myManager);
     }
 
     @Override
@@ -195,7 +197,7 @@ public class VirtualMachineScaleSetImpl
         return this
             .manager()
             .inner()
-            .virtualMachineScaleSets()
+            .getVirtualMachineScaleSets()
             .listSkus(this.resourceGroupName(), this.name())
             .mapPage(VirtualMachineScaleSetSkuImpl::new);
     }
@@ -210,7 +212,7 @@ public class VirtualMachineScaleSetImpl
         return this
             .manager()
             .inner()
-            .virtualMachineScaleSets()
+            .getVirtualMachineScaleSets()
             .deallocateAsync(this.resourceGroupName(), this.name(), null)
             .map(aVoid -> this.refreshAsync())
             .then();
@@ -226,7 +228,7 @@ public class VirtualMachineScaleSetImpl
         return this
             .manager()
             .inner()
-            .virtualMachineScaleSets()
+            .getVirtualMachineScaleSets()
             .powerOffAsync(this.resourceGroupName(), this.name(), null, null);
     }
 
@@ -240,7 +242,7 @@ public class VirtualMachineScaleSetImpl
         return this
             .manager()
             .inner()
-            .virtualMachineScaleSets()
+            .getVirtualMachineScaleSets()
             .restartAsync(this.resourceGroupName(), this.name(), null);
     }
 
@@ -251,7 +253,8 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.manager().inner().virtualMachineScaleSets().startAsync(this.resourceGroupName(), this.name(), null);
+        return this.manager().inner().getVirtualMachineScaleSets()
+            .startAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
@@ -264,7 +267,7 @@ public class VirtualMachineScaleSetImpl
         return this
             .manager()
             .inner()
-            .virtualMachineScaleSets()
+            .getVirtualMachineScaleSets()
             .reimageAsync(this.resourceGroupName(), this.name(), null);
     }
 
@@ -564,7 +567,7 @@ public class VirtualMachineScaleSetImpl
     public ProximityPlacementGroup proximityPlacementGroup() {
         ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
         ProximityPlacementGroupInner plgInner =
-            manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
             return null;
         } else {
@@ -1482,7 +1485,7 @@ public class VirtualMachineScaleSetImpl
                     return this
                         .manager()
                         .inner()
-                        .virtualMachineScaleSets()
+                        .getVirtualMachineScaleSets()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner());
                 });
     }
@@ -1530,7 +1533,7 @@ public class VirtualMachineScaleSetImpl
                     this
                         .manager()
                         .inner()
-                        .virtualMachineScaleSets()
+                        .getVirtualMachineScaleSets()
                         .updateAsync(resourceGroupName(), name(), updateParameter)
                         .map(
                             vmssInner -> {
@@ -1560,7 +1563,7 @@ public class VirtualMachineScaleSetImpl
         return this
             .manager()
             .inner()
-            .virtualMachineScaleSets()
+            .getVirtualMachineScaleSets()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -2281,7 +2284,7 @@ public class VirtualMachineScaleSetImpl
     /**
      * Checks whether the OS disk is based on a CustomImage.
      *
-     * <p>A custom image is represented by {@link com.azure.management.compute.VirtualMachineCustomImage}.
+     * <p>A custom image is represented by {@link VirtualMachineCustomImage}.
      *
      * @param storageProfile the storage profile
      * @return true if the OS disk is configured to be based on custom image.
@@ -2617,7 +2620,7 @@ public class VirtualMachineScaleSetImpl
                     this
                         .manager()
                         .inner()
-                        .proximityPlacementGroups()
+                        .getProximityPlacementGroups()
                         .createOrUpdate(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner);
 
                 this.inner().withProximityPlacementGroup((new SubResource().withId(plgInner.id())));
