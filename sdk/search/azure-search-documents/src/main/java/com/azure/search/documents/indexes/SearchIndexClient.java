@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzeTextRequest;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -247,28 +247,28 @@ public final class SearchIndexClient {
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @param analyzeTextRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
-        return analyzeText(indexName, analyzeRequest, null, Context.NONE);
+    public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextRequest analyzeTextRequest) {
+        return analyzeText(indexName, analyzeTextRequest, null, Context.NONE);
     }
 
     /**
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @param analyzeTextRequest the text and analyzer or analysis components to test
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
+    public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextRequest analyzeTextRequest,
         RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeRequest, requestOptions, context));
+        return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeTextRequest, requestOptions, context));
     }
 
     /**

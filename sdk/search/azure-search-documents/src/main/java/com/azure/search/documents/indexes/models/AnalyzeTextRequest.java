@@ -12,7 +12,7 @@ import java.util.List;
  * tokens.
  */
 @Fluent
-public final class AnalyzeRequest {
+public final class AnalyzeTextRequest {
     /*
      * The text to break into tokens.
      */
@@ -88,7 +88,7 @@ public final class AnalyzeRequest {
      * @param text the text value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setText(String text) {
+    public AnalyzeTextRequest setText(String text) {
         this.text = text;
         return this;
     }
@@ -154,7 +154,7 @@ public final class AnalyzeRequest {
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setAnalyzer(LexicalAnalyzerName analyzer) {
+    public AnalyzeTextRequest setAnalyzer(LexicalAnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -186,7 +186,7 @@ public final class AnalyzeRequest {
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setTokenizer(LexicalTokenizerName tokenizer) {
+    public AnalyzeTextRequest setTokenizer(LexicalTokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }
@@ -210,7 +210,7 @@ public final class AnalyzeRequest {
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setTokenFilters(List<TokenFilterName> tokenFilters) {
+    public AnalyzeTextRequest setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -234,7 +234,7 @@ public final class AnalyzeRequest {
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setCharFilters(List<CharFilterName> charFilters) {
+    public AnalyzeTextRequest setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
     }
