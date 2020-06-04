@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.CorsOptions;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -412,7 +412,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
             new SearchField()
                 .setName("HotelRewards")
                 .setType(SearchFieldDataType.STRING)));
-        existingIndex.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
+        existingIndex.setSuggesters(Collections.singletonList(new SearchSuggester()
             .setName("Suggestion")
             .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
         ));
@@ -430,7 +430,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
         SearchIndex existingIndex = client.getIndex(index.getName());
         String existingFieldName = "Category";
-        existingIndex.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
+        existingIndex.setSuggesters(Collections.singletonList(new SearchSuggester()
             .setName("Suggestion")
             .setSourceFields(Collections.singletonList(existingFieldName))
         ));
@@ -551,7 +551,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         client.createOrUpdateIndex(index);
         indexesToDelete.add(index.getName());
 
-        GetIndexStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
+        SearchIndexStatistics indexStatistics = client.getIndexStatistics(index.getName());
         assertEquals(0, indexStatistics.getDocumentCount());
         assertEquals(0, indexStatistics.getStorageSize());
     }
@@ -562,7 +562,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         client.createOrUpdateIndex(index);
         indexesToDelete.add(index.getName());
 
-        Response<GetIndexStatisticsResult> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
+        Response<SearchIndexStatistics> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
             generateRequestOptions(), Context.NONE);
         assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
         assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());

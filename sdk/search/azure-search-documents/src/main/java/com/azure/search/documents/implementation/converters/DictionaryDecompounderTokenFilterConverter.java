@@ -30,7 +30,7 @@ public final class DictionaryDecompounderTokenFilterConverter {
         dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
 
         Boolean onlyLongestMatch = obj.isOnlyLongestMatch();
-        dictionaryDecompounderTokenFilter.setOnlyLongestMatch(onlyLongestMatch);
+        dictionaryDecompounderTokenFilter.setOnlyLongestMatched(onlyLongestMatch);
 
         Integer maxSubwordSize = obj.getMaxSubwordSize();
         dictionaryDecompounderTokenFilter.setMaxSubwordSize(maxSubwordSize);
@@ -61,7 +61,7 @@ public final class DictionaryDecompounderTokenFilterConverter {
         Integer minSubwordSize = obj.getMinSubwordSize();
         dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
 
-        Boolean onlyLongestMatch = obj.isOnlyLongestMatch();
+        Boolean onlyLongestMatch = obj.isOnlyLongestMatched();
         dictionaryDecompounderTokenFilter.setOnlyLongestMatch(onlyLongestMatch);
 
         Integer maxSubwordSize = obj.getMaxSubwordSize();

@@ -9,8 +9,8 @@ import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountSkuType;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccountSkuType;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -314,7 +314,7 @@ public interface FunctionApp extends WebAppBase, Refreshable<FunctionApp>, Updat
              * @return the next stage of the definition
              */
             @Deprecated
-            WithCreate withNewStorageAccount(String name, com.azure.management.storage.SkuName sku);
+            WithCreate withNewStorageAccount(String name, com.azure.management.storage.models.SkuName sku);
 
             /**
              * Creates a new storage account to use for the function app.
@@ -654,7 +654,7 @@ public interface FunctionApp extends WebAppBase, Refreshable<FunctionApp>, Updat
              * @return the next stage of the function app update
              */
             @Deprecated
-            Update withNewStorageAccount(String name, com.azure.management.storage.SkuName sku);
+            Update withNewStorageAccount(String name, com.azure.management.storage.models.SkuName sku);
 
             /**
              * Creates a new storage account to use for the function app.

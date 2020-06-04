@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.InstanceViewStatus;
-import com.azure.management.compute.RunCommandResult;
-import com.azure.management.compute.models.RunCommandResultInner;
+import com.azure.management.compute.models.InstanceViewStatus;
+import com.azure.management.compute.models.RunCommandResult;
+import com.azure.management.compute.fluent.inner.RunCommandResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 

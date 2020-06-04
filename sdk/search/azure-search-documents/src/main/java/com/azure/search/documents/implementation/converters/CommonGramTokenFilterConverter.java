@@ -27,10 +27,10 @@ public final class CommonGramTokenFilterConverter {
         commonGramTokenFilter.setName(name);
 
         Boolean ignoreCase = obj.isIgnoreCase();
-        commonGramTokenFilter.setIgnoreCase(ignoreCase);
+        commonGramTokenFilter.setCaseIgnored(ignoreCase);
 
         Boolean useQueryMode = obj.isUseQueryMode();
-        commonGramTokenFilter.setUseQueryMode(useQueryMode);
+        commonGramTokenFilter.setQueryModeUsed(useQueryMode);
 
         if (obj.getCommonWords() != null) {
             List<String> commonWords = new ArrayList<>(obj.getCommonWords());
@@ -53,10 +53,10 @@ public final class CommonGramTokenFilterConverter {
         String name = obj.getName();
         commonGramTokenFilter.setName(name);
 
-        Boolean ignoreCase = obj.isIgnoreCase();
+        Boolean ignoreCase = obj.isCaseIgnored();
         commonGramTokenFilter.setIgnoreCase(ignoreCase);
 
-        Boolean useQueryMode = obj.isUseQueryMode();
+        Boolean useQueryMode = obj.isQueryModeUsed();
         commonGramTokenFilter.setUseQueryMode(useQueryMode);
 
         if (obj.getCommonWords() != null) {

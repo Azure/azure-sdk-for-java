@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
-import com.azure.management.storage.implementation.StorageManager;
 
 /** The base for storage manager tests. */
 public abstract class StorageManagementTest extends TestBase {

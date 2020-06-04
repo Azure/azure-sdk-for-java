@@ -4,10 +4,10 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.ComputeSku;
-import com.azure.management.compute.ProximityPlacementGroup;
-import com.azure.management.compute.ProximityPlacementGroupType;
-import com.azure.management.compute.models.ProximityPlacementGroupInner;
+import com.azure.management.compute.models.ComputeSku;
+import com.azure.management.compute.models.ProximityPlacementGroup;
+import com.azure.management.compute.models.ProximityPlacementGroupType;
+import com.azure.management.compute.fluent.inner.ProximityPlacementGroupInner;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import java.util.ArrayList;
 import java.util.Iterator;

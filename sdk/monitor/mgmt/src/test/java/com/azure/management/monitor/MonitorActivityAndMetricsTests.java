@@ -5,7 +5,7 @@ package com.azure.management.monitor;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachine;
 import com.azure.management.resources.core.TestUtilities;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;

@@ -31,7 +31,7 @@ public final class SearchResourceEncryptionKeyConverter {
         searchResourceEncryptionKey.setKeyName(keyName);
 
         String vaultUri = obj.getVaultUri();
-        searchResourceEncryptionKey.setVaultUri(vaultUri);
+        searchResourceEncryptionKey.setVaultUrl(vaultUri);
         return searchResourceEncryptionKey;
     }
 
@@ -59,7 +59,7 @@ public final class SearchResourceEncryptionKeyConverter {
         String keyName = obj.getKeyName();
         searchResourceEncryptionKey.setKeyName(keyName);
 
-        String vaultUri = obj.getVaultUri();
+        String vaultUri = obj.getVaultUrl();
         searchResourceEncryptionKey.setVaultUri(vaultUri);
         return searchResourceEncryptionKey;
     }

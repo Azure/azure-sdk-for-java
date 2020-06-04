@@ -175,7 +175,7 @@ public final class TestHelpers {
     }
 
     public static RequestOptions generateRequestOptions() {
-        return new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
+        return new RequestOptions().setClientRequestId(UUID.randomUUID());
     }
 
     public static void waitForIndexing() {

@@ -32,7 +32,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      * Default is false.
      */
     @JsonProperty(value = "isSearchTokenizer")
-    private Boolean isSearchTokenizer;
+    private Boolean isSearchTokenizerUsed;
 
     /*
      * The language to use. The default is English. Possible values include:
@@ -84,7 +84,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      * @return the isSearchTokenizer value.
      */
     public Boolean isSearchTokenizer() {
-        return this.isSearchTokenizer;
+        return this.isSearchTokenizerUsed;
     }
 
     /**
@@ -92,11 +92,11 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      * is used. Set to true if used as the search tokenizer, set to false if
      * used as the indexing tokenizer. Default is false.
      *
-     * @param isSearchTokenizer the isSearchTokenizer value to set.
+     * @param isSearchTokenizerUsed the isSearchTokenizer value to set.
      * @return the MicrosoftLanguageStemmingTokenizer object itself.
      */
-    public MicrosoftLanguageStemmingTokenizer setIsSearchTokenizer(Boolean isSearchTokenizer) {
-        this.isSearchTokenizer = isSearchTokenizer;
+    public MicrosoftLanguageStemmingTokenizer setIsSearchTokenizerUsed(Boolean isSearchTokenizerUsed) {
+        this.isSearchTokenizerUsed = isSearchTokenizerUsed;
         return this;
     }
 

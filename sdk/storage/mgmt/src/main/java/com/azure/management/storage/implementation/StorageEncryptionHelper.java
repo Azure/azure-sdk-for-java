@@ -3,17 +3,17 @@
 
 package com.azure.management.storage.implementation;
 
-import com.azure.management.storage.Encryption;
-import com.azure.management.storage.EncryptionService;
-import com.azure.management.storage.EncryptionServices;
-import com.azure.management.storage.KeySource;
-import com.azure.management.storage.KeyVaultProperties;
-import com.azure.management.storage.StorageAccountCreateParameters;
-import com.azure.management.storage.StorageAccountEncryptionKeySource;
-import com.azure.management.storage.StorageAccountEncryptionStatus;
-import com.azure.management.storage.StorageAccountUpdateParameters;
-import com.azure.management.storage.StorageService;
-import com.azure.management.storage.models.StorageAccountInner;
+import com.azure.management.storage.models.Encryption;
+import com.azure.management.storage.models.EncryptionService;
+import com.azure.management.storage.models.EncryptionServices;
+import com.azure.management.storage.models.KeySource;
+import com.azure.management.storage.models.KeyVaultProperties;
+import com.azure.management.storage.models.StorageAccountCreateParameters;
+import com.azure.management.storage.models.StorageAccountEncryptionKeySource;
+import com.azure.management.storage.models.StorageAccountEncryptionStatus;
+import com.azure.management.storage.models.StorageAccountUpdateParameters;
+import com.azure.management.storage.models.StorageService;
+import com.azure.management.storage.fluent.inner.StorageAccountInner;
 import java.util.HashMap;
 import java.util.Map;
 

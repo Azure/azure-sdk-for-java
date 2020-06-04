@@ -49,7 +49,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * the output. Default is false.
      */
     @JsonProperty(value = "onlyLongestMatch")
-    private Boolean onlyLongestMatch;
+    private Boolean onlyLongestMatched;
 
     /**
      * Get the wordList property: The list of words to match against.
@@ -143,19 +143,19 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      *
      * @return the onlyLongestMatch value.
      */
-    public Boolean isOnlyLongestMatch() {
-        return this.onlyLongestMatch;
+    public Boolean isOnlyLongestMatched() {
+        return this.onlyLongestMatched;
     }
 
     /**
      * Set the onlyLongestMatch property: A value indicating whether to add
      * only the longest matching subword to the output. Default is false.
      *
-     * @param onlyLongestMatch the onlyLongestMatch value to set.
+     * @param onlyLongestMatched the onlyLongestMatch value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter setOnlyLongestMatch(Boolean onlyLongestMatch) {
-        this.onlyLongestMatch = onlyLongestMatch;
+    public DictionaryDecompounderTokenFilter setOnlyLongestMatched(Boolean onlyLongestMatched) {
+        this.onlyLongestMatched = onlyLongestMatched;
         return this;
     }
 }

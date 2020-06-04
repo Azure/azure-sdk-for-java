@@ -12,6 +12,8 @@ import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
+import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
@@ -20,6 +22,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
@@ -127,10 +130,12 @@ public final class FormTrainingAsyncClient {
      *
      * @param trainingFilesUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
-     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled.
+     * been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -141,8 +146,7 @@ public final class FormTrainingAsyncClient {
     /**
      * Create and train a custom model.
      * <p>Models are trained using documents that are of the following content type -
-     * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
-     * Other type of content is ignored.
+     * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.Other type of content is ignored.
      * </p>
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
@@ -152,13 +156,15 @@ public final class FormTrainingAsyncClient {
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
-     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it
-     * has completed, has failed, or has been cancelled.
+     * has completed, has failed, or has been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -184,6 +190,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomFormModel> getCustomModel(String modelId) {
@@ -199,6 +206,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Response} containing the requested {@link CustomFormModel model}.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId) {
@@ -261,6 +269,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return An empty Mono.
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
@@ -276,6 +285,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Mono} containing containing status code and HTTP headers
+     * @throws NullPointerException If {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponse(String modelId) {
@@ -342,7 +352,9 @@ public final class FormTrainingAsyncClient {
      * generated from the target resource's call to {@link FormTrainingAsyncClient#getCopyAuthorization(String, String)}
      *
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModelInfo}.
+     * @throws FormRecognizerException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code modelId}, {@code target} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
@@ -371,7 +383,10 @@ public final class FormTrainingAsyncClient {
      * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
-     * or has been cancelled.
+     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModelInfo}.
+     * @throws FormRecognizerException If copy operation fails and model with {@link OperationStatus#FAILED}
+     * is created.
+     * @throws NullPointerException If {@code modelId}, {@code target} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
@@ -396,6 +411,7 @@ public final class FormTrainingAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string}
      *
      * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
+     * @throws NullPointerException If {@code resourceId}, {@code resourceRegion} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorization> getCopyAuthorization(String resourceId, String resourceRegion) {
@@ -416,6 +432,7 @@ public final class FormTrainingAsyncClient {
      *
      * @return A {@link Response} containing the {@link CopyAuthorization} that could be used to authorize copying
      * model between resources.
+     * @throws NullPointerException If {@code resourceId}, {@code resourceRegion} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId,
@@ -559,7 +576,10 @@ public final class FormTrainingAsyncClient {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true)
-                    .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()));
+                    .map(modelSimpleResponse -> {
+                        throwIfModelStatusInvalid(modelSimpleResponse.getValue());
+                        return toCustomFormModel(modelSimpleResponse.getValue());
+                    });
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -583,13 +603,13 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String fileSourceUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels) {
+        String trainingFilesUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels) {
         return (pollingContext) -> {
             try {
-                Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
+                Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
                 TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
                     .setPrefix(filePrefix);
-                TrainRequest serviceTrainRequest = new TrainRequest().setSource(fileSourceUrl).
+                TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl).
                     setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
                     .map(response ->
@@ -623,7 +643,7 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Helper method that throws a {@link HttpResponseException} if {@link CopyOperationResult#getStatus()} is
+     * Helper method that throws a {@link FormRecognizerException} if {@link CopyOperationResult#getStatus()} is
      * {@link OperationStatus#FAILED}.
      *
      * @param copyResult The copy operation response returned from the service.
@@ -632,10 +652,26 @@ public final class FormTrainingAsyncClient {
         if (copyResult.getStatus().equals(OperationStatus.FAILED)) {
             List<ErrorInformation> errorInformationList = copyResult.getCopyResult().getErrors();
             if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-                throw logger.logExceptionAsError(new HttpResponseException("Copy operation returned with a failed "
-                    + "status", null, errorInformationList));
+                throw logger.logExceptionAsError(new FormRecognizerException("Copy operation returned with a failed "
+                    + "status", errorInformationList));
             }
         }
     }
 
+     /**
+      *  Helper method that throws a {@link FormRecognizerException} if {@link ModelInfo#getStatus()} is
+      *  {@link com.azure.ai.formrecognizer.implementation.models.ModelStatus#INVALID}.
+      *
+      * @param customModel The response returned from the service.
+      */
+    private void throwIfModelStatusInvalid(Model customModel) {
+        if (ModelStatus.INVALID.equals(customModel.getModelInfo().getStatus())) {
+            List<ErrorInformation> errorInformationList = customModel.getTrainResult().getErrors();
+            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
+                throw logger.logExceptionAsError(new FormRecognizerException(
+                    String.format("Invalid model created with ID: %s", customModel.getModelInfo().getModelId()),
+                    errorInformationList));
+            }
+        }
+    }
 }

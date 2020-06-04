@@ -4,11 +4,11 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.compute.ResourceIdentityType;
-import com.azure.management.compute.VirtualMachineIdentity;
-import com.azure.management.compute.VirtualMachineIdentityUserAssignedIdentities;
-import com.azure.management.compute.models.VirtualMachineInner;
-import com.azure.management.compute.models.VirtualMachineUpdateInner;
+import com.azure.management.compute.models.ResourceIdentityType;
+import com.azure.management.compute.models.VirtualMachineIdentity;
+import com.azure.management.compute.models.VirtualMachineIdentityUserAssignedIdentities;
+import com.azure.management.compute.fluent.inner.VirtualMachineInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineUpdateInner;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;

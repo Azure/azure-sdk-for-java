@@ -55,7 +55,7 @@ The value of `AZURE_AUTHORITY_HOST` can be set via [`KnownAuthorityHosts`](https
 Sample code to create a `AzureProfile`:
 
 ```java
-//AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+//AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_ID>", AzureEnvironment.AZURE);
 ```
 
