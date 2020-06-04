@@ -12,7 +12,7 @@ import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.SqlDatabaseImportRequest;
 import com.azure.management.sql.StorageKeyType;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;

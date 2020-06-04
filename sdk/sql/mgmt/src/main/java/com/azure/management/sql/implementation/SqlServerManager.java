@@ -14,7 +14,7 @@ import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.sql.SqlServers;
 import com.azure.management.sql.models.SqlManagementClientBuilder;
 import com.azure.management.sql.models.SqlManagementClientImpl;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 
 /** Entry point to Azure SQLServer resource management. */
 public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
