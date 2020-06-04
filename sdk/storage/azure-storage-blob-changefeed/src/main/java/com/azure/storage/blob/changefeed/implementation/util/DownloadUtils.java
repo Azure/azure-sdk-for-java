@@ -14,7 +14,7 @@ import java.io.UncheckedIOException;
 
 public class DownloadUtils {
 
-    private static final ClientLogger logger = new ClientLogger(DownloadUtils.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadUtils.class);
 
     /**
      * Reduces a Flux of ByteBuffer into a Mono of String
@@ -26,7 +26,7 @@ public class DownloadUtils {
                 try {
                     os.write(FluxUtil.byteBufferToArray(buffer));
                 } catch (IOException e) {
-                    throw logger.logExceptionAsError(new UncheckedIOException(e));
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                 }
                 return os;
             }).map(ByteArrayOutputStream::toByteArray);
