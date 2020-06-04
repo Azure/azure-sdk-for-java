@@ -142,7 +142,7 @@ public class ReactorSenderTest {
             messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
         ReactorSender spyReactorSender = spy(reactorSender);
 
-        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), any(DeliveryState.class));
+        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), any(TransactionalState.class));
 
         // Act
         StepVerifier.create(spyReactorSender.send(message, transactionDeliveryState))
@@ -153,7 +153,7 @@ public class ReactorSenderTest {
         // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(),
-            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), any(DeliveryState.class));
+            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), any(TransactionalState.class));
     }
 
     @Test
