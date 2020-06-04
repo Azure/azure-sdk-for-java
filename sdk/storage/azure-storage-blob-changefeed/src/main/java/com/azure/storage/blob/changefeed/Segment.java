@@ -99,7 +99,7 @@ class Segment {
         for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {
             /* Strip out the changefeed container name and the subsequent / */
             String shardPath =
-                shard.asText().substring(BlobChangefeedAsyncClient.CHANGEFEED_CONTAINER_NAME.length() + 1);
+                shard.asText().substring(BlobChangefeedClientBuilder.CHANGEFEED_CONTAINER_NAME.length() + 1);
 
             if (userCursor == null) {
                 validShard = true;

@@ -234,7 +234,7 @@ class ChangefeedTest extends Specification {
         OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         OffsetDateTime.of(2017, 12, 12, 2, 0, 0, 0, ZoneOffset.UTC) || ["idx/segments/2017"]                                                                   | [0, 1, 2, 3]                                         /* All segments taken from year. */
         OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018"]                                              | [0, 1, 2, 3]                                         /* No segments taken from year. */
-        OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]                   /* Partial segments taken from year. Checks isEqual. */
+        OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]                       /* Partial segments taken from year. Checks isEqual. */
         OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]   /* Partial segments taken from year. Checks is strictly before. */
     }
 
@@ -328,7 +328,7 @@ class ChangefeedTest extends Specification {
         5         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         6         || ["idx/segments/2017"]                                                                   | [0, 1, 2, 3]                                         /* All segments taken from year. */
         7         || ["idx/segments/2017", "idx/segments/2018"]                                              | [0, 1, 2, 3]                                         /* No segments taken from year. */
-        8         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]                   /* Partial segments taken from year. Checks isEqual. */
+        8         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]                       /* Partial segments taken from year. Checks isEqual. */
         9         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]   /* Partial segments taken from year. Checks is strictly before. */
     }
 

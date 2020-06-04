@@ -97,7 +97,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
             .window(preferredPageSize)
             /* Convert the BlobChangefeedEventWrappers into BlobChangefeedEvents, and bundle them up with the last
                element's cursor. */
-            .flatMap(eventWrappers -> {
+            .concatMap(eventWrappers -> {
                 /* 1. cache the Flux to turn it into a HotFlux so we can subscribe to it multiple times. */
                 Flux<BlobChangefeedEventWrapper> cachedEventWrappers = eventWrappers.cache();
                 /* 2. Get the last element in the flux and grab it's cursor. This will be the continuationToken

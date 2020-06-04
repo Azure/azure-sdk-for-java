@@ -5,9 +5,12 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -16,6 +19,8 @@ import com.azure.storage.blob.BlobServiceVersion;
  */
 @ServiceClientBuilder(serviceClients = {BlobChangefeedClient.class, BlobChangefeedAsyncClient.class})
 public final class BlobChangefeedClientBuilder {
+
+    static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
     private final String accountUrl;
     private final HttpPipeline pipeline;
@@ -67,7 +72,18 @@ public final class BlobChangefeedClientBuilder {
      * @return a {@link BlobChangefeedAsyncClient} created from the configurations in this builder.
      */
     public BlobChangefeedAsyncClient buildAsyncClient() {
-        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        return new BlobChangefeedAsyncClient(pipeline, accountUrl, serviceVersion);
+        BlobContainerAsyncClient client = new BlobContainerClientBuilder()
+            .endpoint(accountUrl)
+            .containerName(CHANGEFEED_CONTAINER_NAME)
+            .pipeline(pipeline)
+            .serviceVersion(version)
+            .buildAsyncClient();
+        AvroReaderFactory avroReaderFactory = new AvroReaderFactory();
+        BlobLazyDownloaderFactory blobLazyDownloaderFactory = new BlobLazyDownloaderFactory(client);
+        ChunkFactory chunkFactory = new ChunkFactory(avroReaderFactory, blobLazyDownloaderFactory);
+        ShardFactory shardFactory = new ShardFactory(chunkFactory, client);
+        SegmentFactory segmentFactory = new SegmentFactory(shardFactory, client);
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(segmentFactory, client);
+        return new BlobChangefeedAsyncClient(changefeedFactory);
     }
 }

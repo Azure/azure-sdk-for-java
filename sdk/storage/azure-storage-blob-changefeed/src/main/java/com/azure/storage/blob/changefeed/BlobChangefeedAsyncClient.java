@@ -4,11 +4,6 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 
 import java.time.OffsetDateTime;
 
@@ -20,31 +15,16 @@ import java.time.OffsetDateTime;
 @ServiceClient(builder = BlobChangefeedClientBuilder.class, isAsync = true)
 public class BlobChangefeedAsyncClient {
 
-    static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
-    private final BlobContainerAsyncClient client;
     private final ChangefeedFactory changefeedFactory;
 
     /**
      * Package-private constructor for use by {@link BlobChangefeedClientBuilder}.
      *
-     * @param pipeline The pipeline used to send and receive service requests.
-     * @param url The endpoint where to send service requests.
-     * @param version The version of the service to receive requests.
+     * @param changefeedFactory The changefeed factory to create the Changefeed from.
      */
-    BlobChangefeedAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion version) {
-        this.client = new BlobContainerClientBuilder()
-            .endpoint(url)
-            .containerName(CHANGEFEED_CONTAINER_NAME)
-            .pipeline(pipeline)
-            .serviceVersion(version)
-            .buildAsyncClient();
-        AvroReaderFactory avroReaderFactory = new AvroReaderFactory();
-        BlobLazyDownloaderFactory blobLazyDownloaderFactory = new BlobLazyDownloaderFactory(client);
-        ChunkFactory chunkFactory = new ChunkFactory(avroReaderFactory, blobLazyDownloaderFactory);
-        ShardFactory shardFactory = new ShardFactory(chunkFactory, client);
-        SegmentFactory segmentFactory = new SegmentFactory(shardFactory, client);
-        this.changefeedFactory = new ChangefeedFactory(segmentFactory, client);
+    BlobChangefeedAsyncClient(ChangefeedFactory changefeedFactory) {
+        this.changefeedFactory = changefeedFactory;
     }
 
     /**
