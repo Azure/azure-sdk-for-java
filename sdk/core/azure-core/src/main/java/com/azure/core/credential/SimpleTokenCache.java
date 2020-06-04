@@ -8,7 +8,9 @@ import reactor.core.publisher.FluxSink.OverflowStrategy;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
 
+import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -22,6 +24,7 @@ public class SimpleTokenCache {
     private final ReplayProcessor<AccessToken> emitterProcessor = ReplayProcessor.create(1);
     private final FluxSink<AccessToken> sink = emitterProcessor.sink(OverflowStrategy.BUFFER);
     private final Supplier<Mono<AccessToken>> tokenSupplier;
+    private final Predicate<AccessToken> tokenExpired;
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
@@ -29,8 +32,20 @@ public class SimpleTokenCache {
      * @param tokenSupplier a method to get a new token
      */
     public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
+        this(tokenSupplier,
+            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(TokenCredential.DEFAULT_TOKEN_REFRESH_OFFSET)));
+    }
+
+    /**
+     * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
+     *
+     * @param tokenSupplier a method to get a new token
+     * @param tokenExpired a method to check if the cached token is expired
+     */
+    public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier, Predicate<AccessToken> tokenExpired) {
         this.wip = new AtomicBoolean(false);
         this.tokenSupplier = tokenSupplier;
+        this.tokenExpired = tokenExpired;
     }
 
     /**
@@ -38,7 +53,7 @@ public class SimpleTokenCache {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken() {
-        if (cache != null && !cache.isExpired()) {
+        if (cache != null && !tokenExpired.test(cache)) {
             return Mono.just(cache);
         }
         return Mono.defer(() -> {

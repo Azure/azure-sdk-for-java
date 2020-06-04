@@ -79,6 +79,37 @@ public class TokenCacheTests {
         Assertions.assertTrue(refreshes.get() <= 11);
     }
 
+    @Test
+    public void testCustomExpiry() throws Exception {
+        AtomicInteger latency = new AtomicInteger(1);
+        SimpleTokenCache cache = new SimpleTokenCache(
+            () -> incrementalRemoteGetTokenAsync(latency),
+            // 2s offset: token needs refreshing after 3s after 1st token comes back (which is just past second 1),
+            // so 5th token acquisition will require another call
+            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(Duration.ofSeconds(2))));
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicLong maxMillis = new AtomicLong(0);
+
+        Flux.range(1, 6)
+            .concatMap(i -> Mono.delay(Duration.ofSeconds(1)))
+            .concatMap(i -> {
+                OffsetDateTime start = OffsetDateTime.now();
+                return cache.getToken()
+                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
+                    .doOnNext(millis -> {
+                        if (millis > maxMillis.get()) {
+                            maxMillis.set(millis);
+                        }
+                    });
+            }).doOnComplete(latch::countDown)
+            .subscribe();
+
+        latch.await();
+        Assertions.assertTrue(maxMillis.get() >= 2000);
+        Assertions.assertTrue(maxMillis.get() < 3000); // Big enough for any latency, small enough to make sure no get token is called twice
+    }
+
     private Mono<AccessToken> remoteGetTokenAsync(long delayInMillis) {
         return Mono.delay(Duration.ofMillis(delayInMillis))
             .map(l -> new Token(Integer.toString(RANDOM.nextInt(100))));

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
@@ -37,7 +38,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         assert scopes.length > 0;
         this.credential = credential;
         this.scopes = scopes;
-        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequestContext().addScopes(scopes)));
+        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequestContext().addScopes(scopes)),
+            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(credential.getTokenRefreshOffset())));
     }
 
     @Override
