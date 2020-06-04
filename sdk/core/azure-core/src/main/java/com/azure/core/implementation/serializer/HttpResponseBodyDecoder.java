@@ -48,14 +48,14 @@ final class HttpResponseBodyDecoder {
      * @return publisher that emits decoded response body upon subscription if body is decodable, no emission if the
      * body is not-decodable
      */
-    static Mono<Object> decode(String body, HttpResponse httpResponse, SerializerAdapter serializer,
+    static Mono<Object> decode(byte[] body, HttpResponse httpResponse, SerializerAdapter serializer,
         HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
         final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         //
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
-                Mono<String> bodyMono = body == null ? httpResponse.getBodyAsString() : Mono.just(body);
+                Mono<byte[]> bodyMono = body == null ? httpResponse.getBodyAsByteArray() : Mono.just(body);
                 return bodyMono.flatMap(bodyString -> {
                     try {
                         final Object decodedErrorEntity = deserializeBody(bodyString,
@@ -78,7 +78,7 @@ final class HttpResponseBodyDecoder {
                     return Mono.empty();
                 }
 
-                Mono<String> bodyMono = body == null ? httpResponse.getBodyAsString() : Mono.just(body);
+                Mono<byte[]> bodyMono = body == null ? httpResponse.getBodyAsByteArray() : Mono.just(body);
                 return bodyMono.flatMap(bodyString -> {
                     try {
                         final Object decodedSuccessEntity = deserializeBody(bodyString,
@@ -140,7 +140,7 @@ final class HttpResponseBodyDecoder {
      * If the {@link ReturnValueWireType} is of type {@link Page}, then the returned object will be an instance of that
      * {@param wireType}. Otherwise, the returned object is converted back to its {@param resultType}.
      *
-     * @param value the string value to deserialize
+     * @param value the byte array value to deserialize
      * @param resultType the return type of the java proxy method
      * @param wireType value of optional {@link ReturnValueWireType} annotation present in java proxy method indicating
      * 'entity type' (wireType) of REST API wire response body
@@ -148,7 +148,7 @@ final class HttpResponseBodyDecoder {
      * @return Deserialized object
      * @throws IOException When the body cannot be deserialized
      */
-    private static Object deserializeBody(String value, Type resultType, Type wireType, SerializerAdapter serializer,
+    private static Object deserializeBody(byte[] value, Type resultType, Type wireType, SerializerAdapter serializer,
         SerializerEncoding encoding) throws IOException {
         if (wireType == null) {
             return serializer.deserialize(value, resultType, encoding);
@@ -218,7 +218,7 @@ final class HttpResponseBodyDecoder {
      * @return An object representing an instance of {@param wireType}
      * @throws IOException if the serializer is unable to deserialize the value.
      */
-    private static Object deserializePage(String value, Type resultType, Type wireType, SerializerAdapter serializer,
+    private static Object deserializePage(byte[] value, Type resultType, Type wireType, SerializerAdapter serializer,
         SerializerEncoding encoding) throws IOException {
         // If the type is the 'Page' interface [@ReturnValueWireType(Page.class)] we will use the 'ItemPage' class.
         final Type wireResponseType = (wireType == Page.class)

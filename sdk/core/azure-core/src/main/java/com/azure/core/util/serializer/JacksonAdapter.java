@@ -22,11 +22,15 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -126,6 +130,17 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     @Override
+    public byte[] serializeToByteArray(Object object, SerializerEncoding encoding) throws IOException {
+        if (object == null) {
+            return new byte[0];
+        }
+
+        return (encoding == SerializerEncoding.XML)
+            ? xmlMapper.writeValueAsBytes(object)
+            : serializer().writeValueAsBytes(object);
+    }
+
+    @Override
     public String serializeRaw(Object object) {
         if (object == null) {
             return null;
@@ -135,6 +150,20 @@ public class JacksonAdapter implements SerializerAdapter {
         } catch (IOException ex) {
             logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
             return null;
+        }
+    }
+
+    @Override
+    public byte[] serializeRawToByteArray(Object object) {
+        if (object == null) {
+            return new byte[0];
+        }
+
+        try {
+            return serializeToByteArray(object, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
+            return new byte[0];
         }
     }
 
@@ -152,6 +181,36 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     @Override
+    public byte[] serializeListToByteArray(List<?> list, CollectionFormat format) {
+        if (list == null) {
+            return new byte[0];
+        }
+
+        byte[] delimiter = format.getDelimiter().getBytes(StandardCharsets.UTF_8);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        boolean addDelimiter = false;
+
+        for (Object element : list) {
+            if (addDelimiter) {
+                writeToStream(stream, delimiter);
+            }
+
+            writeToStream(stream, serializeRawToByteArray(element));
+            addDelimiter = true;
+        }
+
+        return stream.toByteArray();
+    }
+
+    private static void writeToStream(OutputStream stream, byte[] data) {
+        try {
+            stream.write(data);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
         if (CoreUtils.isNullOrEmpty(value)) {
@@ -164,6 +223,24 @@ public class JacksonAdapter implements SerializerAdapter {
                 return (T) xmlMapper.readValue(value, javaType);
             } else {
                 return (T) serializer().readValue(value, javaType);
+            }
+        } catch (JsonParseException jpe) {
+            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
+        }
+    }
+
+    @Override
+    public <T> T deserialize(byte[] value, Type type, SerializerEncoding encoding) throws IOException {
+        if (value == null || value.length == 0) {
+            return null;
+        }
+
+        JavaType javaType = createJavaType(type);
+        try {
+            if (encoding == SerializerEncoding.XML) {
+                return xmlMapper.readValue(value, javaType);
+            } else {
+                return serializer().readValue(value, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));

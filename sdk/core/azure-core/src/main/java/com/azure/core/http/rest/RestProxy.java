@@ -43,6 +43,7 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -269,8 +270,7 @@ public final class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
-                request.setBody(bodyContentString);
+                request.setBody(serializer.serializeToByteArray(bodyContentObject, SerializerEncoding.JSON));
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
@@ -286,9 +286,8 @@ public final class RestProxy implements InvocationHandler {
             } else if (bodyContentObject instanceof ByteBuffer) {
                 request.setBody(Flux.just((ByteBuffer) bodyContentObject));
             } else {
-                final String bodyContentString =
-                    serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()));
-                request.setBody(bodyContentString);
+                SerializerEncoding encoding = SerializerEncoding.fromHeaders(request.getHeaders());
+                request.setBody(serializer.serializeToByteArray(bodyContentObject, encoding));
             }
         }
 
@@ -346,51 +345,50 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
         final Mono<HttpDecodedResponse> asyncResult;
-        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
-            Mono<String> bodyAsString = decodedResponse.getSourceResponse().getBodyAsString();
-            //
-            asyncResult = bodyAsString.flatMap((Function<String, Mono<HttpDecodedResponse>>) responseContent -> {
-                // bodyAsString() emits non-empty string, now look for decoded version of same string
-                Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody(responseContent);
-                //
-                return decodedErrorBody
-                    .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
-                        // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception
-                        // body object
-                        Throwable exception =
-                            instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                                decodedResponse.getSourceResponse(),
-                                responseContent,
-                                responseDecodedErrorObject);
-                        return Mono.error(exception);
-                        //
-                    })
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
-                        // decodedBody() emits empty, indicate unable to decode 'responseContent',
-                        // create exception with un-decodable content string and without exception body object.
-                        Throwable exception =
-                            instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                                decodedResponse.getSourceResponse(),
-                                responseContent,
-                                null);
-                        return Mono.error(exception);
-                        //
-                    }));
-            }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
-                // bodyAsString() emits empty, indicate no body, create exception empty content string no exception
-                // body object.
-                Throwable exception =
-                    instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                        decodedResponse.getSourceResponse(),
-                        "",
-                        null);
-                return Mono.error(exception);
-                //
-            }));
-        } else {
-            asyncResult = Mono.just(decodedResponse);
+        if (methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+            return Mono.just(decodedResponse);
         }
-        return asyncResult;
+
+        Mono<byte[]> bodyAsByteArray = decodedResponse.getSourceResponse().getBodyAsByteArray();
+        //
+        return bodyAsByteArray.flatMap(responseContent -> {
+            // bodyAsString() emits non-empty string, now look for decoded version of same string
+            Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody(responseContent);
+            //
+            return decodedErrorBody
+                .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
+                    // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception
+                    // body object
+                    Throwable exception =
+                        instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                            decodedResponse.getSourceResponse(),
+                            new String(responseContent, StandardCharsets.UTF_8),
+                            responseDecodedErrorObject);
+                    return Mono.error(exception);
+                    //
+                })
+                .switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
+                    // decodedBody() emits empty, indicate unable to decode 'responseContent',
+                    // create exception with un-decodable content string and without exception body object.
+                    Throwable exception =
+                        instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                            decodedResponse.getSourceResponse(),
+                            new String(responseContent, StandardCharsets.UTF_8),
+                            null);
+                    return Mono.error(exception);
+                    //
+                }));
+        }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
+            // bodyAsString() emits empty, indicate no body, create exception empty content string no exception
+            // body object.
+            Throwable exception =
+                instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                    decodedResponse.getSourceResponse(),
+                    "",
+                    null);
+            return Mono.error(exception);
+            //
+        }));
     }
 
     private Mono<?> handleRestResponseReturnType(HttpDecodedResponse response, SwaggerMethodParser methodParser,

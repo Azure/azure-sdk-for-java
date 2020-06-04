@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -92,7 +94,7 @@ public class HttpResponseBodyDecoderTests {
 
     @ParameterizedTest
     @MethodSource("errorResponseSupplier")
-    public void errorResponse(String body, HttpResponse httpResponse, HttpResponseDecodeData decodeData,
+    public void errorResponse(byte[] body, HttpResponse httpResponse, HttpResponseDecodeData decodeData,
         boolean isEmpty, Object expected) {
         StepVerifier.FirstStep<Object> firstStep =
             StepVerifier.create(HttpResponseBodyDecoder.decode(body, httpResponse, new JacksonAdapter(), decodeData));
@@ -124,22 +126,27 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of(null, emptyResponse, expectedStatusCodes, true, null),
             Arguments.of(null, response, noExpectedStatusCodes, false, "expected"),
             Arguments.of(null, response, expectedStatusCodes, false, "expected"),
-            Arguments.of("\"expected\"", emptyResponse, noExpectedStatusCodes, false, "expected"),
-            Arguments.of("\"expected\"", emptyResponse, expectedStatusCodes, false, "expected"),
-            Arguments.of("\"not expected\"", response, noExpectedStatusCodes, false, "not expected"),
-            Arguments.of("\"not expected\"", response, expectedStatusCodes, false, "not expected"),
+            Arguments.of("\"expected\"".getBytes(StandardCharsets.UTF_8), emptyResponse, noExpectedStatusCodes, false,
+                "expected"),
+            Arguments.of("\"expected\"".getBytes(StandardCharsets.UTF_8), emptyResponse, expectedStatusCodes, false,
+                "expected"),
+            Arguments.of("\"not expected\"".getBytes(StandardCharsets.UTF_8), response, noExpectedStatusCodes, false,
+                "not expected"),
+            Arguments.of("\"not expected\"".getBytes(StandardCharsets.UTF_8), response, expectedStatusCodes, false,
+                "not expected"),
             Arguments.of(null, wrongGoodResponse, expectedStatusCodes, false, "good response"),
-            Arguments.of("\"bad response\"", wrongGoodResponse, expectedStatusCodes, false, "bad response"),
+            Arguments.of("\"bad response\"".getBytes(StandardCharsets.UTF_8), wrongGoodResponse, expectedStatusCodes,
+                false, "bad response"),
 
             // Improperly formatted JSON string causes MalformedValueException.
-            Arguments.of("expected", emptyResponse, noExpectedStatusCodes, true, null)
+            Arguments.of("expected".getBytes(StandardCharsets.UTF_8), emptyResponse, noExpectedStatusCodes, true, null)
         );
     }
 
     @Test
     public void ioExceptionInErrorDeserializationReturnsEmpty() throws IOException {
         JacksonAdapter ioExceptionThrower = mock(JacksonAdapter.class);
-        when(ioExceptionThrower.deserialize(any(), any(), any())).thenThrow(IOException.class);
+        when(ioExceptionThrower.deserialize(anyString(), any(), any())).thenThrow(IOException.class);
 
         HttpResponseDecodeData noExpectedStatusCodes = mock(HttpResponseDecodeData.class);
         when(noExpectedStatusCodes.getUnexpectedException(anyInt()))
@@ -333,8 +340,8 @@ public class HttpResponseBodyDecoderTests {
         when(decodeData.getReturnType()).thenReturn(String.class);
         when(decodeData.getReturnValueWireType()).thenReturn(String.class);
 
-        StepVerifier.create(HttpResponseBodyDecoder
-            .decode("malformed JSON string", response, new JacksonAdapter(), decodeData))
+        StepVerifier.create(HttpResponseBodyDecoder.decode("malformed JSON string".getBytes(StandardCharsets.UTF_8),
+            response, new JacksonAdapter(), decodeData))
             .verifyError(HttpResponseException.class);
     }
 
@@ -347,7 +354,7 @@ public class HttpResponseBodyDecoderTests {
         when(decodeData.getReturnValueWireType()).thenReturn(String.class);
 
         SerializerAdapter serializer = mock(SerializerAdapter.class);
-        when(serializer.deserialize(any(), any(), any())).thenThrow(IOException.class);
+        when(serializer.deserialize(any(byte[].class), any(), any())).thenThrow(IOException.class);
 
         StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, serializer, decodeData))
             .verifyError(HttpResponseException.class);
