@@ -3,7 +3,6 @@
 package com.azure.management.sql.implementation;
 
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
@@ -26,11 +25,6 @@ import java.util.Objects;
 public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImportExportResponse>
     implements SqlDatabaseExportRequest, SqlDatabaseExportRequest.SqlDatabaseExportRequestDefinition {
 
-    private final ClientLogger logger = new ClientLogger(getClass());
-    private static final String STORAGE_CONNECTION_STRING =
-        "DefaultEndpointsProtocol=https;" +
-            "AccountName=%s;" +
-            "AccountKey=%s";
     private final SqlDatabaseImpl sqlDatabase;
     private final SqlServerManager sqlServerManager;
     private ExportRequest inner;
