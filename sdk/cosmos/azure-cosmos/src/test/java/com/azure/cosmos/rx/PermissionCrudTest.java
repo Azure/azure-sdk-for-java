@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncPermission;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.models.CosmosContainerChildResourceKind;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosPermissionResponse;
@@ -44,7 +45,8 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosPermissionProperties permissionSettings = new CosmosPermissionProperties()
                 .setId(UUID.randomUUID().toString())
                 .setPermissionMode(PermissionMode.READ)
-                .setContainerName("AQAAAJ0fgTc=");
+                .setContainerName("AQAAAJ0fgTc=")
+                .setResourcePath(CosmosContainerChildResourceKind.ITEM, "doc1");
 
         Mono<CosmosPermissionResponse> createObservable = createdUser.createPermission(permissionSettings, null);
 
@@ -53,6 +55,8 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .withId(permissionSettings.getId())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionContainerName("AQAAAJ0fgTc=")
+                .withPermissionResourceKind(CosmosContainerChildResourceKind.ITEM)
+                .withPermissionResourceName("doc1")
                 .notNullEtag()
                 .build();
         validateSuccess(createObservable, validator);

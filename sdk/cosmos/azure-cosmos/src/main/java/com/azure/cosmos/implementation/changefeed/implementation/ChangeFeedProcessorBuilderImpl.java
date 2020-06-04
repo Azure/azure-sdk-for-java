@@ -188,7 +188,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
                         Integer estimatedLag = 0;
                         try {
                             currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
-                            estimatedLag = Integer.valueOf(latestLsn) - currentLsn + 1;
+                            estimatedLag = Integer.valueOf(latestLsn);
+                            estimatedLag = estimatedLag - currentLsn + 1;
                         } catch (NumberFormatException ex) {
                             logger.warn("Unexpected Cosmos LSN found", ex);
                             estimatedLag = -1;
