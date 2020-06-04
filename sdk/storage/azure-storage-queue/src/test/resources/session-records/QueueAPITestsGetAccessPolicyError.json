@@ -1,23 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetaccesspolicyerror22898faf2790f2ca?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetaccesspolicyerror21671dbd27ed439a?comp=acl",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b3d8526a-b388-4b31-a076-d171c52a3da2"
+      "x-ms-client-request-id" : "64927745-4c11-4321-b94e-4b1f0c3dd395"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "328",
-      "StatusCode" : "400",
-      "x-ms-request-id" : "ceb8207f-a003-006d-3200-3a426a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb8207f-a003-006d-3200-3a426a000000\nTime:2020-06-03T23:38:22.6015921Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
-      "Date" : "Wed, 03 Jun 2020 23:38:22 GMT",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "37a39df4-3003-009b-0d03-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39df4-3003-009b-0d03-3a8ca5000000\nTime:2020-06-04T00:04:59.8499401Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:04:59 GMT",
+      "x-ms-client-request-id" : "64927745-4c11-4321-b94e-4b1f0c3dd395",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetaccesspolicyerror22898faf2790f2ca" ]
+  "variables" : [ "queueapitestsgetaccesspolicyerror21671dbd27ed439a" ]
 }

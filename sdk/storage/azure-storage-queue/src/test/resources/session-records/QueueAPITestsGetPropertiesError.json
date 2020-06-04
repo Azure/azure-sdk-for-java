@@ -1,23 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetpropertieserror26575f2ecc9dd38a3?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetpropertieserror419637fdfec7ec819?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "57dcafaf-3f17-4535-a243-f61b8d3a42cf"
+      "x-ms-client-request-id" : "9c8819bc-67c2-424d-9d70-9d0a08be8f00"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "328",
-      "StatusCode" : "400",
-      "x-ms-request-id" : "ceb82049-a003-006d-0300-3a426a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb82049-a003-006d-0300-3a426a000000\nTime:2020-06-03T23:38:20.5286171Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
-      "Date" : "Wed, 03 Jun 2020 23:38:19 GMT",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "37a39d21-3003-009b-7903-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39d21-3003-009b-7903-3a8ca5000000\nTime:2020-06-04T00:04:55.1345227Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:04:54 GMT",
+      "x-ms-client-request-id" : "9c8819bc-67c2-424d-9d70-9d0a08be8f00",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetpropertieserror26575f2ecc9dd38a3" ]
+  "variables" : [ "queueapitestsgetpropertieserror419637fdfec7ec819" ]
 }

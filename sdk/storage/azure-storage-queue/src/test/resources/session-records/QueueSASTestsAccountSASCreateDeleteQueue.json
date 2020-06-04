@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsaccountsascreatedeletequeue008179abb2f8?sv=2019-02-02&ss=q&srt=sco&se=2020-06-04T23%3A41%3A04Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsaccountsascreatedeletequeue22694b6c5eb0?sv=2019-02-02&ss=q&srt=sco&se=2020-06-05T00%3A06%3A39Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7bb99160-b049-4dfd-a6a0-7fbff59f14e8"
+      "x-ms-client-request-id" : "a7906f4c-4d93-4af4-972f-51c35e2c6870"
     },
     "Response" : {
       "x-ms-version" : "2019-12-12",
@@ -13,18 +13,18 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "1b05ab6b-6003-005d-5900-3a4724000000",
-      "Date" : "Wed, 03 Jun 2020 23:41:03 GMT",
-      "x-ms-client-request-id" : "7bb99160-b049-4dfd-a6a0-7fbff59f14e8"
+      "x-ms-request-id" : "37a3ae0c-3003-009b-1504-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:06:39 GMT",
+      "x-ms-client-request-id" : "a7906f4c-4d93-4af4-972f-51c35e2c6870"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsaccountsascreatedeletequeue008179abb2f8?sv=2019-02-02&ss=q&srt=sco&se=2020-06-04T23%3A41%3A04Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsaccountsascreatedeletequeue22694b6c5eb0?sv=2019-02-02&ss=q&srt=sco&se=2020-06-05T00%3A06%3A39Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b28fc122-73db-4205-b68b-4bc066ef3c89"
+      "x-ms-client-request-id" : "a6c92ecb-a140-490e-ac1d-0ffb84cd6513"
     },
     "Response" : {
       "x-ms-version" : "2019-12-12",
@@ -32,11 +32,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "1b05ab6d-6003-005d-5a00-3a4724000000",
-      "Date" : "Wed, 03 Jun 2020 23:41:04 GMT",
-      "x-ms-client-request-id" : "b28fc122-73db-4205-b68b-4bc066ef3c89"
+      "x-ms-request-id" : "37a3ae11-3003-009b-1804-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:06:39 GMT",
+      "x-ms-client-request-id" : "a6c92ecb-a140-490e-ac1d-0ffb84cd6513"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queuesastestsaccountsascreatedeletequeue4509364776e6", "2020-06-03T23:41:04.731401Z", "queuesastestsaccountsascreatedeletequeue008179abb2f8" ]
+  "variables" : [ "queuesastestsaccountsascreatedeletequeue6570401aa8c5", "2020-06-04T00:06:39.531235400Z", "queuesastestsaccountsascreatedeletequeue22694b6c5eb0" ]
 }

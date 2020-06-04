@@ -1,23 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetinvalidmeta2960054a6453c244ca4",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetinvalidmeta252056fc2dc6c19cc04",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "11986887-b4ab-4feb-b455-eb8a5ca23f8e"
+      "x-ms-client-request-id" : "689af734-0a45-4be6-af04-f3a10d9106aa"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "328",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "37a39dd1-3003-009b-7203-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:04:58 GMT",
+      "x-ms-client-request-id" : "689af734-0a45-4be6-af04-f3a10d9106aa"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetinvalidmeta252056fc2dc6c19cc04?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8deae0fd-c86a-4921-a665-5580a8dc620b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "ceb82074-a003-006d-2900-3a426a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb82074-a003-006d-2900-3a426a000000\nTime:2020-06-03T23:38:22.2362432Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
-      "Date" : "Wed, 03 Jun 2020 23:38:21 GMT",
+      "x-ms-request-id" : "37a39dd3-3003-009b-7303-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:37a39dd3-3003-009b-7303-3a8ca5000000\nTime:2020-06-04T00:04:59.1234129Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:04:58 GMT",
+      "x-ms-client-request-id" : "8deae0fd-c86a-4921-a665-5580a8dc620b",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetinvalidmeta2960054a6453c244ca4" ]
+  "variables" : [ "queueapitestssetinvalidmeta252056fc2dc6c19cc04" ]
 }

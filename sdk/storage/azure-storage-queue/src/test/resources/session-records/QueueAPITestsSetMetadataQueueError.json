@@ -1,23 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetmetadataqueueerror821549490312b3a?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetmetadataqueueerror55457f214756d79?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "95fd542f-c9e8-4591-81d2-7c86f3cd5394"
+      "x-ms-client-request-id" : "8d12264b-5fb8-479c-b434-22ad721d808d"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "328",
-      "StatusCode" : "400",
-      "x-ms-request-id" : "ceb82069-a003-006d-2000-3a426a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb82069-a003-006d-2000-3a426a000000\nTime:2020-06-03T23:38:21.6887218Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
-      "Date" : "Wed, 03 Jun 2020 23:38:21 GMT",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "37a39db0-3003-009b-5c03-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39db0-3003-009b-5c03-3a8ca5000000\nTime:2020-06-04T00:04:58.1316908Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:04:57 GMT",
+      "x-ms-client-request-id" : "8d12264b-5fb8-479c-b434-22ad721d808d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetmetadataqueueerror821549490312b3a" ]
+  "variables" : [ "queueapitestssetmetadataqueueerror55457f214756d79" ]
 }

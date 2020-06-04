@@ -1,23 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetproperties30138555ecbd22ee842",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetproperties063207f8980f99f594b",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "2f772e10-3b10-4c52-a5d9-84ed8bba56c7"
+      "x-ms-client-request-id" : "d063fec7-e2cf-4b67-8736-e17b0a0d340e"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "328",
-      "StatusCode" : "400",
-      "x-ms-request-id" : "ceb82042-a003-006d-7c00-3a426a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:ceb82042-a003-006d-7c00-3a426a000000\nTime:2020-06-03T23:38:20.3184169Z</Message><HeaderName>x-ms-version</HeaderName><HeaderValue>2019-12-12</HeaderValue></Error>",
-      "Date" : "Wed, 03 Jun 2020 23:38:19 GMT",
-      "Content-Type" : "application/xml"
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "37a39d07-3003-009b-6a03-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:04:54 GMT",
+      "x-ms-client-request-id" : "d063fec7-e2cf-4b67-8736-e17b0a0d340e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetproperties063207f8980f99f594b?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "12287ef2-37c7-4be3-9034-34a9f85f3d3e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "x-ms-meta-metadata" : "value",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "x-ms-approximate-messages-count" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "37a39d0c-3003-009b-6d03-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:04:54 GMT",
+      "x-ms-client-request-id" : "12287ef2-37c7-4be3-9034-34a9f85f3d3e"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetproperties30138555ecbd22ee842" ]
+  "variables" : [ "queueapitestsgetproperties063207f8980f99f594b" ]
 }
