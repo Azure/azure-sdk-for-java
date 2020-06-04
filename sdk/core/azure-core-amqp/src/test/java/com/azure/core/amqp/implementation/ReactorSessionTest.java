@@ -75,7 +75,6 @@ public class ReactorSessionTest {
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT, retryPolicy);
 
-
     }
 
     @AfterEach
@@ -87,23 +86,6 @@ public class ReactorSessionTest {
         cbsNode = null;
 
         Mockito.framework().clearInlineMocks();
-    }
-
-    @Test
-    public void createTransaction() {
-
-        when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
-
-        StepVerifier.create(reactorSession.createTransaction())
-            .then(() -> handler.onSessionRemoteOpen(event))
-            .verifyComplete();
-        // Assert
-        verify(session, times(1)).open();
-
-        Assertions.assertSame(session, reactorSession.session());
-        Assertions.assertSame(retryPolicy, reactorSession.getRetryPolicy());
-        Assertions.assertEquals(NAME, reactorSession.getSessionName());
-        Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
     }
 
     @Test

@@ -225,6 +225,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
      * This will make the message available again for processing. Abandoning a message will increase the delivery count
      * on the message.
+     * <p><strong>Complete a Message with transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.abandonMessageWithTransaction}
      *
      * @param lockToken Lock token of the message.
      * @param propertiesToModify Properties to modify on the message.
@@ -317,6 +319,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     /**
      * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
      * service.
+     * <p><strong>Complete a Message with transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.completeMessageWithTransaction}
      *
      * @param lockToken Lock token of the message.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
@@ -1267,6 +1271,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all
      * operations that needs to be in this transaction.
      *
+     * <p><strong>Create a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.createTransaction}
+     *
      * @return a new transaction
      */
     public Mono<ServiceBusTransactionContext> createTransaction() {
@@ -1284,14 +1291,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     * <p><strong>Commit a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.commitTransaction}
      *
      * @param transactionContext to be committed.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     *
      * @return a completable {@link Mono}.
      */
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "commitTransaction")));
+        }
+        if (Objects.isNull(transactionContext)) {
+            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+        } else if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
         return connectionProcessor
@@ -1301,14 +1317,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     * <p><strong>Rollback a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.rollbackTransaction}
      *
      * @param transactionContext to be rollbacked.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     *
      * @return a completable {@link Mono}.
      */
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "rollbackTransaction")));
+        }
+        if (Objects.isNull(transactionContext)) {
+            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+        } else if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
         return connectionProcessor
