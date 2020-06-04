@@ -100,7 +100,7 @@ public class ManageSqlServerDnsAliases {
             System.out.println("Creating a SQL server for production related activities");
 
             SqlServer sqlServerForProd = azure.sqlServers().define(sqlServerForProdName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.US_EAST2)
                 .withExistingResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)

@@ -22,6 +22,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.management.appservice.AppServiceCertificateOrder;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AppServicePlan;
@@ -170,9 +172,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1306,12 +1310,19 @@ public final class Utils {
      * @throws Exception exception
      */
     public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws Exception {
-        Properties authSettings = new Properties();
-        try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
-            authSettings.load(credentialsFileStream);
-        }
+        String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
+        HashMap<String, String> auth = new HashMap<>();
 
-        return authSettings.getProperty("client");
+        if (content.startsWith("{")) {
+            auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+            return auth.get("clientId");
+        } else {
+            Properties authSettings = new Properties();
+            try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
+                authSettings.load(credentialsFileStream);
+            }
+            return authSettings.getProperty("client");
+        }
     }
 
     /**
@@ -1322,12 +1333,19 @@ public final class Utils {
      * @throws Exception exception
      */
     public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws Exception {
-        Properties authSettings = new Properties();
-        try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
-            authSettings.load(credentialsFileStream);
-        }
+        String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
+        HashMap<String, String> auth = new HashMap<>();
 
-        return authSettings.getProperty("key");
+        if (content.startsWith("{")) {
+            auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+            return auth.get("clientSecret");
+        } else {
+            Properties authSettings = new Properties();
+            try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
+                authSettings.load(credentialsFileStream);
+            }
+            return authSettings.getProperty("key");
+        }
     }
 //
 //    /**
@@ -1946,13 +1964,13 @@ public final class Utils {
     }
 
     /**
-     * Uploads a file to an Azure web app.
+     * Uploads a file to an Azure app service.
      *
-     * @param profile the publishing profile for the web app.
+     * @param profile the publishing profile for the app service.
      * @param fileName the name of the file on server
      * @param file the local file
      */
-    public static void uploadFileToWebApp(PublishingProfile profile, String fileName, InputStream file) {
+    public static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
@@ -1964,74 +1982,7 @@ public final class Utils {
         }
         try {
             ftpClient.connect(server);
-            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            for (String segment : path.split("/")) {
-                if (!ftpClient.changeWorkingDirectory(segment)) {
-                    ftpClient.makeDirectory(segment);
-                    ftpClient.changeWorkingDirectory(segment);
-                }
-            }
-            ftpClient.storeFile(fileName, file);
-            ftpClient.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Uploads a file to an Azure function app.
-     *
-     * @param profile the publishing profile for the web app.
-     * @param fileName the name of the file on server
-     * @param file the local file
-     */
-    public static void uploadFileToFunctionApp(PublishingProfile profile, String fileName, InputStream file) {
-        FTPClient ftpClient = new FTPClient();
-        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
-        String server = ftpUrlSegments[0];
-        String path = "site/wwwroot";
-        if (fileName.contains("/")) {
-            int lastslash = fileName.lastIndexOf('/');
-            path = path + "/" + fileName.substring(0, lastslash);
-            fileName = fileName.substring(lastslash + 1);
-        }
-        try {
-            ftpClient.connect(server);
-            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
-            ftpClient.setFileType(FTP.ASCII_FILE_TYPE);
-            for (String segment : path.split("/")) {
-                if (!ftpClient.changeWorkingDirectory(segment)) {
-                    ftpClient.makeDirectory(segment);
-                    ftpClient.changeWorkingDirectory(segment);
-                }
-            }
-            ftpClient.storeFile(fileName, file);
-            ftpClient.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Uploads a file to an Azure web app.
-     *
-     * @param profile the publishing profile for the web app.
-     * @param fileName the name of the file on server
-     * @param file the local file
-     */
-    public static void uploadFileToWebAppWwwRoot(PublishingProfile profile, String fileName, InputStream file) {
-        FTPClient ftpClient = new FTPClient();
-        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
-        String server = ftpUrlSegments[0];
-        String path = "./site/wwwroot";
-        if (fileName.contains("/")) {
-            int lastslash = fileName.lastIndexOf('/');
-            path = path + "/" + fileName.substring(0, lastslash);
-            fileName = fileName.substring(lastslash + 1);
-        }
-        try {
-            ftpClient.connect(server);
+            ftpClient.enterLocalPassiveMode();
             ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             for (String segment : path.split("/")) {

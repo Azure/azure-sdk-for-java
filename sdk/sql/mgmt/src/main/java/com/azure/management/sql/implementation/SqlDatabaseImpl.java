@@ -53,6 +53,8 @@ import com.azure.management.sql.models.RestorePointInner;
 import com.azure.management.sql.models.ServiceTierAdvisorInner;
 import com.azure.management.sql.models.TransparentDataEncryptionInner;
 import com.azure.management.storage.models.StorageAccount;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /** Implementation for SqlDatabase and its parent interfaces. */
 class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
@@ -636,7 +637,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             if (this.importRequestInner.serviceObjectiveName() == null && this.inner().sku() != null) {
                 this
                     .importRequestInner
-                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.requestedServiceObjectiveName()));
+                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.inner().sku().name()));
             }
             if (this.importRequestInner.maxSizeBytes() == null) {
                 this.importRequestInner.withMaxSizeBytes(String.valueOf(this.inner().maxSizeBytes()));
@@ -647,18 +648,17 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .databases()
                 .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
-                .flatMap(
-                    importExportResponseInner -> {
-                        if (self.elasticPoolId() != null) {
-                            self.importRequestInner = null;
-                            return self
-                                .withExistingElasticPoolId(self.elasticPoolId())
-                                .withPatchUpdate()
-                                .updateResourceAsync();
-                        } else {
-                            return self.refreshAsync();
-                        }
-                    });
+                .then(Mono.defer(() -> {
+                    if (self.elasticPoolId() != null) {
+                        self.importRequestInner = null;
+                        return self
+                            .withExistingElasticPoolId(self.elasticPoolId())
+                            .withPatchUpdate()
+                            .updateResourceAsync();
+                    } else {
+                        return self.refreshAsync();
+                    }
+                }));
         } else {
             return this
                 .sqlServerManager
