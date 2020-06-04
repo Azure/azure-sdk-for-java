@@ -36,15 +36,14 @@ public class DeploymentResourceProperties {
 
     /**
      * Provisioning state of the Deployment. Possible values include:
-     * 'Creating', 'Processing', 'Succeeded', 'Failed'.
+     * 'Creating', 'Updating', 'Succeeded', 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentResourceProvisioningState provisioningState;
 
     /**
      * Status of the Deployment. Possible values include: 'Unknown', 'Stopped',
-     * 'Running', 'Failed', 'Processing', 'Allocating', 'Upgrading',
-     * 'Compiling'.
+     * 'Running', 'Failed', 'Allocating', 'Upgrading', 'Compiling'.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentResourceStatus status;
@@ -117,7 +116,7 @@ public class DeploymentResourceProperties {
     }
 
     /**
-     * Get provisioning state of the Deployment. Possible values include: 'Creating', 'Processing', 'Succeeded', 'Failed'.
+     * Get provisioning state of the Deployment. Possible values include: 'Creating', 'Updating', 'Succeeded', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -126,7 +125,7 @@ public class DeploymentResourceProperties {
     }
 
     /**
-     * Get status of the Deployment. Possible values include: 'Unknown', 'Stopped', 'Running', 'Failed', 'Processing', 'Allocating', 'Upgrading', 'Compiling'.
+     * Get status of the Deployment. Possible values include: 'Unknown', 'Stopped', 'Running', 'Failed', 'Allocating', 'Upgrading', 'Compiling'.
      *
      * @return the status value
      */

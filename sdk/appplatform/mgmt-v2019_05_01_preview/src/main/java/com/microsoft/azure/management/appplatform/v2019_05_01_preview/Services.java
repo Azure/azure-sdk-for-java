@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appplatform.v2019_05_01_preview;
 
 import rx.Completable;
 import rx.Observable;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.implementation.ServiceResourceInner;
 
 /**
  * Type representing Services.
@@ -30,10 +31,11 @@ public interface Services {
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
+     * @param resource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ServiceResource> createOrUpdateAsync(String resourceGroupName, String serviceName);
+    Observable<ServiceResource> createOrUpdateAsync(String resourceGroupName, String serviceName, ServiceResourceInner resource);
 
     /**
      * Operation to delete a Service.
@@ -50,10 +52,11 @@ public interface Services {
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
+     * @param resource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ServiceResource> updateAsync(String resourceGroupName, String serviceName);
+    Observable<ServiceResource> updateAsync(String resourceGroupName, String serviceName, ServiceResourceInner resource);
 
     /**
      * Regenerate a test key for a Service.
