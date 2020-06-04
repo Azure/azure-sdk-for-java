@@ -3,13 +3,14 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.DiskVolumeEncryptionMonitor;
-import com.azure.management.compute.EncryptionStatus;
-import com.azure.management.compute.InstanceViewStatus;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
-import com.azure.management.compute.models.VirtualMachineInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.DiskVolumeEncryptionMonitor;
+import com.azure.management.compute.models.EncryptionStatus;
+import com.azure.management.compute.models.InstanceViewStatus;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,16 +87,16 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager)
+                                        virtualMachine.id(), computeManager)
                                     : new WindowsVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager);
+                                        virtualMachine.id(), computeManager);
                         } else {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeLegacyEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager)
+                                        virtualMachine.id(), computeManager)
                                     : new WindowsVolumeLegacyEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager);
+                                        virtualMachine.id(), computeManager);
                         }
                         return self.resolvedEncryptionMonitor.refreshAsync();
                     })
@@ -111,7 +112,7 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
         return computeManager
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .getByResourceGroupAsync(ResourceUtils.groupFromResourceId(vmId), ResourceUtils.nameFromResourceId(vmId))
             .onErrorResume(e -> Mono.error(new Exception(String.format("VM with id '%s' not found.", vmId))));
     }

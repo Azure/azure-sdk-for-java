@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GenericResourceFilter model. */
 @Fluent
 public final class GenericResourceFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericResourceFilter.class);
+
     /*
      * The resource type.
      */
@@ -20,13 +24,13 @@ public final class GenericResourceFilter {
      * The tag name.
      */
     @JsonProperty(value = "tagname")
-    private String tagname;
+    private String tagName;
 
     /*
      * The tag value.
      */
     @JsonProperty(value = "tagvalue")
-    private String tagvalue;
+    private String tagValue;
 
     /**
      * Get the resourceType property: The resource type.
@@ -49,42 +53,50 @@ public final class GenericResourceFilter {
     }
 
     /**
-     * Get the tagname property: The tag name.
+     * Get the tagName property: The tag name.
      *
-     * @return the tagname value.
+     * @return the tagName value.
      */
-    public String tagname() {
-        return this.tagname;
+    public String tagName() {
+        return this.tagName;
     }
 
     /**
-     * Set the tagname property: The tag name.
+     * Set the tagName property: The tag name.
      *
-     * @param tagname the tagname value to set.
+     * @param tagName the tagName value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter withTagname(String tagname) {
-        this.tagname = tagname;
+    public GenericResourceFilter withTagName(String tagName) {
+        this.tagName = tagName;
         return this;
     }
 
     /**
-     * Get the tagvalue property: The tag value.
+     * Get the tagValue property: The tag value.
      *
-     * @return the tagvalue value.
+     * @return the tagValue value.
      */
-    public String tagvalue() {
-        return this.tagvalue;
+    public String tagValue() {
+        return this.tagValue;
     }
 
     /**
-     * Set the tagvalue property: The tag value.
+     * Set the tagValue property: The tag value.
      *
-     * @param tagvalue the tagvalue value to set.
+     * @param tagValue the tagValue value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter withTagvalue(String tagvalue) {
-        this.tagvalue = tagvalue;
+    public GenericResourceFilter withTagValue(String tagValue) {
+        this.tagValue = tagValue;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

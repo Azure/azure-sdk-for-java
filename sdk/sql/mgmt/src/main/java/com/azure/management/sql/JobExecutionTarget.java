@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JobExecutionTarget model. */
 @Immutable
 public final class JobExecutionTarget {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobExecutionTarget.class);
+
     /*
      * The type of the target.
      */
@@ -53,5 +57,13 @@ public final class JobExecutionTarget {
      */
     public String databaseName() {
         return this.databaseName;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

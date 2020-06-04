@@ -85,7 +85,7 @@ public final class DeployUsingARMTemplate {
                 for (DeploymentOperation operation : operations) {
                     if (operation.targetResource() != null) {
                         String operationTxt = String.format("id:%s name:%s type: %s provisioning-state:%s code: %s msg: %s",
-                                operation.targetResource().getId(),
+                                operation.targetResource().id(),
                                 operation.targetResource().resourceName(),
                                 operation.targetResource().resourceType(),
                                 operation.provisioningState(),
@@ -124,7 +124,7 @@ public final class DeployUsingARMTemplate {
             //=================================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

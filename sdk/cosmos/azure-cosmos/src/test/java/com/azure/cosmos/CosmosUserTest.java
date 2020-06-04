@@ -3,9 +3,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -93,7 +93,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosPagedIterable<CosmosUserProperties> feedResponseIterator = createdDatabase.readAllUsers();
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-        CosmosPagedIterable<CosmosUserProperties> feedResponseIterator2 = createdDatabase.readAllUsers(new FeedOptions());
+        CosmosPagedIterable<CosmosUserProperties> feedResponseIterator2 = createdDatabase.readAllUsers(new QueryRequestOptions());
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
     }
@@ -105,15 +105,15 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", userProperties.getId());
-        FeedOptions feedOptions = new FeedOptions();
+        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
 
         CosmosPagedIterable<CosmosUserProperties> feedResponseIterator1 =
-                createdDatabase.queryUsers(query, feedOptions);
+                createdDatabase.queryUsers(query, queryRequestOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<CosmosUserProperties> feedResponseIterator2 =
-                createdDatabase.queryUsers(query, feedOptions);
+                createdDatabase.queryUsers(query, queryRequestOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
     }

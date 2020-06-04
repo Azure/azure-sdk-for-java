@@ -11,20 +11,30 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 /**
  * Tests the metadata operations such as fetching partition properties and event hub properties.
  */
+@Tag(TestUtils.INTEGRATION)
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
-    private final String[] expectedPartitionIds = new String[]{"0", "1", "2"};
+    private final List<String> expectedPartitionIds;
     private EventHubAsyncClient client;
     private String eventHubName;
 
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
+
+        expectedPartitionIds = IntStream.range(0, NUMBER_OF_PARTITIONS)
+            .mapToObj(String::valueOf)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +58,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .assertNext(properties -> {
                 Assertions.assertNotNull(properties);
                 Assertions.assertEquals(eventHubName, properties.getName());
-                Assertions.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().stream().count());
+                Assertions.assertEquals(expectedPartitionIds.size(), properties.getPartitionIds().stream().count());
             }).verifyComplete();
     }
 
@@ -59,7 +69,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionIds() {
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())
-            .expectNextCount(expectedPartitionIds.length)
+            .expectNextCount(expectedPartitionIds.size())
             .verifyComplete();
     }
 
@@ -95,6 +105,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
+            .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
+            .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .verifyComplete();
     }
 
@@ -107,12 +119,11 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
-        final EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
-            .buildAsyncClient();
 
         // Act & Assert
-        try {
+        try (EventHubAsyncClient invalidClient = createBuilder()
+            .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
+            .buildAsyncClient()) {
             StepVerifier.create(invalidClient.getProperties())
                 .expectErrorSatisfies(error -> {
                     Assertions.assertTrue(error instanceof AmqpException);
@@ -123,8 +134,6 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                     Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
                 })
                 .verify();
-        } finally {
-            invalidClient.close();
         }
     }
 
@@ -137,12 +146,11 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential validCredentials = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
-        final EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
-            .buildAsyncClient();
 
         // Act & Assert
-        try {
+        try (EventHubAsyncClient invalidClient = createBuilder()
+            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
+            .buildAsyncClient()) {
             StepVerifier.create(invalidClient.getPartitionIds())
                 .expectErrorSatisfies(error -> {
                     Assertions.assertTrue(error instanceof AmqpException);
@@ -153,8 +161,6 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                     Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
                 })
                 .verify();
-        } finally {
-            invalidClient.close();
         }
     }
 }

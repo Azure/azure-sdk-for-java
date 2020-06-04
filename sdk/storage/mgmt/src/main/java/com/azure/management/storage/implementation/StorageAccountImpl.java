@@ -6,28 +6,31 @@ package com.azure.management.storage.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import com.azure.management.storage.AccessTier;
-import com.azure.management.storage.AzureFilesIdentityBasedAuthentication;
-import com.azure.management.storage.CustomDomain;
-import com.azure.management.storage.DirectoryServiceOptions;
-import com.azure.management.storage.Encryption;
-import com.azure.management.storage.Identity;
-import com.azure.management.storage.Kind;
-import com.azure.management.storage.LargeFileSharesState;
-import com.azure.management.storage.ProvisioningState;
-import com.azure.management.storage.PublicEndpoints;
-import com.azure.management.storage.Sku;
-import com.azure.management.storage.SkuName;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountCreateParameters;
-import com.azure.management.storage.StorageAccountEncryptionKeySource;
-import com.azure.management.storage.StorageAccountEncryptionStatus;
-import com.azure.management.storage.StorageAccountKey;
-import com.azure.management.storage.StorageAccountSkuType;
-import com.azure.management.storage.StorageAccountUpdateParameters;
-import com.azure.management.storage.StorageService;
-import com.azure.management.storage.models.StorageAccountInner;
-import com.azure.management.storage.models.StorageAccountsInner;
+import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.StorageAccountsClient;
+import com.azure.management.storage.models.AccessTier;
+import com.azure.management.storage.models.AccountStatuses;
+import com.azure.management.storage.models.AzureFilesIdentityBasedAuthentication;
+import com.azure.management.storage.models.CustomDomain;
+import com.azure.management.storage.models.DirectoryServiceOptions;
+import com.azure.management.storage.models.Encryption;
+import com.azure.management.storage.models.Identity;
+import com.azure.management.storage.models.Kind;
+import com.azure.management.storage.models.LargeFileSharesState;
+import com.azure.management.storage.models.ProvisioningState;
+import com.azure.management.storage.models.PublicEndpoints;
+import com.azure.management.storage.models.Sku;
+import com.azure.management.storage.models.SkuName;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccountCreateParameters;
+import com.azure.management.storage.models.StorageAccountEncryptionKeySource;
+import com.azure.management.storage.models.StorageAccountEncryptionStatus;
+import com.azure.management.storage.models.StorageAccountKey;
+import com.azure.management.storage.models.StorageAccountSkuType;
+import com.azure.management.storage.models.StorageAccountUpdateParameters;
+import com.azure.management.storage.models.StorageService;
+import com.azure.management.storage.fluent.inner.StorageAccountInner;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -203,7 +206,7 @@ class StorageAccountImpl
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
@@ -218,7 +221,7 @@ class StorageAccountImpl
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
@@ -237,7 +240,7 @@ class StorageAccountImpl
 
     @Override
     protected Mono<StorageAccountInner> getInnerAsync() {
-        return this.manager().inner().storageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getStorageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -499,12 +502,12 @@ class StorageAccountImpl
     public Mono<StorageAccount> createResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
         createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().getTags());
-        final StorageAccountsInner client = this.manager().inner().storageAccounts();
+        createParameters.withTags(this.inner().tags());
+        final StorageAccountsClient client = this.manager().inner().getStorageAccounts();
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .createAsync(this.resourceGroupName(), this.name(), createParameters)
             .flatMap(
                 storageAccountInner ->
@@ -517,11 +520,11 @@ class StorageAccountImpl
     @Override
     public Mono<StorageAccount> updateResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
-        updateParameters.withTags(this.inner().getTags());
+        updateParameters.withTags(this.inner().tags());
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .updateAsync(resourceGroupName(), this.name(), updateParameters)
             .map(innerToFluentMap(this))
             .doOnNext(storageAccount -> clearWrapperProperties());

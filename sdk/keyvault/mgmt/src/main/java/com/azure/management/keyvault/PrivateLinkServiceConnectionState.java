@@ -5,11 +5,15 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateLinkServiceConnectionState model. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
+
     /*
      * Indicates whether the connection has been approved, rejected or removed
      * by the key vault owner.
@@ -92,5 +96,13 @@ public final class PrivateLinkServiceConnectionState {
     public PrivateLinkServiceConnectionState withActionRequired(String actionRequired) {
         this.actionRequired = actionRequired;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -4,13 +4,12 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.keyvault.implementation.KeyVaultManager;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.PublicIPSkuType;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.network.implementation.NetworkManager;
@@ -19,7 +18,7 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
@@ -128,10 +127,10 @@ public abstract class ComputeManagementTest extends TestBase {
         final String backendPoolName = loadBalancerName + "-BAP1";
         final String natPoolName = loadBalancerName + "-INP1";
 
-        PublicIPAddress publicIPAddress =
+        PublicIpAddress publicIPAddress =
             this
                 .networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(publicIpName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -161,7 +160,7 @@ public abstract class ComputeManagementTest extends TestBase {
                 .attach()
                 // Explicitly define the frontend
                 .definePublicFrontend(frontendName)
-                .withExistingPublicIPAddress(publicIPAddress)
+                .withExistingPublicIpAddress(publicIPAddress)
                 .attach()
                 // Add an HTTP probe
                 .defineHttpProbe("httpProbe")
@@ -186,10 +185,10 @@ public abstract class ComputeManagementTest extends TestBase {
         PublicIPSkuType publicIPSkuType =
             lbSkuType.equals(LoadBalancerSkuType.BASIC) ? PublicIPSkuType.BASIC : PublicIPSkuType.STANDARD;
 
-        PublicIPAddress publicIPAddress =
+        PublicIpAddress publicIPAddress =
             this
                 .networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(publicIPName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -240,7 +239,7 @@ public abstract class ComputeManagementTest extends TestBase {
 
                 // Explicitly define the frontend
                 .definePublicFrontend(frontendName)
-                .withExistingPublicIPAddress(publicIPAddress) // Frontend with PIP means internet-facing load-balancer
+                .withExistingPublicIpAddress(publicIPAddress) // Frontend with PIP means internet-facing load-balancer
                 .attach()
 
                 // Add two probes one per rule

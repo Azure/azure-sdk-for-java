@@ -7,19 +7,41 @@ package com.azure.management.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.resources.EnforcementMode;
+import com.azure.management.resources.Identity;
+import com.azure.management.resources.ParameterValuesValue;
 import com.azure.management.resources.PolicySku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The PolicyAssignment model. */
 @JsonFlatten
 @Fluent
 public class PolicyAssignmentInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentInner.class);
+
     /*
-     * The policy sku.
+     * The policy sku. This property is optional, obsolete, and will be
+     * ignored.
      */
     @JsonProperty(value = "sku")
     private PolicySku sku;
+
+    /*
+     * The location of the policy assignment. Only required when utilizing
+     * managed identity.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
+     * The managed identity associated with the policy assignment.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /*
      * The display name of the policy assignment.
@@ -28,7 +50,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     private String displayName;
 
     /*
-     * The ID of the policy definition.
+     * The ID of the policy definition or policy set definition being assigned.
      */
     @JsonProperty(value = "properties.policyDefinitionId")
     private String policyDefinitionId;
@@ -46,10 +68,11 @@ public class PolicyAssignmentInner extends ProxyResource {
     private List<String> notScopes;
 
     /*
-     * Required if a parameter is used in policy rule.
+     * The parameter values for the assigned policy rule. The keys are the
+     * parameter names.
      */
     @JsonProperty(value = "properties.parameters")
-    private Object parameters;
+    private Map<String, ParameterValuesValue> parameters;
 
     /*
      * This message will be part of response in case of policy violation.
@@ -58,13 +81,21 @@ public class PolicyAssignmentInner extends ProxyResource {
     private String description;
 
     /*
-     * The policy assignment metadata.
+     * The policy assignment metadata. Metadata is an open ended object and is
+     * typically a collection of key value pairs.
      */
     @JsonProperty(value = "properties.metadata")
     private Object metadata;
 
+    /*
+     * The policy assignment enforcement mode. Possible values are Default and
+     * DoNotEnforce.
+     */
+    @JsonProperty(value = "properties.enforcementMode")
+    private EnforcementMode enforcementMode;
+
     /**
-     * Get the sku property: The policy sku.
+     * Get the sku property: The policy sku. This property is optional, obsolete, and will be ignored.
      *
      * @return the sku value.
      */
@@ -73,13 +104,53 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the sku property: The policy sku.
+     * Set the sku property: The policy sku. This property is optional, obsolete, and will be ignored.
      *
      * @param sku the sku value to set.
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withSku(PolicySku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location of the policy assignment. Only required when utilizing managed identity.
+     *
+     * @param location the location value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The managed identity associated with the policy assignment.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed identity associated with the policy assignment.
+     *
+     * @param identity the identity value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withIdentity(Identity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -104,7 +175,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the policyDefinitionId property: The ID of the policy definition.
+     * Get the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
      *
      * @return the policyDefinitionId value.
      */
@@ -113,7 +184,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the policyDefinitionId property: The ID of the policy definition.
+     * Set the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
      *
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyAssignmentInner object itself.
@@ -164,21 +235,21 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the parameters property: Required if a parameter is used in policy rule.
+     * Get the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
      *
      * @return the parameters value.
      */
-    public Object parameters() {
+    public Map<String, ParameterValuesValue> parameters() {
         return this.parameters;
     }
 
     /**
-     * Set the parameters property: Required if a parameter is used in policy rule.
+     * Set the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
      *
      * @param parameters the parameters value to set.
      * @return the PolicyAssignmentInner object itself.
      */
-    public PolicyAssignmentInner withParameters(Object parameters) {
+    public PolicyAssignmentInner withParameters(Map<String, ParameterValuesValue> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -204,7 +275,8 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the metadata property: The policy assignment metadata.
+     * Get the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
+     * collection of key value pairs.
      *
      * @return the metadata value.
      */
@@ -213,7 +285,8 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the metadata property: The policy assignment metadata.
+     * Set the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
+     * collection of key value pairs.
      *
      * @param metadata the metadata value to set.
      * @return the PolicyAssignmentInner object itself.
@@ -221,5 +294,44 @@ public class PolicyAssignmentInner extends ProxyResource {
     public PolicyAssignmentInner withMetadata(Object metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
+     * DoNotEnforce.
+     *
+     * @return the enforcementMode value.
+     */
+    public EnforcementMode enforcementMode() {
+        return this.enforcementMode;
+    }
+
+    /**
+     * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
+     * DoNotEnforce.
+     *
+     * @param enforcementMode the enforcementMode value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withEnforcementMode(EnforcementMode enforcementMode) {
+        this.enforcementMode = enforcementMode;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> e.validate());
+        }
     }
 }

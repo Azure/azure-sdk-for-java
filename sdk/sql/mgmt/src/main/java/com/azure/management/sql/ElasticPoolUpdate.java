@@ -6,6 +6,8 @@ package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -13,6 +15,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class ElasticPoolUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolUpdate.class);
+
     /*
      * An ARM Resource SKU.
      */
@@ -171,5 +175,19 @@ public class ElasticPoolUpdate {
     public ElasticPoolUpdate withLicenseType(ElasticPoolLicenseType licenseType) {
         this.licenseType = licenseType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (perDatabaseSettings() != null) {
+            perDatabaseSettings().validate();
+        }
     }
 }

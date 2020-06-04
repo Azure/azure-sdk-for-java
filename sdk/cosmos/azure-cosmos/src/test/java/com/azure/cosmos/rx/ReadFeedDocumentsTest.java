@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -37,10 +37,11 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 2;
 
-        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPagesIsGreaterThanOrEqualTo(1)
@@ -57,9 +58,10 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     public void readDocuments_withoutEnableCrossPartitionQuery() {
         // With introduction of queryplan, crosspartition need not be enabled anymore.
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 2;
-        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator =
             new FeedResponseListValidator.Builder<CosmosItemProperties>()
                                                         .totalSize(createdDocuments.size())
@@ -77,8 +79,6 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
-    // TODO (DANOBLE) ReadFeedDocumentsTest initialization consistently times out in CI environments.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6379
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT, alwaysRun = true)
     public void before_ReadFeedDocumentsTest() {
         client = getClientBuilder().buildAsyncClient();

@@ -8,8 +8,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
 import com.azure.management.network.ConnectivityCheck;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkPeering;
@@ -211,7 +211,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -9,8 +9,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.ComputeResourceType;
-import com.azure.management.compute.ComputeSku;
+import com.azure.management.compute.models.ComputeResourceType;
+import com.azure.management.compute.models.ComputeSku;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -55,7 +55,6 @@ public final class ListComputeSkus {
             } else if (sku.resourceType().equals(ComputeResourceType.SNAPSHOTS)) {
                 size = sku.diskSkuType().toString();
             }
-            Map<Region, Set<AvailabilityZoneId>> regionZones = sku.zones();
             System.out.println(String.format(format, sku.name(), sku.resourceType(), size, regionZoneToString(sku.zones())));
         }
 
@@ -117,7 +116,7 @@ public final class ListComputeSkus {
             //=================================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -5,15 +5,16 @@ package com.azure.management.storage.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.management.storage.BlobTypes;
-import com.azure.management.storage.ManagementPolicy;
-import com.azure.management.storage.ManagementPolicyBaseBlob;
-import com.azure.management.storage.ManagementPolicyRule;
-import com.azure.management.storage.ManagementPolicySchema;
-import com.azure.management.storage.ManagementPolicySnapShot;
-import com.azure.management.storage.PolicyRule;
-import com.azure.management.storage.models.ManagementPoliciesInner;
-import com.azure.management.storage.models.ManagementPolicyInner;
+import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.ManagementPoliciesClient;
+import com.azure.management.storage.models.BlobTypes;
+import com.azure.management.storage.models.ManagementPolicy;
+import com.azure.management.storage.models.ManagementPolicyBaseBlob;
+import com.azure.management.storage.models.ManagementPolicyRule;
+import com.azure.management.storage.models.ManagementPolicySchema;
+import com.azure.management.storage.models.ManagementPolicySnapShot;
+import com.azure.management.storage.models.PolicyRule;
+import com.azure.management.storage.fluent.inner.ManagementPolicyInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,13 +41,13 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     }
 
     ManagementPolicyImpl(ManagementPolicyInner inner, StorageManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.accountName = inner.getName();
+        this.accountName = inner.name();
         // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.accountName = IdParsingUtils.getValueFromIdByName(inner.getId(), "storageAccounts");
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
         //
         this.cpolicy = new ManagementPolicySchema();
         this.upolicy = new ManagementPolicySchema();
@@ -59,7 +60,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> createResourceAsync() {
-        ManagementPoliciesInner client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, cpolicy)
             .map(
@@ -72,7 +73,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> updateResourceAsync() {
-        ManagementPoliciesInner client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, upolicy)
             .map(
@@ -85,13 +86,13 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     protected Mono<ManagementPolicyInner> getInnerAsync() {
-        ManagementPoliciesInner client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client.getAsync(this.resourceGroupName, this.accountName);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     private void resetCreateUpdateParameters() {
@@ -101,7 +102,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -111,7 +112,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -121,7 +122,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override

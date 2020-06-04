@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ElasticPoolPerformanceLevelCapability model. */
 @Fluent
 public final class ElasticPoolPerformanceLevelCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolPerformanceLevelCapability.class);
+
     /*
      * The performance level for the pool.
      */
@@ -186,5 +190,34 @@ public final class ElasticPoolPerformanceLevelCapability {
     public ElasticPoolPerformanceLevelCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (performanceLevel() != null) {
+            performanceLevel().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (supportedLicenseTypes() != null) {
+            supportedLicenseTypes().forEach(e -> e.validate());
+        }
+        if (includedMaxSize() != null) {
+            includedMaxSize().validate();
+        }
+        if (supportedMaxSizes() != null) {
+            supportedMaxSizes().forEach(e -> e.validate());
+        }
+        if (supportedPerDatabaseMaxSizes() != null) {
+            supportedPerDatabaseMaxSizes().forEach(e -> e.validate());
+        }
+        if (supportedPerDatabaseMaxPerformanceLevels() != null) {
+            supportedPerDatabaseMaxPerformanceLevels().forEach(e -> e.validate());
+        }
     }
 }

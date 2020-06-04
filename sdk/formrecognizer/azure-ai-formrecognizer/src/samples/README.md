@@ -34,6 +34,8 @@ The following sections provide code samples covering common scenario operations 
   - [TrainUnlabeledModel][train_unlabeled_model] and [TrainUnlabeledModelAsync][train_unlabeled_model_async]
 - Manage the custom models in your account
   - [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]
+- Copy custom model between Form Recognizer resources
+  - [CopyModel][copy_model] and [CopyModelAsync][copy_model_async]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -74,9 +76,11 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [recognize_content_async]: java/com/azure/ai/formrecognizer/RecognizeContentAsync.java
 [recognize_custom_forms]: java/com/azure/ai/formrecognizer/RecognizeCustomForms.java
 [recognize_custom_forms_async]: java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
-[train_unlabeled_model]: java/com/azure/ai/formrecognizer/TrainUnlabeledModel.java
-[train_unlabeled_model_async]: java/com/azure/ai/formrecognizer/TrainUnlabeledModelAsync.java
-[train_labeled_model]: java/com/azure/ai/formrecognizer/TrainLabeledModel.java
-[train_labeled_model_async]: java/com/azure/ai/formrecognizer/TrainLabeledModelAsync.java
+[train_unlabeled_model]: java/com/azure/ai/formrecognizer/TrainModelWithoutLabels.java
+[train_unlabeled_model_async]: java/com/azure/ai/formrecognizer/TrainModelWithoutLabels.java
+[train_labeled_model]: java/com/azure/ai/formrecognizer/TrainModelWithLabels.java
+[train_labeled_model_async]: java/com/azure/ai/formrecognizer/TrainModelWithLabelsAsync.java
+[copy_model]: java/com/azure/ai/formrecognizer/CopyModel.java
+[copy_model_async]: java/com/azure/ai/formrecognizer/CopyModelAsync.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2FREADME.png)

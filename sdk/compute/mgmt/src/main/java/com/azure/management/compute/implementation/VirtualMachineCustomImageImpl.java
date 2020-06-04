@@ -4,18 +4,19 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.HyperVGenerationTypes;
-import com.azure.management.compute.ImageDataDisk;
-import com.azure.management.compute.ImageOSDisk;
-import com.azure.management.compute.ImageStorageProfile;
-import com.azure.management.compute.OperatingSystemStateTypes;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.Snapshot;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineCustomImage;
-import com.azure.management.compute.models.ImageInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.HyperVGenerationTypes;
+import com.azure.management.compute.models.ImageDataDisk;
+import com.azure.management.compute.models.ImageOSDisk;
+import com.azure.management.compute.models.ImageStorageProfile;
+import com.azure.management.compute.models.OperatingSystemStateTypes;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.Snapshot;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.fluent.inner.ImageInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -51,7 +52,7 @@ class VirtualMachineCustomImageImpl
         if (this.inner().sourceVirtualMachine() == null) {
             return null;
         }
-        return this.inner().sourceVirtualMachine().getId();
+        return this.inner().sourceVirtualMachine().id();
     }
 
     @Override
@@ -76,7 +77,7 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public VirtualMachineCustomImageImpl fromVirtualMachine(String virtualMachineId) {
-        this.inner().withSourceVirtualMachine(new SubResource().setId(virtualMachineId));
+        this.inner().withSourceVirtualMachine(new SubResource().withId(virtualMachineId));
         return this;
     }
 
@@ -108,7 +109,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.WINDOWS)
-            .withSnapshot(new SubResource().setId(sourceSnapshotId));
+            .withSnapshot(new SubResource().withId(sourceSnapshotId));
         return this;
     }
 
@@ -119,7 +120,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.LINUX)
-            .withSnapshot(new SubResource().setId(sourceSnapshotId));
+            .withSnapshot(new SubResource().withId(sourceSnapshotId));
 
         return this;
     }
@@ -143,7 +144,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.WINDOWS)
-            .withManagedDisk(new SubResource().setId(sourceManagedDiskId));
+            .withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
@@ -154,7 +155,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.LINUX)
-            .withManagedDisk(new SubResource().setId(sourceManagedDiskId));
+            .withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
@@ -216,14 +217,14 @@ class VirtualMachineCustomImageImpl
         return this
             .manager()
             .inner()
-            .images()
+            .getImages()
             .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<ImageInner> getInnerAsync() {
-        return this.manager().inner().images().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getImages().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private ImageOSDisk ensureOsDiskImage() {

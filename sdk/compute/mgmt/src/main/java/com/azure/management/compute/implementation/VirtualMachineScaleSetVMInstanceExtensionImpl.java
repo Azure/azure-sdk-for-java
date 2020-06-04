@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachineExtensionInstanceView;
-import com.azure.management.compute.VirtualMachineScaleSetVM;
-import com.azure.management.compute.VirtualMachineScaleSetVMInstanceExtension;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
+import com.azure.management.compute.models.VirtualMachineExtensionInstanceView;
+import com.azure.management.compute.models.VirtualMachineScaleSetVM;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMInstanceExtension;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -38,7 +38,7 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public String typeName() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
@@ -73,10 +73,10 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().getTags() == null) {
+        if (this.inner().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<String, String>());
         }
-        return Collections.unmodifiableMap(this.inner().getTags());
+        return Collections.unmodifiableMap(this.inner().tags());
     }
 
     private void initializeSettings() {

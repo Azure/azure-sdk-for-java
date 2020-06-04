@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachineSize;
-import com.azure.management.compute.models.VirtualMachineSizeInner;
+import com.azure.management.compute.models.VirtualMachineSize;
+import com.azure.management.compute.fluent.inner.VirtualMachineSizeInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
 
 /** The implementation for {@link VirtualMachineSize}. */

@@ -4,32 +4,33 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.AvailabilitySet;
-import com.azure.management.compute.AvailabilitySetSkuTypes;
-import com.azure.management.compute.AvailabilitySets;
-import com.azure.management.compute.models.AvailabilitySetInner;
-import com.azure.management.compute.models.AvailabilitySetsInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AvailabilitySet;
+import com.azure.management.compute.models.AvailabilitySetSkuTypes;
+import com.azure.management.compute.models.AvailabilitySets;
+import com.azure.management.compute.fluent.inner.AvailabilitySetInner;
+import com.azure.management.compute.fluent.AvailabilitySetsClient;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for AvailabilitySets. */
-class AvailabilitySetsImpl
+public class AvailabilitySetsImpl
     extends GroupableResourcesImpl<
-        AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsInner, ComputeManager>
+        AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsClient, ComputeManager>
     implements AvailabilitySets {
 
-    AvailabilitySetsImpl(final ComputeManager computeManager) {
-        super(computeManager.inner().availabilitySets(), computeManager);
+    public AvailabilitySetsImpl(final ComputeManager computeManager) {
+        super(computeManager.inner().getAvailabilitySets(), computeManager);
     }
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        return manager().inner().availabilitySets().list().mapPage(this::wrapModel);
+        return manager().inner().getAvailabilitySets().list().mapPage(this::wrapModel);
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        return this.manager().inner().availabilitySets().listAsync().mapPage(this::wrapModel);
+        return this.manager().inner().getAvailabilitySets().listAsync().mapPage(this::wrapModel);
     }
 
     @Override
@@ -71,6 +72,6 @@ class AvailabilitySetsImpl
         if (availabilitySetInner == null) {
             return null;
         }
-        return new AvailabilitySetImpl(availabilitySetInner.getName(), availabilitySetInner, this.manager());
+        return new AvailabilitySetImpl(availabilitySetInner.name(), availabilitySetInner, this.manager());
     }
 }

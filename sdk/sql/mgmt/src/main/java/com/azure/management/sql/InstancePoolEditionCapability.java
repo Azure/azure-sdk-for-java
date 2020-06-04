@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The InstancePoolEditionCapability model. */
 @Fluent
 public final class InstancePoolEditionCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolEditionCapability.class);
+
     /*
      * The instance pool version name.
      */
@@ -80,5 +84,16 @@ public final class InstancePoolEditionCapability {
     public InstancePoolEditionCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedFamilies() != null) {
+            supportedFamilies().forEach(e -> e.validate());
+        }
     }
 }

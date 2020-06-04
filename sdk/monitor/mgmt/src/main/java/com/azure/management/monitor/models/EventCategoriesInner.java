@@ -20,13 +20,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.monitor.ErrorResponseException;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventCategories. */
 public final class EventCategoriesInner {
+    private final ClientLogger logger = new ClientLogger(EventCategoriesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final EventCategoriesService service;
 
@@ -54,7 +57,7 @@ public final class EventCategoriesInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/microsoft.insights/eventcategories")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<EventCategoryCollectionInner>> list(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
     }
@@ -63,12 +66,16 @@ public final class EventCategoriesInner {
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LocalizableStringInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
         final String apiVersion = "2015-04-01";
         return FluxUtil
             .withContext(context -> service.list(this.client.getHost(), apiVersion, context))
@@ -83,7 +90,32 @@ public final class EventCategoriesInner {
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available event categories supported in the Activity Logs Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<LocalizableStringInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        final String apiVersion = "2015-04-01";
+        return service
+            .list(this.client.getHost(), apiVersion, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.
      */
@@ -96,7 +128,22 @@ public final class EventCategoriesInner {
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available event categories supported in the Activity Logs Service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LocalizableStringInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context));
+    }
+
+    /**
+     * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.
      */

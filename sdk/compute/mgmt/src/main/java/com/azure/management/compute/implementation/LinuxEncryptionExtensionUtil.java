@@ -3,9 +3,9 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.EncryptionStatus;
-import com.azure.management.compute.InstanceViewStatus;
-import com.azure.management.compute.VirtualMachineExtensionInstanceView;
+import com.azure.management.compute.models.EncryptionStatus;
+import com.azure.management.compute.models.InstanceViewStatus;
+import com.azure.management.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;

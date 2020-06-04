@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The NetworkConfigurationDiagnosticParameters model. */
 @Fluent
 public final class NetworkConfigurationDiagnosticParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticParameters.class);
+
     /*
      * The ID of the target resource to perform network configuration
      * diagnostic. Valid options are VM, NetworkInterface,
@@ -91,5 +95,28 @@ public final class NetworkConfigurationDiagnosticParameters {
     public NetworkConfigurationDiagnosticParameters withProfiles(List<NetworkConfigurationDiagnosticProfile> profiles) {
         this.profiles = profiles;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetResourceId in model"
+                            + " NetworkConfigurationDiagnosticParameters"));
+        }
+        if (profiles() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
+        } else {
+            profiles().forEach(e -> e.validate());
+        }
     }
 }

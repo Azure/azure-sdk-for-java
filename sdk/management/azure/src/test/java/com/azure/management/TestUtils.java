@@ -3,8 +3,8 @@
 
 package com.azure.management;
 
-import com.azure.management.compute.DataDisk;
-import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.models.DataDisk;
+import com.azure.management.compute.models.VirtualMachine;
 
 /** Test utilities. */
 public final class TestUtils {
@@ -72,7 +72,7 @@ public final class TestUtils {
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
                 if (resource.isManagedDiskEnabled()) {
                     if (disk.managedDisk() != null) {
-                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().getId());
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
                     }
                 } else {
                     if (disk.vhd().uri() != null) {

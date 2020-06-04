@@ -28,7 +28,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     public void createFormRecognizerClient() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.instantiation
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.instantiation
@@ -44,7 +44,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .build();
 
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();
@@ -65,7 +65,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId).getFinalResult()
             .forEach(recognizedForm -> {
                 recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                    System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                     System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
@@ -86,7 +85,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId, includeTextDetails,
             Duration.ofSeconds(5)).getFinalResult().forEach(recognizedForm -> {
                 recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                    System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                     System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
@@ -110,7 +108,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeCustomForms(targetStream, modelId, sourceFile.length(),
             FormContentType.IMAGE_JPEG).getFinalResult().forEach(recognizedForm -> {
                 recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                    System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                     System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
@@ -137,7 +134,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             FormContentType.IMAGE_JPEG, includeTextDetails, Duration.ofSeconds(5)).getFinalResult()
                 .forEach(recognizedForm -> {
                     recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                        System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                         System.out.printf("Field text: %s%n", fieldText);
                         System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                         System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
@@ -243,7 +239,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl).getFinalResult()
             .forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
                 System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                     usReceipt.getMerchantName().getFieldValue(),
                     usReceipt.getMerchantName().getConfidence());
@@ -271,7 +266,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl, includeTextDetails, Duration.ofSeconds(5))
             .getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
                 System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                     usReceipt.getMerchantName().getFieldValue(),
                     usReceipt.getMerchantName().getConfidence());
@@ -301,7 +295,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG)
             .getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
                 System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                     usReceipt.getMerchantName().getFieldValue(),
                     usReceipt.getMerchantName().getConfidence());
@@ -333,7 +326,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG,
             includeTextDetails, Duration.ofSeconds(5)).getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
                 System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                     usReceipt.getMerchantName().getFieldValue(),
                     usReceipt.getMerchantName().getConfidence());

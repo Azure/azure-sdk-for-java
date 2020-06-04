@@ -1,7 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 
 package com.azure.ai.formrecognizer;
 
@@ -10,7 +8,6 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.io.ByteArrayInputStream;
@@ -18,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 /**
  * Sample for recognizing US receipt information using file source URL.
@@ -33,7 +31,7 @@ public class RecognizeReceipts {
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
@@ -42,35 +40,47 @@ public class RecognizeReceipts {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
+        SyncPoller<OperationResult, List<RecognizedReceipt>> analyzeReceiptPoller =
             client.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
 
-        IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
+        List<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 
-        receiptPageResults.forEach(recognizedReceipt -> {
-            System.out.println("----------- Recognized Receipt -----------");
+        for (int i = 0; i < receiptPageResults.size(); i++) {
+            final RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
+            System.out.printf("----------- Recognized Receipt page %s -----------", i);
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-            System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(), usReceipt.getMerchantName().getConfidence());
-            System.out.printf("Merchant Address: %s, confidence: %.2f%n", usReceipt.getMerchantAddress().getName(), usReceipt.getMerchantAddress().getConfidence());
-            System.out.printf("Merchant Phone Number %s, confidence: %.2f%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getName(), usReceipt.getTotal().getConfidence());
+            System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(),
+                usReceipt.getMerchantName().getConfidence());
+            System.out.printf("Merchant Address: %s, confidence: %.2f%n", usReceipt.getMerchantAddress().getName(),
+                usReceipt.getMerchantAddress().getConfidence());
+            System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
+                usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
+            System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getName(),
+                usReceipt.getTotal().getConfidence());
+            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                usReceipt.getTransactionDate().getFieldValue(), usReceipt.getTransactionDate().getConfidence());
+            System.out.printf("Transaction Time: %s, confidence: %.2f%n",
+                usReceipt.getTransactionTime().getName(), usReceipt.getTransactionTime().getConfidence());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
                 if (receiptItem.getName() != null) {
-                    System.out.printf("Name: %s, confidence: %.2fs%n", receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
+                    System.out.printf("Name: %s, confidence: %.2fs%n", receiptItem.getName().getFieldValue(),
+                        receiptItem.getName().getConfidence());
                 }
                 if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %s, confidence: %.2f%n", receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
+                    System.out.printf("Quantity: %s, confidence: %.2f%n", receiptItem.getQuantity().getFieldValue(),
+                        receiptItem.getQuantity().getConfidence());
                 }
                 if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %s, confidence: %.2f%n", receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
+                    System.out.printf("Price: %s, confidence: %.2f%n", receiptItem.getPrice().getFieldValue(),
+                        receiptItem.getPrice().getConfidence());
                 }
                 if (receiptItem.getTotalPrice() != null) {
-                    System.out.printf("Total Price: %s, confidence: %.2f%n", receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
+                    System.out.printf("Total Price: %s, confidence: %.2f%n",
+                        receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
                 }
             });
             System.out.print("-----------------------------------");
-        });
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Sku model. */
 @Fluent
 public final class Sku {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
+
     /*
      * The SKU name.
      */
@@ -164,5 +168,13 @@ public final class Sku {
     public Sku withCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

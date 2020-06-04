@@ -59,7 +59,7 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

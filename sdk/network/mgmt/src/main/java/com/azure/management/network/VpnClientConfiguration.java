@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VpnClientConfiguration model. */
 @Fluent
 public final class VpnClientConfiguration {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConfiguration.class);
+
     /*
      * The reference of the address space resource which represents Address
      * space for P2S VpnClient.
@@ -289,5 +293,25 @@ public final class VpnClientConfiguration {
     public VpnClientConfiguration withAadIssuer(String aadIssuer) {
         this.aadIssuer = aadIssuer;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vpnClientAddressPool() != null) {
+            vpnClientAddressPool().validate();
+        }
+        if (vpnClientRootCertificates() != null) {
+            vpnClientRootCertificates().forEach(e -> e.validate());
+        }
+        if (vpnClientRevokedCertificates() != null) {
+            vpnClientRevokedCertificates().forEach(e -> e.validate());
+        }
+        if (vpnClientIpsecPolicies() != null) {
+            vpnClientIpsecPolicies().forEach(e -> e.validate());
+        }
     }
 }

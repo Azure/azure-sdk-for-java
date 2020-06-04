@@ -22,6 +22,9 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -45,10 +48,14 @@ public class ClientCertificateCredentialTest {
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(pemPath, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        IdentityClient pemIdentityClient = PowerMockito.mock(IdentityClient.class);
+        IdentityClient pfxIdentityClient = PowerMockito.mock(IdentityClient.class);
+        when(pemIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), isNull(), eq(pemPath), isNull(), any()).thenReturn(pemIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), isNull(), eq(pfxPath), eq(pfxPassword), any()).thenReturn(pfxIdentityClient);
 
         // test
         ClientCertificateCredential credential =
@@ -76,10 +83,14 @@ public class ClientCertificateCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(pemPath, request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
-        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        IdentityClient pemIdentityClient = PowerMockito.mock(IdentityClient.class);
+        IdentityClient pfxIdentityClient = PowerMockito.mock(IdentityClient.class);
+        when(pemIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
+        when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), isNull(), eq(pemPath), isNull(), any()).thenReturn(pemIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), isNull(), eq(pfxPath), eq(pfxPassword), any()).thenReturn(pfxIdentityClient);
 
         // test
         ClientCertificateCredential credential =
@@ -105,8 +116,9 @@ public class ClientCertificateCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(pemPath, request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(identityClient.authenticateWithConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), isNull(), eq(pemPath), isNull(), any()).thenReturn(identityClient);
 
         // test
         try {

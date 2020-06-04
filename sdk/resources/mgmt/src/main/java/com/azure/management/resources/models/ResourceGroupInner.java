@@ -6,12 +6,16 @@ package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.ResourceGroupProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceGroup model. */
 @Fluent
 public final class ResourceGroupInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupInner.class);
+
     /*
      * The resource group properties.
      */
@@ -62,5 +66,16 @@ public final class ResourceGroupInner extends Resource {
     public ResourceGroupInner withManagedBy(String managedBy) {
         this.managedBy = managedBy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

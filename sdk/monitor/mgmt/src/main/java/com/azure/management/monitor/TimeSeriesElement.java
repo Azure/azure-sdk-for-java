@@ -5,13 +5,17 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.models.MetadataValueInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TimeSeriesElement model. */
 @Fluent
 public final class TimeSeriesElement {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesElement.class);
+
     /*
      * the metadata values returned if $filter was specified in the call.
      */
@@ -65,5 +69,19 @@ public final class TimeSeriesElement {
     public TimeSeriesElement withData(List<MetricValue> data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metadatavalues() != null) {
+            metadatavalues().forEach(e -> e.validate());
+        }
+        if (data() != null) {
+            data().forEach(e -> e.validate());
+        }
     }
 }

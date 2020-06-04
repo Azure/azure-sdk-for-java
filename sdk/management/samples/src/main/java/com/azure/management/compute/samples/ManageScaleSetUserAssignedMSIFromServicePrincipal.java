@@ -6,16 +6,16 @@ package com.azure.management.compute.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.compute.ComputeManager;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.ServicePrincipal;
 import com.azure.management.msi.Identity;
@@ -117,7 +117,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 .clientSecret("\"StrongPass!12\"")
                 .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
                 .build();
-            AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, false).withSubscriptionId(subscription);
+            AzureProfile profile = new AzureProfile(null, subscription, AzureEnvironment.AZURE);
             ComputeManager computeManager1 = ComputeManager.authenticate(credential, profile);
 
             VirtualMachineScaleSet vmss = computeManager1.virtualMachineScaleSets().getById(virtualMachineScaleSet1.id());
@@ -134,7 +134,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 throw LOGGER.logExceptionAsError(
                     new RuntimeException("Should not be able to assign identity #2 as service principal does not have permissions")
                 );
-            } catch (CloudException ex) {
+            } catch (ManagementException ex) {
                 ex.printStackTrace();
             }
             return true;
@@ -142,13 +142,21 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             System.out.println(e.getMessage());
             e.printStackTrace();
         } finally {
-            azure.resourceGroups().beginDeleteByName(rgName);
-            try {
-                authenticated.servicePrincipals().deleteById(servicePrincipal.id());
-            } catch (Exception e) { }
+            if (azure != null) {
+                azure.resourceGroups().beginDeleteByName(rgName);
+                try {
+                    authenticated.servicePrincipals().deleteById(servicePrincipal.id());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
             try {
                 authenticated.activeDirectoryApplications().deleteById(authenticated.activeDirectoryApplications().getByName(servicePrincipal.applicationId()).id());
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -162,7 +170,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

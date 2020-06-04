@@ -15,11 +15,12 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class CosmosDBTests extends TestBase {
 
@@ -131,7 +132,7 @@ public class CosmosDBTests extends TestBase {
                 .withPrivateLinkServiceConnections(Arrays.asList(privateLinkServiceConnection))
                 .withSubnet(network.subnets().get(subnetName).inner());
 
-        privateEndpoint.setLocation(region.toString());
+        privateEndpoint.withLocation(region.toString());
         privateEndpoint = networkManager.inner().privateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount
@@ -201,7 +202,7 @@ public class CosmosDBTests extends TestBase {
                 .withDataModelCassandra()
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_CENTRAL)
+                .withReadReplication(Region.US_WEST)
                 .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
@@ -253,7 +254,7 @@ public class CosmosDBTests extends TestBase {
                 .withDataModelAzureTable()
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_CENTRAL)
+                .withReadReplication(Region.US_EAST2)
                 .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();

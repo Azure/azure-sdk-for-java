@@ -8,24 +8,23 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
+import org.apache.commons.lang.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure compute sample for creating multiple virtual machines in parallel.
@@ -75,7 +74,7 @@ public final class CreateVirtualMachinesInParallel {
 
             System.out.println("Created a new resource group - " + resourceGroup.id());
 
-            List<String> publicIpCreatableKeys = new ArrayList<>();
+//            List<String> publicIpCreatableKeys = new ArrayList<>();
             // Prepare a batch of Creatable definitions
             //
             List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
@@ -108,13 +107,13 @@ public final class CreateVirtualMachinesInParallel {
                     //=============================================================
                     // Create 1 public IP address creatable
                     //
-                    Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses()
+                    Creatable<PublicIpAddress> publicIPAddressCreatable = azure.publicIpAddresses()
                             .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroup)
                                 .withLeafDomainLabel(azure.sdkContext().randomResourceName("pip", 10));
 
-                    publicIpCreatableKeys.add(publicIPAddressCreatable.key());
+//                    publicIpCreatableKeys.add(publicIPAddressCreatable.key());
 
                     //=============================================================
                     // Create 1 virtual machine creatable
@@ -153,12 +152,12 @@ public final class CreateVirtualMachinesInParallel {
 
             System.out.println("Virtual Machines created: (took " + (stopwatch.getTime() / 1000) + " seconds to create) == " + virtualMachines.size() + " == virtual machines");
 
-            List<String> publicIpResourceIds = new ArrayList<>();
-            for (String publicIpCreatableKey : publicIpCreatableKeys) {
-                PublicIPAddress pip = (PublicIPAddress) virtualMachines.createdRelatedResource(publicIpCreatableKey);
-                publicIpResourceIds.add(pip.id());
-            }
-
+//            List<String> publicIpResourceIds = new ArrayList<>();
+//            for (String publicIpCreatableKey : publicIpCreatableKeys) {
+//                PublicIPAddress pip = (PublicIPAddress) virtualMachines.createdRelatedResource(publicIpCreatableKey);
+//                publicIpResourceIds.add(pip.id());
+//            }
+//
 //            //=============================================================
 //            // Create 1 Traffic Manager Profile
 //            //
@@ -225,7 +224,7 @@ public final class CreateVirtualMachinesInParallel {
             //=============================================================
             // Authenticate
             //
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

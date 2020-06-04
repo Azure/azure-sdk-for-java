@@ -5,19 +5,20 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.Disallowed;
-import com.azure.management.compute.DiskSkuTypes;
-import com.azure.management.compute.DiskStorageAccountTypes;
-import com.azure.management.compute.Gallery;
-import com.azure.management.compute.GalleryImage;
-import com.azure.management.compute.GalleryImageIdentifier;
-import com.azure.management.compute.GalleryImageVersion;
-import com.azure.management.compute.ImagePurchasePlan;
-import com.azure.management.compute.OperatingSystemStateTypes;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.RecommendedMachineConfiguration;
-import com.azure.management.compute.ResourceRange;
-import com.azure.management.compute.models.GalleryImageInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.Disallowed;
+import com.azure.management.compute.models.DiskSkuTypes;
+import com.azure.management.compute.models.DiskStorageAccountTypes;
+import com.azure.management.compute.models.Gallery;
+import com.azure.management.compute.models.GalleryImage;
+import com.azure.management.compute.models.GalleryImageIdentifier;
+import com.azure.management.compute.models.GalleryImageVersion;
+import com.azure.management.compute.models.ImagePurchasePlan;
+import com.azure.management.compute.models.OperatingSystemStateTypes;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.RecommendedMachineConfiguration;
+import com.azure.management.compute.models.ResourceRange;
+import com.azure.management.compute.fluent.inner.GalleryImageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
@@ -47,14 +48,14 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     }
 
     GalleryImageImpl(GalleryImageInner inner, ComputeManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.galleryImageName = inner.getName();
+        this.galleryImageName = inner.name();
         // resource ancestor names
-        this.resourceGroupName = getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.galleryName = getValueFromIdByName(inner.getId(), "galleries");
-        this.galleryImageName = getValueFromIdByName(inner.getId(), "images");
+        this.resourceGroupName = getValueFromIdByName(inner.id(), "resourceGroups");
+        this.galleryName = getValueFromIdByName(inner.id(), "galleries");
+        this.galleryImageName = getValueFromIdByName(inner.id(), "images");
         //
     }
 
@@ -99,7 +100,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     public Mono<GalleryImage> createResourceAsync() {
         return manager()
             .inner()
-            .galleryImages()
+            .getGalleryImages()
             .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
             .map(innerToFluentMap(this));
     }
@@ -108,7 +109,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     public Mono<GalleryImage> updateResourceAsync() {
         return manager()
             .inner()
-            .galleryImages()
+            .getGalleryImages()
             .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
             .map(innerToFluentMap(this));
     }
@@ -117,13 +118,13 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     protected Mono<GalleryImageInner> getInnerAsync() {
         return manager()
             .inner()
-            .galleryImages()
+            .getGalleryImages()
             .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -161,7 +162,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -171,12 +172,12 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public String location() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -216,12 +217,12 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public Map<String, String> tags() {
-        return this.inner().getTags();
+        return this.inner().tags();
     }
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
@@ -240,13 +241,13 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withLocation(String location) {
-        this.inner().setLocation(location);
+        this.inner().withLocation(location);
         return this;
     }
 
     @Override
     public GalleryImageImpl withLocation(Region location) {
-        this.inner().setLocation(location.toString());
+        this.inner().withLocation(location.toString());
         return this;
     }
 
@@ -473,7 +474,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(tags);
+        this.inner().withTags(tags);
         return this;
     }
 

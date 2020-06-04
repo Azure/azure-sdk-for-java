@@ -53,7 +53,7 @@ final class PolicyDefinitionImpl extends
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

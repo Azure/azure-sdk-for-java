@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ComputeModeOptions;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.SkuDescription;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class WorkerPoolResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkerPoolResourceInner.class);
+
     /*
      * Description of a SKU for a scalable resource.
      */
@@ -159,5 +163,18 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      */
     public List<String> instanceNames() {
         return this.instanceNames;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 }

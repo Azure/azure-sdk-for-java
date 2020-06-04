@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Conflict;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -53,13 +53,14 @@ public class ConflictAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_ConflictAPITest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION);
+            .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true);
 
         this.client = this.clientBuilder().build();
 
@@ -104,8 +105,8 @@ public class ConflictAPITest extends DocumentClientTest {
     public void readConflicts_toBlocking_toIterator() {
         // read all conflicts
         int requestPageSize = 3;
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
                 .readConflicts(getCollectionLink(), options);
@@ -134,8 +135,8 @@ public class ConflictAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
-        FeedOptions options = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
+        QueryRequestOptions options = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
                 .readConflicts(getCollectionLink(), options);

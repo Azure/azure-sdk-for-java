@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
@@ -56,7 +54,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                     ),
                     owner.getServiceEndpoint(),
                     connectionPolicy.isEndpointDiscoveryEnabled(),
-                    BridgeInternal.getUseMultipleWriteLocations(connectionPolicy),
+                    connectionPolicy.isMultipleWriteRegionsEnabled(),
                     configs);
 
             this.owner = owner;

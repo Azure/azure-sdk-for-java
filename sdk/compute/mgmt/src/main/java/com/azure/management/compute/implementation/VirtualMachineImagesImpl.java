@@ -4,23 +4,23 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.VirtualMachineImage;
-import com.azure.management.compute.VirtualMachineImages;
-import com.azure.management.compute.VirtualMachinePublishers;
-import com.azure.management.compute.models.VirtualMachineImageInner;
-import com.azure.management.compute.models.VirtualMachineImageResourceInner;
-import com.azure.management.compute.models.VirtualMachineImagesInner;
+import com.azure.management.compute.models.VirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineImages;
+import com.azure.management.compute.models.VirtualMachinePublishers;
+import com.azure.management.compute.fluent.inner.VirtualMachineImageInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineImageResourceInner;
+import com.azure.management.compute.fluent.VirtualMachineImagesClient;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** The implementation for {@link VirtualMachineImages}. */
-class VirtualMachineImagesImpl implements VirtualMachineImages {
+public class VirtualMachineImagesImpl implements VirtualMachineImages {
     private final VirtualMachinePublishers publishers;
-    private final VirtualMachineImagesInner client;
+    private final VirtualMachineImagesClient client;
 
-    VirtualMachineImagesImpl(VirtualMachinePublishers publishers, VirtualMachineImagesInner client) {
+    public VirtualMachineImagesImpl(VirtualMachinePublishers publishers, VirtualMachineImagesClient client) {
         this.publishers = publishers;
         this.client = client;
     }

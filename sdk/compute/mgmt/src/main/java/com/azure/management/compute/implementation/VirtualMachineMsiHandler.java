@@ -4,11 +4,11 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.compute.ResourceIdentityType;
-import com.azure.management.compute.VirtualMachineIdentity;
-import com.azure.management.compute.VirtualMachineIdentityUserAssignedIdentities;
-import com.azure.management.compute.models.VirtualMachineInner;
-import com.azure.management.compute.models.VirtualMachineUpdateInner;
+import com.azure.management.compute.models.ResourceIdentityType;
+import com.azure.management.compute.models.VirtualMachineIdentity;
+import com.azure.management.compute.models.VirtualMachineIdentityUserAssignedIdentities;
+import com.azure.management.compute.fluent.inner.VirtualMachineInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineUpdateInner;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
@@ -78,7 +78,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             .inner()
             .identity()
             .type()
-            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
             this.virtualMachine.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -223,7 +223,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
                     // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
                         vmUpdate.withIdentity(new VirtualMachineIdentity().withType(ResourceIdentityType.NONE));
-                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
                         vmUpdate.withIdentity(currentIdentity);
                         vmUpdate.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ResourceIdentityType.USER_ASSIGNED)) {
@@ -268,7 +268,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             || virtualMachineInner.identity().type().equals(identityType)) {
             virtualMachineInner.identity().withType(identityType);
         } else {
-            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
         }
     }
 }

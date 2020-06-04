@@ -5,10 +5,11 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.Galleries;
-import com.azure.management.compute.Gallery;
-import com.azure.management.compute.models.GalleriesInner;
-import com.azure.management.compute.models.GalleryInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.Galleries;
+import com.azure.management.compute.models.Gallery;
+import com.azure.management.compute.fluent.GalleriesClient;
+import com.azure.management.compute.fluent.inner.GalleryInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.management.resources.fluentcore.utils.ReactorMapper;
@@ -19,10 +20,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** The implementation for Galleries. */
-class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesInner, ComputeManager>
+public class GalleriesImpl
+    extends GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesClient, ComputeManager>
     implements Galleries {
-    protected GalleriesImpl(ComputeManager manager) {
-        super(manager.inner().galleries(), manager);
+    public GalleriesImpl(ComputeManager manager) {
+        super(manager.inner().getGalleries(), manager);
     }
 
     @Override
@@ -97,7 +99,7 @@ class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, Gallery
 
     @Override
     protected GalleryImpl wrapModel(GalleryInner inner) {
-        return new GalleryImpl(inner.getName(), inner, manager());
+        return new GalleryImpl(inner.name(), inner, manager());
     }
 
     @Override

@@ -3,21 +3,22 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.AccessLevel;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.Disks;
-import com.azure.management.compute.GrantAccessData;
-import com.azure.management.compute.models.DiskInner;
-import com.azure.management.compute.models.DisksInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AccessLevel;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.Disks;
+import com.azure.management.compute.models.GrantAccessData;
+import com.azure.management.compute.fluent.inner.DiskInner;
+import com.azure.management.compute.fluent.DisksClient;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for Disks. */
-class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, DiskInner, DisksInner, ComputeManager>
+public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, DiskInner, DisksClient, ComputeManager>
     implements Disks {
 
-    DisksImpl(ComputeManager computeManager) {
-        super(computeManager.inner().disks(), computeManager);
+    public DisksImpl(ComputeManager computeManager) {
+        super(computeManager.inner().getDisks(), computeManager);
     }
 
     @Override
@@ -56,7 +57,7 @@ class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, DiskInne
         if (inner == null) {
             return null;
         }
-        return new DiskImpl(inner.getName(), inner, this.manager());
+        return new DiskImpl(inner.name(), inner, this.manager());
     }
 
     @Override

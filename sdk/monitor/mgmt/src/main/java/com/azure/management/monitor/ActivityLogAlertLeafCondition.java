@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ActivityLogAlertLeafCondition model. */
 @Fluent
 public final class ActivityLogAlertLeafCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertLeafCondition.class);
+
     /*
      * The name of the field that this condition will examine. The possible
      * values for this field are (case-insensitive): 'resourceId', 'category',
@@ -71,5 +75,25 @@ public final class ActivityLogAlertLeafCondition {
     public ActivityLogAlertLeafCondition withEquals(String equals) {
         this.equals = equals;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (field() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property field in model ActivityLogAlertLeafCondition"));
+        }
+        if (equals() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property equals in model ActivityLogAlertLeafCondition"));
+        }
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The GenericResourceExpanded model. */
 @Immutable
 public final class GenericResourceExpandedInner extends GenericResourceInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericResourceExpandedInner.class);
+
     /*
      * The created time of the resource. This is only present if requested via
      * the $expand query parameter.
@@ -60,5 +64,15 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

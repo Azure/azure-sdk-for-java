@@ -5,11 +5,22 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.HyperVGenerationTypes;
+import com.azure.management.compute.models.ImageDataDisk;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.OperatingSystemStateTypes;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.io.IOException;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -319,8 +330,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             Assertions.assertNotNull(diskImage.managedDisk());
             Assertions
                 .assertTrue(
-                    diskImage.managedDisk().getId().equalsIgnoreCase(managedDataDisk1.id())
-                        || diskImage.managedDisk().getId().equalsIgnoreCase(managedDataDisk2.id()));
+                    diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk1.id())
+                        || diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk2.id()));
         }
         computeManager.disks().deleteById(managedOsDisk.id());
         computeManager.disks().deleteById(managedDataDisk1.id());

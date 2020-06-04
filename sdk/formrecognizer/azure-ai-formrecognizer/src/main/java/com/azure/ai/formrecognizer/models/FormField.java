@@ -38,11 +38,6 @@ public final class FormField<T> {
      */
     private final FieldText valueText;
 
-    /*
-     * The 1 based page number.
-     */
-    private final Integer pageNumber;
-
     /**
      * Constructs a FormField object.
      *
@@ -51,16 +46,14 @@ public final class FormField<T> {
      * @param name The name the field.
      * @param fieldValue The value of the field.
      * @param valueText The label value text for the field.
-     * @param pageNumber The label text value for the field.
      */
     public FormField(final float confidence, final FieldText labelText, final String name, final T fieldValue,
-        final FieldText valueText, final Integer pageNumber) {
+        final FieldText valueText) {
         this.confidence = confidence;
         this.labelText = labelText;
         this.name = name;
         this.fieldValue = fieldValue;
         this.valueText = valueText;
-        this.pageNumber = pageNumber;
     }
 
     /**
@@ -106,14 +99,5 @@ public final class FormField<T> {
      */
     public FieldText getValueText() {
         return this.valueText;
-    }
-
-    /**
-     * Get the 1-based page number in the input document.
-     *
-     * @return the page number value.
-     */
-    public Integer getPageNumber() {
-        return this.pageNumber;
     }
 }

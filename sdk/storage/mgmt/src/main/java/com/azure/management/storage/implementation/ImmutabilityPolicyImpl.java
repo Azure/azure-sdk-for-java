@@ -5,10 +5,11 @@ package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.ETagState;
-import com.azure.management.storage.ImmutabilityPolicy;
-import com.azure.management.storage.ImmutabilityPolicyState;
-import com.azure.management.storage.models.BlobContainersInner;
-import com.azure.management.storage.models.ImmutabilityPolicyInner;
+import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.BlobContainersClient;
+import com.azure.management.storage.models.ImmutabilityPolicy;
+import com.azure.management.storage.models.ImmutabilityPolicyState;
+import com.azure.management.storage.fluent.inner.ImmutabilityPolicyInner;
 import reactor.core.publisher.Mono;
 
 class ImmutabilityPolicyImpl
@@ -31,14 +32,14 @@ class ImmutabilityPolicyImpl
     }
 
     ImmutabilityPolicyImpl(ImmutabilityPolicyInner inner, StorageManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.containerName = inner.getName();
+        this.containerName = inner.name();
         // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.accountName = IdParsingUtils.getValueFromIdByName(inner.getId(), "storageAccounts");
-        this.containerName = IdParsingUtils.getValueFromIdByName(inner.getId(), "containers");
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
+        this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
         //
     }
 
@@ -49,7 +50,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> createResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
@@ -63,7 +64,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
@@ -82,13 +83,13 @@ class ImmutabilityPolicyImpl
 
     @Override
     protected Mono<ImmutabilityPolicyInner> getInnerAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -98,7 +99,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -108,7 +109,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -118,7 +119,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override

@@ -4,15 +4,16 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.AvailabilitySet;
-import com.azure.management.compute.AvailabilitySetSkuTypes;
-import com.azure.management.compute.InstanceViewStatus;
-import com.azure.management.compute.ProximityPlacementGroup;
-import com.azure.management.compute.ProximityPlacementGroupType;
-import com.azure.management.compute.Sku;
-import com.azure.management.compute.VirtualMachineSize;
-import com.azure.management.compute.models.AvailabilitySetInner;
-import com.azure.management.compute.models.ProximityPlacementGroupInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AvailabilitySet;
+import com.azure.management.compute.models.AvailabilitySetSkuTypes;
+import com.azure.management.compute.models.InstanceViewStatus;
+import com.azure.management.compute.models.ProximityPlacementGroup;
+import com.azure.management.compute.models.ProximityPlacementGroupType;
+import com.azure.management.compute.models.Sku;
+import com.azure.management.compute.models.VirtualMachineSize;
+import com.azure.management.compute.fluent.inner.AvailabilitySetInner;
+import com.azure.management.compute.fluent.inner.ProximityPlacementGroupInner;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
@@ -63,7 +64,7 @@ class AvailabilitySetImpl
         if (idOfVMsInSet == null) {
             idOfVMsInSet = new HashSet<>();
             for (SubResource resource : this.inner().virtualMachines()) {
-                idOfVMsInSet.add(resource.getId());
+                idOfVMsInSet.add(resource.id());
             }
         }
         return Collections.unmodifiableSet(idOfVMsInSet);
@@ -71,9 +72,9 @@ class AvailabilitySetImpl
 
     @Override
     public ProximityPlacementGroup proximityPlacementGroup() {
-        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().getId());
+        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
         ProximityPlacementGroupInner plgInner =
-            manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
             return null;
         } else {
@@ -90,7 +91,7 @@ class AvailabilitySetImpl
     public PagedIterable<VirtualMachineSize> listVirtualMachineSizes() {
         return manager()
             .inner()
-            .availabilitySets()
+            .getAvailabilitySets()
             .listAvailableSizes(resourceGroupName(), name())
             .mapPage(virtualMachineSizeInner -> new VirtualMachineSizeImpl(virtualMachineSizeInner));
     }
@@ -109,7 +110,8 @@ class AvailabilitySetImpl
 
     @Override
     protected Mono<AvailabilitySetInner> getInnerAsync() {
-        return this.manager().inner().availabilitySets().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getAvailabilitySets()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -135,7 +137,7 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl withProximityPlacementGroup(String proximityPlacementGroupId) {
-        this.inner().withProximityPlacementGroup(new SubResource().setId(proximityPlacementGroupId));
+        this.inner().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
         this.newProximityPlacementGroupType = null;
         this.newProximityPlacementGroupName = null;
         return this;
@@ -175,7 +177,7 @@ class AvailabilitySetImpl
                 availabilitySet ->
                     manager()
                         .inner()
-                        .availabilitySets()
+                        .getAvailabilitySets()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner())
                         .map(
                             availabilitySetInner -> {
@@ -190,15 +192,15 @@ class AvailabilitySetImpl
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
-                plgInner.setLocation(this.inner().getLocation());
+                plgInner.withLocation(this.inner().location());
                 return this
                     .manager()
                     .inner()
-                    .proximityPlacementGroups()
+                    .getProximityPlacementGroups()
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
                         createdPlgInner -> {
-                            this.inner().withProximityPlacementGroup(new SubResource().setId(createdPlgInner.getId()));
+                            this.inner().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
                             return this;
                         });
             }

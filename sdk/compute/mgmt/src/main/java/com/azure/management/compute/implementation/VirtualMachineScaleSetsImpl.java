@@ -2,24 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.RunCommandInput;
-import com.azure.management.compute.RunCommandInputParameter;
-import com.azure.management.compute.RunCommandResult;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetIPConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetNetworkConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
-import com.azure.management.compute.VirtualMachineScaleSetOSDisk;
-import com.azure.management.compute.VirtualMachineScaleSetOSProfile;
-import com.azure.management.compute.VirtualMachineScaleSetStorageProfile;
-import com.azure.management.compute.VirtualMachineScaleSetVMProfile;
-import com.azure.management.compute.VirtualMachineScaleSets;
-import com.azure.management.compute.models.VirtualMachineScaleSetInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetsInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.RunCommandInput;
+import com.azure.management.compute.models.RunCommandInputParameter;
+import com.azure.management.compute.models.RunCommandResult;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetIpConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetNetworkConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetNetworkProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetOSDisk;
+import com.azure.management.compute.models.VirtualMachineScaleSetOSProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetStorageProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMProfile;
+import com.azure.management.compute.models.VirtualMachineScaleSets;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.management.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -30,19 +31,19 @@ public class VirtualMachineScaleSetsImpl
         VirtualMachineScaleSet,
         VirtualMachineScaleSetImpl,
         VirtualMachineScaleSetInner,
-        VirtualMachineScaleSetsInner,
-        ComputeManager>
+        VirtualMachineScaleSetsClient,
+    ComputeManager>
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final GraphRbacManager rbacManager;
 
-    VirtualMachineScaleSetsImpl(
+    public VirtualMachineScaleSetsImpl(
         ComputeManager computeManager,
         StorageManager storageManager,
         NetworkManager networkManager,
         GraphRbacManager rbacManager) {
-        super(computeManager.inner().virtualMachineScaleSets(), computeManager);
+        super(computeManager.inner().getVirtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.rbacManager = rbacManager;
@@ -162,7 +163,7 @@ public class VirtualMachineScaleSetsImpl
         return this
             .manager()
             .inner()
-            .virtualMachineScaleSetVMs()
+            .getVirtualMachineScaleSetVMs()
             .runCommandAsync(groupName, scaleSetName, vmId, inputCommand)
             .map(RunCommandResultImpl::new);
     }
@@ -195,10 +196,10 @@ public class VirtualMachineScaleSetsImpl
             new VirtualMachineScaleSetNetworkConfiguration()
                 .withPrimary(true)
                 .withName("primary-nic-cfg")
-                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIPConfiguration>());
+                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIpConfiguration>());
         primaryNetworkInterfaceConfiguration
             .ipConfigurations()
-            .add(new VirtualMachineScaleSetIPConfiguration().withName("primary-nic-ip-cfg"));
+            .add(new VirtualMachineScaleSetIpConfiguration().withName("primary-nic-ip-cfg"));
 
         inner
             .virtualMachineProfile()
@@ -216,6 +217,6 @@ public class VirtualMachineScaleSetsImpl
             return null;
         }
         return new VirtualMachineScaleSetImpl(
-            inner.getName(), inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
+            inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
     }
 }

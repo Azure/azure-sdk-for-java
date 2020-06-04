@@ -18,7 +18,7 @@ import com.azure.management.containerregistry.models.RegistryInner;
 import com.azure.management.containerregistry.models.RegistryUsageListResultInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class RegistriesImpl
         return this
             .inner()
             .listAsync()
-            .mapPage(inner -> new RegistryImpl(inner.getName(), inner, this.manager(), this.storageManager));
+            .mapPage(inner -> new RegistryImpl(inner.name(), inner, this.manager(), this.storageManager));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class RegistriesImpl
         }
 
         return new RegistryImpl(
-            containerServiceInner.getName(), containerServiceInner, this.manager(), this.storageManager);
+            containerServiceInner.name(), containerServiceInner, this.manager(), this.storageManager);
     }
 
     @Override

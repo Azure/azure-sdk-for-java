@@ -4,23 +4,24 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.management.storage.CheckNameAvailabilityResult;
-import com.azure.management.storage.ServiceSasParameters;
-import com.azure.management.storage.SkuName;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccounts;
-import com.azure.management.storage.models.StorageAccountInner;
-import com.azure.management.storage.models.StorageAccountsInner;
+import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.StorageAccountsClient;
+import com.azure.management.storage.models.CheckNameAvailabilityResult;
+import com.azure.management.storage.models.ServiceSasParameters;
+import com.azure.management.storage.models.SkuName;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccounts;
+import com.azure.management.storage.fluent.inner.StorageAccountInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of StorageAccounts and its parent interfaces. */
-class StorageAccountsImpl
+public class StorageAccountsImpl
     extends TopLevelModifiableResourcesImpl<
-        StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsInner, StorageManager>
+        StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsClient, StorageManager>
     implements StorageAccounts {
 
-    StorageAccountsImpl(final StorageManager storageManager) {
-        super(storageManager.inner().storageAccounts(), storageManager);
+    public StorageAccountsImpl(final StorageManager storageManager) {
+        super(storageManager.inner().getStorageAccounts(), storageManager);
     }
 
     @Override
@@ -51,7 +52,7 @@ class StorageAccountsImpl
         if (storageAccountInner == null) {
             return null;
         }
-        return new StorageAccountImpl(storageAccountInner.getName(), storageAccountInner, this.manager());
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager());
     }
 
     @Override

@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.DataDiskImage;
-import com.azure.management.compute.ImageReference;
-import com.azure.management.compute.OSDiskImage;
-import com.azure.management.compute.PurchasePlan;
-import com.azure.management.compute.VirtualMachineImage;
-import com.azure.management.compute.models.VirtualMachineImageInner;
+import com.azure.management.compute.models.DataDiskImage;
+import com.azure.management.compute.models.ImageReference;
+import com.azure.management.compute.models.OSDiskImage;
+import com.azure.management.compute.models.PurchasePlan;
+import com.azure.management.compute.models.VirtualMachineImage;
+import com.azure.management.compute.fluent.inner.VirtualMachineImageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.Collections;
@@ -50,7 +50,7 @@ class VirtualMachineImageImpl extends IndexableWrapperImpl<VirtualMachineImageIn
         if (this.inner() == null) {
             return null;
         }
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override

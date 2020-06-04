@@ -272,44 +272,6 @@ class AmqpReceiveLinkProcessorTest {
     }
 
     /**
-     * Verifies that we can get the next AMQP link when the first one encounters a retryable error.
-     */
-    @Test
-    void newLinkOnRetryableError() {
-        // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
-
-        final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
-        final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
-
-        when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link2.receive()).thenReturn(Flux.just(message2));
-
-        final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
-            new AmqpErrorContext("test-namespace"));
-        when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(Duration.ofSeconds(1));
-
-        // Act & Assert
-        // Verify that we get the first connection.
-        StepVerifier.create(processor)
-            .then(() -> {
-                endpointSink.next(AmqpEndpointState.ACTIVE);
-                messageProcessorSink.next(message1);
-            })
-            .expectNext(message1)
-            .then(() -> {
-                endpointSink.error(amqpException);
-            })
-            .expectNext(message2)
-            .thenCancel()
-            .verify();
-
-        Assertions.assertTrue(processor.isTerminated());
-        Assertions.assertFalse(processor.hasError());
-        Assertions.assertNull(processor.getError());
-    }
-
-    /**
      * Verifies that an error is propagated when the first connection encounters a non-retryable error.
      */
     @Test
@@ -387,54 +349,6 @@ class AmqpReceiveLinkProcessorTest {
         verifyZeroInteractions(subscription);
     }
 
-    /**
-     * Verifies it keeps trying to get a link and stops after retries are exhausted.
-     */
-    @Test
-    void retriesUntilExhausted() {
-        // Arrange
-        final Duration delay = Duration.ofSeconds(1);
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2, link3};
-        final Message message3 = mock(Message.class);
-
-        final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
-        final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
-
-        final DirectProcessor<AmqpEndpointState> link2StateProcessor = DirectProcessor.create();
-        final FluxSink<AmqpEndpointState> link2StateSink = link2StateProcessor.sink();
-
-        when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
-        when(link2.receive()).thenReturn(Flux.never());
-
-        when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link3.receive()).thenReturn(Flux.never());
-
-        // Simulates two busy signals, but our retry policy says to try only once.
-        final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
-            new AmqpErrorContext("test-namespace"));
-        final AmqpException amqpException2 = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
-            new AmqpErrorContext("test-namespace"));
-        when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(delay);
-        when(retryPolicy.calculateRetryDelay(amqpException2, 2)).thenReturn(null);
-
-        // Act & Assert
-        // Verify that we get the first connection.
-        StepVerifier.create(processor)
-            .then(() -> {
-                endpointSink.next(AmqpEndpointState.ACTIVE);
-                messageProcessorSink.next(message1);
-            })
-            .expectNext(message1)
-            .then(() -> endpointSink.error(amqpException))
-            .thenAwait(delay)
-            .then(() -> link2StateSink.error(amqpException2))
-            .expectErrorSatisfies(error -> Assertions.assertSame(amqpException2, error))
-            .verify();
-
-        Assertions.assertTrue(processor.isTerminated());
-        Assertions.assertTrue(processor.hasError());
-        Assertions.assertSame(amqpException2, processor.getError());
-    }
 
     /**
      * Does not request another link when parent connection is closed.

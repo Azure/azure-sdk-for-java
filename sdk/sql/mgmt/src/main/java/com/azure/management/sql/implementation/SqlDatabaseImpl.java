@@ -52,7 +52,9 @@ import com.azure.management.sql.models.ReplicationLinkInner;
 import com.azure.management.sql.models.RestorePointInner;
 import com.azure.management.sql.models.ServiceTierAdvisorInner;
 import com.azure.management.sql.models.TransparentDataEncryptionInner;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /** Implementation for SqlDatabase and its parent interfaces. */
 class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
@@ -166,7 +167,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -303,7 +304,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         for (ReplicationLinkInner inner : replicationLinkInners) {
             replicationLinkMap
                 .put(
-                    inner.getName(),
+                    inner.name(),
                     new ReplicationLinkImpl(
                         this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
         }
@@ -372,7 +373,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .databaseThreatDetectionPolicies()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return policyInner != null
-            ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.getName(), this, policyInner, this.sqlServerManager)
+            ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.name(), this, policyInner, this.sqlServerManager)
             : null;
     }
 
@@ -543,7 +544,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
             serviceTierAdvisorMap
                 .put(
-                    serviceTierAdvisorInner.getName(),
+                    serviceTierAdvisorInner.name(),
                     new ServiceTierAdvisorImpl(
                         this.resourceGroupName,
                         this.sqlServerName,
@@ -574,7 +575,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -627,7 +628,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public Mono<SqlDatabase> createResourceAsync() {
         final SqlDatabaseImpl self = this;
-        this.inner().setLocation(this.sqlServerLocation);
+        this.inner().withLocation(this.sqlServerLocation);
         if (this.importRequestInner != null) {
             this.importRequestInner.withDatabaseName(this.name());
             if (this.importRequestInner.edition() == null) {
@@ -636,7 +637,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             if (this.importRequestInner.serviceObjectiveName() == null && this.inner().sku() != null) {
                 this
                     .importRequestInner
-                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.requestedServiceObjectiveName()));
+                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.inner().sku().name()));
             }
             if (this.importRequestInner.maxSizeBytes() == null) {
                 this.importRequestInner.withMaxSizeBytes(String.valueOf(this.inner().maxSizeBytes()));
@@ -647,18 +648,17 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .databases()
                 .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
-                .flatMap(
-                    importExportResponseInner -> {
-                        if (self.elasticPoolId() != null) {
-                            self.importRequestInner = null;
-                            return self
-                                .withExistingElasticPoolId(self.elasticPoolId())
-                                .withPatchUpdate()
-                                .updateResourceAsync();
-                        } else {
-                            return self.refreshAsync();
-                        }
-                    });
+                .then(Mono.defer(() -> {
+                    if (self.elasticPoolId() != null) {
+                        self.importRequestInner = null;
+                        return self
+                            .withExistingElasticPoolId(self.elasticPoolId())
+                            .withPatchUpdate()
+                            .updateResourceAsync();
+                    } else {
+                        return self.refreshAsync();
+                    }
+                }));
         } else {
             return this
                 .sqlServerManager
@@ -679,7 +679,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             final SqlDatabaseImpl self = this;
             DatabaseUpdate databaseUpdateInner =
                 new DatabaseUpdate()
-                    .withTags(self.inner().getTags())
+                    .withTags(self.inner().tags())
                     .withCollation(self.inner().collation())
                     .withSourceDatabaseId(self.inner().sourceDatabaseId())
                     .withCreateMode(self.inner().createMode())
@@ -1061,23 +1061,23 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(new HashMap<>(tags));
+        this.inner().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withTag(String key, String value) {
-        if (this.inner().getTags() == null) {
-            this.inner().setTags(new HashMap<String, String>());
+        if (this.inner().tags() == null) {
+            this.inner().withTags(new HashMap<String, String>());
         }
-        this.inner().getTags().put(key, value);
+        this.inner().tags().put(key, value);
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withoutTag(String key) {
-        if (this.inner().getTags() != null) {
-            this.inner().getTags().remove(key);
+        if (this.inner().tags() != null) {
+            this.inner().tags().remove(key);
         }
         return this;
     }

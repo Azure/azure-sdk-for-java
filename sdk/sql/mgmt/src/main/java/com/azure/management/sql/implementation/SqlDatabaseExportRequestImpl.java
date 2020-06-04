@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
@@ -13,19 +13,18 @@ import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseExportRequest;
 import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.StorageKeyType;
-import com.azure.management.storage.StorageAccount;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.implementation.models.StorageErrorException;
-import java.util.Objects;
-import reactor.core.Exceptions;
+import com.azure.management.storage.models.BlobContainer;
+import com.azure.management.storage.models.BlobContainers;
+import com.azure.management.storage.models.PublicAccess;
+import com.azure.management.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /** Implementation for SqlDatabaseExportRequest. */
 public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImportExportResponse>
     implements SqlDatabaseExportRequest, SqlDatabaseExportRequest.SqlDatabaseExportRequestDefinition {
 
-    private final ClientLogger logger = new ClientLogger(getClass());
     private final SqlDatabaseImpl sqlDatabase;
     private final SqlServerManager sqlServerManager;
     private ExportRequest inner;
@@ -88,20 +87,21 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                                     "%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                     self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
                     self.inner.withStorageKey(storageAccountKey.value());
-                    try {
-                        BlobServiceClient blobServiceClient =
-                            new BlobServiceClientBuilder()
-                                .endpoint(storageAccount.endPoints().primary().blob())
-                                .sasToken(storageAccountKey.value())
-                                .httpClient(sqlServerManager.httpPipeline().getHttpClient())
-                                .buildClient();
-                        blobServiceClient.createBlobContainer(containerName);
-                    } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(indexOutOfBoundsException));
-                    } catch (StorageErrorException stgException) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(stgException));
-                    }
-                    return context.voidMono();
+                    BlobContainers blobContainers = this.sqlServerManager.storageManager.blobContainers();
+                    return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
+                        .onErrorResume(error -> {
+                            if (error instanceof ManagementException) {
+                                if (((ManagementException) error).getResponse().getStatusCode() == 404) {
+                                    return blobContainers.defineContainer(containerName)
+                                        .withExistingBlobService(parent().resourceGroupName(), storageAccount.name())
+                                        .withPublicAccess(PublicAccess.NONE)
+                                        .createAsync()
+                                        .last()
+                                        .map(container -> (BlobContainer) container);
+                                }
+                            }
+                            return Mono.error(error);
+                        });
                 });
     }
 

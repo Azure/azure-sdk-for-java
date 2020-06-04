@@ -20,8 +20,8 @@ import com.azure.management.containerregistry.models.RunInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.model.Creatable;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.StorageManager;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import reactor.core.publisher.Mono;
@@ -75,7 +75,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
                 .createAsync(self.resourceGroupName(), self.name(), self.inner())
                 .map(innerToFluentMap(this));
         } else {
-            updateParameters.withTags(inner().getTags());
+            updateParameters.withTags(inner().tags());
             return manager()
                 .inner()
                 .registries()
@@ -116,7 +116,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
             return null;
         }
 
-        return ResourceUtils.nameFromResourceId(this.inner().storageAccount().getId());
+        return ResourceUtils.nameFromResourceId(this.inner().storageAccount().id());
     }
 
     @Override
@@ -125,7 +125,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
             return null;
         }
 
-        return this.inner().storageAccount().getId();
+        return this.inner().storageAccount().id();
     }
 
     @Override

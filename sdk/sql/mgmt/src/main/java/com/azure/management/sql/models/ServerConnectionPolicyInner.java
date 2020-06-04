@@ -7,13 +7,17 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ServerConnectionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServerConnectionPolicy model. */
 @JsonFlatten
 @Fluent
 public class ServerConnectionPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerConnectionPolicyInner.class);
+
     /*
      * Metadata used for the Azure portal experience.
      */
@@ -68,5 +72,13 @@ public class ServerConnectionPolicyInner extends ProxyResource {
     public ServerConnectionPolicyInner withConnectionType(ServerConnectionType connectionType) {
         this.connectionType = connectionType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

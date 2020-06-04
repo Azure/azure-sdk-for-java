@@ -72,8 +72,8 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl withPeerASN(long peerASN) {
-        inner().withPeerASN(peerASN);
+    public ExpressRouteCircuitPeeringImpl withPeerAsn(long peerASN) {
+        inner().withPeerAsn(peerASN);
         return this;
     }
 
@@ -84,7 +84,7 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -104,7 +104,7 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
@@ -118,13 +118,13 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    public int azureASN() {
-        return Utils.toPrimitiveInt(inner().azureASN());
+    public int azureAsn() {
+        return Utils.toPrimitiveInt(inner().azureAsn());
     }
 
     @Override
-    public long peerASN() {
-        return Utils.toPrimitiveLong(inner().peerASN());
+    public long peerAsn() {
+        return Utils.toPrimitiveLong(inner().peerAsn());
     }
 
     @Override

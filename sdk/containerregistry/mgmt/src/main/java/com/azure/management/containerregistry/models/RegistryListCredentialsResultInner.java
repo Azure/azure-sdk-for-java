@@ -5,13 +5,17 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.RegistryPassword;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The RegistryListCredentialsResult model. */
 @Fluent
 public final class RegistryListCredentialsResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryListCredentialsResultInner.class);
+
     /*
      * The username for a container registry.
      */
@@ -62,5 +66,16 @@ public final class RegistryListCredentialsResultInner {
     public RegistryListCredentialsResultInner withPasswords(List<RegistryPassword> passwords) {
         this.passwords = passwords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (passwords() != null) {
+            passwords().forEach(e -> e.validate());
+        }
     }
 }

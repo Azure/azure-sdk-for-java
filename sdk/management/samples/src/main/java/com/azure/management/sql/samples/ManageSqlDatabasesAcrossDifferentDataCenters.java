@@ -9,11 +9,11 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -148,7 +148,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             for (Network network: networks) {
                 String virtualMachineName = azure.sdkContext().randomResourceName(virtualMachinePrefix, 20);
-                Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses().define(virtualMachineName)
+                Creatable<PublicIpAddress> publicIPAddressCreatable = azure.publicIpAddresses().define(virtualMachineName)
                         .withRegion(network.region())
                         .withExistingResourceGroup(rgName)
                         .withLeafDomainLabel(virtualMachineName);
@@ -220,7 +220,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
     public static void main(String[] args) {
         try {
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

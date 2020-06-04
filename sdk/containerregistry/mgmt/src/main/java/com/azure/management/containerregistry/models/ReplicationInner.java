@@ -7,14 +7,18 @@ package com.azure.management.containerregistry.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.ProvisioningState;
 import com.azure.management.containerregistry.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Replication model. */
 @JsonFlatten
 @Immutable
 public class ReplicationInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationInner.class);
+
     /*
      * The provisioning state of the replication at the time the operation was
      * called.
@@ -45,5 +49,16 @@ public class ReplicationInner extends Resource {
      */
     public Status status() {
         return this.status;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (status() != null) {
+            status().validate();
+        }
     }
 }

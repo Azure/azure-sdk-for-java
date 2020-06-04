@@ -77,7 +77,7 @@ public final class DeployUsingARMTemplateWithTags {
             // Getting created resources
             for (DeploymentOperation operation : operations) {
                 if (operation.targetResource() != null) {
-                    genericResources.add(azure.genericResources().getById(operation.targetResource().getId()));
+                    genericResources.add(azure.genericResources().getById(operation.targetResource().id()));
                 }
             }
 
@@ -127,7 +127,7 @@ public final class DeployUsingARMTemplateWithTags {
             //=================================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

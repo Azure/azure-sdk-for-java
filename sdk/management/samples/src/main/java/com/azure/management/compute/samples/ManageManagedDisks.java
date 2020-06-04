@@ -10,21 +10,21 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.jcraft.jsch.JSchException;
 import com.azure.management.Azure;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.DiskSkuTypes;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.Snapshot;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineCustomImage;
-import com.azure.management.compute.VirtualMachineDataDisk;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskSkuTypes;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.Snapshot;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.SSHShell;
@@ -72,7 +72,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [with an implicit Managed OS disk and explicit Managed data disk]");
+            System.out.println("Created VM [with an implicit Managed OS disk and explicit Managed data disk]: " + linuxVM1.id());
 
             // Creation is simplified with implicit creation of managed disks without specifying all the disk details. You will notice that you do not require storage accounts
             // ::== Update the VM
@@ -186,7 +186,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [from custom image]");
+            System.out.println("Created VM [from custom image]: " + linuxVM3.id());
 
             // Create a VM from a VHD (Create Virtual Machine Using Specialized VHD)
 
@@ -207,7 +207,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [by attaching un-managed disk]");
+            System.out.println("Created VM [by attaching un-managed disk]: " + linuxVM4.id());
 
             // Create a Snapshot (Create Virtual Machine using specialized disks from snapshot)
 
@@ -292,7 +292,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [with specialized OS managed disk]");
+            System.out.println("Created VM [with specialized OS managed disk]: " + linuxVM6.id());
 
             // ::== Migrate a VM to managed disks with a single reboot
 
@@ -359,7 +359,7 @@ public final class ManageManagedDisks {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();
@@ -500,7 +500,7 @@ public final class ManageManagedDisks {
         final String natPool60XXto23 = "natPool60XXto23";
         final String publicIpName = "pip-" + loadBalancerName1;
 
-        PublicIPAddress publicIPAddress = azure.publicIPAddresses().define(publicIpName)
+        PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIpName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withLeafDomainLabel(publicIpName)
@@ -539,7 +539,7 @@ public final class ManageManagedDisks {
                     .attach()
                 // Explicitly define a frontend
                 .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
+                    .withExistingPublicIpAddress(publicIPAddress)
                     .attach()
                 // Add two probes one per rule
                 .defineHttpProbe(httpProbe)

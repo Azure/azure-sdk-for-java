@@ -4,12 +4,14 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.management.storage.BlobServiceProperties;
-import com.azure.management.storage.CorsRule;
-import com.azure.management.storage.CorsRules;
-import com.azure.management.storage.DeleteRetentionPolicy;
-import com.azure.management.storage.models.BlobServicePropertiesInner;
-import com.azure.management.storage.models.BlobServicesInner;
+import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.BlobServicesClient;
+import com.azure.management.storage.models.BlobServiceProperties;
+import com.azure.management.storage.models.CorsRule;
+import com.azure.management.storage.models.CorsRules;
+import com.azure.management.storage.models.DeleteRetentionPolicy;
+import com.azure.management.storage.fluent.inner.BlobServicePropertiesInner;
+
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -30,13 +32,13 @@ class BlobServicePropertiesImpl
     }
 
     BlobServicePropertiesImpl(BlobServicePropertiesInner inner, StorageManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.accountName = inner.getName();
+        this.accountName = inner.name();
         // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.accountName = IdParsingUtils.getValueFromIdByName(inner.getId(), "storageAccounts");
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
         //
     }
 
@@ -47,7 +49,7 @@ class BlobServicePropertiesImpl
 
     @Override
     public Mono<BlobServiceProperties> createResourceAsync() {
-        BlobServicesInner client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().getBlobServices();
         return client
             .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
             .map(innerToFluentMap(this));
@@ -55,7 +57,7 @@ class BlobServicePropertiesImpl
 
     @Override
     public Mono<BlobServiceProperties> updateResourceAsync() {
-        BlobServicesInner client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().getBlobServices();
         return client
             .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
             .map(innerToFluentMap(this));
@@ -63,13 +65,13 @@ class BlobServicePropertiesImpl
 
     @Override
     protected Mono<BlobServicePropertiesInner> getInnerAsync() {
-        BlobServicesInner client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().getBlobServices();
         return client.getServicePropertiesAsync(this.resourceGroupName, this.accountName);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -89,17 +91,17 @@ class BlobServicePropertiesImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override

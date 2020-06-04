@@ -5,37 +5,38 @@ package com.azure.management.compute.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.DataDisk;
-import com.azure.management.compute.DiagnosticsProfile;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.DiskCreateOptionTypes;
-import com.azure.management.compute.DiskState;
-import com.azure.management.compute.ImageReference;
-import com.azure.management.compute.ManagedDiskParameters;
-import com.azure.management.compute.NetworkInterfaceReference;
-import com.azure.management.compute.OSProfile;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.PowerState;
-import com.azure.management.compute.Sku;
-import com.azure.management.compute.StorageAccountTypes;
-import com.azure.management.compute.StorageProfile;
-import com.azure.management.compute.VirtualMachineCustomImage;
-import com.azure.management.compute.VirtualMachineDataDisk;
-import com.azure.management.compute.VirtualMachineImage;
-import com.azure.management.compute.VirtualMachineInstanceView;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetVM;
-import com.azure.management.compute.VirtualMachineScaleSetVMInstanceExtension;
-import com.azure.management.compute.VirtualMachineScaleSetVMNetworkProfileConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetVMProtectionPolicy;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
-import com.azure.management.compute.models.VirtualMachineInstanceViewInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMInstanceViewInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMsInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DataDisk;
+import com.azure.management.compute.models.DiagnosticsProfile;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskCreateOptionTypes;
+import com.azure.management.compute.models.DiskState;
+import com.azure.management.compute.models.ImageReference;
+import com.azure.management.compute.models.ManagedDiskParameters;
+import com.azure.management.compute.models.NetworkInterfaceReference;
+import com.azure.management.compute.models.OSProfile;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.PowerState;
+import com.azure.management.compute.models.Sku;
+import com.azure.management.compute.models.StorageAccountTypes;
+import com.azure.management.compute.models.StorageProfile;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineInstanceView;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetVM;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMInstanceExtension;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineInstanceViewInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetVMInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetVMInstanceViewInner;
+import com.azure.management.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -56,7 +57,7 @@ class VirtualMachineScaleSetVMImpl
     implements VirtualMachineScaleSetVM, VirtualMachineScaleSetVM.Update {
 
     private VirtualMachineInstanceView virtualMachineInstanceView;
-    private final VirtualMachineScaleSetVMsInner client;
+    private final VirtualMachineScaleSetVMsClient client;
     private final ComputeManager computeManager;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMImpl.class);
 
@@ -66,7 +67,7 @@ class VirtualMachineScaleSetVMImpl
     VirtualMachineScaleSetVMImpl(
         VirtualMachineScaleSetVMInner inner,
         final VirtualMachineScaleSetImpl parent,
-        final VirtualMachineScaleSetVMsInner client,
+        final VirtualMachineScaleSetVMsClient client,
         final ComputeManager computeManager) {
         super(inner, parent);
         this.client = client;
@@ -91,17 +92,17 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -111,15 +112,15 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().getTags() == null) {
+        if (this.inner().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<>());
         }
-        return Collections.unmodifiableMap(this.inner().getTags());
+        return Collections.unmodifiableMap(this.inner().tags());
     }
 
     @Override
@@ -164,7 +165,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isOSBasedOnCustomImage() {
         ImageReference imageReference = this.inner().storageProfile().imageReference();
-        if (imageReference != null && imageReference.getId() != null) {
+        if (imageReference != null && imageReference.id() != null) {
             return true;
         }
         return false;
@@ -207,7 +208,7 @@ class VirtualMachineScaleSetVMImpl
     public VirtualMachineCustomImage getOSCustomImage() {
         if (this.isOSBasedOnCustomImage()) {
             ImageReference imageReference = this.inner().storageProfile().imageReference();
-            return this.computeManager.virtualMachineCustomImages().getById(imageReference.getId());
+            return this.computeManager.virtualMachineCustomImages().getById(imageReference.id());
         }
         return null;
     }
@@ -236,7 +237,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String osDiskId() {
         if (this.storageProfile().osDisk().managedDisk() != null) {
-            return this.storageProfile().osDisk().managedDisk().getId();
+            return this.storageProfile().osDisk().managedDisk().id();
         }
         return null;
     }
@@ -346,7 +347,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String availabilitySetId() {
         if (this.inner().availabilitySet() != null) {
-            return this.inner().availabilitySet().getId();
+            return this.inner().availabilitySet().id();
         }
         return null;
     }
@@ -355,7 +356,7 @@ class VirtualMachineScaleSetVMImpl
     public List<String> networkInterfaceIds() {
         List<String> resourceIds = new ArrayList<>();
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
-            resourceIds.add(reference.getId());
+            resourceIds.add(reference.id());
         }
         return Collections.unmodifiableList(resourceIds);
     }
@@ -364,7 +365,7 @@ class VirtualMachineScaleSetVMImpl
     public String primaryNetworkInterfaceId() {
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
             if (reference.primary() != null && reference.primary()) {
-                return reference.getId();
+                return reference.id();
             }
         }
         return null;
@@ -377,7 +378,7 @@ class VirtualMachineScaleSetVMImpl
             for (VirtualMachineExtensionInner extensionInner : this.inner().resources()) {
                 extensions
                     .put(
-                        extensionInner.getName(),
+                        extensionInner.name(),
                         new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
             }
         }
@@ -594,7 +595,7 @@ class VirtualMachineScaleSetVMImpl
 
         ManagedDiskParameters managedDiskParameters =
             new ManagedDiskParameters().withStorageAccountType(storageAccountTypes);
-        managedDiskParameters.setId(dataDisk.id());
+        managedDiskParameters.withId(dataDisk.id());
 
         DataDisk attachDataDisk =
             new DataDisk()

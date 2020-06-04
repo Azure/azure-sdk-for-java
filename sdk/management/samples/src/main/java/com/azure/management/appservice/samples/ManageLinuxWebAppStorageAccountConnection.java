@@ -16,7 +16,7 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -110,7 +110,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             System.out.println("Deploying azure-samples-blob-traverser.war to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToWebApp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageLinuxWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
+            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageLinuxWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
 
             System.out.println("Deployment azure-samples-blob-traverser.war to web app " + app1.name() + " completed");
             Utils.print(app1);
@@ -150,7 +150,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

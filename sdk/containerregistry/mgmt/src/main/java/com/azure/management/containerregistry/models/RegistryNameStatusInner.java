@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RegistryNameStatus model. */
 @Fluent
 public final class RegistryNameStatusInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryNameStatusInner.class);
+
     /*
      * The value that indicates whether the name is available.
      */
@@ -89,5 +93,13 @@ public final class RegistryNameStatusInner {
     public RegistryNameStatusInner withMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

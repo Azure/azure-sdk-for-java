@@ -4,15 +4,17 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.management.storage.BlobContainer;
-import com.azure.management.storage.ImmutabilityPolicyProperties;
-import com.azure.management.storage.LeaseDuration;
-import com.azure.management.storage.LeaseState;
-import com.azure.management.storage.LeaseStatus;
-import com.azure.management.storage.LegalHoldProperties;
-import com.azure.management.storage.PublicAccess;
-import com.azure.management.storage.models.BlobContainerInner;
-import com.azure.management.storage.models.BlobContainersInner;
+import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.BlobContainersClient;
+import com.azure.management.storage.models.BlobContainer;
+import com.azure.management.storage.models.ImmutabilityPolicyProperties;
+import com.azure.management.storage.models.LeaseDuration;
+import com.azure.management.storage.models.LeaseState;
+import com.azure.management.storage.models.LeaseStatus;
+import com.azure.management.storage.models.LegalHoldProperties;
+import com.azure.management.storage.models.PublicAccess;
+import com.azure.management.storage.fluent.inner.BlobContainerInner;
+
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,14 +40,14 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     }
 
     BlobContainerImpl(BlobContainerInner inner, StorageManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.containerName = inner.getName();
+        this.containerName = inner.name();
         // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.accountName = IdParsingUtils.getValueFromIdByName(inner.getId(), "storageAccounts");
-        this.containerName = IdParsingUtils.getValueFromIdByName(inner.getId(), "containers");
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
+        this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
         //
     }
 
@@ -56,7 +58,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public Mono<BlobContainer> createResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .createAsync(this.resourceGroupName, this.accountName, this.containerName,
                 this.inner().withPublicAccess(cpublicAccess).withMetadata(cmetadata))
@@ -65,7 +67,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public Mono<BlobContainer> updateResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .updateAsync(this.resourceGroupName, this.accountName, this.containerName,
                 this.inner().withPublicAccess(upublicAccess).withMetadata(umetadata))
@@ -74,12 +76,12 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     protected Mono<BlobContainerInner> getInnerAsync() {
-        return this.manager().inner().blobContainers().getAsync(resourceGroupName, accountName, containerName);
+        return this.manager().inner().getBlobContainers().getAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -99,7 +101,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -139,7 +141,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -149,7 +151,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override

@@ -3,12 +3,12 @@
 
 package com.azure.management;
 
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineDataDisk;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachines;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.google.common.util.concurrent.SettableFuture;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Flux;
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
 
         final VirtualMachine[] vms = new VirtualMachine[1];
         final SettableFuture<VirtualMachine> future = SettableFuture.create();

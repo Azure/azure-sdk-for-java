@@ -239,6 +239,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -262,19 +263,15 @@
             files="com.azure.identity.implementation.WindowsCredentialApi.java"/>
 
   <!-- Use the logger in a Utility static method. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.ai.textanalytics.Transforms.java"/>
-
-  <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.Transforms.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.CustomModelTransforms.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
 
     <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormTrainingClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormTrainingAsyncClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.java" />
 
   <!-- Throws a non-runtime exception -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
@@ -361,9 +358,25 @@
   <!-- Suppress checks for AutoRest generated Search code -->
   <!-- Hand-written classes should be specified here to be checked -->
   <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]((?!(GeoPointDeserializer|Iso8601DateDeserializer|SerializationUtil)).*)"/>
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]models[/\\]"/>
   <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult)).*)"/>
+            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\]models[/\\]"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]converters[/\\]"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\](DocumentsImpl|SearchIndexRestClientBuilder|SearchIndexRestClientImpl)"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\](DataSourcesImpl|IndexersImpl|IndexesImpl|SkillsetsImpl|SynonymMapsImpl|SearchServiceRestClientBuilder|SearchServiceRestClientImpl)"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult|ComplexField|SearchableField|SimpleField|SearchFieldBase|IndexBatchException|ScoringParameter)).*)"/>
+  <suppress checks="GoodLoggingCheck" files="com.azure.search.documents.implementation.util.PrivateFieldAccessHelper.java"/>
+
+  <!-- Removed this rule after the issue gets fixed: https://github.com/Azure/azure-sdk-for-java/issues/11651-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexAsyncClient.java"/>
+<!--  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchAsyncClient.java"/>-->
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -395,7 +408,7 @@
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-            files="com.azure.core.management.implementation.polling.PollerFactory.java"/>
+            files="com.azure.core.management.implementation.polling.PollOperation.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files="com.azure.core.management.implementation.polling.PollingState.java"/>
 

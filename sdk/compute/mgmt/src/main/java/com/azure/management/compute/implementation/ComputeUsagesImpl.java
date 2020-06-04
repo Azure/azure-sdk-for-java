@@ -4,19 +4,19 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.ComputeUsage;
-import com.azure.management.compute.ComputeUsages;
-import com.azure.management.compute.models.ComputeManagementClientImpl;
-import com.azure.management.compute.models.UsageInner;
+import com.azure.management.compute.models.ComputeUsage;
+import com.azure.management.compute.models.ComputeUsages;
+import com.azure.management.compute.ComputeManagementClient;
+import com.azure.management.compute.fluent.inner.UsageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /** The implementation of {@link ComputeUsages}. */
-class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageImpl, UsageInner>
+public class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageImpl, UsageInner>
     implements ComputeUsages {
-    private final ComputeManagementClientImpl client;
+    private final ComputeManagementClient client;
 
-    ComputeUsagesImpl(ComputeManagementClientImpl client) {
+    public ComputeUsagesImpl(ComputeManagementClient client) {
         this.client = client;
     }
 
@@ -27,7 +27,7 @@ class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageI
 
     @Override
     public PagedIterable<ComputeUsage> listByRegion(String regionName) {
-        return wrapList(client.usages().list(regionName));
+        return wrapList(client.getUsages().list(regionName));
     }
 
     @Override
@@ -37,7 +37,7 @@ class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageI
 
     @Override
     public PagedFlux<ComputeUsage> listByRegionAsync(String regionName) {
-        return wrapPageAsync(client.usages().listAsync(regionName));
+        return wrapPageAsync(client.getUsages().listAsync(regionName));
     }
 
     @Override

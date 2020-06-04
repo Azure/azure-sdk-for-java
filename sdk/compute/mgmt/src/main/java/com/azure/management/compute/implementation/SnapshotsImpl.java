@@ -3,22 +3,23 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.AccessLevel;
-import com.azure.management.compute.GrantAccessData;
-import com.azure.management.compute.Snapshot;
-import com.azure.management.compute.Snapshots;
-import com.azure.management.compute.models.SnapshotInner;
-import com.azure.management.compute.models.SnapshotsInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AccessLevel;
+import com.azure.management.compute.models.GrantAccessData;
+import com.azure.management.compute.models.Snapshot;
+import com.azure.management.compute.models.Snapshots;
+import com.azure.management.compute.fluent.inner.SnapshotInner;
+import com.azure.management.compute.fluent.SnapshotsClient;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for Snapshots. */
-class SnapshotsImpl
-    extends TopLevelModifiableResourcesImpl<Snapshot, SnapshotImpl, SnapshotInner, SnapshotsInner, ComputeManager>
+public class SnapshotsImpl
+    extends TopLevelModifiableResourcesImpl<Snapshot, SnapshotImpl, SnapshotInner, SnapshotsClient, ComputeManager>
     implements Snapshots {
 
-    SnapshotsImpl(ComputeManager computeManager) {
-        super(computeManager.inner().snapshots(), computeManager);
+    public SnapshotsImpl(ComputeManager computeManager) {
+        super(computeManager.inner().getSnapshots(), computeManager);
     }
 
     @Override
@@ -58,7 +59,7 @@ class SnapshotsImpl
         if (inner == null) {
             return null;
         }
-        return new SnapshotImpl(inner.getName(), inner, this.manager());
+        return new SnapshotImpl(inner.name(), inner, this.manager());
     }
 
     @Override

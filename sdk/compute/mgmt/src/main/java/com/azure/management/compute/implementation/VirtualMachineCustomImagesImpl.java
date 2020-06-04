@@ -3,20 +3,21 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachineCustomImage;
-import com.azure.management.compute.VirtualMachineCustomImages;
-import com.azure.management.compute.models.ImageInner;
-import com.azure.management.compute.models.ImagesInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineCustomImages;
+import com.azure.management.compute.fluent.inner.ImageInner;
+import com.azure.management.compute.fluent.ImagesClient;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for VirtualMachineCustomImages. */
-class VirtualMachineCustomImagesImpl
+public class VirtualMachineCustomImagesImpl
     extends TopLevelModifiableResourcesImpl<
-        VirtualMachineCustomImage, VirtualMachineCustomImageImpl, ImageInner, ImagesInner, ComputeManager>
+        VirtualMachineCustomImage, VirtualMachineCustomImageImpl, ImageInner, ImagesClient, ComputeManager>
     implements VirtualMachineCustomImages {
 
-    VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {
-        super(computeManager.inner().images(), computeManager);
+    public VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {
+        super(computeManager.inner().getImages(), computeManager);
     }
 
     @Override
@@ -29,7 +30,7 @@ class VirtualMachineCustomImagesImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualMachineCustomImageImpl(inner.getName(), inner, this.manager());
+        return new VirtualMachineCustomImageImpl(inner.name(), inner, this.manager());
     }
 
     @Override

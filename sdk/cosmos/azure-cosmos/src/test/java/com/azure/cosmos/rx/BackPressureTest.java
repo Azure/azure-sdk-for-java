@@ -12,7 +12,7 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Offer;
@@ -66,9 +66,10 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void readFeedPages() throws Exception {
-        FeedOptions options = new FeedOptions();
-        
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        QueryRequestOptions options = new QueryRequestOptions();
+
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
@@ -110,9 +111,10 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void readFeedItems() throws Exception {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
@@ -152,8 +154,8 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void queryPages() throws Exception {
-        FeedOptions options = new FeedOptions();
-        
+        QueryRequestOptions options = new QueryRequestOptions();
+
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
@@ -197,7 +199,7 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void queryItems() throws Exception {
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
@@ -254,7 +256,7 @@ public class BackPressureTest extends TestSuiteBase {
         // for bulk insert and later queries.
         Offer offer = rxClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
-                        createdCollection.read().block().getProperties().getResourceId())
+                    createdCollection.read().block().getProperties().getResourceId())
                         , null).take(1).map(FeedResponse::getResults).single().block().get(0);
         offer.setThroughput(6000);
         offer = rxClient.replaceOffer(offer).single().block().getResource();
@@ -273,8 +275,8 @@ public class BackPressureTest extends TestSuiteBase {
 
     private void warmUp() {
         // ensure collection is cached
-        FeedOptions options = new FeedOptions();
-        
+        QueryRequestOptions options = new QueryRequestOptions();
+
         createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).byPage().blockFirst();
     }
 

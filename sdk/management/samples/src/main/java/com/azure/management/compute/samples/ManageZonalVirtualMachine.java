@@ -8,11 +8,11 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.PublicIPSkuType;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -75,7 +75,7 @@ public final class ManageZonalVirtualMachine {
 
             System.out.println("Creating a zonal public ip address");
 
-            PublicIPAddress publicIPAddress = azure.publicIPAddresses()
+            PublicIpAddress publicIPAddress = azure.publicIpAddresses()
                     .define(pipName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -164,7 +164,7 @@ public final class ManageZonalVirtualMachine {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

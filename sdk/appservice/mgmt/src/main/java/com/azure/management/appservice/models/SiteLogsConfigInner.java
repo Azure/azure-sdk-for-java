@@ -6,16 +6,20 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ApplicationLogsConfig;
 import com.azure.management.appservice.EnabledConfig;
 import com.azure.management.appservice.HttpLogsConfig;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SiteLogsConfig model. */
 @JsonFlatten
 @Fluent
 public class SiteLogsConfigInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteLogsConfigInner.class);
+
     /*
      * Application logs configuration.
      */
@@ -118,5 +122,27 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     public SiteLogsConfigInner withDetailedErrorMessages(EnabledConfig detailedErrorMessages) {
         this.detailedErrorMessages = detailedErrorMessages;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (applicationLogs() != null) {
+            applicationLogs().validate();
+        }
+        if (httpLogs() != null) {
+            httpLogs().validate();
+        }
+        if (failedRequestsTracing() != null) {
+            failedRequestsTracing().validate();
+        }
+        if (detailedErrorMessages() != null) {
+            detailedErrorMessages().validate();
+        }
     }
 }

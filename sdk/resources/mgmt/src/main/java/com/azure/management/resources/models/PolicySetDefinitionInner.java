@@ -7,18 +7,25 @@ package com.azure.management.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.resources.ParameterDefinitionsValue;
+import com.azure.management.resources.PolicyDefinitionGroup;
 import com.azure.management.resources.PolicyDefinitionReference;
 import com.azure.management.resources.PolicyType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The PolicySetDefinition model. */
 @JsonFlatten
 @Fluent
 public class PolicySetDefinitionInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetDefinitionInner.class);
+
     /*
      * The type of policy definition. Possible values are NotSpecified,
-     * BuiltIn, and Custom.
+     * BuiltIn, Custom, and Static.
      */
     @JsonProperty(value = "properties.policyType")
     private PolicyType policyType;
@@ -36,7 +43,8 @@ public class PolicySetDefinitionInner extends ProxyResource {
     private String description;
 
     /*
-     * The policy set definition metadata.
+     * The policy set definition metadata.  Metadata is an open ended object
+     * and is typically a collection of key value pairs.
      */
     @JsonProperty(value = "properties.metadata")
     private Object metadata;
@@ -46,7 +54,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * definition references.
      */
     @JsonProperty(value = "properties.parameters")
-    private Object parameters;
+    private Map<String, ParameterDefinitionsValue> parameters;
 
     /*
      * An array of policy definition references.
@@ -54,9 +62,16 @@ public class PolicySetDefinitionInner extends ProxyResource {
     @JsonProperty(value = "properties.policyDefinitions")
     private List<PolicyDefinitionReference> policyDefinitions;
 
+    /*
+     * The metadata describing groups of policy definition references within
+     * the policy set definition.
+     */
+    @JsonProperty(value = "properties.policyDefinitionGroups")
+    private List<PolicyDefinitionGroup> policyDefinitionGroups;
+
     /**
-     * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, and
-     * Custom.
+     * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
+     * and Static.
      *
      * @return the policyType value.
      */
@@ -65,8 +80,8 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, and
-     * Custom.
+     * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
+     * and Static.
      *
      * @param policyType the policyType value to set.
      * @return the PolicySetDefinitionInner object itself.
@@ -117,7 +132,8 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the metadata property: The policy set definition metadata.
+     * Get the metadata property: The policy set definition metadata. Metadata is an open ended object and is typically
+     * a collection of key value pairs.
      *
      * @return the metadata value.
      */
@@ -126,7 +142,8 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the metadata property: The policy set definition metadata.
+     * Set the metadata property: The policy set definition metadata. Metadata is an open ended object and is typically
+     * a collection of key value pairs.
      *
      * @param metadata the metadata value to set.
      * @return the PolicySetDefinitionInner object itself.
@@ -142,7 +159,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      *
      * @return the parameters value.
      */
-    public Object parameters() {
+    public Map<String, ParameterDefinitionsValue> parameters() {
         return this.parameters;
     }
 
@@ -153,7 +170,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @param parameters the parameters value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
-    public PolicySetDefinitionInner withParameters(Object parameters) {
+    public PolicySetDefinitionInner withParameters(Map<String, ParameterDefinitionsValue> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -176,5 +193,44 @@ public class PolicySetDefinitionInner extends ProxyResource {
     public PolicySetDefinitionInner withPolicyDefinitions(List<PolicyDefinitionReference> policyDefinitions) {
         this.policyDefinitions = policyDefinitions;
         return this;
+    }
+
+    /**
+     * Get the policyDefinitionGroups property: The metadata describing groups of policy definition references within
+     * the policy set definition.
+     *
+     * @return the policyDefinitionGroups value.
+     */
+    public List<PolicyDefinitionGroup> policyDefinitionGroups() {
+        return this.policyDefinitionGroups;
+    }
+
+    /**
+     * Set the policyDefinitionGroups property: The metadata describing groups of policy definition references within
+     * the policy set definition.
+     *
+     * @param policyDefinitionGroups the policyDefinitionGroups value to set.
+     * @return the PolicySetDefinitionInner object itself.
+     */
+    public PolicySetDefinitionInner withPolicyDefinitionGroups(List<PolicyDefinitionGroup> policyDefinitionGroups) {
+        this.policyDefinitionGroups = policyDefinitionGroups;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (parameters() != null) {
+            parameters().values().forEach(e -> e.validate());
+        }
+        if (policyDefinitions() != null) {
+            policyDefinitions().forEach(e -> e.validate());
+        }
+        if (policyDefinitionGroups() != null) {
+            policyDefinitionGroups().forEach(e -> e.validate());
+        }
     }
 }
