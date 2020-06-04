@@ -189,8 +189,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2019-10-10";
-        // TODO (gapra) : Change this to 12-12 once stage gets to 12-12
+        public static final String TARGET_STORAGE_VERSION = "2019-12-12";
 
         /**
          * Error code returned from the service.
