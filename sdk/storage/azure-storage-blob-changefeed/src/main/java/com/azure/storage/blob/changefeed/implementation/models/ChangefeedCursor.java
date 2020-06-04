@@ -22,7 +22,7 @@ public class ChangefeedCursor {
 
     private ClientLogger logger = new ClientLogger(ChangefeedCursor.class);
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private String endTime;
     private String segmentTime;
@@ -204,7 +204,7 @@ public class ChangefeedCursor {
      */
     public String serialize() {
         try {
-            return mapper.writer().writeValueAsString(this);
+            return MAPPER.writer().writeValueAsString(this);
         } catch (JsonProcessingException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -218,7 +218,7 @@ public class ChangefeedCursor {
      */
     public static ChangefeedCursor deserialize(String cursor, ClientLogger logger) {
         try {
-            return mapper.readerFor(ChangefeedCursor.class).readValue(cursor);
+            return MAPPER.readerFor(ChangefeedCursor.class).readValue(cursor);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }

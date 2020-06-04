@@ -40,7 +40,7 @@ class Segment {
     private static final String CHUNK_FILE_PATHS = "chunkFilePaths";
     private static final String STATUS = "status";
     private static final String FINALIZED = "Finalized";
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String segmentPath; /* Segment manifest location. */
@@ -77,7 +77,7 @@ class Segment {
 
     private Mono<JsonNode> parseJson(byte[] json) {
         try {
-            JsonNode jsonNode = mapper.reader().readTree(json);
+            JsonNode jsonNode = MAPPER.reader().readTree(json);
             return Mono.just(jsonNode);
         } catch (IOException e) {
             return FluxUtil.monoError(logger, new UncheckedIOException(e));

@@ -38,7 +38,7 @@ class Changefeed {
 
     private static final String SEGMENT_PREFIX = "idx/segments/";
     private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final OffsetDateTime startTime; /* User provided start time. */
@@ -102,7 +102,7 @@ class Changefeed {
             /* Parse JSON for last consumable. */
             .flatMap(json -> {
                 try {
-                    JsonNode jsonNode = mapper.reader().readTree(json);
+                    JsonNode jsonNode = MAPPER.reader().readTree(json);
                     this.lastConsumable = OffsetDateTime.parse(jsonNode.get("lastConsumable").asText());
                     if (this.lastConsumable.isBefore(endTime)) {
                         this.safeEndTime = this.lastConsumable;
