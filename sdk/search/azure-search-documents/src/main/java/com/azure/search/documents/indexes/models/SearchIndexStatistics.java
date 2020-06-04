@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * not guaranteed to always be up-to-date.
  */
 @Fluent
-public final class GetIndexStatisticsResult {
+public final class SearchIndexStatistics {
     /*
      * The number of documents in the index.
      */

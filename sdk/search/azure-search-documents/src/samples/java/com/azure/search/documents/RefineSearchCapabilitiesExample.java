@@ -18,7 +18,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.ServiceCounters;
 import com.azure.search.documents.indexes.models.ServiceLimits;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.WebApiSkill;
 import com.azure.search.documents.models.Hotel;
@@ -104,7 +104,7 @@ public class RefineSearchCapabilitiesExample {
     }
 
     private static void getServiceStatistics(SearchIndexClient client) {
-        ServiceStatistics statistics = client.getServiceStatistics();
+        SearchServiceStatistics statistics = client.getServiceStatistics();
         ServiceCounters counters = statistics.getCounters();
         ServiceLimits limits = statistics.getLimits();
 

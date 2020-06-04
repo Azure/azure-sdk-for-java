@@ -5,23 +5,28 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Breaks text following the Unicode Text Segmentation rules. This tokenizer is
  * implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.StandardTokenizer")
 @Fluent
 public final class LuceneStandardTokenizer extends LexicalTokenizer {
+    private final String odataType;
+
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum
      * length are split.
      */
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
+
+    /**
+     * Constructor for {@link LuceneStandardTokenizer}.
+     */
+    public LuceneStandardTokenizer() {
+        odataType = "#Microsoft.Azure.Search.LuceneStandardTokenizerV2";
+    }
 
     /**
      * Get the maxTokenLength property: The maximum token length. Default is
