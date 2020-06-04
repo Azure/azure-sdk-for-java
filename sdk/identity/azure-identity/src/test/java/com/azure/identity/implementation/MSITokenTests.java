@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 public class MSITokenTests {
-    private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 1, 28, 0, ZoneOffset.UTC);
+    private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
 
     @Test
     public void canParseLong() {
@@ -30,11 +30,11 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
 
         token = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00");
-        expected = OffsetDateTime.of(2019, 12, 20, 4, 56, 20, 0, ZoneOffset.UTC);
+        expected = OffsetDateTime.of(2019, 12, 20, 4, 58, 20, 0, ZoneOffset.UTC);
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
 
         token = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00");
-        expected = OffsetDateTime.of(2020, 1, 1, 11, 58, 0, 0, ZoneOffset.UTC);
+        expected = OffsetDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC);
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
     }
 }
