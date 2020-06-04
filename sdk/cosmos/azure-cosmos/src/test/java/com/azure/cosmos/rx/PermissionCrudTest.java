@@ -44,7 +44,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosPermissionProperties permissionSettings = new CosmosPermissionProperties()
                 .setId(UUID.randomUUID().toString())
                 .setPermissionMode(PermissionMode.READ)
-                .setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
+                .setContainerName("AQAAAJ0fgTc=");
 
         Mono<CosmosPermissionResponse> createObservable = createdUser.createPermission(permissionSettings, null);
 
@@ -52,7 +52,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
                 .withId(permissionSettings.getId())
                 .withPermissionMode(PermissionMode.READ)
-                .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
+                .withPermissionContainerName("AQAAAJ0fgTc=")
                 .notNullEtag()
                 .build();
         validateSuccess(createObservable, validator);
@@ -66,7 +66,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosPermissionProperties permissionSettings = new CosmosPermissionProperties()
                 .setId(UUID.randomUUID().toString())
                 .setPermissionMode(PermissionMode.READ)
-                .setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
+                .setContainerName("AQAAAJ0fgTc=");
         createdUser.createPermission(permissionSettings, null).block();
 
         // read Permission
@@ -76,7 +76,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
                 .withId(permissionSettings.getId())
                 .withPermissionMode(PermissionMode.READ)
-                .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
+                .withPermissionContainerName("AQAAAJ0fgTc=")
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validator);
@@ -91,7 +91,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosPermissionProperties permissionSettings = new CosmosPermissionProperties()
                 .setId(UUID.randomUUID().toString())
                 .setPermissionMode(PermissionMode.READ)
-                .setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
+                .setContainerName("AQAAAJ0fgTc=");
         createdUser.createPermission(permissionSettings, null).block();
         CosmosAsyncPermission readBackPermission = createdUser.getPermission(permissionSettings.getId());
 
@@ -121,7 +121,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosPermissionProperties permissionSettings = new CosmosPermissionProperties()
                 .setId(UUID.randomUUID().toString())
                 .setPermissionMode(PermissionMode.READ)
-                .setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
+                .setContainerName("AQAAAJ0fgTc=");
         CosmosPermissionResponse readBackPermissionResponse = createdUser.createPermission(permissionSettings, null)
                 .block();
 
@@ -133,7 +133,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
                 .withId(readBackPermissionProperties.getId())
                 .withPermissionMode(PermissionMode.READ)
-                .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
+                .withPermissionContainerName("AQAAAJ0fgTc=")
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validator);
@@ -147,7 +147,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosResponseValidator<CosmosPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
                 .withId(readBackPermissionProperties.getId())
                 .withPermissionMode(PermissionMode.ALL)
-                .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
+                .withPermissionContainerName("AQAAAJ0fgTc=")
                 .notNullEtag()
                 .build();
         validateSuccess(updateObservable, validatorForUpdate);
@@ -163,7 +163,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosPermissionProperties permissionSettings = new CosmosPermissionProperties()
                 .setId(id)
                 .setPermissionMode(PermissionMode.READ)
-                .setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
+                .setContainerName("AQAAAJ0fgTc=");
         CosmosPermissionResponse readBackPermissionResponse = createdUser.createPermission(permissionSettings, null).block();
         CosmosAsyncPermission readBackPermission = createdUser.getPermission(permissionSettings.getId());
         // read Permission
@@ -173,7 +173,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
                 .withId(readBackPermissionResponse.getProperties().getId())
                 .withPermissionMode(PermissionMode.READ)
-                .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
+                .withPermissionContainerName("AQAAAJ0fgTc=")
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validator);
@@ -188,7 +188,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosResponseValidator<CosmosPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
                 .withId(readBackPermissionProperties.getId())
                 .withPermissionMode(PermissionMode.ALL)
-                .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
+                .withPermissionContainerName("AQAAAJ0fgTc=")
                 .notNullEtag()
                 .build();
         validateSuccess(updateObservable, validatorForUpdate);
