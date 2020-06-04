@@ -25,6 +25,12 @@ public class ServiceResourceInner extends Resource {
     private ClusterResourceProperties properties;
 
     /**
+     * Sku of the Service resource.
+     */
+    @JsonProperty(value = "sku")
+    private SkuInner sku;
+
+    /**
      * Get properties of the Service resource.
      *
      * @return the properties value
@@ -41,6 +47,26 @@ public class ServiceResourceInner extends Resource {
      */
     public ServiceResourceInner withProperties(ClusterResourceProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get sku of the Service resource.
+     *
+     * @return the sku value
+     */
+    public SkuInner sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set sku of the Service resource.
+     *
+     * @param sku the sku value to set
+     * @return the ServiceResourceInner object itself.
+     */
+    public ServiceResourceInner withSku(SkuInner sku) {
+        this.sku = sku;
         return this;
     }
 

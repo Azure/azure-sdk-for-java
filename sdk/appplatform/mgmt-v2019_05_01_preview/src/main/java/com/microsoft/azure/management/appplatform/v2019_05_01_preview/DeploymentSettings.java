@@ -16,13 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DeploymentSettings {
     /**
-     * Required CPU.
+     * Required CPU, basic tier should be 1, standard tier should be in range
+     * (1, 4).
      */
     @JsonProperty(value = "cpu")
     private Integer cpu;
 
     /**
-     * Required Memory size in GB.
+     * Required Memory size in GB, basic tier should be in range (1, 2),
+     * standard tier should be in range (1, 8).
      */
     @JsonProperty(value = "memoryInGB")
     private Integer memoryInGB;
@@ -34,7 +36,8 @@ public class DeploymentSettings {
     private String jvmOptions;
 
     /**
-     * Instance count.
+     * Instance count, basic tier should be in range (1, 25), standard tier
+     * should be in range (1, 500).
      */
     @JsonProperty(value = "instanceCount")
     private Integer instanceCount;
@@ -52,7 +55,7 @@ public class DeploymentSettings {
     private RuntimeVersion runtimeVersion;
 
     /**
-     * Get required CPU.
+     * Get required CPU, basic tier should be 1, standard tier should be in range (1, 4).
      *
      * @return the cpu value
      */
@@ -61,7 +64,7 @@ public class DeploymentSettings {
     }
 
     /**
-     * Set required CPU.
+     * Set required CPU, basic tier should be 1, standard tier should be in range (1, 4).
      *
      * @param cpu the cpu value to set
      * @return the DeploymentSettings object itself.
@@ -72,7 +75,7 @@ public class DeploymentSettings {
     }
 
     /**
-     * Get required Memory size in GB.
+     * Get required Memory size in GB, basic tier should be in range (1, 2), standard tier should be in range (1, 8).
      *
      * @return the memoryInGB value
      */
@@ -81,7 +84,7 @@ public class DeploymentSettings {
     }
 
     /**
-     * Set required Memory size in GB.
+     * Set required Memory size in GB, basic tier should be in range (1, 2), standard tier should be in range (1, 8).
      *
      * @param memoryInGB the memoryInGB value to set
      * @return the DeploymentSettings object itself.
@@ -112,7 +115,7 @@ public class DeploymentSettings {
     }
 
     /**
-     * Get instance count.
+     * Get instance count, basic tier should be in range (1, 25), standard tier should be in range (1, 500).
      *
      * @return the instanceCount value
      */
@@ -121,7 +124,7 @@ public class DeploymentSettings {
     }
 
     /**
-     * Set instance count.
+     * Set instance count, basic tier should be in range (1, 25), standard tier should be in range (1, 500).
      *
      * @param instanceCount the instanceCount value to set
      * @return the DeploymentSettings object itself.
