@@ -44,7 +44,7 @@ import java.util.function.Function;
 public class CachedSchemaRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClientBuilder.class);
 
-    private static final String DEFAULT_SCOPE = "https://eventhubs.azure.com/.default";
+    private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
     private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry-client.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
