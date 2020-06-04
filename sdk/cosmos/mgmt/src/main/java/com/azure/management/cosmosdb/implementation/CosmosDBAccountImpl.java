@@ -535,7 +535,7 @@ class CosmosDBAccountImpl
         locationParameters.withLocations(locations);
     }
 
-    private String formatLocationName(String locationName) {
+    private static String formatLocationName(String locationName) {
         return locationName.replace(" ", "").toLowerCase(Locale.ROOT);
     }
 
@@ -569,7 +569,7 @@ class CosmosDBAccountImpl
         }
 
         Set<String> locations = locationParameters.locations().stream()
-            .map(location -> this.formatLocationName(location.locationName()))
+            .map(location -> formatLocationName(location.locationName()))
             .collect(Collectors.toSet());
         return request
             .flatMap(
@@ -594,7 +594,7 @@ class CosmosDBAccountImpl
                                         if (!isAFinalProvisioningState(location.provisioningState())) {
                                             return Mono.empty();
                                         }
-                                        if (!locations.contains(this.formatLocationName(location.locationName()))) {
+                                        if (!locations.contains(formatLocationName(location.locationName()))) {
                                             return Mono.empty();
                                         }
                                     }
