@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://kasobolcanarytest.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint00226?restype=share&sv=2019-10-10&se=2020-05-13T20%3A47%3A23Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint37521?restype=share&sv=2019-12-12&se=2020-06-05T00%3A09%3A03Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "31abeae3-d292-450a-b58a-50ead523f742"
+      "x-ms-client-request-id" : "4d9c61f6-e96b-455d-8151-b64e6408432c"
     },
     "Response" : {
       "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7F6B5AC249137",
-      "Last-Modified" : "Tue, 12 May 2020 20:47:23 GMT",
+      "ETag" : "0x8D8081B7D57C02B",
+      "Last-Modified" : "Thu, 04 Jun 2020 00:09:03 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e09564f1-701a-007e-389e-286666000000",
-      "Date" : "Tue, 12 May 2020 20:47:22 GMT",
-      "x-ms-client-request-id" : "31abeae3-d292-450a-b58a-50ead523f742"
+      "x-ms-request-id" : "4ee3aece-501a-0056-6104-3a07ce000000",
+      "Date" : "Thu, 04 Jun 2020 00:09:02 GMT",
+      "x-ms-client-request-id" : "4d9c61f6-e96b-455d-8151-b64e6408432c"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://kasobolcanarytest.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint00226/filesastestsaccountsasnetworkaccountsastokenonendpoint82353?sv=2019-10-10&se=2020-05-13T20%3A47%3A23Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint37521/filesastestsaccountsasnetworkaccountsastokenonendpoint69583?sv=2019-12-12&se=2020-06-05T00%3A09%3A03Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "08167bb7-01e5-47bf-afe4-00b4cabfaf98"
+      "x-ms-client-request-id" : "affe7355-64ce-446b-9714-ce8b452af7f5"
     },
     "Response" : {
       "x-ms-version" : "2019-12-12",
       "x-ms-file-permission-key" : "9064745170435706323*15378836105569756509",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2020-05-12T20:47:23.5024286Z",
-      "Last-Modified" : "Tue, 12 May 2020 20:47:23 GMT",
+      "x-ms-file-creation-time" : "2020-06-04T00:09:03.3982116Z",
+      "Last-Modified" : "Thu, 04 Jun 2020 00:09:03 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 12 May 2020 20:47:22 GMT",
-      "ETag" : "0x8D7F6B5AC37299E",
+      "Date" : "Thu, 04 Jun 2020 00:09:02 GMT",
+      "ETag" : "0x8D8081B7D673CA4",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2020-05-12T20:47:23.5024286Z",
+      "x-ms-file-change-time" : "2020-06-04T00:09:03.3982116Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "e09564f3-701a-007e-399e-286666000000",
-      "x-ms-client-request-id" : "08167bb7-01e5-47bf-afe4-00b4cabfaf98",
-      "x-ms-file-last-write-time" : "2020-05-12T20:47:23.5024286Z"
+      "x-ms-request-id" : "4ee3aed0-501a-0056-6204-3a07ce000000",
+      "x-ms-client-request-id" : "affe7355-64ce-446b-9714-ce8b452af7f5",
+      "x-ms-file-last-write-time" : "2020-06-04T00:09:03.3982116Z"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://kasobolcanarytest.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint00226/filesastestsaccountsasnetworkaccountsastokenonendpoint82353?sv=2019-10-10&se=2020-05-13T20%3A47%3A23Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint37521/filesastestsaccountsasnetworkaccountsastokenonendpoint69583?sv=2019-12-12&se=2020-06-05T00%3A09%3A03Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "33f758f5-3ac8-4de4-8d58-a5b40e2a5987"
+      "x-ms-client-request-id" : "9290bf62-5556-492b-8a52-ffbf22b10f1a"
     },
     "Response" : {
       "x-ms-version" : "2019-12-12",
@@ -63,27 +63,27 @@
       "x-ms-file-permission-key" : "9064745170435706323*15378836105569756509",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2020-05-12T20:47:23.5024286Z",
+      "x-ms-file-creation-time" : "2020-06-04T00:09:03.3982116Z",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Tue, 12 May 2020 20:47:23 GMT",
+      "Last-Modified" : "Thu, 04 Jun 2020 00:09:03 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 12 May 2020 20:47:22 GMT",
+      "Date" : "Thu, 04 Jun 2020 00:09:02 GMT",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
       "x-ms-type" : "File",
-      "ETag" : "0x8D7F6B5AC37299E",
+      "ETag" : "0x8D8081B7D673CA4",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2020-05-12T20:47:23.5024286Z",
+      "x-ms-file-change-time" : "2020-06-04T00:09:03.3982116Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "1024",
-      "x-ms-request-id" : "e09564f4-701a-007e-3a9e-286666000000",
+      "x-ms-request-id" : "4ee3aed1-501a-0056-6304-3a07ce000000",
       "Body" : "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
-      "x-ms-client-request-id" : "33f758f5-3ac8-4de4-8d58-a5b40e2a5987",
-      "x-ms-file-last-write-time" : "2020-05-12T20:47:23.5024286Z",
+      "x-ms-client-request-id" : "9290bf62-5556-492b-8a52-ffbf22b10f1a",
+      "x-ms-file-last-write-time" : "2020-06-04T00:09:03.3982116Z",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   } ],
-  "variables" : [ "filesastestsaccountsasnetworkaccountsastokenonendpoint75468", "2020-05-12T20:47:23.434920100Z", "filesastestsaccountsasnetworkaccountsastokenonendpoint00226", "filesastestsaccountsasnetworkaccountsastokenonendpoint82353" ]
+  "variables" : [ "filesastestsaccountsasnetworkaccountsastokenonendpoint27362", "2020-06-04T00:09:03.292508800Z", "filesastestsaccountsasnetworkaccountsastokenonendpoint37521", "filesastestsaccountsasnetworkaccountsastokenonendpoint69583" ]
 }
