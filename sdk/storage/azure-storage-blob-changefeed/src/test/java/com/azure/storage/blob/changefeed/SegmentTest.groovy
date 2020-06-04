@@ -73,15 +73,15 @@ class SegmentTest extends Specification {
         def sv = StepVerifier.create(segment.getEvents().index())
 
         then:
-        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+        sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
             .verifyComplete()
 
         verify(mockContainer).getBlobAsyncClient(segmentPath) || true
@@ -106,20 +106,20 @@ class SegmentTest extends Specification {
 
         then:
         if (shardPath == 'log/00/2020/03/25/0200/') {
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
         }
         if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/') {
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
 
         }
         if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/' || shardPath == 'log/02/2020/03/25/0200/') {
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
         }
         sv.verifyComplete()
 

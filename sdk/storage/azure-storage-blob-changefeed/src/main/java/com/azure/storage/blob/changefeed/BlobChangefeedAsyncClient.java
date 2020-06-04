@@ -40,8 +40,8 @@ public class BlobChangefeedAsyncClient {
             .serviceVersion(version)
             .buildAsyncClient();
         AvroReaderFactory avroReaderFactory = new AvroReaderFactory();
-        BlobLazyDownloaderFactory blobLazyDownloaderFactory = new BlobLazyDownloaderFactory();
-        ChunkFactory chunkFactory = new ChunkFactory(avroReaderFactory, blobLazyDownloaderFactory, client);
+        BlobLazyDownloaderFactory blobLazyDownloaderFactory = new BlobLazyDownloaderFactory(client);
+        ChunkFactory chunkFactory = new ChunkFactory(avroReaderFactory, blobLazyDownloaderFactory);
         ShardFactory shardFactory = new ShardFactory(chunkFactory, client);
         SegmentFactory segmentFactory = new SegmentFactory(shardFactory, client);
         this.changefeedFactory = new ChangefeedFactory(segmentFactory, client);

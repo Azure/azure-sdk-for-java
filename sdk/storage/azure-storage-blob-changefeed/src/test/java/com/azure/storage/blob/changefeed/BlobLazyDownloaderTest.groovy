@@ -18,7 +18,7 @@ class BlobLazyDownloaderTest extends APISpec {
         def cc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         cc.create().block()
         bc = cc.getBlobAsyncClient(generateBlobName())
-        factory = new BlobLazyDownloaderFactory()
+        factory = new BlobLazyDownloaderFactory(cc)
     }
 
     byte[] downloadHelper(BlobLazyDownloader downloader) {
@@ -61,7 +61,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(Constants.KB)
 
         when:
-        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc, Constants.KB, offset))
+        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
@@ -82,7 +82,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(size)
 
         when:
-        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc, Constants.KB, offset))
+        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
@@ -101,7 +101,7 @@ class BlobLazyDownloaderTest extends APISpec {
         uploadHelper(Constants.KB)
 
         when:
-        downloadHelper(factory.getBlobLazyDownloader(bc, Constants.KB, Constants.KB * 2))
+        downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), Constants.KB, Constants.KB * 2))
 
         then:
         thrown(BlobStorageException)
@@ -114,7 +114,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(uploadSize)
 
         when:
-        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc, downloadSize))
+        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), downloadSize))
 
         then:
         assert output.length == downloadSize

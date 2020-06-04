@@ -79,15 +79,15 @@ class ShardTest extends Specification {
         def sv = StepVerifier.create(shard.getEvents().index())
 
         then:
-        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 1) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 2) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 1) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 2) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 1) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 2) })
+        sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 2) })
             .verifyComplete()
 
         ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
@@ -114,19 +114,19 @@ class ShardTest extends Specification {
 
         then:
         if (chunkPath == "chunk0") {
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 0) })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 1) })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 2) })
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 0) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 1) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 2) })
         }
         if (chunkPath == "chunk0" || chunkPath == "chunk1") {
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 0) })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 1) })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 2) })
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 0) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 1) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 2) })
         }
         if (chunkPath == "chunk0" || chunkPath == "chunk1" || chunkPath == "chunk2") {
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 0) })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 1) })
-                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 2) })
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 0) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 1) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 2) })
         }
         sv.verifyComplete()
 

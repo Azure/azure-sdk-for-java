@@ -81,7 +81,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel)
         def simpleVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(data)
-                .readAvroObjects()
+                .read()
             .map({ avroObject -> avroObject.getObject() })
         )
         then:
@@ -99,7 +99,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, -1 as long)
-                .readAvroObjects()
+                .read()
                 .map({ avroObject -> avroObject.getObject() })
         )
 
@@ -160,7 +160,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel, chunkSize, 0, 157)
         def simpleVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(data)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
         )
         then:
@@ -178,7 +178,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, chunkSize, 129, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, 129 as long, -1 as long)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
         )
 
@@ -214,7 +214,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel)
         def simpleVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(data)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
                 .map({o -> (String)((Map<String, Object>) o).get("subject")})
                 .index()
@@ -245,7 +245,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, -1 as long)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
                 .map({o -> (String)((Map<String, Object>) o).get("subject")})
                 .index()
@@ -290,7 +290,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, filterIndex)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
                 .map({o -> (String)((Map<String, Object>) o).get("subject")})
                 .index()
@@ -333,7 +333,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel)
         def simpleVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(data)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
         )
 
@@ -394,7 +394,7 @@ class AvroReaderTest extends Specification {
         when:
         def sv = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(data)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
         )
 
@@ -417,7 +417,7 @@ class AvroReaderTest extends Specification {
         when:
         def sv = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(data)
-                .readAvroObjects()
+                .read()
                 .map({avroObject -> avroObject.getObject()})
         )
 

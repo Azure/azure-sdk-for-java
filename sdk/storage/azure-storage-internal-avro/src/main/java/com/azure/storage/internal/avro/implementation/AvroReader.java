@@ -9,5 +9,5 @@ import reactor.core.publisher.Flux;
  * An interface that represents an AvroReader.
  */
 public interface AvroReader {
-    Flux<AvroObject> readAvroObjects();
+    Flux<AvroObject> read();
 }

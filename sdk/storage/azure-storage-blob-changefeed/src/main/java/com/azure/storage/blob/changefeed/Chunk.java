@@ -36,7 +36,7 @@ class Chunk {
      */
     Flux<BlobChangefeedEventWrapper> getEvents() {
             /* Read avro objects. The AvroReader will only return relevant objects. */
-        return avroReader.readAvroObjects()
+        return avroReader.read()
             /* Convert AvroObjects into BlobChangefeedEventWrappers. */
             .map(avroObject -> {
                 /* Unwrap AvroObject. */

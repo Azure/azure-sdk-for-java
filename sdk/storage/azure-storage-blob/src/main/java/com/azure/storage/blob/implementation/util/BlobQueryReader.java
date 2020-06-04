@@ -63,7 +63,7 @@ public class BlobQueryReader {
      * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
-        return new AvroReaderFactory().getAvroReader(avro).readAvroObjects()
+        return new AvroReaderFactory().getAvroReader(avro).read()
             .map(AvroObject::getObject)
             .concatMap(this::parseRecord);
     }

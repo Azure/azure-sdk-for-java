@@ -47,12 +47,12 @@ class ChunkTest extends Specification {
 
         when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockBlob)
-        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(any(BlobAsyncClient.class), anyLong(), anyLong()))
+        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(anyString(), anyLong(), anyLong()))
             .thenReturn(mockBlobLazyDownloader)
         /* The data returned by the lazy downloader does not matter since we're mocking avroObjects.  */
         when(mockBlobLazyDownloader.download())
             .thenReturn(Flux.empty())
-        when(mockAvroReader.readAvroObjects())
+        when(mockAvroReader.read())
             .thenReturn(Flux.fromIterable(mockAvroObjects))
     }
 
@@ -63,28 +63,28 @@ class ChunkTest extends Specification {
             .thenReturn(mockAvroReader)
 
         when:
-        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory, mockContainer)
+        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
         Chunk chunk = factory.getChunk(chunkPath, chunkCursor, 0, 0)
         def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
-        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
+        sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
             .verifyComplete()
 
-        verify(mockContainer).getBlobAsyncClient(chunkPath) || true
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, ChunkFactory.DEFAULT_BODY_SIZE, 0) || true
+//        verify(mockContainer).getBlobAsyncClient(chunkPath) || true /* TODO : Test this in the BlobLazyDownloader tests. */
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath, ChunkFactory.DEFAULT_BODY_SIZE, 0) || true
         verify(mockBlobLazyDownloader).download() || true
         verify(mockAvroReaderFactory).getAvroReader(Flux.empty()) || true
-        verify(mockAvroReader).readAvroObjects() || true
+        verify(mockAvroReader).read() || true
     }
 
     /* Tests user cursor. */
@@ -93,33 +93,33 @@ class ChunkTest extends Specification {
         setup:
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong(), anyLong()))
             .thenReturn(mockAvroReader)
-        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(any(BlobAsyncClient.class), anyLong()))
+        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(anyString(), anyLong()))
             .thenReturn(mockBlobLazyDownloader)
 
         when:
-        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory, mockContainer)
+        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
         Chunk chunk = factory.getChunk(chunkPath, chunkCursor, blockOffset, objectBlockIndex)
         def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
-        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
+        sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
             .verifyComplete()
 
-        verify(mockContainer).getBlobAsyncClient(chunkPath) || true
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, ChunkFactory.DEFAULT_HEADER_SIZE) || true
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset) || true
+//        verify(mockContainer).getBlobAsyncClient(chunkPath) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath, ChunkFactory.DEFAULT_HEADER_SIZE) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset) || true
         verify(mockBlobLazyDownloader, times(2)).download() || true
         verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset, objectBlockIndex) || true
-        verify(mockAvroReader).readAvroObjects() || true
+        verify(mockAvroReader).read() || true
 
         where:
         blockOffset | objectBlockIndex || _
