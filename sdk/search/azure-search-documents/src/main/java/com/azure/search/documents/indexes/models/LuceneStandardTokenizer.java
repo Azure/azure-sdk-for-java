@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class LuceneStandardTokenizer extends LexicalTokenizer {
-    private String odataType;
+    private final String odataType;
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum

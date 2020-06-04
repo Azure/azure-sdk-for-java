@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class KeywordTokenizer extends LexicalTokenizer {
-    private String odataType;
+    private final String odataType;
 
     /*
      * The maximum token length. Default is 256. Tokens longer than the maximum

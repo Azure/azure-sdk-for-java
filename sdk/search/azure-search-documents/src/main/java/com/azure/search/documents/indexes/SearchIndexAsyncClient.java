@@ -430,7 +430,8 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> analyzeTextWithResponse(indexName, analyzeTextRequest, requestOptions, context)));
+                withContext(context -> analyzeTextWithResponse(indexName, analyzeTextRequest, requestOptions,
+                    context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -439,7 +440,8 @@ public final class SearchIndexAsyncClient {
     PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextRequest analyzeTextRequest,
         RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextRequest, requestOptions, context));
+            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextRequest, requestOptions,
+                context));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }

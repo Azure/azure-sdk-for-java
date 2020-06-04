@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class NGramTokenFilter extends TokenFilter {
-    private String odataType;
+    private final String odataType;
 
     /*
      * The minimum n-gram length. Default is 1. Must be less than the value of
