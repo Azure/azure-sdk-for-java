@@ -86,22 +86,25 @@ public class TokenCacheTests {
             () -> incrementalRemoteGetTokenAsync(latency),
             // 2s offset: token needs refreshing after 3s after 1st token comes back (which is just past second 1),
             // so 5th token acquisition will require another call
-            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(Duration.ofSeconds(2000))));
+            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(Duration.ofSeconds(2))));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
-        Flux.interval(Duration.ofSeconds(1))
-            .take(5)
-            .flatMap(i -> Mono.just(OffsetDateTime.now()))
-            .flatMap(start -> cache.getToken()
-                .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
-                .doOnNext(millis -> {
-                    if (millis > maxMillis.get()) {
-                        maxMillis.set(millis);
-                    }
-                }))
-            .doOnComplete(latch::countDown)
+        Flux.range(1, 5)
+            .concatMap(i -> Mono.delay(Duration.ofSeconds(1)))
+            .concatMap(i -> {
+                OffsetDateTime start = OffsetDateTime.now();
+                return cache.getToken()
+                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
+                    .doOnNext(millis -> {
+                        if (millis > maxMillis.get()) {
+                            maxMillis.set(millis);
+                        }
+                        System.out.format("Thread: %s\tDuration: %smillis%n",
+                            Thread.currentThread().getName(), Duration.between(start, OffsetDateTime.now()).toMillis());
+                    });
+            }).doOnComplete(latch::countDown)
             .subscribe();
 
         latch.await();
