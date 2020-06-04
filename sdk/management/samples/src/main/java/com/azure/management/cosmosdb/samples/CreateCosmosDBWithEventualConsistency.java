@@ -118,7 +118,7 @@ public final class CreateCosmosDBWithEventualConsistency {
             System.out.println(myDatabase.toString());
 
             // Create a new collection.
-            myDatabase.createContainer(COLLECTION_ID, "/keyPath/", 1000);
+            myDatabase.createContainer(COLLECTION_ID, "/keyPath", 1000);
         } catch (Exception ex) {
             throw ex;
         }
