@@ -18,7 +18,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
-import com.azure.resourcemanager.graphrbac.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;

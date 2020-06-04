@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryApplications;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryGroups;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryUsers;
-import com.azure.resourcemanager.graphrbac.RoleAssignments;
-import com.azure.resourcemanager.graphrbac.RoleDefinitions;
-import com.azure.resourcemanager.graphrbac.ServicePrincipals;
+import com.azure.resourcemanager.authorization.ActiveDirectoryApplications;
+import com.azure.resourcemanager.authorization.ActiveDirectoryGroups;
+import com.azure.resourcemanager.authorization.ActiveDirectoryUsers;
+import com.azure.resourcemanager.authorization.RoleAssignments;
+import com.azure.resourcemanager.authorization.RoleDefinitions;
+import com.azure.resourcemanager.authorization.ServicePrincipals;
 
 /** Exposes methods related to managing access permissions in Azure. */
 public interface AccessManagement {

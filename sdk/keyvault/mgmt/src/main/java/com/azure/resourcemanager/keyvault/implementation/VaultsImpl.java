@@ -5,7 +5,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.graphrbac.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
 import com.azure.resourcemanager.keyvault.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.keyvault.CreateMode;
 import com.azure.resourcemanager.keyvault.DeletedVault;

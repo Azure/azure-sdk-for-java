@@ -5,7 +5,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.graphrbac.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
 import com.azure.resourcemanager.keyvault.Vaults;
 import com.azure.resourcemanager.keyvault.models.KeyVaultManagementClientBuilder;
 import com.azure.resourcemanager.keyvault.models.KeyVaultManagementClientImpl;

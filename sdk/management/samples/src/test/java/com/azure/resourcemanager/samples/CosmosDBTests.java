@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager.samples;
 
-import com.azure.resourcemanager.cosmosdb.samples.CreateCosmosDBTableWithVirtualNetworkRule;
-import com.azure.resourcemanager.cosmosdb.samples.CreateCosmosDBWithEventualConsistency;
-import com.azure.resourcemanager.cosmosdb.samples.CreateCosmosDBWithIPRange;
-import com.azure.resourcemanager.cosmosdb.samples.CreateCosmosDBWithKindMongoDB;
-import com.azure.resourcemanager.cosmosdb.samples.ManageHACosmosDB;
+import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBTableWithVirtualNetworkRule;
+import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBWithEventualConsistency;
+import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBWithIPRange;
+import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBWithKindMongoDB;
+import com.azure.resourcemanager.cosmos.samples.ManageHACosmosDB;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

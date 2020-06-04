@@ -5,8 +5,8 @@ package com.azure.resourcemanager.msi;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.graphrbac.BuiltInRole;
-import com.azure.resourcemanager.graphrbac.RoleAssignment;
+import com.azure.resourcemanager.authorization.BuiltInRole;
+import com.azure.resourcemanager.authorization.RoleAssignment;
 import com.azure.resourcemanager.msi.implementation.MSIManager;
 import com.azure.resourcemanager.resources.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestBase;

@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
-import com.azure.resourcemanager.graphrbac.BuiltInRole;
+import com.azure.resourcemanager.authorization.BuiltInRole;
 import com.azure.resourcemanager.msi.Identity;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.NetworkInterface;

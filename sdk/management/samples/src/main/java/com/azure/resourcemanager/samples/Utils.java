@@ -45,9 +45,9 @@ import com.azure.resourcemanager.containerregistry.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.Registry;
 import com.azure.resourcemanager.containerregistry.RegistryCredentials;
 import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.cosmosdb.CosmosDBAccount;
-import com.azure.resourcemanager.cosmosdb.DatabaseAccountListKeysResult;
-import com.azure.resourcemanager.cosmosdb.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.resourcemanager.cosmos.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.DatabaseAccountListKeysResult;
+import com.azure.resourcemanager.cosmos.DatabaseAccountListReadOnlyKeysResult;
 import com.azure.resourcemanager.dns.ARecordSet;
 import com.azure.resourcemanager.dns.AaaaRecordSet;
 import com.azure.resourcemanager.dns.CNameRecordSet;
@@ -62,14 +62,14 @@ import com.azure.resourcemanager.dns.SrvRecord;
 import com.azure.resourcemanager.dns.SrvRecordSet;
 import com.azure.resourcemanager.dns.TxtRecord;
 import com.azure.resourcemanager.dns.TxtRecordSet;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryApplication;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryGroup;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryObject;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryUser;
-import com.azure.resourcemanager.graphrbac.Permission;
-import com.azure.resourcemanager.graphrbac.RoleAssignment;
-import com.azure.resourcemanager.graphrbac.RoleDefinition;
-import com.azure.resourcemanager.graphrbac.ServicePrincipal;
+import com.azure.resourcemanager.authorization.ActiveDirectoryApplication;
+import com.azure.resourcemanager.authorization.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.ActiveDirectoryObject;
+import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.Permission;
+import com.azure.resourcemanager.authorization.RoleAssignment;
+import com.azure.resourcemanager.authorization.RoleDefinition;
+import com.azure.resourcemanager.authorization.ServicePrincipal;
 import com.azure.resourcemanager.keyvault.AccessPolicy;
 import com.azure.resourcemanager.keyvault.KeyPermissions;
 import com.azure.resourcemanager.keyvault.SecretPermissions;
@@ -2234,13 +2234,13 @@ public final class Utils {
                 .append("\n\tPrimary Read-Only Key: ").append(readOnlyKeys.primaryReadonlyMasterKey())
                 .append("\n\tSecondary Read-Only Key: ").append(readOnlyKeys.secondaryReadonlyMasterKey());
 
-        for (com.azure.resourcemanager.cosmosdb.Location writeReplica : cosmosDBAccount.writableReplications()) {
+        for (com.azure.resourcemanager.cosmos.Location writeReplica : cosmosDBAccount.writableReplications()) {
             builder.append("\n\t\tWrite replication: ")
                     .append("\n\t\t\tName :").append(writeReplica.locationName());
         }
 
         builder.append("\n\tNumber of read replications: ").append(cosmosDBAccount.readableReplications().size());
-        for (com.azure.resourcemanager.cosmosdb.Location readReplica : cosmosDBAccount.readableReplications()) {
+        for (com.azure.resourcemanager.cosmos.Location readReplica : cosmosDBAccount.readableReplications()) {
             builder.append("\n\t\tRead replication: ")
                     .append("\n\t\t\tName :").append(readReplica.locationName());
         }

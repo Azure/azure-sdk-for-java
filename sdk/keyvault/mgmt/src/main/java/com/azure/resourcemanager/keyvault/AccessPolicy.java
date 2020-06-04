@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryGroup;
-import com.azure.resourcemanager.graphrbac.ActiveDirectoryUser;
-import com.azure.resourcemanager.graphrbac.ServicePrincipal;
+import com.azure.resourcemanager.authorization.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

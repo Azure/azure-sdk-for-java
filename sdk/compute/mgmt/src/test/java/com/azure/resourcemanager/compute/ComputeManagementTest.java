@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.graphrbac.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
 import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
 import com.azure.resourcemanager.network.LoadBalancer;
 import com.azure.resourcemanager.network.LoadBalancerSkuType;

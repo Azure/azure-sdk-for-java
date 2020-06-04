@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.msi.implementation;
 
-import com.azure.resourcemanager.graphrbac.BuiltInRole;
-import com.azure.resourcemanager.graphrbac.RoleAssignment;
-import com.azure.resourcemanager.graphrbac.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.BuiltInRole;
+import com.azure.resourcemanager.authorization.RoleAssignment;
+import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.Identity;
 import com.azure.resourcemanager.msi.models.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

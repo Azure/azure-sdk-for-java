@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.FunctionApps;
 import com.azure.resourcemanager.appservice.WebApps;
 import com.azure.resourcemanager.appservice.models.WebSiteManagementClientBuilder;
 import com.azure.resourcemanager.appservice.models.WebSiteManagementClientImpl;
-import com.azure.resourcemanager.graphrbac.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
 import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
