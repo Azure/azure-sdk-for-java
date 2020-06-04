@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * of an input token. This token filter is implemented using Apache Lucene.
  */
 public final class EdgeNGramTokenFilter extends TokenFilter {
+    private static final String V2_ODATA_TYPE = "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2";
+
     @JsonProperty(value = "@odata.type")
     private String odataType;
     /*
@@ -36,7 +38,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      * Constructor for {@link EdgeNGramTokenFilter}.
      */
     public EdgeNGramTokenFilter() {
-        odataType = "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2";
+        odataType = V2_ODATA_TYPE;
     }
 
     /**

@@ -13,6 +13,7 @@ import com.azure.search.documents.indexes.models.NGramTokenFilter;
 public final class NGramTokenFilterConverter {
     private static final String V1_ODATA_TYPE = "#Microsoft.Azure.Search.NGramTokenFilter";
     private static final String V2_ODATA_TYPE = "#Microsoft.Azure.Search.NGramTokenFilterV2";
+    private static final String ODATA_FIELD_NAME = "odataType";
 
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilter} to {@link NGramTokenFilter}.
@@ -22,7 +23,7 @@ public final class NGramTokenFilterConverter {
             return null;
         }
         NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
-        PrivateFieldAccessHelper.set(nGramTokenFilter, "odataType", V1_ODATA_TYPE);
+        PrivateFieldAccessHelper.set(nGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
 
         String name = obj.getName();
         nGramTokenFilter.setName(name);
@@ -43,7 +44,7 @@ public final class NGramTokenFilterConverter {
             return null;
         }
         NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
-        PrivateFieldAccessHelper.set(nGramTokenFilter, "odataType", V2_ODATA_TYPE);
+        PrivateFieldAccessHelper.set(nGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
 
         String name = obj.getName();
         nGramTokenFilter.setName(name);
@@ -65,7 +66,7 @@ public final class NGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        String identifier = PrivateFieldAccessHelper.get(obj, "odataType", String.class);
+        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         if (V1_ODATA_TYPE.equals(identifier)) {
             return new com.azure.search.documents.indexes.implementation.models.NGramTokenFilter()
                 .setMaxGram(obj.getMaxGram())

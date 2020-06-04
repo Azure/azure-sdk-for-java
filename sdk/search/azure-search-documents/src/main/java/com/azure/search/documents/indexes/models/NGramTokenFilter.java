@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class NGramTokenFilter extends TokenFilter {
-    @JsonProperty(value = "@odata.type")
     private String odataType;
 
     /*

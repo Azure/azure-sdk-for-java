@@ -14,6 +14,8 @@ import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 public final class EdgeNGramTokenFilterConverter {
     private static final String V1_ODATA_TYPE = "#Microsoft.Azure.Search.EdgeNGramTokenFilter";
     private static final String V2_ODATA_TYPE = "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2";
+    private static final String ODATA_FIELD_NAME = "odataType";
+
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter} to
      * {@link EdgeNGramTokenFilter}.
@@ -23,7 +25,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
         EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter();
-        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, "odataType", V1_ODATA_TYPE);
+        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
 
         String name = obj.getName();
         edgeNGramTokenFilter.setName(name);
@@ -50,7 +52,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
         EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter();
-        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, "odataType", V2_ODATA_TYPE);
+        PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
 
         String name = obj.getName();
         edgeNGramTokenFilter.setName(name);
@@ -78,7 +80,7 @@ public final class EdgeNGramTokenFilterConverter {
             return null;
         }
 
-        String identifier = PrivateFieldAccessHelper.get(obj, "odataType", String.class);
+        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterSide side = obj.getSide() == null ?
             null : EdgeNGramTokenFilterSideConverter.map(obj.getSide());
         if (V1_ODATA_TYPE.equals(identifier)) {

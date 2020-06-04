@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class LuceneStandardTokenizer extends LexicalTokenizer {
-    @JsonProperty(value = "@odata.type")
     private String odataType;
 
     /*

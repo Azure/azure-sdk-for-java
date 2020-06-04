@@ -13,6 +13,7 @@ import com.azure.search.documents.indexes.models.LuceneStandardTokenizer;
 public final class LuceneStandardTokenizerConverter {
     private static final String V1_ODATA_TYPE = "#Microsoft.Azure.Search.LuceneStandardTokenizer";
     private static final String V2_ODATA_TYPE = "#Microsoft.Azure.Search.LuceneStandardTokenizerV2";
+    private static final String ODATA_FIELD_NAME = "odataType";
 
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer} to
@@ -23,7 +24,7 @@ public final class LuceneStandardTokenizerConverter {
             return null;
         }
         LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer();
-        PrivateFieldAccessHelper.set(luceneStandardTokenizer, "odataType", V1_ODATA_TYPE);
+        PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
 
         String name = obj.getName();
         luceneStandardTokenizer.setName(name);
@@ -42,7 +43,7 @@ public final class LuceneStandardTokenizerConverter {
             return null;
         }
         LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer();
-        PrivateFieldAccessHelper.set(luceneStandardTokenizer, "odataType", V2_ODATA_TYPE);
+        PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V2_ODATA_TYPE);
 
         String name = obj.getName();
         luceneStandardTokenizer.setName(name);
@@ -61,7 +62,7 @@ public final class LuceneStandardTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        String identifier = PrivateFieldAccessHelper.get(obj, "odataType", String.class);
+        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         if (V1_ODATA_TYPE.equals(identifier)) {
             return new com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer()
                 .setMaxTokenLength(obj.getMaxTokenLength())
