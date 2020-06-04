@@ -25,7 +25,7 @@ import com.azure.search.documents.indexes.implementation.SearchServiceRestClient
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.indexes.implementation.models.ListIndexesResult;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.indexes.models.AnalyzeTextRequest;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -408,39 +408,39 @@ public final class SearchIndexAsyncClient {
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeTextRequest the text and analyzer or analysis components to test
+     * @param analyzeTextOptions the text and analyzer or analysis components to test
      * @return analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextRequest analyzeTextRequest) {
-        return analyzeText(indexName, analyzeTextRequest, null);
+    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions) {
+        return analyzeText(indexName, analyzeTextOptions, null);
     }
 
     /**
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeTextRequest the text and analyzer or analysis components to test
+     * @param analyzeTextOptions the text and analyzer or analysis components to test
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response containing analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextRequest analyzeTextRequest,
+    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions,
         RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> analyzeTextWithResponse(indexName, analyzeTextRequest, requestOptions,
+                withContext(context -> analyzeTextWithResponse(indexName, analyzeTextOptions, requestOptions,
                     context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextRequest analyzeTextRequest,
+    PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions,
         RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextRequest, requestOptions,
+            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextOptions, requestOptions,
                 context));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
@@ -448,9 +448,9 @@ public final class SearchIndexAsyncClient {
     }
 
     private Mono<PagedResponse<AnalyzedTokenInfo>> analyzeTextWithResponse(String indexName,
-        AnalyzeTextRequest analyzeTextRequest, RequestOptions requestOptions, Context context) {
+        AnalyzeTextOptions analyzeTextOptions, RequestOptions requestOptions, Context context) {
         return restClient.indexes()
-            .analyzeWithRestResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextRequest),
+            .analyzeWithRestResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextOptions),
                 RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingTokenInfo);

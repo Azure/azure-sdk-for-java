@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.models.AnalyzeTextRequest;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.AsciiFoldingTokenFilter;
 import com.azure.search.documents.indexes.models.CharFilter;
@@ -204,7 +204,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        AnalyzeTextRequest request = new AnalyzeTextRequest()
+        AnalyzeTextOptions request = new AnalyzeTextOptions()
             .setText("One two")
             .setAnalyzer(LexicalAnalyzerName.WHITESPACE);
         PagedIterable<AnalyzedTokenInfo> results = searchIndexClient.analyzeText(index.getName(), request);
@@ -213,7 +213,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
         assertFalse(iterator.hasNext());
 
-        request = new AnalyzeTextRequest()
+        request = new AnalyzeTextOptions()
             .setText("One's <two/>")
             .setTokenizer(LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
@@ -239,19 +239,19 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
         LexicalAnalyzerName.values()
             .stream()
-            .map(an -> new AnalyzeTextRequest()
+            .map(an -> new AnalyzeTextOptions()
                 .setText("One two")
                 .setAnalyzer(an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         LexicalTokenizerName.values()
             .stream()
-            .map(tn -> new AnalyzeTextRequest()
+            .map(tn -> new AnalyzeTextOptions()
                 .setText("One two")
                 .setTokenizer(tn))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
-        AnalyzeTextRequest request = new AnalyzeTextRequest()
+        AnalyzeTextOptions request = new AnalyzeTextOptions()
             .setText("One two")
             .setTokenizer(LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(new ArrayList<>(TokenFilterName.values()))

@@ -12,7 +12,7 @@ import java.util.List;
  * tokens.
  */
 @Fluent
-public final class AnalyzeTextRequest {
+public final class AnalyzeTextOptions {
     /*
      * The text to break into tokens.
      */
@@ -88,7 +88,7 @@ public final class AnalyzeTextRequest {
      * @param text the text value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextRequest setText(String text) {
+    public AnalyzeTextOptions setText(String text) {
         this.text = text;
         return this;
     }
@@ -154,7 +154,7 @@ public final class AnalyzeTextRequest {
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextRequest setAnalyzer(LexicalAnalyzerName analyzer) {
+    public AnalyzeTextOptions setAnalyzer(LexicalAnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -186,7 +186,7 @@ public final class AnalyzeTextRequest {
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextRequest setTokenizer(LexicalTokenizerName tokenizer) {
+    public AnalyzeTextOptions setTokenizer(LexicalTokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }
@@ -210,7 +210,7 @@ public final class AnalyzeTextRequest {
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextRequest setTokenFilters(List<TokenFilterName> tokenFilters) {
+    public AnalyzeTextOptions setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -234,7 +234,7 @@ public final class AnalyzeTextRequest {
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextRequest setCharFilters(List<CharFilterName> charFilters) {
+    public AnalyzeTextOptions setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
     }
