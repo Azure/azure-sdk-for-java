@@ -130,8 +130,8 @@ public final class ManageWebAppCosmosDbByMsi {
 
             System.out.println("Deploying a spring boot app to " + appName + " through FTP...");
 
-            Utils.uploadFileToWebAppWwwRoot(app.getPublishingProfile(), "ROOT.jar", ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar"));
-            Utils.uploadFileToWebAppWwwRoot(app.getPublishingProfile(), "web.config", ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/web.config"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "ROOT.jar", ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "web.config", ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/web.config"));
 
             System.out.println("Deployment to web app " + app.name() + " completed");
             Utils.print(app);

@@ -129,8 +129,8 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
 
             System.out.println("Deploying a spring boot app to " + appName + " through FTP...");
 
-            Utils.uploadFileToWebAppWwwRoot(app.getPublishingProfile(), "ROOT.jar", ManageWebAppCosmosDbThroughKeyVault.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar"));
-            Utils.uploadFileToWebAppWwwRoot(app.getPublishingProfile(), "web.config", ManageWebAppCosmosDbThroughKeyVault.class.getResourceAsStream("/web.config"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "ROOT.jar", ManageWebAppCosmosDbThroughKeyVault.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "web.config", ManageWebAppCosmosDbThroughKeyVault.class.getResourceAsStream("/web.config"));
 
             System.out.println("Deployment to web app " + app.name() + " completed");
             Utils.print(app);
