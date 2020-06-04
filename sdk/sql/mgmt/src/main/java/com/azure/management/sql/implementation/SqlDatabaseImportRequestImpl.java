@@ -7,13 +7,15 @@ import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.management.sql.AuthenticationType;
 import com.azure.management.sql.ImportExtensionRequest;
+import com.azure.management.sql.ImportOperationMode;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.SqlDatabaseImportRequest;
 import com.azure.management.sql.StorageKeyType;
 import com.azure.management.storage.StorageAccount;
-import java.util.Objects;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /** Implementation for SqlDatabaseImportRequest. */
 public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImportExportResponse>
@@ -88,6 +90,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
             this.inner = new ImportExtensionRequest();
         }
         this.inner.withStorageUri(storageUri);
+        this.inner.withOperationMode(ImportOperationMode.IMPORT);
         return this;
     }
 
@@ -100,6 +103,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         if (this.inner == null) {
             this.inner = new ImportExtensionRequest();
         }
+        this.inner.withOperationMode(ImportOperationMode.IMPORT);
         this
             .addDependency(
                 context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));
