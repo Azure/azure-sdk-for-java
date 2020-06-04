@@ -26,6 +26,8 @@ public interface TokenCredential {
 
     /**
      * The duration before the actual token expiry to refresh the token. Default is 2 minutes.
+     *
+     * @return the current offset for token refresh
      */
     default Duration getTokenRefreshOffset() {
         return DEFAULT_TOKEN_REFRESH_OFFSET;
