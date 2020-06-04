@@ -17,19 +17,7 @@ and includes six main functions:
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Text Analytics account][text_analytics_account] to use this package.
 
-### Include the Package
-**Note:** This version targets Azure Text Analytics service API version v3.0.
-
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-### Create a Cognitive Services or Text Analytics resource
+#### Create a Cognitive Services or Text Analytics resource
 Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Text Analytics access only,
 create a Text Analytics resource.
@@ -58,6 +46,19 @@ az cognitiveservices account create \
     --location westus2 \
     --yes
 ```
+
+### Include the Package
+**Note:** This version targets Azure Text Analytics service API version v3.0.
+
+[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-textanalytics</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
 ### Authenticate the client
 In order to interact with the Text Analytics service, you will need to create an instance of the Text Analytics client,
