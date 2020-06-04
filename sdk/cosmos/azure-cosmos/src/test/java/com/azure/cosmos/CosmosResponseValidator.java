@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CosmosContainerChildResourceKind;
+import com.azure.cosmos.models.ContainerChildResourceType;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosPermissionResponse;
@@ -324,7 +324,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
             return this;
         }
 
-        public Builder<T> withPermissionResourceKind(CosmosContainerChildResourceKind resourceKind) {
+        public Builder<T> withPermissionResourceKind(ContainerChildResourceType resourceKind) {
             validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
 
                 @Override

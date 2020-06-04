@@ -6,7 +6,7 @@ package com.azure.cosmos.models;
 /**
  * Specifies the kind of resource that has a Cosmos container as parent resource.
  */
-public enum CosmosContainerChildResourceKind {
+public enum ContainerChildResourceType {
     /**
      * Represents an item resource that is created in a Cosmos container.
      */
@@ -24,7 +24,7 @@ public enum CosmosContainerChildResourceKind {
      */
     TRIGGER("Trigger");
 
-    CosmosContainerChildResourceKind(String overWireValue) {
+    ContainerChildResourceType(String overWireValue) {
         this.overWireValue = overWireValue;
     }
 

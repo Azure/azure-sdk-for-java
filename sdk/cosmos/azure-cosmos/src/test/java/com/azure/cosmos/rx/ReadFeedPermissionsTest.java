@@ -85,7 +85,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         CosmosPermissionProperties permission = new CosmosPermissionProperties();
         permission.setId(UUID.randomUUID().toString());
         permission.setPermissionMode(PermissionMode.READ);
-        permission.setContainerName("AQAAAJ0fgT" + index + "=");
+        permission.setContainerName("myContainer" + index + "=");
 
         return createdUser.createPermission(permission, null).single().block().getProperties();
     }

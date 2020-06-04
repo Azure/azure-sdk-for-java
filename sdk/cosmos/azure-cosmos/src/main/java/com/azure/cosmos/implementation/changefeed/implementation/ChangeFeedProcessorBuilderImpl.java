@@ -49,7 +49,7 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  *
  * <pre>
  * {@code
- *  ChangeFeedProcessor.Builder()
+ *  ChangeFeedProcessor.changeFeedProcessorBuilder()
  *     .setHostName(setHostName)
  *     .setFeedContainer(setFeedContainer)
  *     .setLeaseContainer(setLeaseContainer)

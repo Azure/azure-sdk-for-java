@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,15 +18,15 @@ import java.util.stream.Collectors;
 public final class CosmosPermissionProperties {
 
     private Permission permission;
-    String databaseName;
-    String resourceToken;
+    private String databaseName;
+    private String resourceToken;
 
-    String permissionName;
-    String containerName;
-    String resourceName;
-    CosmosContainerChildResourceKind resourceKind;
-    PermissionMode permissionMode;
-    PartitionKey resourcePartitionKey;
+    private String permissionName;
+    private String containerName;
+    private String resourceName;
+    private ContainerChildResourceType resourceKind;
+    private PermissionMode permissionMode;
+    private PartitionKey resourcePartitionKey;
 
     /**
      * Initialize a permission object.
@@ -62,7 +63,7 @@ public final class CosmosPermissionProperties {
         this.resourcePartitionKey = permission.getResourcePartitionKey();
         this.resourceToken = permission.getToken();
 
-        String[] parts = Utils.trimBeginningAndEndingSlashes(permission.getResourceLink()).split("/");
+        String[] parts = StringUtils.split(Utils.trimBeginningAndEndingSlashes(permission.getResourceLink()), "/");
 
         if (parts.length < 4) {
             throw new IllegalArgumentException("jsonString");
@@ -75,13 +76,13 @@ public final class CosmosPermissionProperties {
             this.resourceName = parts[5];
 
             if (Paths.DOCUMENTS_PATH_SEGMENT.equalsIgnoreCase(parts[4])) {
-                this.resourceKind = CosmosContainerChildResourceKind.ITEM;
+                this.resourceKind = ContainerChildResourceType.ITEM;
             } else if (Paths.STORED_PROCEDURES_PATH_SEGMENT.equalsIgnoreCase(parts[4])) {
-                this.resourceKind = CosmosContainerChildResourceKind.STORED_PROCEDURE;
+                this.resourceKind = ContainerChildResourceType.STORED_PROCEDURE;
             } else if (Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT.equalsIgnoreCase(parts[4])) {
-                this.resourceKind = CosmosContainerChildResourceKind.USER_DEFINED_FUNCTION;
+                this.resourceKind = ContainerChildResourceType.USER_DEFINED_FUNCTION;
             } else if (Paths.TRIGGERS_PATH_SEGMENT.equalsIgnoreCase(parts[4])) {
-                this.resourceKind = CosmosContainerChildResourceKind.TRIGGER;
+                this.resourceKind = ContainerChildResourceType.TRIGGER;
             } else {
                 throw new IllegalArgumentException("jsonString");
             }
@@ -121,7 +122,7 @@ public final class CosmosPermissionProperties {
      *
      * @return the kind of resource that has a Cosmos container as parent resource.
      */
-    public CosmosContainerChildResourceKind getResourceKind() {
+    public ContainerChildResourceType getResourceKind() {
         return this.resourceKind;
     }
 
@@ -143,7 +144,7 @@ public final class CosmosPermissionProperties {
      * @param resourceName the name of resource that has a Cosmos container as the parent resource.
      * @return the current {@link CosmosPermissionProperties} object.
      */
-    public CosmosPermissionProperties setResourcePath(CosmosContainerChildResourceKind resourceKind, String resourceName) {
+    public CosmosPermissionProperties setResourcePath(ContainerChildResourceType resourceKind, String resourceName) {
         this.resourceKind = resourceKind;
         this.resourceName = resourceName;
 
