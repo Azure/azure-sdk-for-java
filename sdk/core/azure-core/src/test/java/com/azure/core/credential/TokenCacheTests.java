@@ -101,14 +101,12 @@ public class TokenCacheTests {
                         if (millis > maxMillis.get()) {
                             maxMillis.set(millis);
                         }
-                        System.out.format("Thread: %s\tDuration: %smillis%n",
-                            Thread.currentThread().getName(), Duration.between(start, OffsetDateTime.now()).toMillis());
                     });
             }).doOnComplete(latch::countDown)
             .subscribe();
 
         latch.await();
-        Assertions.assertTrue(maxMillis.get() > 2000);
+        Assertions.assertTrue(maxMillis.get() >= 2000);
         Assertions.assertTrue(maxMillis.get() < 3000); // Big enough for any latency, small enough to make sure no get token is called twice
     }
 
