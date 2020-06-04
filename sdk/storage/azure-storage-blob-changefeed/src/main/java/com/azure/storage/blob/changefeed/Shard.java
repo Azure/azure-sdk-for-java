@@ -77,20 +77,22 @@ class Shard  {
             return chunks;
         /* If a user cursor was provided, filter out chunks that come before the chunk specified in the cursor. */
         } else {
-            AtomicBoolean pass = new AtomicBoolean(); /* Whether or not to pass the event through. */
-            return chunks.filter(chunkPath -> {
-                if (pass.get()) {
-                    return true;
-                } else {
+            return Flux.defer(() -> {
+                AtomicBoolean pass = new AtomicBoolean(); /* Whether or not to pass the event through. */
+                return chunks.filter(chunkPath -> {
+                    if (pass.get()) {
+                        return true;
+                    } else {
                     /* If we hit the chunk specified in the user cursor, set pass to true and pass this chunk
                        and any subsequent chunks through. */
-                    if (userCursor.getChunkPath().equals(chunkPath)) {
-                        pass.set(true); /* This allows us to pass subsequent chunks through.*/
-                        return true; /* This allows us to pass this chunk through. */
-                    } else {
-                        return false;
+                        if (userCursor.getChunkPath().equals(chunkPath)) {
+                            pass.set(true); /* This allows us to pass subsequent chunks through.*/
+                            return true; /* This allows us to pass this chunk through. */
+                        } else {
+                            return false;
+                        }
                     }
-                }
+                });
             });
         }
     }
