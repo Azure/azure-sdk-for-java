@@ -85,6 +85,10 @@ public class TimeUtils {
         if (time.equals(OffsetDateTime.MIN) || time.equals(OffsetDateTime.MAX)) {
             return time;
         }
+        /* Don't want to round up a time that is already a valid hour. */
+        if (time.equals(time.truncatedTo(ChronoUnit.HOURS))) {
+            return time;
+        }
         return time.truncatedTo(ChronoUnit.HOURS).plusHours(1);
     }
 

@@ -44,7 +44,7 @@ class TimeUtilsTest extends Specification {
         where:
         time                                                            || roundedTime
         null                                                            || null
-        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       || OffsetDateTime.of(2019, 1, 1, 1, 0, 0, 0, ZoneOffset.UTC)
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)       || OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
         OffsetDateTime.of(2020, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC)   || OffsetDateTime.of(2020, 3, 17, 21, 0, 0, 0, ZoneOffset.UTC)
         OffsetDateTime.of(2020, 3, 17, 23, 25, 30, 0, ZoneOffset.UTC)   || OffsetDateTime.of(2020, 3, 18, 0, 0, 0, 0, ZoneOffset.UTC)
     }
