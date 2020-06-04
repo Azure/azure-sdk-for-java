@@ -34,14 +34,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormTrainingClientTestBase extends TestBase {
-    static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
-    static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
-    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
     private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
+
+    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
+    static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
+    static final String COPY_OPERATION_FAILED_STATUS_MESSAGE = "Copy operation returned with a failed status";
+    static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
+    static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
+    static final String RESOURCE_RESOLVER_ERROR = "ResourceResolverError";
+
 
     void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
         CopyAuthorization actualResult) {
