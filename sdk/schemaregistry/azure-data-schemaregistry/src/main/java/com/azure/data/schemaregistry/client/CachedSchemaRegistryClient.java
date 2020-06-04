@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
@@ -148,7 +147,7 @@ public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
 
         GetSchemaByIdResponse response;
         try {
-            response = this.restService.getSchemaByIdWithResponseAsync(UUID.fromString(schemaId)).block();
+            response = this.restService.getSchemaByIdWithResponseAsync(schemaId).block();
         } catch (HttpResponseException e) {
             throw logger.logExceptionAsError(new SchemaRegistryClientException("Fetching schema failed.", e));
         }

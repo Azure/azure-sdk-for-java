@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
@@ -89,7 +88,7 @@ public class CachedSchemaRegistryClientTest {
 
     @Test
     public void testGetSchemaThenGuidCacheHit() throws Exception {
-        UUID mockId = UUID.randomUUID();
+        String mockId = "mock-id---";
         GetSchemaByIdHeaders mockHeaders = new GetSchemaByIdHeaders();
         mockHeaders.setXSchemaType(MOCK_SERIALIZATION);
         when(restService.getSchemaByIdWithResponseAsync(mockId))
