@@ -1,36 +1,33 @@
 resources:
   repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+  - repository: azure-sdk-build-tools
+    type: git
+    name: internal/azure-sdk-build-tools
 trigger:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/search/
+    - sdk/search/
     exclude:
-      - sdk/search/azure-search-documents
-
+    - sdk/search/azure-search-documents
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/search/
+    - sdk/search/
     exclude:
-      - sdk/search/azure-search-documents
-
+    - sdk/search/azure-search-documents
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
-    parameters:
-      ServiceDirectory: search
+- template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+  parameters:
+    ServiceDirectory: search

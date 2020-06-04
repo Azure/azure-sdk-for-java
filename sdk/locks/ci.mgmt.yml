@@ -1,32 +1,29 @@
 resources:
   repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+  - repository: azure-sdk-build-tools
+    type: git
+    name: internal/azure-sdk-build-tools
 trigger:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/locks/
-
+    - sdk/locks/
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/locks/
-
+    - sdk/locks/
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
-    parameters:
-      ServiceDirectory: locks
+- template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+  parameters:
+    ServiceDirectory: locks

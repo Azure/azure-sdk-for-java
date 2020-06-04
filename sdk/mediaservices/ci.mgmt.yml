@@ -1,38 +1,35 @@
 resources:
   repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+  - repository: azure-sdk-build-tools
+    type: git
+    name: internal/azure-sdk-build-tools
 trigger:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/mediaservices/
+    - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/azure
-      - sdk/mediaservices/microsoft-azure-media
-
+    - sdk/mediaservices/azure
+    - sdk/mediaservices/microsoft-azure-media
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/mediaservices/
+    - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/azure
-      - sdk/mediaservices/microsoft-azure-media
-
+    - sdk/mediaservices/azure
+    - sdk/mediaservices/microsoft-azure-media
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
-    parameters:
-      ServiceDirectory: mediaservices
+- template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+  parameters:
+    ServiceDirectory: mediaservices

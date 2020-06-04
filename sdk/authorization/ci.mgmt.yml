@@ -1,36 +1,33 @@
 resources:
   repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+  - repository: azure-sdk-build-tools
+    type: git
+    name: internal/azure-sdk-build-tools
 trigger:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/authorization/
+    - sdk/authorization/
     exclude:
-      - sdk/authorization/microsoft-azure-authentication-msi-token-provider
-
+    - sdk/authorization/microsoft-azure-authentication-msi-token-provider
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/authorization/
+    - sdk/authorization/
     exclude:
-      - sdk/authorization/microsoft-azure-authentication-msi-token-provider
-
+    - sdk/authorization/microsoft-azure-authentication-msi-token-provider
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
-    parameters:
-      ServiceDirectory: authorization
+- template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+  parameters:
+    ServiceDirectory: authorization
