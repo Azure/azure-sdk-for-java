@@ -58,6 +58,6 @@ public class ChainedTokenCredential implements TokenCredential {
                                 last.getCause());
                        }
                        return Mono.error(last);
-                }));
+                   }));
     }
 }
