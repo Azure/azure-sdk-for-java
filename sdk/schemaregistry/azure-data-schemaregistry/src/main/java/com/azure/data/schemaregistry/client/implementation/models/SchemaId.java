@@ -12,7 +12,7 @@ public final class SchemaId {
     /*
      * The id property.
      */
-    @JsonProperty(value = "Id")
+    @JsonProperty(value = "id")
     private String id;
 
     /**
