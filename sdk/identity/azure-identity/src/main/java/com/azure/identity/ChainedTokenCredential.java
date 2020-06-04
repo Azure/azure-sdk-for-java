@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
-    private Duration tokenRefreshOffset;
+    private final AtomicReference<Duration> tokenRefreshOffset;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -34,7 +35,7 @@ public class ChainedTokenCredential implements TokenCredential {
      */
     ChainedTokenCredential(Deque<TokenCredential> credentials) {
         this.credentials = credentials;
-        tokenRefreshOffset = TokenCredential.DEFAULT_TOKEN_REFRESH_OFFSET;
+        tokenRefreshOffset = new AtomicReference<>(TokenCredential.DEFAULT_TOKEN_REFRESH_OFFSET);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ChainedTokenCredential implements TokenCredential {
                    .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
                        exceptions.add(t);
                        return Mono.empty();
-                   }).doOnNext(t -> tokenRefreshOffset = p.getTokenRefreshOffset()), 1)
+                   }).doOnNext(t -> tokenRefreshOffset.set(p.getTokenRefreshOffset())), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {
 
@@ -67,6 +68,6 @@ public class ChainedTokenCredential implements TokenCredential {
 
     @Override
     public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset;
+        return tokenRefreshOffset.get();
     }
 }
