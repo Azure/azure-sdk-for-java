@@ -3,12 +3,12 @@
 
 package com.azure.management;
 
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
-import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.management.compute.models.VirtualMachines;
 import com.azure.management.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 

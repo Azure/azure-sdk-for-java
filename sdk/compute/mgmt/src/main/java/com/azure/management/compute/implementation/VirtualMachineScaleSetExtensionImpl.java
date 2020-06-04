@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachineExtensionImage;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetExtension;
-import com.azure.management.compute.models.VirtualMachineScaleSetExtensionInner;
+import com.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetExtension;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

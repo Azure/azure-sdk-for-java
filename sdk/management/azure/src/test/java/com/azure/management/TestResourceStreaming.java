@@ -3,16 +3,16 @@
 
 package com.azure.management;
 
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachines;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Creatable;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccounts;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccounts;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 

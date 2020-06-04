@@ -19,10 +19,10 @@ com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-cosmos;4.0.1-beta.3;4.0.1-beta.4
 com.azure:azure-cosmos-examples;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
-com.azure:azure-cosmos-table;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.1.1;1.2.0-beta.1
 com.azure:azure-data-schemaregistry;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-data-tables;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.0.6;1.1.0-beta.5
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1

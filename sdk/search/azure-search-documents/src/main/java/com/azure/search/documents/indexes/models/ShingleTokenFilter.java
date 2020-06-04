@@ -109,7 +109,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the outputUnigrams value.
      */
-    public Boolean isOutputUnigrams() {
+    public Boolean areOutputUnigrams() {
         return this.outputUnigrams;
     }
 
@@ -134,7 +134,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the outputUnigramsIfNoShingles value.
      */
-    public Boolean isOutputUnigramsIfNoShingles() {
+    public Boolean areOutputUnigramsIfNoShingles() {
         return this.outputUnigramsIfNoShingles;
     }
 

@@ -3,10 +3,10 @@
 package com.azure.management;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachines;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkInterfaces;
@@ -18,8 +18,8 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccounts;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccounts;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;

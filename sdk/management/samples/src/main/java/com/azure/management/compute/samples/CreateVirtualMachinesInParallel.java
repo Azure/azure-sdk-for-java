@@ -8,9 +8,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
 import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
@@ -18,14 +18,13 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
+import org.apache.commons.lang.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * Azure compute sample for creating multiple virtual machines in parallel.

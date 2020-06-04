@@ -28,7 +28,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * converted to lower case first. Default is false.
      */
     @JsonProperty(value = "ignoreCase")
-    private Boolean ignoreCase;
+    private Boolean caseIgnored;
 
     /**
      * Get the keywords property: A list of words to mark as keywords.
@@ -56,19 +56,19 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean isIgnoreCase() {
-        return this.ignoreCase;
+    public Boolean isCaseIgnored() {
+        return this.caseIgnored;
     }
 
     /**
      * Set the ignoreCase property: A value indicating whether to ignore case.
      * If true, all words are converted to lower case first. Default is false.
      *
-     * @param ignoreCase the ignoreCase value to set.
+     * @param caseIgnored the ignoreCase value to set.
      * @return the KeywordMarkerTokenFilter object itself.
      */
-    public KeywordMarkerTokenFilter setIgnoreCase(Boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
+    public KeywordMarkerTokenFilter setCaseIgnored(Boolean caseIgnored) {
+        this.caseIgnored = caseIgnored;
         return this;
     }
 }

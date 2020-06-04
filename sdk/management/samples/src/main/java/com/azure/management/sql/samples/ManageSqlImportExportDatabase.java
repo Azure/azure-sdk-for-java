@@ -16,7 +16,7 @@ import com.azure.management.samples.Utils;
 import com.azure.management.sql.SampleName;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlServer;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 
 /**
  * Azure SQL sample for managing import/export SQL Database -

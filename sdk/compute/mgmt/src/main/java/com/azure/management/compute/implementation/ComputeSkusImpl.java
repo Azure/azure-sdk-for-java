@@ -5,22 +5,23 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.ComputeResourceType;
-import com.azure.management.compute.ComputeSku;
-import com.azure.management.compute.ComputeSkus;
-import com.azure.management.compute.models.ResourceSkuInner;
-import com.azure.management.compute.models.ResourceSkusInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.ComputeResourceType;
+import com.azure.management.compute.models.ComputeSku;
+import com.azure.management.compute.models.ComputeSkus;
+import com.azure.management.compute.fluent.inner.ResourceSkuInner;
+import com.azure.management.compute.fluent.ResourceSkusClient;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation for {@link ComputeSkus}. */
-final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, ComputeSkuImpl, ResourceSkuInner>
+public final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, ComputeSkuImpl, ResourceSkuInner>
     implements ComputeSkus {
     private final ComputeManager manager;
 
-    ComputeSkusImpl(ComputeManager computeManager) {
+    public ComputeSkusImpl(ComputeManager computeManager) {
         this.manager = computeManager;
     }
 
@@ -60,8 +61,8 @@ final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, ComputeSkuI
     }
 
     @Override
-    public ResourceSkusInner inner() {
-        return this.manager.inner().resourceSkus();
+    public ResourceSkusClient inner() {
+        return this.manager.inner().getResourceSkus();
     }
 
     @Override

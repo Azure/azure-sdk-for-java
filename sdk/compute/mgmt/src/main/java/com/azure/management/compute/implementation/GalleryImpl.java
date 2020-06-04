@@ -5,9 +5,10 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.Gallery;
-import com.azure.management.compute.GalleryImage;
-import com.azure.management.compute.models.GalleryInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.Gallery;
+import com.azure.management.compute.models.GalleryImage;
+import com.azure.management.compute.fluent.inner.GalleryInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +23,7 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
     public Mono<Gallery> createResourceAsync() {
         return manager()
             .inner()
-            .galleries()
+            .getGalleries()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
@@ -31,14 +32,14 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
     public Mono<Gallery> updateResourceAsync() {
         return manager()
             .inner()
-            .galleries()
+            .getGalleries()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<GalleryInner> getInnerAsync() {
-        return manager().inner().galleries().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return manager().inner().getGalleries().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

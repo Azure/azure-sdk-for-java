@@ -16,12 +16,12 @@ import java.time.Duration;
 public final class DirectConnectionConfig {
     //  Constants
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(70L);
-    private static final Duration DEFAULT_CONNECTION_TIMEOUT = Duration.ofSeconds(60L);
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60L);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60L);
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 30;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 10;
 
-    private Duration connectionTimeout;
+    private Duration connectTimeout;
     private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
     private Duration requestTimeout;
@@ -32,7 +32,7 @@ public final class DirectConnectionConfig {
      * Constructor.
      */
     public DirectConnectionConfig() {
-        this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
+        this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;
         this.idleConnectionTimeout = Duration.ZERO;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
@@ -50,32 +50,32 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Gets the connection timeout for direct client,
+     * Gets the connect timeout for direct client,
      * represents timeout for establishing connections with an endpoint.
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connection timeout is 60 seconds.
+     * By default, the connect timeout is 60 seconds.
      *
-     * @return direct connection timeout
+     * @return direct connect timeout
      */
-    public Duration getConnectionTimeout() {
-        return connectionTimeout;
+    public Duration getConnectTimeout() {
+        return connectTimeout;
     }
 
     /**
-     * Sets the connection timeout for direct client,
+     * Sets the connect timeout for direct client,
      * represents timeout for establishing connections with an endpoint.
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connection timeout is 60 seconds.
+     * By default, the connect timeout is 60 seconds.
      *
-     * @param connectionTimeout the connection timeout
+     * @param connectTimeout the connection timeout
      * @return the {@link DirectConnectionConfig}
      */
-    public DirectConnectionConfig setConnectionTimeout(Duration connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+    public DirectConnectionConfig setConnectTimeout(Duration connectTimeout) {
+        this.connectTimeout = connectTimeout;
         return this;
     }
 
@@ -201,7 +201,7 @@ public final class DirectConnectionConfig {
      *
      * @return the request timeout interval
      */
-    public Duration getRequestTimeout() {
+    Duration getRequestTimeout() {
         return requestTimeout;
     }
 
@@ -209,12 +209,12 @@ public final class DirectConnectionConfig {
      * Sets the request timeout interval
      * This represents the timeout interval for requests
      *
-     * Default value is 60 seconds
+     * Default value is 5 seconds
      *
      * @param requestTimeout the request timeout interval
      * @return the {@link DirectConnectionConfig}
      */
-    public DirectConnectionConfig setRequestTimeout(Duration requestTimeout) {
+    DirectConnectionConfig setRequestTimeout(Duration requestTimeout) {
         this.requestTimeout = requestTimeout;
         return this;
     }
@@ -222,12 +222,11 @@ public final class DirectConnectionConfig {
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
-            "connectionTimeout=" + connectionTimeout +
+            "connectTimeout=" + connectTimeout +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
-            ", requestTimeout=" + requestTimeout +
             '}';
     }
 }

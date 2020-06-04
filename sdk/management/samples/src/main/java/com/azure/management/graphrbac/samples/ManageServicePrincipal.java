@@ -8,7 +8,7 @@
 //import com.azure.core.management.AzureEnvironment;
 //import com.azure.identity.DefaultAzureCredentialBuilder;
 //import com.azure.management.Azure;
-//import com.azure.management.compute.VirtualMachine;
+//import com.azure.management.compute.models.VirtualMachine;
 //import com.azure.management.graphrbac.ActiveDirectoryApplication;
 //import com.azure.management.graphrbac.BuiltInRole;
 //import com.azure.management.graphrbac.ServicePrincipal;

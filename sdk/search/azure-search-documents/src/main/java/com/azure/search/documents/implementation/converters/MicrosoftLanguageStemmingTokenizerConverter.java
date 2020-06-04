@@ -35,7 +35,7 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         }
 
         Boolean isSearchTokenizer = obj.isSearchTokenizer();
-        microsoftLanguageStemmingTokenizer.setIsSearchTokenizer(isSearchTokenizer);
+        microsoftLanguageStemmingTokenizer.setIsSearchTokenizerUsed(isSearchTokenizer);
         return microsoftLanguageStemmingTokenizer;
     }
 

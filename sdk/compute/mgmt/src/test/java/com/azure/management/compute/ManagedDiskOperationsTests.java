@@ -5,6 +5,12 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.compute.models.CreationSourceType;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskCreateOption;
+import com.azure.management.compute.models.DiskSkuTypes;
+import com.azure.management.compute.models.Snapshot;
+import com.azure.management.compute.models.SnapshotSkuType;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;

@@ -5,13 +5,13 @@ package com.azure.management.monitor;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.management.appservice.implementation.AppServiceManager;
-import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.ComputeManager;
 // import com.azure.management.eventhub.implementation.EventHubManager;
 import com.azure.management.monitor.implementation.MonitorManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.StorageManager;
 
 /** The base for Monitor manager tests. */
 public class MonitorManagementTest extends TestBase {

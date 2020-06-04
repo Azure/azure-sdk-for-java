@@ -3,8 +3,8 @@
 
 package com.azure.management;
 
-import com.azure.management.compute.DataDisk;
-import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.models.DataDisk;
+import com.azure.management.compute.models.VirtualMachine;
 
 /** Test utilities. */
 public final class TestUtils {
