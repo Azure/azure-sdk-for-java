@@ -59,14 +59,14 @@ az cognitiveservices account create \
     --yes
 ```
 
-## Authenticate the client
+### Authenticate the client
 In order to interact with the Text Analytics service, you will need to create an instance of the Text Analytics client,
 both the asynchronous and synchronous clients can be created by using `TextAnalyticsClientBuilder` invoking `buildClient()`
 creates a synchronous client while `buildAsyncClient()` creates its asynchronous counterpart.
 
 You will need an **endpoint** and either a **key** or **AAD TokenCredential** to instantiate a client object. 
 
-### Looking up the endpoint
+#### Looking up the endpoint
 You can find the **endpoint** for your Text Analytics resource in the [Azure Portal][azure_portal] under the "Keys and Endpoint",
 or [Azure CLI][azure_cli_endpoint].
 ```bash
@@ -74,7 +74,7 @@ or [Azure CLI][azure_cli_endpoint].
 az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "endpoint"
 ```
 
-### Create a Text Analytics client with key credential
+#### Create a Text Analytics client with key credential
 Once you have the value for the [key][key], provide it as a string to the [AzureKeyCredential][azure_key_credential].
 This can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Text Analytics
 resource or by running the following Azure CLI command:
@@ -103,7 +103,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 
 credential.update("{new_key}");
 ```
-### Create a Text Analytics client with Azure Active Directory credential
+#### Create a Text Analytics client with Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform. 
 
@@ -141,7 +141,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ## Key concepts
-### Client
+### Text Analytics client
 The Text Analytics client library provides a [TextAnalyticsClient][text_analytics_sync_client] and 
 [TextAnalyticsAsyncClient][text_analytics_async_client] to do analysis on batches of documents. It provides both synchronous and
 asynchronous operations to access a specific use of Text Analytics, such as language detection or key phrase extraction.
