@@ -91,7 +91,7 @@ public class TokenCacheTests {
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
-        Flux.range(1, 5)
+        Flux.range(1, 6)
             .concatMap(i -> Mono.delay(Duration.ofSeconds(1)))
             .concatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
