@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * service level counters and limits.
  */
 @Fluent
-public final class ServiceStatistics {
+public final class SearchServiceStatistics {
     /*
      * Service level resource counters.
      */
@@ -39,7 +39,7 @@ public final class ServiceStatistics {
      * @param counters the counters value to set.
      * @return the ServiceStatistics object itself.
      */
-    public ServiceStatistics setCounters(ServiceCounters counters) {
+    public SearchServiceStatistics setCounters(ServiceCounters counters) {
         this.counters = counters;
         return this;
     }
@@ -59,7 +59,7 @@ public final class ServiceStatistics {
      * @param limits the limits value to set.
      * @return the ServiceStatistics object itself.
      */
-    public ServiceStatistics setLimits(ServiceLimits limits) {
+    public SearchServiceStatistics setLimits(ServiceLimits limits) {
         this.limits = limits;
         return this;
     }

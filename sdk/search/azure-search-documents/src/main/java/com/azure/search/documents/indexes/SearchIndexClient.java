@@ -12,9 +12,9 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.models.AnalyzeRequest;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.RequestOptions;
 
@@ -117,7 +117,7 @@ public final class SearchIndexClient {
      * @return the index statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetIndexStatisticsResult getIndexStatistics(String indexName) {
+    public SearchIndexStatistics getIndexStatistics(String indexName) {
         return getIndexStatisticsWithResponse(indexName, null, Context.NONE).getValue();
     }
 
@@ -131,7 +131,7 @@ public final class SearchIndexClient {
      * @return a response containing the index statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String indexName,
+    public Response<SearchIndexStatistics> getIndexStatisticsWithResponse(String indexName,
         RequestOptions requestOptions, Context context) {
         return asyncClient.getIndexStatisticsWithResponse(indexName, requestOptions, context).block();
     }
@@ -433,7 +433,7 @@ public final class SearchIndexClient {
      * @return the search service statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceStatistics getServiceStatistics() {
+    public SearchServiceStatistics getServiceStatistics() {
         return getServiceStatisticsWithResponse(null, Context.NONE).getValue();
     }
 
@@ -446,7 +446,7 @@ public final class SearchIndexClient {
      * @return the search service statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
+    public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
         Context context) {
         return asyncClient.getServiceStatisticsWithResponse(requestOptions, context).block();
     }

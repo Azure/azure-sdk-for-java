@@ -27,9 +27,9 @@ import com.azure.search.documents.indexes.implementation.models.ListIndexesResul
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeRequest;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.RequestOptions;
 import reactor.core.publisher.Mono;
@@ -201,7 +201,7 @@ public final class SearchIndexAsyncClient {
      * @return the index statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetIndexStatisticsResult> getIndexStatistics(String indexName) {
+    public Mono<SearchIndexStatistics> getIndexStatistics(String indexName) {
         return getIndexStatisticsWithResponse(indexName, null).map(Response::getValue);
     }
 
@@ -214,12 +214,12 @@ public final class SearchIndexAsyncClient {
      * @return a response containing the index statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+    public Mono<Response<SearchIndexStatistics>> getIndexStatisticsWithResponse(String indexName,
         RequestOptions requestOptions) {
         return withContext(context -> getIndexStatisticsWithResponse(indexName, requestOptions, context));
     }
 
-    Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+    Mono<Response<SearchIndexStatistics>> getIndexStatisticsWithResponse(String indexName,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
@@ -707,7 +707,7 @@ public final class SearchIndexAsyncClient {
      * @return the search service statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceStatistics> getServiceStatistics() {
+    public Mono<SearchServiceStatistics> getServiceStatistics() {
         return getServiceStatisticsWithResponse(null).map(Response::getValue);
     }
 
@@ -720,11 +720,12 @@ public final class SearchIndexAsyncClient {
      * @return the search service statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
         return withContext(context -> getServiceStatisticsWithResponse(requestOptions, context));
     }
 
-    Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions,
+        Context context) {
         try {
             return restClient.getServiceStatisticsWithRestResponseAsync(
                 RequestOptionsIndexesConverter.map(requestOptions), context)
