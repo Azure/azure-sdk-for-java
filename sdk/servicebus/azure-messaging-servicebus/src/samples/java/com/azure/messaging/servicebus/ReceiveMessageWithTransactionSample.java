@@ -5,10 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class ReceiveMessageWithTransactionSample {
     /**
      * Main method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure
@@ -24,7 +20,7 @@ public class ReceiveMessageWithTransactionSample {
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
         String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
             + "SharedAccessKey={key}";
-
+        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=";
         // Create a receiver.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
@@ -35,33 +31,38 @@ public class ReceiveMessageWithTransactionSample {
         ServiceBusReceiverClient receiverClient = builder
             .receiver()
             .queueName("<<queue-name>>")
+            .queueName("hemant-test1")
             .buildClient();
 
-        ServiceBusSenderClient senderClient = builder
-            .sender()
-            .topicName("<< TOPIC NAME >>")
-            .buildClient();
-
+        // Transaction is actually started in ServiceBus until you perform first operation
+        // (Example receiver.complete(message, transaction)) with it.
+        // Create transaction
         ServiceBusTransactionContext transactionContext = receiverClient.createTransaction();
 
         final IterableStream<ServiceBusReceivedMessageContext> receivedMessages =
             receiverClient.receive(5);
 
-        AtomicBoolean processed = new AtomicBoolean(false);
         receivedMessages.stream().forEach(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
 
             System.out.println("Received Message Id: " + message.getMessageId());
             System.out.println("Received Message: " + new String(message.getBody()));
 
-            receiverClient.complete(message, transactionContext);
-            // set flag appropriately based on message processing result
-            processed.set(true);
+            boolean messageProcessed = true;
+            // Process the context and its message here.
+            // Change the `messageProcessed` according to you business logic and if you are able to process the
+            // message successfully.
+
+            if (messageProcessed) {
+                receiverClient.complete(message, transactionContext);
+            } else {
+                receiverClient.abandon(message, null, transactionContext);
+            }
         });
 
-        senderClient.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8)), transactionContext);
-
+        // Commit the transaction
         receiverClient.commitTransaction(transactionContext);
+        System.out.println("Transaction is committed.");
 
         // Close the receiver.
         receiverClient.close();

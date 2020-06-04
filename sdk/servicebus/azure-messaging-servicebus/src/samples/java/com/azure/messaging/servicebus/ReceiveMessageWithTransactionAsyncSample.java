@@ -5,17 +5,21 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
+import reactor.core.publisher.SignalType;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ReceiveMessageWithTransactionAsyncSample {
 
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
-     * Queue
+     * Main method to invoke this demo on how to use transaction API and settle the {@link ServiceBusReceivedMessage}
+     * as part of a transaction.
      *
      * @param args Unused arguments to the program.
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
@@ -51,36 +55,54 @@ public class ReceiveMessageWithTransactionAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        sender.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8))).block();
+        List<ServiceBusMessage> messages = new ArrayList<>();
+        messages.add(new ServiceBusMessage("Hello world!".getBytes(UTF_8)));
+        messages.add(new ServiceBusMessage("Hello world!".getBytes(UTF_8)));
 
-        Disposable subscription = receiver.receive()
+        // Send some messages.
+        sender.send(messages).block();
 
-            .map(context -> {
-                // Create the transaction.
-                ServiceBusTransactionContext transactionContext = receiver.createTransaction().block();
+        // Hold the transaction.
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
 
-                boolean messageProcessed = false;
+        // Transaction is actually started in ServiceBus until you perform first operation
+        // (Example receiver.complete(message, transaction)) with it.
+        // Create transaction and start receiving messages
+        Disposable subscription = receiver.createTransaction()
+            .flatMapMany(transactionContext -> {
+                transaction.set(transactionContext);
+                return receiver.receive();
+            })
+            .take(2)
+            .flatMap(context -> {
+                boolean messageProcessed = true;
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
 
                 if (messageProcessed) {
-                    receiver.complete(context.getMessage(), transactionContext);
+                    return receiver.complete(context.getMessage(), transaction.get());
                 } else {
-                    receiver.abandon(context.getMessage(), null, transactionContext);
+                    return receiver.abandon(context.getMessage(), null, transaction.get());
                 }
-
-                return receiver.commitTransaction(transactionContext);
+            })
+            .doFinally(signal -> {
+                if (signal == SignalType.ON_COMPLETE) {
+                    receiver.commitTransaction(transaction.get()).subscribe();
+                } else {
+                    receiver.rollbackTransaction(transaction.get()).subscribe();
+                }
             })
             .subscribe();
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(25);
+        TimeUnit.SECONDS.sleep(30);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();
 
-        // Close the receiver.
+        // Close the clients.
         receiver.close();
+        sender.close();
     }
 }
