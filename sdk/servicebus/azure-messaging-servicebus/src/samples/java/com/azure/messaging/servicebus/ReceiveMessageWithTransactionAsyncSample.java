@@ -5,11 +5,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
-import reactor.core.publisher.SignalType;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -53,43 +51,31 @@ public class ReceiveMessageWithTransactionAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        AtomicReference<ServiceBusTransactionContext>  transaction = new AtomicReference<>();
+        sender.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8))).block();
+
         Disposable subscription = receiver.receive()
-            .flatMap(context -> {
-                if (transaction.get() ==  null) {
-                    receiver.createTransaction().map(transactionCreated -> {
-                        transaction.set(transactionCreated);
-                        return transactionCreated;
-                    });
-                }
+
+            .map(context -> {
+                // Create the transaction.
+                ServiceBusTransactionContext transactionContext = receiver.createTransaction().block();
+
                 boolean messageProcessed = false;
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
+
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage(), transaction.get());
+                    receiver.complete(context.getMessage(), transactionContext);
                 } else {
-                    return receiver.abandon(context.getMessage(), null, transaction.get());
+                    receiver.abandon(context.getMessage(), null, transactionContext);
                 }
-            })
-            .then(
-                sender.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8)), transaction.get())
-            )
-            .doFinally(type -> {
-                if (type == SignalType.ON_ERROR) {
-                    if (transaction.get() != null) {
-                        receiver.rollbackTransaction(transaction.get());
-                    }
-                } else if (type == SignalType.ON_COMPLETE) {
-                    if (transaction.get() != null) {
-                        receiver.commitTransaction(transaction.get());
-                    }
-                }
+
+                return receiver.commitTransaction(transactionContext);
             })
             .subscribe();
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(60);
+        TimeUnit.SECONDS.sleep(25);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();

@@ -90,6 +90,23 @@ public class ReactorSessionTest {
     }
 
     @Test
+    public void createTransaction() {
+
+        when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        StepVerifier.create(reactorSession.createTransaction())
+            .then(() -> handler.onSessionRemoteOpen(event))
+            .verifyComplete();
+        // Assert
+        verify(session, times(1)).open();
+
+        Assertions.assertSame(session, reactorSession.session());
+        Assertions.assertSame(retryPolicy, reactorSession.getRetryPolicy());
+        Assertions.assertEquals(NAME, reactorSession.getSessionName());
+        Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
+    }
+
+    @Test
     public void verifyConstructor() {
         // Assert
         verify(session, times(1)).open();

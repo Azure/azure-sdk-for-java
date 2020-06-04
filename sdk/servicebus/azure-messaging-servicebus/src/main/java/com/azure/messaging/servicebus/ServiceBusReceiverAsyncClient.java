@@ -233,7 +233,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -275,7 +276,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.

@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.transaction.Declare;
 import org.apache.qpid.proton.amqp.transaction.Declared;
@@ -64,7 +63,7 @@ public class TransactionCoordinator {
                         sink.complete();
                         break;
                     default:
-                        sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
+                        sink.error(new IllegalArgumentException("Expected a Accepted, received: " + outcome));
                         logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
