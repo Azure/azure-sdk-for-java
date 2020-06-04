@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcgetfilesystemia&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcgetfilesystemia&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.6.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "6779783d-9221-49dc-a9f6-d70db7393497"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a3be623b-d161-4ced-a42e-7cccff71fd5d"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "fc891ab9-a01e-0099-2dbc-069edf000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcgetfilesystemia</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Mon, 30 Mar 2020 17:55:04 GMT",
-      "x-ms-client-request-id" : "6779783d-9221-49dc-a9f6-d70db7393497",
+      "x-ms-request-id" : "ae625a9e-201e-0073-7309-3aaeb2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest.blob.core.windows.net/\"><Prefix>jtcgetfilesystemia</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 04 Jun 2020 00:42:46 GMT",
+      "x-ms-client-request-id" : "a3be623b-d161-4ced-a42e-7cccff71fd5d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetfilesystemia036767ecaa476fc67b496eb7b" ]
+  "variables" : [ "jtcgetfilesystemia0198951b741309604d45d894b" ]
 }
