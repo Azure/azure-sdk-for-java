@@ -8,12 +8,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.cosmosdb.CosmosDBAccount;
@@ -119,11 +119,11 @@ public final class ManageHACosmosDB {
     private static void createDBAndAddCollection(String masterKey, String endPoint) throws CosmosClientException {
         try {
             CosmosClient cosmosClient = new CosmosClientBuilder()
-                    .setEndpoint(endPoint)
-                    .setKey(masterKey)
-                    .setConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-                    .setConsistencyLevel(ConsistencyLevel.SESSION)
-                    .buildClient();
+                .endpoint(endPoint)
+                .key(masterKey)
+                .directMode(DirectConnectionConfig.getDefaultConfig())
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildClient();
 
             // Define a new database using the id above.
             CosmosDatabase myDatabase = cosmosClient.createDatabase(DATABASE_ID, 400).getDatabase();
@@ -148,7 +148,7 @@ public final class ManageHACosmosDB {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

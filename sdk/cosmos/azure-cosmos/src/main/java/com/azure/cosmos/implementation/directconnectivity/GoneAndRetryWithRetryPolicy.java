@@ -85,8 +85,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                     } else {
                         logger.warn("Received gone exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                                exception);
+                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
 
                 } else if (exception instanceof PartitionKeyRangeGoneException) {
@@ -100,8 +99,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                         logger.warn(
                                 "Received partition key range gone exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                                exception);
+                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
                 } else if (exception instanceof InvalidPartitionException) {
                     if (this.lastRetryWithException != null) {
@@ -113,8 +111,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                         logger.warn(
                                 "Received invalid collection partition exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                                exception);
+                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
                 } else {
                     logger.warn("Received retrywith exception after backoff/retry. Will fail the request. {}",
@@ -151,7 +148,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                 logger.warn("Received second InvalidPartitionException after backoff/retry. Will fail the request. {}",
                         exception.toString());
                 return Mono.just(ShouldRetryResult
-                        .error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception)));
+                        .error(BridgeInternal.createServiceUnavailableException(exception)));
             }
 
             if (this.request != null) {

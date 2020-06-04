@@ -4,15 +4,15 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.storage.Kind;
-import com.azure.management.storage.Restriction;
-import com.azure.management.storage.SkuCapability;
-import com.azure.management.storage.SkuName;
-import com.azure.management.storage.SkuTier;
-import com.azure.management.storage.StorageAccountSkuType;
-import com.azure.management.storage.StorageResourceType;
-import com.azure.management.storage.StorageSku;
-import com.azure.management.storage.models.SkuInformationInner;
+import com.azure.management.storage.models.Kind;
+import com.azure.management.storage.models.Restriction;
+import com.azure.management.storage.models.SkuCapability;
+import com.azure.management.storage.models.SkuName;
+import com.azure.management.storage.models.SkuTier;
+import com.azure.management.storage.models.StorageAccountSkuType;
+import com.azure.management.storage.models.StorageResourceType;
+import com.azure.management.storage.models.StorageSku;
+import com.azure.management.storage.fluent.inner.SkuInformationInner;
 import java.util.ArrayList;
 import java.util.List;
 

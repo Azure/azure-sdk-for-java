@@ -68,16 +68,6 @@
             </dependency>
             <dependency>
                 <groupId>com.azure</groupId>
-                <artifactId>azure-identity</artifactId>
-                <version>1.1.0-beta.3</version>
-            </dependency>
-            <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>azure-security-keyvault-certificates</artifactId>
-                <version>4.1.0-beta.2</version>
-            </dependency>
-            <dependency>
-                <groupId>com.azure</groupId>
                 <artifactId>azure-security-keyvault-keys</artifactId>
                 <version>4.2.0-beta.3</version>
             </dependency>
@@ -89,7 +79,7 @@
             <dependency>
                 <groupId>com.azure</groupId>
                 <artifactId>azure-storage-blob</artifactId>
-                <version>12.6.0</version>
+                <version>12.6.1</version>
             </dependency>
             <dependency>
                 <groupId>com.github.spotbugs</groupId>
@@ -125,6 +115,12 @@
                 <groupId>com.azure</groupId>
                 <artifactId>azure-core-http-netty</artifactId>
                 <version>1.4.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-identity</artifactId>
+                <version>1.1.0-beta.3</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -237,7 +233,7 @@
                 </analysisConfigurationFiles>
                 <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
                 <checkDependencies>true</checkDependencies>
-                <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
                 </configuration>
                 <dependencies>
                 <dependency>

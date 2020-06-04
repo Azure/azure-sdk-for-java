@@ -34,6 +34,9 @@ public final class SearchContinuationToken {
      */
     public static final String NEXT_PAGE_PARAMETERS = "nextPageParameters";
 
+    private SearchContinuationToken() {
+    }
+
     /**
      * Serialize to search continuation token using {@code apiVersion}, {@code nextLink} and {@link SearchRequest}
      *
@@ -50,7 +53,7 @@ public final class SearchContinuationToken {
 
         String nextParametersString = null;
         try {
-             nextParametersString = new JacksonAdapter().serialize(nextPageParameters, SerializerEncoding.JSON);
+            nextParametersString = new JacksonAdapter().serialize(nextPageParameters, SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw new IllegalStateException("Failed to serialize the search request.");
         }

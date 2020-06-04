@@ -5,37 +5,38 @@ package com.azure.management.compute.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.DataDisk;
-import com.azure.management.compute.DiagnosticsProfile;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.DiskCreateOptionTypes;
-import com.azure.management.compute.DiskState;
-import com.azure.management.compute.ImageReference;
-import com.azure.management.compute.ManagedDiskParameters;
-import com.azure.management.compute.NetworkInterfaceReference;
-import com.azure.management.compute.OSProfile;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.PowerState;
-import com.azure.management.compute.Sku;
-import com.azure.management.compute.StorageAccountTypes;
-import com.azure.management.compute.StorageProfile;
-import com.azure.management.compute.VirtualMachineCustomImage;
-import com.azure.management.compute.VirtualMachineDataDisk;
-import com.azure.management.compute.VirtualMachineImage;
-import com.azure.management.compute.VirtualMachineInstanceView;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetVM;
-import com.azure.management.compute.VirtualMachineScaleSetVMInstanceExtension;
-import com.azure.management.compute.VirtualMachineScaleSetVMNetworkProfileConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetVMProtectionPolicy;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
-import com.azure.management.compute.models.VirtualMachineInstanceViewInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMInstanceViewInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMsInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DataDisk;
+import com.azure.management.compute.models.DiagnosticsProfile;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskCreateOptionTypes;
+import com.azure.management.compute.models.DiskState;
+import com.azure.management.compute.models.ImageReference;
+import com.azure.management.compute.models.ManagedDiskParameters;
+import com.azure.management.compute.models.NetworkInterfaceReference;
+import com.azure.management.compute.models.OSProfile;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.PowerState;
+import com.azure.management.compute.models.Sku;
+import com.azure.management.compute.models.StorageAccountTypes;
+import com.azure.management.compute.models.StorageProfile;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineInstanceView;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetVM;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMInstanceExtension;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineInstanceViewInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetVMInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetVMInstanceViewInner;
+import com.azure.management.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -56,7 +57,7 @@ class VirtualMachineScaleSetVMImpl
     implements VirtualMachineScaleSetVM, VirtualMachineScaleSetVM.Update {
 
     private VirtualMachineInstanceView virtualMachineInstanceView;
-    private final VirtualMachineScaleSetVMsInner client;
+    private final VirtualMachineScaleSetVMsClient client;
     private final ComputeManager computeManager;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMImpl.class);
 
@@ -66,7 +67,7 @@ class VirtualMachineScaleSetVMImpl
     VirtualMachineScaleSetVMImpl(
         VirtualMachineScaleSetVMInner inner,
         final VirtualMachineScaleSetImpl parent,
-        final VirtualMachineScaleSetVMsInner client,
+        final VirtualMachineScaleSetVMsClient client,
         final ComputeManager computeManager) {
         super(inner, parent);
         this.client = client;

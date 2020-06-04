@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.BootDiagnosticsInstanceView;
-import com.azure.management.compute.DiskInstanceView;
-import com.azure.management.compute.InstanceViewStatus;
-import com.azure.management.compute.MaintenanceRedeployStatus;
-import com.azure.management.compute.VirtualMachineAgentInstanceView;
-import com.azure.management.compute.VirtualMachineExtensionInstanceView;
-import com.azure.management.compute.VirtualMachineInstanceView;
-import com.azure.management.compute.models.VirtualMachineInstanceViewInner;
+import com.azure.management.compute.models.BootDiagnosticsInstanceView;
+import com.azure.management.compute.models.DiskInstanceView;
+import com.azure.management.compute.models.InstanceViewStatus;
+import com.azure.management.compute.models.MaintenanceRedeployStatus;
+import com.azure.management.compute.models.VirtualMachineAgentInstanceView;
+import com.azure.management.compute.models.VirtualMachineExtensionInstanceView;
+import com.azure.management.compute.models.VirtualMachineInstanceView;
+import com.azure.management.compute.fluent.inner.VirtualMachineInstanceViewInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 

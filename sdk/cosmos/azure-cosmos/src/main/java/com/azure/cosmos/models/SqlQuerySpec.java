@@ -94,7 +94,7 @@ public final class SqlQuerySpec {
     }
 
     /**
-     * Gets the collection of query parameters.
+     * Gets the container of query parameters.
      *
      * @return the query parameters.
      */
@@ -112,7 +112,7 @@ public final class SqlQuerySpec {
     }
 
     /**
-     * Sets the collection of query parameters.
+     * Sets the container of query parameters.
      *
      * @param parameters the query parameters.
      * @return the SqlQuerySpec.

@@ -4,10 +4,10 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.ImageDataDisk;
-import com.azure.management.compute.VirtualMachineCustomImage;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.ImageDataDisk;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /** The implementation for {@link VirtualMachineCustomImage.CustomImageDataDisk}. */

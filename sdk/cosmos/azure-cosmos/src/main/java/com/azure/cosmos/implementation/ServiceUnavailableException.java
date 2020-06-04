@@ -71,7 +71,10 @@ public class ServiceUnavailableException extends CosmosException {
                                        Exception innerException,
                                        HttpHeaders headers,
                                        String requestUriString) {
-        super(String.format("%s: %s", RMResources.ServiceUnavailable, message),
+        super(
+            String.format("%s: %s",
+                RMResources.ServiceUnavailable,
+                String.format(RMResources.ExceptionMessage, Strings.isNullOrWhiteSpace(message) ? RMResources.ServiceUnavailable : message)),
             innerException,
             HttpUtils.asMap(headers),
             HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,

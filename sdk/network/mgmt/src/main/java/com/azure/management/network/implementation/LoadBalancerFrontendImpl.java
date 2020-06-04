@@ -236,7 +236,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public LoadBalancerFrontendImpl withNewPublicIpAddress() {
-        String dnsLabel = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
         return this.withNewPublicIpAddress(dnsLabel);
     }
 

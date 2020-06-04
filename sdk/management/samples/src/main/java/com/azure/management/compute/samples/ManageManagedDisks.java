@@ -10,18 +10,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.jcraft.jsch.JSchException;
 import com.azure.management.Azure;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.DiskSkuTypes;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.Snapshot;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineCustomImage;
-import com.azure.management.compute.VirtualMachineDataDisk;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskSkuTypes;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.Snapshot;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.Network;
 import com.azure.management.network.PublicIpAddress;
@@ -359,7 +359,7 @@ public final class ManageManagedDisks {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

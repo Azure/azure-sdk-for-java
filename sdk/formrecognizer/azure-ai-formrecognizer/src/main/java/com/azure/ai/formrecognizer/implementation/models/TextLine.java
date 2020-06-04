@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TextLine model.
- */
+/** The TextLine model. */
 @Fluent
 public final class TextLine {
     /*
@@ -40,7 +38,7 @@ public final class TextLine {
 
     /**
      * Get the text property: The text content of the line.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -49,7 +47,7 @@ public final class TextLine {
 
     /**
      * Set the text property: The text content of the line.
-     * 
+     *
      * @param text the text value to set.
      * @return the TextLine object itself.
      */
@@ -60,7 +58,7 @@ public final class TextLine {
 
     /**
      * Get the boundingBox property: Bounding box of an extracted line.
-     * 
+     *
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -69,7 +67,7 @@ public final class TextLine {
 
     /**
      * Set the boundingBox property: Bounding box of an extracted line.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @return the TextLine object itself.
      */
@@ -79,9 +77,8 @@ public final class TextLine {
     }
 
     /**
-     * Get the language property: The detected language of this line, if
-     * different from the overall page language.
-     * 
+     * Get the language property: The detected language of this line, if different from the overall page language.
+     *
      * @return the language value.
      */
     public Language getLanguage() {
@@ -89,9 +86,8 @@ public final class TextLine {
     }
 
     /**
-     * Set the language property: The detected language of this line, if
-     * different from the overall page language.
-     * 
+     * Set the language property: The detected language of this line, if different from the overall page language.
+     *
      * @param language the language value to set.
      * @return the TextLine object itself.
      */
@@ -102,7 +98,7 @@ public final class TextLine {
 
     /**
      * Get the words property: List of words in the text line.
-     * 
+     *
      * @return the words value.
      */
     public List<TextWord> getWords() {
@@ -111,7 +107,7 @@ public final class TextLine {
 
     /**
      * Set the words property: List of words in the text line.
-     * 
+     *
      * @param words the words value to set.
      * @return the TextLine object itself.
      */

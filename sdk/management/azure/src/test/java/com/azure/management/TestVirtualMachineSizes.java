@@ -4,10 +4,10 @@
 package com.azure.management;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSize;
-import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSize;
+import com.azure.management.compute.models.VirtualMachines;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +19,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
         Assertions.assertTrue(TestUtilities.getSize(availableSizes) > 0);
         VirtualMachineSize availableSize = availableSizes.iterator().next();
         System.out.println("VM Sizes: " + availableSizes);
-        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
         VirtualMachine vm =
             virtualMachines
                 .define(vmName)

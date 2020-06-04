@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachineExtensionImageTypes;
-import com.azure.management.compute.VirtualMachineOffers;
-import com.azure.management.compute.VirtualMachinePublisher;
-import com.azure.management.compute.models.VirtualMachineExtensionImagesInner;
-import com.azure.management.compute.models.VirtualMachineImagesInner;
+import com.azure.management.compute.models.VirtualMachineExtensionImageTypes;
+import com.azure.management.compute.models.VirtualMachineOffers;
+import com.azure.management.compute.models.VirtualMachinePublisher;
+import com.azure.management.compute.fluent.VirtualMachineExtensionImagesClient;
+import com.azure.management.compute.fluent.VirtualMachineImagesClient;
 import com.azure.management.resources.fluentcore.arm.Region;
 
 /** The implementation for {@link VirtualMachinePublisher}. */
@@ -19,8 +19,8 @@ class VirtualMachinePublisherImpl implements VirtualMachinePublisher {
     VirtualMachinePublisherImpl(
         Region location,
         String publisher,
-        VirtualMachineImagesInner imagesClient,
-        VirtualMachineExtensionImagesInner extensionsClient) {
+        VirtualMachineImagesClient imagesClient,
+        VirtualMachineExtensionImagesClient extensionsClient) {
         this.location = location;
         this.publisher = publisher;
         this.offers = new VirtualMachineOffersImpl(imagesClient, this);

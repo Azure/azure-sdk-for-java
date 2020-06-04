@@ -3,11 +3,11 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.DiskCreateOptionTypes;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetDataDisk;
-import com.azure.management.compute.VirtualMachineScaleSetUnmanagedDataDisk;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DiskCreateOptionTypes;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetDataDisk;
+import com.azure.management.compute.models.VirtualMachineScaleSetUnmanagedDataDisk;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.List;

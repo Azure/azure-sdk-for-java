@@ -3,20 +3,20 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.AvailabilitySetSkuTypes;
-import com.azure.management.compute.ComputeResourceType;
-import com.azure.management.compute.ComputeSku;
-import com.azure.management.compute.ComputeSkuName;
-import com.azure.management.compute.ComputeSkuTier;
-import com.azure.management.compute.DiskSkuTypes;
-import com.azure.management.compute.DiskStorageAccountTypes;
-import com.azure.management.compute.ResourceSkuCapabilities;
-import com.azure.management.compute.ResourceSkuCapacity;
-import com.azure.management.compute.ResourceSkuCosts;
-import com.azure.management.compute.ResourceSkuLocationInfo;
-import com.azure.management.compute.ResourceSkuRestrictions;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.models.ResourceSkuInner;
+import com.azure.management.compute.models.AvailabilitySetSkuTypes;
+import com.azure.management.compute.models.ComputeResourceType;
+import com.azure.management.compute.models.ComputeSku;
+import com.azure.management.compute.models.ComputeSkuName;
+import com.azure.management.compute.models.ComputeSkuTier;
+import com.azure.management.compute.models.DiskSkuTypes;
+import com.azure.management.compute.models.DiskStorageAccountTypes;
+import com.azure.management.compute.models.ResourceSkuCapabilities;
+import com.azure.management.compute.models.ResourceSkuCapacity;
+import com.azure.management.compute.models.ResourceSkuCosts;
+import com.azure.management.compute.models.ResourceSkuLocationInfo;
+import com.azure.management.compute.models.ResourceSkuRestrictions;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.fluent.inner.ResourceSkuInner;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
 import java.util.ArrayList;

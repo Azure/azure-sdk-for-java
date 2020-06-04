@@ -30,7 +30,7 @@ public class RequestOptions {
     private PartitionKey partitionkey;
     private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
-    private boolean populateQuotaInfo;
+    private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
 
@@ -179,7 +179,7 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the offer type when creating a document collection.
+     * Gets the offer type when creating a container.
      *
      * @return the offer type.
      */
@@ -188,7 +188,7 @@ public class RequestOptions {
     }
 
     /**
-     * Sets the offer type when creating a document collection.
+     * Sets the offer type when creating a container.
      *
      * @param offerType the offer type.
      */
@@ -197,7 +197,7 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the throughput in the form of Request Units per second when creating a document collection.
+     * Gets the throughput in the form of Request Units per second when creating a container.
      *
      * @return the throughput value.
      */
@@ -206,7 +206,7 @@ public class RequestOptions {
     }
 
     /**
-     * Sets the throughput in the form of Request Units per second when creating a document collection.
+     * Sets the throughput in the form of Request Units per second when creating a container.
      *
      * @param offerThroughput the throughput value.
      */
@@ -279,25 +279,25 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
-     * collection read requests.
+     * Gets the quotaInfoEnabled setting for container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting container quota related stats for item
+     * container read requests.
      *
-     * @return true if PopulateQuotaInfo is enabled
+     * @return true if quotaInfoEnabled is enabled
      */
-    public boolean isPopulateQuotaInfo() {
-        return populateQuotaInfo;
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
     }
 
     /**
-     * Sets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
-     * collection read requests.
+     * Sets the quotaInfoEnabled setting for container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting container quota related stats for item
+     * container read requests.
      *
-     * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      */
-    public void setPopulateQuotaInfo(boolean populateQuotaInfo) {
-        this.populateQuotaInfo = populateQuotaInfo;
+    public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
     }
 
     /**
