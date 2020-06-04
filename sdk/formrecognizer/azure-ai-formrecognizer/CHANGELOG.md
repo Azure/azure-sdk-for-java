@@ -24,6 +24,7 @@
 - Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
 - Replace parameters `filePrefix` and `includeSubFolders` with `TrainingFileFilter` model
 - Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
+- Added support for AAD Authentication.
 
 ### New Features
 - Support to copy a custom model from one Form Recognizer resource to another

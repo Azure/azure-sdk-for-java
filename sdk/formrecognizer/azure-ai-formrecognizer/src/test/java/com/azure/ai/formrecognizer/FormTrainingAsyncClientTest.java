@@ -7,13 +7,8 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
-import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
@@ -26,11 +21,9 @@ import java.time.Duration;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,16 +45,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     private FormTrainingAsyncClient getFormTrainingAsyncClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
-        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
-            .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
-        AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK)
-            ? new AzureKeyCredential(INVALID_KEY) : new AzureKeyCredential(getApiKey());
-        builder.credential(credential);
-        return builder.buildAsyncClient();
+        return getFormTrainingClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
 
     /**
@@ -150,8 +134,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      public void validGetAccountProperties(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAccountProperties())
-            .assertNext(accountProperties -> validateAccountProperties(getExpectedAccountProperties(),
-                accountProperties))
+            .assertNext(accountProperties -> validateAccountProperties(accountProperties))
             .verifyComplete();
     }
 
@@ -163,8 +146,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      public void validGetAccountPropertiesWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAccountProperties())
-            .assertNext(accountProperties ->
-                validateAccountProperties(getExpectedAccountProperties(), accountProperties))
+            .assertNext(accountProperties -> validateAccountProperties(accountProperties))
             .verifyComplete();
     }
 
@@ -366,7 +348,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) ((List) httpResponseException.getValue()).get(0);
-            assertEquals(EXPECTED_INVALID_MODEL_STATUS_MESSAGE, httpResponseException.getMessage());
+            assertTrue(httpResponseException.getMessage().contains(EXPECTED_INVALID_MODEL_STATUS_MESSAGE));
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getCode());
             assertEquals(EXPECTED_INVALID_STATUS_ERROR_INFORMATION, errorInformation.getMessage());
         });

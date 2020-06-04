@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
-import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -61,10 +60,6 @@ final class TestUtils {
     static final String FORM_JPG = "Form_1.jpg";
 
     private TestUtils() {
-    }
-
-    static AccountProperties getExpectedAccountProperties() {
-        return new AccountProperties(14, 5000);
     }
 
     static InputStream getFileData(String fileName) {
