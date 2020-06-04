@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.credential.AccessToken;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 
@@ -12,7 +13,7 @@ import java.time.ZoneOffset;
 /**
  * Type representing authentication result from the MSAL (Microsoft Authentication Library).
  */
-public final class MsalToken extends IdentityToken {
+public final class MsalToken extends AccessToken {
 
     private IAccount account;
 

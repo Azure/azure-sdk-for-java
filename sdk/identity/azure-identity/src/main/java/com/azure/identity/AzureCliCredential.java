@@ -14,6 +14,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 
+import java.time.Duration;
+
 /**
  * A credential provider that provides token credentials based on Azure CLI
  * command.
@@ -21,6 +23,7 @@ import com.azure.core.credential.TokenRequestContext;
 @Immutable
 class AzureCliCredential implements TokenCredential {
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
 
     /**
      * Creates an AzureCliSecretCredential with default identity client options.
@@ -28,10 +31,16 @@ class AzureCliCredential implements TokenCredential {
      */
     AzureCliCredential(IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request);
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

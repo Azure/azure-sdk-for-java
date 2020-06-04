@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
 public class DeviceCodeCredential implements TokenCredential {
     private final Consumer<DeviceCodeInfo> challengeConsumer;
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
@@ -42,6 +44,7 @@ public class DeviceCodeCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         this.cachedToken = new AtomicReference<>();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -59,5 +62,10 @@ public class DeviceCodeCredential implements TokenCredential {
                 cachedToken.set(msalToken);
                 return msalToken;
             });
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

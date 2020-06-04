@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -45,7 +46,7 @@ public final class IdentityClientOptions {
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
-    private Duration tokenRefreshOffset = Duration.ofMinutes(2);
+    private Duration tokenRefreshOffset = TokenCredential.DEFAULT_TOKEN_REFRESH_OFFSET;
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;

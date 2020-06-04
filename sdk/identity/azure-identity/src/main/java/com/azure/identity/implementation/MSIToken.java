@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +17,7 @@ import java.time.format.DateTimeParseException;
 /**
  * Type representing response from the local MSI token provider.
  */
-public final class MSIToken extends IdentityToken {
+public final class MSIToken extends AccessToken {
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
     @JsonProperty(value = "token_type")

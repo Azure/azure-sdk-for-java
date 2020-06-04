@@ -13,6 +13,8 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /**
  * The base class for Managed Service Identity token based credentials.
  */
@@ -20,6 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMsiCredential appServiceMSICredential;
     private final VirtualMachineMsiCredential virtualMachineMSICredential;
+    private final IdentityClientOptions identityClientOptions;
 
     /**
      * Creates an instance of the ManagedIdentityCredential.
@@ -39,6 +42,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             virtualMachineMSICredential = new VirtualMachineMsiCredential(clientId, identityClient);
             appServiceMSICredential = null;
         }
+        this.identityClientOptions = identityClientOptions;
     }
 
     /**
@@ -56,5 +60,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
         return (appServiceMSICredential != null
             ? appServiceMSICredential.authenticate(request)
             : virtualMachineMSICredential.authenticate(request));
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

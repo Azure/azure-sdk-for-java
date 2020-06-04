@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,6 +27,7 @@ public class UsernamePasswordCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
@@ -50,6 +52,7 @@ public class UsernamePasswordCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         cachedToken = new AtomicReference<>();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -66,5 +69,10 @@ public class UsernamePasswordCredential implements TokenCredential {
                 cachedToken.set(msalToken);
                 return msalToken;
             });
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

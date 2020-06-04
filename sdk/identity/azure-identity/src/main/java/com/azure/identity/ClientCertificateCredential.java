@@ -12,6 +12,7 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -26,6 +27,7 @@ import java.util.Objects;
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
 
     /**
      * Creates a ClientSecretCredential with default identity client options.
@@ -45,6 +47,7 @@ public class ClientCertificateCredential implements TokenCredential {
             .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions)
             .build();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -52,5 +55,10 @@ public class ClientCertificateCredential implements TokenCredential {
         return identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)));
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

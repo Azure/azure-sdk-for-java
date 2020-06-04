@@ -16,6 +16,7 @@ import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -28,6 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 class IntelliJCredential implements TokenCredential {
     private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
@@ -69,6 +71,7 @@ class IntelliJCredential implements TokenCredential {
                              .build();
 
         this.cachedToken = new AtomicReference<>();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -86,5 +89,10 @@ class IntelliJCredential implements TokenCredential {
                        cachedToken.set(msalToken);
                        return msalToken;
                    });
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

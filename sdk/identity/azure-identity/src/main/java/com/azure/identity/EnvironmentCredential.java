@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /**
  * A credential provider that provides token credentials based on environment variables.  The environment variables
  * expected are:
@@ -81,6 +83,11 @@ public class EnvironmentCredential implements TokenCredential {
         } else {
             return tokenCredential.getToken(request);
         }
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 
     private boolean verifyNotNull(String... configs) {

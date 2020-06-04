@@ -14,6 +14,7 @@ import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.VisualStudioCacheAccessor;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -22,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;
     private final String cloudInstance;
 
@@ -61,6 +63,7 @@ class VisualStudioCodeCredential implements TokenCredential {
                 .build();
 
         this.cachedToken = new AtomicReference<>();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -78,5 +81,10 @@ class VisualStudioCodeCredential implements TokenCredential {
                        cachedToken.set(msalToken);
                        return msalToken;
                    });
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

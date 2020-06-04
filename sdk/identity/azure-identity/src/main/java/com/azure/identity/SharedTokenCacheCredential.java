@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -27,6 +28,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final AtomicReference<MsalToken> cachedToken;
 
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
 
     /**
      * Creates an instance of the Shared Token Cache Credential Provider.
@@ -61,6 +63,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         this.cachedToken = new AtomicReference<>();
+        this.identityClientOptions = identityClientOptions;
     }
 
     /**
@@ -81,5 +84,10 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 cachedToken.set(msalToken);
                 return msalToken;
             });
+    }
+
+    @Override
+    public Duration getTokenRefreshOffset() {
+        return identityClientOptions.getTokenRefreshOffset();
     }
 }

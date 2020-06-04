@@ -264,8 +264,7 @@ public class IdentityClient {
                     ConfidentialClientApplication application = applicationBuilder.build();
                     return Mono.fromFuture(application.acquireToken(
                         ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                            .build()))
-                               .map(MsalToken::new);
+                            .build())).map(MsalToken::new);
                 } catch (MalformedURLException e) {
                     return Mono.error(e);
                 }
@@ -297,7 +296,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
+    public Mono<com.azure.core.credential.AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
         String azCommand = "az account get-access-token --output json --resource ";
 
         StringBuilder command = new StringBuilder();
@@ -313,7 +312,7 @@ public class IdentityClient {
 
         command.append(scopes);
 
-        AccessToken token = null;
+        com.azure.core.credential.AccessToken token = null;
         BufferedReader reader = null;
         try {
             String starter;
@@ -377,7 +376,7 @@ public class IdentityClient {
             OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                                            .atZone(ZoneId.systemDefault())
                                            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            token = new IdentityToken(accessToken, expiresOn);
+            token = new AccessToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
@@ -400,7 +399,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
+    public Mono<com.azure.core.credential.AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
         return Mono.fromFuture(() -> getConfidentialClientApplication().acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build()))
             .map(MsalToken::new);
@@ -476,7 +475,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request) {
+    public Mono<com.azure.core.credential.AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request) {
         return Mono.fromFuture(() -> {
             SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                 new HashSet<>(request.getScopes()));
@@ -485,7 +484,7 @@ public class IdentityClient {
             } catch (MalformedURLException e) {
                 return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
             }
-        }).map(ar -> (AccessToken) new MsalToken(ar))
+        }).map(ar -> (com.azure.core.credential.AccessToken) new MsalToken(ar))
             .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(options.getTokenRefreshOffset())));
     }
 
@@ -649,8 +648,8 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
-                                                                   TokenRequestContext request) {
+    public Mono<com.azure.core.credential.AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
+                                                                                             TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
@@ -680,7 +679,9 @@ public class IdentityClient {
                         .useDelimiter("\\A");
                 String result = s.hasNext() ? s.next() : "";
 
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                return new AccessToken(msiToken.getToken(),
+                    msiToken.getExpiresAt().minus(options.getTokenRefreshOffset()));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -695,7 +696,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
+    public Mono<com.azure.core.credential.AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
@@ -732,8 +733,10 @@ public class IdentityClient {
                             .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
 
-                    return SERIALIZER_ADAPTER.deserialize(result,
+                    MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result,
                             MSIToken.class, SerializerEncoding.JSON);
+                    return new AccessToken(msiToken.getToken(),
+                        msiToken.getExpiresAt().minus(options.getTokenRefreshOffset()));
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(
