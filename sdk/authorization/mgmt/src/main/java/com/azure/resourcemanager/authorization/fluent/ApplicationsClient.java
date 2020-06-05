@@ -25,19 +25,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
-import com.azure.resourcemanager.authorization.models.AddOwnerParameters;
-import com.azure.resourcemanager.authorization.models.ApplicationCreateParameters;
-import com.azure.resourcemanager.authorization.models.ApplicationUpdateParameters;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
-import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
-import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
-import java.util.List;
-
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
@@ -47,6 +38,13 @@ import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialListRes
 import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalObjectResultInner;
+import com.azure.resourcemanager.authorization.models.AddOwnerParameters;
+import com.azure.resourcemanager.authorization.models.ApplicationCreateParameters;
+import com.azure.resourcemanager.authorization.models.ApplicationUpdateParameters;
+import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
+import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Applications. */
@@ -60,11 +58,11 @@ public final class ApplicationsClient {
     private final GraphRbacManagementClient client;
 
     /**
-     * Initializes an instance of ApplicationsInner.
+     * Initializes an instance of ApplicationsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ApplicationsClient(GraphRbacManagementClient client) {
+    public ApplicationsClient(GraphRbacManagementClient client) {
         this.service =
             RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -81,8 +79,8 @@ public final class ApplicationsClient {
         @Post("/{tenantID}/applications")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationInner>> create(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationInner>> create(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
             @BodyParam("application/json") ApplicationCreateParameters parameters,
@@ -92,8 +90,8 @@ public final class ApplicationsClient {
         @Get("/{tenantID}/applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -104,7 +102,7 @@ public final class ApplicationsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -114,8 +112,8 @@ public final class ApplicationsClient {
         @Get("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -126,7 +124,7 @@ public final class ApplicationsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> patch(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -137,8 +135,8 @@ public final class ApplicationsClient {
         @Get("/{tenantID}/applications/{applicationObjectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwners(
-            @HostParam("$host") String host,
+        Mono<Response<DirectoryObjectListResultInner>> listOwners(
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -149,7 +147,7 @@ public final class ApplicationsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> addOwner(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -161,7 +159,7 @@ public final class ApplicationsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> removeOwner(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @PathParam("ownerObjectId") String ownerObjectId,
             @QueryParam("api-version") String apiVersion,
@@ -172,8 +170,8 @@ public final class ApplicationsClient {
         @Get("/{tenantID}/applications/{applicationObjectId}/keyCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<KeyCredentialListResultInner>> listKeyCredentials(
-            @HostParam("$host") String host,
+        Mono<Response<KeyCredentialListResultInner>> listKeyCredentials(
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -184,7 +182,7 @@ public final class ApplicationsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> updateKeyCredentials(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -195,8 +193,8 @@ public final class ApplicationsClient {
         @Get("/{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<PasswordCredentialListResultInner>> listPasswordCredentials(
-            @HostParam("$host") String host,
+        Mono<Response<PasswordCredentialListResultInner>> listPasswordCredentials(
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -207,7 +205,7 @@ public final class ApplicationsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> updatePasswordCredentials(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -218,8 +216,8 @@ public final class ApplicationsClient {
         @Get("/{tenantID}/servicePrincipalsByAppId/{applicationID}/objectId")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(
-            @HostParam("$host") String host,
+        Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
             @PathParam("applicationID") String applicationId,
@@ -229,8 +227,8 @@ public final class ApplicationsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> listNext(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationListResultInner>> listNext(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -240,7 +238,7 @@ public final class ApplicationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnersNext(
+        Mono<Response<DirectoryObjectListResultInner>> listOwnersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -254,10 +252,12 @@ public final class ApplicationsClient {
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ApplicationInner>> createWithResponseAsync(ApplicationCreateParameters parameters) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<ApplicationInner>> createWithResponseAsync(ApplicationCreateParameters parameters) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -275,7 +275,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
                             parameters,
@@ -294,11 +294,13 @@ public final class ApplicationsClient {
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ApplicationInner>> createWithResponseAsync(
+    public Mono<Response<ApplicationInner>> createWithResponseAsync(
         ApplicationCreateParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -312,7 +314,8 @@ public final class ApplicationsClient {
             parameters.validate();
         }
         return service
-            .create(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
+            .create(
+                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
     }
 
     /**
@@ -328,7 +331,30 @@ public final class ApplicationsClient {
     public Mono<ApplicationInner> createAsync(ApplicationCreateParameters parameters) {
         return createWithResponseAsync(parameters)
             .flatMap(
-                (SimpleResponse<ApplicationInner> res) -> {
+                (Response<ApplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create a new application.
+     *
+     * @param parameters Request parameters for creating a new application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory application information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ApplicationInner> createAsync(ApplicationCreateParameters parameters, Context context) {
+        return createWithResponseAsync(parameters, context)
+            .flatMap(
+                (Response<ApplicationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -352,6 +378,21 @@ public final class ApplicationsClient {
     }
 
     /**
+     * Create a new application.
+     *
+     * @param parameters Request parameters for creating a new application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory application information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner create(ApplicationCreateParameters parameters, Context context) {
+        return createAsync(parameters, context).block();
+    }
+
+    /**
      * Lists applications by filter parameters.
      *
      * @param filter The filters to apply to the operation.
@@ -362,9 +403,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -377,7 +420,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             filter,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -406,9 +449,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -417,7 +462,7 @@ public final class ApplicationsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -490,6 +535,21 @@ public final class ApplicationsClient {
     /**
      * Lists applications by filter parameters.
      *
+     * @param filter The filters to apply to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationInner> list(String filter, Context context) {
+        return new PagedIterable<>(listAsync(filter, context));
+    }
+
+    /**
+     * Lists applications by filter parameters.
+     *
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application list operation result.
@@ -512,9 +572,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -531,7 +593,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -551,9 +613,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -567,7 +631,7 @@ public final class ApplicationsClient {
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -592,6 +656,21 @@ public final class ApplicationsClient {
      * Delete an application.
      *
      * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String applicationObjectId, Context context) {
+        return deleteWithResponseAsync(applicationObjectId, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete an application.
+     *
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -599,6 +678,20 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String applicationObjectId) {
         deleteAsync(applicationObjectId).block();
+    }
+
+    /**
+     * Delete an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String applicationObjectId, Context context) {
+        deleteAsync(applicationObjectId, context).block();
     }
 
     /**
@@ -611,10 +704,12 @@ public final class ApplicationsClient {
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ApplicationInner>> getWithResponseAsync(String applicationObjectId) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -631,7 +726,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -650,10 +745,12 @@ public final class ApplicationsClient {
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ApplicationInner>> getWithResponseAsync(String applicationObjectId, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -667,7 +764,7 @@ public final class ApplicationsClient {
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -687,7 +784,30 @@ public final class ApplicationsClient {
     public Mono<ApplicationInner> getAsync(String applicationObjectId) {
         return getWithResponseAsync(applicationObjectId)
             .flatMap(
-                (SimpleResponse<ApplicationInner> res) -> {
+                (Response<ApplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get an application by object ID.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application by object ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ApplicationInner> getAsync(String applicationObjectId, Context context) {
+        return getWithResponseAsync(applicationObjectId, context)
+            .flatMap(
+                (Response<ApplicationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -711,6 +831,21 @@ public final class ApplicationsClient {
     }
 
     /**
+     * Get an application by object ID.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application by object ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner get(String applicationObjectId, Context context) {
+        return getAsync(applicationObjectId, context).block();
+    }
+
+    /**
      * Update an existing application.
      *
      * @param applicationObjectId Application object ID.
@@ -723,9 +858,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(
         String applicationObjectId, ApplicationUpdateParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -747,7 +884,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .patch(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -770,9 +907,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(
         String applicationObjectId, ApplicationUpdateParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -791,7 +930,7 @@ public final class ApplicationsClient {
         }
         return service
             .patch(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -819,6 +958,23 @@ public final class ApplicationsClient {
      *
      * @param applicationObjectId Application object ID.
      * @param parameters Request parameters for updating a new application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> patchAsync(String applicationObjectId, ApplicationUpdateParameters parameters, Context context) {
+        return patchWithResponseAsync(applicationObjectId, parameters, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update an existing application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param parameters Request parameters for updating a new application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -826,6 +982,21 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void patch(String applicationObjectId, ApplicationUpdateParameters parameters) {
         patchAsync(applicationObjectId, parameters).block();
+    }
+
+    /**
+     * Update an existing application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param parameters Request parameters for updating a new application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void patch(String applicationObjectId, ApplicationUpdateParameters parameters, Context context) {
+        patchAsync(applicationObjectId, parameters, context).block();
     }
 
     /**
@@ -839,9 +1010,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String applicationObjectId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -858,7 +1031,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .listOwners(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -888,9 +1061,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(
         String applicationObjectId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -904,7 +1079,7 @@ public final class ApplicationsClient {
         }
         return service
             .listOwners(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -967,11 +1142,27 @@ public final class ApplicationsClient {
     }
 
     /**
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, Context context) {
+        return new PagedIterable<>(listOwnersAsync(applicationObjectId, context));
+    }
+
+    /**
      * Add an owner to an application.
      *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
      *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
      *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -981,9 +1172,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String url) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1005,7 +1198,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .addOwner(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -1019,7 +1212,8 @@ public final class ApplicationsClient {
      *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
      *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
      *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @param context The context to associate with this operation.
@@ -1030,9 +1224,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String url, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1051,7 +1247,7 @@ public final class ApplicationsClient {
         parameters.withUrl(url);
         return service
             .addOwner(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -1064,7 +1260,8 @@ public final class ApplicationsClient {
      *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
      *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
      *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,7 +1279,29 @@ public final class ApplicationsClient {
      *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> addOwnerAsync(String applicationObjectId, String url, Context context) {
+        return addOwnerWithResponseAsync(applicationObjectId, url, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Add an owner to an application.
+     *
+     * @param applicationObjectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
      *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
      *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1092,6 +1311,25 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addOwner(String applicationObjectId, String url) {
         addOwnerAsync(applicationObjectId, url).block();
+    }
+
+    /**
+     * Add an owner to an application.
+     *
+     * @param applicationObjectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addOwner(String applicationObjectId, String url, Context context) {
+        addOwnerAsync(applicationObjectId, url, context).block();
     }
 
     /**
@@ -1106,9 +1344,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1128,7 +1368,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .removeOwner(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             ownerObjectId,
                             this.client.getApiVersion(),
@@ -1151,9 +1391,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeOwnerWithResponseAsync(
         String applicationObjectId, String ownerObjectId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1170,7 +1412,7 @@ public final class ApplicationsClient {
         }
         return service
             .removeOwner(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 ownerObjectId,
                 this.client.getApiVersion(),
@@ -1199,6 +1441,23 @@ public final class ApplicationsClient {
      *
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeOwnerAsync(String applicationObjectId, String ownerObjectId, Context context) {
+        return removeOwnerWithResponseAsync(applicationObjectId, ownerObjectId, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Remove a member from owners.
+     *
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1206,6 +1465,21 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeOwner(String applicationObjectId, String ownerObjectId) {
         removeOwnerAsync(applicationObjectId, ownerObjectId).block();
+    }
+
+    /**
+     * Remove a member from owners.
+     *
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeOwner(String applicationObjectId, String ownerObjectId, Context context) {
+        removeOwnerAsync(applicationObjectId, ownerObjectId, context).block();
     }
 
     /**
@@ -1219,9 +1493,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String applicationObjectId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1238,7 +1514,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .listKeyCredentials(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -1263,9 +1539,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(
         String applicationObjectId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1279,7 +1557,7 @@ public final class ApplicationsClient {
         }
         return service
             .listKeyCredentials(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -1334,6 +1612,21 @@ public final class ApplicationsClient {
     }
 
     /**
+     * Get the keyCredentials associated with an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with an application.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, Context context) {
+        return new PagedIterable<>(listKeyCredentialsAsync(applicationObjectId, context));
+    }
+
+    /**
      * Update the keyCredentials associated with an application.
      *
      * @param applicationObjectId Application object ID.
@@ -1346,9 +1639,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
         String applicationObjectId, List<KeyCredentialInner> value) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1372,7 +1667,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .updateKeyCredentials(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -1395,9 +1690,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
         String applicationObjectId, List<KeyCredentialInner> value, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1418,7 +1715,7 @@ public final class ApplicationsClient {
         parameters.withValue(value);
         return service
             .updateKeyCredentials(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -1447,6 +1744,24 @@ public final class ApplicationsClient {
      *
      * @param applicationObjectId Application object ID.
      * @param value A collection of KeyCredentials.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateKeyCredentialsAsync(
+        String applicationObjectId, List<KeyCredentialInner> value, Context context) {
+        return updateKeyCredentialsWithResponseAsync(applicationObjectId, value, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update the keyCredentials associated with an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of KeyCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1454,6 +1769,21 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value) {
         updateKeyCredentialsAsync(applicationObjectId, value).block();
+    }
+
+    /**
+     * Update the keyCredentials associated with an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of KeyCredentials.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value, Context context) {
+        updateKeyCredentialsAsync(applicationObjectId, value, context).block();
     }
 
     /**
@@ -1468,9 +1798,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
         String applicationObjectId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1487,7 +1819,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .listPasswordCredentials(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -1512,9 +1844,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
         String applicationObjectId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1528,7 +1862,7 @@ public final class ApplicationsClient {
         }
         return service
             .listPasswordCredentials(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -1584,6 +1918,21 @@ public final class ApplicationsClient {
     }
 
     /**
+     * Get the passwordCredentials associated with an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with an application.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, Context context) {
+        return new PagedIterable<>(listPasswordCredentialsAsync(applicationObjectId, context));
+    }
+
+    /**
      * Update passwordCredentials associated with an application.
      *
      * @param applicationObjectId Application object ID.
@@ -1596,9 +1945,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
         String applicationObjectId, List<PasswordCredentialInner> value) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1622,7 +1973,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .updatePasswordCredentials(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -1645,9 +1996,11 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
         String applicationObjectId, List<PasswordCredentialInner> value, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -1668,7 +2021,7 @@ public final class ApplicationsClient {
         parameters.withValue(value);
         return service
             .updatePasswordCredentials(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -1697,6 +2050,24 @@ public final class ApplicationsClient {
      *
      * @param applicationObjectId Application object ID.
      * @param value A collection of PasswordCredentials.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updatePasswordCredentialsAsync(
+        String applicationObjectId, List<PasswordCredentialInner> value, Context context) {
+        return updatePasswordCredentialsWithResponseAsync(applicationObjectId, value, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update passwordCredentials associated with an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of PasswordCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1704,6 +2075,22 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updatePasswordCredentials(String applicationObjectId, List<PasswordCredentialInner> value) {
         updatePasswordCredentialsAsync(applicationObjectId, value).block();
+    }
+
+    /**
+     * Update passwordCredentials associated with an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of PasswordCredentials.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updatePasswordCredentials(
+        String applicationObjectId, List<PasswordCredentialInner> value, Context context) {
+        updatePasswordCredentialsAsync(applicationObjectId, value, context).block();
     }
 
     /**
@@ -1716,11 +2103,13 @@ public final class ApplicationsClient {
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
+    public Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
         String applicationId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -1736,7 +2125,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .getServicePrincipalsIdByAppId(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
                             applicationId,
@@ -1755,11 +2144,13 @@ public final class ApplicationsClient {
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
+    public Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
         String applicationId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -1772,7 +2163,11 @@ public final class ApplicationsClient {
         }
         return service
             .getServicePrincipalsIdByAppId(
-                this.client.getHost(), this.client.getApiVersion(), this.client.getTenantId(), applicationId, context);
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getTenantId(),
+                applicationId,
+                context);
     }
 
     /**
@@ -1788,7 +2183,31 @@ public final class ApplicationsClient {
     public Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String applicationId) {
         return getServicePrincipalsIdByAppIdWithResponseAsync(applicationId)
             .flatMap(
-                (SimpleResponse<ServicePrincipalObjectResultInner> res) -> {
+                (Response<ServicePrincipalObjectResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets an object id for a given application id from the current tenant.
+     *
+     * @param applicationId The application ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object id for a given application id from the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(
+        String applicationId, Context context) {
+        return getServicePrincipalsIdByAppIdWithResponseAsync(applicationId, context)
+            .flatMap(
+                (Response<ServicePrincipalObjectResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1812,6 +2231,21 @@ public final class ApplicationsClient {
     }
 
     /**
+     * Gets an object id for a given application id from the current tenant.
+     *
+     * @param applicationId The application ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object id for a given application id from the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServicePrincipalObjectResultInner getServicePrincipalsIdByAppId(String applicationId, Context context) {
+        return getServicePrincipalsIdByAppIdAsync(applicationId, context).block();
+    }
+
+    /**
      * Gets a list of applications from the current tenant.
      *
      * @param nextLink Next link for the list operation.
@@ -1822,9 +2256,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1840,7 +2276,7 @@ public final class ApplicationsClient {
                 context ->
                     service
                         .listNext(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             nextLink,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -1869,9 +2305,11 @@ public final class ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1883,7 +2321,8 @@ public final class ApplicationsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .listNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .listNext(
+                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -23,14 +23,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationListResultInner;
+import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeletedApplications. */
@@ -44,11 +43,11 @@ public final class DeletedApplicationsClient {
     private final GraphRbacManagementClient client;
 
     /**
-     * Initializes an instance of DeletedApplicationsInner.
+     * Initializes an instance of DeletedApplicationsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DeletedApplicationsClient(GraphRbacManagementClient client) {
+    public DeletedApplicationsClient(GraphRbacManagementClient client) {
         this.service =
             RestProxy.create(DeletedApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -65,8 +64,8 @@ public final class DeletedApplicationsClient {
         @Post("/{tenantID}/deletedApplications/{objectId}/restore")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationInner>> restore(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationInner>> restore(
+            @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -76,8 +75,8 @@ public final class DeletedApplicationsClient {
         @Get("/{tenantID}/deletedApplications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -88,7 +87,7 @@ public final class DeletedApplicationsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> hardDelete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("applicationObjectId") String applicationObjectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -98,8 +97,8 @@ public final class DeletedApplicationsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> listNext(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationListResultInner>> listNext(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -116,10 +115,12 @@ public final class DeletedApplicationsClient {
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ApplicationInner>> restoreWithResponseAsync(String objectId) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<ApplicationInner>> restoreWithResponseAsync(String objectId) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -135,7 +136,7 @@ public final class DeletedApplicationsClient {
                 context ->
                     service
                         .restore(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             objectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -154,10 +155,12 @@ public final class DeletedApplicationsClient {
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ApplicationInner>> restoreWithResponseAsync(String objectId, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<ApplicationInner>> restoreWithResponseAsync(String objectId, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -169,7 +172,8 @@ public final class DeletedApplicationsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .restore(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
+            .restore(
+                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
     }
 
     /**
@@ -185,7 +189,30 @@ public final class DeletedApplicationsClient {
     public Mono<ApplicationInner> restoreAsync(String objectId) {
         return restoreWithResponseAsync(objectId)
             .flatMap(
-                (SimpleResponse<ApplicationInner> res) -> {
+                (Response<ApplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Restores the deleted application in the directory.
+     *
+     * @param objectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory application information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ApplicationInner> restoreAsync(String objectId, Context context) {
+        return restoreWithResponseAsync(objectId, context)
+            .flatMap(
+                (Response<ApplicationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -209,6 +236,21 @@ public final class DeletedApplicationsClient {
     }
 
     /**
+     * Restores the deleted application in the directory.
+     *
+     * @param objectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory application information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner restore(String objectId, Context context) {
+        return restoreAsync(objectId, context).block();
+    }
+
+    /**
      * Gets a list of deleted applications in the directory.
      *
      * @param filter The filter to apply to the operation.
@@ -219,9 +261,11 @@ public final class DeletedApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -234,7 +278,7 @@ public final class DeletedApplicationsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             filter,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -263,9 +307,11 @@ public final class DeletedApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -274,7 +320,7 @@ public final class DeletedApplicationsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -347,6 +393,21 @@ public final class DeletedApplicationsClient {
     /**
      * Gets a list of deleted applications in the directory.
      *
+     * @param filter The filter to apply to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted applications in the directory.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationInner> list(String filter, Context context) {
+        return new PagedIterable<>(listAsync(filter, context));
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted applications in the directory.
@@ -369,9 +430,11 @@ public final class DeletedApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hardDeleteWithResponseAsync(String applicationObjectId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -388,7 +451,7 @@ public final class DeletedApplicationsClient {
                 context ->
                     service
                         .hardDelete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             applicationObjectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -408,9 +471,11 @@ public final class DeletedApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hardDeleteWithResponseAsync(String applicationObjectId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
             return Mono
@@ -424,7 +489,7 @@ public final class DeletedApplicationsClient {
         }
         return service
             .hardDelete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 applicationObjectId,
                 this.client.getApiVersion(),
                 this.client.getTenantId(),
@@ -449,6 +514,21 @@ public final class DeletedApplicationsClient {
      * Hard-delete an application.
      *
      * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> hardDeleteAsync(String applicationObjectId, Context context) {
+        return hardDeleteWithResponseAsync(applicationObjectId, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Hard-delete an application.
+     *
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -456,6 +536,20 @@ public final class DeletedApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void hardDelete(String applicationObjectId) {
         hardDeleteAsync(applicationObjectId).block();
+    }
+
+    /**
+     * Hard-delete an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void hardDelete(String applicationObjectId, Context context) {
+        hardDeleteAsync(applicationObjectId, context).block();
     }
 
     /**
@@ -469,9 +563,11 @@ public final class DeletedApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -487,7 +583,7 @@ public final class DeletedApplicationsClient {
                 context ->
                     service
                         .listNext(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             nextLink,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -516,9 +612,11 @@ public final class DeletedApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -530,7 +628,8 @@ public final class DeletedApplicationsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .listNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .listNext(
+                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

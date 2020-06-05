@@ -4,14 +4,11 @@
 
 package com.azure.resourcemanager.authorization;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.management.AzureServiceClient;
 import com.azure.resourcemanager.authorization.fluent.ClassicAdministratorsClient;
 import com.azure.resourcemanager.authorization.fluent.GlobalAdministratorsClient;
 import com.azure.resourcemanager.authorization.fluent.PermissionsClient;
@@ -19,12 +16,13 @@ import com.azure.resourcemanager.authorization.fluent.ProviderOperationsMetadata
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
 
-/** Initializes a new instance of the AuthorizationManagementClientImpl type. */
+/** Initializes a new instance of the AuthorizationManagementClient type. */
+@ServiceClient(builder = AuthorizationManagementClientBuilder.class)
 public final class AuthorizationManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(AuthorizationManagementClient.class);
 
     /** The ID of the target subscription. */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
@@ -35,38 +33,16 @@ public final class AuthorizationManagementClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public AuthorizationManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public AuthorizationManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -81,92 +57,76 @@ public final class AuthorizationManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The ClassicAdministratorsInner object to access its operations. */
+    /** The ClassicAdministratorsClient object to access its operations. */
     private final ClassicAdministratorsClient classicAdministrators;
 
     /**
-     * Gets the ClassicAdministratorsInner object to access its operations.
+     * Gets the ClassicAdministratorsClient object to access its operations.
      *
-     * @return the ClassicAdministratorsInner object.
+     * @return the ClassicAdministratorsClient object.
      */
-    public ClassicAdministratorsClient classicAdministrators() {
+    public ClassicAdministratorsClient getClassicAdministrators() {
         return this.classicAdministrators;
     }
 
-    /** The GlobalAdministratorsInner object to access its operations. */
+    /** The GlobalAdministratorsClient object to access its operations. */
     private final GlobalAdministratorsClient globalAdministrators;
 
     /**
-     * Gets the GlobalAdministratorsInner object to access its operations.
+     * Gets the GlobalAdministratorsClient object to access its operations.
      *
-     * @return the GlobalAdministratorsInner object.
+     * @return the GlobalAdministratorsClient object.
      */
-    public GlobalAdministratorsClient globalAdministrators() {
+    public GlobalAdministratorsClient getGlobalAdministrators() {
         return this.globalAdministrators;
     }
 
-    /** The ProviderOperationsMetadatasInner object to access its operations. */
+    /** The ProviderOperationsMetadatasClient object to access its operations. */
     private final ProviderOperationsMetadatasClient providerOperationsMetadatas;
 
     /**
-     * Gets the ProviderOperationsMetadatasInner object to access its operations.
+     * Gets the ProviderOperationsMetadatasClient object to access its operations.
      *
-     * @return the ProviderOperationsMetadatasInner object.
+     * @return the ProviderOperationsMetadatasClient object.
      */
-    public ProviderOperationsMetadatasClient providerOperationsMetadatas() {
+    public ProviderOperationsMetadatasClient getProviderOperationsMetadatas() {
         return this.providerOperationsMetadatas;
     }
 
-    /** The RoleAssignmentsInner object to access its operations. */
+    /** The RoleAssignmentsClient object to access its operations. */
     private final RoleAssignmentsClient roleAssignments;
 
     /**
-     * Gets the RoleAssignmentsInner object to access its operations.
+     * Gets the RoleAssignmentsClient object to access its operations.
      *
-     * @return the RoleAssignmentsInner object.
+     * @return the RoleAssignmentsClient object.
      */
-    public RoleAssignmentsClient roleAssignments() {
+    public RoleAssignmentsClient getRoleAssignments() {
         return this.roleAssignments;
     }
 
-    /** The PermissionsInner object to access its operations. */
+    /** The PermissionsClient object to access its operations. */
     private final PermissionsClient permissions;
 
     /**
-     * Gets the PermissionsInner object to access its operations.
+     * Gets the PermissionsClient object to access its operations.
      *
-     * @return the PermissionsInner object.
+     * @return the PermissionsClient object.
      */
-    public PermissionsClient permissions() {
+    public PermissionsClient getPermissions() {
         return this.permissions;
     }
 
-    /** The RoleDefinitionsInner object to access its operations. */
+    /** The RoleDefinitionsClient object to access its operations. */
     private final RoleDefinitionsClient roleDefinitions;
 
     /**
-     * Gets the RoleDefinitionsInner object to access its operations.
+     * Gets the RoleDefinitionsClient object to access its operations.
      *
-     * @return the RoleDefinitionsInner object.
+     * @return the RoleDefinitionsClient object.
      */
-    public RoleDefinitionsClient roleDefinitions() {
+    public RoleDefinitionsClient getRoleDefinitions() {
         return this.roleDefinitions;
-    }
-
-    /** Initializes an instance of AuthorizationManagementClient client. */
-    public AuthorizationManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of AuthorizationManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public AuthorizationManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -175,9 +135,12 @@ public final class AuthorizationManagementClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public AuthorizationManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    AuthorizationManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
         this.classicAdministrators = new ClassicAdministratorsClient(this);
         this.globalAdministrators = new GlobalAdministratorsClient(this);
         this.providerOperationsMetadatas = new ProviderOperationsMetadatasClient(this);

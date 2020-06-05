@@ -19,8 +19,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -41,11 +41,11 @@ public final class ClassicAdministratorsClient {
     private final AuthorizationManagementClient client;
 
     /**
-     * Initializes an instance of ClassicAdministratorsInner.
+     * Initializes an instance of ClassicAdministratorsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ClassicAdministratorsClient(AuthorizationManagementClient client) {
+    public ClassicAdministratorsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy
                 .create(ClassicAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -63,8 +63,8 @@ public final class ClassicAdministratorsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ClassicAdministratorListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ClassicAdministratorListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -73,7 +73,7 @@ public final class ClassicAdministratorsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ClassicAdministratorListResultInner>> listNext(
+        Mono<Response<ClassicAdministratorListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -86,9 +86,11 @@ public final class ClassicAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ClassicAdministratorInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -99,7 +101,8 @@ public final class ClassicAdministratorsClient {
         final String apiVersion = "2015-06-01";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
+                context ->
+                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
             .<PagedResponse<ClassicAdministratorInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -123,9 +126,11 @@ public final class ClassicAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ClassicAdministratorInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -135,7 +140,7 @@ public final class ClassicAdministratorsClient {
         }
         final String apiVersion = "2015-06-01";
         return service
-            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -183,6 +188,20 @@ public final class ClassicAdministratorsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClassicAdministratorInner> list() {
         return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Gets service administrator, account administrator, and co-administrators for the subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service administrator, account administrator, and co-administrators for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ClassicAdministratorInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
     }
 
     /**

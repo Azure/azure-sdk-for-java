@@ -19,8 +19,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -41,11 +41,11 @@ public final class PermissionsClient {
     private final AuthorizationManagementClient client;
 
     /**
-     * Initializes an instance of PermissionsInner.
+     * Initializes an instance of PermissionsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PermissionsClient(AuthorizationManagementClient client) {
+    public PermissionsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy.create(PermissionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -60,12 +60,12 @@ public final class PermissionsClient {
     private interface PermissionsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.Authorization/permissions")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization"
+                + "/permissions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PermissionGetResultInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<PermissionGetResultInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -73,13 +73,12 @@ public final class PermissionsClient {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Authorization/permissions")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PermissionGetResultInner>> listForResource(
-            @HostParam("$host") String host,
+        Mono<Response<PermissionGetResultInner>> listForResource(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -93,14 +92,14 @@ public final class PermissionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PermissionGetResultInner>> listForResourceGroupNext(
+        Mono<Response<PermissionGetResultInner>> listForResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PermissionGetResultInner>> listForResourceNext(
+        Mono<Response<PermissionGetResultInner>> listForResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -115,9 +114,11 @@ public final class PermissionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PermissionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -135,7 +136,7 @@ public final class PermissionsClient {
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             apiVersion,
                             this.client.getSubscriptionId(),
@@ -165,9 +166,11 @@ public final class PermissionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PermissionInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,7 +185,7 @@ public final class PermissionsClient {
         final String apiVersion = "2018-01-01-preview";
         return service
             .listByResourceGroup(
-                this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -242,6 +245,21 @@ public final class PermissionsClient {
     }
 
     /**
+     * Gets all permissions the caller has for a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PermissionInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * Gets all permissions the caller has for a resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -261,9 +279,11 @@ public final class PermissionsClient {
         String parentResourcePath,
         String resourceType,
         String resourceName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -297,7 +317,7 @@ public final class PermissionsClient {
                 context ->
                     service
                         .listForResource(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -340,9 +360,11 @@ public final class PermissionsClient {
         String resourceType,
         String resourceName,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -373,7 +395,7 @@ public final class PermissionsClient {
         final String apiVersion = "2018-01-01-preview";
         return service
             .listForResource(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -477,6 +499,33 @@ public final class PermissionsClient {
         return new PagedIterable<>(
             listForResourceAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName));
+    }
+
+    /**
+     * Gets all permissions the caller has for a resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get the permissions for.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PermissionInner> listForResource(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        Context context) {
+        return new PagedIterable<>(
+            listForResourceAsync(
+                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, context));
     }
 
     /**

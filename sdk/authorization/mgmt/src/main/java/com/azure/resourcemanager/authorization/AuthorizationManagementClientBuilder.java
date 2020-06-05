@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the AuthorizationManagementClientImpl type. */
+/** A builder for creating a new instance of the AuthorizationManagementClient type. */
 @ServiceClientBuilder(serviceClients = {AuthorizationManagementClient.class})
 public final class AuthorizationManagementClientBuilder {
     /*
@@ -34,16 +34,16 @@ public final class AuthorizationManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the AuthorizationManagementClientBuilder.
      */
-    public AuthorizationManagementClientBuilder host(String host) {
-        this.host = host;
+    public AuthorizationManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -80,13 +80,13 @@ public final class AuthorizationManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of AuthorizationManagementClientImpl with the provided parameters.
+     * Builds an instance of AuthorizationManagementClient with the provided parameters.
      *
-     * @return an instance of AuthorizationManagementClientImpl.
+     * @return an instance of AuthorizationManagementClient.
      */
     public AuthorizationManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -97,9 +97,8 @@ public final class AuthorizationManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        AuthorizationManagementClient client = new AuthorizationManagementClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
+        AuthorizationManagementClient client =
+            new AuthorizationManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

@@ -34,11 +34,11 @@ public final class GlobalAdministratorsClient {
     private final AuthorizationManagementClient client;
 
     /**
-     * Initializes an instance of GlobalAdministratorsInner.
+     * Initializes an instance of GlobalAdministratorsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    GlobalAdministratorsClient(AuthorizationManagementClient client) {
+    public GlobalAdministratorsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy
                 .create(GlobalAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -57,7 +57,7 @@ public final class GlobalAdministratorsClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> elevateAccess(
-            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
     }
 
     /**
@@ -69,13 +69,15 @@ public final class GlobalAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> elevateAccessWithResponseAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-07-01";
         return FluxUtil
-            .withContext(context -> service.elevateAccess(this.client.getHost(), apiVersion, context))
+            .withContext(context -> service.elevateAccess(this.client.getEndpoint(), apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -90,12 +92,14 @@ public final class GlobalAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> elevateAccessWithResponseAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-07-01";
-        return service.elevateAccess(this.client.getHost(), apiVersion, context);
+        return service.elevateAccess(this.client.getEndpoint(), apiVersion, context);
     }
 
     /**
@@ -113,11 +117,38 @@ public final class GlobalAdministratorsClient {
     /**
      * Elevates access for a Global Administrator.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> elevateAccessAsync(Context context) {
+        return elevateAccessWithResponseAsync(context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Elevates access for a Global Administrator.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void elevateAccess() {
         elevateAccessAsync().block();
+    }
+
+    /**
+     * Elevates access for a Global Administrator.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void elevateAccess(Context context) {
+        elevateAccessAsync(context).block();
     }
 }

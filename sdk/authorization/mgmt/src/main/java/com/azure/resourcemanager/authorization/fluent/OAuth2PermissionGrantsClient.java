@@ -24,15 +24,14 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.fluent.inner.OAuth2PermissionGrantInner;
 import com.azure.resourcemanager.authorization.fluent.inner.OAuth2PermissionGrantListResultInner;
+import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OAuth2PermissionGrants. */
@@ -46,11 +45,11 @@ public final class OAuth2PermissionGrantsClient {
     private final GraphRbacManagementClient client;
 
     /**
-     * Initializes an instance of OAuth2PermissionGrantsInner.
+     * Initializes an instance of OAuth2PermissionGrantsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OAuth2PermissionGrantsClient(GraphRbacManagementClient client) {
+    public OAuth2PermissionGrantsClient(GraphRbacManagementClient client) {
         this.service =
             RestProxy
                 .create(OAuth2PermissionGrantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -68,8 +67,8 @@ public final class OAuth2PermissionGrantsClient {
         @Get("/{tenantID}/oauth2PermissionGrants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<OAuth2PermissionGrantListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<OAuth2PermissionGrantListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -79,8 +78,8 @@ public final class OAuth2PermissionGrantsClient {
         @Post("/{tenantID}/oauth2PermissionGrants")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<OAuth2PermissionGrantInner>> create(
-            @HostParam("$host") String host,
+        Mono<Response<OAuth2PermissionGrantInner>> create(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
             @BodyParam("application/json") OAuth2PermissionGrantInner body,
@@ -91,7 +90,7 @@ public final class OAuth2PermissionGrantsClient {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -101,8 +100,8 @@ public final class OAuth2PermissionGrantsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<OAuth2PermissionGrantListResultInner>> listNext(
-            @HostParam("$host") String host,
+        Mono<Response<OAuth2PermissionGrantListResultInner>> listNext(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -120,9 +119,11 @@ public final class OAuth2PermissionGrantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listSinglePageAsync(String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -135,7 +136,7 @@ public final class OAuth2PermissionGrantsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             filter,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -164,9 +165,11 @@ public final class OAuth2PermissionGrantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listSinglePageAsync(String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -175,7 +178,7 @@ public final class OAuth2PermissionGrantsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -248,6 +251,21 @@ public final class OAuth2PermissionGrantsClient {
     /**
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
      *
+     * @param filter This is the Service Principal ObjectId associated with the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OAuth2PermissionGrantInner> list(String filter, Context context) {
+        return new PagedIterable<>(listAsync(filter, context));
+    }
+
+    /**
+     * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for get oauth2 permissions grants.
@@ -269,10 +287,12 @@ public final class OAuth2PermissionGrantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OAuth2PermissionGrantInner>> createWithResponseAsync(OAuth2PermissionGrantInner body) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<OAuth2PermissionGrantInner>> createWithResponseAsync(OAuth2PermissionGrantInner body) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -288,7 +308,7 @@ public final class OAuth2PermissionGrantsClient {
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
                             body,
@@ -307,11 +327,13 @@ public final class OAuth2PermissionGrantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OAuth2PermissionGrantInner>> createWithResponseAsync(
+    public Mono<Response<OAuth2PermissionGrantInner>> createWithResponseAsync(
         OAuth2PermissionGrantInner body, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -323,7 +345,7 @@ public final class OAuth2PermissionGrantsClient {
             body.validate();
         }
         return service
-            .create(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantId(), body, context);
+            .create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), body, context);
     }
 
     /**
@@ -339,7 +361,30 @@ public final class OAuth2PermissionGrantsClient {
     public Mono<OAuth2PermissionGrantInner> createAsync(OAuth2PermissionGrantInner body) {
         return createWithResponseAsync(body)
             .flatMap(
-                (SimpleResponse<OAuth2PermissionGrantInner> res) -> {
+                (Response<OAuth2PermissionGrantInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
+     *
+     * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OAuth2PermissionGrantInner> createAsync(OAuth2PermissionGrantInner body, Context context) {
+        return createWithResponseAsync(body, context)
+            .flatMap(
+                (Response<OAuth2PermissionGrantInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -361,7 +406,7 @@ public final class OAuth2PermissionGrantsClient {
         final Context context = null;
         return createWithResponseAsync(body)
             .flatMap(
-                (SimpleResponse<OAuth2PermissionGrantInner> res) -> {
+                (Response<OAuth2PermissionGrantInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -382,6 +427,21 @@ public final class OAuth2PermissionGrantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OAuth2PermissionGrantInner create(OAuth2PermissionGrantInner body) {
         return createAsync(body).block();
+    }
+
+    /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
+     *
+     * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OAuth2PermissionGrantInner create(OAuth2PermissionGrantInner body, Context context) {
+        return createAsync(body, context).block();
     }
 
     /**
@@ -409,9 +469,11 @@ public final class OAuth2PermissionGrantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -427,7 +489,7 @@ public final class OAuth2PermissionGrantsClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             objectId,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -447,9 +509,11 @@ public final class OAuth2PermissionGrantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -461,7 +525,8 @@ public final class OAuth2PermissionGrantsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .delete(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
+            .delete(
+                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
     }
 
     /**
@@ -482,6 +547,21 @@ public final class OAuth2PermissionGrantsClient {
      * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
      *
      * @param objectId The object ID of a permission grant.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String objectId, Context context) {
+        return deleteWithResponseAsync(objectId, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
+     *
+     * @param objectId The object ID of a permission grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -489,6 +569,20 @@ public final class OAuth2PermissionGrantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String objectId) {
         deleteAsync(objectId).block();
+    }
+
+    /**
+     * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
+     *
+     * @param objectId The object ID of a permission grant.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String objectId, Context context) {
+        deleteAsync(objectId, context).block();
     }
 
     /**
@@ -502,9 +596,11 @@ public final class OAuth2PermissionGrantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listNextSinglePageAsync(String nextLink) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -520,7 +616,7 @@ public final class OAuth2PermissionGrantsClient {
                 context ->
                     service
                         .listNext(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             nextLink,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -549,9 +645,11 @@ public final class OAuth2PermissionGrantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -563,7 +661,8 @@ public final class OAuth2PermissionGrantsClient {
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
         return service
-            .listNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .listNext(
+                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

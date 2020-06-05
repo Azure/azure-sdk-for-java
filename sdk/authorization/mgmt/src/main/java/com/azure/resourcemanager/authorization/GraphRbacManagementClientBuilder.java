@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the GraphRbacManagementClientImpl type. */
+/** A builder for creating a new instance of the GraphRbacManagementClient type. */
 @ServiceClientBuilder(serviceClients = {GraphRbacManagementClient.class})
 public final class GraphRbacManagementClientBuilder {
     /*
@@ -34,32 +34,16 @@ public final class GraphRbacManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the GraphRbacManagementClientBuilder.
      */
-    public GraphRbacManagementClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the GraphRbacManagementClientBuilder.
-     */
-    public GraphRbacManagementClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public GraphRbacManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -96,16 +80,13 @@ public final class GraphRbacManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of GraphRbacManagementClientImpl with the provided parameters.
+     * Builds an instance of GraphRbacManagementClient with the provided parameters.
      *
-     * @return an instance of GraphRbacManagementClientImpl.
+     * @return an instance of GraphRbacManagementClient.
      */
     public GraphRbacManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://graph.windows.net";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "1.6";
+        if (endpoint == null) {
+            this.endpoint = "https://graph.windows.net";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -116,10 +97,7 @@ public final class GraphRbacManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        GraphRbacManagementClient client = new GraphRbacManagementClient(pipeline, environment);
-        client.setTenantId(this.tenantId);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        GraphRbacManagementClient client = new GraphRbacManagementClient(pipeline, environment, tenantId, endpoint);
         return client;
     }
 }

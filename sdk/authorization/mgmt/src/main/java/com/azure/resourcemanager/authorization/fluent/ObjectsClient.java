@@ -20,16 +20,16 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
-import com.azure.resourcemanager.authorization.models.GetObjectsParameters;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
+import com.azure.resourcemanager.authorization.models.GetObjectsParameters;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Objects. */
@@ -43,11 +43,11 @@ public final class ObjectsClient {
     private final GraphRbacManagementClient client;
 
     /**
-     * Initializes an instance of ObjectsInner.
+     * Initializes an instance of ObjectsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ObjectsClient(GraphRbacManagementClient client) {
+    public ObjectsClient(GraphRbacManagementClient client) {
         this.service = RestProxy.create(ObjectsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -63,8 +63,8 @@ public final class ObjectsClient {
         @Post("/{tenantID}/getObjectsByObjectIds")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> getObjectsByObjectIds(
-            @HostParam("$host") String host,
+        Mono<Response<DirectoryObjectListResultInner>> getObjectsByObjectIds(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
             @BodyParam("application/json") GetObjectsParameters parameters,
@@ -74,8 +74,8 @@ public final class ObjectsClient {
         @Post("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> getObjectsByObjectIdsNext(
-            @HostParam("$host") String host,
+        Mono<Response<DirectoryObjectListResultInner>> getObjectsByObjectIdsNext(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -95,9 +95,11 @@ public final class ObjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsSinglePageAsync(
         GetObjectsParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -115,7 +117,7 @@ public final class ObjectsClient {
                 context ->
                     service
                         .getObjectsByObjectIds(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
                             parameters,
@@ -146,9 +148,11 @@ public final class ObjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsSinglePageAsync(
         GetObjectsParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getTenantId() == null) {
             return Mono
@@ -163,7 +167,7 @@ public final class ObjectsClient {
         }
         return service
             .getObjectsByObjectIds(
-                this.client.getHost(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context)
+                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -227,6 +231,22 @@ public final class ObjectsClient {
     }
 
     /**
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
+     * (users, groups, etc.) should be searched by specifying the optional types parameter.
+     *
+     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the directory objects specified in a list of object IDs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(GetObjectsParameters parameters, Context context) {
+        return new PagedIterable<>(getObjectsByObjectIdsAsync(parameters, context));
+    }
+
+    /**
      * Gets AD group membership for the specified AD object IDs.
      *
      * @param nextLink Next link for the list operation.
@@ -237,9 +257,11 @@ public final class ObjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsNextSinglePageAsync(String nextLink) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -255,7 +277,7 @@ public final class ObjectsClient {
                 context ->
                     service
                         .getObjectsByObjectIdsNext(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             nextLink,
                             this.client.getApiVersion(),
                             this.client.getTenantId(),
@@ -285,9 +307,11 @@ public final class ObjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsNextSinglePageAsync(
         String nextLink, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -300,7 +324,7 @@ public final class ObjectsClient {
         }
         return service
             .getObjectsByObjectIdsNext(
-                this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
+                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

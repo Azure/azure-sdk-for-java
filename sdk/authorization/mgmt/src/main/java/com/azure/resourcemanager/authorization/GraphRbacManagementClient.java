@@ -4,14 +4,11 @@
 
 package com.azure.resourcemanager.authorization;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.management.AzureServiceClient;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.authorization.fluent.DeletedApplicationsClient;
 import com.azure.resourcemanager.authorization.fluent.DomainsClient;
@@ -22,12 +19,13 @@ import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsClient;
 import com.azure.resourcemanager.authorization.fluent.SignedInUsersClient;
 import com.azure.resourcemanager.authorization.fluent.UsersClient;
 
-/** Initializes a new instance of the GraphRbacManagementClientImpl type. */
+/** Initializes a new instance of the GraphRbacManagementClient type. */
+@ServiceClient(builder = GraphRbacManagementClientBuilder.class)
 public final class GraphRbacManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(GraphRbacManagementClient.class);
 
     /** The tenant ID. */
-    private String tenantId;
+    private final String tenantId;
 
     /**
      * Gets The tenant ID.
@@ -38,42 +36,20 @@ public final class GraphRbacManagementClient extends AzureServiceClient {
         return this.tenantId;
     }
 
-    /**
-     * Sets The tenant ID.
-     *
-     * @param tenantId the tenantId value.
-     * @return the service client itself.
-     */
-    public GraphRbacManagementClient setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public GraphRbacManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -82,17 +58,6 @@ public final class GraphRbacManagementClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    public GraphRbacManagementClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -107,128 +72,112 @@ public final class GraphRbacManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The SignedInUsersInner object to access its operations. */
+    /** The SignedInUsersClient object to access its operations. */
     private final SignedInUsersClient signedInUsers;
 
     /**
-     * Gets the SignedInUsersInner object to access its operations.
+     * Gets the SignedInUsersClient object to access its operations.
      *
-     * @return the SignedInUsersInner object.
+     * @return the SignedInUsersClient object.
      */
-    public SignedInUsersClient signedInUsers() {
+    public SignedInUsersClient getSignedInUsers() {
         return this.signedInUsers;
     }
 
-    /** The ApplicationsInner object to access its operations. */
+    /** The ApplicationsClient object to access its operations. */
     private final ApplicationsClient applications;
 
     /**
-     * Gets the ApplicationsInner object to access its operations.
+     * Gets the ApplicationsClient object to access its operations.
      *
-     * @return the ApplicationsInner object.
+     * @return the ApplicationsClient object.
      */
-    public ApplicationsClient applications() {
+    public ApplicationsClient getApplications() {
         return this.applications;
     }
 
-    /** The DeletedApplicationsInner object to access its operations. */
+    /** The DeletedApplicationsClient object to access its operations. */
     private final DeletedApplicationsClient deletedApplications;
 
     /**
-     * Gets the DeletedApplicationsInner object to access its operations.
+     * Gets the DeletedApplicationsClient object to access its operations.
      *
-     * @return the DeletedApplicationsInner object.
+     * @return the DeletedApplicationsClient object.
      */
-    public DeletedApplicationsClient deletedApplications() {
+    public DeletedApplicationsClient getDeletedApplications() {
         return this.deletedApplications;
     }
 
-    /** The GroupsInner object to access its operations. */
+    /** The GroupsClient object to access its operations. */
     private final GroupsClient groups;
 
     /**
-     * Gets the GroupsInner object to access its operations.
+     * Gets the GroupsClient object to access its operations.
      *
-     * @return the GroupsInner object.
+     * @return the GroupsClient object.
      */
-    public GroupsClient groups() {
+    public GroupsClient getGroups() {
         return this.groups;
     }
 
-    /** The ServicePrincipalsInner object to access its operations. */
+    /** The ServicePrincipalsClient object to access its operations. */
     private final ServicePrincipalsClient servicePrincipals;
 
     /**
-     * Gets the ServicePrincipalsInner object to access its operations.
+     * Gets the ServicePrincipalsClient object to access its operations.
      *
-     * @return the ServicePrincipalsInner object.
+     * @return the ServicePrincipalsClient object.
      */
-    public ServicePrincipalsClient servicePrincipals() {
+    public ServicePrincipalsClient getServicePrincipals() {
         return this.servicePrincipals;
     }
 
-    /** The UsersInner object to access its operations. */
+    /** The UsersClient object to access its operations. */
     private final UsersClient users;
 
     /**
-     * Gets the UsersInner object to access its operations.
+     * Gets the UsersClient object to access its operations.
      *
-     * @return the UsersInner object.
+     * @return the UsersClient object.
      */
-    public UsersClient users() {
+    public UsersClient getUsers() {
         return this.users;
     }
 
-    /** The ObjectsInner object to access its operations. */
+    /** The ObjectsClient object to access its operations. */
     private final ObjectsClient objects;
 
     /**
-     * Gets the ObjectsInner object to access its operations.
+     * Gets the ObjectsClient object to access its operations.
      *
-     * @return the ObjectsInner object.
+     * @return the ObjectsClient object.
      */
-    public ObjectsClient objects() {
+    public ObjectsClient getObjects() {
         return this.objects;
     }
 
-    /** The DomainsInner object to access its operations. */
+    /** The DomainsClient object to access its operations. */
     private final DomainsClient domains;
 
     /**
-     * Gets the DomainsInner object to access its operations.
+     * Gets the DomainsClient object to access its operations.
      *
-     * @return the DomainsInner object.
+     * @return the DomainsClient object.
      */
-    public DomainsClient domains() {
+    public DomainsClient getDomains() {
         return this.domains;
     }
 
-    /** The OAuth2PermissionGrantsInner object to access its operations. */
+    /** The OAuth2PermissionGrantsClient object to access its operations. */
     private final OAuth2PermissionGrantsClient oAuth2PermissionGrants;
 
     /**
-     * Gets the OAuth2PermissionGrantsInner object to access its operations.
+     * Gets the OAuth2PermissionGrantsClient object to access its operations.
      *
-     * @return the OAuth2PermissionGrantsInner object.
+     * @return the OAuth2PermissionGrantsClient object.
      */
-    public OAuth2PermissionGrantsClient oAuth2PermissionGrants() {
+    public OAuth2PermissionGrantsClient getOAuth2PermissionGrants() {
         return this.oAuth2PermissionGrants;
-    }
-
-    /** Initializes an instance of GraphRbacManagementClient client. */
-    public GraphRbacManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of GraphRbacManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public GraphRbacManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -237,9 +186,13 @@ public final class GraphRbacManagementClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public GraphRbacManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    GraphRbacManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String tenantId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
+        this.tenantId = tenantId;
+        this.endpoint = endpoint;
+        this.apiVersion = "1.6";
         this.signedInUsers = new SignedInUsersClient(this);
         this.applications = new ApplicationsClient(this);
         this.deletedApplications = new DeletedApplicationsClient(this);
