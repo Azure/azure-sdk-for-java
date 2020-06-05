@@ -49,19 +49,20 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  *
  * <pre>
  * {@code
- *  ChangeFeedProcessor.changeFeedProcessorBuilder()
- *     .setHostName(setHostName)
- *     .setFeedContainer(setFeedContainer)
- *     .setLeaseContainer(setLeaseContainer)
- *     .setHandleChanges(docs -> {
- *         // Implementation for handling and processing CosmosItemProperties list goes here
- *      })
- *     .observer(SampleObserverImpl.class)
- *     .buildAsyncClient();
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+ *     .hostName(hostName)
+ *     .feedContainer(feedContainer)
+ *     .leaseContainer(leaseContainer)
+ *     .handleChanges(docs -> {
+ *         for (JsonNode item : docs) {
+ *             // Implementation for handling and processing of each JsonNode item goes here
+ *         }
+ *     })
+ *     .buildChangeFeedProcessor();
  * }
  * </pre>
  */
-public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.BuilderDefinition, ChangeFeedProcessor, AutoCloseable {
+public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, AutoCloseable {
     private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
     private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
     private final Duration sleepTime = Duration.ofSeconds(15);
@@ -214,7 +215,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique name.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl hostName(String hostName) {
         this.hostName = hostName;
         return this;
@@ -226,7 +226,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param feedDocumentClient the instance of {@link CosmosAsyncContainer} to be used.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl feedContainer(CosmosAsyncContainer feedDocumentClient) {
         if (feedDocumentClient == null) {
             throw new IllegalArgumentException("feedContextClient");
@@ -242,7 +241,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param changeFeedProcessorOptions the change feed processor options to use.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl options(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
         if (changeFeedProcessorOptions == null) {
             throw new IllegalArgumentException("changeFeedProcessorOptions");
@@ -283,7 +281,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this;
     }
 
-    @Override
     public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<JsonNode>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
     }
@@ -315,7 +312,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param leaseClient the instance of {@link CosmosAsyncContainer} to use.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseClient) {
         if (leaseClient == null) {
             throw new IllegalArgumentException("leaseClient");
@@ -400,7 +396,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      *
      * @return an instance of {@link ChangeFeedProcessor}.
      */
-    @Override
     public ChangeFeedProcessor build() {
         if (this.hostName == null) {
             throw new IllegalArgumentException("Host name was not specified");

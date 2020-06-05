@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -85,7 +86,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
-            changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollection)
@@ -100,7 +101,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
@@ -141,7 +142,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<CosmosItemProperties> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -163,7 +164,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setMinScaleCount(1)
                     .setMaxScaleCount(3)
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
@@ -207,7 +208,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<CosmosItemProperties> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -218,7 +219,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
@@ -287,7 +288,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
-            ChangeFeedProcessor changeFeedProcessorFirst = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
                 .handleChanges(docs -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
@@ -298,9 +299,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .options(new ChangeFeedProcessorOptions()
                     .setLeasePrefix(leasePrefix)
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
-            ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorSecond = new ChangeFeedProcessorBuilder()
                 .hostName(ownerSecond)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
@@ -321,7 +322,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessorFirst.start().subscribeOn(Schedulers.elastic())
@@ -425,7 +426,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
-            changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
@@ -435,7 +436,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxItemCount(10)
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
                 .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
