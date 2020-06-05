@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
  */
 public class RecordingRedactor {
     private static final String ACCESS_TOKEN = "accessToken";
-    private static final String REDACTED_UTF_8 =  Base64.getEncoder().encodeToString("REDACTED".getBytes(StandardCharsets.UTF_8));
+    private static final String REDACTED = "REDACTED";
+    private static final String REDACTED_UTF_8 = Base64.getEncoder().encodeToString("REDACTED".getBytes(StandardCharsets.UTF_8));
     private static final String USER_DELEGATION_KEY = "UserDelegationKey";
 
     private static final Pattern ACCESS_TOKEN_KEY_PATTERN = Pattern.compile("(?:\"accessToken\":\")(.*?)(?:\",|\"})");
@@ -50,7 +51,7 @@ public class RecordingRedactor {
     }
 
     private String redactAccessToken(String content) {
-        content = redactionReplacement(content, ACCESS_TOKEN_KEY_PATTERN.matcher(content), REDACTED_UTF_8);
+        content = redactionReplacement(content, ACCESS_TOKEN_KEY_PATTERN.matcher(content), REDACTED);
         return content;
     }
 

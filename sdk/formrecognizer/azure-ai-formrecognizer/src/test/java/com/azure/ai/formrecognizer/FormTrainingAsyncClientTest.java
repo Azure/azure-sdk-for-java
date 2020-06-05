@@ -8,11 +8,10 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
-import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
@@ -25,7 +24,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.List;
 
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
@@ -302,7 +300,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies HttpResponseException is thrown for invalid region input to copy operation.
+     * Verifies {@link FormRecognizerException} is thrown for invalid region input to copy operation.
      */
     @SuppressWarnings("unchecked")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -317,12 +315,12 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             beginCopyIncorrectRegionRunner((resourceId, resourceRegion) -> {
                 Mono<CopyAuthorization> target = client.getCopyAuthorization(resourceId, resourceRegion);
-                HttpResponseException thrown = assertThrows(HttpResponseException.class,
+                FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target.block())
                         .getSyncPoller().getFinalResult());
-                List<ErrorInformation> errorInformationList = (List<ErrorInformation>) thrown.getValue();
-                assertEquals(RESOURCE_RESOLVER_ERROR, errorInformationList.get(0).getCode());
-                assertEquals(COPY_OPERATION_FAILED_STATUS_MESSAGE, thrown.getMessage());
+                ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
+                assertEquals(RESOURCE_RESOLVER_ERROR, errorInformation.getCode());
+                assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
             });
         });
     }
