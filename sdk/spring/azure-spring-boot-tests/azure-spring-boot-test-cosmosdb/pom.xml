@@ -5,7 +5,7 @@
   <parent>
     <artifactId>azure-spring-boot-tests</artifactId>
     <groupId>com.microsoft.azure</groupId>
-    <version>2.2.5-beta.1</version>
+    <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-tests;current} -->
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -16,15 +16,17 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-      <version>2.2.5-beta.1</version>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot-test-core</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-test-core;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

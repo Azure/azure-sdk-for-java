@@ -5,7 +5,7 @@
   <parent>
     <artifactId>azure-spring-boot-tests</artifactId>
     <groupId>com.microsoft.azure</groupId>
-    <version>2.2.5-beta.1</version>
+    <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-tests;current} -->
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -16,14 +16,17 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot-test-core</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-test-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -34,35 +37,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>enforce-environment-variable-is-set</id>-->
-<!--            <goals>-->
-<!--              <goal>enforce</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <rules>-->
-<!--                <requireEnvironmentVariable>-->
-<!--                  <variableName>AZURE_TENANT</variableName>-->
-<!--                  <message>Set the AZURE_TENANT environment variable to your Azure Tenant ID</message>-->
-<!--                </requireEnvironmentVariable>-->
-<!--                <requireEnvironmentVariable>-->
-<!--                  <variableName>AZURE_SUBSCRIPTION</variableName>-->
-<!--                  <message>Set the AZURE_SUBSCRIPTION environment variable to your Azure Subscription ID</message>-->
-<!--                </requireEnvironmentVariable>-->
-<!--                <requireEnvironmentVariable>-->
-<!--                  <variableName>AZURE_CLIENT_ID</variableName>-->
-<!--                  <message>Set the AZURE_CLIENT_ID environment variable to your Application (Client) ID</message>-->
-<!--                </requireEnvironmentVariable>-->
-<!--                <requireEnvironmentVariable>-->
-<!--                  <variableName>AZURE_CLIENT_SECRET</variableName>-->
-<!--                  <message>Set the AZURE_CLIENT_SECRET environment variable to your Application (Client) Secret</message>-->
-<!--                </requireEnvironmentVariable>-->
-<!--              </rules>-->
-<!--              <fail>true</fail>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
         <configuration>
           <rules>
             <bannedDependencies>
