@@ -100,13 +100,13 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
     private ArrayDeque<TokenCredential> getCredentialsChain() {
         ArrayDeque<TokenCredential> output = new ArrayDeque<>(6);
-            output.add(new EnvironmentCredential(identityClientOptions));
-            output.add(new ManagedIdentityCredential(null, identityClientOptions));
-            output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
-                null, identityClientOptions));
-            output.add(new IntelliJCredential(tenantId, identityClientOptions));
-            output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));
-            output.add(new AzureCliCredential(identityClientOptions));
+        output.add(new EnvironmentCredential(identityClientOptions));
+        output.add(new ManagedIdentityCredential(null, identityClientOptions));
+        output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
+            null, identityClientOptions));
+        output.add(new IntelliJCredential(tenantId, identityClientOptions));
+        output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));
+        output.add(new AzureCliCredential(identityClientOptions));
         return output;
     }
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity;
 
 /**
@@ -15,7 +18,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @param tenantId the tenant ID to set.
      * @return An updated instance of this builder with the tenant id set as specified.
      */
-    public VisualStudioCodeCredentialBuilder tenantId(String tenantId) {
+    public IntelliJCredentialBuilder tenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
