@@ -32,12 +32,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.sql.DatabaseUpdate;
-import com.azure.resourcemanager.sql.ExportRequest;
-import com.azure.resourcemanager.sql.ImportExtensionRequest;
-import com.azure.resourcemanager.sql.ImportRequest;
-import com.azure.resourcemanager.sql.ReplicaType;
-import com.azure.resourcemanager.sql.ResourceMoveDefinition;
+import com.azure.resourcemanager.sql.models.DatabaseUpdate;
+import com.azure.resourcemanager.sql.models.ExportRequest;
+import com.azure.resourcemanager.sql.models.ImportExtensionRequest;
+import com.azure.resourcemanager.sql.models.ImportRequest;
+import com.azure.resourcemanager.sql.models.ReplicaType;
+import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;

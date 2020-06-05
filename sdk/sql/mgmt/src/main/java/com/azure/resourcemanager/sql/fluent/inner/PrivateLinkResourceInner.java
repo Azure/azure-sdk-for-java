@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.fluent.inner;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.PrivateLinkResourceProperties;
+import com.azure.resourcemanager.sql.models.PrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

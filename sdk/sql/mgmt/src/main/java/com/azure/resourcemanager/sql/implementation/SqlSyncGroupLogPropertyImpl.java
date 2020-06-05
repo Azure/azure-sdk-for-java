@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.SqlSyncGroupLogProperty;
-import com.azure.resourcemanager.sql.SyncGroupLogType;
+import com.azure.resourcemanager.sql.models.SqlSyncGroupLogProperty;
+import com.azure.resourcemanager.sql.models.SyncGroupLogType;
 import com.azure.resourcemanager.sql.fluent.inner.SyncGroupLogPropertiesInner;
 import java.time.OffsetDateTime;
 

@@ -87,7 +87,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.sql.SqlServers;
+import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.sql.implementation.SqlServerManager;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.BlobServices;

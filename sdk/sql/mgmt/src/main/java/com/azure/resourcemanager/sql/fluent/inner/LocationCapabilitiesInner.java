@@ -6,9 +6,9 @@ package com.azure.resourcemanager.sql.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.CapabilityStatus;
-import com.azure.resourcemanager.sql.ManagedInstanceVersionCapability;
-import com.azure.resourcemanager.sql.ServerVersionCapability;
+import com.azure.resourcemanager.sql.models.CapabilityStatus;
+import com.azure.resourcemanager.sql.models.ManagedInstanceVersionCapability;
+import com.azure.resourcemanager.sql.models.ServerVersionCapability;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.sql.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.OperationDisplay;
-import com.azure.resourcemanager.sql.OperationOrigin;
+import com.azure.resourcemanager.sql.models.OperationDisplay;
+import com.azure.resourcemanager.sql.models.OperationOrigin;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;

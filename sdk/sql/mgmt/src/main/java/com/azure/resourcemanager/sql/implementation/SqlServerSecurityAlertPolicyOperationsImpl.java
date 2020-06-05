@@ -4,9 +4,9 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicy;
-import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicyOperations;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicy;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicyOperations;
 import com.azure.resourcemanager.sql.fluent.inner.ServerSecurityAlertPolicyInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;

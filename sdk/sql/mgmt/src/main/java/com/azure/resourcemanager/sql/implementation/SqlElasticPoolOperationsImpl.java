@@ -4,9 +4,9 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.sql.SqlElasticPool;
-import com.azure.resourcemanager.sql.SqlElasticPoolOperations;
-import com.azure.resourcemanager.sql.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlElasticPool;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
+import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
 import java.util.ArrayList;
 import java.util.Collections;

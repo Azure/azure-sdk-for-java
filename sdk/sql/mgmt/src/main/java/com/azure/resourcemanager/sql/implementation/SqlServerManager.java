@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.sql.SqlServers;
+import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.sql.fluent.SqlManagementClientBuilder;
 import com.azure.resourcemanager.sql.fluent.SqlManagementClientImpl;
 import com.azure.resourcemanager.storage.StorageManager;

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.sql.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.CheckNameAvailabilityReason;
+import com.azure.resourcemanager.sql.models.CheckNameAvailabilityReason;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -5,8 +5,8 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.RestorePoint;
-import com.azure.resourcemanager.sql.RestorePointType;
+import com.azure.resourcemanager.sql.models.RestorePoint;
+import com.azure.resourcemanager.sql.models.RestorePointType;
 import com.azure.resourcemanager.sql.fluent.inner.RestorePointInner;
 import java.time.OffsetDateTime;
 

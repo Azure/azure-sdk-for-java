@@ -6,9 +6,9 @@ package com.azure.resourcemanager.sql.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.MetricName;
-import com.azure.resourcemanager.sql.MetricValue;
-import com.azure.resourcemanager.sql.UnitType;
+import com.azure.resourcemanager.sql.models.MetricName;
+import com.azure.resourcemanager.sql.models.MetricValue;
+import com.azure.resourcemanager.sql.models.UnitType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;

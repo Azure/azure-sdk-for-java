@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRule;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRuleOperations;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
 import com.azure.resourcemanager.sql.fluent.inner.VirtualNetworkRuleInner;
 import java.util.ArrayList;
 import java.util.Collections;

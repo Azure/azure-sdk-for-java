@@ -12,14 +12,14 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.sql.DatabaseEdition;
-import com.azure.resourcemanager.sql.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.ElasticPoolDatabaseActivity;
-import com.azure.resourcemanager.sql.ElasticPoolEdition;
-import com.azure.resourcemanager.sql.ServiceObjectiveName;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlElasticPool;
-import com.azure.resourcemanager.sql.SqlServer;
+import com.azure.resourcemanager.sql.models.DatabaseEdition;
+import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
+import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
+import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlElasticPool;
+import com.azure.resourcemanager.sql.models.SqlServer;
 
 /**
  * Azure SQL sample for managing SQL Database -

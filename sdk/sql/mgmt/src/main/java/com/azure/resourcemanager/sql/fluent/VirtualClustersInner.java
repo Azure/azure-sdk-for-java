@@ -33,7 +33,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.sql.VirtualClusterUpdate;
+import com.azure.resourcemanager.sql.models.VirtualClusterUpdate;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.sql.fluent.inner.VirtualClusterInner;

@@ -28,7 +28,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.sql.DatabaseState;
+import com.azure.resourcemanager.sql.models.DatabaseState;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceLongTermRetentionBackupInner;

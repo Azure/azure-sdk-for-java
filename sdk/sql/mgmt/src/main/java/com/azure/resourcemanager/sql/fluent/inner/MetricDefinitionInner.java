@@ -6,10 +6,10 @@ package com.azure.resourcemanager.sql.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.MetricAvailability;
-import com.azure.resourcemanager.sql.MetricName;
-import com.azure.resourcemanager.sql.PrimaryAggregationType;
-import com.azure.resourcemanager.sql.UnitDefinitionType;
+import com.azure.resourcemanager.sql.models.MetricAvailability;
+import com.azure.resourcemanager.sql.models.MetricName;
+import com.azure.resourcemanager.sql.models.PrimaryAggregationType;
+import com.azure.resourcemanager.sql.models.UnitDefinitionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

@@ -4,11 +4,11 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.SecurityAlertPolicyEmailAccountAdmins;
-import com.azure.resourcemanager.sql.SecurityAlertPolicyState;
-import com.azure.resourcemanager.sql.SecurityAlertPolicyUseServerDefault;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlDatabaseThreatDetectionPolicy;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyEmailAccountAdmins;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyUseServerDefault;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
 import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;

@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.sql.AutomaticTuningOptionModeDesired;
-import com.azure.resourcemanager.sql.AutomaticTuningServerMode;
-import com.azure.resourcemanager.sql.AutomaticTuningServerOptions;
-import com.azure.resourcemanager.sql.SqlServerAutomaticTuning;
+import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
+import com.azure.resourcemanager.sql.models.AutomaticTuningServerMode;
+import com.azure.resourcemanager.sql.models.AutomaticTuningServerOptions;
+import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
 import com.azure.resourcemanager.sql.fluent.inner.ServerAutomaticTuningInner;
 import java.util.Collections;
 import java.util.HashMap;

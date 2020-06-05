@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.sql.CreateDatabaseRestorePointDefinition;
+import com.azure.resourcemanager.sql.models.CreateDatabaseRestorePointDefinition;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.sql.fluent.inner.RestorePointInner;
