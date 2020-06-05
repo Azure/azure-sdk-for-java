@@ -134,7 +134,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             ))
             .setAnalyzers(Collections.singletonList(
                 new CustomAnalyzer()
-                    .setTokenizer(LexicalTokenizerName.STANDARD)
+                    .setTokenizerName(LexicalTokenizerName.STANDARD)
                     .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(customLexicalAnalyzerName.toString())
             ))
@@ -204,18 +204,14 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        AnalyzeTextOptions request = new AnalyzeTextOptions()
-            .setText("One two")
-            .setAnalyzer(LexicalAnalyzerName.WHITESPACE);
+        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalAnalyzerName.WHITESPACE);
         PagedIterable<AnalyzedTokenInfo> results = searchIndexClient.analyzeText(index.getName(), request);
         Iterator<AnalyzedTokenInfo> iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
         assertFalse(iterator.hasNext());
 
-        request = new AnalyzeTextOptions()
-            .setText("One's <two/>")
-            .setTokenizer(LexicalTokenizerName.WHITESPACE)
+        request = new AnalyzeTextOptions("One's <two/>", LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
             .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
         results = searchIndexClient.analyzeText(index.getName(), request);
@@ -239,21 +235,15 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
         LexicalAnalyzerName.values()
             .stream()
-            .map(an -> new AnalyzeTextOptions()
-                .setText("One two")
-                .setAnalyzer(an))
+            .map(an -> new AnalyzeTextOptions("One two", an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         LexicalTokenizerName.values()
             .stream()
-            .map(tn -> new AnalyzeTextOptions()
-                .setText("One two")
-                .setTokenizer(tn))
+            .map(tn -> new AnalyzeTextOptions("One two", tn))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
-        AnalyzeTextOptions request = new AnalyzeTextOptions()
-            .setText("One two")
-            .setTokenizer(LexicalTokenizerName.WHITESPACE)
+        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
             .setCharFilters(new ArrayList<>(CharFilterName.values()));
         searchIndexClient.analyzeText(index.getName(), request);
@@ -653,7 +643,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
         if (expectedAnalyzers != null && actualAnalyzers != null) {
             Comparator<LexicalAnalyzer> customAnalyzerComparator = Comparator
-                .comparing((LexicalAnalyzer a) -> ((CustomAnalyzer) a).getTokenizer().toString());
+                .comparing((LexicalAnalyzer a) -> ((CustomAnalyzer) a).getTokenizerName().toString());
 
             expectedAnalyzers.sort(customAnalyzerComparator);
             actualAnalyzers.sort(customAnalyzerComparator);
@@ -822,7 +812,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     SearchIndex prepareIndexWithAllAnalysisComponentNames() {
         LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer()
-                .setTokenizer(LexicalTokenizerName.LOWERCASE)
+                .setTokenizerName(LexicalTokenizerName.LOWERCASE)
                 .setTokenFilters(TokenFilterName.values()
                     .stream()
                     .sorted(Comparator.comparing(TokenFilterName::toString))
@@ -840,7 +830,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .stream()
             .sorted(Comparator.comparing(LexicalTokenizerName::toString))
             .map(tn -> new CustomAnalyzer()
-                .setTokenizer(tn)
+                .setTokenizerName(tn)
                 .setName(generateName()))
             .collect(Collectors.toList()));
 
@@ -911,12 +901,12 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         return createTestIndex()
             .setAnalyzers(Arrays.asList(
                 new CustomAnalyzer()
-                    .setTokenizer(customTokenizerName)
+                    .setTokenizerName(customTokenizerName)
                     .setTokenFilters(Collections.singletonList(customTokenFilterName))
                     .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(generateName()),
                 new CustomAnalyzer()
-                    .setTokenizer(LexicalTokenizerName.EDGE_NGRAM)
+                    .setTokenizerName(LexicalTokenizerName.EDGE_NGRAM)
                     .setName(generateName()),
                 new PatternAnalyzer()
                     .setLowerCaseTerms(false)
