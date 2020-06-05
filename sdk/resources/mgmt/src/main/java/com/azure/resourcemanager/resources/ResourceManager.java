@@ -56,6 +56,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * Creates an instance of ResourceManager that exposes resource management API entry points.
      *
      * @param credential the credential to use
+     * @param profile the profile used in resource management
      * @return the ResourceManager instance
      */
     public static ResourceManager.Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
@@ -149,10 +150,10 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * The implementation for Authenticated interface.
      */
     private static final class AuthenticatedImpl implements Authenticated {
-        private HttpPipeline httpPipeline;
+        private final HttpPipeline httpPipeline;
         private AzureProfile profile;
         private SdkContext sdkContext;
-        private SubscriptionClient subscriptionClient;
+        private final SubscriptionClient subscriptionClient;
         // The subscription less collections
         private Subscriptions subscriptions;
         private Tenants tenants;
@@ -161,7 +162,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
             this.httpPipeline = httpPipeline;
             this.profile = profile;
             this.sdkContext = new SdkContext();
-            this.subscriptionClient = (new SubscriptionClientBuilder())
+            this.subscriptionClient = new SubscriptionClientBuilder()
                     .pipeline(httpPipeline)
                     .endpoint(profile.environment().getResourceManagerEndpoint())
                     .buildClient();

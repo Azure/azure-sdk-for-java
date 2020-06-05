@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
-import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
 
