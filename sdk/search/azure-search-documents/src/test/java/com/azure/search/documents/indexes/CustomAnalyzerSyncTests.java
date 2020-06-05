@@ -134,7 +134,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             ))
             .setAnalyzers(Collections.singletonList(
                 new CustomAnalyzer()
-                    .setTokenizerName(LexicalTokenizerName.STANDARD)
+                    .setTokenizer(LexicalTokenizerName.STANDARD)
                     .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(customLexicalAnalyzerName.toString())
             ))
@@ -643,7 +643,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
         if (expectedAnalyzers != null && actualAnalyzers != null) {
             Comparator<LexicalAnalyzer> customAnalyzerComparator = Comparator
-                .comparing((LexicalAnalyzer a) -> ((CustomAnalyzer) a).getTokenizerName().toString());
+                .comparing((LexicalAnalyzer a) -> ((CustomAnalyzer) a).getTokenizer().toString());
 
             expectedAnalyzers.sort(customAnalyzerComparator);
             actualAnalyzers.sort(customAnalyzerComparator);
@@ -812,7 +812,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     SearchIndex prepareIndexWithAllAnalysisComponentNames() {
         LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer()
-                .setTokenizerName(LexicalTokenizerName.LOWERCASE)
+                .setTokenizer(LexicalTokenizerName.LOWERCASE)
                 .setTokenFilters(TokenFilterName.values()
                     .stream()
                     .sorted(Comparator.comparing(TokenFilterName::toString))
@@ -830,7 +830,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .stream()
             .sorted(Comparator.comparing(LexicalTokenizerName::toString))
             .map(tn -> new CustomAnalyzer()
-                .setTokenizerName(tn)
+                .setTokenizer(tn)
                 .setName(generateName()))
             .collect(Collectors.toList()));
 
@@ -901,12 +901,12 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         return createTestIndex()
             .setAnalyzers(Arrays.asList(
                 new CustomAnalyzer()
-                    .setTokenizerName(customTokenizerName)
+                    .setTokenizer(customTokenizerName)
                     .setTokenFilters(Collections.singletonList(customTokenFilterName))
                     .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(generateName()),
                 new CustomAnalyzer()
-                    .setTokenizerName(LexicalTokenizerName.EDGE_NGRAM)
+                    .setTokenizer(LexicalTokenizerName.EDGE_NGRAM)
                     .setName(generateName()),
                 new PatternAnalyzer()
                     .setLowerCaseTerms(false)

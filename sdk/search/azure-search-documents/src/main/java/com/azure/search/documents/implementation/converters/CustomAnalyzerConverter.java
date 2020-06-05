@@ -42,7 +42,7 @@ public final class CustomAnalyzerConverter {
 
         if (obj.getTokenizer() != null) {
             LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
-            customAnalyzer.setTokenizerName(tokenizer);
+            customAnalyzer.setTokenizer(tokenizer);
         }
         return customAnalyzer;
     }
@@ -73,9 +73,9 @@ public final class CustomAnalyzerConverter {
             customAnalyzer.setTokenFilters(tokenFilters);
         }
 
-        if (obj.getTokenizerName() != null) {
+        if (obj.getTokenizer() != null) {
             com.azure.search.documents.indexes.implementation.models.LexicalTokenizerName tokenizer =
-                LexicalTokenizerNameConverter.map(obj.getTokenizerName());
+                LexicalTokenizerNameConverter.map(obj.getTokenizer());
             customAnalyzer.setTokenizer(tokenizer);
         }
         return customAnalyzer;
