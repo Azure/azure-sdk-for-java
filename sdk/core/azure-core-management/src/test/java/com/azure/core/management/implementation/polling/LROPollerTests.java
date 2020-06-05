@@ -344,6 +344,8 @@ public class LROPollerTests {
                         .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
+                    System.out.println(String.format("[%s] PUT status %s",
+                        OffsetDateTime.now().toString(), "IN_PROGRESS"));
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(serverConfigure.additionalHeaders)
                         .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
@@ -352,11 +354,15 @@ public class LROPollerTests {
                 if (request.getMethod().isOneOf(RequestMethod.GET)) {
                     getCallCount[0]++;
                     if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
+                        System.out.println(String.format("[%s] GET status %s",
+                            OffsetDateTime.now().toString(), "IN_PROGRESS"));
                         return new com.github.tomakehurst.wiremock.http.Response.Builder()
                             .headers(serverConfigure.additionalHeaders)
                             .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
                             .build();
                     } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
+                        System.out.println(String.format("[%s] GET status %s",
+                            OffsetDateTime.now().toString(), "SUCCEEDED"));
                         return new com.github.tomakehurst.wiremock.http.Response.Builder()
                             .body(toJson(new FooWithProvisioningState("SUCCEEDED", UUID.randomUUID().toString())))
                             .build();
@@ -421,14 +427,6 @@ public class LROPollerTests {
     private static String toJson(Object object) {
         try {
             return SERIALIZER.serialize(object, SerializerEncoding.JSON);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
-    }
-
-    private static <T> T fromJson(String json, Type type) {
-        try {
-            return SERIALIZER.deserialize(json, type, SerializerEncoding.JSON);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
