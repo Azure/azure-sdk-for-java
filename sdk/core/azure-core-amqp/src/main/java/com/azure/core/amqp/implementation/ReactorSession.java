@@ -314,15 +314,15 @@ public class ReactorSession implements AmqpSession {
                     // We have to invoke this in the same thread or else proton-j will not properly link up the created
                     // sender because the link names are not unique. Link name == entity path.
                     provider.getReactorDispatcher().invoke(() -> {
-                        LinkSubscription<AmqpSendLink> linkLinkSubscription = getCoordinator(TRANSACTION_LINK_NAME,
+                        LinkSubscription<AmqpSendLink> linkSubscription = getCoordinator(TRANSACTION_LINK_NAME,
                             timeout, retry);
 
-                        if (coordinatorLink.compareAndSet(null, linkLinkSubscription)) {
+                        if (coordinatorLink.compareAndSet(null, linkSubscription)) {
                             logger.info("linkName[{}]: coordinator send link created.", TRANSACTION_LINK_NAME);
                         } else {
                             logger.info("linkName[{}]: Another coordinator send link exists. Disposing of new one.",
                                 TRANSACTION_LINK_NAME);
-                            linkLinkSubscription.dispose();
+                            linkSubscription.dispose();
                         }
 
                         sink.success(coordinatorLink.get().getLink());
