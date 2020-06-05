@@ -347,6 +347,15 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
+    protected static Stream<Arguments> messagingEntityProviderWithTransaction() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true),
+            Arguments.of(MessagingEntityType.QUEUE, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false)
+        );
+    }
+
     protected static Stream<Arguments> messagingEntityWithSessionsWithTxn() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, false, true),

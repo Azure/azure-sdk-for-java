@@ -96,7 +96,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create transaction.
      */
     @Test
-    void createTansactionTest() {
+    void createTransactionTest() {
         // Arrange
         setSenderAndReceiver(MessagingEntityType.QUEUE, false);
 
@@ -109,7 +109,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create multiple transaction using sender and receiver.
      */
     @Test
-    void createMultipleTansactionTest() {
+    void createMultipleTransactionTest() {
         // Arrange
         setSenderAndReceiver(MessagingEntityType.QUEUE, false);
 
@@ -124,89 +124,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(sender.createTransaction())
             .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that we can create transaction and scheduleMessage.
-     */
-    @MethodSource("messagingEntityWithSessionsWithTxn")
-    @ParameterizedTest
-    void createTansactionAndScheduleMessagesTest(MessagingEntityType entityType, boolean isSessionEnabled,
-        boolean commitTxn) {
-
-        // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(sender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
-            .assertNext(sequenceNumber -> {
-                assertNotNull(sequenceNumber);
-                assertTrue(sequenceNumber.intValue() > 0);
-            })
-            .verifyComplete();
-
-        if (commitTxn) {
-            StepVerifier.create(sender.commitTransaction(transaction.get()))
-                .verifyComplete();
-            StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiveAndDeleteReceiver.receive().next()))
-                .assertNext(receivedMessage -> {
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                    messagesPending.decrementAndGet();
-                })
-                .verifyComplete();
-
-        } else {
-            StepVerifier.create(sender.rollbackTransaction(transaction.get()))
-                .verifyComplete();
-
-            StepVerifier.create(receiveAndDeleteReceiver.receive())
-                .verifyTimeout(Duration.ofSeconds(10));
-        }
-    }
-
-    /**
-     * Verifies that we can create transaction and complete.
-     */
-    @Test
-    void createTansactionAndCommitMessagesTest() throws InterruptedException {
-        // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        sendMessage(message).block(TIMEOUT);
-
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(receiver.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-
-        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
-        assertNotNull(receivedContext);
-
-        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
-        assertNotNull(receivedMessage);
-
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
-            .verifyComplete();
-
-        StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
             .verifyComplete();
     }
 
@@ -215,7 +132,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    void createTansactionAndRollbackMessagesTest(MessagingEntityType entityType) {
+    void createTransactionAndRollbackMessagesTest(MessagingEntityType entityType) {
         // Arrange
         Duration timeout = Duration.ofSeconds(60);
         boolean isSessionEnabled = false;
@@ -282,7 +199,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    void transactionCommitMessagesAndRollbackWithLockTokenTest(MessagingEntityType entityType) {
+    void transactionWithLockTokenTest(MessagingEntityType entityType) {
 
         // Arrange
         boolean isSessionEnabled = false;
@@ -343,7 +260,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("messagingEntityTxnWithSessions")
     @ParameterizedTest
     void transactionSendReceiveAndSettle(MessagingEntityType entityType, boolean isSessionEnabled,
-         boolean commitTxn, DispositionStatus dispositionStatus) {
+         boolean commitTransaction, DispositionStatus dispositionStatus) {
 
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled, true);
@@ -352,7 +269,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
         final String messageId2 = "2";
         final ServiceBusMessage message2 = getMessage(messageId2, isSessionEnabled);
+        final String deadLetterReason = "testing";
         sendMessage(message1).block(TIMEOUT);
+
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -379,10 +298,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } else if (DispositionStatus.ABANDONED == dispositionStatus && !isSessionEnabled) {
             operation = receiver.abandon(receivedMessage, null, transaction.get());
         } else if (DispositionStatus.SUSPENDED == dispositionStatus && isSessionEnabled) {
-            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
+            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
             operation = receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction.get());
         } else if (DispositionStatus.SUSPENDED == dispositionStatus && !isSessionEnabled) {
-            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
+            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
             operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
         } else if (DispositionStatus.COMPLETED == dispositionStatus && isSessionEnabled) {
             operation = receiver.complete(receivedMessage, sessionId, transaction.get());
@@ -400,27 +319,25 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(operation)
             .verifyComplete();
 
-        if (commitTxn) {
-            StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+        if (commitTransaction) {
+            StepVerifier.create(receiver.commitTransaction(transaction.get()))
                 .verifyComplete();
         } else {
-            StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+            StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
                 .verifyComplete();
         }
-
     }
 
     /**
      * Verifies that we can do following on different clients i.e. sender and receiver.
      * 1. create transaction using sender
      * 2. receive and complete with transactionContext.
-     * 3. Rollback this transaction using sender.
+     * 3. Commit this transaction using sender.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void transactionReceiveCompleteRollbackMixClient(MessagingEntityType entityType) {
+    void transactionReceiveCompleteCommitMixClient(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, isSessionEnabled, true);
 
         final String messageId = UUID.randomUUID().toString();
@@ -448,78 +365,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
-        StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+        StepVerifier.create(sender.commitTransaction(transaction.get()))
             .verifyComplete();
-
-    }
-
-    /**
-     * Verifies that we can do following
-     * 1. create transaction
-     * 2. send message  with transactionContext
-     * 3. commit this transaction.
-     */
-    @Test
-    void transactionMessageSendAndCommit() {
-        // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(sender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-        assertNotNull(transaction.get());
-
-        // Assert & Act
-        StepVerifier.create(sender.send(message, transaction.get()))
-            .verifyComplete();
-
-        StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-            .verifyComplete();
-
-        messagesPending.incrementAndGet();
-    }
-
-    /**
-     * Verifies that we can do following
-     * 1. create transaction
-     * 2. send message  with transactionContext
-     * 3. Rollback this transaction.
-     */
-    @MethodSource("messagingEntityProvider")
-    @ParameterizedTest
-    void transactionMessageSendAndRollback(MessagingEntityType entityType) {
-        // Arrange
-        boolean isSessionEnabled = false;
-        setSenderAndReceiver(entityType, isSessionEnabled);
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(sender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-        assertNotNull(transaction.get());
-
-        // Assert & Act
-        StepVerifier.create(sender.send(message, transaction.get()))
-            .verifyComplete();
-
-        StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-            .verifyComplete();
-
     }
 
     /**
@@ -1097,7 +944,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
         Duration autoLockRenewal, boolean shareConnection) {
-        this.isSessionEnabled = isSessionEnabled;
         this.sender = getSenderBuilder(false, entityType, isSessionEnabled, shareConnection).buildAsyncClient();
 
         if (isSessionEnabled) {
