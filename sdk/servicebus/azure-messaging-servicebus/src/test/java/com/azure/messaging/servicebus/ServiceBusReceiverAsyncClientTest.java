@@ -302,7 +302,7 @@ class ServiceBusReceiverAsyncClientTest {
     @EnumSource(DispositionStatus.class)
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
-        ServiceBusTransactionContext nullTransaction = new ServiceBusTransactionContext(null);
+        ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
         when(managementNode.updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(), isNull(),
             isNull(), isNull(), isNull()))
@@ -312,16 +312,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, nullTransaction);
+                operation = receiver.defer(receivedMessage, null, nullTransactionId);
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, nullTransaction);
+                operation = receiver.abandon(receivedMessage, null, nullTransactionId);
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, nullTransaction);
+                operation = receiver.complete(receivedMessage, nullTransactionId);
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransaction);
+                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransactionId);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -332,28 +332,6 @@ class ServiceBusReceiverAsyncClientTest {
             .verify();
 
         verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
-            isNull(), isNull(), isNull(), isNull());
-    }
-
-
-    /**
-     * Verifies that we error if we try to defer a message with null transaction id.
-     */
-    @Test
-    void deferWithNullTransactionId() {
-        // Arrange
-        ServiceBusTransactionContext nullTransaction = new ServiceBusTransactionContext(null);
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
-        when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull(),
-            isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-        when(receivedMessage.getLockToken()).thenReturn("mylockToken");
-
-        StepVerifier.create(receiver.defer(receivedMessage, null, nullTransaction))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        verify(managementNode, never()).updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(),
             isNull(), isNull(), isNull(), isNull());
     }
 

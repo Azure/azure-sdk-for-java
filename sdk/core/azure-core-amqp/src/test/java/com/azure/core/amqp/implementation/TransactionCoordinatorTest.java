@@ -14,7 +14,6 @@ import static org.mockito.Mockito.verify;
 import com.azure.core.amqp.AmqpTransaction;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.stream.Stream;
 
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -25,8 +24,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -47,8 +46,8 @@ public class TransactionCoordinatorTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @MethodSource("commitParams")
     @ParameterizedTest
+    @ValueSource(booleans = {true, false})
     public void testCompleteTransactionRejected(boolean isCommit) {
         final Rejected outcome = new Rejected();
 
@@ -111,12 +110,5 @@ public class TransactionCoordinatorTest {
         Assertions.assertNotNull(actual);
         Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());
         verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
-    }
-
-    protected static Stream<Arguments> commitParams() {
-        return Stream.of(
-            Arguments.of(true),
-            Arguments.of(false)
-        );
     }
 }

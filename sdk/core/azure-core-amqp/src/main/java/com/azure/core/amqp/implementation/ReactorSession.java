@@ -66,11 +66,10 @@ public class ReactorSession implements AmqpSession {
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
-    private final AtomicReference<LinkSubscription<AmqpSendLink>> coordinator = new AtomicReference<>();
-    private final Object coordinatorLock = new Object();
+    private final AtomicReference<LinkSubscription<AmqpSendLink>> coordinatorLink = new AtomicReference<>();
 
     private AmqpRetryPolicy retryPolicy;
-    private TransactionCoordinator transactionCoordinator;
+    private AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -280,21 +279,22 @@ public class ReactorSession implements AmqpSession {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
         }
-
-        if (transactionCoordinator != null) {
+        TransactionCoordinator existing = transactionCoordinator.get();
+        if (existing != null) {
             logger.verbose("Coordinator[{}]: Returning existing transaction coordinator.", TRANSACTION_LINK_NAME);
-            return Mono.just(transactionCoordinator);
+            return Mono.just(existing);
         }
 
-        synchronized (coordinatorLock) {
-            return createCoordinatorSendLink(openTimeout, retryPolicy)
-                .handle((amqpLink, sink) -> {
+        return createCoordinatorSendLink(openTimeout, retryPolicy)
+            .map(sendLink -> {
+                TransactionCoordinator newCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
+                if (transactionCoordinator.compareAndSet(null, newCoordinator)) {
                     logger.info("Coordinator[{}]: Creating transaction coordinator.", TRANSACTION_LINK_NAME);
-                    transactionCoordinator = new TransactionCoordinator(amqpLink,
-                        messageSerializer);
-                    sink.next(transactionCoordinator);
-                });
-        }
+                } else {
+                    logger.info("linkName[{}]: Another transaction coordinator exists.", TRANSACTION_LINK_NAME);
+                }
+                return transactionCoordinator.get();
+            });
     }
 
     private Mono<AmqpSendLink> createCoordinatorSendLink(Duration timeout, AmqpRetryPolicy retry) {
@@ -303,7 +303,7 @@ public class ReactorSession implements AmqpSession {
                 "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
         }
 
-        final LinkSubscription<AmqpSendLink> existing = coordinator.get();
+        final LinkSubscription<AmqpSendLink> existing = coordinatorLink.get();
         if (existing != null) {
             logger.verbose("linkName[{}]: Returning existing coordinator send link.", TRANSACTION_LINK_NAME);
             return Mono.just(existing.getLink());
@@ -320,7 +320,7 @@ public class ReactorSession implements AmqpSession {
                         LinkSubscription<AmqpSendLink> linkLinkSubscription = getCoordinator(TRANSACTION_LINK_NAME,
                             timeout, retry);
 
-                        if (coordinator.compareAndSet(null, linkLinkSubscription)) {
+                        if (coordinatorLink.compareAndSet(null, linkLinkSubscription)) {
                             logger.info("linkName[{}]: coordinator send link created.", TRANSACTION_LINK_NAME);
                         } else {
                             logger.info("linkName[{}]: Another coordinator send link exists. Disposing of new one.",
@@ -328,7 +328,7 @@ public class ReactorSession implements AmqpSession {
                             linkLinkSubscription.dispose();
                         }
 
-                        sink.success(coordinator.get().getLink());
+                        sink.success(coordinatorLink.get().getLink());
                     });
                 } catch (IOException e) {
                     sink.error(e);

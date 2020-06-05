@@ -111,7 +111,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -151,7 +152,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -184,7 +186,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -218,7 +221,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -287,7 +291,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -327,7 +332,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -396,7 +402,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -433,7 +440,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
@@ -762,6 +770,40 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
+     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
+     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
+     * this transaction.
+     *
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     *
+     * @return a new {@link ServiceBusTransactionContext}.
+     */
+    public ServiceBusTransactionContext createTransaction() {
+        return asyncClient.createTransaction().block(operationTimeout);
+    }
+
+    /**
+     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be committed.
+     *
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     */
+    public void commitTransaction(ServiceBusTransactionContext transactionContext) {
+        asyncClient.commitTransaction(transactionContext).block(operationTimeout);
+    }
+
+    /**
+     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be rollbacked.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     */
+    public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
+        asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -797,34 +839,5 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
             emitterProcessor.subscribe(syncSubscriber);
         }
-    }
-
-    /**
-     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
-     * this transaction.
-     *
-     * @return a new {@link ServiceBusTransactionContext}.
-     */
-    public ServiceBusTransactionContext createTransaction() {
-        return asyncClient.createTransaction().block(operationTimeout);
-    }
-
-    /**
-     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     *
-     * @param transactionContext to be committed.
-     */
-    public void commitTransaction(ServiceBusTransactionContext transactionContext) {
-        asyncClient.commitTransaction(transactionContext).block(operationTimeout);
-    }
-
-    /**
-     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     *
-     * @param transactionContext to be rollbacked.
-     */
-    public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
-        asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);
     }
 }

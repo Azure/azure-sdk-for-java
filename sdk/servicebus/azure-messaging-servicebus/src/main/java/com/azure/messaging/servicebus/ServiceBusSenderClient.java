@@ -87,38 +87,6 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time.
-     *
-     * @param message Message to be sent to the Service Bus Queue or Topic.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
-     *
-     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
-     *
-     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
-     */
-    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
-        return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
-    }
-
-    /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time.
-     *
-     * @param message Message to be sent to the Service Bus Queue or Topic.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
-     * @param transactionContext to be set on message before sending to Service Bus.
-     *
-     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
-     *
-     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
-     */
-    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
-        ServiceBusTransactionContext transactionContext) {
-        return asyncClient.scheduleMessage(message, scheduledEnqueueTime, transactionContext).block(tryTimeout);
-    }
-
-    /**
      * Sends a message to a Service Bus queue or topic.
      *
      * @param message Message to be sent to Service Bus queue or topic.
@@ -155,6 +123,38 @@ public class ServiceBusSenderClient implements AutoCloseable {
      */
     public void send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         asyncClient.send(batch, transactionContext).block(tryTimeout);
+    }
+
+    /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param message Message to be sent to the Service Bus Queue or Topic.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+        return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
+    }
+
+    /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param message Message to be sent to the Service Bus Queue or Topic.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param transactionContext to be set on message before sending to Service Bus.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+                                ServiceBusTransactionContext transactionContext) {
+        return asyncClient.scheduleMessage(message, scheduledEnqueueTime, transactionContext).block(tryTimeout);
     }
 
     /**

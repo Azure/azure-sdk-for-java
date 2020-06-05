@@ -75,7 +75,6 @@ class ServiceBusReceiverClientTest {
         when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
-
     }
 
     @AfterEach

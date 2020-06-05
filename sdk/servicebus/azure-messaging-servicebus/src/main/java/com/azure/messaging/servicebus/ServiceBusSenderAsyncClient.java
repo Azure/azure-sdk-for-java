@@ -204,15 +204,39 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return sendIterable(messages, null);
     }
 
-    private Mono<Void> sendIterable(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transaction) {
-        if (Objects.isNull(messages)) {
-            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+    /**
+     * Sends a message batch to the Azure Service Bus entity this sender is connected to.
+     *
+     * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
+     *
+     * @return A {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code batch} is {@code null}.
+     */
+    public Mono<Void> send(ServiceBusMessageBatch batch) {
+        return sendInternal(batch, null);
+    }
+
+    /**
+     * Sends a message batch to the Azure Service Bus entity this sender is connected to.
+     *
+     * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
+     * @param transactionContext to be set on batch message before sending to Service Bus.
+     *
+     * @return A {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code batch}, {@code transactionContext} or
+     * {@code transactionContext.transactionID} is {@code null}.
+     */
+    public Mono<Void> send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(transactionContext)) {
+            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+        }
+        if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return createBatch().flatMap(messageBatch -> {
-            messages.forEach(message -> messageBatch.tryAdd(message));
-            return sendInternal(messageBatch, transaction);
-        });
+        return sendInternal(batch, transactionContext);
     }
 
     /**
@@ -259,30 +283,20 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Sends a message batch to the Azure Service Bus entity this sender is connected to.
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
+     * @param message Message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param transactionContext to be set on message before sending to Service Bus.
      *
-     * @return A {@link Mono} the finishes this operation on service bus resource.
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
-     * @throws NullPointerException if {@code batch} is {@code null}.
-     */
-    public Mono<Void> send(ServiceBusMessageBatch batch) {
-        return sendInternal(batch, null);
-    }
-
-    /**
-     * Sends a message batch to the Azure Service Bus entity this sender is connected to.
-     *
-     * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
-     * @param transactionContext to be set on batch message before sending to Service Bus.
-     *
-     * @return A {@link Mono} the finishes this operation on service bus resource.
-     *
-     * @throws NullPointerException if {@code batch}, {@code transactionContext} or
+     * @throws NullPointerException if {@code message}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      * {@code transactionContext.transactionID} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
         }
@@ -290,7 +304,145 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return sendInternal(batch, transactionContext);
+        return scheduleMessageInternal(message, scheduledEnqueueTime, transactionContext);
+    }
+
+    /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param message Message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+        return scheduleMessageInternal(message, scheduledEnqueueTime, null);
+    }
+
+    /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumber of the scheduled message to cancel.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     *
+     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
+     */
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
+        if (sequenceNumber < 0) {
+            return monoError(logger, new IllegalArgumentException("'sequenceNumber' cannot be negative."));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get()));
+    }
+
+    /**
+     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
+     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
+     * this transaction.
+     *
+     * @return a new {@link ServiceBusTransactionContext}.
+     */
+    public Mono<ServiceBusTransactionContext> createTransaction() {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+            .flatMap(transactionSession -> transactionSession.createTransaction())
+            .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId()));
+    }
+
+    /**
+     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be committed.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     */
+    public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "commitTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+            .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
+                transactionContext.getTransactionId())));
+    }
+
+    /**
+     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     *
+     * @param transactionContext to be rollbacked.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     */
+    public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "rollbackTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+            .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
+                transactionContext.getTransactionId())));
+    }
+
+    /**
+     * Disposes of the {@link ServiceBusSenderAsyncClient}. If the client had a dedicated connection, the underlying
+     * connection is also closed.
+     */
+    @Override
+    public void close() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        onClientClose.run();
+    }
+
+    private Mono<Void> sendIterable(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transaction) {
+        if (Objects.isNull(messages)) {
+            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        return createBatch().flatMap(messageBatch -> {
+            messages.forEach(message -> messageBatch.tryAdd(message));
+            return sendInternal(messageBatch, transaction);
+        });
+    }
+
+    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, Instant scheduledEnqueueTime,
+                                               ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(message)) {
+            return monoError(logger, new NullPointerException("'message' cannot be null."));
+        }
+
+        if (Objects.isNull(scheduledEnqueueTime)) {
+            return monoError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+        }
+
+        return getSendLink()
+            .flatMap(link -> link.getLinkSize().flatMap(size -> {
+                int maxSize =  size > 0
+                    ? size
+                    : MAX_MESSAGE_LENGTH_BYTES;
+
+                return connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
+                        link.getLinkName(), transactionContext));
+            }));
     }
 
     /**
@@ -350,16 +502,17 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
                 }
 
-                TransactionalState deliveryState = null;
                 if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    deliveryState = new TransactionalState();
+                    final TransactionalState deliveryState = new TransactionalState();
                     deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                    return messages.size() == 1
+                        ? link.send(messages.get(0), deliveryState)
+                        : link.send(messages, deliveryState);
+                } else {
+                    return messages.size() == 1
+                        ? link.send(messages.get(0))
+                        : link.send(messages);
                 }
-
-                return messages.size() == 1
-                    ? link.send(messages.get(0), deliveryState)
-                    : link.send(messages, deliveryState);
-
             })
                 .doOnEach(signal -> {
                     if (isTracingEnabled) {
@@ -372,101 +525,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     }
                 }), retryOptions.getTryTimeout(), retryPolicy);
 
-    }
-
-    /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time.
-     *
-     * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
-     * @param transactionContext to be set on message before sending to Service Bus.
-     *
-     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
-     *
-     * @throws NullPointerException if {@code message}, {@code scheduledEnqueueTime}, {@code transactionContext} or
-     * {@code transactionContext.transactionID} is {@code null}.
-     */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
-        ServiceBusTransactionContext transactionContext) {
-        if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
-        }
-        if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
-        }
-
-        return scheduleMessageInternal(message, scheduledEnqueueTime, transactionContext);
-    }
-
-    /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time.
-     *
-     * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
-     *
-     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
-     *
-     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
-     */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
-        return scheduleMessageInternal(message, scheduledEnqueueTime, null);
-    }
-
-    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, Instant scheduledEnqueueTime,
-        ServiceBusTransactionContext transactionContext) {
-        if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
-        }
-
-        if (Objects.isNull(scheduledEnqueueTime)) {
-            return monoError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
-        }
-
-        return getSendLink()
-            .flatMap(link -> link.getLinkSize().flatMap(size -> {
-                int maxSize =  size > 0
-                    ? size
-                    : MAX_MESSAGE_LENGTH_BYTES;
-
-                return connectionProcessor
-                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
-                        link.getLinkName(), transactionContext));
-            }));
-    }
-
-    /**
-     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
-     *
-     * @param sequenceNumber of the scheduled message to cancel.
-     *
-     * @return The {@link Mono} that finishes this operation on service bus resource.
-     *
-     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
-     */
-    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        if (sequenceNumber < 0) {
-            return monoError(logger, new IllegalArgumentException("'sequenceNumber' cannot be negative."));
-        }
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get()));
-    }
-
-    /**
-     * Disposes of the {@link ServiceBusSenderAsyncClient}. If the client had a dedicated connection, the underlying
-     * connection is also closed.
-     */
-    @Override
-    public void close() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        onClientClose.run();
     }
 
     private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
@@ -571,60 +629,5 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         public Set<Characteristics> characteristics() {
             return Collections.emptySet();
         }
-    }
-
-    /**
-     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
-     * this transaction.
-     *
-     * @return a new {@link ServiceBusTransactionContext}.
-     */
-    public Mono<ServiceBusTransactionContext> createTransaction() {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
-        }
-
-        return connectionProcessor
-            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
-            .flatMap(transactionSession -> transactionSession.createTransaction())
-            .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId()));
-    }
-
-    /**
-     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     *
-     * @param transactionContext to be committed.
-     * @return a completable {@link Mono}.
-     */
-    public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "commitTransaction")));
-        }
-
-        return connectionProcessor
-            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
-            .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
-                transactionContext.getTransactionId())));
-    }
-
-    /**
-     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     *
-     * @param transactionContext to be rollbacked.
-     * @return a completable {@link Mono}.
-     */
-    public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "rollbackTransaction")));
-        }
-
-        return connectionProcessor
-            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
-            .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
-                transactionContext.getTransactionId())));
     }
 }

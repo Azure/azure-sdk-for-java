@@ -113,14 +113,17 @@ public final class MessageUtils {
     public static DeliveryState getDeliveryState(DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
+
+        boolean hasTransaction = transactionContext != null && transactionContext.getTransactionId() != null;
+
         final DeliveryState state;
         switch (dispositionStatus) {
             case COMPLETED:
-                if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    tState.setOutcome(Accepted.getInstance());
-                    state = tState;
+                if (hasTransaction) {
+                    TransactionalState transactionalState = new TransactionalState();
+                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                    transactionalState.setOutcome(Accepted.getInstance());
+                    state = transactionalState;
                 } else {
                     state = Accepted.getInstance();
                 }
@@ -141,11 +144,11 @@ public final class MessageUtils {
                 error.setInfo(errorInfo);
                 rejected.setError(error);
 
-                if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    tState.setOutcome(rejected);
-                    state = tState;
+                if (hasTransaction) {
+                    TransactionalState transactionalState = new TransactionalState();
+                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                    transactionalState.setOutcome(rejected);
+                    state = transactionalState;
                 } else {
                     state = rejected;
                 }
@@ -156,11 +159,11 @@ public final class MessageUtils {
                     outcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    tState.setOutcome(outcome);
-                    state = tState;
+                if (hasTransaction) {
+                    TransactionalState transactionalState = new TransactionalState();
+                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                    transactionalState.setOutcome(outcome);
+                    state = transactionalState;
                 } else {
                     state = outcome;
                 }
@@ -172,11 +175,11 @@ public final class MessageUtils {
                     deferredOutcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    TransactionalState tState = new TransactionalState();
-                    tState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    tState.setOutcome(deferredOutcome);
-                    state = tState;
+                if (hasTransaction) {
+                    TransactionalState transactionalState = new TransactionalState();
+                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                    transactionalState.setOutcome(deferredOutcome);
+                    state = transactionalState;
                 } else {
                     state = deferredOutcome;
                 }

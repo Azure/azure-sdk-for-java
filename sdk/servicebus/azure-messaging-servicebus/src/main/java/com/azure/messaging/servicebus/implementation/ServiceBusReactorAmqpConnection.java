@@ -45,6 +45,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
+    private final Object transactionManagerLock = new Object();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
