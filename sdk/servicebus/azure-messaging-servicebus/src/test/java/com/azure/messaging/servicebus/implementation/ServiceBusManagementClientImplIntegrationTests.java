@@ -13,6 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.TestUtils;
@@ -22,6 +23,7 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionResponse;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -58,6 +60,9 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
 
     @Override
     protected void beforeTest() {
+        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK,
+            "Current record/playback does not support persisting XML calls.");
+
         ConnectionStringProperties properties = new ConnectionStringProperties(TestUtils.getConnectionString());
         ServiceBusSharedKeyCredential credential = new ServiceBusSharedKeyCredential(
             properties.getSharedAccessKeyName(), properties.getSharedAccessKey());
