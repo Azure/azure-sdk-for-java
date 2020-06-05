@@ -13,5 +13,5 @@ public enum QueryFeature {
     OffsetAndLimit,
     OrderBy,
     Top,
-    NonValueAggregate,
+    NonValueAggregate
 }

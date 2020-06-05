@@ -83,7 +83,7 @@ public abstract class SingleGroupAggregator {
      * For SELECT VALUE queries there is only one value for each grouping.
      * This class just helps maintain that and captures the first value across all continuations.
      */
-    public static class SelectValueAggregateValues extends SingleGroupAggregator {
+    public static final class SelectValueAggregateValues extends SingleGroupAggregator {
         private final AggregateValue aggregateValue;
 
         public SelectValueAggregateValues(AggregateValue aggregateValue) {
@@ -182,8 +182,6 @@ public abstract class SingleGroupAggregator {
             for (String alias : this.orderedAliases) {
                 AggregateValue aggregateValue = this.aliasToValue.get(alias);
                 if (aggregateValue.getResult() != null) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put(alias,  aggregateValue.getResult());
                     aggregateDocument.set(alias, aggregateValue.getResult());
                 }
             }

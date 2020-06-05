@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-public class DistinctHash {
+public final class DistinctHash {
 
-    private static final UInt128 ArrayHashSeed = new UInt128(0xfa573b014c4dc18eL, 0xa014512c858eb115L);
+    private static final UInt128 ARRAY_HASH_SEED = new UInt128(0xfa573b014c4dc18eL, 0xa014512c858eb115L);
 
     private static final ObjectMapper OBJECT_MAPPER =
         new ObjectMapper()
@@ -47,7 +47,7 @@ public class DistinctHash {
     }
 
     private static UInt128 getHashFromList(List<Object> resource) {
-        UInt128 hash = ArrayHashSeed;
+        UInt128 hash = ARRAY_HASH_SEED;
         for (Object obj : resource) {
             if (obj instanceof JsonSerializable) {
                 byte[] bytes = hash.toByteBuffer().array();

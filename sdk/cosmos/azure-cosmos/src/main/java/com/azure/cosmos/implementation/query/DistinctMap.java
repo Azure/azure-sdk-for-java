@@ -33,10 +33,8 @@ public abstract class DistinctMap {
     String getSortedJsonStringValueFromResource(Resource resource) {
         final Object obj;
         try {
-            obj = OBJECT_MAPPER.treeToValue(resource.getPropertyBag()
-                , Object.class);
-            final String sortedJson = OBJECT_MAPPER.writeValueAsString(obj);
-            return sortedJson;
+            obj = OBJECT_MAPPER.treeToValue(resource.getPropertyBag(), Object.class);
+            return OBJECT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Failed to obtain serialized sorted json");
         }

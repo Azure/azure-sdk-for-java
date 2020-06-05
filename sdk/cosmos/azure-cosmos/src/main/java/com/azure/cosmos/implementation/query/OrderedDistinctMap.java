@@ -31,7 +31,7 @@ public class OrderedDistinctMap extends DistinctMap {
             lastHash = outHash.v;
             return value;
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to add value to distinct map" +e);
+            throw new IllegalStateException("Failed to add value to distinct map", e);
         }
     }
 }

@@ -29,7 +29,7 @@ public class UnorderedDistinctMap extends DistinctMap {
             outHash.v = DistinctHash.getHash(resource);
             return resultSet.add(outHash.v);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to add value to distinct map" + e);
+            throw new IllegalStateException("Failed to add value to distinct map", e);
         }
     }
 }

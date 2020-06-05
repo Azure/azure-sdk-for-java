@@ -398,11 +398,13 @@ public class CosmosAsyncContainer {
             List<T> transformedResults = response.getResults()
                                              .stream()
                                              .map(d -> {
+                                                 Object result;
                                                  if (d.has(Constants.Properties.VALUE)) {
-                                                     return d.get(Constants.Properties.VALUE);
+                                                     result = d.get(Constants.Properties.VALUE);
                                                  } else {
-                                                     return d;
+                                                     result = d;
                                                  }
+                                                 return result;
                                              })
                                              .map(object -> transform(object, classType))
                                              .collect(Collectors.toList());

@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -25,6 +24,7 @@ import java.util.function.Function;
 
 public class AggregateDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T>{
 
+    public static final String PAYLOAD_PROPERTY_NAME = "payload";
     private final boolean isValueAggregateQuery;
     private IDocumentQueryExecutionComponent<T> component;
     private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
@@ -42,10 +42,10 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
         this.isValueAggregateQuery = hasSelectValue;
 
         this.singleGroupAggregator = SingleGroupAggregator.create(aggregateOperators,
-                                                                                   groupByAliasToAggregateType,
-                                                                                   orderedAliases,
-                                                                                   hasSelectValue,
-                                                                                   continuationToken);
+                                                                  groupByAliasToAggregateType,
+                                                                  orderedAliases,
+                                                                  hasSelectValue,
+                                                                  continuationToken);
     }
 
     @SuppressWarnings("unchecked")
@@ -134,11 +134,16 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
             if (document == null) {
                 throw new IllegalArgumentException("document cannot be null");
             }
+
             if (isValueAggregateQuery) {
                 this.payload = new Document(document.getPropertyBag());
             } else {
-                if (document.get("payload") instanceof ObjectNode) {
-                    this.payload = new Document((ObjectNode) document.get("payload"));
+                if (!document.has(PAYLOAD_PROPERTY_NAME)) {
+                    throw new IllegalStateException("Underlying object does not have an 'payload' field.");
+                }
+
+                if (document.get(PAYLOAD_PROPERTY_NAME) instanceof ObjectNode) {
+                    this.payload = new Document((ObjectNode) document.get(PAYLOAD_PROPERTY_NAME));
                 }
             }
         }

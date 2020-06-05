@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.query.ItemComparator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class MinAggregator implements Aggregator {
+    public static final String COUNT_PROPERTY_NAME = "count";
+    public static final String MIN_PROPERTY_NAME = "min";
     private Object value;
 
     public MinAggregator() {
@@ -19,16 +21,16 @@ public class MinAggregator implements Aggregator {
 
         if (item instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode) item;
-            if (objectNode.hasNonNull("count")) {
-                long count = objectNode.get("count").asLong();
+            if (objectNode.hasNonNull(COUNT_PROPERTY_NAME)) {
+                long count = objectNode.get(COUNT_PROPERTY_NAME).asLong();
                 if (count == 0) {
                     // Ignore the value since the continuation / partition had no results that matched the filter
                     // so min/max is undefined.
                     return;
                 }
 
-                if (objectNode.has("min")) {
-                    item = MaxAggregator.getValue(objectNode.get("min"));
+                if (objectNode.has(MIN_PROPERTY_NAME)) {
+                    item = MaxAggregator.getValue(objectNode.get(MIN_PROPERTY_NAME));
                 } else {
                     item = Undefined.value();
                 }

@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class GroupByDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
+public final class GroupByDocumentQueryExecutionContext<T extends Resource> implements
+    IDocumentQueryExecutionComponent<T> {
 
     public static final String CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY = "Continuation token is not supported " +
                                                                                     "for queries with GROUP BY." +
-                                                                                    "Do not use FeedResponse#" +
-                                                                                    "responseContinuation" +
+                                                                                    "Do not use continuation token" +
                                                                                     " or remove the GROUP BY " +
                                                                                     "from the query.";
     private final IDocumentQueryExecutionComponent<T> component;
@@ -48,6 +48,12 @@ public class GroupByDocumentQueryExecutionContext<T extends Resource> implements
         if (continuationToken != null) {
             CosmosException dce = new BadRequestException(CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY);
             return Flux.error(dce);
+        }
+        if (groupByAliasToAggregateType == null) {
+            throw new IllegalArgumentException("groupByAliasToAggregateType should not be null");
+        }
+        if (orderedAliases == null) {
+            throw new IllegalArgumentException("orderedAliases should not be null");
         }
         GroupingTable table = new GroupingTable(groupByAliasToAggregateType, orderedAliases, hasSelectValue);
         // Have to pass non-null continuation token once supported
@@ -110,8 +116,8 @@ public class GroupByDocumentQueryExecutionContext<T extends Resource> implements
      * This class just lets us easily access the "groupByItems" and "payload" property.
      */
     public class RewrittenGroupByProjection extends JsonSerializable {
-        private static final String GroupByItemsPropertyName = "groupByItems";
-        private static final String PayloadPropertyName = "payload";
+        private static final String GROUP_BY_ITEMS_PROPERTY_NAME = "groupByItems";
+        private static final String PAYLOAD_PROPERTY_NAME = "payload";
 
         private List<Document> groupByItems;
 
@@ -128,7 +134,7 @@ public class GroupByDocumentQueryExecutionContext<T extends Resource> implements
          * @return Value for property 'groupByItems'.
          */
         public List<Document> getGroupByItems() {
-            groupByItems = this.getList(GroupByItemsPropertyName, Document.class);
+            groupByItems = this.getList(GROUP_BY_ITEMS_PROPERTY_NAME, Document.class);
             if (groupByItems == null) {
                 throw new IllegalStateException("Underlying object does not have an 'groupByItems' field.");
             }
@@ -141,11 +147,11 @@ public class GroupByDocumentQueryExecutionContext<T extends Resource> implements
          * @return Value for property 'payload'.
          */
         public Document getPayload() {
-            Document document = new Document((ObjectNode) this.get(PayloadPropertyName));
-            if (document == null) {
+            if (!this.has(PAYLOAD_PROPERTY_NAME)) {
                 throw new IllegalStateException("Underlying object does not have an 'payload' field.");
             }
-            return document;
+
+            return new Document((ObjectNode) this.get(PAYLOAD_PROPERTY_NAME));
         }
     }
 }

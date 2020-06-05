@@ -26,7 +26,8 @@ public class UInt128 {
     @Override
     public boolean equals(final Object other) {
         if (other instanceof UInt128) {
-            return this.low == ((UInt128) other).low && this.high == ((UInt128) other).high;
+            final UInt128 uInt128Other = (UInt128) other;
+            return this.low == uInt128Other.low && this.high == uInt128Other.high;
         }
         return false;
     }

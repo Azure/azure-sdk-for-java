@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GroupingTable {
-    private static final List<AggregateOperator> EmptyAggregateOperators = new ArrayList<>();
+    private static final List<AggregateOperator> EMPTY_AGGREGATE_OPERATORS = new ArrayList<>();
 
     private final Map<UInt128, SingleGroupAggregator> table;
     private final Map<String, AggregateOperator> groupByAliasToAggregateType;
@@ -24,6 +24,9 @@ public class GroupingTable {
 
     GroupingTable(Map<String, AggregateOperator> groupByAliasToAggregateType, List<String> orderedAliases,
         boolean hasSelectValue) {
+        if (groupByAliasToAggregateType == null) {
+            throw new IllegalArgumentException("groupByAliasToAggregateType cannot be null");
+        }
         this.table = new HashMap<>();
         this.groupByAliasToAggregateType = groupByAliasToAggregateType;
         this.orderedAliases = orderedAliases;
@@ -35,7 +38,7 @@ public class GroupingTable {
             final UInt128 groupByKeysHash = DistinctHash.getHash(rewrittenGroupByProjection.getGroupByItems());
             SingleGroupAggregator singleGroupAggregator;
             if (!this.table.containsKey(groupByKeysHash)) {
-                singleGroupAggregator = SingleGroupAggregator.create(EmptyAggregateOperators,
+                singleGroupAggregator = SingleGroupAggregator.create(EMPTY_AGGREGATE_OPERATORS,
                                                                      this.groupByAliasToAggregateType,
                                                                      this.orderedAliases,
                                                                      this.hasSelectValue,
