@@ -45,7 +45,7 @@ public final class AnalyzeTextOptions {
      * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "analyzer")
-    private LexicalAnalyzerName analyzerName;
+    private final LexicalAnalyzerName analyzerName;
 
     /*
      * The name of the tokenizer to use to break the given text. If this
@@ -57,7 +57,7 @@ public final class AnalyzeTextOptions {
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer")
-    private LexicalTokenizerName tokenizerName;
+    private final LexicalTokenizerName tokenizerName;
 
     /*
      * An optional list of token filters to use when breaking the given text.
@@ -82,6 +82,7 @@ public final class AnalyzeTextOptions {
     public AnalyzeTextOptions(String text, LexicalAnalyzerName analyzerName) {
         this.text = text;
         this.analyzerName = analyzerName;
+        this.tokenizerName = null;
     }
 
     /**
@@ -93,6 +94,7 @@ public final class AnalyzeTextOptions {
     public AnalyzeTextOptions(String text, LexicalTokenizerName tokenizerName) {
         this.text = text;
         this.tokenizerName = tokenizerName;
+        this.analyzerName = tokenizerName;
     }
 
     /**
