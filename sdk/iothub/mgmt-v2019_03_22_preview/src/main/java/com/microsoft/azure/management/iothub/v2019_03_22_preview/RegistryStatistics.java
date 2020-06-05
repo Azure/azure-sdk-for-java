@@ -10,13 +10,13 @@ package com.microsoft.azure.management.iothub.v2019_03_22_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.RegistryStatisticsInner;
 
 /**
  * Type representing RegistryStatistics.
  */
-public interface RegistryStatistics extends HasInner<RegistryStatisticsInner>, HasManager<IoTHubManager> {
+public interface RegistryStatistics extends HasInner<RegistryStatisticsInner>, HasManager<DevicesManager> {
     /**
      * @return the disabledDeviceCount value.
      */
