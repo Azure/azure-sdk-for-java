@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
-    protected static final Duration TIMEOUT = Duration.ofSeconds(60 * 2);
+    protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
@@ -280,16 +280,7 @@ public abstract class IntegrationTestBase extends TestBase {
         MessagingEntityType entityType,
         Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder;
-
-        if (sharedConnection && sharedBuilder ==  null) {
-            sharedBuilder = getBuilder(useCredentials);
-            builder = sharedBuilder;
-        } else if (sharedConnection && sharedBuilder !=  null) {
-            builder = sharedBuilder;
-        } else {
-            builder = getBuilder(useCredentials);
-        }
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
         builder = onBuilderCreate.apply(builder);
         switch (entityType) {
@@ -310,10 +301,7 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
-        boolean sharedConnection) {
-
+    private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
         ServiceBusClientBuilder builder;
         if (sharedConnection && sharedBuilder ==  null) {
             sharedBuilder = getBuilder(useCredentials);
@@ -323,6 +311,14 @@ public abstract class IntegrationTestBase extends TestBase {
         } else {
             builder = getBuilder(useCredentials);
         }
+        return builder;
+    }
+
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
+        boolean sharedConnection) {
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
         switch (entityType) {
             case QUEUE:
@@ -356,7 +352,7 @@ public abstract class IntegrationTestBase extends TestBase {
         );
     }
 
-    protected static Stream<Arguments> messagingEntityWithSessionsWithTxn() {
+    protected static Stream<Arguments> messagingEntityWithSessionsWithTransaction() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, false, true),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true),
@@ -385,9 +381,9 @@ public abstract class IntegrationTestBase extends TestBase {
         );
     }
 
-    protected static Stream<Arguments> messagingEntityTxnAndDisposition() {
+    protected static Stream<Arguments> messagingEntityTransactionAndDisposition() {
         return Stream.of(
-            // The data corresponds to :entityType, isSessionEnabled, commit, dispositionStatus
+            // The data corresponds to :entityType, commit, dispositionStatus
             Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.SUSPENDED),

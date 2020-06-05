@@ -191,15 +191,15 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can send, receive one message and settle on session enabled entity.
+     * Verifies that we can send, receive one message and settle on non session entity.
      */
-    @MethodSource("messagingEntityTxnAndDisposition")
+    @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
     void transactionMessageAndSettle(MessagingEntityType entityType, boolean commitTransaction,
         DispositionStatus dispositionStatus) {
 
         // Arrange
-        final boolean isSessionEnabled = true;
+        final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, isSessionEnabled);
         int maxMessages = 1;
         final String deadLetterReason = "testing";
@@ -249,9 +249,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can send, receive one message and settle on non session enabled entity.
+     * Verifies that we can send, receive one message and settle on session entity.
      */
-    @MethodSource("messagingEntityTxnAndDisposition")
+    @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
     void transactionMessageAndSettleOnSessionEntity(MessagingEntityType entityType, boolean commitTransaction,
         DispositionStatus dispositionStatus) {
@@ -698,13 +698,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
         setSenderAndReceiver(entityType, isSessionEnabled, null, false);
     }
+
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */

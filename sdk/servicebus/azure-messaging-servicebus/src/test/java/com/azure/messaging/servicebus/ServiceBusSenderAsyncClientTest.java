@@ -381,7 +381,6 @@ class ServiceBusSenderAsyncClientTest {
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
-        //when(sendLink.send(any(Message.class), isNull())).thenReturn(Mono.empty());
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act

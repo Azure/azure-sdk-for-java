@@ -212,7 +212,7 @@ public class ServiceBusSenderClientTest {
 
         when(asyncSender.send(testData, transactionContext)).thenReturn(Mono.empty());
 
-        // Act
+        // Act & Assert
         try {
             sender.send(testData, nullTransaction);
             Assertions.fail("This should have failed with NullPointerException.");

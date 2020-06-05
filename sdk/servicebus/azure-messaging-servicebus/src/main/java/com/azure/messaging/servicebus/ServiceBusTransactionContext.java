@@ -13,12 +13,11 @@ import java.nio.ByteBuffer;
  * A transaction times out after 2 minutes. The transaction timer starts when the first operation in the transaction
  * starts.
  *
- * @see <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-transactions#transactions-in-service-bus">
+ * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transactions-in-service-bus">
  *     Transaction Overciew</a>
  *
- * @see <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-transactions#timeout">
+ * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#timeout">
  *     Transaction Timeout</a>
-
  *
  */
 @Immutable
@@ -30,7 +29,8 @@ public class ServiceBusTransactionContext {
     }
 
     /**
-     * Represents the service-side transactionID
+     * Gets the transaction id.
+     *
      * @return transaction ID
      */
     public ByteBuffer getTransactionId() {

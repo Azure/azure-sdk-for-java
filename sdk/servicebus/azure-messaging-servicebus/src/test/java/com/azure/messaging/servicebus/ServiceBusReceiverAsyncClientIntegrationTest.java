@@ -251,13 +251,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following using shared connection and on session enabled entity.
+     * Verifies that we can do following using shared connection and on non session entity.
      * 1. create transaction
      * 2. send message  with transactionContext
      * 3. receive and settle with transactionContext.
      * 4. commit Rollback this transaction.
      */
-    @MethodSource("messagingEntityTxnAndDisposition")
+    @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
     void transactionSendReceiveAndSettle(MessagingEntityType entityType,
         boolean commitTransaction, DispositionStatus dispositionStatus) {
@@ -326,13 +326,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following using shared connection and on non session entity.
+     * Verifies that we can do following using shared connection and on session enabled entity.
      * 1. create transaction
      * 2. send message  with transactionContext
      * 3. receive and settle with transactionContext.
      * 4. commit Rollback this transaction.
      */
-    @MethodSource("messagingEntityTxnAndDisposition")
+    @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
     void transactionSendReceiveAndSettleOnSessionEntity(MessagingEntityType entityType,
          boolean commitTransaction, DispositionStatus dispositionStatus) {

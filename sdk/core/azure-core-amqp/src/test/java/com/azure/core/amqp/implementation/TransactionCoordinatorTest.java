@@ -102,12 +102,15 @@ public class TransactionCoordinatorTest {
 
         TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(transactionState)).when(sendLink).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        doReturn(Mono.just(transactionState)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        AmqpTransaction actual = transactionCoordinator.createTransaction().block(shortTimeout);
+        StepVerifier.create(transactionCoordinator.createTransaction())
+            .assertNext(actual -> {
+                Assertions.assertNotNull(actual);
+                Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());
+            })
+        .verifyComplete();
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());
-        verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+        verify(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
     }
 }

@@ -208,7 +208,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can create transaction and scheduleMessage.
      */
-    @MethodSource("messagingEntityWithSessionsWithTxn")
+    @MethodSource("messagingEntityWithSessionsWithTransaction")
     @ParameterizedTest
     void createTransactionAndScheduleMessagesTest(MessagingEntityType entityType, boolean isSessionEnabled,
         boolean commitTransaction) {

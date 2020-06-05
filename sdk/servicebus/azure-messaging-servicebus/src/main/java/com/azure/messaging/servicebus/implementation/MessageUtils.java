@@ -30,7 +30,6 @@ import java.util.UUID;
  * Contains helper methods for message conversions, reading status codes, and getting delivery state.
  */
 public final class MessageUtils {
-
     static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
 
@@ -248,7 +247,7 @@ public final class MessageUtils {
         return reorderedBytes;
     }
 
-    private  static TransactionalState getTransactionState(ByteBuffer transactionId, Outcome outcome) {
+    private static TransactionalState getTransactionState(ByteBuffer transactionId, Outcome outcome) {
         TransactionalState transactionalState = new TransactionalState();
         transactionalState.setTxnId(new Binary(transactionId.array()));
         transactionalState.setOutcome(outcome);

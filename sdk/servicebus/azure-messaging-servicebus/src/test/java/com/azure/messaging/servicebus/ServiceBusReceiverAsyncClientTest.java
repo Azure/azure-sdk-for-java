@@ -756,6 +756,7 @@ class ServiceBusReceiverAsyncClientTest {
             .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
             .collect(Collectors.toList());
     }
+
     protected static Stream<Arguments> dispositionStatus() {
         return Stream.of(
             // The data corresponds to :entityType, isSessionEnabled, commit, dispositionStatus
