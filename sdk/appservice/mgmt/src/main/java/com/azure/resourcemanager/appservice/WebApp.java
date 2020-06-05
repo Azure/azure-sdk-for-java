@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

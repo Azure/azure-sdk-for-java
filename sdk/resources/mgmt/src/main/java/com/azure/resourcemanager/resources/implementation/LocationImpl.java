@@ -3,10 +3,10 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.Location;
+import com.azure.resourcemanager.resources.models.Location;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.models.LocationInner;
+import com.azure.resourcemanager.resources.fluent.inner.LocationInner;
 
 /**
  * The implementation of {@link Location}.

@@ -23,7 +23,7 @@ import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsI
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayInner;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;

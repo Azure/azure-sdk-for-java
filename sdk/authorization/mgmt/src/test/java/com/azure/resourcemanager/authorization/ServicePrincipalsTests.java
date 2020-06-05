@@ -3,10 +3,10 @@
 
 package com.azure.resourcemanager.authorization;
 
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;

@@ -3,33 +3,34 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.DebugSetting;
-import com.azure.resourcemanager.resources.Dependency;
-import com.azure.resourcemanager.resources.Deployment;
-import com.azure.resourcemanager.resources.DeploymentExportResult;
-import com.azure.resourcemanager.resources.DeploymentMode;
-import com.azure.resourcemanager.resources.DeploymentOperations;
-import com.azure.resourcemanager.resources.DeploymentProperties;
-import com.azure.resourcemanager.resources.DeploymentPropertiesExtended;
-import com.azure.resourcemanager.resources.DeploymentWhatIf;
-import com.azure.resourcemanager.resources.DeploymentWhatIfProperties;
-import com.azure.resourcemanager.resources.DeploymentWhatIfSettings;
-import com.azure.resourcemanager.resources.OnErrorDeployment;
-import com.azure.resourcemanager.resources.OnErrorDeploymentType;
-import com.azure.resourcemanager.resources.ParametersLink;
-import com.azure.resourcemanager.resources.Provider;
-import com.azure.resourcemanager.resources.ResourceGroup;
-import com.azure.resourcemanager.resources.TemplateLink;
-import com.azure.resourcemanager.resources.WhatIfOperationResult;
-import com.azure.resourcemanager.resources.WhatIfResultFormat;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.models.DebugSetting;
+import com.azure.resourcemanager.resources.models.Dependency;
+import com.azure.resourcemanager.resources.models.Deployment;
+import com.azure.resourcemanager.resources.models.DeploymentExportResult;
+import com.azure.resourcemanager.resources.models.DeploymentMode;
+import com.azure.resourcemanager.resources.models.DeploymentOperations;
+import com.azure.resourcemanager.resources.models.DeploymentProperties;
+import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
+import com.azure.resourcemanager.resources.models.DeploymentWhatIf;
+import com.azure.resourcemanager.resources.models.DeploymentWhatIfProperties;
+import com.azure.resourcemanager.resources.models.DeploymentWhatIfSettings;
+import com.azure.resourcemanager.resources.models.OnErrorDeployment;
+import com.azure.resourcemanager.resources.models.OnErrorDeploymentType;
+import com.azure.resourcemanager.resources.models.ParametersLink;
+import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.TemplateLink;
+import com.azure.resourcemanager.resources.models.WhatIfOperationResult;
+import com.azure.resourcemanager.resources.models.WhatIfResultFormat;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.models.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.models.DeploymentInner;
-import com.azure.resourcemanager.resources.models.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
+import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -162,7 +163,7 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentOperations deploymentOperations() {
-        return new DeploymentOperationsImpl(this.manager().inner().deploymentOperations(), this);
+        return new DeploymentOperationsImpl(this.manager().inner().getDeploymentOperations(), this);
     }
 
     @Override
@@ -172,7 +173,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<Void> cancelAsync() {
-        return this.manager().inner().deployments().cancelAsync(resourceGroupName, name());
+        return this.manager().inner().getDeployments().cancelAsync(resourceGroupName, name());
     }
 
 
@@ -183,7 +184,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<DeploymentExportResult> exportTemplateAsync() {
-        return this.manager().inner().deployments().exportTemplateAsync(resourceGroupName(), name())
+        return this.manager().inner().getDeployments().exportTemplateAsync(resourceGroupName(), name())
             .map(deploymentExportResultInner -> new DeploymentExportResultImpl(deploymentExportResultInner));
     }
 
@@ -300,8 +301,8 @@ public final class DeploymentImpl extends
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }
-        setInner(this.manager().inner().deployments()
-            .beginCreateOrUpdate(resourceGroupName(), name(), createRequestFromInner()));
+        setInner(this.manager().inner().getDeployments()
+            .beginCreateOrUpdateWithoutPolling(resourceGroupName(), name(), createRequestFromInner()));
         return this;
     }
 
@@ -315,14 +316,14 @@ public final class DeploymentImpl extends
                         return Mono.just((Indexable) DeploymentImpl.this);
                     }
                 })
-                .flatMap(indexable -> manager().inner().deployments()
-                    .beginCreateOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner()))
+                .flatMap(indexable -> manager().inner().getDeployments()
+                    .beginCreateOrUpdateWithoutPollingAsync(resourceGroupName(), name(), createRequestFromInner()))
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<Deployment> createResourceAsync() {
-        return this.manager().inner().deployments()
+        return this.manager().inner().getDeployments()
             .createOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner())
             .map(innerToFluentMap(this));
     }
@@ -349,7 +350,7 @@ public final class DeploymentImpl extends
 
     @Override
     protected Mono<DeploymentExtendedInner> getInnerAsync() {
-        return this.manager().inner().deployments().getAtManagementGroupScopeAsync(resourceGroupName(), name());
+        return this.manager().inner().getDeployments().getAtManagementGroupScopeAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -505,7 +506,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAsync() {
-        return this.manager().inner().deployments().whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
+        return this.manager().inner().getDeployments().whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
                 .map(whatIfOperationResultInner -> new WhatIfOperationResultImpl(whatIfOperationResultInner));
     }
 
@@ -517,7 +518,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAtSubscriptionScopeAsync() {
-        return this.manager().inner().deployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
+        return this.manager().inner().getDeployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
                 .map(whatIfOperationResultInner -> new WhatIfOperationResultImpl(whatIfOperationResultInner));
     }
 }

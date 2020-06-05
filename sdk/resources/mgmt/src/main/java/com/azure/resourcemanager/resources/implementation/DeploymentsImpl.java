@@ -5,39 +5,40 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Deployment;
-import com.azure.resourcemanager.resources.Deployments;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.models.Deployment;
+import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.models.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.models.DeploymentsInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The implementation for {@link Deployments}.
  */
-final class DeploymentsImpl
+public final class DeploymentsImpl
         extends SupportsGettingByResourceGroupImpl<Deployment>
         implements Deployments,
         HasManager<ResourceManager> {
 
     private final ResourceManager resourceManager;
 
-    DeploymentsImpl(final ResourceManager resourceManager) {
+    public DeploymentsImpl(final ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
     }
 
     @Override
     public PagedIterable<Deployment> list() {
-        return this.manager().inner().deployments().list()
+        return this.manager().inner().getDeployments().list()
                 .mapPage(inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
     }
 
     @Override
     public PagedIterable<Deployment> listByResourceGroup(String groupName) {
-        return this.manager().inner().deployments()
+        return this.manager().inner().getDeployments()
             .listByResourceGroup(groupName).mapPage(inner -> createFluentModel(inner));
     }
 
@@ -48,13 +49,13 @@ final class DeploymentsImpl
 
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
-        return this.manager().inner().deployments().getAtTenantScopeAsync(name)
+        return this.manager().inner().getDeployments().getAtTenantScopeAsync(name)
             .map(inner -> new DeploymentImpl(inner, inner.name(), this.resourceManager));
     }
 
     @Override
     public Mono<Deployment> getByResourceGroupAsync(String groupName, String name) {
-        return this.manager().inner().deployments()
+        return this.manager().inner().getDeployments()
             .getByResourceGroupAsync(groupName, name).map(deploymentExtendedInner -> {
                 if (deploymentExtendedInner != null) {
                     return createFluentModel(deploymentExtendedInner);
@@ -72,7 +73,7 @@ final class DeploymentsImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
-        return this.manager().inner().deployments().deleteAsync(groupName, name);
+        return this.manager().inner().getDeployments().deleteAsync(groupName, name);
     }
 
     @Override
@@ -126,7 +127,7 @@ final class DeploymentsImpl
 
     @Override
     public PagedFlux<Deployment> listByResourceGroupAsync(String resourceGroupName) {
-        final DeploymentsInner client = this.manager().inner().deployments();
+        final DeploymentsClient client = this.manager().inner().getDeployments();
         return client.listByResourceGroupAsync(resourceGroupName)
             .mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }

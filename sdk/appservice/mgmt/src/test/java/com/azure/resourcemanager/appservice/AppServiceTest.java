@@ -28,7 +28,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;

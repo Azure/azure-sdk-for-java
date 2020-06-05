@@ -10,7 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.Subscription;
+import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;

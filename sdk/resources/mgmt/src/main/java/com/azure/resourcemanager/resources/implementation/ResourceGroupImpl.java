@@ -3,15 +3,15 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.ExportTemplateRequest;
-import com.azure.resourcemanager.resources.ResourceGroup;
-import com.azure.resourcemanager.resources.ResourceGroupExportResult;
-import com.azure.resourcemanager.resources.ResourceGroupExportTemplateOptions;
+import com.azure.resourcemanager.resources.models.ExportTemplateRequest;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroupExportResult;
+import com.azure.resourcemanager.resources.models.ResourceGroupExportTemplateOptions;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.models.ResourceGroupInner;
-import com.azure.resourcemanager.resources.models.ResourceGroupsInner;
-import com.azure.resourcemanager.resources.models.ResourceManagementClientImpl;
+import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
+import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
+import com.azure.resourcemanager.resources.ResourceManagementClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -29,12 +29,12 @@ class ResourceGroupImpl extends
         ResourceGroup.Definition,
         ResourceGroup.Update {
 
-    private final ResourceGroupsInner client;
+    private final ResourceGroupsClient client;
 
     protected ResourceGroupImpl(final ResourceGroupInner innerModel, String name,
-            final ResourceManagementClientImpl serviceClient) {
+            final ResourceManagementClient serviceClient) {
         super(name, innerModel);
-        this.client = serviceClient.resourceGroups();
+        this.client = serviceClient.getResourceGroups();
     }
 
     @Override

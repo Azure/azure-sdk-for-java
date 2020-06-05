@@ -9,7 +9,7 @@ import com.azure.resourcemanager.msi.implementation.MSIManager;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 
 public class NetworkManagementTest extends TestBase {
     protected ResourceManager resourceManager;

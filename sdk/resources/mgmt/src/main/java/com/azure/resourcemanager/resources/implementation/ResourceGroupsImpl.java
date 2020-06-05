@@ -5,33 +5,33 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.ResourceGroup;
-import com.azure.resourcemanager.resources.ResourceGroups;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.resources.models.ResourceGroupInner;
-import com.azure.resourcemanager.resources.models.ResourceGroupsInner;
-import com.azure.resourcemanager.resources.models.ResourceManagementClientImpl;
+import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
+import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
+import com.azure.resourcemanager.resources.ResourceManagementClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The implementation for ResourceGroups.
  */
-final class ResourceGroupsImpl
+public final class ResourceGroupsImpl
         extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
         implements ResourceGroups {
-    private final ResourceGroupsInner client;
-    private final ResourceManagementClientImpl serviceClient;
+    private final ResourceGroupsClient client;
+    private final ResourceManagementClient serviceClient;
 
     /**
      * Creates an instance of the implementation.
      *
      * @param serviceClient the inner resource management client
      */
-    ResourceGroupsImpl(final ResourceManagementClientImpl serviceClient) {
+    public ResourceGroupsImpl(final ResourceManagementClient serviceClient) {
         this.serviceClient = serviceClient;
-        this.client = serviceClient.resourceGroups();
+        this.client = serviceClient.getResourceGroups();
     }
 
     @Override
@@ -101,7 +101,7 @@ final class ResourceGroupsImpl
     @Override
     public Mono<Void> beginDeleteByNameAsync(String name) {
         // DELETE
-        return client.beginDeleteAsync(name);
+        return client.beginDeleteWithoutPollingAsync(name);
     }
 
     @Override

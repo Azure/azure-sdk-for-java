@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.PublicIPSkuType;
 import com.azure.resourcemanager.network.TransportProtocol;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;

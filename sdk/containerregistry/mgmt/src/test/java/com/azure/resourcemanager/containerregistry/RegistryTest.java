@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.containerregistry.implementation.ContainerRegistryManager;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 
 /** The base for storage manager tests. */
 public abstract class RegistryTest extends TestBase {

@@ -5,11 +5,11 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.PolicyAssignment;
-import com.azure.resourcemanager.resources.PolicyAssignments;
-import com.azure.resourcemanager.resources.ResourceGroups;
-import com.azure.resourcemanager.resources.models.PolicyAssignmentInner;
-import com.azure.resourcemanager.resources.models.PolicyAssignmentsInner;
+import com.azure.resourcemanager.resources.models.PolicyAssignment;
+import com.azure.resourcemanager.resources.models.PolicyAssignments;
+import com.azure.resourcemanager.resources.models.ResourceGroups;
+import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
+import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
@@ -17,17 +17,17 @@ import reactor.core.publisher.Mono;
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
-final class PolicyAssignmentsImpl
+public final class PolicyAssignmentsImpl
         extends CreatableWrappersImpl<PolicyAssignment, PolicyAssignmentImpl, PolicyAssignmentInner>
         implements PolicyAssignments {
-    private final PolicyAssignmentsInner client;
+    private final PolicyAssignmentsClient client;
 
     /**
      * Creates an instance of the implementation.
      *
      * @param innerClient the inner policies client
      */
-    PolicyAssignmentsImpl(final PolicyAssignmentsInner innerClient) {
+    public PolicyAssignmentsImpl(final PolicyAssignmentsClient innerClient) {
         this.client = innerClient;
     }
 

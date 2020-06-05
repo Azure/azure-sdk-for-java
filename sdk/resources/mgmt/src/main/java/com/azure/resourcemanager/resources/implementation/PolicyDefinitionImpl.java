@@ -4,10 +4,10 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.PolicyDefinition;
-import com.azure.resourcemanager.resources.PolicyType;
-import com.azure.resourcemanager.resources.models.PolicyDefinitionInner;
-import com.azure.resourcemanager.resources.models.PolicyDefinitionsInner;
+import com.azure.resourcemanager.resources.models.PolicyDefinition;
+import com.azure.resourcemanager.resources.models.PolicyType;
+import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
@@ -23,10 +23,10 @@ final class PolicyDefinitionImpl extends
         PolicyDefinition,
         PolicyDefinition.Definition,
         PolicyDefinition.Update {
-    private final PolicyDefinitionsInner innerCollection;
+    private final PolicyDefinitionsClient innerCollection;
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    PolicyDefinitionImpl(String name, PolicyDefinitionInner innerModel, PolicyDefinitionsInner innerCollection) {
+    PolicyDefinitionImpl(String name, PolicyDefinitionInner innerModel, PolicyDefinitionsClient innerCollection) {
         super(name, innerModel);
         this.innerCollection = innerCollection;
     }

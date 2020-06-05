@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.monitor.implementation.MonitorManager;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** The base for Monitor manager tests. */
