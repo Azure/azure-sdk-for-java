@@ -10,7 +10,7 @@ package com.microsoft.azure.management.iothub.v2018_04_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_04_01.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2018_04_01.implementation.CertificateListDescriptionInner;
 import com.microsoft.azure.management.iothub.v2018_04_01.implementation.CertificateDescriptionInner;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing CertificateListDescription.
  */
-public interface CertificateListDescription extends HasInner<CertificateListDescriptionInner>, HasManager<IoTHubManager> {
+public interface CertificateListDescription extends HasInner<CertificateListDescriptionInner>, HasManager<DevicesManager> {
     /**
      * @return the value value.
      */
