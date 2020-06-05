@@ -48,7 +48,8 @@
 * Removed external dependencies on `fasterxml.uuid, guava, commons-io, commons-collection4, commons-text`.  
 * Moved `CosmosPagedFlux` & `CosmosPagedIterable` to `utils` package. 
 * Updated netty to 4.1.45.Final & project reactor to 3.3.3 version.
-* Updated public rest contracts to `Final` classes. 
+* Updated public rest contracts to `Final` classes.
+* Added support for advanced Diagnostics.
 ### Key Bug Fixes
 * `ChangeFeedProcessor` bug fix for handling partition splits & when partition not found.
 * `ChangeFeedProcessor` bug fix when synchronizing lease updates across different threads.
