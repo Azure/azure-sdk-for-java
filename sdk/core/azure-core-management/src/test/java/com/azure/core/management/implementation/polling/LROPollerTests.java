@@ -103,16 +103,12 @@ public class LROPollerTests {
                 Assertions.assertNotNull(pollResult.getValue());
                 onNextCallCount[0]++;
                 if (onNextCallCount[0] == 1) {
-                    Assertions.assertEquals(response.getStatus(),
-                        LongRunningOperationStatus.IN_PROGRESS);
+                    Assertions.assertEquals(LongRunningOperationStatus.IN_PROGRESS,
+                        response.getStatus());
                     Assertions.assertNull(pollResult.getValue().getResourceId());
                 } else if (onNextCallCount[0] == 2) {
-                    Assertions.assertEquals(response.getStatus(),
-                        LongRunningOperationStatus.IN_PROGRESS);
-                    Assertions.assertNull(pollResult.getValue().getResourceId());
-                } else if (onNextCallCount[0] == 3) {
-                    Assertions.assertEquals(response.getStatus(),
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                    Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        response.getStatus());
                     Assertions.assertNotNull(pollResult.getValue().getResourceId());
                 } else {
                     throw new IllegalStateException("Poller emitted more than expected value.");
