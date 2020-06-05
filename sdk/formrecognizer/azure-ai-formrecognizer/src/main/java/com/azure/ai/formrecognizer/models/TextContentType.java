@@ -5,8 +5,6 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /**
  * Defines values for TextContentType.
  */
@@ -29,12 +27,5 @@ public final class TextContentType extends ExpandableStringEnum<TextContentType>
      */
     public static TextContentType fromString(String value) {
         return fromString(value, TextContentType.class);
-    }
-
-    /**
-     * @return known {@link TextContentType} values.
-     */
-    public static Collection<TextContentType> values() {
-        return values(TextContentType.class);
     }
 }

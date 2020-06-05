@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -42,7 +42,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String filterId = createdStoredProcs.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 5;
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
                                                                                             .queryStoredProcedures(query, options);
@@ -68,7 +68,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     public void query_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
                                                                                             .queryStoredProcedures(query, options);
@@ -85,7 +85,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     public void queryAll() throws Exception {
 
         String query = "SELECT * from root";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 3;
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
@@ -108,7 +108,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
                                                                                             .queryStoredProcedures(query, options);

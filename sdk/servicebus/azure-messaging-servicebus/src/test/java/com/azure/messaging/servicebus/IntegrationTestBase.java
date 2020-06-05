@@ -53,14 +53,6 @@ public abstract class IntegrationTestBase extends TestBase {
     protected final ClientLogger logger;
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
-    private static final String AZURE_SERVICEBUS_CONNECTION_STRING = "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING";
-
-    private static final String AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME";
-    private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
-    private static final String AZURE_SERVICEBUS_SESSION_QUEUE_NAME = "AZURE_SERVICEBUS_SESSION_QUEUE_NAME";
-    private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
-    private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
-    private static final String AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME";
 
     private ConnectionStringProperties properties;
     private String testName;
@@ -124,31 +116,31 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     public String getConnectionString() {
-        return System.getenv(AZURE_SERVICEBUS_CONNECTION_STRING);
+        return TestUtils.getConnectionString();
     }
 
     public String getFullyQualifiedDomainName() {
-        return System.getenv(AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME);
+        return TestUtils.getFullyQualifiedDomainName();
     }
 
     public String getQueueName() {
-        return System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+        return TestUtils.getQueueName();
     }
 
     public String getSessionQueueName() {
-        return System.getenv(AZURE_SERVICEBUS_SESSION_QUEUE_NAME);
+        return TestUtils.getSessionQueueName();
     }
 
     public String getSessionSubscriptionName() {
-        return System.getenv(AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME);
+        return TestUtils.getSessionSubscriptionName();
     }
 
     public String getTopicName() {
-        return System.getenv(AZURE_SERVICEBUS_TOPIC_NAME);
+        return TestUtils.getTopicName();
     }
 
     public String getSubscriptionName() {
-        return System.getenv(AZURE_SERVICEBUS_SUBSCRIPTION_NAME);
+        return TestUtils.getSubscriptionName();
     }
 
     /**
@@ -214,10 +206,10 @@ public abstract class IntegrationTestBase extends TestBase {
             .scheduler(scheduler);
 
         if (useCredentials) {
-            final String fqdn = getFullyQualifiedDomainName();
+            final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
 
-            assumeTrue(fqdn != null && !fqdn.isEmpty(),
-                AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
+            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(System.getenv("AZURE_CLIENT_ID"))
@@ -225,7 +217,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 .tenantId(System.getenv("AZURE_TENANT_ID"))
                 .build();
 
-            return builder.credential(fqdn, clientSecretCredential);
+            return builder.credential(fullyQualifiedDomainName, clientSecretCredential);
         } else {
             return builder.connectionString(getConnectionString());
         }

@@ -12,7 +12,7 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Offer;
@@ -66,7 +66,7 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void readFeedPages() throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
             .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
@@ -111,7 +111,7 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void readFeedItems() throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
             .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
@@ -154,7 +154,7 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void queryPages() throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
@@ -199,7 +199,7 @@ public class BackPressureTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void queryItems() throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
@@ -275,7 +275,7 @@ public class BackPressureTest extends TestSuiteBase {
 
     private void warmUp() {
         // ensure collection is cached
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).byPage().blockFirst();
     }

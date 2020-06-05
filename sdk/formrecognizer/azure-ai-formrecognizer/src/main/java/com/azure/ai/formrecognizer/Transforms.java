@@ -12,7 +12,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
-import com.azure.ai.formrecognizer.models.DimensionUnit;
+import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.FieldText;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContent;
@@ -370,7 +370,7 @@ final class Transforms {
         return new FormPage(
             readResultItem.getHeight(),
             readResultItem.getAngle(),
-            DimensionUnit.fromString(readResultItem.getUnit().toString()),
+            LengthUnit.fromString(readResultItem.getUnit().toString()),
             readResultItem.getWidth(),
             perPageLineList,
             perPageTableList,
