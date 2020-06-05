@@ -293,19 +293,6 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
-        ServiceBusClientBuilder builder;
-        if (sharedConnection && sharedBuilder ==  null) {
-            sharedBuilder = getBuilder(useCredentials);
-            builder = sharedBuilder;
-        } else if (sharedConnection && sharedBuilder !=  null) {
-            builder = sharedBuilder;
-        } else {
-            builder = getBuilder(useCredentials);
-        }
-        return builder;
-    }
-
     protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
         MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
         boolean sharedConnection) {
@@ -456,5 +443,18 @@ public abstract class IntegrationTestBase extends TestBase {
         if (isSessionEnabled) {
             assertEquals(sessionId, message.getSessionId());
         }
+    }
+
+    private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
+        ServiceBusClientBuilder builder;
+        if (sharedConnection && sharedBuilder ==  null) {
+            sharedBuilder = getBuilder(useCredentials);
+            builder = sharedBuilder;
+        } else if (sharedConnection && sharedBuilder !=  null) {
+            builder = sharedBuilder;
+        } else {
+            builder = getBuilder(useCredentials);
+        }
+        return builder;
     }
 }
