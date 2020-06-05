@@ -54,7 +54,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Windows: File -&gt; Settings -&gt; Appearance &amp; Behavior -&gt; System Settings -&gt; Passwords. </p>
      *
      * @param databasePath the path to the KeePass database.
-     * @throws IllegalArgumentException if {@code databasePath is either not specified or is empty}
+     * @throws IllegalArgumentException if {@code databasePath} is either not specified or is empty.
      * @return An updated instance of this builder with the KeePass database path set as specified.
      */
     public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
