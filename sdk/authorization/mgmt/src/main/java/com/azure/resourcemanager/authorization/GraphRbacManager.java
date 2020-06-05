@@ -26,8 +26,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Graph RBAC management. */
 public final class GraphRbacManager implements HasInner<GraphRbacManagementClient> {
-    private String tenantId;
-    private SdkContext sdkContext;
+    private final String tenantId;
+    private final SdkContext sdkContext;
     // The sdk clients
     private final GraphRbacManagementClient graphRbacManagementClient;
     private final AuthorizationManagementClient authorizationManagementClient;

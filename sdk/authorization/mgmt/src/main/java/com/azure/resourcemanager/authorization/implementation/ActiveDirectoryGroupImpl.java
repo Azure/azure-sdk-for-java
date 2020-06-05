@@ -141,7 +141,8 @@ class ActiveDirectoryGroupImpl
     public ActiveDirectoryGroupImpl withMember(String objectId) {
         membersToAdd
             .add(
-                String.format("%s%s/directoryObjects/%s", manager().inner().getEndpoint(), manager().tenantId(), objectId));
+                String.format(
+                    "%s%s/directoryObjects/%s", manager().inner().getEndpoint(), manager().tenantId(), objectId));
         return this;
     }
 

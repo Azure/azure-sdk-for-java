@@ -17,7 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of ServicePrincipals and its parent interfaces. */
-public class ServicePrincipalsImpl extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
+public class ServicePrincipalsImpl
+    extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
     implements ServicePrincipals, HasManager<GraphRbacManager>, HasInner<ServicePrincipalsClient> {
     private ServicePrincipalsClient innerCollection;
     private GraphRbacManager manager;

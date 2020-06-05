@@ -16,7 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
-public class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
+public class ActiveDirectoryUsersImpl
+    extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
     implements ActiveDirectoryUsers, HasInner<UsersClient> {
     private final GraphRbacManager manager;
 
