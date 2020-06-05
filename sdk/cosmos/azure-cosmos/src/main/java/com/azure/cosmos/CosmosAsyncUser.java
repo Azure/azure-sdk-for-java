@@ -9,7 +9,7 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -144,7 +144,7 @@ public class CosmosAsyncUser {
      * error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions() {
-        return readAllPermissions(new QueryRequestOptions());
+        return readAllPermissions(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -158,7 +158,7 @@ public class CosmosAsyncUser {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
      * error.
      */
-    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(QueryRequestOptions options) {
+    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
@@ -181,7 +181,7 @@ public class CosmosAsyncUser {
      * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
-        return queryPermissions(query, new QueryRequestOptions());
+        return queryPermissions(query, new CosmosQueryRequestOptions());
     }
 
     /**
@@ -196,7 +196,7 @@ public class CosmosAsyncUser {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or
      * an error.
      */
-    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, QueryRequestOptions options) {
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()

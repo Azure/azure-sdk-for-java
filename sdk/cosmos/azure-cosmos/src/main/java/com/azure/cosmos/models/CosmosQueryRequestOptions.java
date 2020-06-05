@@ -9,7 +9,7 @@ import java.util.Map;
  * Specifies the options associated with query methods (enumeration operations)
  * in the Azure Cosmos DB database service.
  */
-public final class QueryRequestOptions {
+public final class CosmosQueryRequestOptions {
     private String sessionToken;
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
@@ -27,7 +27,7 @@ public final class QueryRequestOptions {
     /**
      * Instantiates a new query request options.
      */
-    public QueryRequestOptions() {
+    public CosmosQueryRequestOptions() {
     }
 
     /**
@@ -35,7 +35,7 @@ public final class QueryRequestOptions {
      *
      * @param options the options
      */
-    QueryRequestOptions(QueryRequestOptions options) {
+    CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
         this.scanInQueryEnabled = options.scanInQueryEnabled;
@@ -63,9 +63,9 @@ public final class QueryRequestOptions {
      * Sets the partitionKeyRangeId.
      *
      * @param partitionKeyRangeId the partitionKeyRangeId.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    QueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
+    CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
         return this;
     }
@@ -83,9 +83,9 @@ public final class QueryRequestOptions {
      * Sets the session token for use with session consistency.
      *
      * @param sessionToken the session token.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    public QueryRequestOptions setSessionToken(String sessionToken) {
+    public CosmosQueryRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;
     }
@@ -105,9 +105,9 @@ public final class QueryRequestOptions {
      * indexing was opted out on the requested paths.
      *
      * @param scanInQueryEnabled the option of enable scan in query.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    public QueryRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
+    public CosmosQueryRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
         this.scanInQueryEnabled = scanInQueryEnabled;
         return this;
     }
@@ -127,9 +127,9 @@ public final class QueryRequestOptions {
      * investigation.
      *
      * @param emitVerboseTracesInQuery the emit verbose traces in query.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    QueryRequestOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
+    CosmosQueryRequestOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
         this.emitVerboseTracesInQuery = emitVerboseTracesInQuery;
         return this;
     }
@@ -150,9 +150,9 @@ public final class QueryRequestOptions {
      * query execution.
      *
      * @param maxDegreeOfParallelism number of concurrent operations.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    public QueryRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
+    public CosmosQueryRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
@@ -173,9 +173,9 @@ public final class QueryRequestOptions {
      * parallel query execution.
      *
      * @param maxBufferedItemCount maximum number of items.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    public QueryRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
+    public CosmosQueryRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
         return this;
     }
@@ -198,9 +198,9 @@ public final class QueryRequestOptions {
      * size.
      *
      * @param limitInKb continuation token size limit.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    public QueryRequestOptions getResponseContinuationTokenLimitInKb(int limitInKb) {
+    public CosmosQueryRequestOptions getResponseContinuationTokenLimitInKb(int limitInKb) {
         this.responseContinuationTokenLimitInKb = limitInKb;
         return this;
     }
@@ -234,9 +234,9 @@ public final class QueryRequestOptions {
      * operation.
      *
      * @param maxItemCount the max number of items.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    QueryRequestOptions setMaxItemCount(Integer maxItemCount) {
+    CosmosQueryRequestOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -254,9 +254,9 @@ public final class QueryRequestOptions {
      * Sets the request continuation token.
      *
      * @param requestContinuation the request continuation.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    QueryRequestOptions setRequestContinuation(String requestContinuation) {
+    CosmosQueryRequestOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }
@@ -276,9 +276,9 @@ public final class QueryRequestOptions {
      * partition.
      *
      * @param partitionkey the partition key value.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    public QueryRequestOptions setPartitionKey(PartitionKey partitionkey) {
+    public CosmosQueryRequestOptions setPartitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
         return this;
     }
@@ -296,9 +296,9 @@ public final class QueryRequestOptions {
      * Sets the option to enable/disable getting metrics relating to query execution on item query requests
      *
      * @param queryMetricsEnabled whether to enable or disable query metrics
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    public QueryRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
+    public CosmosQueryRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
         this.queryMetricsEnabled = queryMetricsEnabled;
         return this;
     }
@@ -316,9 +316,9 @@ public final class QueryRequestOptions {
      * Sets the properties used to identify the request token.
      *
      * @param properties the properties.
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    QueryRequestOptions setProperties(Map<String, Object> properties) {
+    CosmosQueryRequestOptions setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -335,9 +335,9 @@ public final class QueryRequestOptions {
     /**
      * Sets the option to allow empty result pages in feed response. Defaults to false
      * @param emptyPagesAllowed whether to allow empty pages in feed response
-     * @return the QueryRequestOptions.
+     * @return the CosmosQueryRequestOptions.
      */
-    QueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
+    CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
         return this;
     }
