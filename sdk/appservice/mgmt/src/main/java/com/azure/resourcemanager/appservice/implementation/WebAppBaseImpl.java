@@ -49,7 +49,7 @@ import com.azure.resourcemanager.appservice.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.SiteSourceControlInner;
 import com.azure.resourcemanager.appservice.models.SlotConfigNamesResourceInner;
 import com.azure.resourcemanager.appservice.models.StringDictionaryInner;
-import com.azure.resourcemanager.authorization.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;

@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
-import com.azure.resourcemanager.authorization.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.Identity;
 import com.azure.resourcemanager.network.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.LoadBalancer;
