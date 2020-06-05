@@ -94,7 +94,14 @@ public class ServerAutomaticTuningInner extends ProxyResource {
      */
     public void validate() {
         if (options() != null) {
-            options().values().forEach(e -> e.validate());
+            options()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

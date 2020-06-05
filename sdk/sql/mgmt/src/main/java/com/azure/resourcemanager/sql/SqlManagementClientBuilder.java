@@ -12,8 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the SqlManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {SqlManagementClientImpl.class})
+/** A builder for creating a new instance of the SqlManagementClient type. */
+@ServiceClientBuilder(serviceClients = {SqlManagementClient.class})
 public final class SqlManagementClientBuilder {
     /*
      * The subscription ID that identifies an Azure subscription.
@@ -34,16 +34,16 @@ public final class SqlManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the SqlManagementClientBuilder.
      */
-    public SqlManagementClientBuilder host(String host) {
-        this.host = host;
+    public SqlManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -80,13 +80,13 @@ public final class SqlManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of SqlManagementClientImpl with the provided parameters.
+     * Builds an instance of SqlManagementClient with the provided parameters.
      *
-     * @return an instance of SqlManagementClientImpl.
+     * @return an instance of SqlManagementClient.
      */
-    public SqlManagementClientImpl buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
+    public SqlManagementClient buildClient() {
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -97,9 +97,7 @@ public final class SqlManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        SqlManagementClientImpl client = new SqlManagementClientImpl(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
+        SqlManagementClient client = new SqlManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

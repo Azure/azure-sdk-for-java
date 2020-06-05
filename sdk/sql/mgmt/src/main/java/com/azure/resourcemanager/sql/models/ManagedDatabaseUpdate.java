@@ -77,6 +77,8 @@ public class ManagedDatabaseUpdate {
      * StorageContainerSasToken must be specified. Recovery: Creates a database
      * by restoring a geo-replicated backup. RecoverableDatabaseId must be
      * specified as the recoverable database resource ID to restore.
+     * RestoreLongTermRetentionBackup: Create a database by restoring from a
+     * long term retention backup (longTermRetentionBackupResourceId required).
      */
     @JsonProperty(value = "properties.createMode")
     private ManagedDatabaseCreateMode createMode;
@@ -257,7 +259,8 @@ public class ManagedDatabaseUpdate {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @return the createMode value.
      */
@@ -271,7 +274,8 @@ public class ManagedDatabaseUpdate {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseUpdate object itself.

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
+import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
@@ -23,7 +23,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * Type of the sever administrator.
      */
     @JsonProperty(value = "properties.administratorType")
-    private ManagedInstanceAdministratorType administratorType;
+    private AdministratorType administratorType;
 
     /*
      * Login name of the server administrator.
@@ -54,7 +54,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      *
      * @return the administratorType value.
      */
-    public ManagedInstanceAdministratorType administratorType() {
+    public AdministratorType administratorType() {
         return this.administratorType;
     }
 
@@ -64,7 +64,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @param administratorType the administratorType value to set.
      * @return the ServerAzureADAdministratorInner object itself.
      */
-    public ServerAzureADAdministratorInner withAdministratorType(ManagedInstanceAdministratorType administratorType) {
+    public ServerAzureADAdministratorInner withAdministratorType(AdministratorType administratorType) {
         this.administratorType = administratorType;
         return this;
     }
