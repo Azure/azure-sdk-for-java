@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  *    changes that the change feed processor reads.
  * <p>
  * {@code
- * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
+ * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
  *     .hostName(hostName)
  *     .feedContainer(feedContainer)
  *     .leaseContainer(leaseContainer)
@@ -80,7 +80,7 @@ public interface ChangeFeedProcessor {
      * Helper static method to build a {@link ChangeFeedProcessor} instance.
      * <p>
      * {@code
-     * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
+     * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
      *     .hostName(hostName)
      *     .feedContainer(feedContainer)
      *     .leaseContainer(leaseContainer)
