@@ -94,7 +94,7 @@ public final class AnalyzeTextOptions {
     public AnalyzeTextOptions(String text, LexicalTokenizerName tokenizerName) {
         this.text = text;
         this.tokenizerName = tokenizerName;
-        this.analyzerName = tokenizerName;
+        this.analyzerName = null;
     }
 
     /**
