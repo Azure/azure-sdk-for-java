@@ -13,6 +13,7 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
@@ -94,7 +95,7 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, false, null);
+        return beginRecognizeCustomFormsFromUrl(formUrl, modelId);
     }
 
     /**
@@ -120,15 +121,15 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, boolean includeTextDetails,
-        Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
+        beginRecognizeCustomFormsFromUrl(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
+        final String modelId = recognizeCustomFormsOptions.getModelId();
         return new PollerFlux<OperationResult, List<RecognizedForm>>(
-            interval,
-            analyzeFormActivationOperation(formUrl, modelId, includeTextDetails),
+            recognizeCustomFormsOptions.getPollInterval(),
+            analyzeFormActivationOperation(recognizeCustomFormsOptions.getFormUrl(), modelId
+                , recognizeCustomFormsOptions.isIncludeTextContent()),
             createAnalyzeFormPollOperation(modelId),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeFormResultOperation(modelId, includeTextDetails));
+            fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeTextContent()));
     }
 
     /**
@@ -156,8 +157,8 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType) {
-        return beginRecognizeCustomForms(form, modelId, length, formContentType, false, null);
+        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length) {
+        return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId).setIncludeTextContent(false));
     }
 
     /**
@@ -188,15 +189,16 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType,
-        boolean includeTextDetails, Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
+        beginRecognizeCustomForms(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
+        final String modelId = recognizeCustomFormsOptions.getModelId();
         return new PollerFlux<OperationResult, List<RecognizedForm>>(
-            interval,
-            analyzeFormStreamActivationOperation(form, modelId, length, formContentType, includeTextDetails),
+            recognizeCustomFormsOptions.getPollInterval(),
+            analyzeFormStreamActivationOperation(recognizeCustomFormsOptions.getFormData(), modelId,
+                recognizeCustomFormsOptions.getLength(), recognizeCustomFormsOptions.getContentType(),
+                recognizeCustomFormsOptions.isIncludeTextContent()),
             createAnalyzeFormPollOperation(modelId),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeFormResultOperation(modelId, includeTextDetails));
+            fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeTextContent()));
     }
 
     /**
