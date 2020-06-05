@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -416,7 +416,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         assertThat(capturedResponse, hasSize(1));
 
         // Assert document is deleted
-        QueryRequestOptions queryOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
         List<Document> listOfDocuments = client
                 .queryDocuments(getCollectionLink(), String.format("SELECT * FROM r where r.id = '%s'", createdDocument.getId()), queryOptions)
                 .map(FeedResponse::getResults) // Map page to its list of documents

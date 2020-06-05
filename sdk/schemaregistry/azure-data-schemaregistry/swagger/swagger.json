@@ -42,8 +42,7 @@
               "description": "schema ID referencing specific schema in registry namespace",
               "required": true,
               "schema": {
-                "type": "string",
-                "format": "uuid"
+                "type": "string"
               }
             }
           ],
@@ -502,8 +501,7 @@
             },
             "X-Schema-Id": {
               "schema": {
-                "type": "string",
-                "format": "uuid"
+                "type": "string"
               },
               "description": "unique schema identifier"
             },
@@ -544,8 +542,7 @@
             },
             "X-Schema-Id": {
               "schema": {
-                "type": "string",
-                "format": "uuid"
+                "type": "string"
               },
               "description": "unique schema identifier"
             },

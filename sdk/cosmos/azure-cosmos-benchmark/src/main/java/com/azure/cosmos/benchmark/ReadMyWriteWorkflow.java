@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
@@ -242,7 +242,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @return Observable document
      */
     private Flux<Document> xPartitionQuery(SqlQuerySpec query) {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
 
         return client.<Document>queryDocuments(getCollectionLink(), query, options)
@@ -257,7 +257,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @return Observable document
      */
     private Flux<Document> singlePartitionQuery(Document d) {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey(d.get(partitionKey)));
 
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(String.format("Select top 100 * from c where c.%s = '%s'",

@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -35,7 +35,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = FEED_TIMEOUT)
     public void readPartitionKeyRanges() throws Exception {
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
 
         Flux<FeedResponse<PartitionKeyRange>> feedObservable = client.readPartitionKeyRanges(getCollectionLink(), options);
