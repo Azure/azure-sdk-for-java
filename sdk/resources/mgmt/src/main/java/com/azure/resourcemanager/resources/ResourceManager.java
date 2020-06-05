@@ -163,20 +163,20 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
             this.sdkContext = new SdkContext();
             this.subscriptionClient = (new SubscriptionClientBuilder())
                     .pipeline(httpPipeline)
-                    .host(profile.environment().getResourceManagerEndpoint())
+                    .endpoint(profile.environment().getResourceManagerEndpoint())
                     .buildClient();
         }
 
         public Subscriptions subscriptions() {
             if (subscriptions == null) {
-                subscriptions = new SubscriptionsImpl(subscriptionClient.subscriptions());
+                subscriptions = new SubscriptionsImpl(subscriptionClient.getSubscriptions());
             }
             return subscriptions;
         }
 
         public Tenants tenants() {
             if (tenants == null) {
-                tenants = new TenantsImpl(subscriptionClient.tenants());
+                tenants = new TenantsImpl(subscriptionClient.getTenants());
             }
             return tenants;
         }
@@ -209,13 +209,13 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         super.withResourceManager(this);
         this.resourceManagementClient = new ResourceManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient();
 
         this.featureClient = new FeatureClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient();
 
@@ -227,7 +227,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
 
         this.policyClient = new PolicyClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient();
     }
@@ -267,7 +267,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public Features features() {
         if (features == null) {
-            features = new FeaturesImpl(featureClient.features());
+            features = new FeaturesImpl(featureClient.getFeatures());
         }
         return features;
     }
@@ -277,7 +277,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public Providers providers() {
         if (providers == null) {
-            providers = new ProvidersImpl(resourceManagementClient.providers());
+            providers = new ProvidersImpl(resourceManagementClient.getProviders());
         }
         return providers;
     }
@@ -287,7 +287,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public PolicyDefinitions policyDefinitions() {
         if (policyDefinitions == null) {
-            policyDefinitions = new PolicyDefinitionsImpl(policyClient.policyDefinitions());
+            policyDefinitions = new PolicyDefinitionsImpl(policyClient.getPolicyDefinitions());
         }
         return policyDefinitions;
     }
@@ -297,7 +297,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public PolicyAssignments policyAssignments() {
         if (policyAssignments == null) {
-            policyAssignments = new PolicyAssignmentsImpl(policyClient.policyAssignments());
+            policyAssignments = new PolicyAssignmentsImpl(policyClient.getPolicyAssignments());
         }
         return policyAssignments;
     }

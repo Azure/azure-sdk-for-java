@@ -34,32 +34,32 @@ public final class GenericResourcesImpl
         implements GenericResources {
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    GenericResourcesImpl(ResourceManager resourceManager) {
-        super(resourceManager.inner().resources(), resourceManager);
+    public GenericResourcesImpl(ResourceManager resourceManager) {
+        super(resourceManager.inner().getResources(), resourceManager);
     }
 
     @Override
     public PagedIterable<GenericResource> list() {
-        return wrapList(this.manager().inner().resources().list()
+        return wrapList(this.manager().inner().getResources().list()
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedIterable<GenericResource> listByResourceGroup(String groupName) {
-        return wrapList(this.manager().inner().resources().listByResourceGroup(groupName)
+        return wrapList(this.manager().inner().getResources().listByResourceGroup(groupName)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedIterable<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        return wrapList(this.manager().inner().resources().listByResourceGroup(resourceGroupName,
+        return wrapList(this.manager().inner().getResources().listByResourceGroup(resourceGroupName,
                 Utils.createOdataFilterForTags(tagName, tagValue), null, null)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedFlux<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
-        return wrapPageAsync(this.manager().inner().resources().listByResourceGroupAsync(resourceGroupName,
+        return wrapPageAsync(this.manager().inner().getResources().listByResourceGroupAsync(resourceGroupName,
                 Utils.createOdataFilterForTags(tagName, tagValue), null, null)
                 .mapPage(res -> (GenericResourceInner) res));
     }
@@ -235,7 +235,7 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
-        return wrapPageAsync(this.manager().inner().resources().listByResourceGroupAsync(resourceGroupName)
+        return wrapPageAsync(this.manager().inner().getResources().listByResourceGroupAsync(resourceGroupName)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 }

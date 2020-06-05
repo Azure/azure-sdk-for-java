@@ -27,7 +27,7 @@ public final class PolicyDefinitionsImpl
      *
      * @param innerClient the inner policies client
      */
-    PolicyDefinitionsImpl(final PolicyDefinitionsClient innerClient) {
+    public PolicyDefinitionsImpl(final PolicyDefinitionsClient innerClient) {
         this.client = innerClient;
     }
 

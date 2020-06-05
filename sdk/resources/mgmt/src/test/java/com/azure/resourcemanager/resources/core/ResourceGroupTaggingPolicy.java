@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class ResourceGroupTaggingPolicy implements HttpPipelinePolicy {
 //    private static final String LOGGING_CONTEXT = "com.microsoft.azure.management.resources.ResourceGroups createOrUpdate";
-    private static final String CALLER_METHOD = "com.azure.management.resources.models.ResourceGroupsInner$ResourceGroupsService.createOrUpdate";
+    private static final String CALLER_METHOD = "com.azure.resourcemanager.resources.models.ResourceGroupsInner$ResourceGroupsService.createOrUpdate";
     private AzureJacksonAdapter adapter = new AzureJacksonAdapter();
 
     @Override

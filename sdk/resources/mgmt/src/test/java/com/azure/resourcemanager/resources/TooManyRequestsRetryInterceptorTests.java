@@ -8,8 +8,8 @@
 // */
 //package com.azure.management.resources;
 //
-//import com.azure.management.resources.fluentcore.arm.Region;
-//import com.azure.management.resources.fluentcore.utils.SdkContext;
+//import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+//import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 //import com.microsoft.rest.RestClient;
 //import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@
 //        rgName = "rg429" + testId;
 //
 //        super.initializeClients(restClient, defaultSubscription, domain);
-//        resourceGroups = resourceClient.resourceGroups();
+//        resourceGroups = resourceClient.getResourceGroups();
 //
 //        rg = resourceGroups.define(rgName)
 //            .withRegion(Region.US_EAST)

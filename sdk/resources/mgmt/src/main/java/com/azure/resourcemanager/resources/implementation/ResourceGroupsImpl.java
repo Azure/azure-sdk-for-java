@@ -29,9 +29,9 @@ public final class ResourceGroupsImpl
      *
      * @param serviceClient the inner resource management client
      */
-    ResourceGroupsImpl(final ResourceManagementClient serviceClient) {
+    public ResourceGroupsImpl(final ResourceManagementClient serviceClient) {
         this.serviceClient = serviceClient;
-        this.client = serviceClient.resourceGroups();
+        this.client = serviceClient.getResourceGroups();
     }
 
     @Override
@@ -101,7 +101,7 @@ public final class ResourceGroupsImpl
     @Override
     public Mono<Void> beginDeleteByNameAsync(String name) {
         // DELETE
-        return client.beginDeleteAsync(name);
+        return client.beginDeleteWithoutPollingAsync(name);
     }
 
     @Override

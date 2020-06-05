@@ -20,7 +20,7 @@ public final class FeaturesImpl
         implements Features {
     private final FeaturesClient client;
 
-    FeaturesImpl(final FeaturesClient client) {
+    public FeaturesImpl(final FeaturesClient client) {
         this.client = client;
     }
 

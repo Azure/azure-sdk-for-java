@@ -20,7 +20,7 @@ public final class ProvidersImpl
         implements Providers {
     private final ProvidersClient client;
 
-    ProvidersImpl(final ProvidersClient client) {
+    public ProvidersImpl(final ProvidersClient client) {
         this.client = client;
     }
 

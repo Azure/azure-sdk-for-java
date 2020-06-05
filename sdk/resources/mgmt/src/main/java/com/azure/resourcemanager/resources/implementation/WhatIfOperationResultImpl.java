@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.models.ErrorResponse;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
 import com.azure.resourcemanager.resources.models.WhatIfOperationResult;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
@@ -34,7 +34,7 @@ public class WhatIfOperationResultImpl extends
     }
 
     @Override
-    public ErrorResponse error() {
+    public ManagementError error() {
         return this.inner().error();
     }
 }

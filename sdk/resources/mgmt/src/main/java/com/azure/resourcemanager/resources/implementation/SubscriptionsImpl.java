@@ -20,7 +20,7 @@ public final class SubscriptionsImpl
         implements Subscriptions {
     private final SubscriptionsClient client;
 
-    SubscriptionsImpl(final SubscriptionsClient client) {
+    public SubscriptionsImpl(final SubscriptionsClient client) {
         this.client = client;
     }
 

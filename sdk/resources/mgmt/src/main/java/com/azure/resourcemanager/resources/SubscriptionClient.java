@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.AzureServiceClient;
+import com.azure.resourcemanager.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
@@ -54,18 +54,6 @@ public final class SubscriptionClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
     /** The SubscriptionsClient object to access its operations. */
     private final SubscriptionsClient subscriptions;
 
@@ -101,7 +89,6 @@ public final class SubscriptionClient extends AzureServiceClient {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.apiVersion = "2020-01-01";
-        this.operations = new OperationsClient(this);
         this.subscriptions = new SubscriptionsClient(this);
         this.tenants = new TenantsClient(this);
     }

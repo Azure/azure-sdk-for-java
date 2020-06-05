@@ -16,7 +16,7 @@ public final class TenantsImpl
         implements Tenants {
     private final TenantsClient client;
 
-    TenantsImpl(final TenantsClient client) {
+    public TenantsImpl(final TenantsClient client) {
         this.client = client;
     }
 

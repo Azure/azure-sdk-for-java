@@ -26,19 +26,19 @@ public final class DeploymentsImpl
 
     private final ResourceManager resourceManager;
 
-    DeploymentsImpl(final ResourceManager resourceManager) {
+    public DeploymentsImpl(final ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
     }
 
     @Override
     public PagedIterable<Deployment> list() {
-        return this.manager().inner().deployments().list()
+        return this.manager().inner().getDeployments().list()
                 .mapPage(inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
     }
 
     @Override
     public PagedIterable<Deployment> listByResourceGroup(String groupName) {
-        return this.manager().inner().deployments()
+        return this.manager().inner().getDeployments()
             .listByResourceGroup(groupName).mapPage(inner -> createFluentModel(inner));
     }
 
@@ -49,13 +49,13 @@ public final class DeploymentsImpl
 
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
-        return this.manager().inner().deployments().getAtTenantScopeAsync(name)
+        return this.manager().inner().getDeployments().getAtTenantScopeAsync(name)
             .map(inner -> new DeploymentImpl(inner, inner.name(), this.resourceManager));
     }
 
     @Override
     public Mono<Deployment> getByResourceGroupAsync(String groupName, String name) {
-        return this.manager().inner().deployments()
+        return this.manager().inner().getDeployments()
             .getByResourceGroupAsync(groupName, name).map(deploymentExtendedInner -> {
                 if (deploymentExtendedInner != null) {
                     return createFluentModel(deploymentExtendedInner);
@@ -73,7 +73,7 @@ public final class DeploymentsImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
-        return this.manager().inner().deployments().deleteAsync(groupName, name);
+        return this.manager().inner().getDeployments().deleteAsync(groupName, name);
     }
 
     @Override
@@ -127,7 +127,7 @@ public final class DeploymentsImpl
 
     @Override
     public PagedFlux<Deployment> listByResourceGroupAsync(String resourceGroupName) {
-        final DeploymentsClient client = this.manager().inner().deployments();
+        final DeploymentsClient client = this.manager().inner().getDeployments();
         return client.listByResourceGroupAsync(resourceGroupName)
             .mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }

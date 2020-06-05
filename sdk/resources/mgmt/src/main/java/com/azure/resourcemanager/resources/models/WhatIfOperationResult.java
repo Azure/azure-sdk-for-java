@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluent.inner.WhatIfOperationResultInner;
 
@@ -29,5 +30,5 @@ public interface WhatIfOperationResult extends
     /**
      * @return error when What-If operation fails.
      */
-    ErrorResponse error();
+    ManagementError error();
 }

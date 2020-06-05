@@ -27,7 +27,7 @@ public final class PolicyAssignmentsImpl
      *
      * @param innerClient the inner policies client
      */
-    PolicyAssignmentsImpl(final PolicyAssignmentsClient innerClient) {
+    public PolicyAssignmentsImpl(final PolicyAssignmentsClient innerClient) {
         this.client = innerClient;
     }
 

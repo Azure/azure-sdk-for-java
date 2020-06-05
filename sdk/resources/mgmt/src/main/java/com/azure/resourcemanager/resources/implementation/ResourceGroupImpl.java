@@ -34,7 +34,7 @@ class ResourceGroupImpl extends
     protected ResourceGroupImpl(final ResourceGroupInner innerModel, String name,
             final ResourceManagementClient serviceClient) {
         super(name, innerModel);
-        this.client = serviceClient.resourceGroups();
+        this.client = serviceClient.getResourceGroups();
     }
 
     @Override

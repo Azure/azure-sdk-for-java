@@ -81,7 +81,7 @@ final class GenericResourceImpl
 
     @Override
     protected Mono<GenericResourceInner> getInnerAsync() {
-        return this.manager().inner().resources().getAsync(
+        return this.manager().inner().getResources().getAsync(
                 resourceGroupName(),
                 resourceProviderNamespace(),
                 parentResourcePath(),
@@ -167,7 +167,7 @@ final class GenericResourceImpl
                         return Mono.just(self.apiVersion);
                     });
         }
-        final ResourcesClient resourceClient = this.manager().inner().resources();
+        final ResourcesClient resourceClient = this.manager().inner().getResources();
         return observable
                 .flatMap(api -> {
                     String name = this.name();

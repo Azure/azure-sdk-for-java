@@ -163,7 +163,7 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentOperations deploymentOperations() {
-        return new DeploymentOperationsImpl(this.manager().inner().deploymentOperations(), this);
+        return new DeploymentOperationsImpl(this.manager().inner().getDeploymentOperations(), this);
     }
 
     @Override
@@ -173,7 +173,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<Void> cancelAsync() {
-        return this.manager().inner().deployments().cancelAsync(resourceGroupName, name());
+        return this.manager().inner().getDeployments().cancelAsync(resourceGroupName, name());
     }
 
 
@@ -184,7 +184,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<DeploymentExportResult> exportTemplateAsync() {
-        return this.manager().inner().deployments().exportTemplateAsync(resourceGroupName(), name())
+        return this.manager().inner().getDeployments().exportTemplateAsync(resourceGroupName(), name())
             .map(deploymentExportResultInner -> new DeploymentExportResultImpl(deploymentExportResultInner));
     }
 
@@ -301,8 +301,8 @@ public final class DeploymentImpl extends
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }
-        setInner(this.manager().inner().deployments()
-            .beginCreateOrUpdate(resourceGroupName(), name(), createRequestFromInner()));
+        setInner(this.manager().inner().getDeployments()
+            .beginCreateOrUpdateWithoutPolling(resourceGroupName(), name(), createRequestFromInner()));
         return this;
     }
 
@@ -316,14 +316,14 @@ public final class DeploymentImpl extends
                         return Mono.just((Indexable) DeploymentImpl.this);
                     }
                 })
-                .flatMap(indexable -> manager().inner().deployments()
-                    .beginCreateOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner()))
+                .flatMap(indexable -> manager().inner().getDeployments()
+                    .beginCreateOrUpdateWithoutPollingAsync(resourceGroupName(), name(), createRequestFromInner()))
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<Deployment> createResourceAsync() {
-        return this.manager().inner().deployments()
+        return this.manager().inner().getDeployments()
             .createOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner())
             .map(innerToFluentMap(this));
     }
@@ -350,7 +350,7 @@ public final class DeploymentImpl extends
 
     @Override
     protected Mono<DeploymentExtendedInner> getInnerAsync() {
-        return this.manager().inner().deployments().getAtManagementGroupScopeAsync(resourceGroupName(), name());
+        return this.manager().inner().getDeployments().getAtManagementGroupScopeAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -506,7 +506,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAsync() {
-        return this.manager().inner().deployments().whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
+        return this.manager().inner().getDeployments().whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
                 .map(whatIfOperationResultInner -> new WhatIfOperationResultImpl(whatIfOperationResultInner));
     }
 
@@ -518,7 +518,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAtSubscriptionScopeAsync() {
-        return this.manager().inner().deployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
+        return this.manager().inner().getDeployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
                 .map(whatIfOperationResultInner -> new WhatIfOperationResultImpl(whatIfOperationResultInner));
     }
 }
