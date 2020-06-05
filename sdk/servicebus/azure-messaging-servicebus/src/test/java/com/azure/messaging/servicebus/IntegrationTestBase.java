@@ -385,49 +385,28 @@ public abstract class IntegrationTestBase extends TestBase {
         );
     }
 
-    protected static Stream<Arguments> messagingEntityTxnWithSessions() {
+    protected static Stream<Arguments> messagingEntityTxnAndDisposition() {
         return Stream.of(
             // The data corresponds to :entityType, isSessionEnabled, commit, dispositionStatus
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.DEFERRED),
+            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, true, DispositionStatus.DEFERRED),
 
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, true, DispositionStatus.DEFERRED),
+            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, false, DispositionStatus.DEFERRED),
 
-            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, true, true, DispositionStatus.DEFERRED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, DispositionStatus.DEFERRED),
 
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, true, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, false, false, DispositionStatus.DEFERRED),
-
-
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, false, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, true, false, DispositionStatus.DEFERRED),
-
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true, false, DispositionStatus.DEFERRED)
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false, DispositionStatus.DEFERRED)
         );
     }
 

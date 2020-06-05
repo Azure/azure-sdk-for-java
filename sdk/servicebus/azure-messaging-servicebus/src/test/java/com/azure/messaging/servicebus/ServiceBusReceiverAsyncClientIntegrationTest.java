@@ -251,18 +251,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following using shared connection.
+     * Verifies that we can do following using shared connection and on session enabled entity.
      * 1. create transaction
      * 2. send message  with transactionContext
      * 3. receive and settle with transactionContext.
      * 4. commit Rollback this transaction.
      */
-    @MethodSource("messagingEntityTxnWithSessions")
+    @MethodSource("messagingEntityTxnAndDisposition")
     @ParameterizedTest
-    void transactionSendReceiveAndSettle(MessagingEntityType entityType, boolean isSessionEnabled,
-         boolean commitTransaction, DispositionStatus dispositionStatus) {
+    void transactionSendReceiveAndSettle(MessagingEntityType entityType,
+        boolean commitTransaction, DispositionStatus dispositionStatus) {
 
         // Arrange
+        final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, isSessionEnabled, true);
 
         final String messageId1 = "1";
@@ -272,6 +273,80 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String deadLetterReason = "testing";
         sendMessage(message1).block(TIMEOUT);
 
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message2, transaction.get()))
+            .verifyComplete();
+
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        final Mono<Void> operation;
+        switch (dispositionStatus) {
+            case COMPLETED:
+                operation = receiver.complete(receivedMessage, transaction.get());
+                break;
+            case ABANDONED:
+                operation = receiver.abandon(receivedMessage, null, transaction.get());
+                break;
+            case SUSPENDED:
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
+                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
+                break;
+            case DEFERRED:
+                operation = receiver.defer(receivedMessage, null, transaction.get());
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Disposition status not recognized for this test case: " + dispositionStatus));
+        }
+
+        StepVerifier.create(operation)
+            .verifyComplete();
+
+        if (commitTransaction) {
+            StepVerifier.create(receiver.commitTransaction(transaction.get()))
+                .verifyComplete();
+        } else {
+            StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
+                .verifyComplete();
+        }
+    }
+
+    /**
+     * Verifies that we can do following using shared connection and on non session entity.
+     * 1. create transaction
+     * 2. send message  with transactionContext
+     * 3. receive and settle with transactionContext.
+     * 4. commit Rollback this transaction.
+     */
+    @MethodSource("messagingEntityTxnAndDisposition")
+    @ParameterizedTest
+    void transactionSendReceiveAndSettleOnSessionEntity(MessagingEntityType entityType,
+         boolean commitTransaction, DispositionStatus dispositionStatus) {
+
+        // Arrange
+        final boolean isSessionEnabled = true;
+        setSenderAndReceiver(entityType, isSessionEnabled, true);
+
+        final String messageId1 = "1";
+        final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
+        final String messageId2 = "2";
+        final ServiceBusMessage message2 = getMessage(messageId2, isSessionEnabled);
+        final String deadLetterReason = "testing";
+        sendMessage(message1).block(TIMEOUT);
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -293,27 +368,24 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
         final Mono<Void> operation;
-        if (DispositionStatus.ABANDONED == dispositionStatus && isSessionEnabled) {
-            operation = receiver.abandon(receivedMessage, null, sessionId, transaction.get());
-        } else if (DispositionStatus.ABANDONED == dispositionStatus && !isSessionEnabled) {
-            operation = receiver.abandon(receivedMessage, null, transaction.get());
-        } else if (DispositionStatus.SUSPENDED == dispositionStatus && isSessionEnabled) {
-            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-            operation = receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction.get());
-        } else if (DispositionStatus.SUSPENDED == dispositionStatus && !isSessionEnabled) {
-            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-            operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
-        } else if (DispositionStatus.COMPLETED == dispositionStatus && isSessionEnabled) {
-            operation = receiver.complete(receivedMessage, sessionId, transaction.get());
-        } else if (DispositionStatus.COMPLETED == dispositionStatus && !isSessionEnabled) {
-            operation = receiver.complete(receivedMessage, transaction.get());
-        } else if (DispositionStatus.DEFERRED == dispositionStatus && isSessionEnabled) {
-            operation = receiver.defer(receivedMessage, null, sessionId, transaction.get());
-        } else if (DispositionStatus.DEFERRED == dispositionStatus && !isSessionEnabled) {
-            operation = receiver.defer(receivedMessage, null, transaction.get());
-        } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Disposition status not recognized for this test case: " + dispositionStatus));
+
+        switch (dispositionStatus) {
+            case COMPLETED:
+                operation = receiver.complete(receivedMessage, sessionId, transaction.get());
+                break;
+            case ABANDONED:
+                operation = receiver.abandon(receivedMessage, null, sessionId, transaction.get());
+                break;
+            case SUSPENDED:
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
+                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction.get());
+                break;
+            case DEFERRED:
+                operation = receiver.defer(receivedMessage, null, sessionId, transaction.get());
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
         StepVerifier.create(operation)

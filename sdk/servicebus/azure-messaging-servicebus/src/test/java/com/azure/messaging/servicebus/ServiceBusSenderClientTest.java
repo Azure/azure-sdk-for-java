@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -39,20 +37,6 @@ public class ServiceBusSenderClientTest {
     @Mock
     ServiceBusTransactionContext transactionContext;
 
-    @Captor
-    private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
-    @Captor
-    private ArgumentCaptor<ServiceBusTransactionContext> transactionCaptor;
-
-    @Captor
-    private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
-
-    @Captor
-    private ArgumentCaptor<Instant> scheduleMessageCaptor;
-
-    @Captor
-    private ArgumentCaptor<Long> cancelScheduleMessageCaptor;
-
     private ServiceBusSenderClient sender;
 
     private static final Duration RETRY_TIMEOUT = Duration.ofSeconds(10);
@@ -79,8 +63,6 @@ public class ServiceBusSenderClientTest {
     @AfterEach
     void teardown() {
         sender.close();
-        singleMessageCaptor = null;
-        messageListCaptor = null;
         Mockito.framework().clearInlineMocks();
     }
 
@@ -172,13 +154,7 @@ public class ServiceBusSenderClientTest {
         sender.send(messages, transactionContext);
 
         // Assert
-        verify(asyncSender, times(1)).send(messages, transactionContext);
-        verify(asyncSender).send(messageListCaptor.capture(), transactionCaptor.capture());
-
-        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
-        Assertions.assertEquals(count, sentMessages.size());
-        sentMessages.forEach(serviceBusMessage -> Assertions.assertArrayEquals(contents, serviceBusMessage.getBody()));
-        Assertions.assertEquals(transactionContext, transactionCaptor.getValue());
+        verify(asyncSender).send(messages, transactionContext);
     }
 
     /**
@@ -198,12 +174,7 @@ public class ServiceBusSenderClientTest {
         sender.send(messages);
 
         // Assert
-        verify(asyncSender, times(1)).send(messages);
-        verify(asyncSender).send(messageListCaptor.capture());
-
-        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
-        Assertions.assertEquals(count, sentMessages.size());
-        sentMessages.forEach(serviceBusMessage -> Assertions.assertArrayEquals(contents, serviceBusMessage.getBody()));
+        verify(asyncSender).send(messages);
     }
 
     /**
@@ -219,13 +190,14 @@ public class ServiceBusSenderClientTest {
         messages.add(testData);
         when(asyncSender.send(messages, transactionContext)).thenReturn(Mono.empty());
 
-        // Act
+        // Act & Assert
         try {
             sender.send(messages, nullTransaction);
             Assertions.fail("This should have failed with NullPointerException.");
         } catch (Exception ex) {
             Assertions.assertTrue(ex instanceof NullPointerException);
         }
+        verify(asyncSender).send(messages, nullTransaction);
     }
 
     /**
@@ -247,6 +219,7 @@ public class ServiceBusSenderClientTest {
         } catch (Exception ex) {
             Assertions.assertTrue(ex instanceof NullPointerException);
         }
+        verify(asyncSender).send(testData, nullTransaction);
     }
 
     /**
@@ -264,13 +237,7 @@ public class ServiceBusSenderClientTest {
         sender.send(testData, transactionContext);
 
         // Assert
-        verify(asyncSender, times(1)).send(testData, transactionContext);
-        verify(asyncSender).send(singleMessageCaptor.capture(), transactionCaptor.capture());
-
-        final ServiceBusMessage message = singleMessageCaptor.getValue();
-        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
-        Assertions.assertEquals(transactionContext, transactionCaptor.getValue());
-
+        verify(asyncSender).send(testData, transactionContext);
     }
 
     /**
@@ -288,11 +255,7 @@ public class ServiceBusSenderClientTest {
         sender.send(testData);
 
         // Assert
-        verify(asyncSender, times(1)).send(testData);
-        verify(asyncSender).send(singleMessageCaptor.capture());
-
-        final ServiceBusMessage message = singleMessageCaptor.getValue();
-        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
+        verify(asyncSender).send(testData);
     }
 
     /**
@@ -304,22 +267,17 @@ public class ServiceBusSenderClientTest {
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
         final Instant scheduledEnqueueTime = Instant.now();
-        final long sequenceNumber = 1;
+        final long expected = 1;
 
-        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime)).thenReturn(Mono.just(sequenceNumber));
+        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime)).thenReturn(Mono.just(expected));
 
         // Act
-        sender.scheduleMessage(testData, scheduledEnqueueTime);
+        long actual = sender.scheduleMessage(testData, scheduledEnqueueTime);
 
         // Assert
-        verify(asyncSender, times(1)).scheduleMessage(testData, scheduledEnqueueTime);
-        verify(asyncSender).scheduleMessage(singleMessageCaptor.capture(), scheduleMessageCaptor.capture());
+        Assertions.assertEquals(expected, actual);
+        verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime);
 
-        final ServiceBusMessage message = singleMessageCaptor.getValue();
-        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
-
-        final Instant scheduledEnqueueTimeActual = scheduleMessageCaptor.getValue();
-        Assertions.assertEquals(scheduledEnqueueTime, scheduledEnqueueTimeActual);
     }
 
     /**
@@ -331,24 +289,16 @@ public class ServiceBusSenderClientTest {
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
         final Instant scheduledEnqueueTime = Instant.now();
-        final long sequenceNumber = 1;
+        final long expected = 1;
 
-        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext)).thenReturn(Mono.just(sequenceNumber));
+        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext)).thenReturn(Mono.just(expected));
 
         // Act
-        sender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
+        long actual = sender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
 
         // Assert
-        verify(asyncSender, times(1)).scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
-        verify(asyncSender).scheduleMessage(singleMessageCaptor.capture(), scheduleMessageCaptor.capture(), transactionCaptor.capture());
-
-        final ServiceBusMessage message = singleMessageCaptor.getValue();
-        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
-
-        final Instant scheduledEnqueueTimeActual = scheduleMessageCaptor.getValue();
-        Assertions.assertEquals(scheduledEnqueueTime, scheduledEnqueueTimeActual);
-
-        Assertions.assertEquals(transactionContext, transactionCaptor.getValue());
+        Assertions.assertEquals(expected, actual);
+        verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
     }
 
     /**
@@ -365,10 +315,6 @@ public class ServiceBusSenderClientTest {
         sender.cancelScheduledMessage(sequenceNumber);
 
         // Assert
-        verify(asyncSender, times(1)).cancelScheduledMessage(sequenceNumber);
-        verify(asyncSender).cancelScheduledMessage(cancelScheduleMessageCaptor.capture());
-
-        final long sequenceNumberActual = cancelScheduleMessageCaptor.getValue();
-        Assertions.assertEquals(sequenceNumber, sequenceNumberActual);
+        verify(asyncSender).cancelScheduledMessage(sequenceNumber);
     }
 }

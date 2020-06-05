@@ -191,16 +191,19 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can send, receive one message and settle.
+     * Verifies that we can send, receive one message and settle on session enabled entity.
      */
-    @MethodSource("messagingEntityTxnWithSessions")
+    @MethodSource("messagingEntityTxnAndDisposition")
     @ParameterizedTest
-    void transactionMessageAndSettle(MessagingEntityType entityType, boolean isSessionEnabled, boolean commitTxn,
+    void transactionMessageAndSettle(MessagingEntityType entityType, boolean commitTransaction,
         DispositionStatus dispositionStatus) {
 
         // Arrange
+        final boolean isSessionEnabled = true;
         setSenderAndReceiver(entityType, isSessionEnabled);
         int maxMessages = 1;
+        final String deadLetterReason = "testing";
+
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -218,32 +221,84 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         ServiceBusReceivedMessage receivedMessage = messageList.get(0);
 
-        if (DispositionStatus.ABANDONED == dispositionStatus && isSessionEnabled) {
-            receiver.abandon(receivedMessage, null, sessionId, transaction);
-        } else if (DispositionStatus.ABANDONED == dispositionStatus && !isSessionEnabled) {
-            receiver.abandon(receivedMessage, null, transaction);
-        } else if (DispositionStatus.SUSPENDED == dispositionStatus && isSessionEnabled) {
-            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
-            receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction);
-        } else if (DispositionStatus.SUSPENDED == dispositionStatus && !isSessionEnabled) {
-            DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason("For testing.");
-            receiver.deadLetter(receivedMessage, deadLetterOptions, transaction);
-        } else if (DispositionStatus.COMPLETED == dispositionStatus && isSessionEnabled) {
-            receiver.complete(receivedMessage, sessionId, transaction);
-            messagesPending.decrementAndGet();
-        } else if (DispositionStatus.COMPLETED == dispositionStatus && !isSessionEnabled) {
-            receiver.complete(receivedMessage, transaction);
-            messagesPending.decrementAndGet();
-        } else if (DispositionStatus.DEFERRED == dispositionStatus && isSessionEnabled) {
-            receiver.defer(receivedMessage, null, sessionId, transaction);
-        } else if (DispositionStatus.DEFERRED == dispositionStatus && !isSessionEnabled) {
-            receiver.defer(receivedMessage, null, transaction);
-        } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Disposition status not recognized for this test case: " + dispositionStatus));
+        switch (dispositionStatus) {
+            case COMPLETED:
+                receiver.complete(receivedMessage, transaction);
+                messagesPending.decrementAndGet();
+                break;
+            case ABANDONED:
+                receiver.abandon(receivedMessage, null, transaction);
+                break;
+            case SUSPENDED:
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
+                receiver.deadLetter(receivedMessage, deadLetterOptions, transaction);
+                break;
+            case DEFERRED:
+                receiver.defer(receivedMessage, null, transaction);
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
-        if (commitTxn) {
+        if (commitTransaction) {
+            receiver.commitTransaction(transaction);
+        } else {
+            receiver.rollbackTransaction(transaction);
+        }
+    }
+
+    /**
+     * Verifies that we can send, receive one message and settle on non session enabled entity.
+     */
+    @MethodSource("messagingEntityTxnAndDisposition")
+    @ParameterizedTest
+    void transactionMessageAndSettleOnSessionEntity(MessagingEntityType entityType, boolean commitTransaction,
+        DispositionStatus dispositionStatus) {
+
+        // Arrange
+        boolean isSessionEnabled = true;
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        final int maxMessages = 1;
+        final String deadLetterReason = "testing";
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+
+        // Act & Assert
+        final Stream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT)
+            .stream().map(ServiceBusReceivedMessageContext::getMessage);
+
+        final ServiceBusTransactionContext transaction = receiver.createTransaction();
+
+        List<ServiceBusReceivedMessage> messageList = messages.collect(Collectors.toList());
+        assertEquals(maxMessages, messageList.size());
+
+        ServiceBusReceivedMessage receivedMessage = messageList.get(0);
+
+        switch (dispositionStatus) {
+            case COMPLETED:
+                receiver.complete(receivedMessage, sessionId, transaction);
+                messagesPending.decrementAndGet();
+                break;
+            case ABANDONED:
+                receiver.abandon(receivedMessage, null, sessionId, transaction);
+                break;
+            case SUSPENDED:
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
+                receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction);
+                break;
+            case DEFERRED:
+                receiver.defer(receivedMessage, null, sessionId, transaction);
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Disposition status not recognized for this test case: " + dispositionStatus));
+        }
+
+        if (commitTransaction) {
             receiver.commitTransaction(transaction);
         } else {
             receiver.rollbackTransaction(transaction);
