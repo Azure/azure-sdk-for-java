@@ -29,7 +29,7 @@ public interface JsonObject extends JsonNode {
      * Gets the {@link JsonNode} field with the specified name in the object.
      *
      * @param name Name of the node.
-     * @return The {@link JsonNode} for the specified field in the object.
+     * @return {@link JsonNode} for the specified field in the object if it exist, {@code null} otherwise.
      */
     JsonNode get(String name);
 
@@ -54,7 +54,7 @@ public interface JsonObject extends JsonNode {
      * Removes the {@link JsonNode} with the specified name from the object.
      *
      * @param name Name of the node.
-     * @return The {@link JsonNode} removed from the object.
+     * @return {@link JsonNode} removed from the object if it existed, {@code null} otherwise.
      */
     JsonNode remove(String name);
 
@@ -63,7 +63,7 @@ public interface JsonObject extends JsonNode {
      *
      * @param name Name of the node.
      * @param jsonNode The new {@link JsonNode} value.
-     * @return The old {@link JsonNode} value if it was set.
+     * @return The old {@link JsonNode} value if it was set, {@code null} otherwise.
      */
     JsonNode set(String name, JsonNode jsonNode);
 }

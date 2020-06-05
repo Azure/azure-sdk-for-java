@@ -5,6 +5,7 @@ package com.azure.core.serializer.json.gson;
 
 import com.azure.core.util.serializer.JsonNode;
 import com.azure.core.util.serializer.JsonObject;
+import com.google.gson.JsonElement;
 
 import java.util.AbstractMap;
 import java.util.Map;
@@ -28,9 +29,10 @@ public final class GsonJsonObject implements JsonObject {
      * Constructs a {@link JsonObject} backed by the passed GSON {@link com.google.gson.JsonObject}.
      *
      * @param jsonObject The backing GSON {@link com.google.gson.JsonObject}.
+     * @throws NullPointerException If {@code jsonObject} is {@code null}.
      */
     public GsonJsonObject(com.google.gson.JsonObject jsonObject) {
-        this.jsonObject = jsonObject;
+        this.jsonObject = Objects.requireNonNull(jsonObject, "'jsonObject' cannot be null.");
     }
 
     com.google.gson.JsonObject getJsonObject() {
@@ -50,7 +52,9 @@ public final class GsonJsonObject implements JsonObject {
 
     @Override
     public JsonNode get(String name) {
-        return JsonNodeUtils.fromGsonElement(jsonObject.get(name));
+        JsonElement jsonElement = jsonObject.get(name);
+
+        return (jsonElement == null) ? null : JsonNodeUtils.fromGsonElement(jsonElement);
     }
 
     @Override
@@ -66,14 +70,17 @@ public final class GsonJsonObject implements JsonObject {
 
     @Override
     public JsonNode remove(String name) {
-        return JsonNodeUtils.fromGsonElement(jsonObject.remove(name));
+        JsonElement jsonElement = jsonObject.remove(name);
+
+        return (jsonElement == null) ? null : JsonNodeUtils.fromGsonElement(jsonElement);
     }
 
     @Override
     public JsonNode set(String name, JsonNode jsonNode) {
-        JsonNode oldValue = JsonNodeUtils.fromGsonElement(jsonObject.remove(name));
+        JsonElement jsonElement = jsonObject.remove(name);
         jsonObject.add(name, JsonNodeUtils.toGsonElement(jsonNode));
-        return oldValue;
+
+        return (jsonElement == null) ? null : JsonNodeUtils.fromGsonElement(jsonElement);
     }
 
     @Override

@@ -33,9 +33,10 @@ public class JacksonJsonObject implements JsonObject {
      * Constructs a {@link JsonObject} backed by the passed Jackson {@link ObjectNode}.
      *
      * @param objectNode The backing Jackson {@link ObjectNode}.
+     * @throws NullPointerException If {@code objectNode} is {@code null}.
      */
     public JacksonJsonObject(ObjectNode objectNode) {
-        this.objectNode = objectNode;
+        this.objectNode = Objects.requireNonNull(objectNode, "'objectNode' cannot be null.");
     }
 
     ObjectNode getObjectNode() {
@@ -61,7 +62,9 @@ public class JacksonJsonObject implements JsonObject {
 
     @Override
     public JsonNode get(String name) {
-        return JsonNodeUtils.fromJacksonNode(objectNode.get(name));
+        com.fasterxml.jackson.databind.JsonNode jsonNode = objectNode.get(name);
+
+        return (jsonNode == null) ? null : JsonNodeUtils.fromJacksonNode(jsonNode);
     }
 
     @Override
@@ -77,12 +80,17 @@ public class JacksonJsonObject implements JsonObject {
 
     @Override
     public JsonNode remove(String name) {
-        return JsonNodeUtils.fromJacksonNode(objectNode.remove(name));
+        com.fasterxml.jackson.databind.JsonNode jsonNode = objectNode.remove(name);
+
+        return (jsonNode == null) ? null : JsonNodeUtils.fromJacksonNode(jsonNode);
     }
 
     @Override
     public JsonNode set(String name, JsonNode jsonNode) {
-        return JsonNodeUtils.fromJacksonNode(objectNode.replace(name, JsonNodeUtils.toJacksonNode(jsonNode)));
+        com.fasterxml.jackson.databind.JsonNode oldValue = objectNode.replace(name,
+            JsonNodeUtils.toJacksonNode(jsonNode));
+
+        return (oldValue == null) ? null : JsonNodeUtils.fromJacksonNode(oldValue);
     }
 
     @Override
