@@ -35,11 +35,9 @@ public class Authentication {
         /*
         Set the environment variables with your own values before running the sample:
 
-        1) AZURE_FORM_RECOGNIZER_ENDPOINT - the endpoint to your Form Recognizer resource.
-        2) AZURE_FORM_RECOGNIZER_KEY - your Form Recognizer API key
-        3) AZURE_CLIENT_ID - the client ID of your active directory application.
-        4) AZURE_TENANT_ID - the tenant ID of your active directory application.
-        5) AZURE_CLIENT_SECRET - the secret of your active directory application.
+        1) AZURE_CLIENT_ID - the client ID of your active directory application.
+        2) AZURE_TENANT_ID - the tenant ID of your active directory application.
+        3) AZURE_CLIENT_SECRET - the secret of your active directory application.
         */
         // Form recognizer client: Key credential
         authenticationWithKeyCredentialFormRecognizerClient();
