@@ -31,7 +31,10 @@ class BlobLazyDownloaderFactory {
      * @return {@link BlobLazyDownloader}
      */
     BlobLazyDownloader getBlobLazyDownloader(String blobPath, long blockSize, long offset) {
+        StorageImplUtils.assertNotNull("blobPath", blobPath);
+
         BlobAsyncClient blobClient = this.client.getBlobAsyncClient(blobPath);
+
         return new BlobLazyDownloader(blobClient, blockSize, offset);
     }
 
@@ -43,7 +46,10 @@ class BlobLazyDownloaderFactory {
      * @return {@link BlobLazyDownloader}
      */
     BlobLazyDownloader getBlobLazyDownloader(String blobPath, long totalSize) {
+        StorageImplUtils.assertNotNull("blobPath", blobPath);
+
         BlobAsyncClient blobClient = this.client.getBlobAsyncClient(blobPath);
+
         return new BlobLazyDownloader(blobClient, totalSize);
     }
 }

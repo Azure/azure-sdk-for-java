@@ -70,6 +70,16 @@ class Shard  {
      * @return A reactive stream of chunks.
      */
     private Flux<String> listChunks() {
+        /* Shard paths looks like $blobchangefeed/log/00/2020/03/25/0200/ */
+        /* The underlying chunks will look like
+           $blobchangefeed/log/00/2020/03/25/0200/0000.avro,
+           $blobchangefeed/log/00/2020/03/25/0200/0001.avro,
+           $blobchangefeed/log/00/2020/03/25/0200/0002.avro
+
+           If the chunk indicated by the cursor is 0001.avro, we want the resulting flux to return
+           $blobchangefeed/log/00/2020/03/25/0200/0001.avro,
+           $blobchangefeed/log/00/2020/03/25/0200/0002.avro
+           */
         Flux<String> chunks = client.listBlobs(new ListBlobsOptions().setPrefix(shardPath))
             .map(BlobItem::getName);
         /* If no user cursor was provided, just return all chunks without filtering. */

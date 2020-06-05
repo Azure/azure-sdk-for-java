@@ -55,7 +55,7 @@ public final class BlobChangefeedClientBuilder {
      * <p><strong>Code sample</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClientBuilder#buildClient}
-     *
+     *F
      * @return a {@link BlobChangefeedClient} created from the configurations in this builder.
      */
     public BlobChangefeedClient buildClient() {

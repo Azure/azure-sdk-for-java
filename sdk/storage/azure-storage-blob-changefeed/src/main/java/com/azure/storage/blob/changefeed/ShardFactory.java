@@ -32,8 +32,7 @@ class ShardFactory {
      * @param userCursor The cursor provided by the user.
      * @return {@link Shard}
      */
-    Shard getShard(String shardPath, ChangefeedCursor segmentCursor,
-        ChangefeedCursor userCursor) {
+    Shard getShard(String shardPath, ChangefeedCursor segmentCursor, ChangefeedCursor userCursor) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("shardPath", shardPath);
         StorageImplUtils.assertNotNull("segmentCursor", segmentCursor);
