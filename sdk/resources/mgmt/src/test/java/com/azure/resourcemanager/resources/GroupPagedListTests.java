@@ -11,10 +11,10 @@
 //
 //import com.microsoft.azure.Page;
 //import com.microsoft.azure.PagedList;
-//import com.azure.management.resources.fluentcore.arm.Region;
-//import com.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
-//import com.azure.management.resources.implementation.PageImpl;
-//import com.azure.management.resources.implementation.ResourceGroupInner;
+//import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+//import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupPagedList;
+//import com.azure.resourcemanager.resources.implementation.PageImpl;
+//import com.azure.resourcemanager.resources.implementation.ResourceGroupInner;
 //import com.microsoft.rest.ServiceCallback;
 //import com.microsoft.rest.ServiceFuture;
 //import org.junit.jupiter.api.Assertions;

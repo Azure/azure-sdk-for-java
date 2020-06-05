@@ -5,22 +5,22 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Subscription;
-import com.azure.resourcemanager.resources.Subscriptions;
+import com.azure.resourcemanager.resources.models.Subscription;
+import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByIdImpl;
-import com.azure.resourcemanager.resources.models.SubscriptionInner;
-import com.azure.resourcemanager.resources.models.SubscriptionsInner;
+import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
+import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The implementation of Subscriptions.
  */
-final class SubscriptionsImpl
+public final class SubscriptionsImpl
         extends SupportsGettingByIdImpl<Subscription>
         implements Subscriptions {
-    private final SubscriptionsInner client;
+    private final SubscriptionsClient client;
 
-    SubscriptionsImpl(final SubscriptionsInner client) {
+    public SubscriptionsImpl(final SubscriptionsClient client) {
         this.client = client;
     }
 

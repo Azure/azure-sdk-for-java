@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.ApplicationGatewayRequestRoutingRule;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.NetworkInterface;
 import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

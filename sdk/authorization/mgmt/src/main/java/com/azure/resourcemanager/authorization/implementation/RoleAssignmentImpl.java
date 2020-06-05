@@ -12,7 +12,7 @@ import com.azure.resourcemanager.authorization.RoleAssignment;
 import com.azure.resourcemanager.authorization.RoleAssignmentCreateParameters;
 import com.azure.resourcemanager.authorization.ServicePrincipal;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentInner;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

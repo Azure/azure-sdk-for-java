@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.DeploymentExportResult;
+import com.azure.resourcemanager.resources.models.DeploymentExportResult;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.models.DeploymentExportResultInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentExportResultInner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.LocalNetworkGateway;
 import com.azure.resourcemanager.network.LocalNetworkGateways;
 import com.azure.resourcemanager.network.models.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.network.models.LocalNetworkGatewaysInner;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import java.util.Iterator;
 import java.util.function.Function;

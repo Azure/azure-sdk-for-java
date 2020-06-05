@@ -5,9 +5,9 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.DeploymentProperties;
-import com.azure.resourcemanager.resources.models.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.models.DeploymentInner;
+import com.azure.resourcemanager.resources.models.DeploymentProperties;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

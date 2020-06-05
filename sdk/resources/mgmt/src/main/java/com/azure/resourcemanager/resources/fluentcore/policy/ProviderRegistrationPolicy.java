@@ -12,10 +12,10 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.Provider;
+import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

@@ -6,16 +6,17 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.GenericResource;
-import com.azure.resourcemanager.resources.GenericResources;
-import com.azure.resourcemanager.resources.ResourceGroup;
-import com.azure.resourcemanager.resources.ResourcesMoveInfo;
-import com.azure.resourcemanager.resources.Provider;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.models.GenericResource;
+import com.azure.resourcemanager.resources.models.GenericResources;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
+import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.resources.models.GenericResourceInner;
-import com.azure.resourcemanager.resources.models.ResourcesInner;
+import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
+import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -23,42 +24,42 @@ import java.util.List;
 /**
  * Implementation of the {@link GenericResources}.
  */
-final class GenericResourcesImpl
+public final class GenericResourcesImpl
         extends GroupableResourcesImpl<
         GenericResource,
         GenericResourceImpl,
         GenericResourceInner,
-        ResourcesInner,
-        ResourceManager>
+    ResourcesClient,
+    ResourceManager>
         implements GenericResources {
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    GenericResourcesImpl(ResourceManager resourceManager) {
-        super(resourceManager.inner().resources(), resourceManager);
+    public GenericResourcesImpl(ResourceManager resourceManager) {
+        super(resourceManager.inner().getResources(), resourceManager);
     }
 
     @Override
     public PagedIterable<GenericResource> list() {
-        return wrapList(this.manager().inner().resources().list()
+        return wrapList(this.manager().inner().getResources().list()
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedIterable<GenericResource> listByResourceGroup(String groupName) {
-        return wrapList(this.manager().inner().resources().listByResourceGroup(groupName)
+        return wrapList(this.manager().inner().getResources().listByResourceGroup(groupName)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedIterable<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        return wrapList(this.manager().inner().resources().listByResourceGroup(resourceGroupName,
+        return wrapList(this.manager().inner().getResources().listByResourceGroup(resourceGroupName,
                 Utils.createOdataFilterForTags(tagName, tagValue), null, null)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedFlux<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
-        return wrapPageAsync(this.manager().inner().resources().listByResourceGroupAsync(resourceGroupName,
+        return wrapPageAsync(this.manager().inner().getResources().listByResourceGroupAsync(resourceGroupName,
                 Utils.createOdataFilterForTags(tagName, tagValue), null, null)
                 .mapPage(res -> (GenericResourceInner) res));
     }
@@ -216,7 +217,7 @@ final class GenericResourcesImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(final String id) {
-        final ResourcesInner inner = this.inner();
+        final ResourcesClient inner = this.inner();
         return getApiVersionFromId(id)
                 .flatMap(apiVersion -> inner.deleteByIdAsync(id, apiVersion));
     }
@@ -234,7 +235,7 @@ final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
-        return wrapPageAsync(this.manager().inner().resources().listByResourceGroupAsync(resourceGroupName)
+        return wrapPageAsync(this.manager().inner().getResources().listByResourceGroupAsync(resourceGroupName)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 }

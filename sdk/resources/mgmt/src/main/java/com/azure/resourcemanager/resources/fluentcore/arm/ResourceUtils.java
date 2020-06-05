@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm;
 
-import com.azure.resourcemanager.resources.Provider;
-import com.azure.resourcemanager.resources.ProviderResourceType;
+import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.models.ProviderResourceType;
 
 import java.util.Locale;
 import java.util.regex.Matcher;

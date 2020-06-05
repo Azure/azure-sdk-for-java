@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.GenericResource;
-import com.azure.resourcemanager.resources.PolicyAssignment;
-import com.azure.resourcemanager.resources.PolicyDefinition;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.GenericResource;
+import com.azure.resourcemanager.resources.models.PolicyAssignment;
+import com.azure.resourcemanager.resources.models.PolicyDefinition;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
-import com.azure.resourcemanager.resources.models.PolicyAssignmentInner;
-import com.azure.resourcemanager.resources.models.PolicyAssignmentsInner;
+import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
+import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,9 +20,9 @@ final class PolicyAssignmentImpl extends
         implements
         PolicyAssignment,
         PolicyAssignment.Definition {
-    private final PolicyAssignmentsInner innerCollection;
+    private final PolicyAssignmentsClient innerCollection;
 
-    PolicyAssignmentImpl(String name, PolicyAssignmentInner innerModel, PolicyAssignmentsInner innerCollection) {
+    PolicyAssignmentImpl(String name, PolicyAssignmentInner innerModel, PolicyAssignmentsClient innerCollection) {
         super(name, innerModel);
         this.innerCollection = innerCollection;
     }

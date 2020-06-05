@@ -5,18 +5,18 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Tenants;
-import com.azure.resourcemanager.resources.models.TenantIdDescriptionInner;
-import com.azure.resourcemanager.resources.models.TenantsInner;
+import com.azure.resourcemanager.resources.models.Tenants;
+import com.azure.resourcemanager.resources.fluent.inner.TenantIdDescriptionInner;
+import com.azure.resourcemanager.resources.fluent.TenantsClient;
 
 /**
  * Implementation for {@link Tenants}.
  */
-final class TenantsImpl
+public final class TenantsImpl
         implements Tenants {
-    private final TenantsInner client;
+    private final TenantsClient client;
 
-    TenantsImpl(final TenantsInner client) {
+    public TenantsImpl(final TenantsClient client) {
         this.client = client;
     }
 

@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.DeploymentExportResult;
-import com.azure.resourcemanager.resources.ErrorResponse;
-import com.azure.resourcemanager.resources.ResourceGroupExportResult;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.resourcemanager.resources.models.DeploymentExportResult;
+import com.azure.resourcemanager.resources.models.ResourceGroupExportResult;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.models.ResourceGroupExportResultInner;
+import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupExportResultInner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -41,7 +41,7 @@ final class ResourceGroupExportResultImpl extends
     }
 
     @Override
-    public ErrorResponse error() {
+    public ManagementError error() {
         return inner().error();
     }
 }

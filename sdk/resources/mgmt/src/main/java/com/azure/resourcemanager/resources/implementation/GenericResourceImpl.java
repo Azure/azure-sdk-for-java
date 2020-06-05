@@ -3,14 +3,15 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.GenericResource;
-import com.azure.resourcemanager.resources.Plan;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.models.GenericResource;
+import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.models.GenericResourceInner;
-import com.azure.resourcemanager.resources.models.ResourceManagementClientImpl;
-import com.azure.resourcemanager.resources.models.ResourcesInner;
+import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
+import com.azure.resourcemanager.resources.ResourceManagementClient;
+import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,7 +22,7 @@ final class GenericResourceImpl
         GenericResource,
         GenericResourceInner,
         GenericResourceImpl,
-        ResourceManager>
+    ResourceManager>
         implements
         GenericResource,
         GenericResource.Definition,
@@ -80,7 +81,7 @@ final class GenericResourceImpl
 
     @Override
     protected Mono<GenericResourceInner> getInnerAsync() {
-        return this.manager().inner().resources().getAsync(
+        return this.manager().inner().getResources().getAsync(
                 resourceGroupName(),
                 resourceProviderNamespace(),
                 parentResourcePath(),
@@ -147,7 +148,7 @@ final class GenericResourceImpl
         if (apiVersion != null) {
             observable = Mono.just(apiVersion);
         } else {
-            final ResourceManagementClientImpl serviceClient = this.manager().inner();
+            final ResourceManagementClient serviceClient = this.manager().inner();
             observable = this.manager().providers().getByNameAsync(resourceProviderNamespace)
                     .flatMap(provider -> {
                         String id;
@@ -166,7 +167,7 @@ final class GenericResourceImpl
                         return Mono.just(self.apiVersion);
                     });
         }
-        final ResourcesInner resourceClient = this.manager().inner().resources();
+        final ResourcesClient resourceClient = this.manager().inner().getResources();
         return observable
                 .flatMap(api -> {
                     String name = this.name();
