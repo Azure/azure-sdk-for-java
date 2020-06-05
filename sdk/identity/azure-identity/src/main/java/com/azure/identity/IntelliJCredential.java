@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * this credential can be used in the development code to reuse the cached plugin credentials.</p>
  */
 @Immutable
-class IntelliJCredential implements TokenCredential {
+public class IntelliJCredential implements TokenCredential {
     private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
