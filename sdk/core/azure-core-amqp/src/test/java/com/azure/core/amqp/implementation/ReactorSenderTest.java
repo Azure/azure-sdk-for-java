@@ -23,12 +23,14 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Record;
@@ -40,10 +42,14 @@ import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
 
 /**
@@ -70,6 +76,11 @@ public class ReactorSenderTest {
     @Mock
     private TransactionalState transactionalState;
 
+    @Captor
+    private ArgumentCaptor<Runnable> dispatcherCaptor;
+    @Captor
+    private  ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
+
     @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
@@ -81,10 +92,16 @@ public class ReactorSenderTest {
         when(reactor.selectable()).thenReturn(selectable);
 
         when(handler.getLinkCredits()).thenReturn(Flux.just(100));
-        when(handler.getEndpointStates()).thenReturn(Flux.just(EndpointState.ACTIVE));
+
+        final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
+        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
+        sink1.next(EndpointState.ACTIVE);
+
         when(handler.getErrors()).thenReturn(Flux.empty());
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
-        when(sender.getCredit()).thenReturn(0);
+        when(sender.getCredit()).thenReturn(100);
+        when(sender.advance()).thenReturn(true);
         doNothing().when(selectable).setChannel(any());
         doNothing().when(selectable).onReadable(any());
         doNothing().when(selectable).onFree(any());
@@ -173,6 +190,48 @@ public class ReactorSenderTest {
         verify(sender, times(1)).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(),
             eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), eq(transactionalState));
+    }
+
+    /**
+     * Testing that we can send message with transaction.
+     */
+    @Test
+    public void testSendWithTransactionDeliverySet() throws IOException {
+        // Arrange
+        Message message = Proton.message();
+        message.setMessageId("id");
+        message.setBody(new AmqpValue("hello"));
+        // This is specific to this message and needs to align with this message.
+        when(sender.send(any(byte[].class), anyInt(), anyInt())).thenReturn(26);
+
+        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
+
+        ReactorDispatcher reactorDispatcherMock = mock(ReactorDispatcher.class);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcherMock);
+        doNothing().when(reactorDispatcherMock).invoke(any(Runnable.class));
+
+        // Creating delivery for sending.
+        final Delivery deliveryToSend = mock(Delivery.class);
+        doNothing().when(deliveryToSend).setMessageFormat(anyInt());
+        doNothing().when(deliveryToSend).disposition(deliveryStateArgumentCaptor.capture());
+        when(sender.delivery(any(byte[].class))).thenReturn(deliveryToSend);
+
+        // Act
+        reactorSender.send(message, transactionalState).subscribe();
+
+        verify(reactorDispatcherMock).invoke(dispatcherCaptor.capture());
+
+        List<Runnable> invocations = dispatcherCaptor.getAllValues();
+
+        // Apply the invocation.
+        invocations.get(0).run();
+
+        // Assert
+        DeliveryState deliveryState = deliveryStateArgumentCaptor.getValue();
+        Assertions.assertSame(transactionalState, deliveryState);
+        verify(sender).getRemoteMaxMessageSize();
+        verify(sender).advance();
     }
 
     @Test

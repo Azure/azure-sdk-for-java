@@ -323,15 +323,13 @@ class ServiceBusSenderAsyncClientTest {
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(any(Message.class), isNull())).thenReturn(Mono.empty());
-        when(sendLink.send(anyList(), isNull())).thenReturn(Mono.empty());
-
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
         // Act
         StepVerifier.create(sender.send(batch))
             .verifyComplete();
 
         // Assert
-        verify(sendLink).send(messagesCaptor.capture(), isNull());
+        verify(sendLink).send(messagesCaptor.capture());
 
         final List<org.apache.qpid.proton.message.Message> messagesSent = messagesCaptor.getValue();
         Assertions.assertEquals(count, messagesSent.size());
@@ -383,15 +381,15 @@ class ServiceBusSenderAsyncClientTest {
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(any(Message.class), isNull())).thenReturn(Mono.empty());
-        when(sendLink.send(anyList(), isNull())).thenReturn(Mono.empty());
+        //when(sendLink.send(any(Message.class), isNull())).thenReturn(Mono.empty());
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(sender.send(messages))
             .verifyComplete();
 
         // Assert
-        verify(sendLink).send(messagesCaptor.capture(), isNull());
+        verify(sendLink).send(messagesCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
         Assertions.assertEquals(count, messagesSent.size());
@@ -468,15 +466,15 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(sendLink.send(any(org.apache.qpid.proton.message.Message.class), isNull())).thenReturn(Mono.empty());
+        when(sendLink.send(any(org.apache.qpid.proton.message.Message.class))).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(sender.send(testData))
             .verifyComplete();
 
         // Assert
-        verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class), isNull());
-        verify(sendLink).send(singleMessageCaptor.capture(), isNull());
+        verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class));
+        verify(sendLink).send(singleMessageCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();
         Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
