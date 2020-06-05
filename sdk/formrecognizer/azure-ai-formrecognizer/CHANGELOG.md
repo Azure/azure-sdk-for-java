@@ -7,12 +7,12 @@
 - Raise `FormRecognizerException` when a model with `ModelStatus.Invalid` is returned from the `beginTraining()` API's
 - Raise `FormRecognizerException` when an invalid analyze status is returned from the service for recognize API's
 - Add `pageNumber` property to `FormPage` and `FormTable` model
-- Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
 - Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
 - Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`
-- Adopt the `training` namespace for Form Recognizer Training Clients
 
 ### Breaking Changes
+- Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
+- Adopt the `training` namespace for Form Recognizer Training Clients
 - Rename enum type `DimensionUnit` to `LengthUnit` on `FormPage`
 - `USReceipt`, `USReceiptItem`, `USReceiptType` and `FormField{T}` types removed. Information about a `RecognizedReceipt`
 must now be extracted from its `RecognizedForm`.

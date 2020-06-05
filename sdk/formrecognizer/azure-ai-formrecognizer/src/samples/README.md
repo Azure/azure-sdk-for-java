@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-cognitive-service
+  - azure-cognitive-services
   - azure-form-recognizer
 ---
 
