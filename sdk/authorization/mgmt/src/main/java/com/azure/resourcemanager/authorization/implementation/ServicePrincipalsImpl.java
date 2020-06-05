@@ -17,12 +17,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of ServicePrincipals and its parent interfaces. */
-class ServicePrincipalsImpl extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
+public class ServicePrincipalsImpl extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
     implements ServicePrincipals, HasManager<GraphRbacManager>, HasInner<ServicePrincipalsClient> {
     private ServicePrincipalsClient innerCollection;
     private GraphRbacManager manager;
 
-    ServicePrincipalsImpl(final ServicePrincipalsClient client, final GraphRbacManager graphRbacManager) {
+    public ServicePrincipalsImpl(final ServicePrincipalsClient client, final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
     }
@@ -111,6 +111,6 @@ class ServicePrincipalsImpl extends CreatableWrappersImpl<ServicePrincipal, Serv
 
     @Override
     public ServicePrincipalsClient inner() {
-        return manager().inner().servicePrincipals();
+        return manager().inner().getServicePrincipals();
     }
 }

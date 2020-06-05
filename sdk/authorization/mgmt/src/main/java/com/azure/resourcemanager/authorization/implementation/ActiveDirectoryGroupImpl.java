@@ -64,7 +64,7 @@ class ActiveDirectoryGroupImpl
     public PagedFlux<ActiveDirectoryObject> listMembersAsync() {
         return manager()
             .inner()
-            .groups()
+            .getGroups()
             .getGroupMembersAsync(id())
             .mapPage(
                 directoryObjectInner -> {
@@ -84,7 +84,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     protected Mono<ADGroupInner> getInnerAsync() {
-        return manager().inner().groups().getAsync(id());
+        return manager().inner().getGroups().getAsync(id());
     }
 
     @Override
@@ -96,7 +96,7 @@ class ActiveDirectoryGroupImpl
     public Mono<ActiveDirectoryGroup> createResourceAsync() {
         Mono<?> group = Mono.just(this);
         if (isInCreateMode()) {
-            group = manager().inner().groups().createAsync(createParameters).map(innerToFluentMap(this));
+            group = manager().inner().getGroups().createAsync(createParameters).map(innerToFluentMap(this));
         }
         if (!membersToRemove.isEmpty()) {
             group =
@@ -105,7 +105,7 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToRemove)
-                                .flatMap(s -> manager().inner().groups().removeMemberAsync(id(), s))
+                                .flatMap(s -> manager().inner().getGroups().removeMemberAsync(id(), s))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToRemove.clear()));
@@ -117,7 +117,7 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToAdd)
-                                .flatMap(s -> manager().inner().groups().addMemberAsync(id(), s))
+                                .flatMap(s -> manager().inner().getGroups().addMemberAsync(id(), s))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToAdd.clear()));
@@ -141,7 +141,7 @@ class ActiveDirectoryGroupImpl
     public ActiveDirectoryGroupImpl withMember(String objectId) {
         membersToAdd
             .add(
-                String.format("%s%s/directoryObjects/%s", manager().inner().getHost(), manager().tenantId(), objectId));
+                String.format("%s%s/directoryObjects/%s", manager().inner().getEndpoint(), manager().tenantId(), objectId));
         return this;
     }
 

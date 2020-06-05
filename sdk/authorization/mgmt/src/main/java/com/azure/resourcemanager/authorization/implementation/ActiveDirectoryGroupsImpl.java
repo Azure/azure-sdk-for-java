@@ -15,18 +15,18 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
-class ActiveDirectoryGroupsImpl
+public class ActiveDirectoryGroupsImpl
     extends CreatableWrappersImpl<ActiveDirectoryGroup, ActiveDirectoryGroupImpl, ADGroupInner>
     implements ActiveDirectoryGroups {
     private final GraphRbacManager manager;
 
-    ActiveDirectoryGroupsImpl(final GraphRbacManager manager) {
+    public ActiveDirectoryGroupsImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 
     @Override
     public PagedIterable<ActiveDirectoryGroup> list() {
-        return wrapList(this.manager.inner().groups().list(null));
+        return wrapList(this.manager.inner().getGroups().list(null));
     }
 
     @Override
@@ -46,7 +46,7 @@ class ActiveDirectoryGroupsImpl
     public Mono<ActiveDirectoryGroup> getByIdAsync(String id) {
         return manager
             .inner()
-            .groups()
+            .getGroups()
             .getAsync(id)
             .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
@@ -54,14 +54,14 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryGroup> listAsync() {
-        return wrapPageAsync(manager().inner().groups().listAsync(null));
+        return wrapPageAsync(manager().inner().getGroups().listAsync(null));
     }
 
     @Override
     public Mono<ActiveDirectoryGroup> getByNameAsync(String name) {
         return manager()
             .inner()
-            .groups()
+            .getGroups()
             .listAsync(String.format("displayName eq '%s'", name))
             .singleOrEmpty()
             .map(adGroupInner -> new ActiveDirectoryGroupImpl(adGroupInner, manager()));
@@ -84,7 +84,7 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().inner().groups().deleteAsync(id);
+        return manager().inner().getGroups().deleteAsync(id);
     }
 
     @Override
@@ -94,6 +94,6 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public GroupsClient inner() {
-        return manager().inner().groups();
+        return manager().inner().getGroups();
     }
 }

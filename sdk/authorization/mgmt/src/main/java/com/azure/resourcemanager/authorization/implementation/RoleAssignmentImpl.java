@@ -87,7 +87,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                 roleAssignmentPropertiesInner ->
                     manager()
                         .roleInner()
-                        .roleAssignments()
+                        .getRoleAssignments()
                         .createAsync(scope(), name(), roleAssignmentPropertiesInner)
                         .retryWhen(
                             throwableFlux ->
@@ -120,7 +120,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     protected Mono<RoleAssignmentInner> getInnerAsync() {
-        return manager.roleInner().roleAssignments().getAsync(scope(), name());
+        return manager.roleInner().getRoleAssignments().getAsync(scope(), name());
     }
 
     @Override

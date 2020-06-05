@@ -18,13 +18,13 @@ import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Applications and its parent interfaces. */
-class ActiveDirectoryApplicationsImpl
+public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
     implements ActiveDirectoryApplications, HasManager<GraphRbacManager>, HasInner<ApplicationsClient> {
     private ApplicationsClient innerCollection;
     private GraphRbacManager manager;
 
-    ActiveDirectoryApplicationsImpl(final ApplicationsClient client, final GraphRbacManager graphRbacManager) {
+    public ActiveDirectoryApplicationsImpl(final ApplicationsClient client, final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
     }

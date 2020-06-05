@@ -112,13 +112,13 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         this.graphRbacManagementClient =
             new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getGraphEndpoint())
+                .endpoint(profile.environment().getGraphEndpoint())
                 .tenantId(profile.tenantId())
                 .buildClient();
         this.authorizationManagementClient =
             new AuthorizationManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient();
         this.tenantId = profile.tenantId();
@@ -162,7 +162,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /** @return the service principal management API entry point */
     public ServicePrincipals servicePrincipals() {
         if (servicePrincipals == null) {
-            servicePrincipals = new ServicePrincipalsImpl(graphRbacManagementClient.servicePrincipals(), this);
+            servicePrincipals = new ServicePrincipalsImpl(graphRbacManagementClient.getServicePrincipals(), this);
         }
         return servicePrincipals;
     }
@@ -170,7 +170,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /** @return the application management API entry point */
     public ActiveDirectoryApplications applications() {
         if (applications == null) {
-            applications = new ActiveDirectoryApplicationsImpl(graphRbacManagementClient.applications(), this);
+            applications = new ActiveDirectoryApplicationsImpl(graphRbacManagementClient.getApplications(), this);
         }
         return applications;
     }

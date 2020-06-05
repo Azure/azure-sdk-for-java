@@ -16,11 +16,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of RoleDefinitions and its parent interfaces. */
-class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefinitionImpl, RoleDefinitionInner>
+public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefinitionImpl, RoleDefinitionInner>
     implements RoleDefinitions, HasInner<RoleDefinitionsClient> {
     private final GraphRbacManager manager;
 
-    RoleDefinitionsImpl(final GraphRbacManager manager) {
+    public RoleDefinitionsImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 
@@ -91,6 +91,6 @@ class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefin
 
     @Override
     public RoleDefinitionsClient inner() {
-        return manager().roleInner().roleDefinitions();
+        return manager().roleInner().getRoleDefinitions();
     }
 }

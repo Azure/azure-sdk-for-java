@@ -16,11 +16,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
-class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
+public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
     implements RoleAssignments, HasInner<RoleAssignmentsClient> {
     private final GraphRbacManager manager;
 
-    RoleAssignmentsImpl(final GraphRbacManager manager) {
+    public RoleAssignmentsImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 
@@ -99,6 +99,6 @@ class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAss
 
     @Override
     public RoleAssignmentsClient inner() {
-        return manager().roleInner().roleAssignments();
+        return manager().roleInner().getRoleAssignments();
     }
 }

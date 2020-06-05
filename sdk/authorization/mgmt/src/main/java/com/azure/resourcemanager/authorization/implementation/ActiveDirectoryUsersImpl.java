@@ -16,17 +16,17 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
-class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
+public class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
     implements ActiveDirectoryUsers, HasInner<UsersClient> {
     private final GraphRbacManager manager;
 
-    ActiveDirectoryUsersImpl(final GraphRbacManager manager) {
+    public ActiveDirectoryUsersImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 
     @Override
     public PagedIterable<ActiveDirectoryUser> list() {
-        return wrapList(this.manager().inner().users().list());
+        return wrapList(this.manager().inner().getUsers().list());
     }
 
     @Override
@@ -46,7 +46,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
     public Mono<ActiveDirectoryUser> getByIdAsync(String id) {
         return manager()
             .inner()
-            .users()
+            .getUsers()
             .getAsync(id)
             .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
@@ -61,7 +61,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
     public Mono<ActiveDirectoryUser> getByNameAsync(final String name) {
         return manager()
             .inner()
-            .users()
+            .getUsers()
             .getAsync(name)
             .onErrorResume(
                 GraphErrorException.class,
@@ -69,7 +69,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
                     if (name.contains("@")) {
                         return manager()
                             .inner()
-                            .users()
+                            .getUsers()
                             .listAsync(
                                 String
                                     .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")),
@@ -78,7 +78,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
                     } else {
                         return manager()
                             .inner()
-                            .users()
+                            .getUsers()
                             .listAsync(String.format("displayName eq '%s'", name), null)
                             .singleOrEmpty();
                     }
@@ -103,7 +103,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().inner().users().deleteAsync(id);
+        return manager().inner().getUsers().deleteAsync(id);
     }
 
     @Override
@@ -113,6 +113,6 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
 
     @Override
     public UsersClient inner() {
-        return manager().inner().users();
+        return manager().inner().getUsers();
     }
 }

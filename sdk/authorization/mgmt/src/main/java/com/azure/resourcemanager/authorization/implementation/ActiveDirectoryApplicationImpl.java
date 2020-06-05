@@ -57,7 +57,7 @@ class ActiveDirectoryApplicationImpl
         }
         return manager
             .inner()
-            .applications()
+            .getApplications()
             .createAsync(createParameters)
             .map(innerToFluentMap(this))
             .flatMap(application -> refreshCredentialsAsync());
@@ -65,14 +65,14 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> updateResourceAsync() {
-        return manager.inner().applications().patchAsync(id(), updateParameters).then(Mono.just(this));
+        return manager.inner().getApplications().patchAsync(id(), updateParameters).then(Mono.just(this));
     }
 
     Mono<ActiveDirectoryApplication> refreshCredentialsAsync() {
         final Mono<ActiveDirectoryApplication> keyCredentials =
             manager
                 .inner()
-                .applications()
+                .getApplications()
                 .listKeyCredentialsAsync(id())
                 .map(
                     (Function<KeyCredentialInner, CertificateCredential>)
@@ -89,7 +89,7 @@ class ActiveDirectoryApplicationImpl
         final Mono<ActiveDirectoryApplication> passwordCredentials =
             manager
                 .inner()
-                .applications()
+                .getApplications()
                 .listPasswordCredentialsAsync(id())
                 .map(
                     (Function<PasswordCredentialInner, PasswordCredential>)
@@ -171,7 +171,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     protected Mono<ApplicationInner> getInnerAsync() {
-        return manager.inner().applications().getAsync(id());
+        return manager.inner().getApplications().getAsync(id());
     }
 
     @Override
