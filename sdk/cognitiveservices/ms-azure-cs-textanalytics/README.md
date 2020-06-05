@@ -1,7 +1,6 @@
-## Microsoft Azure SDK for Python
+## Microsoft Azure SDK for Java
 
-**NOTE:** If you are looking for the new, preview version of Azure Text
-Analytics, please see
+**NOTE:** If you are looking for the new version of Azure Text Analytics, please see
 [azure-ai-textanalytics](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/textanalytics/azure-ai-textanalytics).
 
 This is the Microsoft Azure Cognitive Services Text Analytics Client
