@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -20,7 +20,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
-    private final QueryRequestOptions queryRequestOptions;
+    private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private RxDocumentServiceRequest request;
 
     private volatile boolean retried = false;
@@ -28,14 +28,14 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     public InvalidPartitionExceptionRetryPolicy(RxCollectionCache collectionCache,
             DocumentClientRetryPolicy nextPolicy,
             String resourceFullName,
-            QueryRequestOptions queryRequestOptions) {
+            CosmosQueryRequestOptions cosmosQueryRequestOptions) {
 
         this.clientCollectionCache = collectionCache;
         this.nextPolicy = nextPolicy;
 
         // TODO the resource address should be inferred from exception
         this.collectionLink = Utils.getCollectionName(resourceFullName);
-        this.queryRequestOptions = queryRequestOptions;
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
     }
 
     @Override
@@ -54,11 +54,11 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 // TODO: resource address should be accessible from the exception
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
-                if(this.queryRequestOptions != null) {
+                if(this.cosmosQueryRequestOptions != null) {
                     this.clientCollectionCache.refresh(
                         BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                         collectionLink,
-                        ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.queryRequestOptions));
+                        ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
                 } else {
                     this.clientCollectionCache.refresh(
                         BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),

@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
@@ -113,7 +113,7 @@ public class BasicDemo {
     private void queryItems() {
         log("+ Querying the collection ");
         String query = "SELECT * from root";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
@@ -129,7 +129,7 @@ public class BasicDemo {
     private void queryWithContinuationToken() {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(true);
         String continuation = null;
         do {
